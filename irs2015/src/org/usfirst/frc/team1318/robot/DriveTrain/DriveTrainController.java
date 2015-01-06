@@ -4,7 +4,6 @@ import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.Common.IController;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.PIDHandler;
-import org.usfirst.frc.team1318.robot.Common.ToggleButtons.SimpleToggleButton;
 
 /**
  * Drivetrain controller.
@@ -78,6 +77,8 @@ public class DriveTrainController implements IController
 
         // apply the power to the motors
         this.component.setDriveTrainPower(leftPower, rightPower);
+        
+        // apply desired shifter state
         this.component.setShifterState(this.driver.getDriveTrainShifterButton());
     }
 

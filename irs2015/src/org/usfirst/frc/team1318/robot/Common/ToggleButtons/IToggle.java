@@ -10,6 +10,7 @@ public interface IToggle
 {
     /**
      * Attempt to change the current state
+     * @param buttonState the current position of the button (whether it is currently pressed)
      */
-    public void toggle();
+    public void updateState(boolean buttonState);
 }

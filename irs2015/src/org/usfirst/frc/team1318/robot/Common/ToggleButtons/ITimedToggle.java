@@ -17,5 +17,5 @@ public interface ITimedToggle
     /**
      * Indicates that some time has passed
      */
-    public void tick();
+    public void update();
 }

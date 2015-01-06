@@ -3,43 +3,65 @@ package org.usfirst.frc.team1318.robot.Common.ToggleButtons;
 /**
  * Defines a simple toggle that switches between true and false.
  * 
+ * Toggle on press behavior:
+ * 
+ *     button pressed:        _________________
+ *                           |                 |
+ * button not pressed: ______|                 |________
+ *                           ^ takes effect when first pressed
+ * 
+ * Toggle on release behavior:
+ * 
+ *     button pressed:        _________________
+ *                           |                 |
+ * button not pressed: ______|                 |________
+ *                                             ^ takes effect when first released
+ * 
+ * 
  * @author Will
  *
  */
 public class SimpleToggleButton implements ISimpleToggle
 {
+	private final boolean toggleOnPress;
+
     private boolean currentState;
-    private boolean buttonState;
+    private boolean prevButtonState;
 
     /**
      * Initializes a new SimpleToggleButton
      */
     public SimpleToggleButton()
     {
-        this.currentState = false;
-        this.buttonState = false;
+        this(true);
     }
 
     /**
-     * change current state if it needs to be changed based on button values 
-     * @param newState current button state 
+     * Initializes a new SimpleToggleButton
+     * @param toggleOnPress indicates whether we should toggle when the button is first pressed or when released
      */
-    public void updateState(boolean newState)
+    public SimpleToggleButton(boolean toggleOnPress)
     {
-    	if(buttonState && !newState)
-    	{
-    		currentState = !currentState;
-    	}
-    	
-    	buttonState = newState;
+        this.currentState = false;
+        this.prevButtonState = false;
+
+        this.toggleOnPress = toggleOnPress;
     }
-    
+
     /**
      * Attempt to change the current state
+     * @param buttonState the current position of the button (whether it is currently pressed)
      */
-    public void toggle()
+    public void updateState(boolean buttonState)
     {
-        this.currentState = !this.currentState;
+    	// if button has switched state, check if we want to toggle
+    	if (this.prevButtonState != buttonState &&
+			(this.toggleOnPress && buttonState || !this.toggleOnPress && !buttonState))
+    	{
+    		this.currentState = !this.currentState;
+    	}
+
+    	this.prevButtonState = buttonState;
     }
 
     /**

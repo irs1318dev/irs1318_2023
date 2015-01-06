@@ -23,32 +23,34 @@ public class UserDriver implements IDriver
     private static final String DRIVETRAIN_SHIFTER_STATE_LOG_KEY = "u.dss";
 
     private Joystick joystick;
-    
+
+    private SimpleToggleButton simpleDriveModeButton;
     private SimpleToggleButton shifterButton;
 
     /**
-     * Initializes a new UserOperator
+     * Initializes a new UserDriver
      */
     public UserDriver()
     {
         this.joystick = new Joystick(JoystickButtonConstants.JOYSTICK_PORT);
+
+        // initialize various toggle buttons
+        this.simpleDriveModeButton = new SimpleToggleButton();
         this.shifterButton = new SimpleToggleButton();
-        
-        // instantiate toggles here
     }
 
     /**
-     * Tell the operator component that some time has passed
+     * Tell the driver component that some time has passed
      */
     public void update()
     {
-        // check and update the toggles
-    	
-    	this.shifterButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.SHIFTER_BUTTON));
+    	// update the state of the various toggle buttons
+    	this.simpleDriveModeButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.DRIVETRAIN_SIMPLE_BUTTON));
+    	this.shifterButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.DRIVETRAIN_SHIFTER_BUTTON));
     }
     
     /**
-     * Tell the operator component that operation is stopping
+     * Tell the driver that operation is stopping
      */
     public void stop()
     {
@@ -86,13 +88,13 @@ public class UserDriver implements IDriver
      */
     public boolean getDriveTrainSimpleModeButton()
     {
-        boolean simpleMode = this.joystick.getRawButton(JoystickButtonConstants.DRIVETRAIN_SIMPLE_BUTTON);
+        boolean simpleMode = this.simpleDriveModeButton.isToggled();
 
         SmartDashboardLogger.putBoolean(UserDriver.DRIVETRAIN_SIMPLE_MODE_LOG_KEY, simpleMode);
 
         return simpleMode;
     }
-    
+
     /**
      * Gets a value indicating whether the shifter state should change 
      * @return true for state should change, false for no change 

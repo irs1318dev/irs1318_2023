@@ -12,5 +12,5 @@ public class JoystickButtonConstants
 
     public static final int DRIVETRAIN_SIMPLE_BUTTON = 3;
     
-    public static final int SHIFTER_BUTTON = 4;
+    public static final int DRIVETRAIN_SHIFTER_BUTTON = 4;
 }

@@ -21,6 +21,8 @@ public class SimpleTimedToggleButton extends SimpleToggleButton implements ITime
      */
     public SimpleTimedToggleButton(double toggleDuration)
     {
+    	super(true);
+
         this.toggleDuration = toggleDuration;
         this.timer = new Timer();
         this.timer.start();
@@ -39,7 +41,7 @@ public class SimpleTimedToggleButton extends SimpleToggleButton implements ITime
     /**
      * Indicates that some time has passed
      */
-    public void tick()
+    public void update()
     {
         if (this.startTime != null &&
             this.timer.get() > this.startTime + this.toggleDuration)
@@ -50,11 +52,16 @@ public class SimpleTimedToggleButton extends SimpleToggleButton implements ITime
 
     /**
      * Attempt to change the current state
+     * @param buttonState the current position of the button (whether it is currently pressed)
      */
-    public void toggle()
+    public void updateState(boolean buttonState)
     {
-        super.toggle();
-        this.startTime = this.timer.get();
+		super.updateState(buttonState && this.canToggle());
+		
+		if (this.canToggle())
+		{
+			this.startTime = this.timer.get();
+		}
     }
 
     /**
