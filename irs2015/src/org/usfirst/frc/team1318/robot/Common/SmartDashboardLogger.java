@@ -1,12 +1,12 @@
 package org.usfirst.frc.team1318.robot.Common;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.networktables.NetworkTableKeyNotDefined;
+import edu.wpi.first.wpilibj.tables.TableKeyNotDefinedException;
 
 /**
  * Logger that logs current values to the smart dashboard. 
  * 
- * @author Will
+ * @author Chris K
  *
  */
 public class SmartDashboardLogger
@@ -40,7 +40,7 @@ public class SmartDashboardLogger
 				SmartDashboard.putBoolean(key, value.booleanValue());
 			}
 		}
-		catch (NetworkTableKeyNotDefined ex)
+		catch (TableKeyNotDefinedException ex)
 		{
 			SmartDashboard.putBoolean(key, value.booleanValue());
 		}
@@ -75,7 +75,7 @@ public class SmartDashboardLogger
 				SmartDashboard.putNumber(key, value.doubleValue());
 			}
 		}
-		catch (NetworkTableKeyNotDefined ex)
+		catch (TableKeyNotDefinedException ex)
 		{
 			SmartDashboard.putNumber(key, value.doubleValue());
 		}
@@ -95,7 +95,7 @@ public class SmartDashboardLogger
 				SmartDashboard.putString(key, value);
 			}
 		}
-		catch (NetworkTableKeyNotDefined ex)
+		catch (TableKeyNotDefinedException ex)
 		{
 			SmartDashboard.putString(key, value);
 		}

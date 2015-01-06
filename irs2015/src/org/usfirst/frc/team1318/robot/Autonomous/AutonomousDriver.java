@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1318.robot.Autonomous;
 
+import java.util.Queue;
+
 import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
@@ -22,8 +24,7 @@ public class AutonomousDriver implements IDriver
     private static final String DRIVETRAIN_POSITION_MODE_LOG_KEY = "a.dpm";
     private static final String DRIVETRAIN_SHIFTER_MODE_LOG_KEY = "a.dsm";
 
-    private IAutonomousTask[] autonomousTasks;
-    private int currentTaskPosition;
+    private Queue<IAutonomousTask> autonomousTasks;
     private IAutonomousTask currentTask;
     private AutonomousControlData controlData;
 
@@ -31,15 +32,11 @@ public class AutonomousDriver implements IDriver
      * Initializes a new AutonomousOperator
      * @param autonomousTasks to execute as a part of this operator
      */
-    public AutonomousDriver(IAutonomousTask[] autonomousTasks)
+    public AutonomousDriver(Queue<IAutonomousTask> autonomousTasks)
     {
-        // switch to Queue when available to get rid of currentTaskPosition...
         this.autonomousTasks = autonomousTasks;
-        this.currentTaskPosition = 0;
         this.currentTask = null;
-        this.controlData = new AutonomousControlData(); 
-
-        this.validateAutonomousTasks();
+        this.controlData = new AutonomousControlData();
     }
 
     /**
@@ -54,19 +51,19 @@ public class AutonomousDriver implements IDriver
             {
                 this.currentTask.end(this.controlData);
                 this.currentTask = null;
-                this.currentTaskPosition++;
             }
         }
 
         // if there's no current task, find the next one and start it (if any)
         if (this.currentTask == null)
         {
-            if (this.currentTaskPosition >= this.autonomousTasks.length)
+            this.currentTask = this.autonomousTasks.poll();
+
+            if (this.currentTask == null)
             {
                 return;
             }
 
-            this.currentTask = this.autonomousTasks[this.currentTaskPosition];
             this.currentTask.begin();
         }
 
@@ -171,22 +168,6 @@ public class AutonomousDriver implements IDriver
         SmartDashboardLogger.putBoolean(AutonomousDriver.DRIVETRAIN_POSITION_MODE_LOG_KEY, positionMode);
 
         return positionMode;
-    }
-
-    private void validateAutonomousTasks()
-    {
-        if (this.autonomousTasks == null)
-        {
-            throw new RuntimeException("autonomous tasks are null!");
-        }
-
-        for (int i = 0; i < this.autonomousTasks.length; i++)
-        {
-            if (this.autonomousTasks[i] == null)
-            {
-                throw new RuntimeException("null entry in autonomous tasks list!");
-            }
-        }
     }
 
 }
