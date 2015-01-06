@@ -3,6 +3,8 @@ package org.usfirst.frc.team1318.robot.UserInterface;
 import org.usfirst.frc.team1318.robot.JoystickButtonConstants;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
+import org.usfirst.frc.team1318.robot.Common.ToggleButtons.SimpleToggleButton;
+
 import edu.wpi.first.wpilibj.*;
 
 /**
@@ -18,8 +20,11 @@ public class UserDriver implements IDriver
     private static final String DRIVETRAIN_X_VELOCITY_LOG_KEY = "u.dxv";
     private static final String DRIVETRAIN_Y_VELOCITY_LOG_KEY = "u.dyv";
     private static final String DRIVETRAIN_SIMPLE_MODE_LOG_KEY = "u.dsm";
+    private static final String DRIVETRAIN_SHIFTER_STATE_LOG_KEY = "u.dss";
 
     private Joystick joystick;
+    
+    private SimpleToggleButton shifterButton;
 
     /**
      * Initializes a new UserOperator
@@ -27,6 +32,7 @@ public class UserDriver implements IDriver
     public UserDriver()
     {
         this.joystick = new Joystick(JoystickButtonConstants.JOYSTICK_PORT);
+        this.shifterButton = new SimpleToggleButton();
         
         // instantiate toggles here
     }
@@ -37,6 +43,8 @@ public class UserDriver implements IDriver
     public void update()
     {
         // check and update the toggles
+    	
+    	this.shifterButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.SHIFTER_BUTTON));
     }
     
     /**
@@ -84,7 +92,20 @@ public class UserDriver implements IDriver
 
         return simpleMode;
     }
-
+    
+    /**
+     * Gets a value indicating whether the shifter state should change 
+     * @return true for state should change, false for no change 
+     */
+    public boolean getDriveTrainShifterButton()
+    {
+    	boolean shifterState = this.shifterButton.isToggled();
+    	
+    	SmartDashboardLogger.putBoolean(UserDriver.DRIVETRAIN_SHIFTER_STATE_LOG_KEY, shifterState);
+    	
+    	return shifterState;
+    }
+    
     /**
      * Get a value indicating the desired drive train left position for positional mode
      * @return position

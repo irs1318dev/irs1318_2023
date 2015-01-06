@@ -14,6 +14,12 @@ public interface IDriveTrainComponent
      * @param rightPower level to apply to the right motor
      */
     public void setDriveTrainPower(double leftPower, double rightPower);
+    
+    /**
+     * sets the state of the shifters 
+     * @param state what the shifter state should be
+     */
+    public void setShifterState(boolean state);
 
     /**
      * get the velocity from the left encoder

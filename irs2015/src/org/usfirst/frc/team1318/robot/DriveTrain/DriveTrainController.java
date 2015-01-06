@@ -4,6 +4,7 @@ import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.Common.IController;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.PIDHandler;
+import org.usfirst.frc.team1318.robot.Common.ToggleButtons.SimpleToggleButton;
 
 /**
  * Drivetrain controller.
@@ -25,7 +26,7 @@ public class DriveTrainController implements IController
     private boolean usePositionalMode;
     private PIDHandler leftPID;
     private PIDHandler rightPID;
-
+    
     /**
      * Initializes a new DriveTrainController
      * @param operator to use to control the drive train
@@ -77,6 +78,7 @@ public class DriveTrainController implements IController
 
         // apply the power to the motors
         this.component.setDriveTrainPower(leftPower, rightPower);
+        this.component.setShifterState(this.driver.getDriveTrainShifterButton());
     }
 
     /**

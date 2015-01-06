@@ -39,6 +39,12 @@ public interface IDriver
     public boolean getDriveTrainSimpleModeButton();
 
     /**
+     * Gets a value indicating whether the shifter state should change 
+     * @return true for state should change, false for no change 
+     */
+    public boolean getDriveTrainShifterButton();
+    
+    /**
      * Get a value indicating the desired drive train left position for positional mode
      * @return position
      */

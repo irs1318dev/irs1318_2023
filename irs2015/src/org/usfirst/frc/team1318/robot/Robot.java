@@ -1,5 +1,8 @@
 package org.usfirst.frc.team1318.robot;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+
 import org.usfirst.frc.team1318.robot.Autonomous.AutonomousDriver;
 import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveAutonomousTask;
@@ -12,6 +15,7 @@ import org.usfirst.frc.team1318.robot.Compressor.CompressorController;
 import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainComponent;
 import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainController;
 import org.usfirst.frc.team1318.robot.UserInterface.UserDriver;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 /**
@@ -95,24 +99,23 @@ public class Robot extends IterativeRobot
      */
     public void autonomousInit()
     {
-        // create autonomous operator
-        this.driver = new AutonomousDriver(
-            // drive in a square:
-            new IAutonomousTask[]
-            {
-                new DriveAutonomousTask(600, this.driveTrainComponent),
-                new WaitAutonomousTask(5),
-                new TurnAutonomousTask(90, this.driveTrainComponent),
-                new DriveAutonomousTask(600, this.driveTrainComponent),
-                new WaitAutonomousTask(5),
-                new TurnAutonomousTask(90, this.driveTrainComponent),
-                new DriveAutonomousTask(600, this.driveTrainComponent),
-                new WaitAutonomousTask(5),
-                new TurnAutonomousTask(90, this.driveTrainComponent),
-                new DriveAutonomousTask(600, this.driveTrainComponent),
-                new WaitAutonomousTask(5),
-                new TurnAutonomousTask(90, this.driveTrainComponent),
-            });
+        // create autonomous driver
+        this.driver = new AutonomousDriver( 
+    			new LinkedList<IAutonomousTask>(
+    					Arrays.asList(
+							// drive in a circle
+    		                new DriveAutonomousTask(600, this.driveTrainComponent),
+    		                new WaitAutonomousTask(5),
+    		                new TurnAutonomousTask(90, this.driveTrainComponent),
+    		                new DriveAutonomousTask(600, this.driveTrainComponent),
+    		                new WaitAutonomousTask(5),
+    		                new TurnAutonomousTask(90, this.driveTrainComponent),
+    		                new DriveAutonomousTask(600, this.driveTrainComponent),
+    		                new WaitAutonomousTask(5),
+    		                new TurnAutonomousTask(90, this.driveTrainComponent),
+    		                new DriveAutonomousTask(600, this.driveTrainComponent),
+    		                new WaitAutonomousTask(5),
+    		                new TurnAutonomousTask(90, this.driveTrainComponent))));
 
         this.generalInit();
 
