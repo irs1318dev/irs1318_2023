@@ -23,7 +23,7 @@ package org.usfirst.frc.team1318.robot.Common.ToggleButtons;
  */
 public class SimpleToggleButton implements ISimpleToggle
 {
-	private final boolean toggleOnPress;
+    private final boolean toggleOnPress;
 
     private boolean currentState;
     private boolean prevButtonState;
@@ -54,14 +54,14 @@ public class SimpleToggleButton implements ISimpleToggle
      */
     public void updateState(boolean buttonState)
     {
-    	// if button has switched state, check if we want to toggle
-    	if (this.prevButtonState != buttonState &&
-			(this.toggleOnPress && buttonState || !this.toggleOnPress && !buttonState))
-    	{
-    		this.currentState = !this.currentState;
-    	}
+        // if button has switched state, check if we want to toggle
+        if (this.prevButtonState != buttonState &&
+            (this.toggleOnPress && buttonState || !this.toggleOnPress && !buttonState))
+        {
+            this.currentState = !this.currentState;
+        }
 
-    	this.prevButtonState = buttonState;
+        this.prevButtonState = buttonState;
     }
 
     /**

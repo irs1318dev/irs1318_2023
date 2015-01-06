@@ -21,7 +21,7 @@ public class CompressorController implements IController
      */
     public CompressorController(CompressorComponent component)
     {
-        this.component = component;        
+        this.component = component;
         this.isStarted = false;
     }
 

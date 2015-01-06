@@ -30,7 +30,7 @@ public class DriveTrainComponent implements IDriveTrainComponent
 
     private Encoder leftEncoder;
     private Encoder rightEncoder;
-    
+
     private DoubleSolenoid shifter;
 
     /**
@@ -54,8 +54,9 @@ public class DriveTrainComponent implements IDriveTrainComponent
 
         this.leftEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_LEFT_PULSE_DISTANCE);
         this.rightEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_RIGHT_PULSE_DISTANCE);
-        
-        shifter = new DoubleSolenoid(ElectronicsConstants.DRIVETRAIN_SHIFTER_MODE_EXTENDER_PORT, ElectronicsConstants.DRIVETRAIN_SHIFTER_MODE_RETRACTER_PORT);
+
+        shifter = new DoubleSolenoid(ElectronicsConstants.DRIVETRAIN_SHIFTER_MODE_EXTENDER_PORT,
+            ElectronicsConstants.DRIVETRAIN_SHIFTER_MODE_RETRACTER_PORT);
     }
 
     /**
@@ -78,18 +79,18 @@ public class DriveTrainComponent implements IDriveTrainComponent
      */
     public void setShifterState(boolean state)
     {
-    	if(state)
-    	{
-    		shifter.set(Value.kForward);
-    	}
-    	else
-    	{
-    		shifter.set(Value.kReverse);
-    	}
-    	
-    	SmartDashboardLogger.putBoolean(DriveTrainComponent.SHIFTER_STATE_LOG_KEY, state);
+        if (state)
+        {
+            shifter.set(Value.kForward);
+        }
+        else
+        {
+            shifter.set(Value.kReverse);
+        }
+
+        SmartDashboardLogger.putBoolean(DriveTrainComponent.SHIFTER_STATE_LOG_KEY, state);
     }
-    
+
     /**
      * get the velocity from the left encoder
      * @return a value indicating the velocity
@@ -122,7 +123,7 @@ public class DriveTrainComponent implements IDriveTrainComponent
      */
     public double getLeftEncoderDistance()
     {
-        double leftDistance = this.leftEncoder.getDistance(); 
+        double leftDistance = this.leftEncoder.getDistance();
 
         SmartDashboardLogger.putNumber(DriveTrainComponent.LEFT_ENCODER_DISTANCE_LOG_KEY, leftDistance);
 
@@ -135,7 +136,7 @@ public class DriveTrainComponent implements IDriveTrainComponent
      */
     public double getRightEncoderDistance()
     {
-        double rightDistance = this.rightEncoder.getDistance(); 
+        double rightDistance = this.rightEncoder.getDistance();
 
         SmartDashboardLogger.putNumber(DriveTrainComponent.RIGHT_ENCODER_DISTANCE_LOG_KEY, rightDistance);
 

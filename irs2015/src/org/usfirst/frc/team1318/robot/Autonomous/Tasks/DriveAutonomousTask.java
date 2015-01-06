@@ -31,6 +31,6 @@ public class DriveAutonomousTask extends MoveAutonomousTaskBase implements IAuto
     protected void determineFinalEncoderDistance()
     {
         this.desiredFinalLeftEncoderDistance = this.startLeftEncoderDistance + this.distance;
-        this.desiredFinalRightEncoderDistance = this.startRightEncoderDistance + this.distance;        
+        this.desiredFinalRightEncoderDistance = this.startRightEncoderDistance + this.distance;
     }
 }

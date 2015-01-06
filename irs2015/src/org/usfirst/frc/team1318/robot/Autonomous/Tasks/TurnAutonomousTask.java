@@ -33,6 +33,6 @@ public class TurnAutonomousTask extends MoveAutonomousTaskBase implements IAuton
     {
         double arcLength = Math.PI * HardwareConstants.DRIVETRAIN_WHEEL_SEPARATION_DISTANCE * (this.degrees / 360.0);
         this.desiredFinalLeftEncoderDistance = this.startLeftEncoderDistance + arcLength;
-        this.desiredFinalRightEncoderDistance = this.startRightEncoderDistance - arcLength;        
+        this.desiredFinalRightEncoderDistance = this.startRightEncoderDistance - arcLength;
     }
 }

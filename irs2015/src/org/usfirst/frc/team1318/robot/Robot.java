@@ -89,7 +89,7 @@ public class Robot extends IterativeRobot
             this.driveTrainController.stop();
             this.driveTrainController = null;
         }
-        
+
         SmartDashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Disabled");
     }
 
@@ -100,22 +100,22 @@ public class Robot extends IterativeRobot
     public void autonomousInit()
     {
         // create autonomous driver
-        this.driver = new AutonomousDriver( 
-    			new LinkedList<IAutonomousTask>(
-    					Arrays.asList(
-							// drive in a circle
-    		                new DriveAutonomousTask(600, this.driveTrainComponent),
-    		                new WaitAutonomousTask(5),
-    		                new TurnAutonomousTask(90, this.driveTrainComponent),
-    		                new DriveAutonomousTask(600, this.driveTrainComponent),
-    		                new WaitAutonomousTask(5),
-    		                new TurnAutonomousTask(90, this.driveTrainComponent),
-    		                new DriveAutonomousTask(600, this.driveTrainComponent),
-    		                new WaitAutonomousTask(5),
-    		                new TurnAutonomousTask(90, this.driveTrainComponent),
-    		                new DriveAutonomousTask(600, this.driveTrainComponent),
-    		                new WaitAutonomousTask(5),
-    		                new TurnAutonomousTask(90, this.driveTrainComponent))));
+        this.driver = new AutonomousDriver(
+            new LinkedList<IAutonomousTask>(
+                Arrays.asList(
+                    // drive in a circle
+                    new DriveAutonomousTask(600, this.driveTrainComponent),
+                    new WaitAutonomousTask(5),
+                    new TurnAutonomousTask(90, this.driveTrainComponent),
+                    new DriveAutonomousTask(600, this.driveTrainComponent),
+                    new WaitAutonomousTask(5),
+                    new TurnAutonomousTask(90, this.driveTrainComponent),
+                    new DriveAutonomousTask(600, this.driveTrainComponent),
+                    new WaitAutonomousTask(5),
+                    new TurnAutonomousTask(90, this.driveTrainComponent),
+                    new DriveAutonomousTask(600, this.driveTrainComponent),
+                    new WaitAutonomousTask(5),
+                    new TurnAutonomousTask(90, this.driveTrainComponent))));
 
         this.generalInit();
 
@@ -187,152 +187,6 @@ public class Robot extends IterativeRobot
         this.driveTrainController.update();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*
                                       .                                                             

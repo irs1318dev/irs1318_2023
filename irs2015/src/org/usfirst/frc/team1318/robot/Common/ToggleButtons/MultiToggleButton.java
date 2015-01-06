@@ -23,7 +23,7 @@ package org.usfirst.frc.team1318.robot.Common.ToggleButtons;
  */
 public class MultiToggleButton<T> implements IMultiToggle<T>
 {
-	private final boolean toggleOnPress;
+    private final boolean toggleOnPress;
 
     private int currentStatePosition;
     private T[] possibleStates;
@@ -58,20 +58,20 @@ public class MultiToggleButton<T> implements IMultiToggle<T>
      */
     public void updateState(boolean buttonState)
     {
-    	// if button has switched state, check if we want to toggle
-    	if (this.prevButtonState != buttonState &&
-			(this.toggleOnPress && buttonState || !this.toggleOnPress && !buttonState))
-    	{
-    		this.currentStatePosition++;
+        // if button has switched state, check if we want to toggle
+        if (this.prevButtonState != buttonState &&
+            (this.toggleOnPress && buttonState || !this.toggleOnPress && !buttonState))
+        {
+            this.currentStatePosition++;
 
             // if we are going past the end of the list, go back to the beginning...
             if (this.currentStatePosition >= this.possibleStates.length)
             {
                 this.currentStatePosition = 0;
             }
-    	}
+        }
 
-    	this.prevButtonState = buttonState;
+        this.prevButtonState = buttonState;
     }
 
     /**

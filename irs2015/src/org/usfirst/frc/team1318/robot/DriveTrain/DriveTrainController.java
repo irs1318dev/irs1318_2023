@@ -25,7 +25,7 @@ public class DriveTrainController implements IController
     private boolean usePositionalMode;
     private PIDHandler leftPID;
     private PIDHandler rightPID;
-    
+
     /**
      * Initializes a new DriveTrainController
      * @param operator to use to control the drive train
@@ -77,7 +77,7 @@ public class DriveTrainController implements IController
 
         // apply the power to the motors
         this.component.setDriveTrainPower(leftPower, rightPower);
-        
+
         // apply desired shifter state
         this.component.setShifterState(this.driver.getDriveTrainShifterButton());
     }
@@ -224,8 +224,11 @@ public class DriveTrainController implements IController
                         // y=0 => lp = 0 + x*b = x*b.  rp = 0 + x*-b = -x*b
                         // lp = x*b + y*(1 - x*b)
                         // rp = x*-b + y*(1+x*(a-1) - x*-b)
-                        leftVelocityGoal = xVelocity * TuningConstants.DRIVETRAIN_B + yVelocity * (1 - xVelocity * TuningConstants.DRIVETRAIN_B);
-                        rightVelocityGoal = -xVelocity * TuningConstants.DRIVETRAIN_B + yVelocity * (1 + xVelocity * (TuningConstants.DRIVETRAIN_A - 1) + xVelocity * TuningConstants.DRIVETRAIN_B);
+                        leftVelocityGoal = xVelocity
+                            * TuningConstants.DRIVETRAIN_B + yVelocity * (1 - xVelocity * TuningConstants.DRIVETRAIN_B);
+                        rightVelocityGoal = -xVelocity
+                            * TuningConstants.DRIVETRAIN_B + yVelocity
+                            * (1 + xVelocity * (TuningConstants.DRIVETRAIN_A - 1) + xVelocity * TuningConstants.DRIVETRAIN_B);
                     }
                     else
                     {
@@ -234,8 +237,11 @@ public class DriveTrainController implements IController
                         // y=0  => lp = x*B.  rp = -x*B (see Q1)
                         // lp = x*B + -1*y*(-1 - x*B)
                         // rp = x*-B + -1*y*(-1+x*(-a - -1) - x*-B)
-                        leftVelocityGoal = xVelocity * TuningConstants.DRIVETRAIN_B - yVelocity * (-1 - xVelocity * TuningConstants.DRIVETRAIN_B);
-                        rightVelocityGoal = -xVelocity * TuningConstants.DRIVETRAIN_B - yVelocity * (-1 + xVelocity * (-TuningConstants.DRIVETRAIN_A + 1) + xVelocity * TuningConstants.DRIVETRAIN_B);
+                        leftVelocityGoal = xVelocity
+                            * TuningConstants.DRIVETRAIN_B - yVelocity * (-1 - xVelocity * TuningConstants.DRIVETRAIN_B);
+                        rightVelocityGoal = -xVelocity
+                            * TuningConstants.DRIVETRAIN_B - yVelocity
+                            * (-1 + xVelocity * (-TuningConstants.DRIVETRAIN_A + 1) + xVelocity * TuningConstants.DRIVETRAIN_B);
                     }
                 }
                 else
@@ -247,8 +253,11 @@ public class DriveTrainController implements IController
                         // y=0 => lp = 0 + -1*x*(-b - 0) = x*b.  rp = 0 + -1*x*(b - 0) = -x*b
                         // lp = x*b + y*(1 - x*(a-1) - x*b)
                         // rp = -x*b + y*(1 - -x*B)
-                        leftVelocityGoal = xVelocity * TuningConstants.DRIVETRAIN_B + yVelocity * (1 - xVelocity * (TuningConstants.DRIVETRAIN_A - 1) - xVelocity * TuningConstants.DRIVETRAIN_B);
-                        rightVelocityGoal = -xVelocity * TuningConstants.DRIVETRAIN_B + yVelocity * (1 + xVelocity * TuningConstants.DRIVETRAIN_B);
+                        leftVelocityGoal = xVelocity
+                            * TuningConstants.DRIVETRAIN_B + yVelocity
+                            * (1 - xVelocity * (TuningConstants.DRIVETRAIN_A - 1) - xVelocity * TuningConstants.DRIVETRAIN_B);
+                        rightVelocityGoal = -xVelocity
+                            * TuningConstants.DRIVETRAIN_B + yVelocity * (1 + xVelocity * TuningConstants.DRIVETRAIN_B);
                     }
                     else
                     {
@@ -257,8 +266,11 @@ public class DriveTrainController implements IController
                         // y=0  => lp = x*b.  rp = -x*b (see Q2) 
                         // lp = x*b + -1*y*(-1 - x*(-a + 1) - x*b)
                         // rp = -x*b + -1*y*(-1 - -x*b)
-                        leftVelocityGoal = xVelocity * TuningConstants.DRIVETRAIN_B - yVelocity * (-1 - xVelocity * (-TuningConstants.DRIVETRAIN_A + 1) - xVelocity * TuningConstants.DRIVETRAIN_B);
-                        rightVelocityGoal = -xVelocity * TuningConstants.DRIVETRAIN_B - yVelocity * (-1 + xVelocity * TuningConstants.DRIVETRAIN_B);
+                        leftVelocityGoal = xVelocity
+                            * TuningConstants.DRIVETRAIN_B - yVelocity
+                            * (-1 - xVelocity * (-TuningConstants.DRIVETRAIN_A + 1) - xVelocity * TuningConstants.DRIVETRAIN_B);
+                        rightVelocityGoal = -xVelocity
+                            * TuningConstants.DRIVETRAIN_B - yVelocity * (-1 + xVelocity * TuningConstants.DRIVETRAIN_B);
                     }
                 }
             }
@@ -278,8 +290,10 @@ public class DriveTrainController implements IController
         double rightPower;
         if (this.usePID)
         {
-            this.leftPID.calculate(leftVelocityGoal, this.component.getLeftEncoderVelocity() / TuningConstants.DRIVETRAIN_LEFT_ENCODER_MAX_SPEED);
-            this.rightPID.calculate(rightVelocityGoal, this.component.getRightEncoderVelocity() / TuningConstants.DRIVETRAIN_RIGHT_ENCODER_MAX_SPEED);
+            this.leftPID.calculate(leftVelocityGoal, this.component.getLeftEncoderVelocity()
+                / TuningConstants.DRIVETRAIN_LEFT_ENCODER_MAX_SPEED);
+            this.rightPID.calculate(rightVelocityGoal, this.component.getRightEncoderVelocity()
+                / TuningConstants.DRIVETRAIN_RIGHT_ENCODER_MAX_SPEED);
 
             leftPower = this.leftPID.getOutput();
             rightPower = this.rightPID.getOutput();

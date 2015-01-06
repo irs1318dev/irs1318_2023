@@ -2,8 +2,8 @@ package org.usfirst.frc.team1318.robot.Common;
 
 /**
  * The "driver" describes the currently requested actions that the robot should be performing.  The driver could be either
- * a user controlling the robot with a joystick, or autonomous mode controlling the robot based on a list of pre-determined
- * task which each have their own lifecycle. 
+ * a user controlling the robot with a joystick, or autonomous mode controlling the robot based on a queue of predetermined
+ * tasks which each have their own lifecycle.
  * 
  * @author Will
  *
@@ -43,7 +43,7 @@ public interface IDriver
      * @return true for state should change, false for no change 
      */
     public boolean getDriveTrainShifterButton();
-    
+
     /**
      * Get a value indicating the desired drive train left position for positional mode
      * @return position

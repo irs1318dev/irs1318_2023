@@ -83,7 +83,7 @@ public class PIDHandler
         this.measuredValue = measuredValue;
 
         // update dt
-        this.curTime = this.timer.get();  
+        this.curTime = this.timer.get();
         this.dt = this.curTime - this.prevTime;
 
         // To prevent division by zero and over-aggressive measurement, output updates at a max of 1kHz
@@ -117,8 +117,8 @@ public class PIDHandler
             this.prevError = this.error;
 
             double result =
-                    this.kp * this.error +      // proportional
-                    this.ki * this.integral +   // integral
+                this.kp * this.error +      // proportional
+                this.ki * this.integral +   // integral
                     this.kd * this.derivative + // derivative
                     this.kf * this.setpoint;    // feed-forward
 

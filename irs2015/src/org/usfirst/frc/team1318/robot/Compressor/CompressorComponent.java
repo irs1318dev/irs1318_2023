@@ -57,7 +57,8 @@ public class CompressorComponent
      */
     public double getPSI()
     {
-        double psi = this.analogPressureSensor.getVoltage() * (ElectronicsConstants.COMPRESSOR_MAX_PSI / ElectronicsConstants.COMPRESSOR_MAX_VOLTAGE);
+        double psi = this.analogPressureSensor.getVoltage()
+            * (ElectronicsConstants.COMPRESSOR_MAX_PSI / ElectronicsConstants.COMPRESSOR_MAX_VOLTAGE);
 
         SmartDashboardLogger.putNumber(CompressorComponent.PSI_LOG_KEY, psi);
 

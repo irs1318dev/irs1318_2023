@@ -122,14 +122,15 @@ public class AutonomousDriver implements IDriver
      * Gets a value indicating whether the shifter state should change 
      * @return true for state should change, false for no change 
      */
-	public boolean getDriveTrainShifterButton() {
-		
-		boolean shifterMode = this.controlData.getDriveTrainShifterMode();
-		
-		SmartDashboardLogger.putBoolean(AutonomousDriver.DRIVETRAIN_SHIFTER_MODE_LOG_KEY, shifterMode);
-		
-		return shifterMode;
-	}
+    public boolean getDriveTrainShifterButton()
+    {
+
+        boolean shifterMode = this.controlData.getDriveTrainShifterMode();
+
+        SmartDashboardLogger.putBoolean(AutonomousDriver.DRIVETRAIN_SHIFTER_MODE_LOG_KEY, shifterMode);
+
+        return shifterMode;
+    }
 
     /**
      * Get a value indicating the desired drive train left position for positional mode

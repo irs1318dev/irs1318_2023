@@ -44,11 +44,11 @@ public class UserDriver implements IDriver
      */
     public void update()
     {
-    	// update the state of the various toggle buttons
-    	this.simpleDriveModeButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.DRIVETRAIN_SIMPLE_BUTTON));
-    	this.shifterButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.DRIVETRAIN_SHIFTER_BUTTON));
+        // update the state of the various toggle buttons
+        this.simpleDriveModeButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.DRIVETRAIN_SIMPLE_BUTTON));
+        this.shifterButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.DRIVETRAIN_SHIFTER_BUTTON));
     }
-    
+
     /**
      * Tell the driver that operation is stopping
      */
@@ -101,13 +101,13 @@ public class UserDriver implements IDriver
      */
     public boolean getDriveTrainShifterButton()
     {
-    	boolean shifterState = this.shifterButton.isToggled();
-    	
-    	SmartDashboardLogger.putBoolean(UserDriver.DRIVETRAIN_SHIFTER_STATE_LOG_KEY, shifterState);
-    	
-    	return shifterState;
+        boolean shifterState = this.shifterButton.isToggled();
+
+        SmartDashboardLogger.putBoolean(UserDriver.DRIVETRAIN_SHIFTER_STATE_LOG_KEY, shifterState);
+
+        return shifterState;
     }
-    
+
     /**
      * Get a value indicating the desired drive train left position for positional mode
      * @return position

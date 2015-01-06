@@ -25,7 +25,7 @@ public class DriveTrainTests
         private double x;
         private double y;
         private boolean simpleModeEnabled;
-        
+
         public MockDriver(double x, double y, boolean simpleModeEnabled)
         {
             this.x = x;
@@ -71,12 +71,12 @@ public class DriveTrainTests
             return false;
         }
 
-		public boolean getDriveTrainShifterButton() 
-		{
-			return false;
-		}
+        public boolean getDriveTrainShifterButton()
+        {
+            return false;
+        }
     }
-    
+
     /**
      * Mock DriveTrain Component to verify the inputs result in the correct outputs
      */
@@ -84,7 +84,7 @@ public class DriveTrainTests
     {
         private double expectedLeftPower;
         private double expectedRightPower;
-        
+
         private static final double acceptableDelta = 0.0001;
 
         public MockDriveTrainComponent(double expectedLeftPower, double expectedRightPower)
@@ -92,7 +92,7 @@ public class DriveTrainTests
             this.expectedLeftPower = expectedLeftPower;
             this.expectedRightPower = expectedRightPower;
         }
-        
+
         public void setDriveTrainPower(double leftPower, double rightPower)
         {
             Assert.assertEquals(this.expectedLeftPower, leftPower, acceptableDelta);
@@ -119,9 +119,9 @@ public class DriveTrainTests
             return 0.0;
         }
 
-		public void setShifterState(boolean state) 
-		{
-		}
+        public void setShifterState(boolean state)
+        {
+        }
     }
 
     @Before
@@ -136,7 +136,7 @@ public class DriveTrainTests
             new MockDriver(0.0, 0.0, false),
             new MockDriveTrainComponent(0.0, 0.0),
             false);
-        
+
         controller.update();
     }
 
@@ -147,7 +147,7 @@ public class DriveTrainTests
             new MockDriver(0.0, 1.0, false),
             new MockDriveTrainComponent(TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL, TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL),
             false);
-        
+
         controller.update();
     }
 
@@ -158,7 +158,7 @@ public class DriveTrainTests
             new MockDriver(0.0, -1.0, false),
             new MockDriveTrainComponent(-TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL, -TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL),
             false);
-        
+
         controller.update();
     }
 
@@ -167,9 +167,10 @@ public class DriveTrainTests
     {
         DriveTrainController controller = new DriveTrainController(
             new MockDriver(1.0, 1.0, false),
-            new MockDriveTrainComponent(TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL, TuningConstants.DRIVETRAIN_A * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL),
+            new MockDriveTrainComponent(TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL, TuningConstants.DRIVETRAIN_A
+                * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL),
             false);
-        
+
         controller.update();
     }
 
@@ -178,9 +179,10 @@ public class DriveTrainTests
     {
         DriveTrainController controller = new DriveTrainController(
             new MockDriver(-1.0, 1.0, false),
-            new MockDriveTrainComponent(TuningConstants.DRIVETRAIN_A * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL, TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL),
+            new MockDriveTrainComponent(TuningConstants.DRIVETRAIN_A * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL,
+                TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL),
             false);
-        
+
         controller.update();
     }
 
@@ -189,9 +191,10 @@ public class DriveTrainTests
     {
         DriveTrainController controller = new DriveTrainController(
             new MockDriver(1.0, -1.0, false),
-            new MockDriveTrainComponent(-TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL, -TuningConstants.DRIVETRAIN_A * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL),
+            new MockDriveTrainComponent(-TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL, -TuningConstants.DRIVETRAIN_A
+                * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL),
             false);
-        
+
         controller.update();
     }
 
@@ -200,9 +203,10 @@ public class DriveTrainTests
     {
         DriveTrainController controller = new DriveTrainController(
             new MockDriver(-1.0, -1.0, false),
-            new MockDriveTrainComponent(-TuningConstants.DRIVETRAIN_A * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL, -TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL),
+            new MockDriveTrainComponent(-TuningConstants.DRIVETRAIN_A * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL,
+                -TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL),
             false);
-        
+
         controller.update();
     }
 
@@ -211,9 +215,10 @@ public class DriveTrainTests
     {
         DriveTrainController controller = new DriveTrainController(
             new MockDriver(1.0, 0.0, false),
-            new MockDriveTrainComponent(TuningConstants.DRIVETRAIN_B * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL, -TuningConstants.DRIVETRAIN_B * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL),
+            new MockDriveTrainComponent(TuningConstants.DRIVETRAIN_B * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL,
+                -TuningConstants.DRIVETRAIN_B * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL),
             false);
-        
+
         controller.update();
     }
 
@@ -222,12 +227,13 @@ public class DriveTrainTests
     {
         DriveTrainController controller = new DriveTrainController(
             new MockDriver(-1.0, 0.0, false),
-            new MockDriveTrainComponent(-TuningConstants.DRIVETRAIN_B * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL, TuningConstants.DRIVETRAIN_B * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL),
+            new MockDriveTrainComponent(-TuningConstants.DRIVETRAIN_B * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL,
+                TuningConstants.DRIVETRAIN_B * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL),
             false);
-        
+
         controller.update();
     }
-    
+
     @Test
     public void testSimpleForward()
     {
@@ -235,10 +241,10 @@ public class DriveTrainTests
             new MockDriver(0.2, 1.0, true),
             new MockDriveTrainComponent(TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL, TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL),
             false);
-        
+
         controller.update();
     }
-    
+
     @Test
     public void testSimpleBackward()
     {
@@ -246,10 +252,10 @@ public class DriveTrainTests
             new MockDriver(0.2, -1.0, true),
             new MockDriveTrainComponent(-TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL, -TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL),
             false);
-        
+
         controller.update();
     }
-    
+
     @Test
     public void testSimpleRight()
     {
@@ -257,10 +263,10 @@ public class DriveTrainTests
             new MockDriver(1.0, 0.2, true),
             new MockDriveTrainComponent(TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL, -TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL),
             false);
-        
+
         controller.update();
     }
-    
+
     @Test
     public void testSimpleLeft()
     {
@@ -268,7 +274,7 @@ public class DriveTrainTests
             new MockDriver(-1.0, 0.2, true),
             new MockDriveTrainComponent(-TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL, TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL),
             false);
-        
+
         controller.update();
     }
 
