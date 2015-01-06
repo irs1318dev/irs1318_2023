@@ -20,6 +20,7 @@ public class AutonomousDriver implements IDriver
     private static final String DRIVETRAIN_LEFT_POSITION_LOG_KEY = "a.dlp";
     private static final String DRIVETRAIN_RIGHT_POSITION_LOG_KEY = "a.drp";
     private static final String DRIVETRAIN_POSITION_MODE_LOG_KEY = "a.dpm";
+    private static final String DRIVETRAIN_SHIFTER_MODE_LOG_KEY = "a.dsm";
 
     private IAutonomousTask[] autonomousTasks;
     private int currentTaskPosition;
@@ -119,6 +120,19 @@ public class AutonomousDriver implements IDriver
 
         return simpleMode;
     }
+    
+
+	/**
+	 * 
+	 */
+	public boolean getDriveTrainShifterButton() {
+		
+		boolean shifterMode = this.controlData.getDriveTrainShifterMode();
+		
+		SmartDashboardLogger.putBoolean(AutonomousDriver.DRIVETRAIN_SHIFTER_MODE_LOG_KEY, shifterMode);
+		
+		return shifterMode;
+	}
 
     /**
      * Get a value indicating the desired drive train left position for positional mode
@@ -174,4 +188,5 @@ public class AutonomousDriver implements IDriver
             }
         }
     }
+
 }

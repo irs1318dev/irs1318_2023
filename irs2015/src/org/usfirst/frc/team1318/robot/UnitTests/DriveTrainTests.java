@@ -70,6 +70,12 @@ public class DriveTrainTests
         {
             return false;
         }
+
+		@Override
+		public boolean getDriveTrainShifterButton() 
+		{
+			return false;
+		}
     }
     
     /**
@@ -113,6 +119,12 @@ public class DriveTrainTests
         {
             return 0.0;
         }
+
+		@Override
+		public void setShifterState(boolean state) 
+		{
+			
+		}
     }
     
     @Before
