@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1318.robot.Common;
 
 /**
- * The controller defines the logic that controls a mechanism given inputs (component) and operator-requested actions, and 
+ * The controller defines the logic that controls a mechanism given inputs (component) and driver-requested actions, and 
  * translates those into the abstract functions that should be applied to the outputs (component).
  * 
  * @author Will

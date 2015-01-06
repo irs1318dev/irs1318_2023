@@ -2,7 +2,7 @@ package org.usfirst.frc.team1318.robot.Autonomous;
 
 /**
  * Interface describing a task that is performed in autonomous mode.  The autonomous
- * task takes in the current control data as used by the autonomous operator and modifies
+ * task takes in the current control data as used by the autonomous driver and modifies
  * it.
  * 
  * @author Will

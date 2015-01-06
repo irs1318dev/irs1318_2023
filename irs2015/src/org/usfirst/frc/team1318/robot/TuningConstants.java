@@ -38,6 +38,4 @@ public class TuningConstants
 
     public static final double DRIVETRAIN_A = 0.2; // "a" coefficient (advancing turn)
     public static final double DRIVETRAIN_B = 1.0; // "b" coefficient (in-place turn)
-
-    public static final double SHOOTER_TOGGLE_DURATION = 2.0;
 }

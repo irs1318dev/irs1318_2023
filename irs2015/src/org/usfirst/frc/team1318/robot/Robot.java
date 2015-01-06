@@ -15,7 +15,7 @@ import org.usfirst.frc.team1318.robot.UserInterface.UserDriver;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 /**
- * Main class for the FRC 2015 Robot for IRS1318 - [name]
+ * Main class for the FRC 2015 Robot for IRS1318 - [robot_name]
  * 
  * 
  * The VM is configured to automatically run this class, and to call the
@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
  * 
  * General design comments:
  * We have three types of objects:
- * - Driver - describes the driver ("autonomous" or "user")
+ * - Driver - describes the driver/operator of the robot ("autonomous" or "user")
  * - Components - describe the electronics of an mechanism and defines the abstract way to control those electronics.
  * - Controllers - define the logic that controls a mechanism given inputs/outputs.
  * 
