@@ -29,8 +29,8 @@ public class AutonomousDriver implements IDriver
     private AutonomousControlData controlData;
 
     /**
-     * Initializes a new AutonomousOperator
-     * @param autonomousTasks to execute as a part of this operator
+     * Initializes a new AutonomousDriver
+     * @param autonomousTasks to execute as a part of this driver
      */
     public AutonomousDriver(Queue<IAutonomousTask> autonomousTasks)
     {
@@ -40,7 +40,7 @@ public class AutonomousDriver implements IDriver
     }
 
     /**
-     * Tell the operator component that some time has passed
+     * Tell the driver that some time has passed
      */
     public void update()
     {
