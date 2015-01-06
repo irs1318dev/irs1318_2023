@@ -1,7 +1,5 @@
 package org.usfirst.frc.team1318.robot;
 
-import edu.wpi.first.wpilibj.SensorBase;
-
 /**
  * All constants describing how the electronics are plugged together.
  * 
