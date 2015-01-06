@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.tables.TableKeyNotDefinedException;
 /**
  * Logger that logs current values to the smart dashboard. 
  * 
- * @author Will
+ * @author Chris K
  *
  */
 public class SmartDashboardLogger
