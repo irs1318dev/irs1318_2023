@@ -4,8 +4,10 @@ import org.usfirst.frc.team1318.robot.ElectronicsConstants;
 import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
-import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Talon;
 
 /**
  * The drivetrain component class describes the electronics of the drivetrain and defines the abstract way to control it.
@@ -55,7 +57,8 @@ public class DriveTrainComponent implements IDriveTrainComponent
         this.leftEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_LEFT_PULSE_DISTANCE);
         this.rightEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_RIGHT_PULSE_DISTANCE);
 
-        shifter = new DoubleSolenoid(ElectronicsConstants.DRIVETRAIN_SHIFTER_MODE_EXTENDER_PORT,
+        this.shifter = new DoubleSolenoid(
+            ElectronicsConstants.DRIVETRAIN_SHIFTER_MODE_EXTENDER_PORT,
             ElectronicsConstants.DRIVETRAIN_SHIFTER_MODE_RETRACTER_PORT);
     }
 
@@ -74,18 +77,18 @@ public class DriveTrainComponent implements IDriveTrainComponent
     }
 
     /**
-     * set the state of the shifter solenoid 
-     * @param state state to set the solenoid to 
+     * set the state of the shifter
+     * @param state to set the solenoid
      */
     public void setShifterState(boolean state)
     {
         if (state)
         {
-            shifter.set(Value.kForward);
+            this.shifter.set(Value.kForward);
         }
         else
         {
-            shifter.set(Value.kReverse);
+            this.shifter.set(Value.kReverse);
         }
 
         SmartDashboardLogger.putBoolean(DriveTrainComponent.SHIFTER_STATE_LOG_KEY, state);
