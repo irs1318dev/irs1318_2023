@@ -86,7 +86,7 @@ public class UserDriver implements IDriver
      * Get a value indicating whether we should be using the drive train in simple mode 
      * @return true if we should be in simple mode, otherwise false
      */
-    public boolean getDriveTrainSimpleModeButton()
+    public boolean getDriveTrainSimpleMode()
     {
         boolean simpleMode = this.simpleDriveModeButton.isToggled();
 
@@ -99,7 +99,7 @@ public class UserDriver implements IDriver
      * Gets a value indicating whether the shifter state should change 
      * @return true for state should change, false for no change 
      */
-    public boolean getDriveTrainShifterButton()
+    public boolean getDriveTrainShifterMode()
     {
         boolean shifterState = this.shifterButton.isToggled();
 

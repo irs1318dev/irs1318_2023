@@ -60,6 +60,16 @@ public class AutonomousControlData
         this.driveTrainSimpleMode = driveTrainSimpleMode;
     }
 
+    public boolean getDriveTrainShifterMode()
+    {
+        return driveTrainShifterMode;
+    }
+
+    public void setDriveTrainShifterMode(boolean driveTrainShifterMode)
+    {
+        this.driveTrainShifterMode = driveTrainShifterMode;
+    }
+
     public double getDriveTrainLeftPosition()
     {
         return this.driveTrainLeftPosition;
@@ -88,15 +98,5 @@ public class AutonomousControlData
     public void setDriveTrainPositionMode(boolean driveTrainPositionMode)
     {
         this.driveTrainPositionMode = driveTrainPositionMode;
-    }
-
-    public boolean getDriveTrainShifterMode()
-    {
-        return driveTrainShifterMode;
-    }
-
-    public void setDriveTrainShifterMode(boolean driveTrainShifterMode)
-    {
-        this.driveTrainShifterMode = driveTrainShifterMode;
     }
 }

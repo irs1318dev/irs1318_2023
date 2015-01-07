@@ -51,7 +51,7 @@ public class DriveTrainTests
             return this.y;
         }
 
-        public boolean getDriveTrainSimpleModeButton()
+        public boolean getDriveTrainSimpleMode()
         {
             return this.simpleModeEnabled;
         }
@@ -71,7 +71,7 @@ public class DriveTrainTests
             return false;
         }
 
-        public boolean getDriveTrainShifterButton()
+        public boolean getDriveTrainShifterMode()
         {
             return false;
         }

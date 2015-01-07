@@ -79,7 +79,7 @@ public class DriveTrainController implements IController
         this.component.setDriveTrainPower(leftPower, rightPower);
 
         // apply desired shifter state
-        this.component.setShifterState(this.driver.getDriveTrainShifterButton());
+        this.component.setShifterState(this.driver.getDriveTrainShifterMode());
     }
 
     /**
@@ -152,7 +152,7 @@ public class DriveTrainController implements IController
         double rightVelocityGoal = 0.0;
 
         // get a value indicating that we should be in simple mode...
-        boolean simpleDriveModeEnabled = this.driver.getDriveTrainSimpleModeButton();
+        boolean simpleDriveModeEnabled = this.driver.getDriveTrainSimpleMode();
 
         // get the X and Y values from the operator.  We expect these to be between -1.0 and 1.0,
         // with this value representing the forward velocity percentage and right turn percentage (of max speed)

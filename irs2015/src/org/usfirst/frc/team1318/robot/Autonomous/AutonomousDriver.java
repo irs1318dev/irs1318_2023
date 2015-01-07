@@ -19,10 +19,10 @@ public class AutonomousDriver implements IDriver
     private static final String DRIVETRAIN_X_VELOCITY_LOG_KEY = "a.dxv";
     private static final String DRIVETRAIN_Y_VELOCITY_LOG_KEY = "a.dyv";
     private static final String DRIVETRAIN_SIMPLE_MODE_LOG_KEY = "a.dsm";
+    private static final String DRIVETRAIN_SHIFTER_MODE_LOG_KEY = "a.dshm";
     private static final String DRIVETRAIN_LEFT_POSITION_LOG_KEY = "a.dlp";
     private static final String DRIVETRAIN_RIGHT_POSITION_LOG_KEY = "a.drp";
     private static final String DRIVETRAIN_POSITION_MODE_LOG_KEY = "a.dpm";
-    private static final String DRIVETRAIN_SHIFTER_MODE_LOG_KEY = "a.dsm";
 
     private Queue<IAutonomousTask> autonomousTasks;
     private IAutonomousTask currentTask;
@@ -59,6 +59,7 @@ public class AutonomousDriver implements IDriver
         {
             this.currentTask = this.autonomousTasks.poll();
 
+            // if there's no next task to run, then we are done
             if (this.currentTask == null)
             {
                 return;
@@ -109,7 +110,7 @@ public class AutonomousDriver implements IDriver
      * Get a value indicating whether we should be using the drive train in simple mode 
      * @return true if we should be in simple mode, otherwise false
      */
-    public boolean getDriveTrainSimpleModeButton()
+    public boolean getDriveTrainSimpleMode()
     {
         boolean simpleMode = this.controlData.getDriveTrainSimpleMode();
 
@@ -122,7 +123,7 @@ public class AutonomousDriver implements IDriver
      * Gets a value indicating whether the shifter state should change 
      * @return true for state should change, false for no change 
      */
-    public boolean getDriveTrainShifterButton()
+    public boolean getDriveTrainShifterMode()
     {
 
         boolean shifterMode = this.controlData.getDriveTrainShifterMode();
