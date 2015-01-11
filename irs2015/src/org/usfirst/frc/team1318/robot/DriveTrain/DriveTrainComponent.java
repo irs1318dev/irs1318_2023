@@ -33,7 +33,7 @@ public class DriveTrainComponent implements IDriveTrainComponent
     private Encoder leftEncoder;
     private Encoder rightEncoder;
 
-    private DoubleSolenoid shifter;
+//    private DoubleSolenoid shifter;
 
     /**
      * Initializes a new DriveTrainComponent
@@ -57,9 +57,9 @@ public class DriveTrainComponent implements IDriveTrainComponent
         this.leftEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_LEFT_PULSE_DISTANCE);
         this.rightEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_RIGHT_PULSE_DISTANCE);
 
-        this.shifter = new DoubleSolenoid(
-            ElectronicsConstants.DRIVETRAIN_SHIFTER_MODE_EXTENDER_PORT,
-            ElectronicsConstants.DRIVETRAIN_SHIFTER_MODE_RETRACTER_PORT);
+//        this.shifter = new DoubleSolenoid(
+//            ElectronicsConstants.DRIVETRAIN_SHIFTER_MODE_EXTENDER_PORT,
+//            ElectronicsConstants.DRIVETRAIN_SHIFTER_MODE_RETRACTER_PORT);
     }
 
     /**
@@ -82,14 +82,14 @@ public class DriveTrainComponent implements IDriveTrainComponent
      */
     public void setShifterState(boolean state)
     {
-        if (state)
-        {
-            this.shifter.set(Value.kForward);
-        }
-        else
-        {
-            this.shifter.set(Value.kReverse);
-        }
+//        if (state)
+//        {
+//            this.shifter.set(Value.kForward);
+//        }
+//        else
+//        {
+//            this.shifter.set(Value.kReverse);
+//        }
 
         SmartDashboardLogger.putBoolean(DriveTrainComponent.SHIFTER_STATE_LOG_KEY, state);
     }
