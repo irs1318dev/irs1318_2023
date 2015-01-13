@@ -4,8 +4,6 @@ import org.usfirst.frc.team1318.robot.ElectronicsConstants;
 import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Talon;
 
@@ -33,7 +31,7 @@ public class DriveTrainComponent implements IDriveTrainComponent
     private Encoder leftEncoder;
     private Encoder rightEncoder;
 
-    private DoubleSolenoid shifter;
+    //private DoubleSolenoid shifter;
 
     /**
      * Initializes a new DriveTrainComponent
@@ -57,9 +55,9 @@ public class DriveTrainComponent implements IDriveTrainComponent
         this.leftEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_LEFT_PULSE_DISTANCE);
         this.rightEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_RIGHT_PULSE_DISTANCE);
 
-        this.shifter = new DoubleSolenoid(
+        /*this.shifter = new DoubleSolenoid(
             ElectronicsConstants.DRIVETRAIN_SHIFTER_MODE_EXTENDER_PORT,
-            ElectronicsConstants.DRIVETRAIN_SHIFTER_MODE_RETRACTER_PORT);
+            ElectronicsConstants.DRIVETRAIN_SHIFTER_MODE_RETRACTER_PORT);*/
     }
 
     /**
@@ -84,11 +82,11 @@ public class DriveTrainComponent implements IDriveTrainComponent
     {
         if (state)
         {
-            this.shifter.set(Value.kForward);
+            //this.shifter.set(Value.kForward);
         }
         else
         {
-            this.shifter.set(Value.kReverse);
+            //this.shifter.set(Value.kReverse);
         }
 
         SmartDashboardLogger.putBoolean(DriveTrainComponent.SHIFTER_STATE_LOG_KEY, state);
