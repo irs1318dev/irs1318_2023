@@ -9,16 +9,16 @@ import org.usfirst.frc.team1318.robot.DriveTrain.IDriveTrainComponent;
  * @author Will
  *
  */
-public class DriveAutonomousTask extends MoveAutonomousTaskBase implements IAutonomousTask
+public class DriveDistanceAutonomousTask extends MoveDistanceAutonomousTaskBase implements IAutonomousTask
 {
     private final double distance;
 
     /**
-     * Initializes a new DriveAutonomousTask
+     * Initializes a new DriveDistanceAutonomousTask
      * @param distance from the current location to move (positive means move forward, negative means move backwards) in centimeters
      * @param driveTrain component to use to detect our current position
      */
-    public DriveAutonomousTask(double distance, IDriveTrainComponent driveTrain)
+    public DriveDistanceAutonomousTask(double distance, IDriveTrainComponent driveTrain)
     {
         super(driveTrain);
 

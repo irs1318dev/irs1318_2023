@@ -10,7 +10,7 @@ import org.usfirst.frc.team1318.robot.DriveTrain.IDriveTrainComponent;
  * @author Will
  *
  */
-public class TurnAutonomousTask extends MoveAutonomousTaskBase implements IAutonomousTask
+public class TurnAutonomousTask extends MoveDistanceAutonomousTaskBase implements IAutonomousTask
 {
     private final double degrees;
 

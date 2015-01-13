@@ -1,4 +1,7 @@
-package org.usfirst.frc.team1318.robot.Autonomous;
+package org.usfirst.frc.team1318.robot.Autonomous.Tasks;
+
+import org.usfirst.frc.team1318.robot.Autonomous.AutonomousControlData;
+import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 
 import edu.wpi.first.wpilibj.Timer;
 

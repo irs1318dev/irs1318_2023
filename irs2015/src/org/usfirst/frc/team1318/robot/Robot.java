@@ -2,19 +2,23 @@ package org.usfirst.frc.team1318.robot;
 
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.usfirst.frc.team1318.robot.Autonomous.AutonomousDriver;
 import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
-import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveAutonomousTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveDistanceAutonomousTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveTimedAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.TurnAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.WaitAutonomousTask;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainComponent;
 import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainController;
+import org.usfirst.frc.team1318.robot.DriveTrain.IDriveTrainComponent;
 import org.usfirst.frc.team1318.robot.UserInterface.UserDriver;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Preferences;
 
 /**
  * Main class for the FRC 2015 Robot for IRS1318 - [robot_name]
@@ -36,8 +40,11 @@ import edu.wpi.first.wpilibj.IterativeRobot;
  */
 public class Robot extends IterativeRobot
 {
-    // logging constants
+    // smartdash logging constants
     private static final String ROBOT_STATE_LOG_KEY = "r.s";
+
+    // smartdash preference constants 
+    private static final String AUTONOMOUS_ROUTINE_PREFERENCE_KEY = "a.routine";
 
     // Driver (e.g. joystick, autonomous)
     private IDriver driver;
@@ -58,9 +65,7 @@ public class Robot extends IterativeRobot
     public void robotInit()
     {
         // create mechanism components
-
         //this.compressorComponent = new CompressorComponent();
-
         this.driveTrainComponent = new DriveTrainComponent();
 
         SmartDashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Init");
@@ -99,23 +104,26 @@ public class Robot extends IterativeRobot
      */
     public void autonomousInit()
     {
-        // create autonomous driver
-        this.driver = new AutonomousDriver(
-            new LinkedList<IAutonomousTask>(
-                Arrays.asList(
-                    // drive in a circle
-                    new DriveAutonomousTask(600, this.driveTrainComponent),
-                    new WaitAutonomousTask(5),
-                    new TurnAutonomousTask(90, this.driveTrainComponent),
-                    new DriveAutonomousTask(600, this.driveTrainComponent),
-                    new WaitAutonomousTask(5),
-                    new TurnAutonomousTask(90, this.driveTrainComponent),
-                    new DriveAutonomousTask(600, this.driveTrainComponent),
-                    new WaitAutonomousTask(5),
-                    new TurnAutonomousTask(90, this.driveTrainComponent),
-                    new DriveAutonomousTask(600, this.driveTrainComponent),
-                    new WaitAutonomousTask(5),
-                    new TurnAutonomousTask(90, this.driveTrainComponent))));
+        // determine our desired autonomous routine
+        List<IAutonomousTask> autonomousRoutine;
+        Preferences prefs = Preferences.getInstance();
+        switch (prefs.getInt(Robot.AUTONOMOUS_ROUTINE_PREFERENCE_KEY, 0) % 2)
+        {
+            case 0:
+                autonomousRoutine = Robot.GetDriveInSquareRoutine();
+                break;
+
+            case 1:
+                autonomousRoutine = Robot.GetDriveInSquareByDistanceRoutine(this.driveTrainComponent);
+                break;
+
+            default:
+                autonomousRoutine = Robot.GetDriveInSquareRoutine();
+                break;
+        }
+
+        // create autonomous driver based on our desired routine
+        this.driver = new AutonomousDriver(new LinkedList<IAutonomousTask>(autonomousRoutine));
 
         this.generalInit();
 
@@ -183,9 +191,54 @@ public class Robot extends IterativeRobot
         this.driver.update();
 
         // run each controller
-
         //this.compressorController.update();
         this.driveTrainController.update();
+    }
+
+    /**
+     * Gets an autonomous routine that represents driving in a square based on positional PID
+     * 
+     * @return list of autonomous tasks
+     */
+    private static List<IAutonomousTask> GetDriveInSquareByDistanceRoutine(IDriveTrainComponent driveTrainComponent)
+    {
+        return Arrays.asList(
+            // drive in a square
+            new DriveDistanceAutonomousTask(600, driveTrainComponent),
+            new WaitAutonomousTask(5),
+            new TurnAutonomousTask(90, driveTrainComponent),
+            new DriveDistanceAutonomousTask(600, driveTrainComponent),
+            new WaitAutonomousTask(5),
+            new TurnAutonomousTask(90, driveTrainComponent),
+            new DriveDistanceAutonomousTask(600, driveTrainComponent),
+            new WaitAutonomousTask(5),
+            new TurnAutonomousTask(90, driveTrainComponent),
+            new DriveDistanceAutonomousTask(600, driveTrainComponent),
+            new WaitAutonomousTask(5),
+            new TurnAutonomousTask(90, driveTrainComponent));
+    }
+
+    /**
+     * Gets an autonomous routine that represents driving in a square based on drive times
+     * 
+     * @return list of autonomous tasks
+     */
+    private static List<IAutonomousTask> GetDriveInSquareRoutine()
+    {
+        return Arrays.asList(
+            // drive in a square
+            new DriveTimedAutonomousTask(5, 0.0, 0.8),  // drive forward
+            new WaitAutonomousTask(5),
+            new DriveTimedAutonomousTask(2, 0.8, 0.0),  // turn right
+            new DriveTimedAutonomousTask(5, 0.0, 0.8),  // drive forward
+            new WaitAutonomousTask(5),
+            new DriveTimedAutonomousTask(2, 0.8, 0.0),  // turn right
+            new DriveTimedAutonomousTask(5, 0.0, 0.8),  // drive forward
+            new WaitAutonomousTask(5),
+            new DriveTimedAutonomousTask(2, 0.8, 0.0),  // turn right
+            new DriveTimedAutonomousTask(5, 0.0, 0.8),  // drive forward
+            new WaitAutonomousTask(5),
+            new DriveTimedAutonomousTask(2, 0.8, 0.0)); // turn right
     }
 }
 
