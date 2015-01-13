@@ -5,7 +5,7 @@ import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 import org.usfirst.frc.team1318.robot.Common.ToggleButtons.SimpleToggleButton;
 
-import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.Joystick;
 
 /**
  * Driver for teleop mode.  User driver translates current toggle state and joystick state into
@@ -17,10 +17,10 @@ import edu.wpi.first.wpilibj.*;
 public class UserDriver implements IDriver
 {
     // logging constants
-    private static final String DRIVETRAIN_X_VELOCITY_LOG_KEY = "u.dxv";
-    private static final String DRIVETRAIN_Y_VELOCITY_LOG_KEY = "u.dyv";
-    private static final String DRIVETRAIN_SIMPLE_MODE_LOG_KEY = "u.dsm";
-    private static final String DRIVETRAIN_SHIFTER_STATE_LOG_KEY = "u.dss";
+    private static final String DRIVETRAIN_X_VELOCITY_LOG_KEY = "u.driveXVelocity";
+    private static final String DRIVETRAIN_Y_VELOCITY_LOG_KEY = "u.driveYVelocity";
+    private static final String DRIVETRAIN_SIMPLE_MODE_LOG_KEY = "u.driveSimpleMode";
+    private static final String DRIVETRAIN_SHIFTER_STATE_LOG_KEY = "u.driveShiftState";
 
     private Joystick joystick;
 

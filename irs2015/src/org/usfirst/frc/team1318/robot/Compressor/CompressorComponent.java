@@ -2,7 +2,9 @@ package org.usfirst.frc.team1318.robot.Compressor;
 
 import org.usfirst.frc.team1318.robot.ElectronicsConstants;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
-import edu.wpi.first.wpilibj.*;
+
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Compressor;
 
 /**
  * The compressor component class describes the electronics of the compressor and defines the abstract way to control it.
@@ -14,8 +16,8 @@ import edu.wpi.first.wpilibj.*;
 public class CompressorComponent
 {
     // logging constants
-    private static final String RUNNING_LOG_KEY = "cm.r";
-    private static final String PSI_LOG_KEY = "cm.p";
+    private static final String RUNNING_LOG_KEY = "cm.running";
+    private static final String PSI_LOG_KEY = "cm.psi";
 
     private Compressor compressor;
     private AnalogInput analogPressureSensor;

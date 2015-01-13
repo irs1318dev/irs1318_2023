@@ -16,13 +16,13 @@ import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 public class AutonomousDriver implements IDriver
 {
     // logging constants
-    private static final String DRIVETRAIN_X_VELOCITY_LOG_KEY = "a.dxv";
-    private static final String DRIVETRAIN_Y_VELOCITY_LOG_KEY = "a.dyv";
-    private static final String DRIVETRAIN_SIMPLE_MODE_LOG_KEY = "a.dsm";
-    private static final String DRIVETRAIN_SHIFTER_MODE_LOG_KEY = "a.dshm";
-    private static final String DRIVETRAIN_LEFT_POSITION_LOG_KEY = "a.dlp";
-    private static final String DRIVETRAIN_RIGHT_POSITION_LOG_KEY = "a.drp";
-    private static final String DRIVETRAIN_POSITION_MODE_LOG_KEY = "a.dpm";
+    private static final String DRIVETRAIN_X_VELOCITY_LOG_KEY = "a.driveXVelocity";
+    private static final String DRIVETRAIN_Y_VELOCITY_LOG_KEY = "a.driveYVelocity";
+    private static final String DRIVETRAIN_SIMPLE_MODE_LOG_KEY = "a.driveSimpleMode";
+    private static final String DRIVETRAIN_SHIFTER_MODE_LOG_KEY = "a.driveShifterMode";
+    private static final String DRIVETRAIN_LEFT_POSITION_LOG_KEY = "a.driveLeftPosition";
+    private static final String DRIVETRAIN_RIGHT_POSITION_LOG_KEY = "a.driveRightPosition";
+    private static final String DRIVETRAIN_POSITION_MODE_LOG_KEY = "a.drivePositionMode";
 
     private Queue<IAutonomousTask> autonomousTasks;
     private IAutonomousTask currentTask;

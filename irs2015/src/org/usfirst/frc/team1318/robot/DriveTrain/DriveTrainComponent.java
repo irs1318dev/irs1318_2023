@@ -17,13 +17,13 @@ import edu.wpi.first.wpilibj.Talon;
 public class DriveTrainComponent implements IDriveTrainComponent
 {
     // logging constants
-    public static final String LEFT_TALON_POWER_LOG_KEY = "dt.re";
-    public static final String RIGHT_TALON_POWER_LOG_KEY = "dt.le";
-    public static final String LEFT_ENCODER_VELOCITY_LOG_KEY = "dt.lev";
-    public static final String RIGHT_ENCODER_VELOCITY_LOG_KEY = "dt.rev";
-    public static final String LEFT_ENCODER_DISTANCE_LOG_KEY = "dt.led";
-    public static final String RIGHT_ENCODER_DISTANCE_LOG_KEY = "dt.red";
-    public static final String SHIFTER_STATE_LOG_KEY = "dt.ss";
+    public static final String LEFT_TALON_POWER_LOG_KEY = "dt.leftPower";
+    public static final String RIGHT_TALON_POWER_LOG_KEY = "dt.rightPower";
+    public static final String LEFT_ENCODER_VELOCITY_LOG_KEY = "dt.leftVelocity";
+    public static final String RIGHT_ENCODER_VELOCITY_LOG_KEY = "dt.rightVelocity";
+    public static final String LEFT_ENCODER_DISTANCE_LOG_KEY = "dt.leftDistance";
+    public static final String RIGHT_ENCODER_DISTANCE_LOG_KEY = "dt.rightDistance";
+    public static final String SHIFTER_STATE_LOG_KEY = "dt.shifterState";
 
     private Talon leftTalon;
     private Talon rightTalon;
