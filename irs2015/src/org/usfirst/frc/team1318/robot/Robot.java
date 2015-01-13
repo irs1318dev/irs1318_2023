@@ -58,7 +58,9 @@ public class Robot extends IterativeRobot
     public void robotInit()
     {
         // create mechanism components
+
         //this.compressorComponent = new CompressorComponent();
+
         this.driveTrainComponent = new DriveTrainComponent();
 
         SmartDashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Init");
@@ -181,6 +183,7 @@ public class Robot extends IterativeRobot
         this.driver.update();
 
         // run each controller
+
         //this.compressorController.update();
         this.driveTrainController.update();
     }
