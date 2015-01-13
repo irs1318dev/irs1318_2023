@@ -151,6 +151,10 @@ public class DriveTrainController implements IController
         double leftVelocityGoal = 0.0;
         double rightVelocityGoal = 0.0;
 
+        // read the encoder distance just in case we want it output in smart dashboard
+        this.component.getLeftEncoderDistance();
+        this.component.getRightEncoderDistance();
+
         // get a value indicating that we should be in simple mode...
         boolean simpleDriveModeEnabled = this.driver.getDriveTrainSimpleMode();
 
@@ -327,6 +331,7 @@ public class DriveTrainController implements IController
         double leftPosition = this.driver.getDriveTrainLeftPosition();
         double rightPosition = this.driver.getDriveTrainRightPosition();
 
+        // use positional PID to get the relevant value
         this.leftPID.calculate(leftPosition, this.component.getLeftEncoderDistance());
         this.rightPID.calculate(rightPosition, this.component.getRightEncoderDistance());
 
@@ -343,9 +348,7 @@ public class DriveTrainController implements IController
         double leftPower = this.applyPowerLevelRange(leftSeconds);
         double rightPower = this.applyPowerLevelRange(rightSeconds);
 
-        return new PowerSetting(
-            TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL * leftPower,
-            TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL * rightPower);
+        return new PowerSetting(leftPower, rightPower);
     }
 
     /**

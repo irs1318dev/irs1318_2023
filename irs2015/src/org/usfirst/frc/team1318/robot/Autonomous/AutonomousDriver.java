@@ -77,7 +77,11 @@ public class AutonomousDriver implements IDriver
      */
     public void stop()
     {
-        this.currentTask.cancel(this.controlData);
+        if (this.currentTask != null)
+        {
+            this.currentTask.cancel(this.controlData);
+            this.currentTask = null;
+        }
     }
 
     /**

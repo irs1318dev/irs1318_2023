@@ -91,8 +91,8 @@ public abstract class MoveAutonomousTaskBase implements IAutonomousTask
         double rightEncoderDistance = this.driveTrain.getRightEncoderDistance();
 
         // check how far away we are from the desired end location
-        double leftDelta = Math.abs(leftEncoderDistance - this.desiredFinalLeftEncoderDistance);
-        double rightDelta = Math.abs(rightEncoderDistance - this.desiredFinalRightEncoderDistance);
+        double leftDelta = Math.abs(this.desiredFinalLeftEncoderDistance - leftEncoderDistance);
+        double rightDelta = Math.abs(this.desiredFinalRightEncoderDistance - rightEncoderDistance);
 
         // return done if we are within an acceptable distance from the desired end location...
         return leftDelta < AutonomousConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA &&

@@ -92,7 +92,6 @@ public class PIDHandler
             this.prevTime = this.curTime;
 
             // calculate error
-            // this.error = this.setpoint * this.kScale - this.measuredValue;
             this.error = this.setpoint - this.measuredValue;
 
             // calculate integral, limiting it based on MaxOutput/MinOutput
