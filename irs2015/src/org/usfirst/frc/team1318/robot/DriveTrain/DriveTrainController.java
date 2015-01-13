@@ -290,10 +290,13 @@ public class DriveTrainController implements IController
         double rightPower;
         if (this.usePID)
         {
-            this.leftPID.calculate(leftVelocityGoal, this.component.getLeftEncoderVelocity()
-                / TuningConstants.DRIVETRAIN_LEFT_ENCODER_MAX_SPEED);
-            this.rightPID.calculate(rightVelocityGoal, this.component.getRightEncoderVelocity()
-                / TuningConstants.DRIVETRAIN_RIGHT_ENCODER_MAX_SPEED);
+            this.leftPID.calculate(
+                leftVelocityGoal,
+                this.component.getLeftEncoderVelocity() / TuningConstants.DRIVETRAIN_LEFT_ENCODER_MAX_SPEED);
+
+            this.rightPID.calculate(
+                rightVelocityGoal,
+                this.component.getRightEncoderVelocity() / TuningConstants.DRIVETRAIN_RIGHT_ENCODER_MAX_SPEED);
 
             leftPower = this.leftPID.getOutput();
             rightPower = this.rightPID.getOutput();
