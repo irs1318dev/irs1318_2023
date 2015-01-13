@@ -306,6 +306,8 @@ public class DriveTrainController implements IController
 
         // ensure that our algorithms are correct and don't give values outside
         // the appropriate range
+        leftPower = this.applyPowerLevelRange(leftPower);
+        rightPower = this.applyPowerLevelRange(rightPower);
         this.assertPowerLevelRange(leftPower, "left velocity (goal)");
         this.assertPowerLevelRange(rightPower, "right velocity (goal)");
 
