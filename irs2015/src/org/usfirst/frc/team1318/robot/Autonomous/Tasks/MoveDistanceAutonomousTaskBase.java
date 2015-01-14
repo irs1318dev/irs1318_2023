@@ -6,12 +6,12 @@ import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 import org.usfirst.frc.team1318.robot.DriveTrain.IDriveTrainComponent;
 
 /**
- * Abstract class defining a task that moves the robot using the drive train.
+ * Abstract class defining a task that moves the robot a certain distance using the drive train.
  * 
  * @author Will
  *
  */
-public abstract class MoveAutonomousTaskBase implements IAutonomousTask
+public abstract class MoveDistanceAutonomousTaskBase implements IAutonomousTask
 {
     private final IDriveTrainComponent driveTrain;
 
@@ -22,10 +22,10 @@ public abstract class MoveAutonomousTaskBase implements IAutonomousTask
     protected double desiredFinalRightEncoderDistance;
 
     /**
-     * Initializes a new MoveAutonomousTaskBase
+     * Initializes a new MoveDistanceAutonomousTaskBase
      * @param driveTrain component to use to detect our current position
      */
-    protected MoveAutonomousTaskBase(IDriveTrainComponent driveTrain)
+    protected MoveDistanceAutonomousTaskBase(IDriveTrainComponent driveTrain)
     {
         this.driveTrain = driveTrain;
     }

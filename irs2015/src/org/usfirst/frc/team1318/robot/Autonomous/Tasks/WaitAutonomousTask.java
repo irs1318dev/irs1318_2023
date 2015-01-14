@@ -2,7 +2,6 @@ package org.usfirst.frc.team1318.robot.Autonomous.Tasks;
 
 import org.usfirst.frc.team1318.robot.Autonomous.AutonomousControlData;
 import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
-import org.usfirst.frc.team1318.robot.Autonomous.TimedAutonomousTask;
 
 /**
  * Autonomous task that simply waits for a short period of time.
