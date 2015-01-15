@@ -52,6 +52,8 @@ public class Robot extends IterativeRobot
     // smartdash preferences
     private Preferences prefs;
 
+    private SendableChooser autonomousRoutineChooser;
+
     // Driver (e.g. joystick, autonomous)
     private IDriver driver;
 
@@ -78,6 +80,13 @@ public class Robot extends IterativeRobot
         this.driveTrainComponent = new DriveTrainComponent();
 
         SmartDashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Init");
+
+        // set up chooser on SmartDashboard
+        autonomousRoutineChooser = new SendableChooser();
+        autonomousRoutineChooser.addDefault("Drive In Square", 0);
+        autonomousRoutineChooser.addObject("Drive In Square Positional", 1);
+        autonomousRoutineChooser.addObject("Drive Forward", 2);
+        SmartDashboard.putData(Robot.AUTONOMOUS_ROUTINE_PREFERENCE_KEY, autonomousRoutineChooser);
     }
 
     /**
@@ -116,14 +125,8 @@ public class Robot extends IterativeRobot
         // determine our desired autonomous routine
         List<IAutonomousTask> autonomousRoutine;
 
-        // set up chooser on SmartDashboard
-        SendableChooser autonomousRoutineChooser = new SendableChooser();
-        autonomousRoutineChooser.addDefault("Drive In Square", 0);
-        autonomousRoutineChooser.addObject("Drive In Square Positional", 1);
-        SmartDashboard.putData(Robot.AUTONOMOUS_ROUTINE_PREFERENCE_KEY, autonomousRoutineChooser);
-
         // select autonomous routine based on setting in SmartDashboard
-        switch ((int)autonomousRoutineChooser.getSelected() % 2)
+        switch ((int)autonomousRoutineChooser.getSelected() % 3)
         {
             case 0:
                 autonomousRoutine = Robot.GetDriveInSquareRoutine();
@@ -135,6 +138,7 @@ public class Robot extends IterativeRobot
 
             case 2:
                 autonomousRoutine = Robot.GetDriveForwardRoutine();
+                break;
 
             default:
                 autonomousRoutine = Robot.GetDriveInSquareRoutine();

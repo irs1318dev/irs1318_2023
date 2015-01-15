@@ -19,10 +19,10 @@ public class DriveTrainComponent implements IDriveTrainComponent
     // logging constants
     public static final String LEFT_TALON_POWER_LOG_KEY = "dt.leftPower";
     public static final String RIGHT_TALON_POWER_LOG_KEY = "dt.rightPower";
-    public static final String LEFT_ENCODER_VELOCITY_LOG_KEY = "dt.leftVelocity";
-    public static final String RIGHT_ENCODER_VELOCITY_LOG_KEY = "dt.rightVelocity";
-    public static final String LEFT_ENCODER_DISTANCE_LOG_KEY = "dt.leftDistance";
-    public static final String RIGHT_ENCODER_DISTANCE_LOG_KEY = "dt.rightDistance";
+    public static final String LEFT_ENCODER_VELOCITY_LOG_KEY = "dt.leftEncoderVelocity";
+    public static final String RIGHT_ENCODER_VELOCITY_LOG_KEY = "dt.rightEncoderVelocity";
+    public static final String LEFT_ENCODER_DISTANCE_LOG_KEY = "dt.leftEncoderDistance";
+    public static final String RIGHT_ENCODER_DISTANCE_LOG_KEY = "dt.rightEncoderDistance";
     public static final String SHIFTER_STATE_LOG_KEY = "dt.shifterState";
 
     private Talon leftTalon;
