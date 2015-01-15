@@ -24,6 +24,7 @@ public class SimpleTimedToggleButton extends SimpleToggleButton implements ITime
         super(true);
 
         this.toggleDuration = toggleDuration;
+
         this.timer = new Timer();
         this.timer.start();
         this.startTime = null;
@@ -46,6 +47,7 @@ public class SimpleTimedToggleButton extends SimpleToggleButton implements ITime
         if (this.startTime != null &&
             this.timer.get() > this.startTime + this.toggleDuration)
         {
+            this.timer.stop();
             this.startTime = null;
         }
     }
@@ -60,6 +62,7 @@ public class SimpleTimedToggleButton extends SimpleToggleButton implements ITime
 
         if (this.canToggle())
         {
+            this.timer.start();
             this.startTime = this.timer.get();
         }
     }
@@ -69,6 +72,7 @@ public class SimpleTimedToggleButton extends SimpleToggleButton implements ITime
      */
     public void cancel()
     {
+        this.timer.stop();
         this.startTime = null;
     }
 }

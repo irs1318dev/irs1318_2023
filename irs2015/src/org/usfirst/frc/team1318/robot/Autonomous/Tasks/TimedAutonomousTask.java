@@ -35,6 +35,7 @@ public abstract class TimedAutonomousTask implements IAutonomousTask
      */
     public void begin()
     {
+        this.timer.start();
         this.startTime = this.timer.get();
     }
 
