@@ -13,7 +13,8 @@ public class CompressorComponent
 {
     // logging constants
     private static final String RUNNING_LOG_KEY = "cm.running";
-    private static final String PSI_LOG_KEY = "cm.psi";
+
+    //private static final String PSI_LOG_KEY = "cm.psi";
 
     //private Compressor compressor;
 

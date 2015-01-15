@@ -177,7 +177,11 @@ public class Robot extends IterativeRobot
     {
         // create controllers for each mechanism
         this.compressorController = new CompressorController(this.compressorComponent);
-        this.driveTrainController = new DriveTrainController(this.driver, this.driveTrainComponent, true);
+        this.driveTrainController =
+            new DriveTrainController(
+                this.driver,
+                this.driveTrainComponent,
+                this.prefs.getBoolean(TuningConstants.DRIVETRAIN_USE_PID_KEY, TuningConstants.DRIVETRAIN_USE_PID_DEFAULT));
 
         // we will run the compressor controller here because we should start it in advance...
         this.compressorController.update();

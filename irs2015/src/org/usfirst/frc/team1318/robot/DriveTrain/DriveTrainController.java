@@ -361,17 +361,48 @@ public class DriveTrainController implements IController
      */
     private PowerSetting calculatePositionModePowerSetting()
     {
-        // get the desired left and right values from the operator.
+        // get the desired left and right values from the driver.
         double leftPosition = this.driver.getDriveTrainLeftPosition();
         double rightPosition = this.driver.getDriveTrainRightPosition();
 
-        // use positional PID to get the relevant value
-        double leftResult = this.leftPID.calculate(leftPosition, this.component.getLeftEncoderDistance());
-        double rightResult = this.rightPID.calculate(rightPosition, this.component.getRightEncoderDistance());
+        // get the current encoder distance from the component.
+        double leftDistance = this.component.getLeftEncoderDistance();
+        double rightDistance = this.component.getRightEncoderDistance();
 
-        // ensure that we are within our power level range
-        double leftPower = this.applyPowerLevelRange(leftResult);
-        double rightPower = this.applyPowerLevelRange(rightResult);
+        // read the encoder velocity just in case we want it output in smart dashboard
+        this.component.getLeftEncoderVelocity();
+        this.component.getRightEncoderVelocity();
+
+        double leftPower;
+        double rightPower;
+        if (this.usePID)
+        {
+            // use positional PID to get the relevant value
+            leftPower = this.leftPID.calculate(leftPosition, leftDistance);
+            rightPower = this.rightPID.calculate(rightPosition, rightDistance);
+        }
+        else
+        {
+            // calculate a desired 
+            leftPower = leftPosition - leftDistance;
+            rightPower = rightPosition - rightDistance;
+            if (Math.abs(leftPower) < 0.1)
+            {
+                leftPower = 0.0;
+            }
+
+            if (Math.abs(rightPower) < 0.1)
+            {
+                rightPower = 0.0;
+            }
+
+            // ensure that we are within our power level range, and then scale it down
+            leftPower = this.applyPowerLevelRange(leftPower) * TuningConstants.DRIVETRAIN_MAX_POWER_POSITIONAL_NON_PID;
+            rightPower = this.applyPowerLevelRange(rightPower) * TuningConstants.DRIVETRAIN_MAX_POWER_POSITIONAL_NON_PID;
+        }
+
+        this.assertPowerLevelRange(leftPower, "left velocity (goal)");
+        this.assertPowerLevelRange(rightPower, "right velocity (goal)");
 
         return new PowerSetting(leftPower, rightPower);
     }

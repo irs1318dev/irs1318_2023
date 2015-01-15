@@ -9,6 +9,9 @@ package org.usfirst.frc.team1318.robot;
 public class TuningConstants
 {
     // Drivetrain PID keys/default values:
+    public static final String DRIVETRAIN_USE_PID_KEY = "DRIVETRAIN_USE_PID";
+    public static final boolean DRIVETRAIN_USE_PID_DEFAULT = true;
+
     // Velocity PID (right)
     public static final String DRIVETRAIN_VELOCITY_PID_RIGHT_KP_KEY = "DRIVETRAIN_VELOCITY_PID_RIGHT_KP";
     public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KP_DEFAULT = 0.0005;
@@ -71,5 +74,6 @@ public class TuningConstants
 
     // Drivetrain deadzone/max power levels
     public static final double DRIVETRAIN_DEAD_ZONE = 0.1;
-    public static final double DRIVETRAIN_MAX_POWER_LEVEL = 0.8; // max power level
+    public static final double DRIVETRAIN_MAX_POWER_LEVEL = 0.8; // max power level (velocity)
+    public static final double DRIVETRAIN_MAX_POWER_POSITIONAL_NON_PID = 0.2; // max power level (positional, non-PID)
 }
