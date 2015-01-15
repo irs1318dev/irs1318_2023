@@ -76,8 +76,10 @@ public class PIDHandler
      * 
      * @param setpoint describes the goal value
      * @param measuredValue describes the measured value
+     * 
+     * @return output value to be used
      */
-    public void calculate(double setpoint, double measuredValue)
+    public double calculate(double setpoint, double measuredValue)
     {
         this.setpoint = setpoint;
         this.measuredValue = measuredValue;
@@ -132,15 +134,7 @@ public class PIDHandler
 
             this.output = result;
         }
-    }
 
-    /**
-     * this returns the output of the PID controller.  The goal of PID is for this value to eventually reach the setpoint.
-     * 
-     * @return output value to be used
-     */
-    public double getOutput()
-    {
         return this.output;
     }
 }
