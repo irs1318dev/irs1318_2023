@@ -7,6 +7,7 @@ import java.util.List;
 import org.usfirst.frc.team1318.robot.Autonomous.AutonomousDriver;
 import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveDistanceAutonomousTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveForwardTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveTimedAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.TurnAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.WaitAutonomousTask;
@@ -116,6 +117,9 @@ public class Robot extends IterativeRobot
             case 1:
                 autonomousRoutine = Robot.GetDriveInSquareByDistanceRoutine(this.driveTrainComponent);
                 break;
+
+            case 2:
+                autonomousRoutine = Robot.GetDriveForwardRoutine();
 
             default:
                 autonomousRoutine = Robot.GetDriveInSquareRoutine();
@@ -239,6 +243,11 @@ public class Robot extends IterativeRobot
             new DriveTimedAutonomousTask(5, 0.0, 0.8),  // drive forward
             new WaitAutonomousTask(5),
             new DriveTimedAutonomousTask(2, 0.8, 0.0)); // turn right
+    }
+
+    private static List<IAutonomousTask> GetDriveForwardRoutine()
+    {
+        return Arrays.asList(new DriveForwardTask());
     }
 }
 
