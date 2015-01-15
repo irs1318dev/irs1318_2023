@@ -13,6 +13,8 @@ import org.usfirst.frc.team1318.robot.Autonomous.Tasks.TurnAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.WaitAutonomousTask;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
+import org.usfirst.frc.team1318.robot.Compressor.CompressorComponent;
+import org.usfirst.frc.team1318.robot.Compressor.CompressorController;
 import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainComponent;
 import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainController;
 import org.usfirst.frc.team1318.robot.DriveTrain.IDriveTrainComponent;
@@ -58,8 +60,8 @@ public class Robot extends IterativeRobot
     private IDriver driver;
 
     // Compressor
-    //private CompressorComponent compressorComponent;
-    //private CompressorController compressorController;
+    private CompressorComponent compressorComponent;
+    private CompressorController compressorController;
 
     // DriveTrain
     private DriveTrainComponent driveTrainComponent;
@@ -76,7 +78,7 @@ public class Robot extends IterativeRobot
         this.prefs = Preferences.getInstance();
 
         // create mechanism components
-        //this.compressorComponent = new CompressorComponent();
+        this.compressorComponent = new CompressorComponent();
         this.driveTrainComponent = new DriveTrainComponent();
 
         SmartDashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Init");
@@ -101,11 +103,11 @@ public class Robot extends IterativeRobot
             this.driver = null;
         }
 
-        /*if (this.compressorController != null)
+        if (this.compressorController != null)
         {
             this.compressorController.stop();
             this.compressorController = null;
-        }*/
+        }
 
         if (this.driveTrainController != null)
         {
@@ -173,11 +175,11 @@ public class Robot extends IterativeRobot
     public void generalInit()
     {
         // create controllers for each mechanism
-        //this.compressorController = new CompressorController(this.compressorComponent);
+        this.compressorController = new CompressorController(this.compressorComponent);
         this.driveTrainController = new DriveTrainController(this.driver, this.driveTrainComponent, true);
 
         // we will run the compressor controller here because we should start it in advance...
-        //this.compressorController.update();
+        this.compressorController.update();
     }
 
     /**
@@ -214,7 +216,7 @@ public class Robot extends IterativeRobot
         this.driver.update();
 
         // run each controller
-        //this.compressorController.update();
+        this.compressorController.update();
         this.driveTrainController.update();
     }
 
