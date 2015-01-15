@@ -51,9 +51,8 @@ public class Robot extends IterativeRobot
     // smartdash other constants 
     private static final String AUTONOMOUS_ROUTINE_PREFERENCE_KEY = "a.routine";
 
-    // smartdash preferences
+    // smartdash preferences and other inputs
     private Preferences prefs;
-
     private SendableChooser autonomousRoutineChooser;
 
     // Driver (e.g. joystick, autonomous)
@@ -84,11 +83,11 @@ public class Robot extends IterativeRobot
         SmartDashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Init");
 
         // set up chooser on SmartDashboard
-        autonomousRoutineChooser = new SendableChooser();
-        autonomousRoutineChooser.addDefault("Drive In Square", 0);
-        autonomousRoutineChooser.addObject("Drive In Square Positional", 1);
-        autonomousRoutineChooser.addObject("Drive Forward", 2);
-        SmartDashboard.putData(Robot.AUTONOMOUS_ROUTINE_PREFERENCE_KEY, autonomousRoutineChooser);
+        this.autonomousRoutineChooser = new SendableChooser();
+        this.autonomousRoutineChooser.addDefault("Drive In Square", 0);
+        this.autonomousRoutineChooser.addObject("Drive In Square Positional", 1);
+        this.autonomousRoutineChooser.addObject("Drive Forward", 2);
+        SmartDashboard.putData(Robot.AUTONOMOUS_ROUTINE_PREFERENCE_KEY, this.autonomousRoutineChooser);
     }
 
     /**
@@ -128,7 +127,7 @@ public class Robot extends IterativeRobot
         List<IAutonomousTask> autonomousRoutine;
 
         // select autonomous routine based on setting in SmartDashboard
-        switch ((int)autonomousRoutineChooser.getSelected() % 3)
+        switch ((int)this.autonomousRoutineChooser.getSelected() % 3)
         {
             case 0:
                 autonomousRoutine = Robot.GetDriveInSquareRoutine();
@@ -152,6 +151,7 @@ public class Robot extends IterativeRobot
 
         this.generalInit();
 
+        // log that we are in autonomous mode
         SmartDashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Autonomous");
     }
 
@@ -166,6 +166,7 @@ public class Robot extends IterativeRobot
 
         this.generalInit();
 
+        // log that we are in teleop mode
         SmartDashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Teleop");
     }
 

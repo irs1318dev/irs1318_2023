@@ -5,6 +5,8 @@ import org.usfirst.frc.team1318.robot.Common.IController;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.PIDHandler;
 
+import edu.wpi.first.wpilibj.Preferences;
+
 /**
  * Drivetrain controller.
  * The controller defines the logic that controls a mechanism given inputs (component) and operator-requested actions, and 
@@ -102,39 +104,72 @@ public class DriveTrainController implements IController
         }
         else
         {
+            Preferences prefs = Preferences.getInstance();
             if (this.usePositionalMode)
             {
                 this.leftPID = new PIDHandler(
-                    TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KP,
-                    TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KI,
-                    TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KD,
-                    TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KF,
+                    prefs.getDouble(
+                        TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KP_KEY,
+                        TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KP_DEFAULT),
+                    prefs.getDouble(
+                        TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KI_KEY,
+                        TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KI_DEFAULT),
+                    prefs.getDouble(
+                        TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KD_KEY,
+                        TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KD_DEFAULT),
+                    prefs.getDouble(
+                        TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KF_KEY,
+                        TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KF_DEFAULT),
                     null,
                     null);
 
                 this.rightPID = new PIDHandler(
-                    TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KP,
-                    TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KI,
-                    TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KD,
-                    TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KF,
+                    prefs.getDouble(
+                        TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KP_KEY,
+                        TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KP_DEFAULT),
+                    prefs.getDouble(
+                        TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KI_KEY,
+                        TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KI_DEFAULT),
+                    prefs.getDouble(
+                        TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KD_KEY,
+                        TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KD_DEFAULT),
+                    prefs.getDouble(
+                        TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KF_KEY,
+                        TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KF_DEFAULT),
                     null,
                     null);
             }
             else
             {
                 this.leftPID = new PIDHandler(
-                    TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KP,
-                    TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KI,
-                    TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KD,
-                    TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KF,
+                    prefs.getDouble(
+                        TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KP_KEY,
+                        TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KP_DEFAULT),
+                    prefs.getDouble(
+                        TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KI_KEY,
+                        TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KI_DEFAULT),
+                    prefs.getDouble(
+                        TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KD_KEY,
+                        TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KD_DEFAULT),
+                    prefs.getDouble(
+                        TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KF_KEY,
+                        TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KF_DEFAULT),
                     DriveTrainController.POWERLEVEL_MIN,
                     DriveTrainController.POWERLEVEL_MAX);
 
                 this.rightPID = new PIDHandler(
-                    TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KP,
-                    TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KI,
-                    TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KD,
-                    TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF,
+                    prefs.getDouble(
+                        TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KP_KEY,
+                        TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KP_DEFAULT),
+                    prefs.getDouble(
+                        TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KI_KEY,
+                        TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KI_DEFAULT),
+                    prefs.getDouble(
+                        TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KD_KEY,
+                        TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KD_DEFAULT),
+                    prefs.getDouble(
+                        TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF_KEY,
+                        TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF_DEFAULT),
                     DriveTrainController.POWERLEVEL_MIN,
                     DriveTrainController.POWERLEVEL_MAX);
             }

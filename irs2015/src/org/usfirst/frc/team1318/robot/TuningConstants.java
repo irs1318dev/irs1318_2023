@@ -8,34 +8,68 @@ package org.usfirst.frc.team1318.robot;
  */
 public class TuningConstants
 {
-    public static final double COLLECTOR_SPEED = 0.8;
+    // Drivetrain PID keys/default values:
+    // Velocity PID (right)
+    public static final String DRIVETRAIN_VELOCITY_PID_RIGHT_KP_KEY = "DRIVETRAIN_VELOCITY_PID_RIGHT_KP";
+    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KP_DEFAULT = 0.0005;
 
-    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KP = 0.0005;
-    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KI = 0.0;
-    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KD = 0.0;
-    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KF = 0.5;
+    public static final String DRIVETRAIN_VELOCITY_PID_RIGHT_KI_KEY = "DRIVETRAIN_VELOCITY_PID_RIGHT_KI";
+    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KI_DEFAULT = 0.0;
 
-    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KP = 0.0005;
-    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KI = 0.0;
-    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KD = 0.0;
-    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KF = 0.5;
+    public static final String DRIVETRAIN_VELOCITY_PID_RIGHT_KD_KEY = "DRIVETRAIN_VELOCITY_PID_RIGHT_KD";
+    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KD_DEFAULT = 0.0;
 
-    public static final double DRIVETRAIN_POSITION_PID_RIGHT_KP = 0.0005;
-    public static final double DRIVETRAIN_POSITION_PID_RIGHT_KI = 0.0;
-    public static final double DRIVETRAIN_POSITION_PID_RIGHT_KD = 0.5;
-    public static final double DRIVETRAIN_POSITION_PID_RIGHT_KF = 0.0;
+    public static final String DRIVETRAIN_VELOCITY_PID_RIGHT_KF_KEY = "DRIVETRAIN_VELOCITY_PID_RIGHT_KF";
+    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KF_DEFAULT = 0.5;
 
-    public static final double DRIVETRAIN_POSITION_PID_LEFT_KP = 0.0005;
-    public static final double DRIVETRAIN_POSITION_PID_LEFT_KI = 0.0;
-    public static final double DRIVETRAIN_POSITION_PID_LEFT_KD = 0.5;
-    public static final double DRIVETRAIN_POSITION_PID_LEFT_KF = 0.0;
+    // Velocity PID (left)
+    public static final String DRIVETRAIN_VELOCITY_PID_LEFT_KP_KEY = "DRIVETRAIN_VELOCITY_PID_LEFT_KP";
+    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KP_DEFAULT = 0.0005;
 
-    public static final double DRIVETRAIN_DEAD_ZONE = 0.1;
-    public static final double DRIVETRAIN_MAX_POWER_LEVEL = 0.8; // max power level
+    public static final String DRIVETRAIN_VELOCITY_PID_LEFT_KI_KEY = "DRIVETRAIN_VELOCITY_PID_LEFT_KI";
+    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KI_DEFAULT = 0.0;
 
+    public static final String DRIVETRAIN_VELOCITY_PID_LEFT_KD_KEY = "DRIVETRAIN_VELOCITY_PID_LEFT_KD";
+    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KD_DEFAULT = 0.0;
+
+    public static final String DRIVETRAIN_VELOCITY_PID_LEFT_KF_KEY = "DRIVETRAIN_VELOCITY_PID_LEFT_KF";
+    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KF_DEFAULT = 0.5;
+
+    // Position PID (right)
+    public static final String DRIVETRAIN_POSITION_PID_RIGHT_KP_KEY = "DRIVETRAIN_POSITION_PID_RIGHT_KP";
+    public static final double DRIVETRAIN_POSITION_PID_RIGHT_KP_DEFAULT = 0.0005;
+
+    public static final String DRIVETRAIN_POSITION_PID_RIGHT_KI_KEY = "DRIVETRAIN_POSITION_PID_RIGHT_KI";
+    public static final double DRIVETRAIN_POSITION_PID_RIGHT_KI_DEFAULT = 0.0;
+
+    public static final String DRIVETRAIN_POSITION_PID_RIGHT_KD_KEY = "DRIVETRAIN_POSITION_PID_RIGHT_KD";
+    public static final double DRIVETRAIN_POSITION_PID_RIGHT_KD_DEFAULT = 0.5;
+
+    public static final String DRIVETRAIN_POSITION_PID_RIGHT_KF_KEY = "DRIVETRAIN_POSITION_PID_RIGHT_KF";
+    public static final double DRIVETRAIN_POSITION_PID_RIGHT_KF_DEFAULT = 0.0;
+
+    // Position PID (left)
+    public static final String DRIVETRAIN_POSITION_PID_LEFT_KP_KEY = "DRIVETRAIN_POSITION_PID_LEFT_KP";
+    public static final double DRIVETRAIN_POSITION_PID_LEFT_KP_DEFAULT = 0.0005;
+
+    public static final String DRIVETRAIN_POSITION_PID_LEFT_KI_KEY = "DRIVETRAIN_POSITION_PID_LEFT_KI";
+    public static final double DRIVETRAIN_POSITION_PID_LEFT_KI_DEFAULT = 0.0;
+
+    public static final String DRIVETRAIN_POSITION_PID_LEFT_KD_KEY = "DRIVETRAIN_POSITION_PID_LEFT_KD";
+    public static final double DRIVETRAIN_POSITION_PID_LEFT_KD_DEFAULT = 0.5;
+
+    public static final String DRIVETRAIN_POSITION_PID_LEFT_KF_KEY = "DRIVETRAIN_POSITION_PID_LEFT_KF";
+    public static final double DRIVETRAIN_POSITION_PID_LEFT_KF_DEFAULT = 0.0;
+
+    // Drivetrain max speeds from encoder
     public static final double DRIVETRAIN_LEFT_ENCODER_MAX_SPEED = 170.0; // max speed we expect to detect from the left encoder
     public static final double DRIVETRAIN_RIGHT_ENCODER_MAX_SPEED = 170.0; // max speed we expect to detect from the right encoder
 
-    public static final double DRIVETRAIN_A = 0.2; // "a" coefficient (advancing turn)
+    // Drivetrain kinematics choices for advanced one-stick drive
+    public static final double DRIVETRAIN_A = 0.4; // "a" coefficient (advancing turn)
     public static final double DRIVETRAIN_B = 1.0; // "b" coefficient (in-place turn)
+
+    // Drivetrain deadzone/max power levels
+    public static final double DRIVETRAIN_DEAD_ZONE = 0.1;
+    public static final double DRIVETRAIN_MAX_POWER_LEVEL = 0.8; // max power level
 }
