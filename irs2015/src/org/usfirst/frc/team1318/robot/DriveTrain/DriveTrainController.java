@@ -294,16 +294,15 @@ public class DriveTrainController implements IController
         double rightPower;
         if (this.usePID)
         {
-            this.leftPID.calculate(
-                leftVelocityGoal,
-                this.component.getLeftEncoderVelocity() / TuningConstants.DRIVETRAIN_LEFT_ENCODER_MAX_SPEED);
+            leftPower =
+                this.leftPID.calculate(
+                    leftVelocityGoal,
+                    this.component.getLeftEncoderVelocity() / TuningConstants.DRIVETRAIN_LEFT_ENCODER_MAX_SPEED);
 
-            this.rightPID.calculate(
-                rightVelocityGoal,
-                this.component.getRightEncoderVelocity() / TuningConstants.DRIVETRAIN_RIGHT_ENCODER_MAX_SPEED);
-
-            leftPower = this.leftPID.getOutput();
-            rightPower = this.rightPID.getOutput();
+            rightPower =
+                this.rightPID.calculate(
+                    rightVelocityGoal,
+                    this.component.getRightEncoderVelocity() / TuningConstants.DRIVETRAIN_RIGHT_ENCODER_MAX_SPEED);
         }
         else
         {
@@ -332,21 +331,12 @@ public class DriveTrainController implements IController
         double rightPosition = this.driver.getDriveTrainRightPosition();
 
         // use positional PID to get the relevant value
-        this.leftPID.calculate(leftPosition, this.component.getLeftEncoderDistance());
-        this.rightPID.calculate(rightPosition, this.component.getRightEncoderDistance());
+        double leftResult = this.leftPID.calculate(leftPosition, this.component.getLeftEncoderDistance());
+        double rightResult = this.rightPID.calculate(rightPosition, this.component.getRightEncoderDistance());
 
-        // result represents the distance we want to travel
-        double leftResult = this.leftPID.getOutput();
-        double rightResult = this.rightPID.getOutput();
-
-        // use power setting based on:
-        // desiredTravelDistance (centimeters) / (maxMeasurableSpeed (centimeters/second))
-        // equals seconds we will need to travel
-        double leftSeconds = leftResult / TuningConstants.DRIVETRAIN_LEFT_ENCODER_MAX_SPEED;
-        double rightSeconds = rightResult / TuningConstants.DRIVETRAIN_RIGHT_ENCODER_MAX_SPEED;
-
-        double leftPower = this.applyPowerLevelRange(leftSeconds);
-        double rightPower = this.applyPowerLevelRange(rightSeconds);
+        // ensure that we are within our power level range
+        double leftPower = this.applyPowerLevelRange(leftResult);
+        double rightPower = this.applyPowerLevelRange(rightResult);
 
         return new PowerSetting(leftPower, rightPower);
     }

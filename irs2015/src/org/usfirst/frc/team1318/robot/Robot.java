@@ -19,6 +19,8 @@ import org.usfirst.frc.team1318.robot.UserInterface.UserDriver;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Main class for the FRC 2015 Robot for IRS1318 - [robot_name]
@@ -43,8 +45,11 @@ public class Robot extends IterativeRobot
     // smartdash logging constants
     private static final String ROBOT_STATE_LOG_KEY = "r.s";
 
-    // smartdash preference constants 
+    // smartdash other constants 
     private static final String AUTONOMOUS_ROUTINE_PREFERENCE_KEY = "a.routine";
+
+    // smartdash preferences
+    private Preferences prefs;
 
     // Driver (e.g. joystick, autonomous)
     private IDriver driver;
@@ -64,6 +69,9 @@ public class Robot extends IterativeRobot
      */
     public void robotInit()
     {
+        // get preferences
+        this.prefs = Preferences.getInstance();
+
         // create mechanism components
         //this.compressorComponent = new CompressorComponent();
         this.driveTrainComponent = new DriveTrainComponent();
@@ -106,8 +114,15 @@ public class Robot extends IterativeRobot
     {
         // determine our desired autonomous routine
         List<IAutonomousTask> autonomousRoutine;
-        Preferences prefs = Preferences.getInstance();
-        switch (prefs.getInt(Robot.AUTONOMOUS_ROUTINE_PREFERENCE_KEY, 0) % 2)
+
+        // set up chooser on SmartDashboard
+        SendableChooser autonomousRoutineChooser = new SendableChooser();
+        autonomousRoutineChooser.addDefault("Drive In Square", 0);
+        autonomousRoutineChooser.addObject("Drive In Square Positional", 1);
+        SmartDashboard.putData(Robot.AUTONOMOUS_ROUTINE_PREFERENCE_KEY, autonomousRoutineChooser);
+
+        // select autonomous routine based on setting in SmartDashboard
+        switch ((int)autonomousRoutineChooser.getSelected() % 2)
         {
             case 0:
                 autonomousRoutine = Robot.GetDriveInSquareRoutine();
