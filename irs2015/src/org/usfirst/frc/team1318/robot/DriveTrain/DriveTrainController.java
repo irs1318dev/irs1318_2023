@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.Preferences;
  * translates those into the abstract functions that should be applied to the outputs (component).
  * 
  * @author Will
- *
+ * 
  */
 public class DriveTrainController implements IController
 {
@@ -49,6 +49,9 @@ public class DriveTrainController implements IController
      */
     public void update()
     {
+        // apply desired shifter state
+        this.component.setShifterState(this.driver.getDriveTrainShifterMode());
+
         // check our desired PID mode
         boolean newUsePositionalMode = this.driver.getDriveTrainPositionMode();
         if (newUsePositionalMode != this.usePositionalMode)
@@ -59,6 +62,7 @@ public class DriveTrainController implements IController
             this.createPIDHandler();
         }
 
+        // calculate desired power setting for the current mode
         PowerSetting powerSetting;
         if (!this.usePositionalMode)
         {
@@ -77,11 +81,8 @@ public class DriveTrainController implements IController
         this.assertPowerLevelRange(leftPower, "left");
         this.assertPowerLevelRange(rightPower, "right");
 
-        // apply the power to the motors
+        // apply the power settings to the drivetrain component
         this.component.setDriveTrainPower(leftPower, rightPower);
-
-        // apply desired shifter state
-        this.component.setShifterState(this.driver.getDriveTrainShifterMode());
     }
 
     /**

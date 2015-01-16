@@ -18,6 +18,7 @@ import org.usfirst.frc.team1318.robot.Compressor.CompressorController;
 import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainComponent;
 import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainController;
 import org.usfirst.frc.team1318.robot.DriveTrain.IDriveTrainComponent;
+import org.usfirst.frc.team1318.robot.DriveTrain.PositionManager;
 import org.usfirst.frc.team1318.robot.UserInterface.UserDriver;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -66,6 +67,9 @@ public class Robot extends IterativeRobot
     private DriveTrainComponent driveTrainComponent;
     private DriveTrainController driveTrainController;
 
+    // Position manager - holds position information relative to our starting point
+    private PositionManager position;
+
     /**
      * Robot-wide initialization code should go here.
      * This default Robot-wide initialization code will be called when 
@@ -79,6 +83,9 @@ public class Robot extends IterativeRobot
         // create mechanism components
         this.compressorComponent = new CompressorComponent();
         this.driveTrainComponent = new DriveTrainComponent();
+
+        // create position manager
+        this.position = new PositionManager(this.driveTrainComponent);
 
         SmartDashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Init");
 
@@ -218,6 +225,9 @@ public class Robot extends IterativeRobot
      */
     public void generalPeriodic()
     {
+        // update our position
+        this.position.update();
+
         this.driver.update();
 
         // run each controller
