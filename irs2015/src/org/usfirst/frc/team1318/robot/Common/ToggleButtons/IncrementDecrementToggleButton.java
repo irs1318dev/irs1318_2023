@@ -3,6 +3,12 @@ package org.usfirst.frc.team1318.robot.Common.ToggleButtons;
 /**
  * Defines a toggle that allows one to increment or decrement through multiple different states
  * 
+ *       decrement    start    increment
+ *          <--         |         -->
+ *                     \|/
+ * -5, -4, -3, -2, -1,  0,  1,  2,  3,  4,  5
+ * 
+ * 
  * Toggle on press behavior:
  * 
  *     button pressed:        _________________
