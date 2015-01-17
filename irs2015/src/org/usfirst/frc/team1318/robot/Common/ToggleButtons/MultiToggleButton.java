@@ -21,7 +21,7 @@ package org.usfirst.frc.team1318.robot.Common.ToggleButtons;
  * @author Will
  *
  */
-public class MultiToggleButton<T> implements IMultiToggle<T>
+public class MultiToggleButton<T> implements IMultiToggle<T>, IToggle
 {
     private final boolean toggleOnPress;
 
