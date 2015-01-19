@@ -79,6 +79,7 @@ public class Robot extends IterativeRobot
     {
         // get preferences
         this.prefs = Preferences.getInstance();
+        this.ensureDefaultPreferencesInitialized();
 
         // create mechanism components
         this.compressorComponent = new CompressorComponent();
@@ -281,9 +282,144 @@ public class Robot extends IterativeRobot
             new DriveTimedAutonomousTask(2, 0.8, 0.0)); // turn right
     }
 
+    /**
+     * Gets an autonomous routine that represents driving straight forward forever.
+     * 
+     * @return list of autonomous tasks
+     */
     private static List<IAutonomousTask> GetDriveForwardRoutine()
     {
         return Arrays.asList(new DriveForwardTask());
+    }
+
+    /**
+     * Initialize Preferences into the UI so that they are visible and can be changed before they're first used
+     */
+    private void ensureDefaultPreferencesInitialized()
+    {
+        // Initialize Preferences for PID settings
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_USE_PID_KEY))
+        {
+            prefs.putBoolean(
+                TuningConstants.DRIVETRAIN_USE_PID_KEY,
+                TuningConstants.DRIVETRAIN_USE_PID_DEFAULT);
+        }
+
+        // Right Velocity
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KP_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KP_KEY,
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KP_DEFAULT);
+        }
+
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KI_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KI_KEY,
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KI_DEFAULT);
+        }
+
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KD_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KD_KEY,
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KD_DEFAULT);
+        }
+
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF_KEY,
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF_DEFAULT);
+        }
+
+        // Left Velocity
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KP_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KP_KEY,
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KP_DEFAULT);
+        }
+
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KI_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KI_KEY,
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KI_DEFAULT);
+        }
+
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KD_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KD_KEY,
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KD_DEFAULT);
+        }
+
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KF_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KF_KEY,
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KF_DEFAULT);
+        }
+
+        // Right Position
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KP_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KP_KEY,
+                TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KP_DEFAULT);
+        }
+
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KI_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KI_KEY,
+                TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KI_DEFAULT);
+        }
+
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KD_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KD_KEY,
+                TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KD_DEFAULT);
+        }
+
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KF_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KF_KEY,
+                TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KF_DEFAULT);
+        }
+
+        // Left Position
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KP_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KP_KEY,
+                TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KP_DEFAULT);
+        }
+
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KI_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KI_KEY,
+                TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KI_DEFAULT);
+        }
+
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KD_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KD_KEY,
+                TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KD_DEFAULT);
+        }
+
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KF_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KF_KEY,
+                TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KF_DEFAULT);
+        }
     }
 }
 
