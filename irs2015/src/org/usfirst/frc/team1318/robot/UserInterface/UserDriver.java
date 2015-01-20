@@ -64,6 +64,11 @@ public class UserDriver implements IDriver
     {
         double xVelocity = this.joystick.getX();
 
+        if (JoystickButtonConstants.INVERT_X_AXIS)
+        {
+            xVelocity = -xVelocity;
+        }
+
         SmartDashboardLogger.putNumber(UserDriver.DRIVETRAIN_X_VELOCITY_LOG_KEY, xVelocity);
 
         return xVelocity;
@@ -76,6 +81,11 @@ public class UserDriver implements IDriver
     public double getDriveTrainYVelocity()
     {
         double yVelocity = this.joystick.getY();
+
+        if (JoystickButtonConstants.INVERT_Y_AXIS)
+        {
+            yVelocity = -yVelocity;
+        }
 
         SmartDashboardLogger.putNumber(UserDriver.DRIVETRAIN_Y_VELOCITY_LOG_KEY, yVelocity);
 

@@ -121,8 +121,8 @@ public class DriveTrainController implements IController
                     prefs.getDouble(
                         TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KF_KEY,
                         TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KF_DEFAULT),
-                    null,
-                    null);
+                    DriveTrainController.POWERLEVEL_MIN,
+                    DriveTrainController.POWERLEVEL_MAX);
 
                 this.rightPID = new PIDHandler(
                     prefs.getDouble(
@@ -137,8 +137,8 @@ public class DriveTrainController implements IController
                     prefs.getDouble(
                         TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KF_KEY,
                         TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KF_DEFAULT),
-                    null,
-                    null);
+                    DriveTrainController.POWERLEVEL_MIN,
+                    DriveTrainController.POWERLEVEL_MAX);
             }
             else
             {

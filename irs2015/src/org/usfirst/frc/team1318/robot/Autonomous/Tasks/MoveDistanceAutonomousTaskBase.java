@@ -83,7 +83,7 @@ public abstract class MoveDistanceAutonomousTaskBase implements IAutonomousTask
 
     /**
      * Checks whether we should continue processing this task or whether it should end
-     * @return true if we should continue, otherwise false
+     * @return true if we should continue on the current task, otherwise false (to move to the next task)
      */
     public boolean shouldContinue()
     {
@@ -94,8 +94,9 @@ public abstract class MoveDistanceAutonomousTaskBase implements IAutonomousTask
         double leftDelta = Math.abs(this.desiredFinalLeftEncoderDistance - leftEncoderDistance);
         double rightDelta = Math.abs(this.desiredFinalRightEncoderDistance - rightEncoderDistance);
 
-        // return done if we are within an acceptable distance from the desired end location...
-        return leftDelta < AutonomousConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA &&
-            rightDelta < AutonomousConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA;
+        // return that we should continue processing this task if we not are within an acceptable distance
+        // from the desired end location for both left and right. 
+        return leftDelta >= AutonomousConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA &&
+            rightDelta >= AutonomousConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA;
     }
 }

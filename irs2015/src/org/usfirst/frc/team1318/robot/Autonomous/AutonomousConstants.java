@@ -8,5 +8,5 @@ package org.usfirst.frc.team1318.robot.Autonomous;
  */
 public class AutonomousConstants
 {
-    public static final double DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA = 0.1;
+    public static final double DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA = 10.0;
 }
