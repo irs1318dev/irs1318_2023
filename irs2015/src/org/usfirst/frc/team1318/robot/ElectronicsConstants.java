@@ -30,4 +30,8 @@ public class ElectronicsConstants
 
     public static final double COMPRESSOR_MAX_PSI = 150.0;
     public static final double COMPRESSOR_MAX_VOLTAGE = 10.0;
+
+    public static final int ELEVATOR_TALON_CHANNEL = 0;
+    public static final int ELEVATOR_ENCODER_CHANNELA = 1;
+    public static final int ELEVATOR_ENCODER_CHANNELB = 2;
 }
