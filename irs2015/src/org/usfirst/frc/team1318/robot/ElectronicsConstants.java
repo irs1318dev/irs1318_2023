@@ -30,4 +30,11 @@ public class ElectronicsConstants
 
     public static final double COMPRESSOR_MAX_PSI = 150.0;
     public static final double COMPRESSOR_MAX_VOLTAGE = 10.0;
+
+    public static final int TROMBONE_SOLANOID_EXTEND = -1;
+    public static final int TROMBONE_SOLANOID_RETRACT = -1;
+    public static final int MOVE_LINK_SOLANOID_EXTEND = -1;
+    public static final int MOVE_LINK_SOLANOID_RETRACT = -1;
+    public static final int EXTEND_LINK_SOLANOID_EXTEND = -1;
+    public static final int EXTEND_LINK_SOLANOID_RETRACT = -1;
 }
