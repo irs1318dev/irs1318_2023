@@ -1,4 +1,4 @@
-package Arm;
+package org.usfirst.frc.team1318.robot.Arm;
 
 import org.usfirst.frc.team1318.robot.ElectronicsConstants;
 
