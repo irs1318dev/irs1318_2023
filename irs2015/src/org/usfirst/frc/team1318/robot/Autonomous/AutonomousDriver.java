@@ -19,10 +19,20 @@ public class AutonomousDriver implements IDriver
     private static final String DRIVETRAIN_X_VELOCITY_LOG_KEY = "a.driveXVelocity";
     private static final String DRIVETRAIN_Y_VELOCITY_LOG_KEY = "a.driveYVelocity";
     private static final String DRIVETRAIN_SIMPLE_MODE_LOG_KEY = "a.driveSimpleMode";
-    private static final String DRIVETRAIN_SHIFTER_MODE_LOG_KEY = "a.driveShifterMode";
     private static final String DRIVETRAIN_LEFT_POSITION_LOG_KEY = "a.driveLeftPosition";
     private static final String DRIVETRAIN_RIGHT_POSITION_LOG_KEY = "a.driveRightPosition";
     private static final String DRIVETRAIN_POSITION_MODE_LOG_KEY = "a.drivePositionMode";
+
+    private static final String ELEVATOR_MACRO_STATE_LOG_KEY = "a.elevatorMacroState";
+    private static final String ELEVATOR_HEIGHT_0_STATE_LOG_KEY = "a.elevatorHeight0";
+    private static final String ELEVATOR_HEIGHT_1_STATE_LOG_KEY = "a.elevatorHeight1";
+    private static final String ELEVATOR_HEIGHT_2_STATE_LOG_KEY = "a.elevatorHeight2";
+    private static final String ELEVATOR_HEIGHT_3_STATE_LOG_KEY = "a.elevatorHeight3";
+    private static final String ELEVATOR_HEIGHT_4_STATE_LOG_KEY = "a.elevatorHeight4";
+    private static final String ELEVATOR_HEIGHT_5_STATE_LOG_KEY = "a.elevatorHeight5";
+    private static final String ELEVATOR_HEIGHT_6_STATE_LOG_KEY = "a.elevatorHeight6";
+    private static final String ELEVATOR_HEIGHT_7_STATE_LOG_KEY = "a.elevatorHeight7";
+    private static final String ELEVATOR_OVERRIDE_STATE_LOG_KEY = "a.elevatorOverride";
 
     private Queue<IAutonomousTask> autonomousTasks;
     private IAutonomousTask currentTask;
@@ -124,20 +134,6 @@ public class AutonomousDriver implements IDriver
     }
 
     /**
-     * Gets a value indicating whether the shifter state should change 
-     * @return true for state should change, false for no change 
-     */
-    public boolean getDriveTrainShifterMode()
-    {
-
-        boolean shifterMode = this.controlData.getDriveTrainShifterMode();
-
-        SmartDashboardLogger.putBoolean(AutonomousDriver.DRIVETRAIN_SHIFTER_MODE_LOG_KEY, shifterMode);
-
-        return shifterMode;
-    }
-
-    /**
      * Get a value indicating the desired drive train left position for positional mode
      * @return position
      */
@@ -174,6 +170,86 @@ public class AutonomousDriver implements IDriver
         SmartDashboardLogger.putBoolean(AutonomousDriver.DRIVETRAIN_POSITION_MODE_LOG_KEY, positionMode);
 
         return positionMode;
+    }
+
+    @Override
+    public boolean getElevatorMacroButton()
+    {
+        boolean mode = this.controlData.getElevatorMacroState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_MACRO_STATE_LOG_KEY, mode);
+        return mode;
+    }
+
+    @Override
+    public boolean getElevatorHeight0Button()
+    {
+        boolean state = this.controlData.getElevatorHeight0State();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_HEIGHT_0_STATE_LOG_KEY, state);
+        return state;
+    }
+
+    @Override
+    public boolean getElevatorHeight1Button()
+    {
+        boolean state = this.controlData.getElevatorHeight1State();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_HEIGHT_1_STATE_LOG_KEY, state);
+        return state;
+    }
+
+    @Override
+    public boolean getElevatorHeight2Button()
+    {
+        boolean state = this.controlData.getElevatorHeight2State();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_HEIGHT_2_STATE_LOG_KEY, state);
+        return state;
+    }
+
+    @Override
+    public boolean getElevatorHeight3Button()
+    {
+        boolean state = this.controlData.getElevatorHeight3State();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_HEIGHT_3_STATE_LOG_KEY, state);
+        return state;
+    }
+
+    @Override
+    public boolean getElevatorHeight4Button()
+    {
+        boolean state = this.controlData.getElevatorHeight4State();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_HEIGHT_4_STATE_LOG_KEY, state);
+        return state;
+    }
+
+    @Override
+    public boolean getElevatorHeight5Button()
+    {
+        boolean state = this.controlData.getElevatorHeight5State();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_HEIGHT_5_STATE_LOG_KEY, state);
+        return state;
+    }
+
+    @Override
+    public boolean getElevatorHeight6Button()
+    {
+        boolean state = this.controlData.getElevatorHeight6State();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_HEIGHT_6_STATE_LOG_KEY, state);
+        return state;
+    }
+
+    @Override
+    public boolean getElevatorHeight7Button()
+    {
+        boolean state = this.controlData.getElevatorHeight7State();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_HEIGHT_7_STATE_LOG_KEY, state);
+        return state;
+    }
+
+    @Override
+    public double getElevatorOverride()
+    {
+        double speed = this.controlData.getElevatorOverrideState();
+        SmartDashboardLogger.putNumber(AutonomousDriver.ELEVATOR_OVERRIDE_STATE_LOG_KEY, speed);
+        return speed;
     }
 
 }

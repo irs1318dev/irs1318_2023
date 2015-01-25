@@ -20,6 +20,7 @@ public interface IDriver
      */
     public void stop();
 
+    //================================================== DriveTrain ==============================================================
     /**
      * Get a value indicating the desired drive train X Velocity 
      * @return value between -1.0 and 1.0 (percentage of max right turn velocity)
@@ -39,12 +40,6 @@ public interface IDriver
     public boolean getDriveTrainSimpleMode();
 
     /**
-     * Gets a value indicating whether the shifter state should change 
-     * @return true for state should change, false for no change 
-     */
-    public boolean getDriveTrainShifterMode();
-
-    /**
      * Get a value indicating the desired drive train left position for positional mode
      * @return position
      */
@@ -61,4 +56,66 @@ public interface IDriver
      * @return true if position mode, false if velocity mode
      */
     public boolean getDriveTrainPositionMode();
+
+    //=================================================== Elevator ===============================================================
+    /**
+     * Get a value indicating whether the robot should start the elevator macro 
+     * @return true if start macro, otherwise false  
+     */
+    public boolean getElevatorMacroButton();
+
+    /**
+     * Get a value indicating whether the elevator should move to the 0 height setting 
+     * @return true if move to 0 height setting, otherwise false
+     */
+    public boolean getElevatorHeight0Button();
+
+    /**
+     * Get a value indicating whether the elevator should move to the 1 height setting 
+     * @return true if move to 1 height setting, otherwise false
+     */
+    public boolean getElevatorHeight1Button();
+
+    /**
+     * Get a value indicating whether the elevator should move to the 2 height setting 
+     * @return true if move to 2 height setting, otherwise false
+     */
+    public boolean getElevatorHeight2Button();
+
+    /**
+     * Get a value indicating whether the elevator should move to the 3 height setting 
+     * @return true if move to 3 height setting, otherwise false
+     */
+    public boolean getElevatorHeight3Button();
+
+    /**
+     * Get a value indicating whether the elevator should move to the 4 height setting 
+     * @return true if move to 4 height setting, otherwise false
+     */
+    public boolean getElevatorHeight4Button();
+
+    /**
+     * Get a value indicating whether the elevator should move to the 5 height setting 
+     * @return true if move to 5 height setting, otherwise false
+     */
+    public boolean getElevatorHeight5Button();
+
+    /**
+     * Get a value indicating whether the elevator should move to the 6 height setting 
+     * @return true if move to 6 height setting, otherwise false
+     */
+    public boolean getElevatorHeight6Button();
+
+    /**
+     * Get a value indicating whether the elevator should move to the 7 height setting 
+     * @return true if move to 7 height setting, otherwise false
+     */
+    public boolean getElevatorHeight7Button();
+
+    /**
+     * Get a value indicating the desired speed of the elevator 
+     * @return the desired speed of the elevator 
+     */
+    public double getElevatorOverride();
+
 }
