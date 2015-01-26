@@ -22,6 +22,11 @@ public class ElevatorComponent
         return encoder.getDistance();
     }
 
+    public double getEncoderVelocity()
+    {
+        return encoder.getRate();
+    }
+
     public void setMotorVelocity(double motorVelocity)
     {
         motor.set(motorVelocity);
