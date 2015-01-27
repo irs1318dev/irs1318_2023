@@ -49,9 +49,6 @@ public class DriveTrainController implements IController
      */
     public void update()
     {
-        // apply desired shifter state
-        this.component.setShifterState(this.driver.getDriveTrainShifterMode());
-
         // check our desired PID mode
         boolean newUsePositionalMode = this.driver.getDriveTrainPositionMode();
         if (newUsePositionalMode != this.usePositionalMode)

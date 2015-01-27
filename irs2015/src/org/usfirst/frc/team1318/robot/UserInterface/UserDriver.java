@@ -17,15 +17,34 @@ import edu.wpi.first.wpilibj.Joystick;
 public class UserDriver implements IDriver
 {
     // logging constants
+
+    //Drive Train 
     private static final String DRIVETRAIN_X_VELOCITY_LOG_KEY = "u.driveXVelocity";
     private static final String DRIVETRAIN_Y_VELOCITY_LOG_KEY = "u.driveYVelocity";
     private static final String DRIVETRAIN_SIMPLE_MODE_LOG_KEY = "u.driveSimpleMode";
-    private static final String DRIVETRAIN_SHIFTER_STATE_LOG_KEY = "u.driveShiftState";
+
+    //Elevator 
+    private static final String ELEVATOR_MACRO_STATE_LOG_KEY = "u.elevatorMacroState";
+    private static final String ELEVATOR_HEIGHT_0_STATE_LOG_KEY = "u.elevatorHeight0";
+    private static final String ELEVATOR_HEIGHT_1_STATE_LOG_KEY = "u.elevatorHeight1";
+    private static final String ELEVATOR_HEIGHT_2_STATE_LOG_KEY = "u.elevatorHeight2";
+    private static final String ELEVATOR_HEIGHT_3_STATE_LOG_KEY = "u.elevatorHeight3";
+    private static final String ELEVATOR_HEIGHT_4_STATE_LOG_KEY = "u.elevatorHeight4";
+    private static final String ELEVATOR_HEIGHT_5_STATE_LOG_KEY = "u.elevatorHeight5";
+    private static final String ELEVATOR_HEIGHT_6_STATE_LOG_KEY = "u.elevatorHeight6";
+    private static final String ELEVATOR_HEIGHT_7_STATE_LOG_KEY = "u.elevatorHeight7";
+    private static final String ELEVATOR_OVERRIDE_STATE_LOG_KEY = "u.elevatorOverride";
+
+    //Arm 
+    private static final String ARM_MACRO_STATE_LOG_KEY = "u.armMacroState";
+    private static final String ARM_TILT_OVERRIDE_LOG_KEY = "u.armTiltOverride";
+    private static final String ARM_EXTENDER_OVERRIDE_LOG_KEY = "u.armExtenderOverride";
+    private static final String ARM_TROMBONE_OVERRIDE_LOG_KEY = "u.armTromboneOverride";
 
     private Joystick joystick;
 
     private SimpleToggleButton simpleDriveModeButton;
-    private SimpleToggleButton shifterButton;
+    private SimpleToggleButton armMacroToggleButton;
 
     /**
      * Initializes a new UserDriver
@@ -36,7 +55,6 @@ public class UserDriver implements IDriver
 
         // initialize various toggle buttons
         this.simpleDriveModeButton = new SimpleToggleButton();
-        this.shifterButton = new SimpleToggleButton();
     }
 
     /**
@@ -46,7 +64,7 @@ public class UserDriver implements IDriver
     {
         // update the state of the various toggle buttons
         this.simpleDriveModeButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.DRIVETRAIN_SIMPLE_BUTTON));
-        this.shifterButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.DRIVETRAIN_SHIFTER_BUTTON));
+        this.armMacroToggleButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_MACRO_BUTTON));
     }
 
     /**
@@ -55,6 +73,8 @@ public class UserDriver implements IDriver
     public void stop()
     {
     }
+
+    //================================================== DriveTrain ==============================================================
 
     /**
      * Get a value indicating the desired drive train X Velocity 
@@ -106,19 +126,6 @@ public class UserDriver implements IDriver
     }
 
     /**
-     * Gets a value indicating whether the shifter state should change 
-     * @return true for state should change, false for no change 
-     */
-    public boolean getDriveTrainShifterMode()
-    {
-        boolean shifterState = this.shifterButton.isToggled();
-
-        SmartDashboardLogger.putBoolean(UserDriver.DRIVETRAIN_SHIFTER_STATE_LOG_KEY, shifterState);
-
-        return shifterState;
-    }
-
-    /**
      * Get a value indicating the desired drive train left position for positional mode
      * @return position
      */
@@ -147,4 +154,162 @@ public class UserDriver implements IDriver
         // position mode is only used for autonomous
         return false;
     }
+
+    //=================================================== Elevator ===============================================================
+
+    @Override
+    public boolean getElevatorMacroButton()
+    {
+        boolean state = this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_MACRO_BUTTON);
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_MACRO_STATE_LOG_KEY, state);
+        return state;
+    }
+
+    @Override
+    public boolean getElevatorHeight0Button()
+    {
+        boolean state = this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_HEIGHT_0_BUTTON);
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_HEIGHT_0_STATE_LOG_KEY, state);
+        return state;
+    }
+
+    @Override
+    public boolean getElevatorHeight1Button()
+    {
+        boolean state = this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_HEIGHT_1_BUTTON);
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_HEIGHT_1_STATE_LOG_KEY, state);
+        return state;
+    }
+
+    @Override
+    public boolean getElevatorHeight2Button()
+    {
+        boolean state = this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_HEIGHT_2_BUTTON);
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_HEIGHT_2_STATE_LOG_KEY, state);
+        return state;
+    }
+
+    @Override
+    public boolean getElevatorHeight3Button()
+    {
+        boolean state = this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_HEIGHT_3_BUTTON);
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_HEIGHT_3_STATE_LOG_KEY, state);
+        return state;
+    }
+
+    @Override
+    public boolean getElevatorHeight4Button()
+    {
+        boolean state = this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_HEIGHT_4_BUTTON);
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_HEIGHT_4_STATE_LOG_KEY, state);
+        return state;
+    }
+
+    @Override
+    public boolean getElevatorHeight5Button()
+    {
+        boolean state = this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_HEIGHT_5_BUTTON);
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_HEIGHT_5_STATE_LOG_KEY, state);
+        return state;
+    }
+
+    @Override
+    public boolean getElevatorHeight6Button()
+    {
+        boolean state = this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_HEIGHT_6_BUTTON);
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_HEIGHT_6_STATE_LOG_KEY, state);
+        return state;
+    }
+
+    @Override
+    public boolean getElevatorHeight7Button()
+    {
+        boolean state = this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_HEIGHT_7_BUTTON);
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_HEIGHT_7_STATE_LOG_KEY, state);
+        return state;
+    }
+
+    @Override
+    public double getElevatorOverride()
+    {
+        double speed = this.joystick.getZ();
+        SmartDashboardLogger.putNumber(UserDriver.ELEVATOR_OVERRIDE_STATE_LOG_KEY, speed);
+        return speed;
+    }
+
+    //===================================================== Arm =================================================================
+
+    @Override
+    public boolean getArmMacroToggle()
+    {
+        boolean mode = this.armMacroToggleButton.isToggled();
+        SmartDashboardLogger.putBoolean(UserDriver.ARM_MACRO_STATE_LOG_KEY, mode);
+        return mode;
+    }
+
+    @Override
+    public boolean getArmExtenderToggleOverride()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getArmTiltToggleOverride()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getArmTromboneToggleOverride()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    //=================================================== Intake ================================================================
+
+    @Override
+    public boolean getIntakeUpButton()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getIntakeDownButton()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getIntakeRightToggleOverride()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getIntakeLeftToggleOverride()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public double getIntakeForwardButton()
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public double getIntakeBackwardButton()
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
 }
