@@ -96,6 +96,8 @@ public class AutonomousDriver implements IDriver
         }
     }
 
+    //================================================== DriveTrain ==============================================================
+
     /**
      * Get a value indicating the desired drive train X Velocity 
      * @return value between -1.0 and 1.0 (percentage of max right turn velocity)
@@ -173,6 +175,8 @@ public class AutonomousDriver implements IDriver
 
         return positionMode;
     }
+
+    //=================================================== Elevator ===============================================================
 
     @Override
     public boolean getElevatorMacroButton()

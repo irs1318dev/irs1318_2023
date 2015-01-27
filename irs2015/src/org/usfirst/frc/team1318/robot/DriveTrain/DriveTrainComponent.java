@@ -5,7 +5,6 @@ import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Talon;
 
@@ -74,24 +73,6 @@ public class DriveTrainComponent implements IDriveTrainComponent
 
         SmartDashboardLogger.putNumber(DriveTrainComponent.LEFT_TALON_POWER_LOG_KEY, leftPower);
         SmartDashboardLogger.putNumber(DriveTrainComponent.RIGHT_TALON_POWER_LOG_KEY, rightPower);
-    }
-
-    /**
-     * set the state of the shifter
-     * @param state to set the solenoid
-     */
-    public void setShifterState(boolean state)
-    {
-        if (state)
-        {
-            this.shifter.set(Value.kForward);
-        }
-        else
-        {
-            this.shifter.set(Value.kReverse);
-        }
-
-        SmartDashboardLogger.putBoolean(DriveTrainComponent.SHIFTER_STATE_LOG_KEY, state);
     }
 
     /**
