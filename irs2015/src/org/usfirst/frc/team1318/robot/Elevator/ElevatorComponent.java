@@ -18,6 +18,8 @@ public class ElevatorComponent
         encoder = new Encoder(ElectronicsConstants.ELEVATOR_ENCODER_CHANNELA,
             ElectronicsConstants.ELEVATOR_ENCODER_CHANNELB);
         dInput = new DigitalInput(ElectronicsConstants.ELEVATOR_DINPUT_CHANNEL);
+
+        encoder.setDistancePerPulse(ElevatorTurningConstants.PULSE_DISTANCE);
     }
 
     /**
