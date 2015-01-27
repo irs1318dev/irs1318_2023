@@ -299,17 +299,17 @@ public class UserDriver implements IDriver
     }
 
     @Override
-    public double getIntakeForwardButton()
+    public boolean getIntakeForwardButton()
     {
         // TODO Auto-generated method stub
-        return 0;
+        return false;
     }
 
     @Override
-    public double getIntakeBackwardButton()
+    public boolean getIntakeBackwardButton()
     {
         // TODO Auto-generated method stub
-        return 0;
+        return false;
     }
 
 }
