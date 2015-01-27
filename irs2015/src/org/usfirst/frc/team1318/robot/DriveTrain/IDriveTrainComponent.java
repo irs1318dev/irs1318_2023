@@ -44,4 +44,5 @@ public interface IDriveTrainComponent
      * @return a value indicating the distance
      */
     public double getRightEncoderDistance();
+
 }

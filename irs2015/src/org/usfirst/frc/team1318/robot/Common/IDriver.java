@@ -118,4 +118,66 @@ public interface IDriver
      */
     public double getElevatorOverride();
 
+    //===================================================== Arm =================================================================
+    /**
+     * Get a value indicating whether to toggle the whole arm state 
+     * @return true for toggle state, otherwise false 
+     */
+    public boolean getArmMacroToggle();
+
+    /**
+     * Get a value indicating whether to toggle the arm extender state 
+     * @return true for toggle state, otherwise false 
+     */
+    public boolean getArmExtenderToggleOverride();
+
+    /**
+     * Get a value indicating whether to toggle the arm tilt state 
+     * @return true for toggle state, otherwise false 
+     */
+    public boolean getArmTiltToggleOverride();
+
+    /**
+     * Get a value indicating whether to toggle the arm trombone state 
+     * @return true for toggle state, otherwise false 
+     */
+    public boolean getArmTromboneToggleOverride();
+
+    //=================================================== Intake ================================================================
+    /**
+     * Get a value indicating whether to move both sides of the intake up 
+     * @return true for move up, otherwise false 
+     */
+    public boolean getIntakeUpButton();
+
+    /**
+     * Get a value indicating whether to move both sides of the intake down 
+     * @return true for move down, otherwise false 
+     */
+    public boolean getIntakeDownButton();
+
+    /**
+     * Get a value indicating whether to switch the state of the right side of the intake 
+     * @return true for toggle, otherwise false 
+     */
+    public boolean getIntakeRightToggleOverride();
+
+    /**
+     * Get a value indicating whether to switch the state of the left side of the intake 
+     * @return true for toggle, otherwise false 
+     */
+    public boolean getIntakeLeftToggleOverride();
+
+    /**
+     * Get a value indicating whether to move the intake wheels forward 
+     * @return true for move forward, otherwise false 
+     */
+    public double getIntakeForwardButton();
+
+    /**
+     * Get a value indicating whether to move the intake wheels forward 
+     * @return true for move forward, otherwise false 
+     */
+    public double getIntakeBackwardButton();
+
 }

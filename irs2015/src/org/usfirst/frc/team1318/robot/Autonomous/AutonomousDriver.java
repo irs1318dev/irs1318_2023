@@ -16,6 +16,7 @@ import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 public class AutonomousDriver implements IDriver
 {
     // logging constants
+    //Drive Train 
     private static final String DRIVETRAIN_X_VELOCITY_LOG_KEY = "a.driveXVelocity";
     private static final String DRIVETRAIN_Y_VELOCITY_LOG_KEY = "a.driveYVelocity";
     private static final String DRIVETRAIN_SIMPLE_MODE_LOG_KEY = "a.driveSimpleMode";
@@ -23,6 +24,7 @@ public class AutonomousDriver implements IDriver
     private static final String DRIVETRAIN_RIGHT_POSITION_LOG_KEY = "a.driveRightPosition";
     private static final String DRIVETRAIN_POSITION_MODE_LOG_KEY = "a.drivePositionMode";
 
+    //Elevator 
     private static final String ELEVATOR_MACRO_STATE_LOG_KEY = "a.elevatorMacroState";
     private static final String ELEVATOR_HEIGHT_0_STATE_LOG_KEY = "a.elevatorHeight0";
     private static final String ELEVATOR_HEIGHT_1_STATE_LOG_KEY = "a.elevatorHeight1";
@@ -250,6 +252,80 @@ public class AutonomousDriver implements IDriver
         double speed = this.controlData.getElevatorOverrideState();
         SmartDashboardLogger.putNumber(AutonomousDriver.ELEVATOR_OVERRIDE_STATE_LOG_KEY, speed);
         return speed;
+    }
+
+    //===================================================== Arm =================================================================
+
+    @Override
+    public boolean getArmMacroToggle()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getArmExtenderToggleOverride()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getArmTiltToggleOverride()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getArmTromboneToggleOverride()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    //=================================================== Intake ================================================================
+
+    @Override
+    public boolean getIntakeUpButton()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getIntakeDownButton()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getIntakeRightToggleOverride()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getIntakeLeftToggleOverride()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public double getIntakeForwardButton()
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public double getIntakeBackwardButton()
+    {
+        // TODO Auto-generated method stub
+        return 0;
     }
 
 }
