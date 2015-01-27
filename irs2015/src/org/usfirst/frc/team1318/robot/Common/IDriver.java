@@ -172,12 +172,12 @@ public interface IDriver
      * Get a value indicating whether to move the intake wheels forward 
      * @return true for move forward, otherwise false 
      */
-    public double getIntakeForwardButton();
+    public boolean getIntakeForwardButton();
 
     /**
      * Get a value indicating whether to move the intake wheels forward 
      * @return true for move forward, otherwise false 
      */
-    public double getIntakeBackwardButton();
+    public boolean getIntakeBackwardButton();
 
 }

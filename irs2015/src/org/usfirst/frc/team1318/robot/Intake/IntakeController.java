@@ -1,6 +1,243 @@
 package org.usfirst.frc.team1318.robot.Intake;
 
-public class IntakeController
-{
+import org.usfirst.frc.team1318.robot.Common.IDriver;
 
+import edu.wpi.first.wpilibj.Joystick;
+
+/* buttons 
+ * up
+ * down
+ * toggle up and down
+ * press and hold for in
+ * press and hold for out
+ * */
+
+public class IntakeController implements IDriver
+{
+    private IntakeComponent intake;
+
+    // private boolean isToggleUp;
+
+    public void update()
+    {
+        if (getIntakeUpButton())
+        {
+            intake.raiseIntake();
+        }
+
+        if(getIntakeDownButton())
+        {
+            intake.lowerIntake();
+        }
+
+        if ()
+        {
+            intake.toggleIntakeRaise();
+        }
+        
+        if (getIntakeForwardButton()) 
+        {
+            intake.intakeIn();
+        }
+        
+        if () 
+        {
+            intake.intakeOut();
+        }
+        
+        if () 
+        {
+            intake.intakeOff();
+            
+        }
+    }
+
+    @Override
+    public void stop()
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public double getDriveTrainXVelocity()
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public double getDriveTrainYVelocity()
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public boolean getDriveTrainSimpleMode()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public double getDriveTrainLeftPosition()
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public double getDriveTrainRightPosition()
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public boolean getDriveTrainPositionMode()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getElevatorMacroButton()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getElevatorHeight0Button()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getElevatorHeight1Button()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getElevatorHeight2Button()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getElevatorHeight3Button()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getElevatorHeight4Button()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getElevatorHeight5Button()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getElevatorHeight6Button()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getElevatorHeight7Button()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public double getElevatorOverride()
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public boolean getArmMacroToggle()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getArmExtenderToggleOverride()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getArmTiltToggleOverride()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getArmTromboneToggleOverride()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getIntakeUpButton()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getIntakeDownButton()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getIntakeRightToggleOverride()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getIntakeLeftToggleOverride()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public double getIntakeForwardButton()
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public double getIntakeBackwardButton()
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 }
