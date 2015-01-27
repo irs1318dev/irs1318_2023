@@ -17,7 +17,7 @@ public class ArmComponent
     private static final String MOVE_LINKAGE_STATE_LOG_KEY = "dt.MoveLinkageState";
     private static final String EXTEND_LINKAGE_STATE_LOG_KEY = "dt.ExtendLinkageState";
 
-    //constructor requires constants for extension and retraction of 3 solenoids that make up the arm 
+    //constructor uses constants for extension and retraction of 3 solenoids that make up the arm 
     public ArmComponent()
     {
         this.trombone = new DoubleSolenoid(ElectronicsConstants.TROMBONE_SOLANOID_EXTEND, ElectronicsConstants.TROMBONE_SOLANOID_RETRACT);
@@ -28,30 +28,56 @@ public class ArmComponent
     }
 
     /**
-     * @param state to which to set the Trombone Solenoid
+     * changes state of Trombone_Solenoid
+     * @param true for extended state; false for retracted state
      */
-    public void setTromboneSolenoidState(Value state)
+    public void setTromboneSolenoidState(boolean state)
     {
-        this.trombone.set(state);
+        if (state)
+        {
+            this.trombone.set(Value.kForward);
+        }
+        else
+        {
+            this.trombone.set(Value.kReverse);
+
+        }
         SmartDashboardLogger.putNumber(ArmComponent.TROMBONE_STATE_LOG_KEY, trombone.get().value);
 
     }
 
     /**
-     * @param state to which to set the MoveLinkage Solenoid
+     * changes state of TiltLinkage_Solenoid
+     * @param true for extended state; false for retracted state
      */
-    public void setMoveLinkageSolenoidState(Value state)
+    public void setMoveLinkageSolenoidState(boolean state)
     {
-        this.moveLinkage.set(state);
+        if (state)
+        {
+            this.trombone.set(Value.kForward);
+        }
+        else
+        {
+            this.trombone.set(Value.kReverse);
+        }
         SmartDashboardLogger.putNumber(ArmComponent.MOVE_LINKAGE_STATE_LOG_KEY, moveLinkage.get().value);
     }
 
     /**
-     * @param state to which to set the ExtendLinkage Solenoid
+     * changes state of Extend_Linkage_Solenoid
+     * @param true for extended state; false for retracted state
      */
-    public void setExtendLinkageSolenoidState(Value state)
+    public void setExtendLinkageSolenoidState(boolean state)
     {
-        this.extendLinkage.set(state);
+        if (state)
+        {
+            this.trombone.set(Value.kForward);
+        }
+        else
+        {
+            this.trombone.set(Value.kReverse);
+        }
+
         SmartDashboardLogger.putNumber(ArmComponent.EXTEND_LINKAGE_STATE_LOG_KEY, extendLinkage.get().value);
     }
 
