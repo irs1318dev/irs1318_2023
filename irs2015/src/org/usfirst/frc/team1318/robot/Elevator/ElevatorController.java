@@ -8,6 +8,10 @@ import edu.wpi.first.wpilibj.Preferences;
 
 public class ElevatorController implements IController
 {
+    public ElevatorController()
+    {
+
+    }
 
     private PIDHandler handler;
     private boolean useVelocityPID = false;
