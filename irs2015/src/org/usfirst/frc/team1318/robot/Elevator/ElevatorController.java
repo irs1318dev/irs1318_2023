@@ -23,6 +23,7 @@ public class ElevatorController implements IController
 
     public static final double POWERLEVEL_MIN = -.5;
     public static final double POWERLEVEL_MAX = .5;
+
     private static final double HEIGHT_0 = -1;
     private static final double HEIGHT_1 = -1;
     private static final double HEIGHT_2 = -1;

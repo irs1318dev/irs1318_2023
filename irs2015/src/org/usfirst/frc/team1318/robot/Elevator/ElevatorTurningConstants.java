@@ -35,4 +35,6 @@ public class ElevatorTurningConstants
     public static final double ELEVATOR_DEAD_ZONE = 0.1;
     public static final double ELEVATOR_MAX_POWER_LEVEL = 0.8; // max power level (velocity)
     public static final double ELEVATOR_MAX_POWER_POSITIONAL_NON_PID = 0.2; // max power level (positional, non-PID)
+
+    public static final double PULSE_DISTANCE = -1;
 }
