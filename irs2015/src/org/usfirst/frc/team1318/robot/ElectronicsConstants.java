@@ -34,4 +34,5 @@ public class ElectronicsConstants
     public static final int ELEVATOR_TALON_CHANNEL = 0;
     public static final int ELEVATOR_ENCODER_CHANNELA = 1;
     public static final int ELEVATOR_ENCODER_CHANNELB = 2;
+    public static final int ELEVATOR_DINPUT_CHANNEL = 0;
 }
