@@ -16,17 +16,17 @@ public class IntakeComponent
 
     private Talon motorLeft;
     private Talon motorRight;
-    private Solenoid intakeSolenoidUp;
-    private Solenoid intakeSolenoidDown;
-    private double INTAKE_SPEED = .5;
+    private Solenoid intakeSolenoidLeft;
+    private Solenoid intakeSolenoidRight;
+    private double INTAKE_SPEED = .7;
 
     public IntakeComponent(int motorLeftConstant, int motorRightConstant,
-        int collectorSolenoidConstantForward, int collectorSolenoidConstantReverse)
+        int collectorSolenoidConstantLeft, int collectorSolenoidConstantRight)
     {
         this.motorLeft = new Talon(motorLeftConstant);
         this.motorRight = new Talon(motorRightConstant);
-        this.intakeSolenoidUp = new Solenoid(collectorSolenoidConstantForward);
-        this.intakeSolenoidDown = new Solenoid(collectorSolenoidConstantReverse);
+        this.intakeSolenoidLeft = new Solenoid(collectorSolenoidConstantLeft);
+        this.intakeSolenoidRight = new Solenoid(collectorSolenoidConstantRight);
     }
 
     /**
@@ -35,8 +35,8 @@ public class IntakeComponent
 
     public void raiseIntake()
     {
-        intakeSolenoidUp.set(true);
-        intakeSolenoidDown.set(false);
+        intakeSolenoidLeft.set(true);
+        intakeSolenoidRight.set(true);
     }
 
     /**
@@ -45,19 +45,26 @@ public class IntakeComponent
 
     public void lowerIntake()
     {
-        intakeSolenoidDown.set(true);
-        intakeSolenoidUp.set(false);
+        intakeSolenoidRight.set(false);
+        intakeSolenoidLeft.set(false);
     }
 
     /**
-     * Changes the state of the solenoids causing the intake to switch from
-     * upwards movement to downwards movement
+     * Method left intake solenoid toggle
     */
 
-    public void toggleIntakeRaise()
+    public void toggleLeftIntake()
     {
-        intakeSolenoidUp.set(!intakeSolenoidUp.get());
-        intakeSolenoidDown.set(!intakeSolenoidDown.get());
+        intakeSolenoidLeft.set(!intakeSolenoidLeft.get());
+    }
+
+    /**
+     * Method right intake solenoid toggle
+    */
+
+    public void toggleRightIntake()
+    {
+        intakeSolenoidRight.set(!intakeSolenoidRight.get());
     }
 
     /**

@@ -2,8 +2,6 @@ package org.usfirst.frc.team1318.robot.Intake;
 
 import org.usfirst.frc.team1318.robot.Common.IDriver;
 
-import edu.wpi.first.wpilibj.Joystick;
-
 /* buttons 
  * up
  * down
@@ -20,43 +18,54 @@ public class IntakeController implements IDriver
 
     public void update()
     {
+        //Raises the intake arm
         if (getIntakeUpButton())
         {
             intake.raiseIntake();
         }
 
-        if(getIntakeDownButton())
+        //Lowers the intake arm
+        if (getIntakeDownButton())
         {
             intake.lowerIntake();
         }
 
-        if ()
+        //Toggles the right intake arm solenoid
+        if (getIntakeRightToggleOverride())
         {
-            intake.toggleIntakeRaise();
+            intake.toggleRightIntake();
         }
-        
-        if (getIntakeForwardButton()) 
+
+        //Toggles the left intake arm solenoid
+        if (getIntakeLeftToggleOverride())
+        {
+            intake.toggleLeftIntake();
+        }
+
+        //Rotates the intake wheels inwards while held
+        if (getIntakeForwardButton())
         {
             intake.intakeIn();
         }
-        
-        if () 
+
+        //Rotates wheels outwards while held
+        else if (getIntakeBackwardButton())
         {
             intake.intakeOut();
         }
-        
-        if () 
+
+        //Turns off the motors
+        else
         {
             intake.intakeOff();
-            
+
         }
     }
 
     @Override
     public void stop()
     {
-        // TODO Auto-generated method stub
-
+        intake.intakeOff();
     }
 
     @Override
@@ -228,16 +237,16 @@ public class IntakeController implements IDriver
     }
 
     @Override
-    public double getIntakeForwardButton()
+    public boolean getIntakeForwardButton()
     {
         // TODO Auto-generated method stub
-        return 0;
+        return false;
     }
 
     @Override
-    public double getIntakeBackwardButton()
+    public boolean getIntakeBackwardButton()
     {
         // TODO Auto-generated method stub
-        return 0;
+        return false;
     }
 }
