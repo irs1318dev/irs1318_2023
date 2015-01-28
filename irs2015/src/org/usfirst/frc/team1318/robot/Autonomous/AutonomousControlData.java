@@ -8,6 +8,7 @@ package org.usfirst.frc.team1318.robot.Autonomous;
  */
 public class AutonomousControlData
 {
+    //Drive Train 
     private double driveTrainXVelocity;
     private double driveTrainYVelocity;
     private double driveTrainLeftPosition;
@@ -15,6 +16,7 @@ public class AutonomousControlData
     private boolean driveTrainPositionMode;
     private boolean driveTrainSimpleMode;
 
+    //Elevator 
     private boolean elevatorMacroState;
     private boolean elevatorHeight0State;
     private boolean elevatorHeight1State;
@@ -26,11 +28,18 @@ public class AutonomousControlData
     private boolean elevatorHeight7State;
     private double elevatorOverrideState;
 
+    //Arm
+    private boolean armMacroState;
+    private boolean armExtenderOverrideState;
+    private boolean armTiltOverrideState;
+    private boolean armTromboneOverrideState;
+
     /**
      * Initializes a new AutonomousControlData
      */
     public AutonomousControlData()
     {
+        //Drive Train 
         this.driveTrainXVelocity = 0.0;
         this.driveTrainYVelocity = 0.0;
         this.driveTrainSimpleMode = false;
@@ -38,6 +47,7 @@ public class AutonomousControlData
         this.driveTrainRightPosition = 0.0;
         this.driveTrainPositionMode = false;
 
+        //Elevator 
         this.elevatorMacroState = false;
         this.elevatorHeight0State = false;
         this.elevatorHeight1State = false;
@@ -48,6 +58,12 @@ public class AutonomousControlData
         this.elevatorHeight6State = false;
         this.elevatorHeight7State = false;
         this.elevatorOverrideState = 0.0;
+
+        //Arm 
+        this.armMacroState = false;
+        this.armExtenderOverrideState = false;
+        this.armTiltOverrideState = false;
+        this.armTromboneOverrideState = false;
     }
 
     public double getDriveTrainXVelocity()
@@ -208,5 +224,45 @@ public class AutonomousControlData
     public void setElevatorOverrideState(double elevatorOverrideState)
     {
         this.elevatorOverrideState = elevatorOverrideState;
+    }
+
+    public boolean getArmMacroState()
+    {
+        return armMacroState;
+    }
+
+    public void setArmMacroState(boolean armMacroOverrideState)
+    {
+        this.armMacroState = armMacroOverrideState;
+    }
+
+    public boolean getArmExtenderOverrideState()
+    {
+        return armExtenderOverrideState;
+    }
+
+    public void setArmExtenderOverrideState(boolean armElevatorOverrideState)
+    {
+        this.armExtenderOverrideState = armElevatorOverrideState;
+    }
+
+    public boolean getArmTiltOverrideState()
+    {
+        return armTiltOverrideState;
+    }
+
+    public void setArmTiltOverrideState(boolean armTiltOverrideState)
+    {
+        this.armTiltOverrideState = armTiltOverrideState;
+    }
+
+    public boolean getArmTromboneOverrideState()
+    {
+        return armTromboneOverrideState;
+    }
+
+    public void setArmTromboneOverrideState(boolean armTromboneOverrideState)
+    {
+        this.armTromboneOverrideState = armTromboneOverrideState;
     }
 }
