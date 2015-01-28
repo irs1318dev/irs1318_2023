@@ -3,6 +3,23 @@ package org.usfirst.frc.team1318.robot;
 /**
  * All constants that describe which button on the joystick maps to which action in the user driver.
  * 
+ * Button guide:
+ * -----------------------
+ * Logitech Xtreme 3D Pro
+ * 1 - stick trigger
+ * 2 - stick thumb button
+ * 3 - stick bottom left
+ * 4 - stick bottom right
+ * 5 - stick top left
+ * 6 - stick top right
+ * 7 - base top left
+ * 8 - base top right
+ * 9 - base middle left
+ * 10 - base middle right
+ * 11 - base bottom left
+ * 12 - base bottom right
+ * -----------------------
+ * 
  * @author Will
  * 
  */

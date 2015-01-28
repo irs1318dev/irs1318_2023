@@ -95,7 +95,7 @@ public class DriveTrainController implements IController
      */
     private void createPIDHandler()
     {
-        if (!usePID)
+        if (!this.usePID)
         {
             this.leftPID = null;
             this.rightPID = null;
