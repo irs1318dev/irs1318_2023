@@ -44,7 +44,12 @@ public class UserDriver implements IDriver
     private Joystick joystick;
 
     private SimpleToggleButton simpleDriveModeButton;
+
+    //Arm
     private SimpleToggleButton armMacroToggleButton;
+    private SimpleToggleButton armExtenderToggleOverride;
+    private SimpleToggleButton armTiltToggleOverride;
+    private SimpleToggleButton armTromboneToggleOverride;
 
     /**
      * Initializes a new UserDriver
@@ -55,6 +60,12 @@ public class UserDriver implements IDriver
 
         // initialize various toggle buttons
         this.simpleDriveModeButton = new SimpleToggleButton();
+
+        //Arm
+        this.armMacroToggleButton = new SimpleToggleButton();
+        this.armExtenderToggleOverride = new SimpleToggleButton();
+        this.armTiltToggleOverride = new SimpleToggleButton();
+        this.armTromboneToggleOverride = new SimpleToggleButton();
     }
 
     /**
@@ -64,7 +75,12 @@ public class UserDriver implements IDriver
     {
         // update the state of the various toggle buttons
         this.simpleDriveModeButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.DRIVETRAIN_SIMPLE_BUTTON));
+
+        //Arm 
         this.armMacroToggleButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_MACRO_BUTTON));
+        this.armExtenderToggleOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_EXTENDER_BUTTON));
+        this.armTiltToggleOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_TILT_BUTTON));
+        this.armTromboneToggleOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_TROMBONE_BUTTON));
     }
 
     /**
@@ -250,22 +266,25 @@ public class UserDriver implements IDriver
     @Override
     public boolean getArmExtenderToggleOverride()
     {
-        // TODO Auto-generated method stub
-        return false;
+        boolean mode = this.armExtenderToggleOverride.isToggled();
+        SmartDashboardLogger.putBoolean(UserDriver.ARM_EXTENDER_OVERRIDE_LOG_KEY, mode);
+        return mode;
     }
 
     @Override
     public boolean getArmTiltToggleOverride()
     {
-        // TODO Auto-generated method stub
-        return false;
+        boolean mode = this.armTiltToggleOverride.isToggled();
+        SmartDashboardLogger.putBoolean(UserDriver.ARM_TILT_OVERRIDE_LOG_KEY, mode);
+        return mode;
     }
 
     @Override
     public boolean getArmTromboneToggleOverride()
     {
-        // TODO Auto-generated method stub
-        return false;
+        boolean mode = this.armTromboneToggleOverride.isToggled();
+        SmartDashboardLogger.putBoolean(UserDriver.ARM_TROMBONE_OVERRIDE_LOG_KEY, mode);
+        return mode;
     }
 
     //=================================================== Intake ================================================================
