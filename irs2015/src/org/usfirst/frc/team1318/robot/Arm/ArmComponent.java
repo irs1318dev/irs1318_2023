@@ -57,7 +57,7 @@ public class ArmComponent
             this.trombone.set(Value.kReverse);
 
         }
-        SmartDashboardLogger.putNumber(ArmComponent.TROMBONE_STATE_LOG_KEY, trombone.get().value);
+        SmartDashboardLogger.putNumber(ArmComponent.TROMBONE_STATE_LOG_KEY, state);
 
     }
 
@@ -75,7 +75,7 @@ public class ArmComponent
         {
             this.tiltLinkage.set(Value.kReverse);
         }
-        SmartDashboardLogger.putNumber(ArmComponent.TILT_LINKAGE_STATE_LOG_KEY, this.tiltLinkage.get().value);
+        SmartDashboardLogger.putNumber(ArmComponent.TILT_LINKAGE_STATE_LOG_KEY, state);
     }
 
     /**
@@ -93,7 +93,7 @@ public class ArmComponent
             this.extendLinkage.set(Value.kReverse);
         }
 
-        SmartDashboardLogger.putNumber(ArmComponent.EXTEND_LINKAGE_STATE_LOG_KEY, this.extendLinkage.get().value);
+        SmartDashboardLogger.putNumber(ArmComponent.EXTEND_LINKAGE_STATE_LOG_KEY, state);
     }
 
 }
