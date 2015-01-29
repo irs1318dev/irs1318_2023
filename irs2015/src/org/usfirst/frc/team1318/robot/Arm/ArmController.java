@@ -19,19 +19,20 @@ public class ArmController implements IController
     @Override
     public void update()
     {
-        //toggle state of ArmExtender solenoid if button pressed
-        if (this.driver.getArmExtenderToggleOverride())
-        {
-            switch (this.component.extendLinkage.get().value)
-            {
-                case Value.kForward_val:
-                    component.setExtendLinkageSolenoidState(false);
-                    break;
-                case Value.kReverse_val:
-                    component.setExtendLinkageSolenoidState(true);
-                    break;
-            }
-        }
+        this.component.setExtendLinkageSolenoidState(this.driver.getArmExtenderToggleOverride());
+        /*        toggle state of ArmExtender solenoid if button pressed
+                if (this.driver.getArmExtenderToggleOverride())
+                {
+                    switch (this.component.extendLinkage.get().value)
+                    {
+                        case Value.kForward_val:
+                            component.setExtendLinkageSolenoidState(false);
+                            break;
+                        case Value.kReverse_val:
+                            component.setExtendLinkageSolenoidState(true);
+                            break;
+                    }
+                }*/
 
         //toggle state of ArmTilting solenoid if button pressed
         if (this.driver.getArmTiltToggleOverride())

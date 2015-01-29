@@ -33,8 +33,8 @@ public class ElectronicsConstants
 
     public static final int TROMBONE_SOLANOID_EXTEND = -1;
     public static final int TROMBONE_SOLANOID_RETRACT = -1;
-    public static final int MOVE_LINK_SOLANOID_EXTEND = -1;
-    public static final int MOVE_LINK_SOLANOID_RETRACT = -1;
+    public static final int TILT_LINK_SOLANOID_EXTEND = -1;
+    public static final int TILT_LINK_SOLANOID_RETRACT = -1;
     public static final int EXTEND_LINK_SOLANOID_EXTEND = -1;
     public static final int EXTEND_LINK_SOLANOID_RETRACT = -1;
 }
