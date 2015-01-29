@@ -5,8 +5,8 @@ import org.usfirst.frc.team1318.robot.Common.IDriver;
 
 public class ArmController implements IController
 {
-    ArmComponent component;
-    IDriver driver;
+    private ArmComponent component;
+    private IDriver driver;
 
     public ArmController(ArmComponent component, IDriver driver)
     {
