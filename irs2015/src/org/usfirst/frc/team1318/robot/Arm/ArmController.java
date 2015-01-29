@@ -3,8 +3,6 @@ package org.usfirst.frc.team1318.robot.Arm;
 import org.usfirst.frc.team1318.robot.Common.IController;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-
 public class ArmController implements IController
 {
     ArmComponent component;
@@ -19,7 +17,13 @@ public class ArmController implements IController
     @Override
     public void update()
     {
-        //toggle state of ArmExtender solenoid if button pressed
+        this.component.setExtendLinkageSolenoidState(this.driver.getArmExtenderToggleOverride());
+
+        this.component.setMoveLinkageSolenoidState(this.driver.getArmTiltToggleOverride());
+
+        this.component.setTromboneSolenoidState(this.driver.getArmTromboneToggleOverride());
+
+        /*//toggle state of ArmExtender solenoid if button pressed
         if (this.driver.getArmExtenderToggleOverride())
         {
             switch (this.component.extendLinkage.get().value)
@@ -59,7 +63,7 @@ public class ArmController implements IController
                     component.setTromboneSolenoidState(true);
                     break;
             }
-        }
+        }*/
     }
 
     @Override
