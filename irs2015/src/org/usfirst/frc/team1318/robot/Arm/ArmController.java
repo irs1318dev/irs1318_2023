@@ -88,8 +88,8 @@ public class ArmController implements IController
                             component.setTromboneSolenoidState(true);
                             break;
                     }
-                }
-        */}
+                }*/
+    }
 
     @Override
     public void stop()
