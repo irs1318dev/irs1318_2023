@@ -86,11 +86,11 @@ public class ArmComponent
     {
         if (state)
         {
-            this.trombone.set(Value.kForward);
+            this.extendLinkage.set(Value.kForward);
         }
         else
         {
-            this.trombone.set(Value.kReverse);
+            this.extendLinkage.set(Value.kReverse);
         }
 
         SmartDashboardLogger.putNumber(ArmComponent.EXTEND_LINKAGE_STATE_LOG_KEY, this.extendLinkage.get().value);
