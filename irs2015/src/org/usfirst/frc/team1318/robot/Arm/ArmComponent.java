@@ -57,8 +57,12 @@ public class ArmComponent
             this.trombone.set(Value.kReverse);
 
         }
+<<<<<<< HEAD
         SmartDashboardLogger.putBoolean(ArmComponent.TROMBONE_STATE_LOG_KEY, state);
+=======
+>>>>>>> branch 'Arm' of https://github.com/irs1318dev/irs1318_2015.git
 
+        SmartDashboardLogger.putBoolean(ArmComponent.TROMBONE_STATE_LOG_KEY, state);
     }
 
     /**
@@ -75,6 +79,10 @@ public class ArmComponent
         {
             this.tiltLinkage.set(Value.kReverse);
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'Arm' of https://github.com/irs1318dev/irs1318_2015.git
         SmartDashboardLogger.putBoolean(ArmComponent.TILT_LINKAGE_STATE_LOG_KEY, state);
     }
 
@@ -95,5 +103,4 @@ public class ArmComponent
 
         SmartDashboardLogger.putBoolean(ArmComponent.EXTEND_LINKAGE_STATE_LOG_KEY, state);
     }
-
 }
