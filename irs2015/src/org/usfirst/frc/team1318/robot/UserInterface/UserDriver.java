@@ -41,15 +41,15 @@ public class UserDriver implements IDriver
     private static final String ARM_EXTENDER_OVERRIDE_LOG_KEY = "u.armExtenderOverride";
     private static final String ARM_TROMBONE_OVERRIDE_LOG_KEY = "u.armTromboneOverride";
 
-    private Joystick joystick;
+    private final Joystick joystick;
 
-    private SimpleToggleButton simpleDriveModeButton;
+    private final SimpleToggleButton simpleDriveModeButton;
 
     //Arm
-    private SimpleToggleButton armMacroToggleButton;
-    private SimpleToggleButton armExtenderToggleOverride;
-    private SimpleToggleButton armTiltToggleOverride;
-    private SimpleToggleButton armTromboneToggleOverride;
+    private final SimpleToggleButton armMacroToggleButton;
+    private final SimpleToggleButton armExtenderToggleOverride;
+    private final SimpleToggleButton armTiltToggleOverride;
+    private final SimpleToggleButton armTromboneToggleOverride;
 
     /**
      * Initializes a new UserDriver

@@ -13,7 +13,7 @@ import org.usfirst.frc.team1318.robot.Common.IController;
 public class CompressorController implements IController
 {
     private boolean isStarted;
-    private CompressorComponent component;
+    private final CompressorComponent component;
 
     /**
      * Initializes a new CompressorController

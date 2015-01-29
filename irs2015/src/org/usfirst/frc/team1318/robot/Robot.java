@@ -298,125 +298,125 @@ public class Robot extends IterativeRobot
     private void ensureDefaultPreferencesInitialized()
     {
         // Initialize Preferences for PID settings
-        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_USE_PID_KEY))
+        if (!this.prefs.containsKey(TuningConstants.DRIVETRAIN_USE_PID_KEY))
         {
-            prefs.putBoolean(
+            this.prefs.putBoolean(
                 TuningConstants.DRIVETRAIN_USE_PID_KEY,
                 TuningConstants.DRIVETRAIN_USE_PID_DEFAULT);
         }
 
         // Right Velocity
-        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KP_KEY))
+        if (!this.prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KP_KEY))
         {
-            prefs.putDouble(
+            this.prefs.putDouble(
                 TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KP_KEY,
                 TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KP_DEFAULT);
         }
 
-        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KI_KEY))
+        if (!this.prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KI_KEY))
         {
-            prefs.putDouble(
+            this.prefs.putDouble(
                 TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KI_KEY,
                 TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KI_DEFAULT);
         }
 
-        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KD_KEY))
+        if (!this.prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KD_KEY))
         {
-            prefs.putDouble(
+            this.prefs.putDouble(
                 TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KD_KEY,
                 TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KD_DEFAULT);
         }
 
-        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF_KEY))
+        if (!this.prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF_KEY))
         {
-            prefs.putDouble(
+            this.prefs.putDouble(
                 TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF_KEY,
                 TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF_DEFAULT);
         }
 
         // Left Velocity
-        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KP_KEY))
+        if (!this.prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KP_KEY))
         {
-            prefs.putDouble(
+            this.prefs.putDouble(
                 TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KP_KEY,
                 TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KP_DEFAULT);
         }
 
-        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KI_KEY))
+        if (!this.prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KI_KEY))
         {
-            prefs.putDouble(
+            this.prefs.putDouble(
                 TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KI_KEY,
                 TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KI_DEFAULT);
         }
 
-        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KD_KEY))
+        if (!this.prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KD_KEY))
         {
-            prefs.putDouble(
+            this.prefs.putDouble(
                 TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KD_KEY,
                 TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KD_DEFAULT);
         }
 
-        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KF_KEY))
+        if (!this.prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KF_KEY))
         {
-            prefs.putDouble(
+            this.prefs.putDouble(
                 TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KF_KEY,
                 TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KF_DEFAULT);
         }
 
         // Right Position
-        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KP_KEY))
+        if (!this.prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KP_KEY))
         {
-            prefs.putDouble(
+            this.prefs.putDouble(
                 TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KP_KEY,
                 TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KP_DEFAULT);
         }
 
-        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KI_KEY))
+        if (!this.prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KI_KEY))
         {
-            prefs.putDouble(
+            this.prefs.putDouble(
                 TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KI_KEY,
                 TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KI_DEFAULT);
         }
 
-        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KD_KEY))
+        if (!this.prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KD_KEY))
         {
-            prefs.putDouble(
+            this.prefs.putDouble(
                 TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KD_KEY,
                 TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KD_DEFAULT);
         }
 
-        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KF_KEY))
+        if (!this.prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KF_KEY))
         {
-            prefs.putDouble(
+            this.prefs.putDouble(
                 TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KF_KEY,
                 TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KF_DEFAULT);
         }
 
         // Left Position
-        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KP_KEY))
+        if (!this.prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KP_KEY))
         {
-            prefs.putDouble(
+            this.prefs.putDouble(
                 TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KP_KEY,
                 TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KP_DEFAULT);
         }
 
-        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KI_KEY))
+        if (!this.prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KI_KEY))
         {
-            prefs.putDouble(
+            this.prefs.putDouble(
                 TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KI_KEY,
                 TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KI_DEFAULT);
         }
 
-        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KD_KEY))
+        if (!this.prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KD_KEY))
         {
-            prefs.putDouble(
+            this.prefs.putDouble(
                 TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KD_KEY,
                 TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KD_DEFAULT);
         }
 
-        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KF_KEY))
+        if (!this.prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KF_KEY))
         {
-            prefs.putDouble(
+            this.prefs.putDouble(
                 TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KF_KEY,
                 TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KF_DEFAULT);
         }

@@ -26,13 +26,13 @@ public class DriveTrainComponent implements IDriveTrainComponent
     public static final String RIGHT_ENCODER_DISTANCE_LOG_KEY = "dt.rightEncoderDistance";
     public static final String SHIFTER_STATE_LOG_KEY = "dt.shifterState";
 
-    private Talon leftTalon;
-    private Talon rightTalon;
+    private final Talon leftTalon;
+    private final Talon rightTalon;
 
-    private Encoder leftEncoder;
-    private Encoder rightEncoder;
+    private final Encoder leftEncoder;
+    private final Encoder rightEncoder;
 
-    private DoubleSolenoid shifter;
+    private final DoubleSolenoid shifter;
 
     /**
      * Initializes a new DriveTrainComponent

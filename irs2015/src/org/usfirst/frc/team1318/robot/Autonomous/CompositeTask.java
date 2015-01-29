@@ -16,7 +16,7 @@ import java.util.List;
 public class CompositeTask implements IAutonomousTask
 {
     private final boolean andTask;
-    private List<IAutonomousTask> tasks;
+    private final List<IAutonomousTask> tasks;
 
     /**
      * Initializes a new CompositeTask

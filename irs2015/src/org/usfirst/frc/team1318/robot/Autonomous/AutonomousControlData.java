@@ -128,7 +128,7 @@ public class AutonomousControlData
 
     public boolean getElevatorMacroState()
     {
-        return elevatorMacroState;
+        return this.elevatorMacroState;
     }
 
     public void setElevatorMacroState(boolean elevatorMacroState)
@@ -138,7 +138,7 @@ public class AutonomousControlData
 
     public boolean getElevatorHeight0State()
     {
-        return elevatorHeight0State;
+        return this.elevatorHeight0State;
     }
 
     public void setElevatorHeight0State(boolean elevatorHeight0State)
@@ -148,7 +148,7 @@ public class AutonomousControlData
 
     public boolean getElevatorHeight1State()
     {
-        return elevatorHeight1State;
+        return this.elevatorHeight1State;
     }
 
     public void setElevatorHeight1State(boolean elevatorHeight1State)
@@ -158,7 +158,7 @@ public class AutonomousControlData
 
     public boolean getElevatorHeight2State()
     {
-        return elevatorHeight2State;
+        return this.elevatorHeight2State;
     }
 
     public void setElevatorHeight2State(boolean elevatorHeight2State)
@@ -168,7 +168,7 @@ public class AutonomousControlData
 
     public boolean getElevatorHeight3State()
     {
-        return elevatorHeight3State;
+        return this.elevatorHeight3State;
     }
 
     public void setElevatorHeight3State(boolean elevatorHeight3State)
@@ -178,7 +178,7 @@ public class AutonomousControlData
 
     public boolean getElevatorHeight4State()
     {
-        return elevatorHeight4State;
+        return this.elevatorHeight4State;
     }
 
     public void setElevatorHeight4State(boolean elevatorHeight4State)
@@ -188,7 +188,7 @@ public class AutonomousControlData
 
     public boolean getElevatorHeight5State()
     {
-        return elevatorHeight5State;
+        return this.elevatorHeight5State;
     }
 
     public void setElevatorHeight5State(boolean elevatorHeight5State)
@@ -198,7 +198,7 @@ public class AutonomousControlData
 
     public boolean getElevatorHeight6State()
     {
-        return elevatorHeight6State;
+        return this.elevatorHeight6State;
     }
 
     public void setElevatorHeight6State(boolean elevatorHeight6State)
@@ -208,7 +208,7 @@ public class AutonomousControlData
 
     public boolean getElevatorHeight7State()
     {
-        return elevatorHeight7State;
+        return this.elevatorHeight7State;
     }
 
     public void setElevatorHeight7State(boolean elevatorHeight7State)
@@ -218,7 +218,7 @@ public class AutonomousControlData
 
     public double getElevatorOverrideState()
     {
-        return elevatorOverrideState;
+        return this.elevatorOverrideState;
     }
 
     public void setElevatorOverrideState(double elevatorOverrideState)
@@ -228,7 +228,7 @@ public class AutonomousControlData
 
     public boolean getArmMacroState()
     {
-        return armMacroState;
+        return this.armMacroState;
     }
 
     public void setArmMacroState(boolean armMacroOverrideState)
@@ -238,7 +238,7 @@ public class AutonomousControlData
 
     public boolean getArmExtenderOverrideState()
     {
-        return armExtenderOverrideState;
+        return this.armExtenderOverrideState;
     }
 
     public void setArmExtenderOverrideState(boolean armElevatorOverrideState)
@@ -248,7 +248,7 @@ public class AutonomousControlData
 
     public boolean getArmTiltOverrideState()
     {
-        return armTiltOverrideState;
+        return this.armTiltOverrideState;
     }
 
     public void setArmTiltOverrideState(boolean armTiltOverrideState)
@@ -258,7 +258,7 @@ public class AutonomousControlData
 
     public boolean getArmTromboneOverrideState()
     {
-        return armTromboneOverrideState;
+        return this.armTromboneOverrideState;
     }
 
     public void setArmTromboneOverrideState(boolean armTromboneOverrideState)

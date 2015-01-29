@@ -15,7 +15,7 @@ public abstract class TimedAutonomousTask implements IAutonomousTask
 {
     private final double duration;
 
-    private Timer timer;
+    private final Timer timer;
     private Double startTime;
 
     /**
@@ -68,6 +68,6 @@ public abstract class TimedAutonomousTask implements IAutonomousTask
      */
     public boolean shouldContinue()
     {
-        return timer.get() < this.startTime + this.duration;
+        return this.timer.get() < this.startTime + this.duration;
     }
 }
