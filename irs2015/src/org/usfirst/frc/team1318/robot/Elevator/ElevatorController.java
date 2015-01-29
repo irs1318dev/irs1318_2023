@@ -12,6 +12,7 @@ public class ElevatorController implements IController
     {
         this.component = component;
         this.driver = driver;
+        createPIDHandler();
 
     }
 

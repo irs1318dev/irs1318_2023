@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Talon;
 
 public class ElevatorComponent
 {
-    private DigitalInput dInput;
+    private DigitalInput throughBeamSensor;
     private Talon motor;
     private Encoder encoder;
 
@@ -17,7 +17,7 @@ public class ElevatorComponent
         motor = new Talon(ElectronicsConstants.ELEVATOR_TALON_CHANNEL);
         encoder = new Encoder(ElectronicsConstants.ELEVATOR_ENCODER_CHANNELA,
             ElectronicsConstants.ELEVATOR_ENCODER_CHANNELB);
-        dInput = new DigitalInput(ElectronicsConstants.ELEVATOR_DINPUT_CHANNEL);
+        throughBeamSensor = new DigitalInput(ElectronicsConstants.ELEVATOR_DINPUT_CHANNEL);
 
         encoder.setDistancePerPulse(ElevatorTurningConstants.PULSE_DISTANCE);
     }
@@ -44,11 +44,12 @@ public class ElevatorComponent
 
     /**
      * 
-     * @return Digital Input
+     * @return Through Beam Sensor output
      */
-    public boolean getdInput()
+    public boolean getThroughBeamSensor()
     {
-        return dInput.get();
+        return throughBeamSensor.get();
+
     }
 
 }
