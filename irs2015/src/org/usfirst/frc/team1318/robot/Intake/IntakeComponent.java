@@ -1,12 +1,16 @@
 package org.usfirst.frc.team1318.robot.Intake;
 
-import edu.wpi.first.wpilibj.Solenoid;
+import org.usfirst.frc.team1318.robot.ElectronicsConstants;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Talon;
 
 /* buttons 
  * up
  * down
- * toggle up and down
+ * toggle left 
+ * toggle right
  * press and hold for in
  * press and hold for out
  * */
@@ -16,38 +20,48 @@ public class IntakeComponent
 
     private Talon motorLeft;
     private Talon motorRight;
-    private Solenoid intakeSolenoidLeft;
-    private Solenoid intakeSolenoidRight;
-    private double INTAKE_SPEED = .7;
+    private DoubleSolenoid intakeDoubleSolenoidLeft;
+    private DoubleSolenoid intakeDoubleSolenoidRight;
 
     public IntakeComponent(int motorLeftConstant, int motorRightConstant,
         int collectorSolenoidConstantLeft, int collectorSolenoidConstantRight)
     {
         this.motorLeft = new Talon(motorLeftConstant);
         this.motorRight = new Talon(motorRightConstant);
-        this.intakeSolenoidLeft = new Solenoid(collectorSolenoidConstantLeft);
-        this.intakeSolenoidRight = new Solenoid(collectorSolenoidConstantRight);
+        this.intakeDoubleSolenoidLeft = new DoubleSolenoid(ElectronicsConstants.SOLENOID_MODULE_PORT_1,
+            ElectronicsConstants.SOLENOID_MODULE_PORT_2);
+        this.intakeDoubleSolenoidRight = new DoubleSolenoid(ElectronicsConstants.SOLENOID_MODULE_PORT_3,
+            ElectronicsConstants.SOLENOID_MODULE_PORT_4);
     }
 
     /**
      * Method to raise
     */
 
-    public void raiseIntake()
+    public void setIntake(boolean shouldForward)
     {
-        intakeSolenoidLeft.set(true);
-        intakeSolenoidRight.set(true);
+        if (shouldForward)
+        {
+            intakeDoubleSolenoidLeft.set(Value.kForward);
+            intakeDoubleSolenoidRight.set(Value.kForward);
+        }
+        else
+        {
+            intakeDoubleSolenoidLeft.set(Value.kReverse);
+            intakeDoubleSolenoidRight.set(Value.kReverse);
+        }
+
     }
 
     /**
      * Method to lower
     */
 
-    public void lowerIntake()
-    {
-        intakeSolenoidRight.set(false);
-        intakeSolenoidLeft.set(false);
-    }
+    //    public void lowerIntake()
+    //    {
+    //        intakeDoubleSolenoidRight.set(false);
+    //        intakeDoubleSolenoidLeft.set(false);
+    //    }
 
     /**
      * Method left intake solenoid toggle
@@ -55,7 +69,8 @@ public class IntakeComponent
 
     public void toggleLeftIntake()
     {
-        intakeSolenoidLeft.set(!intakeSolenoidLeft.get());
+        intakeDoubleSolenoidLeft.set(!intakeDoubleSolenoidLeft.get());
+        //SmartDashboardLogger.
     }
 
     /**
@@ -64,35 +79,18 @@ public class IntakeComponent
 
     public void toggleRightIntake()
     {
-        intakeSolenoidRight.set(!intakeSolenoidRight.get());
+        intakeDoubleSolenoidRight.set(!intakeDoubleSolenoidRight.get());
     }
 
     /**
-     * Method intake in
+     * sets the intake motors speed
+     * @args A double to represent speed from -1 to 1
+     * values < 0 are inwards, values > 0 forwards, 0 motor off
     */
 
-    public void intakeIn()
+    public void setIntakeMotorSpeed(double speed)
     {
-        this.motorLeft.set(INTAKE_SPEED);
-        this.motorRight.set(INTAKE_SPEED);
-    }
-
-    /**
-     * Method intake out
-    */
-
-    public void intakeOut()
-    {
-        this.motorLeft.set(-INTAKE_SPEED);
-        this.motorRight.set(-INTAKE_SPEED);
-    }
-
-    /**
-     * Method intake off
-     */
-    public void intakeOff()
-    {
-        this.motorLeft.set(0);
-        this.motorRight.set(0);
+        this.motorLeft.set(speed);
+        this.motorRight.set(speed);
     }
 }

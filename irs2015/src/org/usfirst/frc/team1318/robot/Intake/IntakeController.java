@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1318.robot.Intake;
 
+import org.usfirst.frc.team1318.robot.Common.IController;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
 
 /* buttons 
@@ -10,243 +11,69 @@ import org.usfirst.frc.team1318.robot.Common.IDriver;
  * press and hold for out
  * */
 
-public class IntakeController implements IDriver
+public class IntakeController implements IController
 {
     private IntakeComponent intake;
+    private IDriver operator;
+    private static final double INTAKE_SPEED = .7;
+
+    public IntakeController(IDriver operator, IntakeComponent intake)
+    {
+        this.intake = intake;
+        this.operator = operator;
+    }
 
     // private boolean isToggleUp;
 
     public void update()
     {
         //Raises the intake arm
-        if (getIntakeUpButton())
+        if (operator.getIntakeUpButton())
         {
-            intake.raiseIntake();
+            intake.setIntake(true);
         }
 
         //Lowers the intake arm
-        if (getIntakeDownButton())
+        if (operator.getIntakeDownButton())
         {
-            intake.lowerIntake();
+            intake.setIntake(false);
         }
 
         //Toggles the right intake arm solenoid
-        if (getIntakeRightToggleOverride())
+        if (operator.getIntakeRightToggleOverride())
         {
             intake.toggleRightIntake();
         }
 
         //Toggles the left intake arm solenoid
-        if (getIntakeLeftToggleOverride())
+        if (operator.getIntakeLeftToggleOverride())
         {
             intake.toggleLeftIntake();
         }
 
-        //Rotates the intake wheels inwards while held
-        if (getIntakeForwardButton())
+        //Rotates the intake wheels
+        if (operator.getIntakeForwardButton())
         {
-            intake.intakeIn();
+            intake.setIntakeMotorSpeed(INTAKE_SPEED);
         }
 
         //Rotates wheels outwards while held
-        else if (getIntakeBackwardButton())
+        else if (operator.getIntakeBackwardButton())
         {
-            intake.intakeOut();
+            intake.setIntakeMotorSpeed(-INTAKE_SPEED);
         }
 
         //Turns off the motors
         else
         {
-            intake.intakeOff();
+            intake.setIntakeMotorSpeed(0.0);
 
         }
     }
 
-    @Override
     public void stop()
     {
-        intake.intakeOff();
+        intake.setIntakeMotorSpeed(0);
     }
 
-    @Override
-    public double getDriveTrainXVelocity()
-    {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public double getDriveTrainYVelocity()
-    {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public boolean getDriveTrainSimpleMode()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public double getDriveTrainLeftPosition()
-    {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public double getDriveTrainRightPosition()
-    {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public boolean getDriveTrainPositionMode()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean getElevatorMacroButton()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean getElevatorHeight0Button()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean getElevatorHeight1Button()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean getElevatorHeight2Button()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean getElevatorHeight3Button()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean getElevatorHeight4Button()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean getElevatorHeight5Button()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean getElevatorHeight6Button()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean getElevatorHeight7Button()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public double getElevatorOverride()
-    {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public boolean getArmMacroToggle()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean getArmExtenderToggleOverride()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean getArmTiltToggleOverride()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean getArmTromboneToggleOverride()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean getIntakeUpButton()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean getIntakeDownButton()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean getIntakeRightToggleOverride()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean getIntakeLeftToggleOverride()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean getIntakeForwardButton()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean getIntakeBackwardButton()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
 }

@@ -10,6 +10,11 @@ public class ElectronicsConstants
 {
     public static final int SOLENOID_MODULE_PORT_1 = 3;
     public static final int SOLENOID_MODULE_PORT_2 = 2;
+    /* TODO
+     * get intake solenoid port numbers
+     */
+    // public static final int SOLENOID_MODULE_PORT_3;
+    // public static final int SOLENOID_MODULE_PORT_4;
 
     public static final int DRIVETRAIN_LEFT_TALON_CHANNEL = 9;
     public static final int DRIVETRAIN_RIGHT_TALON_CHANNEL = 8;
