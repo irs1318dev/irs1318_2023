@@ -48,8 +48,17 @@ public class JoystickButtonConstants
     public static final int ELEVATOR_HEIGHT_7_BUTTON = -1;
 
     //Arm
-    public static final int ARM_MACRO_BUTTON = -1;
+    public static final int ARM_MACRO_EXTEND_BUTTON = -1;
+    public static final int ARM_MACRO_RETRACT_BUTTON = -1;
     public static final int ARM_EXTENDER_BUTTON = -1;
     public static final int ARM_TILT_BUTTON = -1;
     public static final int ARM_TROMBONE_BUTTON = -1;
+
+    //Intake 
+    public static final int INTAKE_UP_BUTTON = -1;
+    public static final int INTAKE_DOWN_BUTTON = -1;
+    public static final int INTAKE_RIGHT_TOGGLE_OVERRIDE = -1;
+    public static final int INTAKE_LEFT_TOGGLE_OVERRIDE = -1;
+    public static final int INTAKE_FORWARD_BUTTON = -1;
+    public static final int INTAKE_BACKWARD_BUTTON = -1;
 }

@@ -29,10 +29,19 @@ public class AutonomousControlData
     private double elevatorOverrideState;
 
     //Arm
-    private boolean armMacroState;
+    private boolean armMacroExtendState;
+    private boolean armMacroRetractState;
     private boolean armExtenderOverrideState;
     private boolean armTiltOverrideState;
     private boolean armTromboneOverrideState;
+
+    //Intake 
+    private boolean intakeUpState;
+    private boolean intakeDownState;
+    private boolean intakeRightToggleOverrideState;
+    private boolean intakeLeftToggleOverrideState;
+    private boolean intakeForwardState;
+    private boolean intakeBackwardState;
 
     /**
      * Initializes a new AutonomousControlData
@@ -60,10 +69,19 @@ public class AutonomousControlData
         this.elevatorOverrideState = 0.0;
 
         //Arm 
-        this.armMacroState = false;
+        this.armMacroExtendState = false;
+        this.armMacroRetractState = false;
         this.armExtenderOverrideState = false;
         this.armTiltOverrideState = false;
         this.armTromboneOverrideState = false;
+
+        //Intake
+        this.intakeUpState = false;
+        this.intakeDownState = false;
+        this.intakeRightToggleOverrideState = false;
+        this.intakeLeftToggleOverrideState = false;
+        this.intakeForwardState = false;
+        this.intakeBackwardState = false;
     }
 
     public double getDriveTrainXVelocity()
@@ -226,14 +244,24 @@ public class AutonomousControlData
         this.elevatorOverrideState = elevatorOverrideState;
     }
 
-    public boolean getArmMacroState()
+    public boolean getArmMacroExtendState()
     {
-        return armMacroState;
+        return armMacroExtendState;
     }
 
-    public void setArmMacroState(boolean armMacroOverrideState)
+    public void setArmMacroExtendState(boolean armMacroExtendState)
     {
-        this.armMacroState = armMacroOverrideState;
+        this.armMacroExtendState = armMacroExtendState;
+    }
+
+    public boolean getArmMacroRetractState()
+    {
+        return armMacroRetractState;
+    }
+
+    public void setArmMacroRetractState(boolean armMacroRetractState)
+    {
+        this.armMacroRetractState = armMacroRetractState;
     }
 
     public boolean getArmExtenderOverrideState()
@@ -264,5 +292,65 @@ public class AutonomousControlData
     public void setArmTromboneOverrideState(boolean armTromboneOverrideState)
     {
         this.armTromboneOverrideState = armTromboneOverrideState;
+    }
+
+    public boolean getIntakeUpState()
+    {
+        return intakeUpState;
+    }
+
+    public void setIntakeUpState(boolean intakeUpState)
+    {
+        this.intakeUpState = intakeUpState;
+    }
+
+    public boolean getIntakeDownState()
+    {
+        return intakeDownState;
+    }
+
+    public void setIntakeDownState(boolean intakeDownState)
+    {
+        this.intakeDownState = intakeDownState;
+    }
+
+    public boolean getIntakeRightToggleOverrideState()
+    {
+        return intakeRightToggleOverrideState;
+    }
+
+    public void setIntakeRightToggleOverrideState(boolean intakeRightToggleOverrideState)
+    {
+        this.intakeRightToggleOverrideState = intakeRightToggleOverrideState;
+    }
+
+    public boolean getIntakeLeftToggleOverrideState()
+    {
+        return intakeLeftToggleOverrideState;
+    }
+
+    public void setIntakeLeftToggleOverrideState(boolean intakeLeftToggleOverrideState)
+    {
+        this.intakeLeftToggleOverrideState = intakeLeftToggleOverrideState;
+    }
+
+    public boolean getIntakeForwardState()
+    {
+        return intakeForwardState;
+    }
+
+    public void setIntakeForwardState(boolean intakeForwardState)
+    {
+        this.intakeForwardState = intakeForwardState;
+    }
+
+    public boolean getIntakeBackwardState()
+    {
+        return intakeBackwardState;
+    }
+
+    public void setIntakeBackwardState(boolean intakeBackwardState)
+    {
+        this.intakeBackwardState = intakeBackwardState;
     }
 }

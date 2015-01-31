@@ -37,10 +37,19 @@ public class AutonomousDriver implements IDriver
     private static final String ELEVATOR_OVERRIDE_STATE_LOG_KEY = "a.elevatorOverride";
 
     //Arm 
-    private static final String ARM_MACRO_STATE_LOG_KEY = "a.armMacroState";
+    private static final String ARM_MACRO_EXTEND_STATE_LOG_KEY = "a.armMacroExtendState";
+    private static final String ARM_MACRO_RETRACT_STATE_LOG_KEY = "a.armMacroRetractState";
     private static final String ARM_EXTENDER_STATE_LOG_KEY = "a.armExtenderOverride";
     private static final String ARM_TILT_STATE_LOG_KEY = "a.armTiltOverride";
     private static final String ARM_TROMBONE_STATE_LOG_KEY = "a.armTromboneOverride";
+
+    //Intake 
+    private static final String INTAKE_UP_STATE_KEY = "a.intakeUpState";
+    private static final String INTAKE_DOWN_STATE_KEY = "a.intakeDownState";
+    private static final String INTAKE_RIGHT_TOGGLE_OVERRIDE_STATE_KEY = "a.intakeRightToggleOverrideState";
+    private static final String INTAKE_LEFT_TOGGLE_OVERRIDE_STATE_KEY = "a.intakeLeftToggleOverrideState";
+    private static final String INTAKE_FORWARD_STATE_KEY = "a.intakeForwardStateKey";
+    private static final String INTAKE_BACKWARD_STATE_KEY = "a.intakeBackwardStateKey";
 
     private Queue<IAutonomousTask> autonomousTasks;
     private IAutonomousTask currentTask;
@@ -267,10 +276,18 @@ public class AutonomousDriver implements IDriver
     //===================================================== Arm =================================================================
 
     @Override
-    public boolean getArmMacroToggle()
+    public boolean getArmMacroExtendButton()
     {
-        boolean state = this.controlData.getArmMacroState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_MACRO_STATE_LOG_KEY, state);
+        boolean state = this.controlData.getArmMacroExtendState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_MACRO_EXTEND_STATE_LOG_KEY, state);
+        return state;
+    }
+
+    @Override
+    public boolean getArmMacroRetractButton()
+    {
+        boolean state = this.controlData.getArmMacroRetractState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_MACRO_RETRACT_STATE_LOG_KEY, state);
         return state;
     }
 
@@ -303,43 +320,49 @@ public class AutonomousDriver implements IDriver
     @Override
     public boolean getIntakeUpButton()
     {
-        // TODO Auto-generated method stub
-        return false;
+        boolean state = this.controlData.getIntakeUpState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_UP_STATE_KEY, state);
+        return state;
     }
 
     @Override
     public boolean getIntakeDownButton()
     {
-        // TODO Auto-generated method stub
-        return false;
+        boolean state = this.controlData.getIntakeDownState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_DOWN_STATE_KEY, state);
+        return state;
     }
 
     @Override
     public boolean getIntakeRightToggleOverride()
     {
-        // TODO Auto-generated method stub
-        return false;
+        boolean state = this.controlData.getIntakeRightToggleOverrideState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_RIGHT_TOGGLE_OVERRIDE_STATE_KEY, state);
+        return state;
     }
 
     @Override
     public boolean getIntakeLeftToggleOverride()
     {
-        // TODO Auto-generated method stub
-        return false;
+        boolean state = this.controlData.getIntakeLeftToggleOverrideState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_LEFT_TOGGLE_OVERRIDE_STATE_KEY, state);
+        return state;
     }
 
     @Override
-    public double getIntakeForwardButton()
+    public boolean getIntakeForwardButton()
     {
-        // TODO Auto-generated method stub
-        return 0;
+        boolean state = this.controlData.getIntakeForwardState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_FORWARD_STATE_KEY, state);
+        return state;
     }
 
     @Override
-    public double getIntakeBackwardButton()
+    public boolean getIntakeBackwardButton()
     {
-        // TODO Auto-generated method stub
-        return 0;
+        boolean state = this.controlData.getIntakeBackwardState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_BACKWARD_STATE_KEY, state);
+        return state;
     }
 
 }

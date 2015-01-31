@@ -120,10 +120,16 @@ public interface IDriver
 
     //===================================================== Arm =================================================================
     /**
-     * Get a value indicating whether to toggle the whole arm state 
-     * @return true for toggle state, otherwise false 
+     * Get a value indicating whether to run the macro to extend the whole arm state 
+     * @return true for run macro, otherwise false 
      */
-    public boolean getArmMacroToggle();
+    public boolean getArmMacroExtendButton();
+
+    /**
+     * Get a value indicating whether to run the macro to retract teh whole arm state 
+     * @return true for run macro, otherwise false 
+     */
+    public boolean getArmMacroRetractButton();
 
     /**
      * Get a value indicating whether to toggle the arm extender state 
@@ -172,12 +178,12 @@ public interface IDriver
      * Get a value indicating whether to move the intake wheels forward 
      * @return true for move forward, otherwise false 
      */
-    public double getIntakeForwardButton();
+    public boolean getIntakeForwardButton();
 
     /**
      * Get a value indicating whether to move the intake wheels forward 
      * @return true for move forward, otherwise false 
      */
-    public double getIntakeBackwardButton();
+    public boolean getIntakeBackwardButton();
 
 }

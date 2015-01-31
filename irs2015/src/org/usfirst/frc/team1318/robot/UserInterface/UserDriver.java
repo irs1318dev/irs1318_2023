@@ -2,6 +2,7 @@ package org.usfirst.frc.team1318.robot.UserInterface;
 
 import org.usfirst.frc.team1318.robot.JoystickButtonConstants;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
+import org.usfirst.frc.team1318.robot.Common.SimpleButton;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 import org.usfirst.frc.team1318.robot.Common.ToggleButtons.SimpleToggleButton;
 
@@ -36,20 +37,36 @@ public class UserDriver implements IDriver
     private static final String ELEVATOR_OVERRIDE_STATE_LOG_KEY = "u.elevatorOverride";
 
     //Arm 
-    private static final String ARM_MACRO_STATE_LOG_KEY = "u.armMacroState";
+    private static final String ARM_MACRO_EXTEND_STATE_LOG_KEY = "u.armMacroExtendState";
+    private static final String ARM_MACRO_RETRACT_STATE_LOG_KEY = "u.armMacroRetractState";
     private static final String ARM_TILT_OVERRIDE_LOG_KEY = "u.armTiltOverride";
     private static final String ARM_EXTENDER_OVERRIDE_LOG_KEY = "u.armExtenderOverride";
     private static final String ARM_TROMBONE_OVERRIDE_LOG_KEY = "u.armTromboneOverride";
+
+    //Intake 
+    private static final String INTAKE_UP_STATE_KEY = "u.intakeUpState";
+    private static final String INTAKE_DOWN_STATE_KEY = "u.intakeDownState";
+    private static final String INTAKE_RIGHT_TOGGLE_OVERRIDE_STATE_KEY = "u.intakeRightToggleOverrideState";
+    private static final String INTAKE_LEFT_TOGGLE_OVERRIDE_STATE_KEY = "u.intakeLeftToggleOverrideState";
+    private static final String INTAKE_FORWARD_STATE_KEY = "u.intakeForwardStateKey";
+    private static final String INTAKE_BACKWARD_STATE_KEY = "u.intakeBackwardStateKey";
 
     private Joystick joystick;
 
     private SimpleToggleButton simpleDriveModeButton;
 
     //Arm
-    private SimpleToggleButton armMacroToggleButton;
+    private SimpleButton armMacroExtendButton;
+    private SimpleButton armMacroRetractButton;
     private SimpleToggleButton armExtenderToggleOverride;
     private SimpleToggleButton armTiltToggleOverride;
     private SimpleToggleButton armTromboneToggleOverride;
+
+    //Intake
+    private SimpleButton intakeUpButton;
+    private SimpleButton intakeDownButton;
+    private SimpleToggleButton intakeRightToggleOverride;
+    private SimpleToggleButton intakeLeftToggleOverride;
 
     /**
      * Initializes a new UserDriver
@@ -62,10 +79,17 @@ public class UserDriver implements IDriver
         this.simpleDriveModeButton = new SimpleToggleButton();
 
         //Arm
-        this.armMacroToggleButton = new SimpleToggleButton();
+        this.armMacroExtendButton = new SimpleButton();
+        this.armMacroRetractButton = new SimpleButton();
         this.armExtenderToggleOverride = new SimpleToggleButton();
         this.armTiltToggleOverride = new SimpleToggleButton();
         this.armTromboneToggleOverride = new SimpleToggleButton();
+
+        //Intake
+        this.intakeUpButton = new SimpleButton();
+        this.intakeDownButton = new SimpleButton();
+        this.intakeRightToggleOverride = new SimpleToggleButton();
+        this.intakeLeftToggleOverride = new SimpleToggleButton();
     }
 
     /**
@@ -77,10 +101,18 @@ public class UserDriver implements IDriver
         this.simpleDriveModeButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.DRIVETRAIN_SIMPLE_BUTTON));
 
         //Arm 
-        this.armMacroToggleButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_MACRO_BUTTON));
+        this.armMacroExtendButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_MACRO_EXTEND_BUTTON));
+        this.armMacroRetractButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_MACRO_RETRACT_BUTTON));
         this.armExtenderToggleOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_EXTENDER_BUTTON));
         this.armTiltToggleOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_TILT_BUTTON));
         this.armTromboneToggleOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_TROMBONE_BUTTON));
+
+        //Intake
+        this.intakeUpButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.INTAKE_UP_BUTTON));
+        this.intakeDownButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.INTAKE_DOWN_BUTTON));
+        this.intakeRightToggleOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.INTAKE_RIGHT_TOGGLE_OVERRIDE));
+        this.intakeLeftToggleOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.INTAKE_LEFT_TOGGLE_OVERRIDE));
+
     }
 
     /**
@@ -256,10 +288,18 @@ public class UserDriver implements IDriver
     //===================================================== Arm =================================================================
 
     @Override
-    public boolean getArmMacroToggle()
+    public boolean getArmMacroExtendButton()
     {
-        boolean mode = this.armMacroToggleButton.isToggled();
-        SmartDashboardLogger.putBoolean(UserDriver.ARM_MACRO_STATE_LOG_KEY, mode);
+        boolean mode = this.armMacroExtendButton.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.ARM_MACRO_EXTEND_STATE_LOG_KEY, mode);
+        return mode;
+    }
+
+    @Override
+    public boolean getArmMacroRetractButton()
+    {
+        boolean mode = this.armMacroRetractButton.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.ARM_MACRO_RETRACT_STATE_LOG_KEY, mode);
         return mode;
     }
 
@@ -292,43 +332,49 @@ public class UserDriver implements IDriver
     @Override
     public boolean getIntakeUpButton()
     {
-        // TODO Auto-generated method stub
-        return false;
+        boolean mode = this.intakeUpButton.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_UP_STATE_KEY, mode);
+        return mode;
     }
 
     @Override
     public boolean getIntakeDownButton()
     {
-        // TODO Auto-generated method stub
-        return false;
+        boolean mode = this.intakeDownButton.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_DOWN_STATE_KEY, mode);
+        return mode;
     }
 
     @Override
     public boolean getIntakeRightToggleOverride()
     {
-        // TODO Auto-generated method stub
-        return false;
+        boolean mode = this.intakeRightToggleOverride.isToggled();
+        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_RIGHT_TOGGLE_OVERRIDE_STATE_KEY, mode);
+        return mode;
     }
 
     @Override
     public boolean getIntakeLeftToggleOverride()
     {
-        // TODO Auto-generated method stub
-        return false;
+        boolean mode = this.intakeLeftToggleOverride.isToggled();
+        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_LEFT_TOGGLE_OVERRIDE_STATE_KEY, mode);
+        return mode;
     }
 
     @Override
-    public double getIntakeForwardButton()
+    public boolean getIntakeForwardButton()
     {
-        // TODO Auto-generated method stub
-        return 0;
+        boolean mode = this.joystick.getRawButton(JoystickButtonConstants.INTAKE_FORWARD_BUTTON);
+        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_FORWARD_STATE_KEY, mode);
+        return mode;
     }
 
     @Override
-    public double getIntakeBackwardButton()
+    public boolean getIntakeBackwardButton()
     {
-        // TODO Auto-generated method stub
-        return 0;
+        boolean mode = this.joystick.getRawButton(JoystickButtonConstants.INTAKE_BACKWARD_BUTTON);
+        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_BACKWARD_STATE_KEY, mode);
+        return mode;
     }
 
 }
