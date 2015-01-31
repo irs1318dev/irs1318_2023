@@ -36,20 +36,32 @@ public class JoystickButtonConstants
     public static final boolean INVERT_Y_AXIS = true;
 
     //Elevator
-    public static final int ELEVATOR_MACRO_BUTTON = -1;
+    public static final int ELEVATOR_CONTAINER_MACRO_BUTTON = -1;
 
-    public static final int ELEVATOR_HEIGHT_0_BUTTON = -1;
-    public static final int ELEVATOR_HEIGHT_1_BUTTON = -1;
-    public static final int ELEVATOR_HEIGHT_2_BUTTON = -1;
-    public static final int ELEVATOR_HEIGHT_3_BUTTON = -1;
-    public static final int ELEVATOR_HEIGHT_4_BUTTON = -1;
-    public static final int ELEVATOR_HEIGHT_5_BUTTON = -1;
-    public static final int ELEVATOR_HEIGHT_6_BUTTON = -1;
-    public static final int ELEVATOR_HEIGHT_7_BUTTON = -1;
+    public static final int ELEVATOR_SET_STAE_TO_FLOOR_BUTTON = -1;
+    public static final int ELEVATOR_SET_STATE_TO_PLATFORM_BUTTON = -1;
+    public static final int ELEVATOR_SET_STATE_TO_STEP_BUTTON = -1;
+    public static final int ELEVATOR_MOVE_TO_0_TOTES_BUTTON = -1;
+    public static final int ELEVATOR_MOVE_TO_1_TOTE_BUTTON = -1;
+    public static final int ELEVATOR_MOVE_TO_2_TOTES_BUTTON = -1;
+    public static final int ELEVATOR_MOVE_TO_3_TOTES_BUTTON = -1;
+    public static final int ELEVATOR_PID_TOGGLE = -1;
+    public static final int ELEVATOR_STOP_BUTTON = -1;
+    public static final int ELEVATOR_UP_BUTTON = -1;
+    public static final int ELEVATOR_DOWN_BUTTON = -1;
 
     //Arm
-    public static final int ARM_MACRO_BUTTON = -1;
+    public static final int ARM_MACRO_EXTEND_BUTTON = -1;
+    public static final int ARM_MACRO_RETRACT_BUTTON = -1;
     public static final int ARM_EXTENDER_BUTTON = -1;
     public static final int ARM_TILT_BUTTON = -1;
     public static final int ARM_TROMBONE_BUTTON = -1;
+
+    //Intake 
+    public static final int INTAKE_UP_BUTTON = -1;
+    public static final int INTAKE_DOWN_BUTTON = -1;
+    public static final int INTAKE_RIGHT_TOGGLE_OVERRIDE = -1;
+    public static final int INTAKE_LEFT_TOGGLE_OVERRIDE = -1;
+    public static final int INTAKE_FORWARD_BUTTON = -1;
+    public static final int INTAKE_BACKWARD_BUTTON = -1;
 }
