@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1318.robot.Intake;
 
 import org.usfirst.frc.team1318.robot.ElectronicsConstants;
+import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -22,6 +23,11 @@ public class IntakeComponent
     private final DoubleSolenoid intakeDoubleSolenoidLeft;
     private final DoubleSolenoid intakeDoubleSolenoidRight;
 
+    // SmartDashboard keys
+    public static final String INTAKEMOTORSPEED = "i.motorspeed";
+    public static final String LEFTINTAKEARMDIRECTION = "i.leftarmdirection";
+    public static final String RIGHTINTAKEARMDIRECTION = "i.rightarmdirection";
+
     public IntakeComponent()
     {
         this.motorLeft = new Talon(ElectronicsConstants.INTAKE_LEFT_TALON_CHANNEL);
@@ -37,7 +43,8 @@ public class IntakeComponent
     }
 
     /**
-     * Method to move the intake
+     * sets both solenoids on the intake to extend or retract
+     * @param shouldForward if true, both pistons will extend if false both will retract
     */
     public void setIntake(boolean shouldForward)
     {
@@ -45,29 +52,44 @@ public class IntakeComponent
         {
             this.intakeDoubleSolenoidLeft.set(Value.kForward);
             this.intakeDoubleSolenoidRight.set(Value.kForward);
+            SmartDashboardLogger.putString(LEFTINTAKEARMDIRECTION, intakeDoubleSolenoidLeft.get().toString());
+            SmartDashboardLogger.putString(RIGHTINTAKEARMDIRECTION, intakeDoubleSolenoidRight.get().toString());
         }
         else
         {
             this.intakeDoubleSolenoidLeft.set(Value.kReverse);
             this.intakeDoubleSolenoidRight.set(Value.kReverse);
+            SmartDashboardLogger.putString(LEFTINTAKEARMDIRECTION, intakeDoubleSolenoidLeft.get().toString());
+            SmartDashboardLogger.putString(RIGHTINTAKEARMDIRECTION, intakeDoubleSolenoidRight.get().toString());
         }
     }
 
     /**
-     * Method left intake solenoid toggle
+     * Toggles the left intake solenoid
+     * If the piston is extending, it will be switched to retracting
+     * If the piston is off or retracting, it will be switched to extending
     */
     public void toggleLeftIntake()
     {
-        this.intakeDoubleSolenoidLeft.set(!this.intakeDoubleSolenoidLeft.get());
-        //SmartDashboardLogger.
+        this.intakeDoubleSolenoidLeft.set(
+            intakeDoubleSolenoidLeft.get() == DoubleSolenoid.Value.kForward ?
+                DoubleSolenoid.Value.kReverse : DoubleSolenoid.Value.kForward);
+        // not sure if DoubleSolenoidValue.toString() returns an understandable result
+        SmartDashboardLogger.putString(LEFTINTAKEARMDIRECTION, intakeDoubleSolenoidLeft.get().toString());
     }
 
     /**
-     * Method right intake solenoid toggle
+     * Toggles the right intake solenoid
+     * If the piston is extending, it will be switched to retracting
+     * If the piston is off or retracting, it will be switched to extending
     */
     public void toggleRightIntake()
     {
-        this.intakeDoubleSolenoidRight.set(!this.intakeDoubleSolenoidRight.get());
+        this.intakeDoubleSolenoidRight.set(
+            intakeDoubleSolenoidRight.get() == DoubleSolenoid.Value.kForward ?
+                DoubleSolenoid.Value.kReverse : DoubleSolenoid.Value.kForward);
+        // not sure if DoubleSolenoidValue.toString() returns an understandable result
+        SmartDashboardLogger.putString(RIGHTINTAKEARMDIRECTION, intakeDoubleSolenoidRight.get().toString());
     }
 
     /**
@@ -79,5 +101,15 @@ public class IntakeComponent
     {
         this.motorLeft.set(velocity);
         this.motorRight.set(velocity);
+        SmartDashboardLogger.putNumber(INTAKEMOTORSPEED, motorLeft.get());
+    }
+
+    // stops both solenoids, leaving the pistons unmoving
+    public void stopSolenoids()
+    {
+        intakeDoubleSolenoidLeft.set(Value.kOff);
+        intakeDoubleSolenoidRight.set(Value.kOff);
+        SmartDashboardLogger.putString(LEFTINTAKEARMDIRECTION, intakeDoubleSolenoidLeft.get().toString());
+        SmartDashboardLogger.putString(RIGHTINTAKEARMDIRECTION, intakeDoubleSolenoidRight.get().toString());
     }
 }

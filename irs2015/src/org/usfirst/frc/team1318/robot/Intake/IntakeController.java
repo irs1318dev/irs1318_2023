@@ -51,19 +51,19 @@ public class IntakeController implements IController
             this.intake.toggleLeftIntake();
         }
 
-        //Rotates the intake wheels
+        //Rotates the intake motors when forward button is held
         if (this.operator.getIntakeForwardButton())
         {
             this.intake.setIntakeMotorSpeed(IntakeController.INTAKE_SPEED);
         }
 
-        //Rotates wheels outwards while held
+        //Rotates wheels outwards when backward button is held
         else if (this.operator.getIntakeBackwardButton())
         {
             this.intake.setIntakeMotorSpeed(-IntakeController.INTAKE_SPEED);
         }
 
-        //Turns off the motors
+        //Turns off the motors if not button is held
         else
         {
             this.intake.setIntakeMotorSpeed(0.0);
@@ -73,5 +73,6 @@ public class IntakeController implements IController
     public void stop()
     {
         this.intake.setIntakeMotorSpeed(0);
+        this.intake.stopSolenoids();
     }
 }
