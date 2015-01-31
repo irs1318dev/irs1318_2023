@@ -42,9 +42,9 @@ public class AutonomousDriver implements IDriver
     private static final String ARM_TILT_STATE_LOG_KEY = "a.armTiltOverride";
     private static final String ARM_TROMBONE_STATE_LOG_KEY = "a.armTromboneOverride";
 
-    private Queue<IAutonomousTask> autonomousTasks;
+    private final Queue<IAutonomousTask> autonomousTasks;
     private IAutonomousTask currentTask;
-    private AutonomousControlData controlData;
+    private final AutonomousControlData controlData;
 
     /**
      * Initializes a new AutonomousDriver

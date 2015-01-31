@@ -20,9 +20,6 @@ public class ElectronicsConstants
     public static final int DRIVETRAIN_LEFT_ENCODER_CHANNEL_A = 8;
     public static final int DRIVETRAIN_LEFT_ENCODER_CHANNEL_B = 9;
 
-    public static final int DRIVETRAIN_SHIFTER_MODE_EXTENDER_PORT = 1;
-    public static final int DRIVETRAIN_SHIFTER_MODE_RETRACTER_PORT = 0;
-
     public static final int COMPRESSOR_PRESSURE_SWITCH_CHANNEL = 6;
     public static final int COMPRESSOR_RELAY_CHANNEL = 1;
 

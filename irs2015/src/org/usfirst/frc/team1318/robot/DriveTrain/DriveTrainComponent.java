@@ -4,7 +4,6 @@ import org.usfirst.frc.team1318.robot.ElectronicsConstants;
 import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Talon;
 
@@ -26,13 +25,11 @@ public class DriveTrainComponent implements IDriveTrainComponent
     public static final String RIGHT_ENCODER_DISTANCE_LOG_KEY = "dt.rightEncoderDistance";
     public static final String SHIFTER_STATE_LOG_KEY = "dt.shifterState";
 
-    private Talon leftTalon;
-    private Talon rightTalon;
+    private final Talon leftTalon;
+    private final Talon rightTalon;
 
-    private Encoder leftEncoder;
-    private Encoder rightEncoder;
-
-    private DoubleSolenoid shifter;
+    private final Encoder leftEncoder;
+    private final Encoder rightEncoder;
 
     /**
      * Initializes a new DriveTrainComponent
@@ -55,10 +52,6 @@ public class DriveTrainComponent implements IDriveTrainComponent
 
         this.leftEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_LEFT_PULSE_DISTANCE);
         this.rightEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_RIGHT_PULSE_DISTANCE);
-
-        this.shifter = new DoubleSolenoid(
-            ElectronicsConstants.DRIVETRAIN_SHIFTER_MODE_EXTENDER_PORT,
-            ElectronicsConstants.DRIVETRAIN_SHIFTER_MODE_RETRACTER_PORT);
     }
 
     /**
