@@ -8,19 +8,12 @@ import edu.wpi.first.wpilibj.Preferences;
 
 public class ElevatorController implements IController
 {
-    public ElevatorController(ElevatorComponent component, IDriver driver)
-    {
-        this.component = component;
-        this.driver = driver;
-        createPIDHandler();
-
-    }
 
     private PIDHandler handler;
     private boolean useVelocityPID = false;
 
-    private ElevatorComponent component;
-    private IDriver driver;
+    private final ElevatorComponent component;
+    private final IDriver driver;
 
     public static final double POWERLEVEL_MIN = -.5;
     public static final double POWERLEVEL_MAX = .5;
@@ -34,7 +27,12 @@ public class ElevatorController implements IController
     private static final double HEIGHT_6 = -1;
     private static final double HEIGHT_7 = -1;
 
-    // TODO add constructor 
+    public ElevatorController(ElevatorComponent component, IDriver driver)
+    {
+        this.component = component;
+        this.driver = driver;
+        this.createPIDHandler();
+    }
 
     @Override
     public void update()
@@ -42,45 +40,45 @@ public class ElevatorController implements IController
         // TODO figure out whether it should be moving 
         // TODO figure out which type of PID to use 
         // TODO figure out the target position or velocity 
-        if (driver.getElevatorHeight0Button())
+        if (this.driver.getElevatorHeight0Button())
         {
-            component.setMotorVelocity(calculatePositionModePowerSetting(HEIGHT_0));
+            this.component.setMotorVelocity(this.calculatePositionModePowerSetting(ElevatorController.HEIGHT_0));
         }
-        else if (driver.getElevatorHeight1Button())
+        else if (this.driver.getElevatorHeight1Button())
         {
-            component.setMotorVelocity(calculatePositionModePowerSetting(HEIGHT_1));
+            this.component.setMotorVelocity(this.calculatePositionModePowerSetting(ElevatorController.HEIGHT_1));
         }
-        else if (driver.getElevatorHeight2Button())
+        else if (this.driver.getElevatorHeight2Button())
         {
-            component.setMotorVelocity(calculatePositionModePowerSetting(HEIGHT_2));
+            this.component.setMotorVelocity(this.calculatePositionModePowerSetting(ElevatorController.HEIGHT_2));
         }
-        else if (driver.getElevatorHeight3Button())
+        else if (this.driver.getElevatorHeight3Button())
         {
-            component.setMotorVelocity(calculatePositionModePowerSetting(HEIGHT_3));
+            this.component.setMotorVelocity(this.calculatePositionModePowerSetting(ElevatorController.HEIGHT_3));
         }
-        else if (driver.getElevatorHeight4Button())
+        else if (this.driver.getElevatorHeight4Button())
         {
-            component.setMotorVelocity(calculatePositionModePowerSetting(HEIGHT_4));
+            this.component.setMotorVelocity(this.calculatePositionModePowerSetting(ElevatorController.HEIGHT_4));
         }
-        else if (driver.getElevatorHeight5Button())
+        else if (this.driver.getElevatorHeight5Button())
         {
-            component.setMotorVelocity(calculatePositionModePowerSetting(HEIGHT_5));
+            this.component.setMotorVelocity(this.calculatePositionModePowerSetting(ElevatorController.HEIGHT_5));
         }
-        else if (driver.getElevatorHeight6Button())
+        else if (this.driver.getElevatorHeight6Button())
         {
-            component.setMotorVelocity(calculatePositionModePowerSetting(HEIGHT_6));
+            this.component.setMotorVelocity(this.calculatePositionModePowerSetting(ElevatorController.HEIGHT_6));
         }
-        else if (driver.getElevatorHeight7Button())
+        else if (this.driver.getElevatorHeight7Button())
         {
-            component.setMotorVelocity(calculatePositionModePowerSetting(HEIGHT_7));
+            this.component.setMotorVelocity(this.calculatePositionModePowerSetting(ElevatorController.HEIGHT_7));
         }
         else
         {
-            useVelocityPID = true;
-            createPIDHandler();
-            component.setMotorVelocity(calculateVelocityModePowerSetting(driver.getElevatorOverride()));
-            useVelocityPID = false;
-            createPIDHandler();
+            this.useVelocityPID = true;
+            this.createPIDHandler();
+            this.component.setMotorVelocity(this.calculateVelocityModePowerSetting(this.driver.getElevatorOverride()));
+            this.useVelocityPID = false;
+            this.createPIDHandler();
         }
     }
 
@@ -88,54 +86,46 @@ public class ElevatorController implements IController
     public void stop()
     {
         // TODO Auto-generated method stub
-
     }
 
     private void createPIDHandler()
     {
-        if (false)
+        Preferences prefs = Preferences.getInstance();
+        if (!this.useVelocityPID)
         {
-            this.handler = null;
+            this.handler = new PIDHandler(
+                prefs.getDouble(
+                    ElevatorTurningConstants.ELEVATOR_POSITION_PID_KP_KEY,
+                    ElevatorTurningConstants.ELEVATOR_POSITION_PID_KP_DEFAULT),
+                prefs.getDouble(
+                    ElevatorTurningConstants.ELEVATOR_POSITION_PID_KI_KEY,
+                    ElevatorTurningConstants.ELEVATOR_POSITION_PID_KI_DEFAULT),
+                prefs.getDouble(
+                    ElevatorTurningConstants.ELEVATOR_POSITION_PID_KD_KEY,
+                    ElevatorTurningConstants.ELEVATOR_POSITION_PID_KD_DEFAULT),
+                prefs.getDouble(
+                    ElevatorTurningConstants.ELEVATOR_POSITION_PID_KF_KEY,
+                    ElevatorTurningConstants.ELEVATOR_POSITION_PID_KF_DEFAULT),
+                ElevatorController.POWERLEVEL_MIN,
+                ElevatorController.POWERLEVEL_MAX);
         }
         else
         {
-            Preferences prefs = Preferences.getInstance();
-            if (!this.useVelocityPID)
-            {
-                this.handler = new PIDHandler(
-                    prefs.getDouble(
-                        ElevatorTurningConstants.ELEVATOR_POSITION_PID_KP_KEY,
-                        ElevatorTurningConstants.ELEVATOR_POSITION_PID_KP_DEFAULT),
-                    prefs.getDouble(
-                        ElevatorTurningConstants.ELEVATOR_POSITION_PID_KI_KEY,
-                        ElevatorTurningConstants.ELEVATOR_POSITION_PID_KI_DEFAULT),
-                    prefs.getDouble(
-                        ElevatorTurningConstants.ELEVATOR_POSITION_PID_KD_KEY,
-                        ElevatorTurningConstants.ELEVATOR_POSITION_PID_KD_DEFAULT),
-                    prefs.getDouble(
-                        ElevatorTurningConstants.ELEVATOR_POSITION_PID_KF_KEY,
-                        ElevatorTurningConstants.ELEVATOR_POSITION_PID_KF_DEFAULT),
-                    ElevatorController.POWERLEVEL_MIN,
-                    ElevatorController.POWERLEVEL_MAX);
-            }
-            else
-            {
-                this.handler = new PIDHandler(
-                    prefs.getDouble(
-                        ElevatorTurningConstants.ELEVATOR_VELOCITY_PID_KP_KEY,
-                        ElevatorTurningConstants.ELEVATOR_VELOCITY_PID_KP_DEFAULT),
-                    prefs.getDouble(
-                        ElevatorTurningConstants.ELEVATOR_VELOCITY_PID_KI_KEY,
-                        ElevatorTurningConstants.ELEVATOR_VELOCITY_PID_KI_DEFAULT),
-                    prefs.getDouble(
-                        ElevatorTurningConstants.ELEVATOR_VELOCITY_PID_KD_KEY,
-                        ElevatorTurningConstants.ELEVATOR_VELOCITY_PID_KD_DEFAULT),
-                    prefs.getDouble(
-                        ElevatorTurningConstants.ELEVATOR_VELOCITY_PID_KF_KEY,
-                        ElevatorTurningConstants.ELEVATOR_VELOCITY_PID_KF_DEFAULT),
-                    ElevatorController.POWERLEVEL_MIN,
-                    ElevatorController.POWERLEVEL_MAX);
-            }
+            this.handler = new PIDHandler(
+                prefs.getDouble(
+                    ElevatorTurningConstants.ELEVATOR_VELOCITY_PID_KP_KEY,
+                    ElevatorTurningConstants.ELEVATOR_VELOCITY_PID_KP_DEFAULT),
+                prefs.getDouble(
+                    ElevatorTurningConstants.ELEVATOR_VELOCITY_PID_KI_KEY,
+                    ElevatorTurningConstants.ELEVATOR_VELOCITY_PID_KI_DEFAULT),
+                prefs.getDouble(
+                    ElevatorTurningConstants.ELEVATOR_VELOCITY_PID_KD_KEY,
+                    ElevatorTurningConstants.ELEVATOR_VELOCITY_PID_KD_DEFAULT),
+                prefs.getDouble(
+                    ElevatorTurningConstants.ELEVATOR_VELOCITY_PID_KF_KEY,
+                    ElevatorTurningConstants.ELEVATOR_VELOCITY_PID_KF_DEFAULT),
+                ElevatorController.POWERLEVEL_MIN,
+                ElevatorController.POWERLEVEL_MAX);
         }
     }
 
@@ -150,5 +140,4 @@ public class ElevatorController implements IController
         double current = this.component.getEncoderVelocity();
         return this.handler.calculate(desired, current);
     }
-
 }

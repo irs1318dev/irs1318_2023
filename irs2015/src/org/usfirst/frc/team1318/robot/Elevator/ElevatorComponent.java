@@ -8,18 +8,18 @@ import edu.wpi.first.wpilibj.Talon;
 
 public class ElevatorComponent
 {
-    private DigitalInput throughBeamSensor;
-    private Talon motor;
-    private Encoder encoder;
+    private final DigitalInput throughBeamSensor;
+    private final Talon motor;
+    private final Encoder encoder;
 
     public ElevatorComponent()
     {
-        motor = new Talon(ElectronicsConstants.ELEVATOR_TALON_CHANNEL);
-        encoder = new Encoder(ElectronicsConstants.ELEVATOR_ENCODER_CHANNELA,
+        this.motor = new Talon(ElectronicsConstants.ELEVATOR_TALON_CHANNEL);
+        this.encoder = new Encoder(ElectronicsConstants.ELEVATOR_ENCODER_CHANNELA,
             ElectronicsConstants.ELEVATOR_ENCODER_CHANNELB);
-        throughBeamSensor = new DigitalInput(ElectronicsConstants.ELEVATOR_DINPUT_CHANNEL);
+        this.throughBeamSensor = new DigitalInput(ElectronicsConstants.ELEVATOR_DINPUT_CHANNEL);
 
-        encoder.setDistancePerPulse(ElevatorTurningConstants.PULSE_DISTANCE);
+        this.encoder.setDistancePerPulse(ElevatorTurningConstants.PULSE_DISTANCE);
     }
 
     /**
@@ -28,18 +28,17 @@ public class ElevatorComponent
      */
     public double getEncoderDistance()
     {
-        return encoder.getDistance();
+        return this.encoder.getDistance();
     }
 
     public double getEncoderVelocity()
     {
-        return encoder.getRate();
+        return this.encoder.getRate();
     }
 
     public void setMotorVelocity(double motorVelocity)
     {
-        motor.set(motorVelocity);
-
+        this.motor.set(motorVelocity);
     }
 
     /**
@@ -48,8 +47,6 @@ public class ElevatorComponent
      */
     public boolean getThroughBeamSensor()
     {
-        return throughBeamSensor.get();
-
+        return this.throughBeamSensor.get();
     }
-
 }
