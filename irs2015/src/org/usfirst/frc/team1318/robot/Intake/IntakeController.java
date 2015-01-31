@@ -13,8 +13,8 @@ import org.usfirst.frc.team1318.robot.Common.IDriver;
 
 public class IntakeController implements IController
 {
-    private IntakeComponent intake;
-    private IDriver operator;
+    private final IntakeComponent intake;
+    private final IDriver operator;
     private static final double INTAKE_SPEED = .7;
 
     public IntakeController(IDriver operator, IntakeComponent intake)
@@ -28,52 +28,50 @@ public class IntakeController implements IController
     public void update()
     {
         //Raises the intake arm
-        if (operator.getIntakeUpButton())
+        if (this.operator.getIntakeUpButton())
         {
-            intake.setIntake(true);
+            this.intake.setIntake(true);
         }
 
         //Lowers the intake arm
-        if (operator.getIntakeDownButton())
+        if (this.operator.getIntakeDownButton())
         {
-            intake.setIntake(false);
+            this.intake.setIntake(false);
         }
 
         //Toggles the right intake arm solenoid
-        if (operator.getIntakeRightToggleOverride())
+        if (this.operator.getIntakeRightToggleOverride())
         {
-            intake.toggleRightIntake();
+            this.intake.toggleRightIntake();
         }
 
         //Toggles the left intake arm solenoid
-        if (operator.getIntakeLeftToggleOverride())
+        if (this.operator.getIntakeLeftToggleOverride())
         {
-            intake.toggleLeftIntake();
+            this.intake.toggleLeftIntake();
         }
 
         //Rotates the intake wheels
-        if (operator.getIntakeForwardButton())
+        if (this.operator.getIntakeForwardButton())
         {
-            intake.setIntakeMotorSpeed(INTAKE_SPEED);
+            this.intake.setIntakeMotorSpeed(IntakeController.INTAKE_SPEED);
         }
 
         //Rotates wheels outwards while held
-        else if (operator.getIntakeBackwardButton())
+        else if (this.operator.getIntakeBackwardButton())
         {
-            intake.setIntakeMotorSpeed(-INTAKE_SPEED);
+            this.intake.setIntakeMotorSpeed(-IntakeController.INTAKE_SPEED);
         }
 
         //Turns off the motors
         else
         {
-            intake.setIntakeMotorSpeed(0.0);
-
+            this.intake.setIntakeMotorSpeed(0.0);
         }
     }
 
     public void stop()
     {
-        intake.setIntakeMotorSpeed(0);
+        this.intake.setIntakeMotorSpeed(0);
     }
-
 }
