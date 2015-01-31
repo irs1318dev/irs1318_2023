@@ -12,18 +12,24 @@ public class ArmComponent
     private DoubleSolenoid tiltLinkage;
     private DoubleSolenoid extendLinkage;
 
-    //logging constants
+    // logging constants
     private static final String TROMBONE_STATE_LOG_KEY = "dt.TromboneState";
     private static final String EXTEND_LINKAGE_STATE_LOG_KEY = "dt.ExtendLinkageState";
     private static final String TILT_LINKAGE_STATE_LOG_KEY = "dt.TiltLinkageState";
 
-    //constructor uses constants for extension and retraction of 3 solenoids that make up the arm 
+    // constructor uses constants for extension and retraction of 3 solenoids that make up the arm 
     public ArmComponent()
     {
-        this.trombone = new DoubleSolenoid(ElectronicsConstants.TROMBONE_SOLANOID_EXTEND, ElectronicsConstants.TROMBONE_SOLANOID_RETRACT);
-        this.tiltLinkage = new DoubleSolenoid(ElectronicsConstants.TILT_LINK_SOLANOID_EXTEND,
+        this.trombone = new DoubleSolenoid(
+            ElectronicsConstants.TROMBONE_SOLANOID_EXTEND,
+            ElectronicsConstants.TROMBONE_SOLANOID_RETRACT);
+
+        this.tiltLinkage = new DoubleSolenoid(
+            ElectronicsConstants.TILT_LINK_SOLANOID_EXTEND,
             ElectronicsConstants.TILT_LINK_SOLANOID_RETRACT);
-        this.extendLinkage = new DoubleSolenoid(ElectronicsConstants.EXTEND_LINK_SOLANOID_EXTEND,
+
+        this.extendLinkage = new DoubleSolenoid(
+            ElectronicsConstants.EXTEND_LINK_SOLANOID_EXTEND,
             ElectronicsConstants.EXTEND_LINK_SOLANOID_RETRACT);
     }
 
@@ -57,10 +63,6 @@ public class ArmComponent
             this.trombone.set(Value.kReverse);
 
         }
-<<<<<<< HEAD
-        SmartDashboardLogger.putBoolean(ArmComponent.TROMBONE_STATE_LOG_KEY, state);
-=======
->>>>>>> branch 'Arm' of https://github.com/irs1318dev/irs1318_2015.git
 
         SmartDashboardLogger.putBoolean(ArmComponent.TROMBONE_STATE_LOG_KEY, state);
     }
@@ -79,10 +81,7 @@ public class ArmComponent
         {
             this.tiltLinkage.set(Value.kReverse);
         }
-<<<<<<< HEAD
-=======
 
->>>>>>> branch 'Arm' of https://github.com/irs1318dev/irs1318_2015.git
         SmartDashboardLogger.putBoolean(ArmComponent.TILT_LINKAGE_STATE_LOG_KEY, state);
     }
 
