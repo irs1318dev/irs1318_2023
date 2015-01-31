@@ -12,7 +12,7 @@ public class SimpleTimedToggleButton extends SimpleToggleButton implements ITime
 {
     private final double toggleDuration;
 
-    private Timer timer;
+    private final Timer timer;
     private Double startTime;
 
     /**

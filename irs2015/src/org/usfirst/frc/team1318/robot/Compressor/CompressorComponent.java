@@ -18,7 +18,7 @@ public class CompressorComponent
 
     //private static final String PSI_LOG_KEY = "cm.psi";
 
-    private Compressor compressor;
+    private final Compressor compressor;
 
     //    private AnalogInput analogPressureSensor;
     //    private DigitalInput digitalPressureSensor;

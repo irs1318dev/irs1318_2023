@@ -36,9 +36,15 @@ public class AutonomousDriver implements IDriver
     private static final String ELEVATOR_HEIGHT_7_STATE_LOG_KEY = "a.elevatorHeight7";
     private static final String ELEVATOR_OVERRIDE_STATE_LOG_KEY = "a.elevatorOverride";
 
-    private Queue<IAutonomousTask> autonomousTasks;
+    //Arm 
+    private static final String ARM_MACRO_STATE_LOG_KEY = "a.armMacroState";
+    private static final String ARM_EXTENDER_STATE_LOG_KEY = "a.armExtenderOverride";
+    private static final String ARM_TILT_STATE_LOG_KEY = "a.armTiltOverride";
+    private static final String ARM_TROMBONE_STATE_LOG_KEY = "a.armTromboneOverride";
+
+    private final Queue<IAutonomousTask> autonomousTasks;
     private IAutonomousTask currentTask;
-    private AutonomousControlData controlData;
+    private final AutonomousControlData controlData;
 
     /**
      * Initializes a new AutonomousDriver
@@ -263,29 +269,33 @@ public class AutonomousDriver implements IDriver
     @Override
     public boolean getArmMacroToggle()
     {
-        // TODO Auto-generated method stub
-        return false;
+        boolean state = this.controlData.getArmMacroState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_MACRO_STATE_LOG_KEY, state);
+        return state;
     }
 
     @Override
     public boolean getArmExtenderToggleOverride()
     {
-        // TODO Auto-generated method stub
-        return false;
+        boolean state = this.controlData.getArmExtenderOverrideState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_EXTENDER_STATE_LOG_KEY, state);
+        return state;
     }
 
     @Override
     public boolean getArmTiltToggleOverride()
     {
-        // TODO Auto-generated method stub
-        return false;
+        boolean state = this.controlData.getArmTiltOverrideState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_TILT_STATE_LOG_KEY, state);
+        return state;
     }
 
     @Override
     public boolean getArmTromboneToggleOverride()
     {
-        // TODO Auto-generated method stub
-        return false;
+        boolean state = this.controlData.getArmTromboneOverrideState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_TROMBONE_STATE_LOG_KEY, state);
+        return state;
     }
 
     //=================================================== Intake ================================================================
