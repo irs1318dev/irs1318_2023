@@ -20,10 +20,10 @@ public class DriveTrainController implements IController
     private static final double POWERLEVEL_MIN = -1.0;
     private static final double POWERLEVEL_MAX = 1.0;
 
-    private IDriver driver;
-    private IDriveTrainComponent component;
+    private final IDriver driver;
+    private final IDriveTrainComponent component;
 
-    private boolean usePID;
+    private final boolean usePID;
     private boolean usePositionalMode;
     private PIDHandler leftPID;
     private PIDHandler rightPID;
@@ -467,8 +467,8 @@ public class DriveTrainController implements IController
      */
     private class PowerSetting
     {
-        private double leftPower;
-        private double rightPower;
+        private final double leftPower;
+        private final double rightPower;
 
         /**
          * Initializes a new PowerSetting

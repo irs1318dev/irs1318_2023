@@ -4,8 +4,8 @@ import org.usfirst.frc.team1318.robot.Autonomous.AutonomousControlData;
 
 public class DriveTimedAutonomousTask extends TimedAutonomousTask
 {
-    private double xVelocity;
-    private double yVelocity;
+    private final double xVelocity;
+    private final double yVelocity;
 
     /**
      * Initializes a new DriveTimedAutonomousTask

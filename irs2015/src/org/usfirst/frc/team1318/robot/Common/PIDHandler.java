@@ -42,7 +42,7 @@ public class PIDHandler
     private double output = 0.0;        // the output we wish to set after our calculation
 
     // other vars
-    private Timer timer;
+    private final Timer timer;
 
     /**
      * This constructor initializes the object and sets constants to affect gain
