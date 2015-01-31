@@ -17,22 +17,33 @@ public class AutonomousControlData
     private boolean driveTrainSimpleMode;
 
     //Elevator 
-    private boolean elevatorMacroState;
-    private boolean elevatorHeight0State;
-    private boolean elevatorHeight1State;
-    private boolean elevatorHeight2State;
-    private boolean elevatorHeight3State;
-    private boolean elevatorHeight4State;
-    private boolean elevatorHeight5State;
-    private boolean elevatorHeight6State;
-    private boolean elevatorHeight7State;
-    private double elevatorOverrideState;
+    private boolean elevatorContainerMacroState;
+    private boolean elevatorSetStateToFloor;
+    private boolean elevatorSetStateToPlatform;
+    private boolean elevatorSetStateToStep;
+    private boolean elevatorMoveTo0Totes;
+    private boolean elevatorMoveTo1Tote;
+    private boolean elevatorMoveTo2Totes;
+    private boolean elevatorMoveTo3Totes;
+    private boolean elevatorPIDToggleState;
+    private boolean elevatorStopState;
+    private boolean elevatorUpState;
+    private boolean elevatorDownState;
 
     //Arm
-    private boolean armMacroState;
+    private boolean armMacroExtendState;
+    private boolean armMacroRetractState;
     private boolean armExtenderOverrideState;
     private boolean armTiltOverrideState;
     private boolean armTromboneOverrideState;
+
+    //Intake 
+    private boolean intakeUpState;
+    private boolean intakeDownState;
+    private boolean intakeRightToggleOverrideState;
+    private boolean intakeLeftToggleOverrideState;
+    private boolean intakeForwardState;
+    private boolean intakeBackwardState;
 
     /**
      * Initializes a new AutonomousControlData
@@ -48,22 +59,33 @@ public class AutonomousControlData
         this.driveTrainPositionMode = false;
 
         //Elevator 
-        this.elevatorMacroState = false;
-        this.elevatorHeight0State = false;
-        this.elevatorHeight1State = false;
-        this.elevatorHeight2State = false;
-        this.elevatorHeight3State = false;
-        this.elevatorHeight4State = false;
-        this.elevatorHeight5State = false;
-        this.elevatorHeight6State = false;
-        this.elevatorHeight7State = false;
-        this.elevatorOverrideState = 0.0;
+        this.elevatorContainerMacroState = false;
+        this.elevatorSetStateToFloor = false;
+        this.elevatorSetStateToPlatform = false;
+        this.elevatorSetStateToStep = false;
+        this.elevatorMoveTo0Totes = false;
+        this.elevatorMoveTo1Tote = false;
+        this.elevatorMoveTo2Totes = false;
+        this.elevatorMoveTo3Totes = false;
+        this.elevatorPIDToggleState = false;
+        this.elevatorStopState = false;
+        this.elevatorUpState = false;
+        this.elevatorDownState = false;
 
         //Arm 
-        this.armMacroState = false;
+        this.armMacroExtendState = false;
+        this.armMacroRetractState = false;
         this.armExtenderOverrideState = false;
         this.armTiltOverrideState = false;
         this.armTromboneOverrideState = false;
+
+        //Intake
+        this.intakeUpState = false;
+        this.intakeDownState = false;
+        this.intakeRightToggleOverrideState = false;
+        this.intakeLeftToggleOverrideState = false;
+        this.intakeForwardState = false;
+        this.intakeBackwardState = false;
     }
 
     public double getDriveTrainXVelocity()
@@ -126,114 +148,144 @@ public class AutonomousControlData
         this.driveTrainPositionMode = driveTrainPositionMode;
     }
 
-    public boolean getElevatorMacroState()
+    public boolean getElevatorContainerMacroState()
     {
-        return this.elevatorMacroState;
+        return this.elevatorContainerMacroState;
     }
 
-    public void setElevatorMacroState(boolean elevatorMacroState)
+    public void setElevatorContainerMacroState(boolean elevatorContainerMacroState)
     {
-        this.elevatorMacroState = elevatorMacroState;
+        this.elevatorContainerMacroState = elevatorContainerMacroState;
     }
 
-    public boolean getElevatorHeight0State()
+    public boolean getElevatorSetStateToFloor()
     {
-        return this.elevatorHeight0State;
+        return this.elevatorSetStateToFloor;
     }
 
-    public void setElevatorHeight0State(boolean elevatorHeight0State)
+    public void setElevatorSetStateToFloor(boolean elevatorSetStateToFloor)
     {
-        this.elevatorHeight0State = elevatorHeight0State;
+        this.elevatorSetStateToFloor = elevatorSetStateToFloor;
     }
 
-    public boolean getElevatorHeight1State()
+    public boolean getElevatorSetStateToPlatform()
     {
-        return this.elevatorHeight1State;
+        return this.elevatorSetStateToPlatform;
     }
 
-    public void setElevatorHeight1State(boolean elevatorHeight1State)
+    public void setElevatorSetStateToPlatform(boolean elevatorSetStateToPlatform)
     {
-        this.elevatorHeight1State = elevatorHeight1State;
+        this.elevatorSetStateToPlatform = elevatorSetStateToPlatform;
     }
 
-    public boolean getElevatorHeight2State()
+    public boolean getElevatorSetStateToStep()
     {
-        return this.elevatorHeight2State;
+        return this.elevatorSetStateToStep;
     }
 
-    public void setElevatorHeight2State(boolean elevatorHeight2State)
+    public void setElevatorSetStateToStep(boolean elevatorSetStateToStep)
     {
-        this.elevatorHeight2State = elevatorHeight2State;
+        this.elevatorSetStateToStep = elevatorSetStateToStep;
     }
 
-    public boolean getElevatorHeight3State()
+    public boolean getElevatorMoveTo0Totes()
     {
-        return this.elevatorHeight3State;
+        return this.elevatorMoveTo0Totes;
     }
 
-    public void setElevatorHeight3State(boolean elevatorHeight3State)
+    public void setElevatorMoveTo0Totes(boolean elevatorMoveTo0Totes)
     {
-        this.elevatorHeight3State = elevatorHeight3State;
+        this.elevatorMoveTo0Totes = elevatorMoveTo0Totes;
     }
 
-    public boolean getElevatorHeight4State()
+    public boolean getElevatorMoveTo1Tote()
     {
-        return this.elevatorHeight4State;
+        return this.elevatorMoveTo1Tote;
     }
 
-    public void setElevatorHeight4State(boolean elevatorHeight4State)
+    public void setElevatorMoveTo1Tote(boolean elevatorMoveTo1Tote)
     {
-        this.elevatorHeight4State = elevatorHeight4State;
+        this.elevatorMoveTo1Tote = elevatorMoveTo1Tote;
     }
 
-    public boolean getElevatorHeight5State()
+    public boolean getElevatorMoveTo2Totes()
     {
-        return this.elevatorHeight5State;
+        return this.elevatorMoveTo2Totes;
     }
 
-    public void setElevatorHeight5State(boolean elevatorHeight5State)
+    public void setElevatorMoveTo2Totes(boolean elevatorMoveTo2Totes)
     {
-        this.elevatorHeight5State = elevatorHeight5State;
+        this.elevatorMoveTo2Totes = elevatorMoveTo2Totes;
     }
 
-    public boolean getElevatorHeight6State()
+    public boolean getElevatorMoveTo3Totes()
     {
-        return this.elevatorHeight6State;
+        return this.elevatorMoveTo3Totes;
     }
 
-    public void setElevatorHeight6State(boolean elevatorHeight6State)
+    public void setElevatorMoveTo3Totes(boolean elevatorMoveTo3Totes)
     {
-        this.elevatorHeight6State = elevatorHeight6State;
+        this.elevatorMoveTo3Totes = elevatorMoveTo3Totes;
     }
 
-    public boolean getElevatorHeight7State()
+    public boolean getElevatorPIDToggleState()
     {
-        return this.elevatorHeight7State;
+        return this.elevatorPIDToggleState;
     }
 
-    public void setElevatorHeight7State(boolean elevatorHeight7State)
+    public void setElevatorPIDToggleState(boolean elevatorPIDToggleState)
     {
-        this.elevatorHeight7State = elevatorHeight7State;
+        this.elevatorPIDToggleState = elevatorPIDToggleState;
     }
 
-    public double getElevatorOverrideState()
+    public boolean getElevatorStopState()
     {
-        return this.elevatorOverrideState;
+        return this.elevatorStopState;
     }
 
-    public void setElevatorOverrideState(double elevatorOverrideState)
+    public void setElevatorStopState(boolean elevatorStopState)
     {
-        this.elevatorOverrideState = elevatorOverrideState;
+        this.elevatorStopState = elevatorStopState;
     }
 
-    public boolean getArmMacroState()
+    public boolean getElevatorUpState()
     {
-        return this.armMacroState;
+        return this.elevatorUpState;
     }
 
-    public void setArmMacroState(boolean armMacroOverrideState)
+    public void setElevatorUpState(boolean elevatorUpState)
     {
-        this.armMacroState = armMacroOverrideState;
+        this.elevatorUpState = elevatorUpState;
+    }
+
+    public boolean getElevatorDownState()
+    {
+        return this.elevatorDownState;
+    }
+
+    public void setElevatorDownState(boolean elevatorDownState)
+    {
+        this.elevatorDownState = elevatorDownState;
+    }
+
+    public boolean getArmMacroExtendState()
+    {
+        return this.armMacroExtendState;
+    }
+
+    public void setArmMacroExtendState(boolean armMacroExtendState)
+    {
+        this.armMacroExtendState = armMacroExtendState;
+    }
+
+    public boolean getArmMacroRetractState()
+    {
+        return this.armMacroRetractState;
+    }
+
+    public void setArmMacroRetractState(boolean armMacroRetractState)
+    {
+        this.armMacroRetractState = armMacroRetractState;
     }
 
     public boolean getArmExtenderOverrideState()
@@ -264,5 +316,65 @@ public class AutonomousControlData
     public void setArmTromboneOverrideState(boolean armTromboneOverrideState)
     {
         this.armTromboneOverrideState = armTromboneOverrideState;
+    }
+
+    public boolean getIntakeUpState()
+    {
+        return this.intakeUpState;
+    }
+
+    public void setIntakeUpState(boolean intakeUpState)
+    {
+        this.intakeUpState = intakeUpState;
+    }
+
+    public boolean getIntakeDownState()
+    {
+        return this.intakeDownState;
+    }
+
+    public void setIntakeDownState(boolean intakeDownState)
+    {
+        this.intakeDownState = intakeDownState;
+    }
+
+    public boolean getIntakeRightToggleOverrideState()
+    {
+        return this.intakeRightToggleOverrideState;
+    }
+
+    public void setIntakeRightToggleOverrideState(boolean intakeRightToggleOverrideState)
+    {
+        this.intakeRightToggleOverrideState = intakeRightToggleOverrideState;
+    }
+
+    public boolean getIntakeLeftToggleOverrideState()
+    {
+        return this.intakeLeftToggleOverrideState;
+    }
+
+    public void setIntakeLeftToggleOverrideState(boolean intakeLeftToggleOverrideState)
+    {
+        this.intakeLeftToggleOverrideState = intakeLeftToggleOverrideState;
+    }
+
+    public boolean getIntakeForwardState()
+    {
+        return this.intakeForwardState;
+    }
+
+    public void setIntakeForwardState(boolean intakeForwardState)
+    {
+        this.intakeForwardState = intakeForwardState;
+    }
+
+    public boolean getIntakeBackwardState()
+    {
+        return this.intakeBackwardState;
+    }
+
+    public void setIntakeBackwardState(boolean intakeBackwardState)
+    {
+        this.intakeBackwardState = intakeBackwardState;
     }
 }
