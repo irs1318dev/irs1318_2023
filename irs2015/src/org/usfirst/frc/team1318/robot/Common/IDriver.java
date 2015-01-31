@@ -59,64 +59,76 @@ public interface IDriver
 
     //=================================================== Elevator ===============================================================
     /**
-     * Get a value indicating whether the robot should start the elevator macro 
+     * Get a value indicating whether the robot should start the macro to flip a container  
      * @return true if start macro, otherwise false  
      */
-    public boolean getElevatorMacroButton();
+    public boolean getElevatorContainerMacroButton();
 
     /**
-     * Get a value indicating whether the elevator should move to the 0 height setting 
-     * @return true if move to 0 height setting, otherwise false
+     * Get a value indicating whether the elevator state should be set to the floor
+     * @return true if set to floor, otherwise false
      */
-    public boolean getElevatorHeight0Button();
+    public boolean getElevatorSetStateToFloorButton();
 
     /**
-     * Get a value indicating whether the elevator should move to the 1 height setting 
-     * @return true if move to 1 height setting, otherwise false
+     * Get a value indicating whether the elevator state should be set to the platform
+     * @return true if set to platform, otherwise false
      */
-    public boolean getElevatorHeight1Button();
+    public boolean getElevatorSetStateToPlatformButton();
 
     /**
-     * Get a value indicating whether the elevator should move to the 2 height setting 
-     * @return true if move to 2 height setting, otherwise false
+     * Get a value indicating whether the elevator state should be set to the step
+     * @return true if set to step, otherwise false
      */
-    public boolean getElevatorHeight2Button();
+    public boolean getElevatorSetStateToStepButton();
 
     /**
-     * Get a value indicating whether the elevator should move to the 3 height setting 
-     * @return true if move to 3 height setting, otherwise false
+     * Get a value indicating whether the elevator should move to the height of 0 totes over the current setting
+     * @return true if move, otherwise false
      */
-    public boolean getElevatorHeight3Button();
+    public boolean getElevatorMoveTo0TotesButton();
 
     /**
-     * Get a value indicating whether the elevator should move to the 4 height setting 
-     * @return true if move to 4 height setting, otherwise false
+     * Get a value indicating whether the elevator should move to the height of 1 tote over the current setting
+     * @return true if move, otherwise false
      */
-    public boolean getElevatorHeight4Button();
+    public boolean getElevatorMoveTo1ToteButton();
 
     /**
-     * Get a value indicating whether the elevator should move to the 5 height setting 
-     * @return true if move to 5 height setting, otherwise false
+     * Get a value indicating whether the elevator should move to the height of 2 totes over the current setting
+     * @return true if move, otherwise false
      */
-    public boolean getElevatorHeight5Button();
+    public boolean getElevatorMoveTo2TotesButton();
 
     /**
-     * Get a value indicating whether the elevator should move to the 6 height setting 
-     * @return true if move to 6 height setting, otherwise false
+     * Get a value indicating whether the elevator should move to the height of 3 totes over the current setting
+     * @return true if move, otherwise false
      */
-    public boolean getElevatorHeight6Button();
+    public boolean getElevatorMoveTo3TotesButton();
 
     /**
-     * Get a value indicating whether the elevator should move to the 7 height setting 
-     * @return true if move to 7 height setting, otherwise false
+     * Get a value indicating whether to toggle the elevator PID
+     * @return true if toggle, otherwise false
      */
-    public boolean getElevatorHeight7Button();
+    public boolean getElevatorPIDToggle();
 
     /**
-     * Get a value indicating the desired speed of the elevator 
-     * @return the desired speed of the elevator 
+     * Get a value indicating whether the elevator should stop 
+     * @return true for stop elevator, otherwise false
      */
-    public double getElevatorOverride();
+    public boolean getStopElevatorButton();
+
+    /**
+     * Get a value indicating whether to move the elevator up 
+     * @return true for move elevator up, otherwise false 
+     */
+    public boolean getElevatorUpButton();
+
+    /**
+     * Get a value indicating whether to move the elevator down 
+     * @return true for move elevator down, otherwise false 
+     */
+    public boolean getElevatorDownButton();
 
     //===================================================== Arm =================================================================
     /**

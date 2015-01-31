@@ -25,16 +25,18 @@ public class UserDriver implements IDriver
     private static final String DRIVETRAIN_SIMPLE_MODE_LOG_KEY = "u.driveSimpleMode";
 
     //Elevator 
-    private static final String ELEVATOR_MACRO_STATE_LOG_KEY = "u.elevatorMacroState";
-    private static final String ELEVATOR_HEIGHT_0_STATE_LOG_KEY = "u.elevatorHeight0";
-    private static final String ELEVATOR_HEIGHT_1_STATE_LOG_KEY = "u.elevatorHeight1";
-    private static final String ELEVATOR_HEIGHT_2_STATE_LOG_KEY = "u.elevatorHeight2";
-    private static final String ELEVATOR_HEIGHT_3_STATE_LOG_KEY = "u.elevatorHeight3";
-    private static final String ELEVATOR_HEIGHT_4_STATE_LOG_KEY = "u.elevatorHeight4";
-    private static final String ELEVATOR_HEIGHT_5_STATE_LOG_KEY = "u.elevatorHeight5";
-    private static final String ELEVATOR_HEIGHT_6_STATE_LOG_KEY = "u.elevatorHeight6";
-    private static final String ELEVATOR_HEIGHT_7_STATE_LOG_KEY = "u.elevatorHeight7";
-    private static final String ELEVATOR_OVERRIDE_STATE_LOG_KEY = "u.elevatorOverride";
+    private static final String ELEVATOR_CONTAINER_MACRO_STATE_LOG_KEY = "u.elevatorContainerMacroState";
+    private static final String ELEVATOR_SET_STATE_TO_FLOOR_LOG_KEY = "u.elevatorSetStateToFloor";
+    private static final String ELEVATOR_SET_STATE_TO_PLATFORM_LOG_KEY = "u.elevatorSetStateToPlatform";
+    private static final String ELEVATOR_SET_STATE_TO_STEP_LOG_KEY = "u.elevatorSetStateToStep";
+    private static final String ELEVATOR_MOVE_TO_0_TOTES_LOG_KEY = "u.elevatorMoveTo0Totes";
+    private static final String ELEVATOR_MOVE_TO_1_TOTE_STATE_LOG_KEY = "u.elevatorMoveTo1Tote";
+    private static final String ELEVATOR_MOVE_TO_2_TOTES_STATE_LOG_KEY = "u.elevatorMoveTo2Totes";
+    private static final String ELEVATOR_MOVE_TO_3_TOTES_STATE_LOG_KEY = "u.elevatorMoveTo3Totes";
+    private static final String ELEVATOR_PID_TOGGLE_STATE_LOG_KEY = "u.elevatorPIDToggleState";
+    private static final String ELEVATOR_STOP_LOG_KEY = "u.elevatorStop";
+    private static final String ELEVATOR_UP_STATE_LOG_KEY = "u.elevatorUp";
+    private static final String ELEVATOR_DOWN_STATE_LOG_KEY = "u.elevatorDown";
 
     //Arm 
     private static final String ARM_MACRO_EXTEND_STATE_LOG_KEY = "u.armMacroExtendState";
@@ -68,6 +70,20 @@ public class UserDriver implements IDriver
     private SimpleToggleButton intakeRightToggleOverride;
     private SimpleToggleButton intakeLeftToggleOverride;
 
+    //Elevator 
+    private SimpleButton elevatorContainerMacroButton;
+    private SimpleButton elevatorSetStateToFloorButton;
+    private SimpleButton elevatorSetStateToPlatformButton;
+    private SimpleButton elevatorSetStateToStepButton;
+    private SimpleButton elevatorMoveTo0Totes;
+    private SimpleButton elevatorMoveTo1Tote;
+    private SimpleButton elevatorMoveTo2Totes;
+    private SimpleButton elevatorMoveTo3Totes;
+    private SimpleToggleButton elevatorPIDToggle;
+    private SimpleButton elevatorStop;
+    private SimpleButton elevatorUp;
+    private SimpleButton elevatorDown;
+
     /**
      * Initializes a new UserDriver
      */
@@ -90,6 +106,20 @@ public class UserDriver implements IDriver
         this.intakeDownButton = new SimpleButton();
         this.intakeRightToggleOverride = new SimpleToggleButton();
         this.intakeLeftToggleOverride = new SimpleToggleButton();
+
+        //Elevator
+        this.elevatorContainerMacroButton = new SimpleButton();
+        this.elevatorSetStateToFloorButton = new SimpleButton();
+        this.elevatorSetStateToPlatformButton = new SimpleButton();
+        this.elevatorSetStateToStepButton = new SimpleButton();
+        this.elevatorMoveTo0Totes = new SimpleButton();
+        this.elevatorMoveTo1Tote = new SimpleButton();
+        this.elevatorMoveTo2Totes = new SimpleButton();
+        this.elevatorMoveTo3Totes = new SimpleButton();
+        this.elevatorPIDToggle = new SimpleToggleButton();
+        this.elevatorStop = new SimpleButton();
+        this.elevatorUp = new SimpleButton();
+        this.elevatorDown = new SimpleButton();
     }
 
     /**
@@ -112,6 +142,24 @@ public class UserDriver implements IDriver
         this.intakeDownButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.INTAKE_DOWN_BUTTON));
         this.intakeRightToggleOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.INTAKE_RIGHT_TOGGLE_OVERRIDE));
         this.intakeLeftToggleOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.INTAKE_LEFT_TOGGLE_OVERRIDE));
+
+        //Elevator
+        this.elevatorContainerMacroButton.updateState(this.joystick
+            .getRawButton(JoystickButtonConstants.ELEVATOR_CONTAINER_MACRO_BUTTON));
+        this.elevatorSetStateToFloorButton.updateState(this.joystick
+            .getRawButton(JoystickButtonConstants.ELEVATOR_SET_STAE_TO_FLOOR_BUTTON));
+        this.elevatorSetStateToPlatformButton.updateState(this.joystick
+            .getRawButton(JoystickButtonConstants.ELEVATOR_SET_STATE_TO_PLATFORM_BUTTON));
+        this.elevatorSetStateToStepButton.updateState(this.joystick
+            .getRawButton(JoystickButtonConstants.ELEVATOR_SET_STATE_TO_STEP_BUTTON));
+        this.elevatorMoveTo0Totes.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_0_TOTES_BUTTON));
+        this.elevatorMoveTo1Tote.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_1_TOTE_BUTTON));
+        this.elevatorMoveTo2Totes.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_2_TOTES_BUTTON));
+        this.elevatorMoveTo3Totes.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_3_TOTES_BUTTON));
+        this.elevatorPIDToggle.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_PID_TOGGLE));
+        this.elevatorStop.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_STOP_BUTTON));
+        this.elevatorUp.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_UP_BUTTON));
+        this.elevatorDown.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_DOWN_BUTTON));
 
     }
 
@@ -206,83 +254,99 @@ public class UserDriver implements IDriver
     //=================================================== Elevator ===============================================================
 
     @Override
-    public boolean getElevatorMacroButton()
+    public boolean getElevatorContainerMacroButton()
     {
-        boolean state = this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_MACRO_BUTTON);
-        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_MACRO_STATE_LOG_KEY, state);
+        boolean state = this.elevatorContainerMacroButton.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_CONTAINER_MACRO_STATE_LOG_KEY, state);
         return state;
     }
 
     @Override
-    public boolean getElevatorHeight0Button()
+    public boolean getElevatorSetStateToFloorButton()
     {
-        boolean state = this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_HEIGHT_0_BUTTON);
-        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_HEIGHT_0_STATE_LOG_KEY, state);
+        boolean state = this.elevatorSetStateToFloorButton.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_SET_STATE_TO_FLOOR_LOG_KEY, state);
         return state;
     }
 
     @Override
-    public boolean getElevatorHeight1Button()
+    public boolean getElevatorSetStateToPlatformButton()
     {
-        boolean state = this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_HEIGHT_1_BUTTON);
-        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_HEIGHT_1_STATE_LOG_KEY, state);
+        boolean state = this.elevatorSetStateToPlatformButton.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_SET_STATE_TO_PLATFORM_LOG_KEY, state);
         return state;
     }
 
     @Override
-    public boolean getElevatorHeight2Button()
+    public boolean getElevatorSetStateToStepButton()
     {
-        boolean state = this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_HEIGHT_2_BUTTON);
-        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_HEIGHT_2_STATE_LOG_KEY, state);
+        boolean state = this.elevatorSetStateToStepButton.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_SET_STATE_TO_STEP_LOG_KEY, state);
         return state;
     }
 
     @Override
-    public boolean getElevatorHeight3Button()
+    public boolean getElevatorMoveTo0TotesButton()
     {
-        boolean state = this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_HEIGHT_3_BUTTON);
-        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_HEIGHT_3_STATE_LOG_KEY, state);
+        boolean state = this.elevatorMoveTo0Totes.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_MOVE_TO_0_TOTES_LOG_KEY, state);
         return state;
     }
 
     @Override
-    public boolean getElevatorHeight4Button()
+    public boolean getElevatorMoveTo1ToteButton()
     {
-        boolean state = this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_HEIGHT_4_BUTTON);
-        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_HEIGHT_4_STATE_LOG_KEY, state);
+        boolean state = this.elevatorMoveTo1Tote.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_MOVE_TO_1_TOTE_STATE_LOG_KEY, state);
         return state;
     }
 
     @Override
-    public boolean getElevatorHeight5Button()
+    public boolean getElevatorMoveTo2TotesButton()
     {
-        boolean state = this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_HEIGHT_5_BUTTON);
-        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_HEIGHT_5_STATE_LOG_KEY, state);
+        boolean state = this.elevatorMoveTo2Totes.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_MOVE_TO_2_TOTES_STATE_LOG_KEY, state);
         return state;
     }
 
     @Override
-    public boolean getElevatorHeight6Button()
+    public boolean getElevatorMoveTo3TotesButton()
     {
-        boolean state = this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_HEIGHT_6_BUTTON);
-        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_HEIGHT_6_STATE_LOG_KEY, state);
+        boolean state = this.elevatorMoveTo3Totes.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_MOVE_TO_3_TOTES_STATE_LOG_KEY, state);
         return state;
     }
 
     @Override
-    public boolean getElevatorHeight7Button()
+    public boolean getElevatorPIDToggle()
     {
-        boolean state = this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_HEIGHT_7_BUTTON);
-        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_HEIGHT_7_STATE_LOG_KEY, state);
+        boolean state = this.elevatorPIDToggle.isToggled();
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_PID_TOGGLE_STATE_LOG_KEY, state);
         return state;
     }
 
     @Override
-    public double getElevatorOverride()
+    public boolean getStopElevatorButton()
     {
-        double speed = this.joystick.getZ();
-        SmartDashboardLogger.putNumber(UserDriver.ELEVATOR_OVERRIDE_STATE_LOG_KEY, speed);
-        return speed;
+        boolean mode = this.elevatorStop.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_STOP_LOG_KEY, mode);
+        return mode;
+    }
+
+    @Override
+    public boolean getElevatorUpButton()
+    {
+        boolean mode = this.elevatorUp.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_UP_STATE_LOG_KEY, mode);
+        return mode;
+    }
+
+    @Override
+    public boolean getElevatorDownButton()
+    {
+        boolean mode = this.elevatorDown.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_DOWN_STATE_LOG_KEY, mode);
+        return mode;
     }
 
     //===================================================== Arm =================================================================
