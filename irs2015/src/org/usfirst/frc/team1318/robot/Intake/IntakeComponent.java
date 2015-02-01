@@ -17,21 +17,25 @@ import edu.wpi.first.wpilibj.Talon;
  * */
 public class IntakeComponent
 {
-    private final Talon motorLeft;
-    private final Talon motorRight;
+    private final Talon leftTalon;
+    private final Talon rightTalon;
 
     private final DoubleSolenoid intakeDoubleSolenoidLeft;
     private final DoubleSolenoid intakeDoubleSolenoidRight;
 
     // SmartDashboard keys
-    public static final String INTAKEMOTORSPEED = "i.motorspeed";
-    public static final String LEFTINTAKEARMDIRECTION = "i.leftarmdirection";
-    public static final String RIGHTINTAKEARMDIRECTION = "i.rightarmdirection";
+    public static final String INTAKE_MOTOR_SPEED = "i.motorSpeed";
+    public static final String LEFT_INTAKE_ARM_DIRECTION = "i.leftArmDirection";
+    public static final String RIGHT_INTAKE_ARM_DIRECTION = "i.rightArmDirection";
+
+    private boolean solenoidLeftState;
+    private boolean solenoidRightState;
+    private double intakeMotorVelocity;
 
     public IntakeComponent()
     {
-        this.motorLeft = new Talon(ElectronicsConstants.INTAKE_LEFT_TALON_CHANNEL);
-        this.motorRight = new Talon(ElectronicsConstants.INTAKE_RIGHT_TALON_CHANNEL);
+        this.leftTalon = new Talon(ElectronicsConstants.INTAKE_LEFT_TALON_CHANNEL);
+        this.rightTalon = new Talon(ElectronicsConstants.INTAKE_RIGHT_TALON_CHANNEL);
 
         this.intakeDoubleSolenoidLeft = new DoubleSolenoid(
             ElectronicsConstants.INTAKE_LEFT_ARM_CHANNEL_A,
@@ -46,50 +50,34 @@ public class IntakeComponent
      * sets both solenoids on the intake to extend or retract
      * @param shouldForward if true, both pistons will extend if false both will retract
     */
-    public void setIntake(boolean shouldForward)
+
+    public void setIntake(boolean leftForward, boolean rightForward)
     {
-        if (shouldForward)
+        if (leftForward)
         {
             this.intakeDoubleSolenoidLeft.set(Value.kForward);
-            this.intakeDoubleSolenoidRight.set(Value.kForward);
-            SmartDashboardLogger.putString(LEFTINTAKEARMDIRECTION, intakeDoubleSolenoidLeft.get().toString());
-            SmartDashboardLogger.putString(RIGHTINTAKEARMDIRECTION, intakeDoubleSolenoidRight.get().toString());
+            solenoidLeftState = true;
+            SmartDashboardLogger.putBoolean(LEFT_INTAKE_ARM_DIRECTION, solenoidLeftState);
         }
         else
         {
             this.intakeDoubleSolenoidLeft.set(Value.kReverse);
-            this.intakeDoubleSolenoidRight.set(Value.kReverse);
-            SmartDashboardLogger.putString(LEFTINTAKEARMDIRECTION, intakeDoubleSolenoidLeft.get().toString());
-            SmartDashboardLogger.putString(RIGHTINTAKEARMDIRECTION, intakeDoubleSolenoidRight.get().toString());
+            solenoidLeftState = false;
+            SmartDashboardLogger.putBoolean(LEFT_INTAKE_ARM_DIRECTION, solenoidLeftState);
         }
-    }
 
-    /**
-     * Toggles the left intake solenoid
-     * If the piston is extending, it will be switched to retracting
-     * If the piston is off or retracting, it will be switched to extending
-    */
-    public void toggleLeftIntake()
-    {
-        this.intakeDoubleSolenoidLeft.set(
-            intakeDoubleSolenoidLeft.get() == DoubleSolenoid.Value.kForward ?
-                DoubleSolenoid.Value.kReverse : DoubleSolenoid.Value.kForward);
-        // not sure if DoubleSolenoidValue.toString() returns an understandable result
-        SmartDashboardLogger.putString(LEFTINTAKEARMDIRECTION, intakeDoubleSolenoidLeft.get().toString());
-    }
-
-    /**
-     * Toggles the right intake solenoid
-     * If the piston is extending, it will be switched to retracting
-     * If the piston is off or retracting, it will be switched to extending
-    */
-    public void toggleRightIntake()
-    {
-        this.intakeDoubleSolenoidRight.set(
-            intakeDoubleSolenoidRight.get() == DoubleSolenoid.Value.kForward ?
-                DoubleSolenoid.Value.kReverse : DoubleSolenoid.Value.kForward);
-        // not sure if DoubleSolenoidValue.toString() returns an understandable result
-        SmartDashboardLogger.putString(RIGHTINTAKEARMDIRECTION, intakeDoubleSolenoidRight.get().toString());
+        if (rightForward)
+        {
+            this.intakeDoubleSolenoidRight.set(Value.kForward);
+            solenoidRightState = true;
+            SmartDashboardLogger.putBoolean(RIGHT_INTAKE_ARM_DIRECTION, solenoidRightState);
+        }
+        else
+        {
+            this.intakeDoubleSolenoidRight.set(Value.kReverse);
+            solenoidRightState = false;
+            SmartDashboardLogger.putBoolean(RIGHT_INTAKE_ARM_DIRECTION, solenoidRightState);
+        }
     }
 
     /**
@@ -99,17 +87,9 @@ public class IntakeComponent
     */
     public void setIntakeMotorSpeed(double velocity)
     {
-        this.motorLeft.set(velocity);
-        this.motorRight.set(velocity);
-        SmartDashboardLogger.putNumber(INTAKEMOTORSPEED, motorLeft.get());
-    }
-
-    // stops both solenoids, leaving the pistons unmoving
-    public void stopSolenoids()
-    {
-        intakeDoubleSolenoidLeft.set(Value.kOff);
-        intakeDoubleSolenoidRight.set(Value.kOff);
-        SmartDashboardLogger.putString(LEFTINTAKEARMDIRECTION, intakeDoubleSolenoidLeft.get().toString());
-        SmartDashboardLogger.putString(RIGHTINTAKEARMDIRECTION, intakeDoubleSolenoidRight.get().toString());
+        this.intakeMotorVelocity = velocity;
+        this.leftTalon.set(intakeMotorVelocity);
+        this.rightTalon.set(intakeMotorVelocity);
+        SmartDashboardLogger.putNumber(INTAKE_MOTOR_SPEED, intakeMotorVelocity);
     }
 }
