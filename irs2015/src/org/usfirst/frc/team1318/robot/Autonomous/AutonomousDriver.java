@@ -33,7 +33,8 @@ public class AutonomousDriver implements IDriver
     private static final String ELEVATOR_MOVE_TO_1_TOTE_LOG_KEY = "a.elevatorHeight4";
     private static final String ELEVATOR_MOVE_TO_2_TOTES_LOG_KEY = "a.elevatorHeight5";
     private static final String ELEVATOR_MOVE_TO_3_TOTES_LOG_KEY = "a.elevatorHeight6";
-    private static final String ELEVATOR_PID_TOGGLE_STATE_LOG_KEY = "a.elevatorPIDToggle";
+    private static final String ELEVATOR_PID_ON_STATE_LOG_KEY = "a.elevatorPIDOnState";
+    private static final String ELEVATOR_PID_OFF_STATE_LOG_KEY = "a.elevatorPIDOffState";
     private static final String ELEVATOR_STOP_STATE_LOG_KEY = "a.elevatorStop";
     private static final String ELEVATOR_UP_STATE_LOG_KEY = "a.elevatorUp";
     private static final String ELEVATOR_DOWN_STATE_LOG_KEY = "a.elevatorDown";
@@ -41,15 +42,20 @@ public class AutonomousDriver implements IDriver
     //Arm 
     private static final String ARM_MACRO_EXTEND_STATE_LOG_KEY = "a.armMacroExtendState";
     private static final String ARM_MACRO_RETRACT_STATE_LOG_KEY = "a.armMacroRetractState";
-    private static final String ARM_EXTENDER_STATE_LOG_KEY = "a.armExtenderOverride";
-    private static final String ARM_TILT_STATE_LOG_KEY = "a.armTiltOverride";
-    private static final String ARM_TROMBONE_STATE_LOG_KEY = "a.armTromboneOverride";
+    private static final String ARM_TILT_EXTEND_OVERRIDE_LOG_KEY = "a.armTiltExtendOverride";
+    private static final String ARM_TILT_RETRACT_OVERRIDE_LOG_KEY = "a.armTiltRetractOverride";
+    private static final String ARM_EXTENDER_EXTEND_OVERRIDE_LOG_KEY = "a.armExtenderExtendOverride";
+    private static final String ARM_EXTENDER_RETRACT_OVERRIDE_LOG_KEY = "a.armExtenderRetractOverride";
+    private static final String ARM_TROMBONE_EXTEND_OVERRIDE_LOG_KEY = "a.armTromboneExtendOverride";
+    private static final String ARM_TROMBONE_RETRACT_OVERRIDE_LOG_KEY = "a.armTromboneRetractOverride";
 
     //Intake 
     private static final String INTAKE_UP_STATE_KEY = "a.intakeUpState";
     private static final String INTAKE_DOWN_STATE_KEY = "a.intakeDownState";
-    private static final String INTAKE_RIGHT_TOGGLE_OVERRIDE_STATE_KEY = "a.intakeRightToggleOverrideState";
-    private static final String INTAKE_LEFT_TOGGLE_OVERRIDE_STATE_KEY = "a.intakeLeftToggleOverrideState";
+    private static final String INTAKE_RIGHT_EXTEND_OVERRIDE_STATE_KEY = "a.intakeRightExtendOverrideState";
+    private static final String INTAKE_RIGHT_RETRACT_OVERRIDE_STATE_KEY = "a.intakeRightRetractOverrideState";
+    private static final String INTAKE_LEFT_EXTEND_OVERRIDE_STATE_KEY = "a.intakeLeftExtendOverrideState";
+    private static final String INTAKE_LEFT_RETRACT_OVERRIDE_STATE_KEY = "a.intakeLeftRetractOverrideState";
     private static final String INTAKE_FORWARD_STATE_KEY = "a.intakeForwardStateKey";
     private static final String INTAKE_BACKWARD_STATE_KEY = "a.intakeBackwardStateKey";
 
@@ -260,10 +266,18 @@ public class AutonomousDriver implements IDriver
     }
 
     @Override
-    public boolean getElevatorPIDToggle()
+    public boolean getElevatorPIDOn()
     {
-        boolean state = this.controlData.getElevatorPIDToggleState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_PID_TOGGLE_STATE_LOG_KEY, state);
+        boolean state = this.controlData.getElevatorPIDOnState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_PID_ON_STATE_LOG_KEY, state);
+        return state;
+    }
+
+    @Override
+    public boolean getElevatorPIDOff()
+    {
+        boolean state = this.controlData.getElevatorPIDOffState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_PID_OFF_STATE_LOG_KEY, state);
         return state;
     }
 
@@ -310,26 +324,50 @@ public class AutonomousDriver implements IDriver
     }
 
     @Override
-    public boolean getArmExtenderToggleOverride()
+    public boolean getArmExtenderExtendOverride()
     {
-        boolean state = this.controlData.getArmExtenderOverrideState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_EXTENDER_STATE_LOG_KEY, state);
+        boolean state = this.controlData.getArmExtenderExtendOverrideState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_EXTENDER_EXTEND_OVERRIDE_LOG_KEY, state);
         return state;
     }
 
     @Override
-    public boolean getArmTiltToggleOverride()
+    public boolean getArmExtenderRetractOverride()
     {
-        boolean state = this.controlData.getArmTiltOverrideState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_TILT_STATE_LOG_KEY, state);
+        boolean state = this.controlData.getArmExtenderRetractOverrideState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_EXTENDER_RETRACT_OVERRIDE_LOG_KEY, state);
         return state;
     }
 
     @Override
-    public boolean getArmTromboneToggleOverride()
+    public boolean getArmTiltExtendOverride()
     {
-        boolean state = this.controlData.getArmTromboneOverrideState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_TROMBONE_STATE_LOG_KEY, state);
+        boolean state = this.controlData.getArmTiltExtendOverrideState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_TILT_EXTEND_OVERRIDE_LOG_KEY, state);
+        return state;
+    }
+
+    @Override
+    public boolean getArmTiltRetractOverride()
+    {
+        boolean state = this.controlData.getArmTiltRetractOverrideState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_TILT_RETRACT_OVERRIDE_LOG_KEY, state);
+        return state;
+    }
+
+    @Override
+    public boolean getArmTromboneExtendOverride()
+    {
+        boolean state = this.controlData.getArmTromboneExtendOverrideState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_TROMBONE_EXTEND_OVERRIDE_LOG_KEY, state);
+        return state;
+    }
+
+    @Override
+    public boolean getArmTromboneRetractOverride()
+    {
+        boolean state = this.controlData.getArmTromboneRetractOverrideState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_TROMBONE_RETRACT_OVERRIDE_LOG_KEY, state);
         return state;
     }
 
@@ -352,18 +390,34 @@ public class AutonomousDriver implements IDriver
     }
 
     @Override
-    public boolean getIntakeRightToggleOverride()
+    public boolean getIntakeRightExtendOverride()
     {
-        boolean state = this.controlData.getIntakeRightToggleOverrideState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_RIGHT_TOGGLE_OVERRIDE_STATE_KEY, state);
+        boolean state = this.controlData.getIntakeRightExtendOverrideState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_RIGHT_EXTEND_OVERRIDE_STATE_KEY, state);
         return state;
     }
 
     @Override
-    public boolean getIntakeLeftToggleOverride()
+    public boolean getIntakeRightRetractOverride()
     {
-        boolean state = this.controlData.getIntakeLeftToggleOverrideState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_LEFT_TOGGLE_OVERRIDE_STATE_KEY, state);
+        boolean state = this.controlData.getIntakeRightRetractOverrideState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_RIGHT_RETRACT_OVERRIDE_STATE_KEY, state);
+        return state;
+    }
+
+    @Override
+    public boolean getIntakeLeftExtendOverride()
+    {
+        boolean state = this.controlData.getIntakeLeftExtendOverrideState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_LEFT_EXTEND_OVERRIDE_STATE_KEY, state);
+        return state;
+    }
+
+    @Override
+    public boolean getIntakeLeftRetractOverride()
+    {
+        boolean state = this.controlData.getIntakeLeftRetractOverrideState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_LEFT_RETRACT_OVERRIDE_STATE_KEY, state);
         return state;
     }
 
