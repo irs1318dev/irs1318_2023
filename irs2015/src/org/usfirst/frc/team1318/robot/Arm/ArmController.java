@@ -7,12 +7,12 @@ import org.usfirst.frc.team1318.robot.Common.IDriver;
 
 public class ArmController implements IController
 {
-    private enum armStates
+    private enum ArmStates
     {
-        STAGE0, STAGE1, STAGE2, STAGE3
+        STAGE_0, STAGE_1, STAGE_2, STAGE_3
     };
 
-    private armStates armstate;
+    private ArmStates armstate;
 
     private Date timer;
     private long startTime;
@@ -21,48 +21,85 @@ public class ArmController implements IController
     private ArmComponent component;
     private IDriver driver;
 
+    private boolean tromboneState;
+    private boolean tiltState;
+    private boolean extenderState;
+
     public ArmController(ArmComponent component, IDriver driver)
     {
-        this.armstate = armStates.STAGE0;
+        this.armstate = ArmStates.STAGE_0;
         this.component = component;
         this.driver = driver;
 
+        tromboneState = false;
+        tiltState = false;
+        extenderState = false;
     }
 
     @Override
     public void update()
     {
-        this.component.setExtendLinkageSolenoidState(this.driver.getArmExtenderToggleOverride());
-
-        this.component.setTiltLinkageSolenoidState(this.driver.getArmTiltToggleOverride());
-
-        this.component.setTromboneSolenoidState(this.driver.getArmTromboneToggleOverride());
 
         switch (this.armstate)
         {
-            case STAGE0:
-                if (this.driver.getArmExtendMacroToggle())
-                    this.armstate = armStates.STAGE1;
+            case STAGE_0:
+                if (this.driver.getArmMacroExtendButton())
+                {
+                    this.armstate = ArmStates.STAGE_1;
+                }
                 break;
-            case STAGE1:
+            case STAGE_1:
                 this.component.setExtendLinkageSolenoidState(false);
                 this.component.setTromboneSolenoidState(true);
 
                 this.startTime = this.timer.getTime();
-                this.armstate = armStates.STAGE2;
+                this.armstate = ArmStates.STAGE_2;
 
                 break;
-            case STAGE2:
+            case STAGE_2:
                 if (this.timer.getTime() - this.startTime >= this.EXTEND_WAIT_TIME)
-                    this.armstate = armStates.STAGE3;
+                {
+                    this.armstate = ArmStates.STAGE_3;
+                }
                 break;
-            case STAGE3:
+            case STAGE_3:
                 this.component.setTiltLinkageSolenoidState(true);
-                this.armstate = armStates.STAGE0;
+                this.armstate = ArmStates.STAGE_0;
                 break;
             default:
                 break;
         }
+
+        if (this.driver.getArmExtenderExtendOverride())
+        {
+            this.extenderState = true;
+        }
+        if (this.driver.getArmExtenderRetractOverride())
+        {
+            this.extenderState = false;
+        }
+
+        if (this.driver.getArmTiltExtendOverride())
+        {
+            this.tiltState = true;
+        }
+        if (this.driver.getArmTiltRetractOverride())
+        {
+            this.tiltState = false;
+        }
+
+        if (this.driver.getArmTromboneExtendOverride())
+        {
+            this.tromboneState = true;
+        }
+        if (this.driver.getArmTromboneRetractOverride())
+        {
+            this.tromboneState = false;
+        }
+
+        this.component.setExtendLinkageSolenoidState(extenderState);
+        this.component.setTiltLinkageSolenoidState(tiltState);
+        this.component.setTromboneSolenoidState(tromboneState);
     }
 
     /*//toggle state of ArmExtender solenoid if button pressed

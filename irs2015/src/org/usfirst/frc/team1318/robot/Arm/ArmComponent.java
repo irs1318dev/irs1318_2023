@@ -33,20 +33,20 @@ public class ArmComponent
             ElectronicsConstants.EXTEND_LINK_SOLANOID_RETRACT);
     }
 
-    public DoubleSolenoid getTrombone()
-    {
-        return this.trombone;
-    }
-
-    public DoubleSolenoid getTiltLinkage()
-    {
-        return this.tiltLinkage;
-    }
-
-    public DoubleSolenoid getExtendLinkage()
-    {
-        return this.extendLinkage;
-    }
+    //        public DoubleSolenoid getTrombone()
+    //        {
+    //            return this.trombone;
+    //        }
+    //    
+    //        public DoubleSolenoid getTiltLinkage()
+    //        {
+    //            return this.tiltLinkage;
+    //        }
+    //    
+    //        public DoubleSolenoid getExtendLinkage()
+    //        {
+    //            return this.extendLinkage;
+    //        }
 
     /**
      * sets state of Trombone_Solenoid
