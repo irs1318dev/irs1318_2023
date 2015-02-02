@@ -33,7 +33,8 @@ public class UserDriver implements IDriver
     private static final String ELEVATOR_MOVE_TO_1_TOTE_STATE_LOG_KEY = "u.elevatorMoveTo1Tote";
     private static final String ELEVATOR_MOVE_TO_2_TOTES_STATE_LOG_KEY = "u.elevatorMoveTo2Totes";
     private static final String ELEVATOR_MOVE_TO_3_TOTES_STATE_LOG_KEY = "u.elevatorMoveTo3Totes";
-    private static final String ELEVATOR_PID_TOGGLE_STATE_LOG_KEY = "u.elevatorPIDToggleState";
+    private static final String ELEVATOR_PID_ON_STATE_LOG_KEY = "u.elevatorPIDOnState";
+    private static final String ELEVATOR_PID_OFF_STATE_LOG_KEY = "u.elevatorPIDOffState";
     private static final String ELEVATOR_STOP_LOG_KEY = "u.elevatorStop";
     private static final String ELEVATOR_UP_STATE_LOG_KEY = "u.elevatorUp";
     private static final String ELEVATOR_DOWN_STATE_LOG_KEY = "u.elevatorDown";
@@ -41,15 +42,20 @@ public class UserDriver implements IDriver
     //Arm 
     private static final String ARM_MACRO_EXTEND_STATE_LOG_KEY = "u.armMacroExtendState";
     private static final String ARM_MACRO_RETRACT_STATE_LOG_KEY = "u.armMacroRetractState";
-    private static final String ARM_TILT_OVERRIDE_LOG_KEY = "u.armTiltOverride";
-    private static final String ARM_EXTENDER_OVERRIDE_LOG_KEY = "u.armExtenderOverride";
-    private static final String ARM_TROMBONE_OVERRIDE_LOG_KEY = "u.armTromboneOverride";
+    private static final String ARM_TILT_EXTEND_OVERRIDE_LOG_KEY = "u.armTiltExtendOverride";
+    private static final String ARM_TILT_RETRACT_OVERRIDE_LOG_KEY = "u.armTiltRetractOverride";
+    private static final String ARM_EXTENDER_EXTEND_OVERRIDE_LOG_KEY = "u.armExtenderExtendOverride";
+    private static final String ARM_EXTENDER_RETRACT_OVERRIDE_LOG_KEY = "u.armExtenderRetractOverride";
+    private static final String ARM_TROMBONE_EXTEND_OVERRIDE_LOG_KEY = "u.armTromboneExtendOverride";
+    private static final String ARM_TROMBONE_RETRACT_OVERRIDE_LOG_KEY = "u.armTromboneRetractOverride";
 
     //Intake 
     private static final String INTAKE_UP_STATE_KEY = "u.intakeUpState";
     private static final String INTAKE_DOWN_STATE_KEY = "u.intakeDownState";
-    private static final String INTAKE_RIGHT_TOGGLE_OVERRIDE_STATE_KEY = "u.intakeRightToggleOverrideState";
-    private static final String INTAKE_LEFT_TOGGLE_OVERRIDE_STATE_KEY = "u.intakeLeftToggleOverrideState";
+    private static final String INTAKE_RIGHT_EXTEND_OVERRIDE_STATE_KEY = "u.intakeRightExtendOverrideState";
+    private static final String INTAKE_RIGHT_RETRACT_OVERRIDE_STATE_KEY = "u.intakeRightRetractOverrideState";
+    private static final String INTAKE_LEFT_EXTEND_OVERRIDE_STATE_KEY = "u.intakeLeftExtendOverrideState";
+    private static final String INTAKE_LEFT_RETRACT_OVERRIDE_STATE_KEY = "u.intakeLeftRetractOverrideState";
     private static final String INTAKE_FORWARD_STATE_KEY = "u.intakeForwardStateKey";
     private static final String INTAKE_BACKWARD_STATE_KEY = "u.intakeBackwardStateKey";
 
@@ -62,15 +68,20 @@ public class UserDriver implements IDriver
     //Arm
     private SimpleButton armMacroExtendButton;
     private SimpleButton armMacroRetractButton;
-    private SimpleToggleButton armExtenderToggleOverride;
-    private SimpleToggleButton armTiltToggleOverride;
-    private SimpleToggleButton armTromboneToggleOverride;
+    private SimpleButton armExtenderExtendOverride;
+    private SimpleButton armExtenderRetractOverride;
+    private SimpleButton armTiltExtendOverride;
+    private SimpleButton armTiltRetractOverride;
+    private SimpleButton armTromboneExtendOverride;
+    private SimpleButton armTromboneRetractOverride;
 
     //Intake
     private SimpleButton intakeUpButton;
     private SimpleButton intakeDownButton;
-    private SimpleToggleButton intakeRightToggleOverride;
-    private SimpleToggleButton intakeLeftToggleOverride;
+    private SimpleButton intakeRightExtendOverride;
+    private SimpleButton intakeRightRetractOverride;
+    private SimpleButton intakeLeftExtendOverride;
+    private SimpleButton intakeLeftRetractOverride;
 
     //Elevator 
     private SimpleButton elevatorContainerMacroButton;
@@ -81,7 +92,8 @@ public class UserDriver implements IDriver
     private SimpleButton elevatorMoveTo1Tote;
     private SimpleButton elevatorMoveTo2Totes;
     private SimpleButton elevatorMoveTo3Totes;
-    private SimpleToggleButton elevatorPIDToggle;
+    private SimpleButton elevatorPIDOn;
+    private SimpleButton elevatorPIDOff;
     private SimpleButton elevatorStop;
     private SimpleButton elevatorUp;
     private SimpleButton elevatorDown;
@@ -99,15 +111,20 @@ public class UserDriver implements IDriver
         //Arm
         this.armMacroExtendButton = new SimpleButton();
         this.armMacroRetractButton = new SimpleButton();
-        this.armExtenderToggleOverride = new SimpleToggleButton();
-        this.armTiltToggleOverride = new SimpleToggleButton();
-        this.armTromboneToggleOverride = new SimpleToggleButton();
+        this.armExtenderExtendOverride = new SimpleButton();
+        this.armExtenderRetractOverride = new SimpleButton();
+        this.armTiltExtendOverride = new SimpleButton();
+        this.armTiltRetractOverride = new SimpleButton();
+        this.armTromboneExtendOverride = new SimpleButton();
+        this.armTromboneRetractOverride = new SimpleButton();
 
         //Intake
         this.intakeUpButton = new SimpleButton();
         this.intakeDownButton = new SimpleButton();
-        this.intakeRightToggleOverride = new SimpleToggleButton();
-        this.intakeLeftToggleOverride = new SimpleToggleButton();
+        this.intakeRightExtendOverride = new SimpleButton();
+        this.intakeRightRetractOverride = new SimpleButton();
+        this.intakeLeftExtendOverride = new SimpleButton();
+        this.intakeLeftRetractOverride = new SimpleButton();
 
         //Elevator
         this.elevatorContainerMacroButton = new SimpleButton();
@@ -118,7 +135,8 @@ public class UserDriver implements IDriver
         this.elevatorMoveTo1Tote = new SimpleButton();
         this.elevatorMoveTo2Totes = new SimpleButton();
         this.elevatorMoveTo3Totes = new SimpleButton();
-        this.elevatorPIDToggle = new SimpleToggleButton();
+        this.elevatorPIDOn = new SimpleButton();
+        this.elevatorPIDOff = new SimpleButton();
         this.elevatorStop = new SimpleButton();
         this.elevatorUp = new SimpleButton();
         this.elevatorDown = new SimpleButton();
@@ -137,15 +155,20 @@ public class UserDriver implements IDriver
         //Arm 
         this.armMacroExtendButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_MACRO_EXTEND_BUTTON));
         this.armMacroRetractButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_MACRO_RETRACT_BUTTON));
-        this.armExtenderToggleOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_EXTENDER_BUTTON));
-        this.armTiltToggleOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_TILT_BUTTON));
-        this.armTromboneToggleOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_TROMBONE_BUTTON));
+        this.armExtenderExtendOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_EXTENDER_EXTEND_BUTTON));
+        this.armExtenderRetractOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_EXTENDER_RETRACT_BUTTON));
+        this.armTiltExtendOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_TILT_EXTEND_BUTTON));
+        this.armTiltRetractOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_TILT_RETRACT_BUTTON));
+        this.armTromboneExtendOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_TROMBONE_EXTEND_BUTTON));
+        this.armTromboneRetractOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_TROMBONE_RETRACT_BUTTON));
 
         //Intake
         this.intakeUpButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.INTAKE_UP_BUTTON));
         this.intakeDownButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.INTAKE_DOWN_BUTTON));
-        this.intakeRightToggleOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.INTAKE_RIGHT_TOGGLE_OVERRIDE));
-        this.intakeLeftToggleOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.INTAKE_LEFT_TOGGLE_OVERRIDE));
+        this.intakeRightExtendOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.INTAKE_RIGHT_EXTEND_OVERRIDE));
+        this.intakeRightRetractOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.INTAKE_RIGHT_RETRACT_OVERRIDE));
+        this.intakeLeftExtendOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.INTAKE_LEFT_EXTEND_OVERRIDE));
+        this.intakeLeftRetractOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.INTAKE_LEFT_RETRACT_OVERRIDE));
 
         //Elevator
         this.elevatorContainerMacroButton.updateState(this.joystick
@@ -160,7 +183,8 @@ public class UserDriver implements IDriver
         this.elevatorMoveTo1Tote.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_1_TOTE_BUTTON));
         this.elevatorMoveTo2Totes.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_2_TOTES_BUTTON));
         this.elevatorMoveTo3Totes.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_3_TOTES_BUTTON));
-        this.elevatorPIDToggle.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_PID_TOGGLE));
+        this.elevatorPIDOn.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_PID_ON));
+        this.elevatorPIDOff.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_PID_OFF));
         this.elevatorStop.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_STOP_BUTTON));
         this.elevatorUp.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_UP_BUTTON));
         this.elevatorDown.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_DOWN_BUTTON));
@@ -322,10 +346,18 @@ public class UserDriver implements IDriver
     }
 
     @Override
-    public boolean getElevatorPIDToggle()
+    public boolean getElevatorPIDOn()
     {
-        boolean state = this.elevatorPIDToggle.isToggled();
-        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_PID_TOGGLE_STATE_LOG_KEY, state);
+        boolean state = this.elevatorPIDOn.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_PID_ON_STATE_LOG_KEY, state);
+        return state;
+    }
+
+    @Override
+    public boolean getElevatorPIDOff()
+    {
+        boolean state = this.elevatorPIDOff.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_PID_OFF_STATE_LOG_KEY, state);
         return state;
     }
 
@@ -372,26 +404,50 @@ public class UserDriver implements IDriver
     }
 
     @Override
-    public boolean getArmExtenderToggleOverride()
+    public boolean getArmExtenderExtendOverride()
     {
-        boolean mode = this.armExtenderToggleOverride.isToggled();
-        SmartDashboardLogger.putBoolean(UserDriver.ARM_EXTENDER_OVERRIDE_LOG_KEY, mode);
+        boolean mode = this.armExtenderExtendOverride.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.ARM_EXTENDER_EXTEND_OVERRIDE_LOG_KEY, mode);
         return mode;
     }
 
     @Override
-    public boolean getArmTiltToggleOverride()
+    public boolean getArmExtenderRetractOverride()
     {
-        boolean mode = this.armTiltToggleOverride.isToggled();
-        SmartDashboardLogger.putBoolean(UserDriver.ARM_TILT_OVERRIDE_LOG_KEY, mode);
+        boolean mode = this.armExtenderRetractOverride.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.ARM_EXTENDER_RETRACT_OVERRIDE_LOG_KEY, mode);
         return mode;
     }
 
     @Override
-    public boolean getArmTromboneToggleOverride()
+    public boolean getArmTiltExtendOverride()
     {
-        boolean mode = this.armTromboneToggleOverride.isToggled();
-        SmartDashboardLogger.putBoolean(UserDriver.ARM_TROMBONE_OVERRIDE_LOG_KEY, mode);
+        boolean mode = this.armTiltExtendOverride.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.ARM_TILT_EXTEND_OVERRIDE_LOG_KEY, mode);
+        return mode;
+    }
+
+    @Override
+    public boolean getArmTiltRetractOverride()
+    {
+        boolean mode = this.armTiltExtendOverride.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.ARM_TILT_RETRACT_OVERRIDE_LOG_KEY, mode);
+        return mode;
+    }
+
+    @Override
+    public boolean getArmTromboneExtendOverride()
+    {
+        boolean mode = this.armTromboneExtendOverride.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.ARM_TROMBONE_EXTEND_OVERRIDE_LOG_KEY, mode);
+        return mode;
+    }
+
+    @Override
+    public boolean getArmTromboneRetractOverride()
+    {
+        boolean mode = this.armTromboneRetractOverride.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.ARM_TROMBONE_RETRACT_OVERRIDE_LOG_KEY, mode);
         return mode;
     }
 
@@ -414,18 +470,34 @@ public class UserDriver implements IDriver
     }
 
     @Override
-    public boolean getIntakeRightToggleOverride()
+    public boolean getIntakeRightExtendOverride()
     {
-        boolean mode = this.intakeRightToggleOverride.isToggled();
-        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_RIGHT_TOGGLE_OVERRIDE_STATE_KEY, mode);
+        boolean mode = this.intakeRightExtendOverride.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_RIGHT_EXTEND_OVERRIDE_STATE_KEY, mode);
         return mode;
     }
 
     @Override
-    public boolean getIntakeLeftToggleOverride()
+    public boolean getIntakeRightRetractOverride()
     {
-        boolean mode = this.intakeLeftToggleOverride.isToggled();
-        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_LEFT_TOGGLE_OVERRIDE_STATE_KEY, mode);
+        boolean mode = this.intakeRightRetractOverride.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_RIGHT_RETRACT_OVERRIDE_STATE_KEY, mode);
+        return mode;
+    }
+
+    @Override
+    public boolean getIntakeLeftExtendOverride()
+    {
+        boolean mode = this.intakeLeftExtendOverride.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_LEFT_EXTEND_OVERRIDE_STATE_KEY, mode);
+        return mode;
+    }
+
+    @Override
+    public boolean getIntakeLeftRetractOverride()
+    {
+        boolean mode = this.intakeLeftRetractOverride.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_LEFT_RETRACT_OVERRIDE_STATE_KEY, mode);
         return mode;
     }
 

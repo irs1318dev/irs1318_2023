@@ -45,7 +45,8 @@ public class JoystickButtonConstants
     public static final int ELEVATOR_MOVE_TO_1_TOTE_BUTTON = -1;
     public static final int ELEVATOR_MOVE_TO_2_TOTES_BUTTON = -1;
     public static final int ELEVATOR_MOVE_TO_3_TOTES_BUTTON = -1;
-    public static final int ELEVATOR_PID_TOGGLE = -1;
+    public static final int ELEVATOR_PID_ON = -1;
+    public static final int ELEVATOR_PID_OFF = -1;
     public static final int ELEVATOR_STOP_BUTTON = -1;
     public static final int ELEVATOR_UP_BUTTON = -1;
     public static final int ELEVATOR_DOWN_BUTTON = -1;
@@ -53,15 +54,20 @@ public class JoystickButtonConstants
     //Arm
     public static final int ARM_MACRO_EXTEND_BUTTON = -1;
     public static final int ARM_MACRO_RETRACT_BUTTON = -1;
-    public static final int ARM_EXTENDER_BUTTON = -1;
-    public static final int ARM_TILT_BUTTON = -1;
-    public static final int ARM_TROMBONE_BUTTON = -1;
+    public static final int ARM_EXTENDER_EXTEND_BUTTON = -1;
+    public static final int ARM_EXTENDER_RETRACT_BUTTON = -1;
+    public static final int ARM_TILT_EXTEND_BUTTON = -1;
+    public static final int ARM_TILT_RETRACT_BUTTON = -1;
+    public static final int ARM_TROMBONE_EXTEND_BUTTON = -1;
+    public static final int ARM_TROMBONE_RETRACT_BUTTON = -1;
 
     //Intake 
     public static final int INTAKE_UP_BUTTON = -1;
     public static final int INTAKE_DOWN_BUTTON = -1;
-    public static final int INTAKE_RIGHT_TOGGLE_OVERRIDE = -1;
-    public static final int INTAKE_LEFT_TOGGLE_OVERRIDE = -1;
+    public static final int INTAKE_RIGHT_EXTEND_OVERRIDE = -1;
+    public static final int INTAKE_RIGHT_RETRACT_OVERRIDE = -1;
+    public static final int INTAKE_LEFT_EXTEND_OVERRIDE = -1;
+    public static final int INTAKE_LEFT_RETRACT_OVERRIDE = -1;
     public static final int INTAKE_FORWARD_BUTTON = -1;
     public static final int INTAKE_BACKWARD_BUTTON = -1;
 }
