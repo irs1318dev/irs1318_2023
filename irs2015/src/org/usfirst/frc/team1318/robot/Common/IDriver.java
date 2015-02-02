@@ -107,10 +107,16 @@ public interface IDriver
     public boolean getElevatorMoveTo3TotesButton();
 
     /**
-     * Get a value indicating whether to toggle the elevator PID
-     * @return true if toggle, otherwise false
+     * Get a value indicating whether to turn on elevator PID
+     * @return true if turn on, otherwise false
      */
-    public boolean getElevatorPIDToggle();
+    public boolean getElevatorPIDOn();
+
+    /**
+     * Get a value indicating whether to turn off elevator PID
+     * @return true if turn off, otherwise false
+     */
+    public boolean getElevatorPIDOff();
 
     /**
      * Get a value indicating whether the elevator should stop 
@@ -138,28 +144,46 @@ public interface IDriver
     public boolean getArmMacroExtendButton();
 
     /**
-     * Get a value indicating whether to run the macro to retract teh whole arm state 
+     * Get a value indicating whether to run the macro to retract the whole arm state 
      * @return true for run macro, otherwise false 
      */
     public boolean getArmMacroRetractButton();
 
     /**
-     * Get a value indicating whether to toggle the arm extender state 
-     * @return true for toggle state, otherwise false 
+     * Get a value indicating whether to extend the arm extender solenoid 
+     * @return true for extend, otherwise false 
      */
-    public boolean getArmExtenderToggleOverride();
+    public boolean getArmExtenderExtendOverride();
 
     /**
-     * Get a value indicating whether to toggle the arm tilt state 
-     * @return true for toggle state, otherwise false 
+     * Get a value indicating whether to retract the arm extender solenoid 
+     * @return true for retract, otherwise false
      */
-    public boolean getArmTiltToggleOverride();
+    public boolean getArmExtenderRetractOverride();
 
     /**
-     * Get a value indicating whether to toggle the arm trombone state 
-     * @return true for toggle state, otherwise false 
+     * Get a value indicating whether to extend the arm tilt solenoid 
+     * @return true for extend, otherwise false 
      */
-    public boolean getArmTromboneToggleOverride();
+    public boolean getArmTiltExtendOverride();
+
+    /**
+     * Get a value indicating whether to retract the arm tilt solenoid 
+     * @return true for retract, otherwise false 
+     */
+    public boolean getArmTiltRetractOverride();
+
+    /**
+     * Get a value indicating whether to extend the arm trombone solenoid 
+     * @return true for extend, otherwise false 
+     */
+    public boolean getArmTromboneExtendOverride();
+
+    /**
+     * Get a value indicating whether to retract the arm trombone solenoid 
+     * @return true for retract, otherwise false 
+     */
+    public boolean getArmTromboneRetractOverride();
 
     //=================================================== Intake ================================================================
     /**
@@ -175,16 +199,28 @@ public interface IDriver
     public boolean getIntakeDownButton();
 
     /**
-     * Get a value indicating whether to switch the state of the right side of the intake 
-     * @return true for toggle, otherwise false 
+     * Get a value indicating whether to extend the right intake solenoid 
+     * @return true for extend, otherwise false 
      */
-    public boolean getIntakeRightToggleOverride();
+    public boolean getIntakeRightExtendOverride();
 
     /**
-     * Get a value indicating whether to switch the state of the left side of the intake 
-     * @return true for toggle, otherwise false 
+     * Get a value indicating whether to retract the right intake solenoid 
+     * @return true for retract, otherwise false 
      */
-    public boolean getIntakeLeftToggleOverride();
+    public boolean getIntakeRightRetractOverride();
+
+    /**
+     * Get a value indicating whether to extend the left intake solenoid
+     * @return true for extend, otherwise false 
+     */
+    public boolean getIntakeLeftExtendOverride();
+
+    /**
+     * Get a value indicating whether to retract the left intake solenoid
+     * @return true for retract, otherwise false 
+     */
+    public boolean getIntakeLeftRetractOverride();
 
     /**
      * Get a value indicating whether to move the intake wheels forward 

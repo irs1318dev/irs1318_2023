@@ -25,7 +25,8 @@ public class AutonomousControlData
     private boolean elevatorMoveTo1Tote;
     private boolean elevatorMoveTo2Totes;
     private boolean elevatorMoveTo3Totes;
-    private boolean elevatorPIDToggleState;
+    private boolean elevatorPIDOnState;
+    private boolean elevatorPIDOffState;
     private boolean elevatorStopState;
     private boolean elevatorUpState;
     private boolean elevatorDownState;
@@ -33,15 +34,20 @@ public class AutonomousControlData
     //Arm
     private boolean armMacroExtendState;
     private boolean armMacroRetractState;
-    private boolean armExtenderOverrideState;
-    private boolean armTiltOverrideState;
-    private boolean armTromboneOverrideState;
+    private boolean armExtenderExtendOverrideState;
+    private boolean armExtenderRetractOverrideState;
+    private boolean armTiltExtendOverrideState;
+    private boolean armTiltRetractOverrideState;
+    private boolean armTromboneExtendOverrideState;
+    private boolean armTromboneRetractOverrideState;
 
     //Intake 
     private boolean intakeUpState;
     private boolean intakeDownState;
-    private boolean intakeRightToggleOverrideState;
-    private boolean intakeLeftToggleOverrideState;
+    private boolean intakeRightExtendOverrideState;
+    private boolean intakeRightRetractOverrideState;
+    private boolean intakeLeftExtendOverrideState;
+    private boolean intakeLeftRetractOverrideState;
     private boolean intakeForwardState;
     private boolean intakeBackwardState;
 
@@ -67,7 +73,8 @@ public class AutonomousControlData
         this.elevatorMoveTo1Tote = false;
         this.elevatorMoveTo2Totes = false;
         this.elevatorMoveTo3Totes = false;
-        this.elevatorPIDToggleState = false;
+        this.elevatorPIDOnState = false;
+        this.elevatorPIDOffState = false;
         this.elevatorStopState = false;
         this.elevatorUpState = false;
         this.elevatorDownState = false;
@@ -75,15 +82,20 @@ public class AutonomousControlData
         //Arm 
         this.armMacroExtendState = false;
         this.armMacroRetractState = false;
-        this.armExtenderOverrideState = false;
-        this.armTiltOverrideState = false;
-        this.armTromboneOverrideState = false;
+        this.armExtenderExtendOverrideState = false;
+        this.armExtenderRetractOverrideState = false;
+        this.armTiltExtendOverrideState = false;
+        this.armTiltRetractOverrideState = false;
+        this.armTromboneExtendOverrideState = false;
+        this.armTromboneRetractOverrideState = false;
 
         //Intake
         this.intakeUpState = false;
         this.intakeDownState = false;
-        this.intakeRightToggleOverrideState = false;
-        this.intakeLeftToggleOverrideState = false;
+        this.intakeRightExtendOverrideState = false;
+        this.intakeRightRetractOverrideState = false;
+        this.intakeLeftExtendOverrideState = false;
+        this.intakeLeftRetractOverrideState = false;
         this.intakeForwardState = false;
         this.intakeBackwardState = false;
     }
@@ -228,14 +240,24 @@ public class AutonomousControlData
         this.elevatorMoveTo3Totes = elevatorMoveTo3Totes;
     }
 
-    public boolean getElevatorPIDToggleState()
+    public boolean getElevatorPIDOnState()
     {
-        return this.elevatorPIDToggleState;
+        return this.elevatorPIDOnState;
     }
 
-    public void setElevatorPIDToggleState(boolean elevatorPIDToggleState)
+    public void setElevatorPIDOnState(boolean elevatorPIDOnState)
     {
-        this.elevatorPIDToggleState = elevatorPIDToggleState;
+        this.elevatorPIDOnState = elevatorPIDOnState;
+    }
+
+    public boolean getElevatorPIDOffState()
+    {
+        return this.elevatorPIDOffState;
+    }
+
+    public void setElevatorPIDOffState(boolean elevatorPIDOffState)
+    {
+        this.elevatorPIDOffState = elevatorPIDOffState;
     }
 
     public boolean getElevatorStopState()
@@ -288,34 +310,64 @@ public class AutonomousControlData
         this.armMacroRetractState = armMacroRetractState;
     }
 
-    public boolean getArmExtenderOverrideState()
+    public boolean getArmExtenderExtendOverrideState()
     {
-        return this.armExtenderOverrideState;
+        return this.armExtenderExtendOverrideState;
     }
 
-    public void setArmExtenderOverrideState(boolean armElevatorOverrideState)
+    public void setArmExtenderExtendOverrideState(boolean armElevatorExtendOverrideState)
     {
-        this.armExtenderOverrideState = armElevatorOverrideState;
+        this.armExtenderExtendOverrideState = armElevatorExtendOverrideState;
     }
 
-    public boolean getArmTiltOverrideState()
+    public boolean getArmExtenderRetractOverrideState()
     {
-        return this.armTiltOverrideState;
+        return this.armExtenderRetractOverrideState;
     }
 
-    public void setArmTiltOverrideState(boolean armTiltOverrideState)
+    public void setArmExtenderRetractOverrideState(boolean armElevatorRetractOverrideState)
     {
-        this.armTiltOverrideState = armTiltOverrideState;
+        this.armExtenderRetractOverrideState = armElevatorRetractOverrideState;
     }
 
-    public boolean getArmTromboneOverrideState()
+    public boolean getArmTiltExtendOverrideState()
     {
-        return this.armTromboneOverrideState;
+        return this.armTiltExtendOverrideState;
     }
 
-    public void setArmTromboneOverrideState(boolean armTromboneOverrideState)
+    public void setArmTiltExtendOverrideState(boolean armTiltExtendOverrideState)
     {
-        this.armTromboneOverrideState = armTromboneOverrideState;
+        this.armTiltExtendOverrideState = armTiltExtendOverrideState;
+    }
+
+    public boolean getArmTiltRetractOverrideState()
+    {
+        return this.armTiltRetractOverrideState;
+    }
+
+    public void setArmTiltRetractOverrideState(boolean armTiltRetractOverrideState)
+    {
+        this.armTiltRetractOverrideState = armTiltRetractOverrideState;
+    }
+
+    public boolean getArmTromboneExtendOverrideState()
+    {
+        return this.armTromboneExtendOverrideState;
+    }
+
+    public void setArmTromboneExtendOverrideState(boolean armTromboneExtendOverrideState)
+    {
+        this.armTromboneExtendOverrideState = armTromboneExtendOverrideState;
+    }
+
+    public boolean getArmTromboneRetractOverrideState()
+    {
+        return this.armTromboneExtendOverrideState;
+    }
+
+    public void setArmTromboneRetractOverrideState(boolean armTromboneRetractOverrideState)
+    {
+        this.armTromboneRetractOverrideState = armTromboneRetractOverrideState;
     }
 
     public boolean getIntakeUpState()
@@ -338,24 +390,44 @@ public class AutonomousControlData
         this.intakeDownState = intakeDownState;
     }
 
-    public boolean getIntakeRightToggleOverrideState()
+    public boolean getIntakeRightExtendOverrideState()
     {
-        return this.intakeRightToggleOverrideState;
+        return this.intakeRightExtendOverrideState;
     }
 
-    public void setIntakeRightToggleOverrideState(boolean intakeRightToggleOverrideState)
+    public void setIntakeRightExtendOverrideState(boolean intakeRightExtendOverrideState)
     {
-        this.intakeRightToggleOverrideState = intakeRightToggleOverrideState;
+        this.intakeRightExtendOverrideState = intakeRightExtendOverrideState;
     }
 
-    public boolean getIntakeLeftToggleOverrideState()
+    public boolean getIntakeRightRetractOverrideState()
     {
-        return this.intakeLeftToggleOverrideState;
+        return this.intakeRightRetractOverrideState;
     }
 
-    public void setIntakeLeftToggleOverrideState(boolean intakeLeftToggleOverrideState)
+    public void setIntakeRightRetractOverrideState(boolean intakeRightRetractOverrideState)
     {
-        this.intakeLeftToggleOverrideState = intakeLeftToggleOverrideState;
+        this.intakeRightRetractOverrideState = intakeRightRetractOverrideState;
+    }
+
+    public boolean getIntakeLeftExtendOverrideState()
+    {
+        return this.intakeLeftExtendOverrideState;
+    }
+
+    public void setIntakeLeftExtendOverrideState(boolean intakeLeftExtendOverrideState)
+    {
+        this.intakeLeftExtendOverrideState = intakeLeftExtendOverrideState;
+    }
+
+    public boolean getIntakeLeftRetractOverrideState()
+    {
+        return this.intakeLeftRetractOverrideState;
+    }
+
+    public void setIntakeLeftRetractOverrideState(boolean intakeLeftRetractOverrideState)
+    {
+        this.intakeLeftRetractOverrideState = intakeLeftRetractOverrideState;
     }
 
     public boolean getIntakeForwardState()
