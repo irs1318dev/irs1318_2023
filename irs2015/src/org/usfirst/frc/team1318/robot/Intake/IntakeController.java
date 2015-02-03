@@ -14,7 +14,7 @@ import org.usfirst.frc.team1318.robot.Common.IDriver;
 public class IntakeController implements IController
 {
     private final IntakeComponent intake;
-    private final IDriver operator;
+    private final IDriver driver;
     private static final double INTAKE_SPEED = .7;
     private static final int MOTOR_FORWARD = 1;
     private static final int MOTOR_STOP = 0;
@@ -26,20 +26,20 @@ public class IntakeController implements IController
     private boolean solenoidRightState;
     private int motorState;
 
-    public IntakeController(IDriver operator, IntakeComponent intake)
+    public IntakeController(IDriver driver, IntakeComponent intake)
     {
         this.intake = intake;
-        this.operator = operator;
+        this.driver = driver;
     }
 
     public void update()
     {
         // gets joystick input and translates it into wanted motor state
-        if (this.operator.getIntakeForwardButton())
+        if (this.driver.getIntakeForwardButton())
         {
             motorState = MOTOR_FORWARD;
         }
-        else if (this.operator.getIntakeBackwardButton())
+        else if (this.driver.getIntakeBackwardButton())
         {
             motorState = MOTOR_REVERSE;
         }
@@ -49,25 +49,33 @@ public class IntakeController implements IController
         }
 
         // gets joystick input and translates it into wanted solenoid state
-        if (this.operator.getIntakeUpButton())
+        if (this.driver.getIntakeUpButton())
         {
             this.solenoidLeftState = true;
             this.solenoidRightState = true;
         }
-        else if (this.operator.getIntakeDownButton())
+        if (this.driver.getIntakeDownButton())
         {
             this.solenoidLeftState = false;
             this.solenoidRightState = false;
         }
 
-        if (this.operator.getIntakeLeftToggleOverride())
+        if (this.driver.getIntakeLeftExtendOverride())
         {
-            this.solenoidLeftState = !this.solenoidLeftState;
+            this.solenoidLeftState = true;
+        }
+        if (this.driver.getIntakeLeftRetractOverride())
+        {
+            this.solenoidLeftState = false;
         }
 
-        if (this.operator.getIntakeRightToggleOverride())
+        if (this.driver.getIntakeRightExtendOverride())
         {
-            this.solenoidRightState = !this.solenoidRightState;
+            this.solenoidRightState = true;
+        }
+        if (this.driver.getIntakeRightRetractOverride())
+        {
+            this.solenoidRightState = false;
         }
 
         // sets IntakeComponent using solenoid and motor states
