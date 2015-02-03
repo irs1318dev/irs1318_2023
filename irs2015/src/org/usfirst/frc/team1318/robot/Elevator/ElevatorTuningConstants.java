@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1318.robot.Elevator;
 
-public class ElevatorTurningConstants
+public class ElevatorTuningConstants
 {
     // Velocity PID (right)
     public static final String ELEVATOR_VELOCITY_PID_KP_KEY = "ELEVATOR_VELOCITY_PID_KP";

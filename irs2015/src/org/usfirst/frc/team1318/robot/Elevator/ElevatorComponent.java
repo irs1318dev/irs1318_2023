@@ -15,11 +15,14 @@ public class ElevatorComponent
     public ElevatorComponent()
     {
         this.motor = new Talon(ElectronicsConstants.ELEVATOR_TALON_CHANNEL);
-        this.encoder = new Encoder(ElectronicsConstants.ELEVATOR_ENCODER_CHANNELA,
+
+        this.encoder = new Encoder(
+            ElectronicsConstants.ELEVATOR_ENCODER_CHANNELA,
             ElectronicsConstants.ELEVATOR_ENCODER_CHANNELB);
+
         this.throughBeamSensor = new DigitalInput(ElectronicsConstants.ELEVATOR_DINPUT_CHANNEL);
 
-        this.encoder.setDistancePerPulse(ElevatorTurningConstants.PULSE_DISTANCE);
+        this.encoder.setDistancePerPulse(ElevatorTuningConstants.PULSE_DISTANCE);
     }
 
     /**
@@ -36,9 +39,9 @@ public class ElevatorComponent
         return this.encoder.getRate();
     }
 
-    public void setMotorVelocity(double motorVelocity)
+    public void setMotorPowerLevel(double powerLevel)
     {
-        this.motor.set(motorVelocity);
+        this.motor.set(powerLevel);
     }
 
     /**
