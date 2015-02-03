@@ -65,6 +65,7 @@ public class ElevatorController implements IController
         // handle enabling/disabling PID (enabling PID takes precedence)
         if (this.driver.getElevatorPIDOn())
         {
+            // create PID handler if we are changing modes...
             if (!this.usePID)
             {
                 this.usePID = true;
@@ -73,6 +74,7 @@ public class ElevatorController implements IController
         }
         else if (this.driver.getElevatorPIDOff())
         {
+            // remove PID handler if we are changing modes...
             if (this.usePID)
             {
                 this.usePID = false;
@@ -87,6 +89,7 @@ public class ElevatorController implements IController
             // if usePID is true, calculate velocity using PID.
             if (this.usePID)
             {
+                // recreate PID handler if we are changing modes...
                 if (!this.useVelocityPID)
                 {
                     this.useVelocityPID = true;
@@ -105,6 +108,7 @@ public class ElevatorController implements IController
             // if usePID is true, calculate velocity using PID.
             if (this.usePID)
             {
+                // recreate PID handler if we are changing modes...
                 if (!this.useVelocityPID)
                 {
                     this.useVelocityPID = true;
