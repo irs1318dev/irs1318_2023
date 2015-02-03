@@ -27,6 +27,9 @@ public class IntakeController implements IController
     {
         this.intake = intake;
         this.operator = operator;
+        motorSpeed = 0;
+        solenoidLeftState = false;
+        solenoidRightState = false;
     }
 
     public void update()
