@@ -28,8 +28,6 @@ public class IntakeComponent
     public static final String LEFT_INTAKE_ARM_DIRECTION = "i.leftArmDirection";
     public static final String RIGHT_INTAKE_ARM_DIRECTION = "i.rightArmDirection";
 
-    private double intakeMotorVelocity;
-
     public IntakeComponent()
     {
         this.leftTalon = new Talon(ElectronicsConstants.INTAKE_LEFT_TALON_CHANNEL);
@@ -46,7 +44,8 @@ public class IntakeComponent
 
     /**
      * sets both solenoids on the intake to extend or retract
-     * @param shouldForward if true, both pistons will extend if false both will retract
+     * @param leftForward if true the left piston will extend, 
+     * if false the left piston will retract
     */
 
     public void setLeftIntake(boolean leftForward)
@@ -62,6 +61,12 @@ public class IntakeComponent
             SmartDashboardLogger.putBoolean(LEFT_INTAKE_ARM_DIRECTION, !leftForward);
         }
     }
+
+    /**
+     * sets both solenoids on the intake to extend or retract
+     * @param rightForward if true the right piston will extend, 
+     * if false the right piston will retract
+    */
 
     public void setRightIntake(boolean rightForward)
     {
@@ -79,14 +84,14 @@ public class IntakeComponent
 
     /**
      * sets the intake motors speed
-     * @param velocity to set the motors to,
+     * @param double velocity to set the motors to,
      * values < 0 are inwards, values > 0 forwards, 0 motor off
+     * range [-1,1]
     */
     public void setIntakeMotorSpeed(double velocity)
     {
-        this.intakeMotorVelocity = velocity;
-        this.leftTalon.set(intakeMotorVelocity);
-        this.rightTalon.set(intakeMotorVelocity);
-        SmartDashboardLogger.putNumber(INTAKE_MOTOR_SPEED, intakeMotorVelocity);
+        this.leftTalon.set(velocity);
+        this.rightTalon.set(velocity);
+        SmartDashboardLogger.putNumber(INTAKE_MOTOR_SPEED, velocity);
     }
 }
