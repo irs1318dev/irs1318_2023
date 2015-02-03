@@ -14,73 +14,71 @@ import org.usfirst.frc.team1318.robot.Common.IDriver;
 public class IntakeController implements IController
 {
     private final IntakeComponent intake;
-    private final IDriver driver;
+    private final IDriver operator;
     private static final double INTAKE_SPEED = .7;
-    private static final int MOTOR_FORWARD = 1;
-    private static final int MOTOR_STOP = 0;
-    private static final int MOTOR_REVERSE = -1;
+    private double motorSpeed;
 
     // state variables
     // true = outward(motor)/extending(piston), false = inward/retracting
     private boolean solenoidLeftState;
     private boolean solenoidRightState;
-    private int motorState;
 
-    public IntakeController(IDriver driver, IntakeComponent intake)
+    public IntakeController(IDriver operator, IntakeComponent intake)
     {
         this.intake = intake;
-        this.driver = driver;
+        this.operator = operator;
     }
 
     public void update()
     {
         // gets joystick input and translates it into wanted motor state
-        if (this.driver.getIntakeForwardButton())
+        if (this.operator.getIntakeForwardButton())
         {
-            motorState = MOTOR_FORWARD;
+            motorSpeed = INTAKE_SPEED;
         }
-        else if (this.driver.getIntakeBackwardButton())
+        else if (this.operator.getIntakeBackwardButton())
         {
-            motorState = MOTOR_REVERSE;
+            motorSpeed = -INTAKE_SPEED;
         }
         else
         {
-            motorState = MOTOR_STOP;
+            motorSpeed = 0;
         }
 
         // gets joystick input and translates it into wanted solenoid state
-        if (this.driver.getIntakeUpButton())
+        if (this.operator.getIntakeUpButton())
         {
             this.solenoidLeftState = true;
             this.solenoidRightState = true;
         }
-        if (this.driver.getIntakeDownButton())
+        if (this.operator.getIntakeDownButton())
         {
             this.solenoidLeftState = false;
             this.solenoidRightState = false;
         }
 
-        if (this.driver.getIntakeLeftExtendOverride())
+        if (this.operator.getIntakeLeftExtendOverride())
         {
             this.solenoidLeftState = true;
         }
-        if (this.driver.getIntakeLeftRetractOverride())
+        if (this.operator.getIntakeLeftRetractOverride())
         {
             this.solenoidLeftState = false;
         }
 
-        if (this.driver.getIntakeRightExtendOverride())
+        if (this.operator.getIntakeRightExtendOverride())
         {
             this.solenoidRightState = true;
         }
-        if (this.driver.getIntakeRightRetractOverride())
+        if (this.operator.getIntakeRightRetractOverride())
         {
             this.solenoidRightState = false;
         }
 
         // sets IntakeComponent using solenoid and motor states
-        intake.setIntake(solenoidLeftState, solenoidRightState);
-        intake.setIntakeMotorSpeed(motorState * INTAKE_SPEED);
+        intake.setLeftIntake(solenoidLeftState);
+        intake.setRightIntake(solenoidRightState);
+        intake.setIntakeMotorSpeed(motorSpeed);
     }
 
     public void stop()
@@ -88,15 +86,3 @@ public class IntakeController implements IController
         this.intake.setIntakeMotorSpeed(0);
     }
 }
-
-/**
- * Toggles the left intake solenoid
- * If the piston is extending, it will be switched to retracting
- * If the piston is off or retracting, it will be switched to extending
-*/
-
-/**
- * Toggles the right intake solenoid
- * If the piston is extending, it will be switched to retracting
- * If the piston is off or retracting, it will be switched to extending
-*/

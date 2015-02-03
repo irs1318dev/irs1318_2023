@@ -28,8 +28,6 @@ public class IntakeComponent
     public static final String LEFT_INTAKE_ARM_DIRECTION = "i.leftArmDirection";
     public static final String RIGHT_INTAKE_ARM_DIRECTION = "i.rightArmDirection";
 
-    private boolean solenoidLeftState;
-    private boolean solenoidRightState;
     private double intakeMotorVelocity;
 
     public IntakeComponent()
@@ -51,32 +49,31 @@ public class IntakeComponent
      * @param shouldForward if true, both pistons will extend if false both will retract
     */
 
-    public void setIntake(boolean leftForward, boolean rightForward)
+    public void setLeftIntake(boolean leftForward)
     {
         if (leftForward)
         {
             this.intakeDoubleSolenoidLeft.set(Value.kForward);
-            solenoidLeftState = true;
-            SmartDashboardLogger.putBoolean(LEFT_INTAKE_ARM_DIRECTION, solenoidLeftState);
+            SmartDashboardLogger.putBoolean(LEFT_INTAKE_ARM_DIRECTION, leftForward);
         }
         else
         {
             this.intakeDoubleSolenoidLeft.set(Value.kReverse);
-            solenoidLeftState = false;
-            SmartDashboardLogger.putBoolean(LEFT_INTAKE_ARM_DIRECTION, solenoidLeftState);
+            SmartDashboardLogger.putBoolean(LEFT_INTAKE_ARM_DIRECTION, !leftForward);
         }
+    }
 
+    public void setRightIntake(boolean rightForward)
+    {
         if (rightForward)
         {
             this.intakeDoubleSolenoidRight.set(Value.kForward);
-            solenoidRightState = true;
-            SmartDashboardLogger.putBoolean(RIGHT_INTAKE_ARM_DIRECTION, solenoidRightState);
+            SmartDashboardLogger.putBoolean(RIGHT_INTAKE_ARM_DIRECTION, rightForward);
         }
         else
         {
             this.intakeDoubleSolenoidRight.set(Value.kReverse);
-            solenoidRightState = false;
-            SmartDashboardLogger.putBoolean(RIGHT_INTAKE_ARM_DIRECTION, solenoidRightState);
+            SmartDashboardLogger.putBoolean(RIGHT_INTAKE_ARM_DIRECTION, !rightForward);
         }
     }
 
