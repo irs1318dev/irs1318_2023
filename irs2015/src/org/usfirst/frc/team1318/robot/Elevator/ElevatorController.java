@@ -11,6 +11,8 @@ public class ElevatorController implements IController
 
     private PIDHandler handler;
     private boolean useVelocityPID = false;
+    private boolean usePID;
+    private double state;
 
     private final ElevatorComponent component;
     private final IDriver driver;
@@ -18,20 +20,22 @@ public class ElevatorController implements IController
     public static final double POWERLEVEL_MIN = -.5;
     public static final double POWERLEVEL_MAX = .5;
 
-    private static final double HEIGHT_0 = -1;
-    private static final double HEIGHT_1 = -1;
-    private static final double HEIGHT_2 = -1;
-    private static final double HEIGHT_3 = -1;
-    private static final double HEIGHT_4 = -1;
-    private static final double HEIGHT_5 = -1;
-    private static final double HEIGHT_6 = -1;
-    private static final double HEIGHT_7 = -1;
+    private static final double GROUND = 0;
+    private static final double PLATFORM = -1;
+    private static final double STEP = -1;
+
+    private static final double TOTE_0 = -1;
+    private static final double TOTE_1 = -1;
+    private static final double TOTE_2 = -1;
+    private static final double TOTE_3 = -1;
 
     public ElevatorController(ElevatorComponent component, IDriver driver)
     {
         this.component = component;
         this.driver = driver;
         this.createPIDHandler();
+        usePID = true;
+        state = GROUND;
     }
 
     @Override
@@ -40,46 +44,26 @@ public class ElevatorController implements IController
         // TODO figure out whether it should be moving 
         // TODO figure out which type of PID to use 
         // TODO figure out the target position or velocity 
-        if (this.driver.getElevatorHeight0Button())
+
+        if (driver.getElevatorSetStateToFloorButton())
         {
-            this.component.setMotorVelocity(this.calculatePositionModePowerSetting(ElevatorController.HEIGHT_0));
+            state = GROUND;
         }
-        else if (this.driver.getElevatorHeight1Button())
+        else if (driver.getElevatorSetStateToPlatformButton())
         {
-            this.component.setMotorVelocity(this.calculatePositionModePowerSetting(ElevatorController.HEIGHT_1));
+            state = PLATFORM;
         }
-        else if (this.driver.getElevatorHeight2Button())
+        else if (driver.getElevatorSetStateToStepButton())
         {
-            this.component.setMotorVelocity(this.calculatePositionModePowerSetting(ElevatorController.HEIGHT_2));
+            state = STEP;
         }
-        else if (this.driver.getElevatorHeight3Button())
-        {
-            this.component.setMotorVelocity(this.calculatePositionModePowerSetting(ElevatorController.HEIGHT_3));
-        }
-        else if (this.driver.getElevatorHeight4Button())
-        {
-            this.component.setMotorVelocity(this.calculatePositionModePowerSetting(ElevatorController.HEIGHT_4));
-        }
-        else if (this.driver.getElevatorHeight5Button())
-        {
-            this.component.setMotorVelocity(this.calculatePositionModePowerSetting(ElevatorController.HEIGHT_5));
-        }
-        else if (this.driver.getElevatorHeight6Button())
-        {
-            this.component.setMotorVelocity(this.calculatePositionModePowerSetting(ElevatorController.HEIGHT_6));
-        }
-        else if (this.driver.getElevatorHeight7Button())
-        {
-            this.component.setMotorVelocity(this.calculatePositionModePowerSetting(ElevatorController.HEIGHT_7));
-        }
-        else
-        {
-            this.useVelocityPID = true;
-            this.createPIDHandler();
-            this.component.setMotorVelocity(this.calculateVelocityModePowerSetting(this.driver.getElevatorOverride()));
-            this.useVelocityPID = false;
-            this.createPIDHandler();
-        }
+
+        double position = getPositionShift();
+    }
+
+    private double getPositionShift()
+    {
+        return 0;
     }
 
     @Override
