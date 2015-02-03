@@ -37,16 +37,14 @@ public class ArmController implements IController
         this.driver = driver;
 
         this.tromboneState = false;
-        this.tiltState = false;
+        this.tiltState = true;
         this.extenderState = true;
     }
 
     @Override
     public void update()
     {
-        //when are MacroButtons being reset? AFTER THEY ARE GOTTEN
-
-        //in rest position: extendLinkage is open, trombone is closed, tiltLinkage is closed 
+        //in rest position: extendLinkage is open, trombone is closed, tiltLinkage is open 
         //Macro Retract state machine
         switch (this.armstateRetractor)
         {
