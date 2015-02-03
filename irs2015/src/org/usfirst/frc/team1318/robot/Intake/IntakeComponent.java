@@ -24,9 +24,9 @@ public class IntakeComponent
     private final DoubleSolenoid intakeDoubleSolenoidRight;
 
     // SmartDashboard keys
-    public static final String INTAKE_MOTOR_SPEED = "i.motorSpeed";
-    public static final String LEFT_INTAKE_ARM_DIRECTION = "i.leftArmDirection";
-    public static final String RIGHT_INTAKE_ARM_DIRECTION = "i.rightArmDirection";
+    public static final String INTAKE_MOTOR_SPEED_KEY = "i.motorSpeed";
+    public static final String LEFT_INTAKE_ARM_DIRECTION_KEY = "i.leftArmDirection";
+    public static final String RIGHT_INTAKE_ARM_DIRECTION_KEY = "i.rightArmDirection";
 
     public IntakeComponent()
     {
@@ -59,7 +59,7 @@ public class IntakeComponent
             this.intakeDoubleSolenoidLeft.set(Value.kReverse);
         }
 
-        SmartDashboardLogger.putBoolean(IntakeComponent.LEFT_INTAKE_ARM_DIRECTION, leftForward);
+        SmartDashboardLogger.putBoolean(IntakeComponent.LEFT_INTAKE_ARM_DIRECTION_KEY, leftForward);
     }
 
     /**
@@ -79,7 +79,7 @@ public class IntakeComponent
             this.intakeDoubleSolenoidRight.set(Value.kReverse);
         }
 
-        SmartDashboardLogger.putBoolean(IntakeComponent.RIGHT_INTAKE_ARM_DIRECTION, rightForward);
+        SmartDashboardLogger.putBoolean(IntakeComponent.RIGHT_INTAKE_ARM_DIRECTION_KEY, rightForward);
     }
 
     /**
@@ -92,6 +92,6 @@ public class IntakeComponent
     {
         this.leftTalon.set(velocity);
         this.rightTalon.set(velocity);
-        SmartDashboardLogger.putNumber(IntakeComponent.INTAKE_MOTOR_SPEED, velocity);
+        SmartDashboardLogger.putNumber(IntakeComponent.INTAKE_MOTOR_SPEED_KEY, velocity);
     }
 }
