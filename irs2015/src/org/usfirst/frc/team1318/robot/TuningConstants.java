@@ -76,4 +76,7 @@ public class TuningConstants
     public static final double DRIVETRAIN_DEAD_ZONE = 0.1;
     public static final double DRIVETRAIN_MAX_POWER_LEVEL = 0.8; // max power level (velocity)
     public static final double DRIVETRAIN_MAX_POWER_POSITIONAL_NON_PID = 0.2; // max power level (positional, non-PID)
+
+    // Intake motor constants
+    public static final double INTAKE_MOTOR_SPEED = .7;
 }

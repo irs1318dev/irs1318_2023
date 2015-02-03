@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1318.robot.Intake;
 
+import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.Common.IController;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
 
@@ -15,7 +16,6 @@ public class IntakeController implements IController
 {
     private final IntakeComponent intake;
     private final IDriver operator;
-    private static final double INTAKE_SPEED = .7;
     private double motorSpeed;
 
     // state variables
@@ -34,11 +34,11 @@ public class IntakeController implements IController
         // gets joystick input and translates it into wanted motor state
         if (this.operator.getIntakeForwardButton())
         {
-            motorSpeed = INTAKE_SPEED;
+            motorSpeed = TuningConstants.INTAKE_MOTOR_SPEED;
         }
         else if (this.operator.getIntakeBackwardButton())
         {
-            motorSpeed = -INTAKE_SPEED;
+            motorSpeed = -TuningConstants.INTAKE_MOTOR_SPEED;
         }
         else
         {
