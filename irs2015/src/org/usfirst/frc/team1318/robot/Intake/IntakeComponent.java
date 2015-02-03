@@ -58,7 +58,8 @@ public class IntakeComponent
         {
             this.intakeDoubleSolenoidLeft.set(Value.kReverse);
         }
-        SmartDashboardLogger.putBoolean(LEFT_INTAKE_ARM_DIRECTION, leftForward);
+
+        SmartDashboardLogger.putBoolean(IntakeComponent.LEFT_INTAKE_ARM_DIRECTION, leftForward);
     }
 
     /**
@@ -77,7 +78,8 @@ public class IntakeComponent
         {
             this.intakeDoubleSolenoidRight.set(Value.kReverse);
         }
-        SmartDashboardLogger.putBoolean(RIGHT_INTAKE_ARM_DIRECTION, rightForward);
+
+        SmartDashboardLogger.putBoolean(IntakeComponent.RIGHT_INTAKE_ARM_DIRECTION, rightForward);
     }
 
     /**
@@ -90,6 +92,6 @@ public class IntakeComponent
     {
         this.leftTalon.set(velocity);
         this.rightTalon.set(velocity);
-        SmartDashboardLogger.putNumber(INTAKE_MOTOR_SPEED, velocity);
+        SmartDashboardLogger.putNumber(IntakeComponent.INTAKE_MOTOR_SPEED, velocity);
     }
 }

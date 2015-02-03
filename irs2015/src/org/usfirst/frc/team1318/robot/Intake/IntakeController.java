@@ -27,9 +27,9 @@ public class IntakeController implements IController
     {
         this.intake = intake;
         this.operator = operator;
-        motorSpeed = 0;
-        solenoidLeftState = false;
-        solenoidRightState = false;
+        this.motorSpeed = 0;
+        this.solenoidLeftState = false;
+        this.solenoidRightState = false;
     }
 
     public void update()
@@ -37,15 +37,15 @@ public class IntakeController implements IController
         // gets joystick input and translates it into wanted motor state
         if (this.operator.getIntakeForwardButton())
         {
-            motorSpeed = TuningConstants.INTAKE_MOTOR_SPEED;
+            this.motorSpeed = TuningConstants.INTAKE_MOTOR_SPEED;
         }
         else if (this.operator.getIntakeBackwardButton())
         {
-            motorSpeed = -TuningConstants.INTAKE_MOTOR_SPEED;
+            this.motorSpeed = -TuningConstants.INTAKE_MOTOR_SPEED;
         }
         else
         {
-            motorSpeed = 0;
+            this.motorSpeed = 0;
         }
 
         // gets joystick input and translates it into wanted solenoid state
@@ -54,6 +54,7 @@ public class IntakeController implements IController
             this.solenoidLeftState = true;
             this.solenoidRightState = true;
         }
+
         if (this.operator.getIntakeDownButton())
         {
             this.solenoidLeftState = false;
@@ -64,6 +65,7 @@ public class IntakeController implements IController
         {
             this.solenoidLeftState = true;
         }
+
         if (this.operator.getIntakeLeftRetractOverride())
         {
             this.solenoidLeftState = false;
@@ -73,15 +75,16 @@ public class IntakeController implements IController
         {
             this.solenoidRightState = true;
         }
+
         if (this.operator.getIntakeRightRetractOverride())
         {
             this.solenoidRightState = false;
         }
 
         // sets IntakeComponent using solenoid and motor states
-        intake.setLeftIntake(solenoidLeftState);
-        intake.setRightIntake(solenoidRightState);
-        intake.setIntakeMotorSpeed(motorSpeed);
+        this.intake.setLeftIntake(this.solenoidLeftState);
+        this.intake.setRightIntake(this.solenoidRightState);
+        this.intake.setIntakeMotorSpeed(this.motorSpeed);
     }
 
     public void stop()
