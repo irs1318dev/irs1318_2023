@@ -54,13 +54,12 @@ public class IntakeComponent
         if (leftForward)
         {
             this.intakeDoubleSolenoidLeft.set(Value.kForward);
-            SmartDashboardLogger.putBoolean(LEFT_INTAKE_ARM_DIRECTION, leftForward);
         }
         else
         {
             this.intakeDoubleSolenoidLeft.set(Value.kReverse);
-            SmartDashboardLogger.putBoolean(LEFT_INTAKE_ARM_DIRECTION, !leftForward);
         }
+        SmartDashboardLogger.putBoolean(LEFT_INTAKE_ARM_DIRECTION, leftForward);
     }
 
     public void setRightIntake(boolean rightForward)
@@ -68,13 +67,12 @@ public class IntakeComponent
         if (rightForward)
         {
             this.intakeDoubleSolenoidRight.set(Value.kForward);
-            SmartDashboardLogger.putBoolean(RIGHT_INTAKE_ARM_DIRECTION, rightForward);
         }
         else
         {
             this.intakeDoubleSolenoidRight.set(Value.kReverse);
-            SmartDashboardLogger.putBoolean(RIGHT_INTAKE_ARM_DIRECTION, !rightForward);
         }
+        SmartDashboardLogger.putBoolean(RIGHT_INTAKE_ARM_DIRECTION, rightForward);
     }
 
     /**
