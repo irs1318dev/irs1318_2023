@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.usfirst.frc.team1318.robot.Arm.ArmComponent;
+import org.usfirst.frc.team1318.robot.Arm.ArmController;
 import org.usfirst.frc.team1318.robot.Autonomous.AutonomousDriver;
 import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveDistanceAutonomousTask;
@@ -70,6 +72,10 @@ public class Robot extends IterativeRobot
     // Position manager - holds position information relative to our starting point
     private PositionManager position;
 
+    //Arm 
+    private ArmComponent armComponent;
+    private ArmController armController;
+
     /**
      * Robot-wide initialization code should go here.
      * This default Robot-wide initialization code will be called when 
@@ -84,6 +90,7 @@ public class Robot extends IterativeRobot
         // create mechanism components
         this.compressorComponent = new CompressorComponent();
         this.driveTrainComponent = new DriveTrainComponent();
+        this.armComponent = new ArmComponent();
 
         // create position manager
         this.position = new PositionManager(this.driveTrainComponent);
@@ -120,6 +127,12 @@ public class Robot extends IterativeRobot
         {
             this.driveTrainController.stop();
             this.driveTrainController = null;
+        }
+
+        if (this.armController != null)
+        {
+            this.armController.stop();
+            this.armController = null;
         }
 
         SmartDashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Disabled");
@@ -190,6 +203,7 @@ public class Robot extends IterativeRobot
                 this.driver,
                 this.driveTrainComponent,
                 this.prefs.getBoolean(TuningConstants.DRIVETRAIN_USE_PID_KEY, TuningConstants.DRIVETRAIN_USE_PID_DEFAULT));
+        this.armController = new ArmController(this.armComponent, this.driver);
 
         // we will run the compressor controller here because we should start it in advance...
         this.compressorController.update();
@@ -234,6 +248,7 @@ public class Robot extends IterativeRobot
         // run each controller
         this.compressorController.update();
         this.driveTrainController.update();
+        this.armController.update();
     }
 
     /**
