@@ -33,21 +33,6 @@ public class ArmComponent
             ElectronicsConstants.EXTEND_LINK_SOLANOID_RETRACT);
     }
 
-    //        public DoubleSolenoid getTrombone()
-    //        {
-    //            return this.trombone;
-    //        }
-    //    
-    //        public DoubleSolenoid getTiltLinkage()
-    //        {
-    //            return this.tiltLinkage;
-    //        }
-    //    
-    //        public DoubleSolenoid getExtendLinkage()
-    //        {
-    //            return this.extendLinkage;
-    //        }
-
     /**
      * sets state of Trombone_Solenoid
      * @param true for extended state; false for retracted state
@@ -61,9 +46,7 @@ public class ArmComponent
         else
         {
             this.trombone.set(Value.kReverse);
-
         }
-
         SmartDashboardLogger.putBoolean(ArmComponent.TROMBONE_STATE_LOG_KEY, state);
     }
 
@@ -81,7 +64,6 @@ public class ArmComponent
         {
             this.tiltLinkage.set(Value.kReverse);
         }
-
         SmartDashboardLogger.putBoolean(ArmComponent.TILT_LINKAGE_STATE_LOG_KEY, state);
     }
 
@@ -99,7 +81,6 @@ public class ArmComponent
         {
             this.extendLinkage.set(Value.kReverse);
         }
-
         SmartDashboardLogger.putBoolean(ArmComponent.EXTEND_LINKAGE_STATE_LOG_KEY, state);
     }
 }
