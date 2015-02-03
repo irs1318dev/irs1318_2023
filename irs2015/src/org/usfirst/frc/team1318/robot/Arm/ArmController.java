@@ -17,8 +17,10 @@ public class ArmController implements IController
 
     private Date timer;
     private long startTime;
-    private final long EXTEND_WAIT_TIME = 7000;
-    private final long RETRACT_WAIT_TIME = 3000;
+    private final long PARTIAL_EXTEND_WAIT_TIME = 5000;
+    private final long FULL_EXTEND_WAIT_TIME = this.PARTIAL_EXTEND_WAIT_TIME + 5000;
+    private final long PARTIAL_RETRACT_WAIT_TIME = 5000;
+    private final long FULL_RETRACT_WAIT_TIME = this.PARTIAL_RETRACT_WAIT_TIME + 5000;
 
     private ArmComponent component;
     private IDriver driver;
@@ -55,23 +57,25 @@ public class ArmController implements IController
                     this.armstateExtendor = ArmStates.STAGE_0;
                 }
                 break;
+            //start the Retraction timer
             case STAGE_1:
-                this.tiltState = false;
-
+                this.tiltState = true;
                 this.startTime = this.timer.getTime();
                 this.armstateRetractor = ArmStates.STAGE_2;
                 break;
             case STAGE_2:
-                if (this.timer.getTime() - this.startTime >= this.RETRACT_WAIT_TIME)
+                if (this.timer.getTime() - this.startTime >= this.PARTIAL_RETRACT_WAIT_TIME)
                 {
+                    this.tromboneState = false;
                     this.armstateRetractor = ArmStates.STAGE_3;
                 }
                 break;
             case STAGE_3:
-                this.extenderState = true;
-                this.tromboneState = false;
-
-                this.armstateRetractor = ArmStates.STAGE_0;
+                if (this.timer.getTime() - this.startTime >= this.FULL_RETRACT_WAIT_TIME)
+                {
+                    this.extenderState = true;
+                    this.armstateRetractor = ArmStates.STAGE_0;
+                }
                 break;
             default:
                 break;
@@ -87,22 +91,25 @@ public class ArmController implements IController
                     this.armstateRetractor = ArmStates.STAGE_0;
                 }
                 break;
+            //start the Extendor timer
             case STAGE_1:
                 this.extenderState = false;
-                this.tromboneState = true;
-
                 this.startTime = this.timer.getTime();
                 this.armstateExtendor = ArmStates.STAGE_2;
                 break;
             case STAGE_2:
-                if (this.timer.getTime() - this.startTime >= this.EXTEND_WAIT_TIME)
+                if (this.timer.getTime() - this.startTime >= this.PARTIAL_EXTEND_WAIT_TIME)
                 {
+                    this.tromboneState = true;
                     this.armstateExtendor = ArmStates.STAGE_3;
                 }
                 break;
             case STAGE_3:
-                this.tiltState = true;
-                this.armstateExtendor = ArmStates.STAGE_0;
+                if (this.timer.getTime() - this.startTime >= this.FULL_EXTEND_WAIT_TIME)
+                {
+                    this.tiltState = false;
+                    this.armstateExtendor = ArmStates.STAGE_0;
+                }
                 break;
             default:
                 break;
