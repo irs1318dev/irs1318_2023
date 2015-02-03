@@ -10,9 +10,10 @@ public class ElevatorController implements IController
 {
 
     private PIDHandler handler;
-    private boolean useVelocityPID = false;
+    private boolean useVelocityPID;
     private boolean usePID;
     private double state;
+    private double position;
 
     private final ElevatorComponent component;
     private final IDriver driver;
@@ -29,109 +30,121 @@ public class ElevatorController implements IController
     private static final double TOTE_2 = -1;
     private static final double TOTE_3 = -1;
 
-    private static final double OVERRIDE = -1.0;
+    private static final double OVERRIDE = 0.5;
     private static final double MINIMUM_HEIGHT = 0.0;
+    private static final double MAXIMUM_HEIGHT = 0.0;
 
     public ElevatorController(ElevatorComponent component, IDriver driver)
     {
         this.component = component;
         this.driver = driver;
-        this.createPIDHandler();
-        usePID = true;
-        state = FLOOR;
+        //this.createPIDHandler();
+        this.useVelocityPID = false;
+        this.usePID = true;
+        this.state = ElevatorController.FLOOR;
+        this.position = 0;
     }
 
     @Override
     public void update()
     {
-        // TODO figure out whether it should be moving 
-        // TODO figure out which type of PID to use 
-        // TODO figure out the target position or velocity 
+        // set elevator state here
+        if (this.driver.getElevatorSetStateToFloorButton())
+        {
+            this.state = ElevatorController.FLOOR;
+        }
+        else if (this.driver.getElevatorSetStateToPlatformButton())
+        {
+            this.state = ElevatorController.PLATFORM;
+        }
+        else if (this.driver.getElevatorSetStateToStepButton())
+        {
+            this.state = ElevatorController.STEP;
+        }
+
+        if (this.driver.getElevatorPIDOn())
+        {
+            this.usePID = true;
+        }
+        if (this.driver.getElevatorPIDOff())
+        {
+            this.usePID = false;
+        }
 
         // if elevator up or down button is pushed, do not deal with elevator buttons
-        if (driver.getElevatorDownButton())
+        if (this.driver.getElevatorDownButton())
         {
             // if usePID is true, calculate velocity using PID.
-            if (usePID)
+            if (this.usePID)
             {
-                component.setMotorVelocity(calculateVelocityModePowerSetting(-OVERRIDE));
+                this.useVelocityPID = true;
+                this.createPIDHandler();
+                this.component.setMotorVelocity(this.calculateVelocityModePowerSetting(-ElevatorController.OVERRIDE));
             }
             else
             {
-                component.setMotorVelocity(-OVERRIDE);
+                this.component.setMotorVelocity(-ElevatorController.OVERRIDE);
             }
         }
-        else if (driver.getElevatorUpButton())
+        else if (this.driver.getElevatorUpButton())
         {
             // if usePID is true, calculate velocity using PID.
-            if (usePID)
+            if (this.usePID)
             {
-                component.setMotorVelocity(calculateVelocityModePowerSetting(OVERRIDE));
+                this.useVelocityPID = true;
+                this.createPIDHandler();
+                this.component.setMotorVelocity(this.calculateVelocityModePowerSetting(ElevatorController.OVERRIDE));
             }
             else
             {
-                component.setMotorVelocity(OVERRIDE);
+                this.component.setMotorVelocity(ElevatorController.OVERRIDE);
             }
         }
         else
         {
-            // set elevator state here
-            if (driver.getElevatorSetStateToFloorButton())
-            {
-                state = FLOOR;
-            }
-            else if (driver.getElevatorSetStateToPlatformButton())
-            {
-                state = PLATFORM;
-            }
-            else if (driver.getElevatorSetStateToStepButton())
-            {
-                state = STEP;
-            }
+
             //calculate position to set elevator
-            double position = getPositionShift();
+            position = this.getPositionShift();
 
             // if position is less than minimum, do not move
-            if (position >= MINIMUM_HEIGHT)
+            if (position >= ElevatorController.MINIMUM_HEIGHT && position <= ElevatorController.MAXIMUM_HEIGHT)
             {
                 //if usePID is true, calculate velocity using PID
-                if (usePID)
+                if (this.usePID)
                 {
-                    component.setMotorVelocity(calculatePositionModePowerSetting(position));
-                }
-                else
-                {
-                    /**
-                     * TODO figure out what to do when usePID is false and position of 
-                     * elevator must be set using buttons
-                     **/
+                    this.useVelocityPID = false;
+                    this.createPIDHandler();
+                    this.component.setMotorVelocity(this.calculatePositionModePowerSetting(position));
                 }
             }
         }
     }
 
+    /**
+     * changes the desired state in response to new user input, otherwise returns current desired position 
+     * @return desired position 
+     */
     private double getPositionShift()
     {
-        if (driver.getElevatorMoveTo0TotesButton())
+        if (this.driver.getElevatorMoveTo0TotesButton())
         {
-            return TOTE_0 + state;
+            return ElevatorController.TOTE_0 + this.state;
         }
-        else if (driver.getElevatorMoveTo1ToteButton())
+        else if (this.driver.getElevatorMoveTo1ToteButton())
         {
-            return TOTE_1 + state;
+            return ElevatorController.TOTE_1 + this.state;
         }
-        else if (driver.getElevatorMoveTo2TotesButton())
+        else if (this.driver.getElevatorMoveTo2TotesButton())
         {
-            return TOTE_2 + state;
+            return ElevatorController.TOTE_2 + this.state;
         }
-        else if (driver.getElevatorMoveTo3TotesButton())
+        else if (this.driver.getElevatorMoveTo3TotesButton())
         {
-            return TOTE_3 + state;
+            return ElevatorController.TOTE_3 + this.state;
         }
         else
         {
-            // return -1 for no position shift
-            return MINIMUM_HEIGHT - 1;
+            return position;
         }
 
     }
