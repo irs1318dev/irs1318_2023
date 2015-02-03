@@ -22,8 +22,8 @@ public class ArmController implements IController
     private final long PARTIAL_RETRACT_WAIT_TIME = 5000;
     private final long FULL_RETRACT_WAIT_TIME = this.PARTIAL_RETRACT_WAIT_TIME + 5000;
 
-    private ArmComponent component;
-    private IDriver driver;
+    private final ArmComponent component;
+    private final IDriver driver;
 
     private boolean tromboneState;
     private boolean tiltState;
@@ -152,9 +152,9 @@ public class ArmController implements IController
             this.armstateRetractor = ArmStates.STAGE_0;
         }
 
-        this.component.setExtendLinkageSolenoidState(extenderState);
-        this.component.setTiltLinkageSolenoidState(tiltState);
-        this.component.setTromboneSolenoidState(tromboneState);
+        this.component.setExtendLinkageSolenoidState(this.extenderState);
+        this.component.setTiltLinkageSolenoidState(this.tiltState);
+        this.component.setTromboneSolenoidState(this.tromboneState);
     }
 
     @Override

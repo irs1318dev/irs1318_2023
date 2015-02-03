@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 public class ArmComponent
 {
-    private DoubleSolenoid trombone;
-    private DoubleSolenoid tiltLinkage;
-    private DoubleSolenoid extendLinkage;
+    private final DoubleSolenoid trombone;
+    private final DoubleSolenoid tiltLinkage;
+    private final DoubleSolenoid extendLinkage;
 
     // logging constants
     private static final String TROMBONE_STATE_LOG_KEY = "dt.TromboneState";
@@ -47,6 +47,7 @@ public class ArmComponent
         {
             this.trombone.set(Value.kReverse);
         }
+
         SmartDashboardLogger.putBoolean(ArmComponent.TROMBONE_STATE_LOG_KEY, state);
     }
 
@@ -64,6 +65,7 @@ public class ArmComponent
         {
             this.tiltLinkage.set(Value.kReverse);
         }
+
         SmartDashboardLogger.putBoolean(ArmComponent.TILT_LINKAGE_STATE_LOG_KEY, state);
     }
 
@@ -81,6 +83,7 @@ public class ArmComponent
         {
             this.extendLinkage.set(Value.kReverse);
         }
+
         SmartDashboardLogger.putBoolean(ArmComponent.EXTEND_LINKAGE_STATE_LOG_KEY, state);
     }
 }
