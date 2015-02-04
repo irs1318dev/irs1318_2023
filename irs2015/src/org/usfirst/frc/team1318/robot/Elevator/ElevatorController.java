@@ -13,6 +13,7 @@ public class ElevatorController implements IController
     private boolean usePID;
     private double state;
     private double position;
+    private double powerLevel;
 
     private final ElevatorComponent component;
     private final IDriver driver;
@@ -43,6 +44,7 @@ public class ElevatorController implements IController
 
         this.state = ElevatorController.FLOOR;
         this.position = 0;
+        powerLevel = 0;
     }
 
     @Override
@@ -96,11 +98,11 @@ public class ElevatorController implements IController
                     this.createPIDHandler();
                 }
 
-                this.component.setMotorPowerLevel(this.calculateVelocityModePowerSetting(-ElevatorController.OVERRIDE));
+                powerLevel = this.calculateVelocityModePowerSetting(-ElevatorController.OVERRIDE);
             }
             else
             {
-                this.component.setMotorPowerLevel(-ElevatorController.OVERRIDE);
+                powerLevel = -ElevatorController.OVERRIDE;
             }
         }
         else if (this.driver.getElevatorUpButton())
@@ -115,11 +117,11 @@ public class ElevatorController implements IController
                     this.createPIDHandler();
                 }
 
-                this.component.setMotorPowerLevel(this.calculateVelocityModePowerSetting(ElevatorController.OVERRIDE));
+                powerLevel = this.calculateVelocityModePowerSetting(ElevatorController.OVERRIDE);
             }
             else
             {
-                this.component.setMotorPowerLevel(ElevatorController.OVERRIDE);
+                powerLevel = ElevatorController.OVERRIDE;
             }
         }
         else
@@ -140,14 +142,16 @@ public class ElevatorController implements IController
                 this.position = Math.max(this.position, ElevatorController.MINIMUM_HEIGHT);
                 this.position = Math.min(this.position, ElevatorController.MAXIMUM_HEIGHT);
 
-                this.component.setMotorPowerLevel(this.calculatePositionModePowerSetting(this.position));
+                powerLevel = this.calculatePositionModePowerSetting(this.position);
             }
             else
             {
                 // if we are in non-PID mode, pressing neither the up nor down override buttons means we should stop applying power to the motor
-                this.component.setMotorPowerLevel(0.0);
+                powerLevel = 0.0;
             }
         }
+
+        this.component.setMotorPowerLevel(powerLevel);
     }
 
     /**
