@@ -19,6 +19,8 @@ import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainComponent;
 import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainController;
 import org.usfirst.frc.team1318.robot.DriveTrain.IDriveTrainComponent;
 import org.usfirst.frc.team1318.robot.DriveTrain.PositionManager;
+import org.usfirst.frc.team1318.robot.Intake.IntakeComponent;
+import org.usfirst.frc.team1318.robot.Intake.IntakeController;
 import org.usfirst.frc.team1318.robot.UserInterface.UserDriver;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -67,6 +69,10 @@ public class Robot extends IterativeRobot
     private DriveTrainComponent driveTrainComponent;
     private DriveTrainController driveTrainController;
 
+    // Intake
+    private IntakeComponent intakeComponent;
+    private IntakeController intakeController;
+
     // Position manager - holds position information relative to our starting point
     private PositionManager position;
 
@@ -84,6 +90,7 @@ public class Robot extends IterativeRobot
         // create mechanism components
         this.compressorComponent = new CompressorComponent();
         this.driveTrainComponent = new DriveTrainComponent();
+        this.intakeComponent = new IntakeComponent();
 
         // create position manager
         this.position = new PositionManager(this.driveTrainComponent);
@@ -120,6 +127,12 @@ public class Robot extends IterativeRobot
         {
             this.driveTrainController.stop();
             this.driveTrainController = null;
+        }
+
+        if (this.intakeController != null)
+        {
+            this.intakeController.stop();
+            this.intakeController = null;
         }
 
         SmartDashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Disabled");
@@ -190,6 +203,7 @@ public class Robot extends IterativeRobot
                 this.driver,
                 this.driveTrainComponent,
                 this.prefs.getBoolean(TuningConstants.DRIVETRAIN_USE_PID_KEY, TuningConstants.DRIVETRAIN_USE_PID_DEFAULT));
+        this.intakeController = new IntakeController(this.driver, this.intakeComponent);
 
         // we will run the compressor controller here because we should start it in advance...
         this.compressorController.update();
@@ -234,6 +248,7 @@ public class Robot extends IterativeRobot
         // run each controller
         this.compressorController.update();
         this.driveTrainController.update();
+        this.intakeController.update();
     }
 
     /**
