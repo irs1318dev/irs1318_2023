@@ -19,6 +19,8 @@ import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainComponent;
 import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainController;
 import org.usfirst.frc.team1318.robot.DriveTrain.IDriveTrainComponent;
 import org.usfirst.frc.team1318.robot.DriveTrain.PositionManager;
+import org.usfirst.frc.team1318.robot.Elevator.ElevatorComponent;
+import org.usfirst.frc.team1318.robot.Elevator.ElevatorController;
 import org.usfirst.frc.team1318.robot.UserInterface.UserDriver;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -67,6 +69,10 @@ public class Robot extends IterativeRobot
     private DriveTrainComponent driveTrainComponent;
     private DriveTrainController driveTrainController;
 
+    // Elevator
+    private ElevatorComponent elevatorComponent;
+    private ElevatorController elevatorController;
+
     // Position manager - holds position information relative to our starting point
     private PositionManager position;
 
@@ -84,6 +90,7 @@ public class Robot extends IterativeRobot
         // create mechanism components
         this.compressorComponent = new CompressorComponent();
         this.driveTrainComponent = new DriveTrainComponent();
+        this.elevatorComponent = new ElevatorComponent();
 
         // create position manager
         this.position = new PositionManager(this.driveTrainComponent);
@@ -120,6 +127,12 @@ public class Robot extends IterativeRobot
         {
             this.driveTrainController.stop();
             this.driveTrainController = null;
+        }
+
+        if (this.elevatorController != null)
+        {
+            this.elevatorController.stop();
+            this.elevatorController = null;
         }
 
         SmartDashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Disabled");
@@ -190,6 +203,7 @@ public class Robot extends IterativeRobot
                 this.driver,
                 this.driveTrainComponent,
                 this.prefs.getBoolean(TuningConstants.DRIVETRAIN_USE_PID_KEY, TuningConstants.DRIVETRAIN_USE_PID_DEFAULT));
+        this.elevatorController = new ElevatorController(this.driver, this.elevatorComponent);
 
         // we will run the compressor controller here because we should start it in advance...
         this.compressorController.update();
@@ -234,6 +248,7 @@ public class Robot extends IterativeRobot
         // run each controller
         this.compressorController.update();
         this.driveTrainController.update();
+        this.elevatorController.update();
     }
 
     /**
@@ -297,6 +312,7 @@ public class Robot extends IterativeRobot
      */
     private void ensureDefaultPreferencesInitialized()
     {
+        // ================================ DriveTrain preferences ==============================
         // Initialize Preferences for PID settings
         if (!this.prefs.containsKey(TuningConstants.DRIVETRAIN_USE_PID_KEY))
         {
@@ -419,6 +435,66 @@ public class Robot extends IterativeRobot
             this.prefs.putDouble(
                 TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KF_KEY,
                 TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KF_DEFAULT);
+        }
+
+        // ================================ Elevator preferences ==============================
+
+        // Positional
+        if (!this.prefs.containsKey(TuningConstants.ELEVATOR_POSITION_PID_KP_KEY))
+        {
+            this.prefs.putDouble(
+                TuningConstants.ELEVATOR_POSITION_PID_KP_KEY,
+                TuningConstants.ELEVATOR_POSITION_PID_KP_DEFAULT);
+        }
+
+        if (!this.prefs.containsKey(TuningConstants.ELEVATOR_POSITION_PID_KI_KEY))
+        {
+            this.prefs.putDouble(
+                TuningConstants.ELEVATOR_POSITION_PID_KI_KEY,
+                TuningConstants.ELEVATOR_POSITION_PID_KI_DEFAULT);
+        }
+
+        if (!this.prefs.containsKey(TuningConstants.ELEVATOR_POSITION_PID_KD_KEY))
+        {
+            this.prefs.putDouble(
+                TuningConstants.ELEVATOR_POSITION_PID_KD_KEY,
+                TuningConstants.ELEVATOR_POSITION_PID_KD_DEFAULT);
+        }
+
+        if (!this.prefs.containsKey(TuningConstants.ELEVATOR_POSITION_PID_KF_KEY))
+        {
+            this.prefs.putDouble(
+                TuningConstants.ELEVATOR_POSITION_PID_KF_KEY,
+                TuningConstants.ELEVATOR_POSITION_PID_KF_DEFAULT);
+        }
+
+        // Velocity
+        if (!this.prefs.containsKey(TuningConstants.ELEVATOR_VELOCITY_PID_KP_KEY))
+        {
+            this.prefs.putDouble(
+                TuningConstants.ELEVATOR_VELOCITY_PID_KP_KEY,
+                TuningConstants.ELEVATOR_VELOCITY_PID_KP_DEFAULT);
+        }
+
+        if (!this.prefs.containsKey(TuningConstants.ELEVATOR_VELOCITY_PID_KI_KEY))
+        {
+            this.prefs.putDouble(
+                TuningConstants.ELEVATOR_VELOCITY_PID_KI_KEY,
+                TuningConstants.ELEVATOR_VELOCITY_PID_KI_DEFAULT);
+        }
+
+        if (!this.prefs.containsKey(TuningConstants.ELEVATOR_VELOCITY_PID_KD_KEY))
+        {
+            this.prefs.putDouble(
+                TuningConstants.ELEVATOR_VELOCITY_PID_KD_KEY,
+                TuningConstants.ELEVATOR_VELOCITY_PID_KD_DEFAULT);
+        }
+
+        if (!this.prefs.containsKey(TuningConstants.ELEVATOR_VELOCITY_PID_KF_KEY))
+        {
+            this.prefs.putDouble(
+                TuningConstants.ELEVATOR_VELOCITY_PID_KF_KEY,
+                TuningConstants.ELEVATOR_VELOCITY_PID_KF_DEFAULT);
         }
     }
 }

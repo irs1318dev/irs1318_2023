@@ -20,7 +20,7 @@ public class ElevatorController implements IController
     private boolean usePID;
     private PIDHandler pidHandler;
 
-    public ElevatorController(ElevatorComponent component, IDriver driver)
+    public ElevatorController(IDriver driver, ElevatorComponent component)
     {
         this.component = component;
         this.driver = driver;
