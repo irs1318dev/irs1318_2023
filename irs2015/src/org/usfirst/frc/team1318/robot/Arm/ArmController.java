@@ -9,8 +9,8 @@ public class ArmController implements IController
 {
     private enum ArmStates
     {
-        STAGE_0, STAGE_1, STAGE_2, STAGE_3
-    };
+        STAGE_0, STAGE_1, STAGE_2, STAGE_3;
+    }
 
     private ArmStates armstateExtendor;
     private ArmStates armstateRetractor;
@@ -23,8 +23,8 @@ public class ArmController implements IController
     private final double FULL_RETRACT_WAIT_TIME = 5;
     private final double SAFETY_WAIT = 2;
 
-    private ArmComponent component;
-    private IDriver driver;
+    private final ArmComponent component;
+    private final IDriver driver;
 
     private boolean tromboneState;
     private boolean tiltState;
@@ -206,13 +206,14 @@ public class ArmController implements IController
         }
 
         //actually set the solenoid states only once per update cycle in order to prevent opposite commands
-        this.component.setExtendLinkageSolenoidState(extenderState);
-        this.component.setTiltLinkageSolenoidState(tiltState);
-        this.component.setTromboneSolenoidState(tromboneState);
+        this.component.setExtendLinkageSolenoidState(this.extenderState);
+        this.component.setTiltLinkageSolenoidState(this.tiltState);
+        this.component.setTromboneSolenoidState(this.tromboneState);
+
     }
 
     @Override
-    //return to completely retracted position - NOT SURE??
+    //return arm to completely retracted position
     public void stop()
     {
         this.component.setExtendLinkageSolenoidState(true);
