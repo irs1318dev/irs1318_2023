@@ -213,11 +213,7 @@ public class ArmController implements IController
     }
 
     @Override
-    //return arm to completely retracted position
     public void stop()
     {
-        this.component.setExtendLinkageSolenoidState(true);
-        this.component.setTiltLinkageSolenoidState(true);
-        this.component.setTromboneSolenoidState(false);
     }
 }
