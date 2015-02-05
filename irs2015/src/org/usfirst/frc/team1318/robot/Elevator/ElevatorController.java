@@ -10,14 +10,15 @@ import edu.wpi.first.wpilibj.Preferences;
 
 public class ElevatorController implements IController
 {
-    private PIDHandler pidHandler;
-    private boolean useVelocityPID;
-    private boolean usePID;
+    private final ElevatorComponent component;
+    private final IDriver driver;
+
     private double baseLevel;
     private double position;
 
-    private final ElevatorComponent component;
-    private final IDriver driver;
+    private boolean useVelocityPID;
+    private boolean usePID;
+    private PIDHandler pidHandler;
 
     public ElevatorController(ElevatorComponent component, IDriver driver)
     {
