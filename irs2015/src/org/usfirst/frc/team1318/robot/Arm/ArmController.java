@@ -16,7 +16,7 @@ public class ArmController implements IController
     private ArmStates armstateRetractor;
 
     private Timer timer;
-    private double startTime;
+    private double continueTime;
     private final double PARTIAL_EXTEND_WAIT_TIME = 5;
     private final double FULL_EXTEND_WAIT_TIME = 5;
     private final double PARTIAL_RETRACT_WAIT_TIME = 5;
@@ -72,33 +72,33 @@ public class ArmController implements IController
                 if (this.extenderState == false)
                 {
                     //don't wait for extender to retract
-                    this.startTime = this.timer.get() + this.PARTIAL_EXTEND_WAIT_TIME - this.SAFETY_WAIT;
+                    this.continueTime = this.timer.get() + this.SAFETY_WAIT;
                 }
                 else
                 {
-                    this.startTime = this.timer.get();
+                    this.continueTime = this.timer.get() + this.PARTIAL_EXTEND_WAIT_TIME;
                     this.extenderState = false;
                 }
                 this.armstateExtendor = ArmStates.STAGE_2;
                 break;
             case STAGE_2:
-                if (this.timer.get() - this.startTime >= this.PARTIAL_EXTEND_WAIT_TIME)
+                if (this.timer.get() >= this.continueTime)
                 {
                     if (this.tromboneState == true)
                     {
                         //don't wait for trombone to extend
-                        this.startTime = this.timer.get() + this.FULL_EXTEND_WAIT_TIME - this.SAFETY_WAIT;
+                        this.continueTime = this.timer.get() + this.SAFETY_WAIT;
                     }
                     else
                     {
-                        this.startTime = this.timer.get();
+                        this.continueTime = this.timer.get() + this.FULL_EXTEND_WAIT_TIME;
                         this.tromboneState = true;
                     }
                     this.armstateExtendor = ArmStates.STAGE_3;
                 }
                 break;
             case STAGE_3:
-                if (this.timer.get() - this.startTime >= this.FULL_EXTEND_WAIT_TIME)
+                if (this.timer.get() >= this.continueTime)
                 {
                     this.tiltState = false;
                     this.armstateExtendor = ArmStates.STAGE_0;
@@ -126,33 +126,33 @@ public class ArmController implements IController
                 if (this.tiltState == true)
                 {
                     //don't wait for tilt to extend
-                    this.startTime = this.timer.get() + this.PARTIAL_RETRACT_WAIT_TIME - this.SAFETY_WAIT;
+                    this.continueTime = this.timer.get() + this.SAFETY_WAIT;
                 }
                 else
                 {
-                    this.startTime = this.timer.get();
+                    this.continueTime = this.timer.get() + this.PARTIAL_RETRACT_WAIT_TIME;
                     this.tiltState = true;
                 }
                 this.armstateRetractor = ArmStates.STAGE_2;
                 break;
             case STAGE_2:
-                if (this.timer.get() - this.startTime >= this.PARTIAL_RETRACT_WAIT_TIME)
+                if (this.timer.get() >= this.continueTime)
                 {
                     if (this.tromboneState == false)
                     {
                         //don't wait for trombone to retract
-                        this.startTime = this.timer.get() + this.FULL_RETRACT_WAIT_TIME - this.SAFETY_WAIT;
+                        this.continueTime = this.timer.get() + this.SAFETY_WAIT;
                     }
                     else
                     {
-                        this.startTime = this.timer.get();
+                        this.continueTime = this.timer.get() + this.FULL_RETRACT_WAIT_TIME;
                         this.tromboneState = false;
                     }
                     this.armstateRetractor = ArmStates.STAGE_3;
                 }
                 break;
             case STAGE_3:
-                if (this.timer.get() - this.startTime >= this.FULL_RETRACT_WAIT_TIME)
+                if (this.timer.get() >= this.continueTime)
                 {
                     this.extenderState = true;
                     this.armstateRetractor = ArmStates.STAGE_0;
