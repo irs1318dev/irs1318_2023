@@ -69,12 +69,12 @@ public class Robot extends IterativeRobot
     private DriveTrainComponent driveTrainComponent;
     private DriveTrainController driveTrainController;
 
-    // Position manager - holds position information relative to our starting point
-    private PositionManager position;
-
-    //Arm 
+    // Arm 
     private ArmComponent armComponent;
     private ArmController armController;
+
+    // Position manager - holds position information relative to our starting point
+    private PositionManager position;
 
     /**
      * Robot-wide initialization code should go here.
@@ -203,7 +203,7 @@ public class Robot extends IterativeRobot
                 this.driver,
                 this.driveTrainComponent,
                 this.prefs.getBoolean(TuningConstants.DRIVETRAIN_USE_PID_KEY, TuningConstants.DRIVETRAIN_USE_PID_DEFAULT));
-        this.armController = new ArmController(this.armComponent, this.driver);
+        this.armController = new ArmController(this.driver, this.armComponent);
 
         // we will run the compressor controller here because we should start it in advance...
         this.compressorController.update();

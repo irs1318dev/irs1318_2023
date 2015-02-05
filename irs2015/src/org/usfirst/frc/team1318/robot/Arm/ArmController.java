@@ -30,7 +30,7 @@ public class ArmController implements IController
     private boolean tiltState;
     private boolean extenderState;
 
-    public ArmController(ArmComponent component, IDriver driver)
+    public ArmController(IDriver driver, ArmComponent component)
     {
         this.armstateExtendor = ArmStates.STAGE_0;
         this.armstateRetractor = ArmStates.STAGE_0;
