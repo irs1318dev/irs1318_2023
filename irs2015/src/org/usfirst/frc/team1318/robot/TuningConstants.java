@@ -76,4 +76,11 @@ public class TuningConstants
     public static final double DRIVETRAIN_DEAD_ZONE = 0.1;
     public static final double DRIVETRAIN_MAX_POWER_LEVEL = 0.8; // max power level (velocity)
     public static final double DRIVETRAIN_MAX_POWER_POSITIONAL_NON_PID = 0.2; // max power level (positional, non-PID)
+
+    // ======================= Arm tuning constants ==================================
+    public static final double PARTIAL_EXTEND_WAIT_TIME = 2;
+    public static final double FULL_EXTEND_WAIT_TIME = 2;
+    public static final double PARTIAL_RETRACT_WAIT_TIME = 2;
+    public static final double FULL_RETRACT_WAIT_TIME = 2;
+    public static final double SAFETY_WAIT = 1;
 }

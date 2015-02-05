@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1318.robot.Arm;
 
+import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.Common.IController;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
 
@@ -17,11 +18,6 @@ public class ArmController implements IController
 
     private Timer timer;
     private double continueTime;
-    private final double PARTIAL_EXTEND_WAIT_TIME = 5;
-    private final double FULL_EXTEND_WAIT_TIME = 5;
-    private final double PARTIAL_RETRACT_WAIT_TIME = 5;
-    private final double FULL_RETRACT_WAIT_TIME = 5;
-    private final double SAFETY_WAIT = 2;
 
     private final ArmComponent component;
     private final IDriver driver;
@@ -72,11 +68,11 @@ public class ArmController implements IController
                 if (this.extenderState == false)
                 {
                     //don't wait for extender to retract
-                    this.continueTime = this.timer.get() + this.SAFETY_WAIT;
+                    this.continueTime = this.timer.get() + TuningConstants.SAFETY_WAIT;
                 }
                 else
                 {
-                    this.continueTime = this.timer.get() + this.PARTIAL_EXTEND_WAIT_TIME;
+                    this.continueTime = this.timer.get() + TuningConstants.PARTIAL_EXTEND_WAIT_TIME;
                     this.extenderState = false;
                 }
                 this.armstateExtendor = ArmStates.STAGE_2;
@@ -87,11 +83,11 @@ public class ArmController implements IController
                     if (this.tromboneState == true)
                     {
                         //don't wait for trombone to extend
-                        this.continueTime = this.timer.get() + this.SAFETY_WAIT;
+                        this.continueTime = this.timer.get() + TuningConstants.SAFETY_WAIT;
                     }
                     else
                     {
-                        this.continueTime = this.timer.get() + this.FULL_EXTEND_WAIT_TIME;
+                        this.continueTime = this.timer.get() + TuningConstants.FULL_EXTEND_WAIT_TIME;
                         this.tromboneState = true;
                     }
                     this.armstateExtendor = ArmStates.STAGE_3;
@@ -126,11 +122,11 @@ public class ArmController implements IController
                 if (this.tiltState == true)
                 {
                     //don't wait for tilt to extend
-                    this.continueTime = this.timer.get() + this.SAFETY_WAIT;
+                    this.continueTime = this.timer.get() + TuningConstants.SAFETY_WAIT;
                 }
                 else
                 {
-                    this.continueTime = this.timer.get() + this.PARTIAL_RETRACT_WAIT_TIME;
+                    this.continueTime = this.timer.get() + TuningConstants.PARTIAL_RETRACT_WAIT_TIME;
                     this.tiltState = true;
                 }
                 this.armstateRetractor = ArmStates.STAGE_2;
@@ -141,11 +137,11 @@ public class ArmController implements IController
                     if (this.tromboneState == false)
                     {
                         //don't wait for trombone to retract
-                        this.continueTime = this.timer.get() + this.SAFETY_WAIT;
+                        this.continueTime = this.timer.get() + TuningConstants.SAFETY_WAIT;
                     }
                     else
                     {
-                        this.continueTime = this.timer.get() + this.FULL_RETRACT_WAIT_TIME;
+                        this.continueTime = this.timer.get() + TuningConstants.FULL_RETRACT_WAIT_TIME;
                         this.tromboneState = false;
                     }
                     this.armstateRetractor = ArmStates.STAGE_3;
