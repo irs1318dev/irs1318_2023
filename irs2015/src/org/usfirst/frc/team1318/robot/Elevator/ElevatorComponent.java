@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1318.robot.Elevator;
 
 import org.usfirst.frc.team1318.robot.ElectronicsConstants;
+import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -30,7 +31,8 @@ public class ElevatorComponent
         this.encoder = new Encoder(
             ElectronicsConstants.ELEVATOR_ENCODER_CHANNELA,
             ElectronicsConstants.ELEVATOR_ENCODER_CHANNELB);
-        this.encoder.setDistancePerPulse(ElevatorTuningConstants.PULSE_DISTANCE);
+
+        this.encoder.setDistancePerPulse(HardwareConstants.ELEVATOR_PULSE_DISTANCE);
 
         this.throughBeamSensor = new DigitalInput(ElectronicsConstants.ELEVATOR_THROUGH_BEAM_SENSOR_CHANNEL);
 

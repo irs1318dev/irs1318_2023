@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1318.robot.Elevator;
 
+import org.usfirst.frc.team1318.robot.HardwareConstants;
+import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.Common.IController;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.PIDHandler;
@@ -11,28 +13,11 @@ public class ElevatorController implements IController
     private PIDHandler pidHandler;
     private boolean useVelocityPID;
     private boolean usePID;
-    private double state;
+    private double baseLevel;
     private double position;
-    private double powerLevel;
 
     private final ElevatorComponent component;
     private final IDriver driver;
-
-    public static final double POWERLEVEL_MIN = -.5;
-    public static final double POWERLEVEL_MAX = .5;
-
-    private static final double FLOOR = 0;
-    private static final double PLATFORM = -1;
-    private static final double STEP = -1;
-
-    private static final double TOTE_0 = -1;
-    private static final double TOTE_1 = -1;
-    private static final double TOTE_2 = -1;
-    private static final double TOTE_3 = -1;
-
-    private static final double OVERRIDE = 0.5;
-    private static final double MINIMUM_HEIGHT = 0.0;
-    private static final double MAXIMUM_HEIGHT = 0.0;
 
     public ElevatorController(ElevatorComponent component, IDriver driver)
     {
@@ -42,9 +27,8 @@ public class ElevatorController implements IController
         this.useVelocityPID = false;
         this.usePID = true;
 
-        this.state = ElevatorController.FLOOR;
+        this.baseLevel = HardwareConstants.ELEVATOR_FLOOR_HEIGHT;
         this.position = 0;
-        powerLevel = 0;
     }
 
     @Override
@@ -53,15 +37,15 @@ public class ElevatorController implements IController
         // set elevator state here
         if (this.driver.getElevatorSetStateToFloorButton())
         {
-            this.state = ElevatorController.FLOOR;
+            this.baseLevel = HardwareConstants.ELEVATOR_FLOOR_HEIGHT;
         }
         else if (this.driver.getElevatorSetStateToPlatformButton())
         {
-            this.state = ElevatorController.PLATFORM;
+            this.baseLevel = HardwareConstants.ELEVATOR_PLATFORM_HEIGHT;
         }
         else if (this.driver.getElevatorSetStateToStepButton())
         {
-            this.state = ElevatorController.STEP;
+            this.baseLevel = HardwareConstants.ELEVATOR_STEP_HEIGHT;
         }
 
         // handle enabling/disabling PID (enabling PID takes precedence)
@@ -84,6 +68,8 @@ public class ElevatorController implements IController
             }
         }
 
+        double powerLevel;
+
         // if elevator up or down button is pushed, do not deal with positional elevator buttons
         // down override button takes precedence over the up override button.
         if (this.driver.getElevatorDownButton())
@@ -98,11 +84,11 @@ public class ElevatorController implements IController
                     this.createPIDHandler();
                 }
 
-                powerLevel = this.calculateVelocityModePowerSetting(-ElevatorController.OVERRIDE);
+                powerLevel = this.calculateVelocityModePowerSetting(-TuningConstants.ELEVATOR_OVERRIDE_POWER_LEVEL);
             }
             else
             {
-                powerLevel = -ElevatorController.OVERRIDE;
+                powerLevel = -TuningConstants.ELEVATOR_OVERRIDE_POWER_LEVEL;
             }
         }
         else if (this.driver.getElevatorUpButton())
@@ -117,11 +103,11 @@ public class ElevatorController implements IController
                     this.createPIDHandler();
                 }
 
-                powerLevel = this.calculateVelocityModePowerSetting(ElevatorController.OVERRIDE);
+                powerLevel = this.calculateVelocityModePowerSetting(TuningConstants.ELEVATOR_OVERRIDE_POWER_LEVEL);
             }
             else
             {
-                powerLevel = ElevatorController.OVERRIDE;
+                powerLevel = TuningConstants.ELEVATOR_OVERRIDE_POWER_LEVEL;
             }
         }
         else
@@ -135,12 +121,12 @@ public class ElevatorController implements IController
                     this.createPIDHandler();
                 }
 
-                //calculate position to set elevator
+                // calculate position to set elevator
                 this.position = this.getPositionShift();
 
                 // reset in case position is less than minimum, or more then maximum
-                this.position = Math.max(this.position, ElevatorController.MINIMUM_HEIGHT);
-                this.position = Math.min(this.position, ElevatorController.MAXIMUM_HEIGHT);
+                this.position = Math.max(this.position, HardwareConstants.ELEVATOR_MIN_HEIGHT);
+                this.position = Math.min(this.position, HardwareConstants.ELEVATOR_MAX_HEIGHT);
 
                 powerLevel = this.calculatePositionModePowerSetting(this.position);
             }
@@ -162,22 +148,25 @@ public class ElevatorController implements IController
     {
         if (this.driver.getElevatorMoveTo0TotesButton())
         {
-            return ElevatorController.TOTE_0 + this.state;
+            return HardwareConstants.ELEVATOR_0_TOTE_HEIGHT + this.baseLevel;
         }
         else if (this.driver.getElevatorMoveTo1ToteButton())
         {
-            return ElevatorController.TOTE_1 + this.state;
+            return HardwareConstants.ELEVATOR_1_TOTE_HEIGHT + this.baseLevel;
         }
         else if (this.driver.getElevatorMoveTo2TotesButton())
         {
-            return ElevatorController.TOTE_2 + this.state;
+            return HardwareConstants.ELEVATOR_2_TOTE_HEIGHT + this.baseLevel;
         }
         else if (this.driver.getElevatorMoveTo3TotesButton())
         {
-            return ElevatorController.TOTE_3 + this.state;
+            return HardwareConstants.ELEVATOR_3_TOTE_HEIGHT + this.baseLevel;
         }
         else
         {
+            // Note: we only adjust position if we change the totes level.
+            // If we change only the base level, we just stay at the current position
+            // until we change the totes level as well.
             return this.position;
         }
     }
@@ -202,37 +191,37 @@ public class ElevatorController implements IController
             {
                 this.pidHandler = new PIDHandler(
                     prefs.getDouble(
-                        ElevatorTuningConstants.ELEVATOR_POSITION_PID_KP_KEY,
-                        ElevatorTuningConstants.ELEVATOR_POSITION_PID_KP_DEFAULT),
+                        TuningConstants.ELEVATOR_POSITION_PID_KP_KEY,
+                        TuningConstants.ELEVATOR_POSITION_PID_KP_DEFAULT),
                     prefs.getDouble(
-                        ElevatorTuningConstants.ELEVATOR_POSITION_PID_KI_KEY,
-                        ElevatorTuningConstants.ELEVATOR_POSITION_PID_KI_DEFAULT),
+                        TuningConstants.ELEVATOR_POSITION_PID_KI_KEY,
+                        TuningConstants.ELEVATOR_POSITION_PID_KI_DEFAULT),
                     prefs.getDouble(
-                        ElevatorTuningConstants.ELEVATOR_POSITION_PID_KD_KEY,
-                        ElevatorTuningConstants.ELEVATOR_POSITION_PID_KD_DEFAULT),
+                        TuningConstants.ELEVATOR_POSITION_PID_KD_KEY,
+                        TuningConstants.ELEVATOR_POSITION_PID_KD_DEFAULT),
                     prefs.getDouble(
-                        ElevatorTuningConstants.ELEVATOR_POSITION_PID_KF_KEY,
-                        ElevatorTuningConstants.ELEVATOR_POSITION_PID_KF_DEFAULT),
-                    ElevatorController.POWERLEVEL_MIN,
-                    ElevatorController.POWERLEVEL_MAX);
+                        TuningConstants.ELEVATOR_POSITION_PID_KF_KEY,
+                        TuningConstants.ELEVATOR_POSITION_PID_KF_DEFAULT),
+                    -TuningConstants.ELEVATOR_MAX_POWER_LEVEL,
+                    TuningConstants.ELEVATOR_MAX_POWER_LEVEL);
             }
             else
             {
                 this.pidHandler = new PIDHandler(
                     prefs.getDouble(
-                        ElevatorTuningConstants.ELEVATOR_VELOCITY_PID_KP_KEY,
-                        ElevatorTuningConstants.ELEVATOR_VELOCITY_PID_KP_DEFAULT),
+                        TuningConstants.ELEVATOR_VELOCITY_PID_KP_KEY,
+                        TuningConstants.ELEVATOR_VELOCITY_PID_KP_DEFAULT),
                     prefs.getDouble(
-                        ElevatorTuningConstants.ELEVATOR_VELOCITY_PID_KI_KEY,
-                        ElevatorTuningConstants.ELEVATOR_VELOCITY_PID_KI_DEFAULT),
+                        TuningConstants.ELEVATOR_VELOCITY_PID_KI_KEY,
+                        TuningConstants.ELEVATOR_VELOCITY_PID_KI_DEFAULT),
                     prefs.getDouble(
-                        ElevatorTuningConstants.ELEVATOR_VELOCITY_PID_KD_KEY,
-                        ElevatorTuningConstants.ELEVATOR_VELOCITY_PID_KD_DEFAULT),
+                        TuningConstants.ELEVATOR_VELOCITY_PID_KD_KEY,
+                        TuningConstants.ELEVATOR_VELOCITY_PID_KD_DEFAULT),
                     prefs.getDouble(
-                        ElevatorTuningConstants.ELEVATOR_VELOCITY_PID_KF_KEY,
-                        ElevatorTuningConstants.ELEVATOR_VELOCITY_PID_KF_DEFAULT),
-                    ElevatorController.POWERLEVEL_MIN,
-                    ElevatorController.POWERLEVEL_MAX);
+                        TuningConstants.ELEVATOR_VELOCITY_PID_KF_KEY,
+                        TuningConstants.ELEVATOR_VELOCITY_PID_KF_DEFAULT),
+                    -TuningConstants.ELEVATOR_MAX_POWER_LEVEL,
+                    TuningConstants.ELEVATOR_MAX_POWER_LEVEL);
             }
         }
     }
