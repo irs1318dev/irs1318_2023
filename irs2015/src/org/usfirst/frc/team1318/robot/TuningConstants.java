@@ -94,6 +94,12 @@ public class TuningConstants
     public static final String ELEVATOR_VELOCITY_PID_KF_KEY = "ELEVATOR_VELOCITY_PID_KF";
     public static final double ELEVATOR_VELOCITY_PID_KF_DEFAULT = 0.5;
 
+    public static final String ELEVATOR_VELOCITY_PID_KO_KEY = "ELEVATOR_VELOCITY_PID_KO";
+    public static final double ELEVATOR_VELOCITY_PID_KO_DEFAULT = 0.0;
+
+    public static final String ELEVATOR_VELOCITY_PID_KN_KEY = "ELEVATOR_VELOCITY_PID_KN";
+    public static final double ELEVATOR_VELOCITY_PID_KN_DEFAULT = 1.0;
+
     // Position PID (right)
     public static final String ELEVATOR_POSITION_PID_KP_KEY = "ELEVATOR_POSITION_PID_KP";
     public static final double ELEVATOR_POSITION_PID_KP_DEFAULT = 0.0005;
@@ -106,6 +112,12 @@ public class TuningConstants
 
     public static final String ELEVATOR_POSITION_PID_KF_KEY = "ELEVATOR_POSITION_PID_KF";
     public static final double ELEVATOR_POSITION_PID_KF_DEFAULT = 0.0;
+
+    public static final String ELEVATOR_POSITION_PID_KO_KEY = "ELEVATOR_POSITION_PID_KO";
+    public static final double ELEVATOR_POSITION_PID_KO_DEFAULT = 0.0;
+
+    public static final String ELEVATOR_POSITION_PID_KN_KEY = "ELEVATOR_POSITION_PID_KN";
+    public static final double ELEVATOR_POSITION_PID_KN_DEFAULT = 1.0;
 
     // Elevator max speeds from encoder
     public static final double ELEVATOR_ENCODER_MAX_SPEED = 170.0; // max speed we expect to detect from the left encoder

@@ -3,7 +3,7 @@ package org.usfirst.frc.team1318.robot.Common;
 import edu.wpi.first.wpilibj.Timer;
 
 /**
- * This class is a PID handler with a feed-forward handler.
+ * This class is a PID handler with a feed-forward handler and a complementary filter.
  * 
  * To use PID control:
  *      set the kp/ki/kd/kf tuning values
@@ -29,6 +29,9 @@ public class PIDHandler
     private final double kd;        // proportion for derivative
     private final double kf;        // proportion for feed-forward
 
+    private final double kO;        // proportion for slowing ramp-up, applied to previous value
+    private final double kN;        // proportion for slowing ramp-up, applied to new value
+
     // instance variables
     private double setpoint = 0.0;      // the input, desired value for
     private double measuredValue = 0.0; // the measured value for PID 
@@ -45,7 +48,8 @@ public class PIDHandler
     private final Timer timer;
 
     /**
-     * This constructor initializes the object and sets constants to affect gain
+     * This constructor initializes the object and sets constants to affect gain.
+     * This defaults to not utilizing a complementary filter to slow ramp-up/ramp-down.
      * 
      * @param kp scalar for proportional component
      * @param ki scalar for integral component
@@ -56,10 +60,31 @@ public class PIDHandler
      */
     public PIDHandler(double kp, double ki, double kd, double kf, Double minOutput, Double maxOutput)
     {
+        this(kp, ki, kd, kf, 0, 1, minOutput, maxOutput);
+    }
+
+    /**
+     * This constructor initializes the object and sets constants to affect gain.
+     * This utilizes a complementary filter to slow ramp-up/ramp-down.
+     * 
+     * @param kp scalar for proportional component
+     * @param ki scalar for integral component
+     * @param kd scalar for derivative component
+     * @param kf scalar for feed-forward control
+     * @param kO scalar for complementary filter multiplier
+     * @param kN scalar for complementary filter multiplier
+     * @param minOutput indicates the minimum output value acceptable, or null
+     * @param maxOutput indicates the maximum output value acceptable, or null
+     */
+    public PIDHandler(double kp, double ki, double kd, double kf, double kO, double kN, Double minOutput, Double maxOutput)
+    {
         this.ki = ki;
         this.kd = kd;
         this.kp = kp;
         this.kf = kf;
+
+        this.kO = kO;
+        this.kN = kN;
 
         this.minOutput = minOutput;
         this.maxOutput = maxOutput;
@@ -132,7 +157,8 @@ public class PIDHandler
                 result = this.minOutput;
             }
 
-            this.output = result;
+            // apply complementary filter to slow ramp-up/ramp-down
+            this.output = this.kO * this.output + this.kN * result;
         }
 
         return this.output;

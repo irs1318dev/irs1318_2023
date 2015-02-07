@@ -325,6 +325,12 @@ public class ElevatorController implements IController
                     prefs.getDouble(
                         TuningConstants.ELEVATOR_POSITION_PID_KF_KEY,
                         TuningConstants.ELEVATOR_POSITION_PID_KF_DEFAULT),
+                    prefs.getDouble(
+                        TuningConstants.ELEVATOR_POSITION_PID_KO_KEY,
+                        TuningConstants.ELEVATOR_POSITION_PID_KO_DEFAULT),
+                    prefs.getDouble(
+                        TuningConstants.ELEVATOR_POSITION_PID_KN_KEY,
+                        TuningConstants.ELEVATOR_POSITION_PID_KN_DEFAULT),
                     -TuningConstants.ELEVATOR_MAX_POWER_LEVEL,
                     TuningConstants.ELEVATOR_MAX_POWER_LEVEL);
             }
@@ -343,6 +349,12 @@ public class ElevatorController implements IController
                     prefs.getDouble(
                         TuningConstants.ELEVATOR_VELOCITY_PID_KF_KEY,
                         TuningConstants.ELEVATOR_VELOCITY_PID_KF_DEFAULT),
+                    prefs.getDouble(
+                        TuningConstants.ELEVATOR_VELOCITY_PID_KO_KEY,
+                        TuningConstants.ELEVATOR_VELOCITY_PID_KO_DEFAULT),
+                    prefs.getDouble(
+                        TuningConstants.ELEVATOR_VELOCITY_PID_KN_KEY,
+                        TuningConstants.ELEVATOR_VELOCITY_PID_KN_DEFAULT),
                     -TuningConstants.ELEVATOR_MAX_POWER_LEVEL,
                     TuningConstants.ELEVATOR_MAX_POWER_LEVEL);
             }
