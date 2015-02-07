@@ -74,6 +74,11 @@ public class ElevatorController implements IController
             }
         }
 
+        if (this.driver.getZeroElevatorEncoder())
+        {
+            this.encoderZeroOffset = HardwareConstants.ELEVATOR_MIN_HEIGHT - this.component.getEncoderDistance();
+        }
+
         double powerLevel = 0.0;
 
         //checks whether it is in a mode to move down until the sensor is triggered 
@@ -181,8 +186,19 @@ public class ElevatorController implements IController
             }
             movingToBottom = false;
         }
-        
-        if(this.driver.getStopElevatorButton())
+
+        if (this.driver.getElevatorVelocityOverride() > 0.1 || driver.getElevatorVelocityOverride() < -0.1)
+        {
+            double velocity = adjustIntensity(this.driver.getElevatorVelocityOverride());
+            if (!useVelocityPID)
+            {
+                useVelocityPID = true;
+                this.createPIDHandler();
+            }
+            powerLevel = this.calculateVelocityModePowerSetting(velocity);
+        }
+
+        if (this.driver.getStopElevatorButton())
         {
             powerLevel = 0.0;
         }
@@ -236,6 +252,24 @@ public class ElevatorController implements IController
     {
         // stop the elevator's motor
         this.component.setMotorPowerLevel(0.0);
+    }
+
+    /**
+     * Adjust the intensity of the input value
+     * @param value to adjust
+     * @return adjusted value
+     */
+    private double adjustIntensity(double value)
+    {
+        // we will use simple quadratic scaling to adjust input intensity
+        if (value < 0)
+        {
+            return -value * value;
+        }
+        else
+        {
+            return value * value;
+        }
     }
 
     private void createPIDHandler()
