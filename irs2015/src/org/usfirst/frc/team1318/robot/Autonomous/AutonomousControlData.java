@@ -30,6 +30,10 @@ public class AutonomousControlData
     private boolean elevatorStopState;
     private boolean elevatorUpState;
     private boolean elevatorDownState;
+    private double elevatorVelocityOverrideState;
+    private boolean elevatorIgnoreSensorsState;
+    private boolean elevatorUseSensorsState;
+    private boolean elevatorZeroEncodersState;
 
     //Arm
     private boolean armMacroExtendState;
@@ -78,6 +82,10 @@ public class AutonomousControlData
         this.elevatorStopState = false;
         this.elevatorUpState = false;
         this.elevatorDownState = false;
+        this.elevatorVelocityOverrideState = 0;
+        this.elevatorIgnoreSensorsState = false;
+        this.elevatorUseSensorsState = true;
+        this.elevatorZeroEncodersState = false;
 
         //Arm 
         this.armMacroExtendState = false;
@@ -293,6 +301,46 @@ public class AutonomousControlData
     public boolean getArmMacroExtendState()
     {
         return armMacroExtendState;
+    }
+
+    public void setElevatorVelocityOverrideState(double velocity)
+    {
+        this.elevatorVelocityOverrideState = velocity;
+    }
+
+    public double getElevatorVelocityOverrideState()
+    {
+        return this.elevatorVelocityOverrideState;
+    }
+
+    public void setElevatorIgnoreSensorsState(boolean elevatorIgnoreSensorsState)
+    {
+        this.elevatorIgnoreSensorsState = elevatorIgnoreSensorsState;
+    }
+
+    public boolean getElevatorIgnoreSensorsState()
+    {
+        return this.elevatorIgnoreSensorsState;
+    }
+
+    public void setElevatorUseSensorsState(boolean elevatorUseSensorsState)
+    {
+        this.elevatorUseSensorsState = elevatorUseSensorsState;
+    }
+
+    public boolean getElevatorUseSensorsState()
+    {
+        return this.elevatorUseSensorsState;
+    }
+
+    public void setElevatorZeroEncodersState(boolean elevatorZeroEncodersState)
+    {
+        this.elevatorZeroEncodersState = elevatorZeroEncodersState;
+    }
+
+    public boolean getElevatorZeroEncoderState()
+    {
+        return this.elevatorZeroEncodersState;
     }
 
     public void setArmMacroExtendState(boolean armMacroExtendState)
