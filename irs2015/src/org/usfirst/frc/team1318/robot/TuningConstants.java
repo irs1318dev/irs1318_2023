@@ -78,8 +78,10 @@ public class TuningConstants
     public static final double DRIVETRAIN_MAX_POWER_POSITIONAL_NON_PID = 0.2; // max power level (positional, non-PID)
 
     // ======================= Arm tuning constants ==================================
-    public static final double PARTIAL_EXTEND_WAIT_TIME = 2;
-    public static final double FULL_EXTEND_WAIT_TIME = 2;
+    public static final double TILT_EXTEND_WAIT_TIME = 1;
+    public static final double EXTENDOR_EXTEND_WAIT_TIME = 2;
+    public static final double TROMBONE_EXTEND_WAIT_TIME = 2;
+
     public static final double PARTIAL_RETRACT_WAIT_TIME = 2;
     public static final double FULL_RETRACT_WAIT_TIME = 2;
     public static final double SAFETY_WAIT = 1;

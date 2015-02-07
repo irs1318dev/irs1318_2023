@@ -10,7 +10,7 @@ public class ArmController implements IController
 {
     private enum ArmStates
     {
-        STAGE_0, STAGE_1, STAGE_2, STAGE_3;
+        STAGE_0, STAGE_1, STAGE_2, STAGE_3, STAGE_4;
     }
 
     private ArmStates armstateExtendor;
@@ -65,19 +65,35 @@ public class ArmController implements IController
                 }
                 break;
             case STAGE_1:
-                if (this.extenderState == false)
+                if (this.tiltState == true)
                 {
-                    //don't wait for extender to retract
-                    this.continueTime = this.timer.get() + TuningConstants.SAFETY_WAIT;
+                    //don't wait for tilt to extend, necessary for the beginning of the macro
+                    this.continueTime = this.timer.get();
                 }
                 else
                 {
-                    this.continueTime = this.timer.get() + TuningConstants.PARTIAL_EXTEND_WAIT_TIME;
-                    this.extenderState = false;
+                    this.continueTime = this.timer.get() + TuningConstants.TILT_EXTEND_WAIT_TIME;
+                    this.tiltState = true;
                 }
                 this.armstateExtendor = ArmStates.STAGE_2;
                 break;
             case STAGE_2:
+                if (this.timer.get() >= this.continueTime)
+                {
+                    if (this.extenderState == false)
+                    {
+                        //don't wait for extender to retract
+                        this.continueTime = this.timer.get() + TuningConstants.SAFETY_WAIT;
+                    }
+                    else
+                    {
+                        this.continueTime = this.timer.get() + TuningConstants.EXTENDOR_EXTEND_WAIT_TIME;
+                        this.extenderState = false;
+                    }
+                    this.armstateExtendor = ArmStates.STAGE_3;
+                }
+                break;
+            case STAGE_3:
                 if (this.timer.get() >= this.continueTime)
                 {
                     if (this.tromboneState == true)
@@ -87,13 +103,13 @@ public class ArmController implements IController
                     }
                     else
                     {
-                        this.continueTime = this.timer.get() + TuningConstants.FULL_EXTEND_WAIT_TIME;
+                        this.continueTime = this.timer.get() + TuningConstants.TROMBONE_EXTEND_WAIT_TIME;
                         this.tromboneState = true;
                     }
-                    this.armstateExtendor = ArmStates.STAGE_3;
+                    this.armstateExtendor = ArmStates.STAGE_4;
                 }
                 break;
-            case STAGE_3:
+            case STAGE_4:
                 if (this.timer.get() >= this.continueTime)
                 {
                     this.tiltState = false;
