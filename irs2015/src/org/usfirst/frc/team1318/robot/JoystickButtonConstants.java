@@ -50,6 +50,7 @@ public class JoystickButtonConstants
     public static final int ELEVATOR_STOP_BUTTON = -1;
     public static final int ELEVATOR_UP_BUTTON = -1;
     public static final int ELEVATOR_DOWN_BUTTON = -1;
+    public static final int ELEVATOR_MOVE_TO_BOTTOM = -1;
 
     //Arm
     public static final int ARM_MACRO_EXTEND_BUTTON = -1;

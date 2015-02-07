@@ -21,6 +21,8 @@ public class ElevatorController implements IController
     private boolean usePID;
     private PIDHandler pidHandler;
 
+    private boolean movingToBottom;
+
     public ElevatorController(IDriver driver, ElevatorComponent component)
     {
         this.component = component;
@@ -32,22 +34,13 @@ public class ElevatorController implements IController
         this.baseLevel = HardwareConstants.ELEVATOR_FLOOR_HEIGHT;
         this.position = 0;
         this.encoderZeroOffset = 0;
+        movingToBottom = true;  //move to bottom to callibrate on start
     }
 
     @Override
     public void update()
     {
-        // check offset - if we hit the bottom or top, adjust the encoder zero offset
-        if (this.component.getBottomHallEffectSensorValue())
-        {
-            this.encoderZeroOffset = HardwareConstants.ELEVATOR_MIN_HEIGHT - this.component.getEncoderDistance();
-        }
-        else if (this.component.getTopHallEffectSensorValue())
-        {
-            this.encoderZeroOffset = HardwareConstants.ELEVATOR_MAX_HEIGHT - this.component.getEncoderDistance();
-        }
-
-        // set elevator state here
+        // set elevator base level here
         if (this.driver.getElevatorSetStateToFloorButton())
         {
             this.baseLevel = HardwareConstants.ELEVATOR_FLOOR_HEIGHT;
@@ -81,51 +74,32 @@ public class ElevatorController implements IController
             }
         }
 
-        double powerLevel;
+        double powerLevel = 0.0;
 
-        // if elevator up or down button is pushed, do not deal with positional elevator buttons
-        // down override button takes precedence over the up override button.
-        if (this.driver.getElevatorDownButton())
+        //checks whether it is in a mode to move down until the sensor is triggered 
+        if (this.driver.getElevatorMoveToBottom() || movingToBottom)
         {
-            // if usePID is true, calculate velocity using PID.
             if (this.usePID)
             {
-                // recreate PID handler if we are changing modes...
-                if (!this.useVelocityPID)
+                if (this.useVelocityPID)
                 {
-                    this.useVelocityPID = true;
+                    this.useVelocityPID = false;
                     this.createPIDHandler();
                 }
-
-                powerLevel = this.calculateVelocityModePowerSetting(-TuningConstants.ELEVATOR_OVERRIDE_POWER_LEVEL);
+                powerLevel = this.calculatePositionModePowerSetting(TuningConstants.ELEVATOR_BELLOW_MINIMUM_POSITION);
+                movingToBottom = true;
             }
             else
             {
                 powerLevel = -TuningConstants.ELEVATOR_OVERRIDE_POWER_LEVEL;
+                movingToBottom = true;
             }
         }
-        else if (this.driver.getElevatorUpButton())
-        {
-            // if usePID is true, calculate velocity using PID.
-            if (this.usePID)
-            {
-                // recreate PID handler if we are changing modes...
-                if (!this.useVelocityPID)
-                {
-                    this.useVelocityPID = true;
-                    this.createPIDHandler();
-                }
 
-                powerLevel = this.calculateVelocityModePowerSetting(TuningConstants.ELEVATOR_OVERRIDE_POWER_LEVEL);
-            }
-            else
-            {
-                powerLevel = TuningConstants.ELEVATOR_OVERRIDE_POWER_LEVEL;
-            }
-        }
-        else
+        //check for position normally
+        // if usePID is true, calculate power-level using PID
+        if (this.getActionButtonPressed() || !movingToBottom)
         {
-            // if usePID is true, calculate power-level using PID
             if (this.usePID)
             {
                 if (this.useVelocityPID)
@@ -148,6 +122,69 @@ public class ElevatorController implements IController
                 // if we are in non-PID mode, pressing neither the up nor down override buttons means we should stop applying power to the motor
                 powerLevel = 0.0;
             }
+            movingToBottom = false;
+        }
+
+        // check offset - if we hit the bottom or top, adjust the encoder zero offset
+        if (this.component.getBottomHallEffectSensorValue())
+        {
+            this.encoderZeroOffset = HardwareConstants.ELEVATOR_MIN_HEIGHT - this.component.getEncoderDistance();
+            movingToBottom = false;
+            powerLevel = Math.max(powerLevel, 0);
+        }
+        else if (this.component.getTopHallEffectSensorValue())
+        {
+            this.encoderZeroOffset = HardwareConstants.ELEVATOR_MAX_HEIGHT - this.component.getEncoderDistance();
+            powerLevel = Math.min(powerLevel, 0);
+        }
+
+        // if elevator up or down button is pushed, do not deal with positional elevator buttons
+        //overrides take precedence over normal controls 
+        // down override button takes precedence over the up override button.
+        if (this.driver.getElevatorDownButton())
+        {
+            // if usePID is true, calculate velocity using PID.
+            if (this.usePID)
+            {
+                // recreate PID handler if we are changing modes...
+                if (!this.useVelocityPID)
+                {
+                    this.useVelocityPID = true;
+                    this.createPIDHandler();
+                }
+
+                powerLevel = this.calculateVelocityModePowerSetting(-TuningConstants.ELEVATOR_OVERRIDE_POWER_LEVEL);
+            }
+            else
+            {
+                powerLevel = -TuningConstants.ELEVATOR_OVERRIDE_POWER_LEVEL;
+            }
+            movingToBottom = false;
+        }
+        else if (this.driver.getElevatorUpButton())
+        {
+            // if usePID is true, calculate velocity using PID.
+            if (this.usePID)
+            {
+                // recreate PID handler if we are changing modes...
+                if (!this.useVelocityPID)
+                {
+                    this.useVelocityPID = true;
+                    this.createPIDHandler();
+                }
+
+                powerLevel = this.calculateVelocityModePowerSetting(TuningConstants.ELEVATOR_OVERRIDE_POWER_LEVEL);
+            }
+            else
+            {
+                powerLevel = TuningConstants.ELEVATOR_OVERRIDE_POWER_LEVEL;
+            }
+            movingToBottom = false;
+        }
+        
+        if(this.driver.getStopElevatorButton())
+        {
+            powerLevel = 0.0;
         }
 
         this.component.setMotorPowerLevel(powerLevel);
@@ -161,18 +198,22 @@ public class ElevatorController implements IController
     {
         if (this.driver.getElevatorMoveTo0TotesButton())
         {
+            movingToBottom = false;
             return HardwareConstants.ELEVATOR_0_TOTE_HEIGHT + this.baseLevel;
         }
         else if (this.driver.getElevatorMoveTo1ToteButton())
         {
+            movingToBottom = false;
             return HardwareConstants.ELEVATOR_1_TOTE_HEIGHT + this.baseLevel;
         }
         else if (this.driver.getElevatorMoveTo2TotesButton())
         {
+            movingToBottom = false;
             return HardwareConstants.ELEVATOR_2_TOTE_HEIGHT + this.baseLevel;
         }
         else if (this.driver.getElevatorMoveTo3TotesButton())
         {
+            movingToBottom = false;
             return HardwareConstants.ELEVATOR_3_TOTE_HEIGHT + this.baseLevel;
         }
         else
@@ -182,6 +223,12 @@ public class ElevatorController implements IController
             // until we change the totes level as well.
             return this.position;
         }
+    }
+
+    private boolean getActionButtonPressed()
+    {
+        return this.driver.getElevatorMoveTo0TotesButton() || this.driver.getElevatorMoveTo1ToteButton() ||
+            this.driver.getElevatorMoveTo2TotesButton() || this.driver.getElevatorMoveTo3TotesButton();
     }
 
     @Override

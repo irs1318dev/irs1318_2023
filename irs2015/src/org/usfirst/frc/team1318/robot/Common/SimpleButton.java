@@ -27,7 +27,7 @@ public class SimpleButton
     }
 
     /**
-     * attempt to activate 
+     * attempt to activate button, otherwise sets activated to false 
      * @param buttonState the current position of the button (whether it is currently pressed) 
      */
     public void updateState(boolean buttonState)
@@ -40,6 +40,10 @@ public class SimpleButton
         {
             activated = true;
         }
+        else
+        {
+            activated = false;
+        }
         prevState = buttonState;
     }
 
@@ -49,12 +53,7 @@ public class SimpleButton
      */
     public boolean isActivated()
     {
-        if (activated)
-        {
-            activated = false;
-            return true;
-        }
-        return false;
+        return activated;
     }
 
 }

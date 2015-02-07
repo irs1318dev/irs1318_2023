@@ -30,6 +30,7 @@ public class AutonomousControlData
     private boolean elevatorStopState;
     private boolean elevatorUpState;
     private boolean elevatorDownState;
+    private boolean elevatorMoveToBottomState;
 
     //Arm
     private boolean armMacroExtendState;
@@ -288,6 +289,16 @@ public class AutonomousControlData
     public void setElevatorDownState(boolean elevatorDownState)
     {
         this.elevatorDownState = elevatorDownState;
+    }
+
+    public boolean getElevatorMoveToBottomState()
+    {
+        return elevatorMoveToBottomState;
+    }
+
+    public void setElebvatorMoveToBottomState(boolean elevatorMoveToBottomState)
+    {
+        this.elevatorMoveToBottomState = elevatorMoveToBottomState;
     }
 
     public boolean getArmMacroExtendState()

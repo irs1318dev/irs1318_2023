@@ -136,6 +136,12 @@ public interface IDriver
      */
     public boolean getElevatorDownButton();
 
+    /**
+     * Get a value indicating whether to move the elevator to the lowest possible point 
+     * @return true for move to the bottom, otherwise false 
+     */
+    public boolean getElevatorMoveToBottom();
+
     //===================================================== Arm =================================================================
     /**
      * Get a value indicating whether to run the macro to extend the whole arm state 

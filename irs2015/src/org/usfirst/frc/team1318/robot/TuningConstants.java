@@ -115,4 +115,5 @@ public class TuningConstants
     public static final double ELEVATOR_MAX_POWER_LEVEL = 0.5; // max power level (velocity)
 
     public static final double ELEVATOR_OVERRIDE_POWER_LEVEL = 0.5;
+    public static final double ELEVATOR_BELLOW_MINIMUM_POSITION = -10000;
 }

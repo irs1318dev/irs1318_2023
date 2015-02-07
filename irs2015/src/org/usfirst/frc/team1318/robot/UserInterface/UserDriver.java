@@ -38,6 +38,7 @@ public class UserDriver implements IDriver
     private static final String ELEVATOR_STOP_LOG_KEY = "u.elevatorStop";
     private static final String ELEVATOR_UP_STATE_LOG_KEY = "u.elevatorUp";
     private static final String ELEVATOR_DOWN_STATE_LOG_KEY = "u.elevatorDown";
+    private static final String ELEVATOR_MOVE_TO_BOTTOM_LOG_KEY = "u.elevatorMoveToBottom";
 
     //Arm 
     private static final String ARM_MACRO_EXTEND_STATE_LOG_KEY = "u.armMacroExtendState";
@@ -97,6 +98,7 @@ public class UserDriver implements IDriver
     private SimpleButton elevatorStop;
     private SimpleButton elevatorUp;
     private SimpleButton elevatorDown;
+    private SimpleButton elevatorMoveToBottom;
 
     /**
      * Initializes a new UserDriver
@@ -140,6 +142,7 @@ public class UserDriver implements IDriver
         this.elevatorStop = new SimpleButton();
         this.elevatorUp = new SimpleButton();
         this.elevatorDown = new SimpleButton();
+        this.elevatorMoveToBottom = new SimpleButton();
     }
 
     /**
@@ -188,7 +191,7 @@ public class UserDriver implements IDriver
         this.elevatorStop.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_STOP_BUTTON));
         this.elevatorUp.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_UP_BUTTON));
         this.elevatorDown.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_DOWN_BUTTON));
-
+        this.elevatorMoveToBottom.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_BOTTOM));
     }
 
     /**
@@ -382,6 +385,14 @@ public class UserDriver implements IDriver
     {
         boolean mode = this.elevatorDown.isActivated();
         SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_DOWN_STATE_LOG_KEY, mode);
+        return mode;
+    }
+
+    @Override
+    public boolean getElevatorMoveToBottom()
+    {
+        boolean mode = this.elevatorMoveToBottom.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_MOVE_TO_BOTTOM_LOG_KEY, mode);
         return mode;
     }
 

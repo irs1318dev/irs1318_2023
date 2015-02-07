@@ -38,6 +38,7 @@ public class AutonomousDriver implements IDriver
     private static final String ELEVATOR_STOP_STATE_LOG_KEY = "a.elevatorStop";
     private static final String ELEVATOR_UP_STATE_LOG_KEY = "a.elevatorUp";
     private static final String ELEVATOR_DOWN_STATE_LOG_KEY = "a.elevatorDown";
+    private static final String ELEVATOR_MOVE_TO_BOTTOM_STATE_LOG_KEY = "a.elevatorMoveToBottom";
 
     //Arm 
     private static final String ARM_MACRO_EXTEND_STATE_LOG_KEY = "a.armMacroExtendState";
@@ -302,6 +303,14 @@ public class AutonomousDriver implements IDriver
     {
         boolean mode = this.controlData.getElevatorDownState();
         SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_DOWN_STATE_LOG_KEY, mode);
+        return mode;
+    }
+
+    @Override
+    public boolean getElevatorMoveToBottom()
+    {
+        boolean mode = this.controlData.getElevatorMoveToBottomState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_MOVE_TO_BOTTOM_STATE_LOG_KEY, mode);
         return mode;
     }
 
