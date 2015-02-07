@@ -61,7 +61,7 @@ public class UserDriver implements IDriver
     private static final String INTAKE_BACKWARD_STATE_KEY = "u.intakeBackwardStateKey";
 
     // Joystick
-    private final Joystick joystick;
+    private final Joystick joystickDriver;
 
     // DriveTrain toggles
     private final SimpleToggleButton simpleDriveModeButton;
@@ -105,7 +105,7 @@ public class UserDriver implements IDriver
      */
     public UserDriver()
     {
-        this.joystick = new Joystick(JoystickButtonConstants.JOYSTICK_PORT);
+        this.joystickDriver = new Joystick(JoystickButtonConstants.JOYSTICK_PORT);
 
         // initialize DriveTrain toggles
         this.simpleDriveModeButton = new SimpleToggleButton();
@@ -153,45 +153,46 @@ public class UserDriver implements IDriver
         // update the state of the various toggle buttons
 
         // DriveTrain
-        this.simpleDriveModeButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.DRIVETRAIN_SIMPLE_BUTTON));
+        this.simpleDriveModeButton.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.DRIVETRAIN_SIMPLE_BUTTON));
 
         //Arm 
-        this.armMacroExtendButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_MACRO_EXTEND_BUTTON));
-        this.armMacroRetractButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_MACRO_RETRACT_BUTTON));
-        this.armExtenderExtendOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_EXTENDER_EXTEND_BUTTON));
-        this.armExtenderRetractOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_EXTENDER_RETRACT_BUTTON));
-        this.armTiltExtendOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_TILT_EXTEND_BUTTON));
-        this.armTiltRetractOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_TILT_RETRACT_BUTTON));
-        this.armTromboneExtendOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_TROMBONE_EXTEND_BUTTON));
-        this.armTromboneRetractOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_TROMBONE_RETRACT_BUTTON));
+        this.armMacroExtendButton.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ARM_MACRO_EXTEND_BUTTON));
+        this.armMacroRetractButton.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ARM_MACRO_RETRACT_BUTTON));
+        this.armExtenderExtendOverride.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ARM_EXTENDER_EXTEND_BUTTON));
+        this.armExtenderRetractOverride.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ARM_EXTENDER_RETRACT_BUTTON));
+        this.armTiltExtendOverride.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ARM_TILT_EXTEND_BUTTON));
+        this.armTiltRetractOverride.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ARM_TILT_RETRACT_BUTTON));
+        this.armTromboneExtendOverride.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ARM_TROMBONE_EXTEND_BUTTON));
+        this.armTromboneRetractOverride.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ARM_TROMBONE_RETRACT_BUTTON));
 
         //Intake
-        this.intakeUpButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.INTAKE_UP_BUTTON));
-        this.intakeDownButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.INTAKE_DOWN_BUTTON));
-        this.intakeRightExtendOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.INTAKE_RIGHT_EXTEND_OVERRIDE));
-        this.intakeRightRetractOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.INTAKE_RIGHT_RETRACT_OVERRIDE));
-        this.intakeLeftExtendOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.INTAKE_LEFT_EXTEND_OVERRIDE));
-        this.intakeLeftRetractOverride.updateState(this.joystick.getRawButton(JoystickButtonConstants.INTAKE_LEFT_RETRACT_OVERRIDE));
+        this.intakeUpButton.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.INTAKE_UP_BUTTON));
+        this.intakeDownButton.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.INTAKE_DOWN_BUTTON));
+        this.intakeRightExtendOverride.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.INTAKE_RIGHT_EXTEND_OVERRIDE));
+        this.intakeRightRetractOverride
+            .updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.INTAKE_RIGHT_RETRACT_OVERRIDE));
+        this.intakeLeftExtendOverride.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.INTAKE_LEFT_EXTEND_OVERRIDE));
+        this.intakeLeftRetractOverride.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.INTAKE_LEFT_RETRACT_OVERRIDE));
 
         //Elevator
-        this.elevatorContainerMacroButton.updateState(this.joystick
+        this.elevatorContainerMacroButton.updateState(this.joystickDriver
             .getRawButton(JoystickButtonConstants.ELEVATOR_CONTAINER_MACRO_BUTTON));
-        this.elevatorSetStateToFloorButton.updateState(this.joystick
+        this.elevatorSetStateToFloorButton.updateState(this.joystickDriver
             .getRawButton(JoystickButtonConstants.ELEVATOR_SET_STAE_TO_FLOOR_BUTTON));
-        this.elevatorSetStateToPlatformButton.updateState(this.joystick
+        this.elevatorSetStateToPlatformButton.updateState(this.joystickDriver
             .getRawButton(JoystickButtonConstants.ELEVATOR_SET_STATE_TO_PLATFORM_BUTTON));
-        this.elevatorSetStateToStepButton.updateState(this.joystick
+        this.elevatorSetStateToStepButton.updateState(this.joystickDriver
             .getRawButton(JoystickButtonConstants.ELEVATOR_SET_STATE_TO_STEP_BUTTON));
-        this.elevatorMoveTo0Totes.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_0_TOTES_BUTTON));
-        this.elevatorMoveTo1Tote.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_1_TOTE_BUTTON));
-        this.elevatorMoveTo2Totes.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_2_TOTES_BUTTON));
-        this.elevatorMoveTo3Totes.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_3_TOTES_BUTTON));
-        this.elevatorPIDOn.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_PID_ON));
-        this.elevatorPIDOff.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_PID_OFF));
-        this.elevatorStop.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_STOP_BUTTON));
-        this.elevatorUp.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_UP_BUTTON));
-        this.elevatorDown.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_DOWN_BUTTON));
-        this.elevatorMoveToBottom.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_BOTTOM));
+        this.elevatorMoveTo0Totes.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_0_TOTES_BUTTON));
+        this.elevatorMoveTo1Tote.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_1_TOTE_BUTTON));
+        this.elevatorMoveTo2Totes.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_2_TOTES_BUTTON));
+        this.elevatorMoveTo3Totes.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_3_TOTES_BUTTON));
+        this.elevatorPIDOn.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_PID_ON));
+        this.elevatorPIDOff.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_PID_OFF));
+        this.elevatorStop.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_STOP_BUTTON));
+        this.elevatorUp.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_UP_BUTTON));
+        this.elevatorDown.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_DOWN_BUTTON));
+        this.elevatorMoveToBottom.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_BOTTOM));
     }
 
     /**
@@ -209,7 +210,7 @@ public class UserDriver implements IDriver
      */
     public double getDriveTrainXVelocity()
     {
-        double xVelocity = this.joystick.getX();
+        double xVelocity = this.joystickDriver.getX();
 
         if (JoystickButtonConstants.INVERT_X_AXIS)
         {
@@ -227,7 +228,7 @@ public class UserDriver implements IDriver
      */
     public double getDriveTrainYVelocity()
     {
-        double yVelocity = this.joystick.getY();
+        double yVelocity = this.joystickDriver.getY();
 
         if (JoystickButtonConstants.INVERT_Y_AXIS)
         {
@@ -515,7 +516,7 @@ public class UserDriver implements IDriver
     @Override
     public boolean getIntakeForwardButton()
     {
-        boolean mode = this.joystick.getRawButton(JoystickButtonConstants.INTAKE_FORWARD_BUTTON);
+        boolean mode = this.joystickDriver.getRawButton(JoystickButtonConstants.INTAKE_FORWARD_BUTTON);
         SmartDashboardLogger.putBoolean(UserDriver.INTAKE_FORWARD_STATE_KEY, mode);
         return mode;
     }
@@ -523,7 +524,7 @@ public class UserDriver implements IDriver
     @Override
     public boolean getIntakeBackwardButton()
     {
-        boolean mode = this.joystick.getRawButton(JoystickButtonConstants.INTAKE_BACKWARD_BUTTON);
+        boolean mode = this.joystickDriver.getRawButton(JoystickButtonConstants.INTAKE_BACKWARD_BUTTON);
         SmartDashboardLogger.putBoolean(UserDriver.INTAKE_BACKWARD_STATE_KEY, mode);
         return mode;
     }
