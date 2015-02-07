@@ -22,9 +22,9 @@ public class ArmController implements IController
     private final ArmComponent component;
     private final IDriver driver;
 
-    private boolean tromboneState;
-    private boolean tiltState;
-    private boolean extenderState;
+    private Boolean tromboneState;
+    private Boolean tiltState;
+    private Boolean extenderState;
 
     public ArmController(IDriver driver, ArmComponent component)
     {
@@ -34,9 +34,9 @@ public class ArmController implements IController
         this.driver = driver;
 
         //in rest position: extendLinkage is extended, tiltLinkage is extended, trombone is retracted 
-        this.tromboneState = false;
-        this.tiltState = true;
-        this.extenderState = true;
+        this.tromboneState = null;
+        this.tiltState = null;
+        this.extenderState = null;
 
         //initialize new Timer but start it between actual stages of arm-movement
         this.timer = new Timer();
@@ -202,10 +202,20 @@ public class ArmController implements IController
         }
 
         //actually set the solenoid states only once per update cycle in order to prevent opposite commands
-        this.component.setExtendLinkageSolenoidState(this.extenderState);
-        this.component.setTiltLinkageSolenoidState(this.tiltState);
-        this.component.setTromboneSolenoidState(this.tromboneState);
+        if (this.extenderState != null)
+        {
+            this.component.setExtendLinkageSolenoidState(this.extenderState);
+        }
 
+        if (this.tiltState != null)
+        {
+            this.component.setTiltLinkageSolenoidState(this.tiltState);
+        }
+
+        if (this.tromboneState != null)
+        {
+            this.component.setTromboneSolenoidState(this.tromboneState);
+        }
     }
 
     @Override
