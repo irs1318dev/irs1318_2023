@@ -142,6 +142,30 @@ public interface IDriver
      */
     public boolean getElevatorMoveToBottom();
 
+    /**
+     * Get a value indicating the desired elevator velocity 
+     * @return desired elevator velocity 
+     */
+    public double getElevatorVelocityOverride();
+
+    /**
+     * Get a value indicating whether to ignore the Hall Effect sensors or limit switches 
+     * @return true for ignore them, otherwise false 
+     */
+    public boolean getIgnoreElevatorSensors();
+
+    /**
+     * Get a value indicating whether to use the Hall Effect sensors or limit switches
+     * @return true for use them, otherwise false 
+     */
+    public boolean getUseElevatorSensors();
+
+    /**
+     * Get a value indicating whether to change the offset to consider the current position 0 
+     * @return true for change offset, otherwise false 
+     */
+    public boolean getZeroElevatorEncoder();
+
     //===================================================== Arm =================================================================
     /**
      * Get a value indicating whether to run the macro to extend the whole arm state 
