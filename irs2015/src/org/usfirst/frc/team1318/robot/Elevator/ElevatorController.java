@@ -222,6 +222,14 @@ public class ElevatorController implements IController
         if (this.driver.getStopElevatorButton())
         {
             powerLevel = 0.0;
+
+            // also disable PID when we stop the elevator - otherwise the next iteration will cause us 
+            // to continue to try to hit the same position setpoint we were trying to hit earlier
+            if (this.usePID)
+            {
+                this.usePID = false;
+                this.createPIDHandler();
+            }
         }
 
         this.component.setMotorPowerLevel(powerLevel);
