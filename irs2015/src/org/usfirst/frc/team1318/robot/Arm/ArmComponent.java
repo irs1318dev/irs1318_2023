@@ -13,9 +13,9 @@ public class ArmComponent
     private final DoubleSolenoid extendLinkage;
 
     // logging constants
-    private static final String TROMBONE_STATE_LOG_KEY = "dt.TromboneState";
-    private static final String EXTEND_LINKAGE_STATE_LOG_KEY = "dt.ExtendLinkageState";
-    private static final String TILT_LINKAGE_STATE_LOG_KEY = "dt.TiltLinkageState";
+    private static final String TROMBONE_STATE_LOG_KEY = "ar.TromboneState";
+    private static final String EXTEND_LINKAGE_STATE_LOG_KEY = "ar.ExtendLinkageState";
+    private static final String TILT_LINKAGE_STATE_LOG_KEY = "ar.TiltLinkageState";
 
     // constructor uses constants for extension and retraction of 3 solenoids that make up the arm 
     public ArmComponent()
