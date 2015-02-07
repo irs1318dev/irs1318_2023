@@ -22,6 +22,7 @@ public class ElevatorController implements IController
     private PIDHandler pidHandler;
 
     private boolean movingToBottom;
+    private boolean ignoreSensors;
 
     public ElevatorController(IDriver driver, ElevatorComponent component)
     {
@@ -30,6 +31,8 @@ public class ElevatorController implements IController
 
         this.useVelocityPID = false;
         this.usePID = true;
+
+        this.ignoreSensors = false;
 
         this.baseLevel = HardwareConstants.ELEVATOR_FLOOR_HEIGHT;
         this.position = 0;
@@ -40,6 +43,16 @@ public class ElevatorController implements IController
     @Override
     public void update()
     {
+        //check whether ignore or use sensors; using sensors takes precedence over ignoring them
+        if (this.driver.getIgnoreElevatorSensors())
+        {
+            this.ignoreSensors = true;
+        }
+        if (this.driver.getUseElevatorSensors())
+        {
+            this.ignoreSensors = false;
+        }
+
         // set elevator base level here
         if (this.driver.getElevatorSetStateToFloorButton())
         {
@@ -131,13 +144,13 @@ public class ElevatorController implements IController
         }
 
         // check offset - if we hit the bottom or top, adjust the encoder zero offset
-        if (this.component.getBottomHallEffectSensorValue())
+        if (this.component.getBottomHallEffectSensorValue() && !this.ignoreSensors)
         {
             this.encoderZeroOffset = HardwareConstants.ELEVATOR_MIN_HEIGHT - this.component.getEncoderDistance();
             movingToBottom = false;
             powerLevel = Math.max(powerLevel, 0);
         }
-        else if (this.component.getTopHallEffectSensorValue())
+        else if (this.component.getTopHallEffectSensorValue() && !this.ignoreSensors)
         {
             this.encoderZeroOffset = HardwareConstants.ELEVATOR_MAX_HEIGHT - this.component.getEncoderDistance();
             powerLevel = Math.min(powerLevel, 0);
