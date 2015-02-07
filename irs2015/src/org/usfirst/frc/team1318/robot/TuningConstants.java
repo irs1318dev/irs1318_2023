@@ -110,10 +110,10 @@ public class TuningConstants
     // Elevator max speeds from encoder
     public static final double ELEVATOR_ENCODER_MAX_SPEED = 170.0; // max speed we expect to detect from the left encoder
 
-    // Drivetrain deadzone/max power levels
+    // Elevator deadzone/max power levels
     public static final double ELEVATOR_DEAD_ZONE = 0.1;
     public static final double ELEVATOR_MAX_POWER_LEVEL = 0.5; // max power level (velocity)
 
     public static final double ELEVATOR_OVERRIDE_POWER_LEVEL = 0.5;
-    public static final double ELEVATOR_BELLOW_MINIMUM_POSITION = -10000;
+    public static final double ELEVATOR_BELOW_MINIMUM_POSITION = -10000;
 }

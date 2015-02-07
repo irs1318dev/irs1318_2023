@@ -2,8 +2,7 @@ package org.usfirst.frc.team1318.robot.Common;
 
 public class SimpleButton
 {
-
-    private boolean activateOnPress;
+    private final boolean activateOnPress;
 
     private boolean prevState;
     private boolean activated;
@@ -22,7 +21,7 @@ public class SimpleButton
      */
     public SimpleButton(boolean activateOnPress)
     {
-        prevState = false;
+        this.prevState = false;
         this.activateOnPress = activateOnPress;
     }
 
@@ -32,19 +31,20 @@ public class SimpleButton
      */
     public void updateState(boolean buttonState)
     {
-        if (activateOnPress && !prevState && buttonState)
+        if (this.activateOnPress && !this.prevState && buttonState)
         {
-            activated = true;
+            this.activated = true;
         }
-        else if (!activateOnPress && prevState && !buttonState)
+        else if (!this.activateOnPress && this.prevState && !buttonState)
         {
-            activated = true;
+            this.activated = true;
         }
         else
         {
-            activated = false;
+            this.activated = false;
         }
-        prevState = buttonState;
+
+        this.prevState = buttonState;
     }
 
     /**
@@ -53,7 +53,6 @@ public class SimpleButton
      */
     public boolean isActivated()
     {
-        return activated;
+        return this.activated;
     }
-
 }

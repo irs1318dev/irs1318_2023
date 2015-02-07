@@ -155,8 +155,8 @@ public interface IDriver
     public boolean getIgnoreElevatorSensors();
 
     /**
-     * Get a value indicating whether to use the Hall Effect sensors or limit switches
-     * @return true for use them, otherwise false 
+     * Get a value indicating whether to use the Hall Effect or limit switch sensors, or not
+     * @return true for use sensors, otherwise false 
      */
     public boolean getUseElevatorSensors();
 
