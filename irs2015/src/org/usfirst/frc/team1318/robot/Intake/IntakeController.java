@@ -20,16 +20,16 @@ public class IntakeController implements IController
 
     // state variables
     // true = outward(motor)/extending(piston), false = inward/retracting
-    private boolean solenoidLeftState;
-    private boolean solenoidRightState;
+    private Boolean solenoidLeftState;
+    private Boolean solenoidRightState;
 
     public IntakeController(IDriver operator, IntakeComponent intake)
     {
         this.intake = intake;
         this.operator = operator;
-        this.motorSpeed = 0;
-        this.solenoidLeftState = false;
-        this.solenoidRightState = false;
+        this.motorSpeed = 0.0;
+        this.solenoidLeftState = null;
+        this.solenoidRightState = null;
     }
 
     public void update()
@@ -82,8 +82,14 @@ public class IntakeController implements IController
         }
 
         // sets IntakeComponent using solenoid and motor states
-        this.intake.setLeftIntake(this.solenoidLeftState);
-        this.intake.setRightIntake(this.solenoidRightState);
+        if (this.solenoidLeftState != null)
+        {
+            this.intake.setLeftIntake(this.solenoidLeftState);
+        }
+        if (this.solenoidRightState != null)
+        {
+            this.intake.setRightIntake(this.solenoidRightState);
+        }
         this.intake.setIntakeMotorSpeed(this.motorSpeed);
     }
 
