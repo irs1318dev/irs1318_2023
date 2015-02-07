@@ -82,7 +82,7 @@ public class TuningConstants
     public static final double EXTENDOR_EXTEND_WAIT_TIME = 2;
     public static final double TROMBONE_EXTEND_WAIT_TIME = 2;
 
-    public static final double PARTIAL_RETRACT_WAIT_TIME = 2;
-    public static final double FULL_RETRACT_WAIT_TIME = 2;
+    public static final double TILT_RETRACT_WAIT_TIME = 1;
+    public static final double TROMBONE_RETRACT_WAIT_TIME = 2;
     public static final double SAFETY_WAIT = 1;
 }

@@ -46,14 +46,9 @@ public class ArmController implements IController
     @Override
     public void update()
     {
-        /*WILL"S SUGGESTION FOR FUTURE CONSIDERATION: to check all of the buttons and determine the current user intent 
-         * (i.e. first check for extend macro, then retract macro, then each of the extend/retract overrides)
-         * before calculating any action you want to perform -  as opposed to currently convoluted logic
-         */
-
         /* 
          * Macro Extend operation will retract the extender (Stage 1), extend the trombone (Stage 2), and then retract the tilt (Stage 3)
-         * Fully extends entire arm
+         * Fully extends entire arm, starting with a check that tilts the arm up
          */
         switch (this.armstateExtendor)
         {
@@ -122,7 +117,7 @@ public class ArmController implements IController
 
         /* 
          * Macro Retract operation extends the tilt (Stage 1), retracts the trombone (Stage 2), and extends the extender (Stage 3)
-         * Returns arm to most compact position
+         * Returns arm to most compact position - SHOULD BE OK IF EXTENDER IS ALREADY COMPACT
          * The Retract operation takes precedence over the Extend operation.
          */
         switch (this.armstateRetractor)
@@ -142,7 +137,7 @@ public class ArmController implements IController
                 }
                 else
                 {
-                    this.continueTime = this.timer.get() + TuningConstants.PARTIAL_RETRACT_WAIT_TIME;
+                    this.continueTime = this.timer.get() + TuningConstants.TILT_RETRACT_WAIT_TIME;
                     this.tiltState = true;
                 }
                 this.armstateRetractor = ArmStates.STAGE_2;
@@ -157,7 +152,7 @@ public class ArmController implements IController
                     }
                     else
                     {
-                        this.continueTime = this.timer.get() + TuningConstants.FULL_RETRACT_WAIT_TIME;
+                        this.continueTime = this.timer.get() + TuningConstants.TROMBONE_RETRACT_WAIT_TIME;
                         this.tromboneState = false;
                     }
                     this.armstateRetractor = ArmStates.STAGE_3;
