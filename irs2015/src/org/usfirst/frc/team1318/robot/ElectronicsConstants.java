@@ -36,4 +36,5 @@ public class ElectronicsConstants
     public static final int ELEVATOR_HALL_EFFECT_BOTTOM_CHANNEL = -1;
 
     public static final double MAX_POWER_LEVEL = 1.0;
+
 }

@@ -45,7 +45,7 @@ public class ElevatorComponent
      */
     public double getEncoderDistance()
     {
-        double value = -this.encoder.getDistance();
+        double value = this.encoder.getDistance();
         SmartDashboardLogger.putNumber(ElevatorComponent.ENCODER_DISTANCE_LOG_KEY, value);
         return value;
     }
@@ -56,7 +56,7 @@ public class ElevatorComponent
      */
     public int getEncoderTicks()
     {
-        int value = -this.encoder.get();
+        int value = this.encoder.get();
         SmartDashboardLogger.putNumber(ElevatorComponent.ENCODER_TICKS_LOG_KEY, value);
         return value;
     }
@@ -67,7 +67,7 @@ public class ElevatorComponent
      */
     public double getEncoderVelocity()
     {
-        double value = -this.encoder.getRate();
+        double value = this.encoder.getRate();
         SmartDashboardLogger.putNumber(ElevatorComponent.ENCODER_VELOCITY_LOG_KEY, value);
         return value;
     }

@@ -27,17 +27,17 @@ public class HardwareConstants
     //================================================== Elevator ==============================================================
 
     public static final double ELEVATOR_FLOOR_HEIGHT = 0;
-    public static final double ELEVATOR_PLATFORM_HEIGHT = -1; // TODO
-    public static final double ELEVATOR_STEP_HEIGHT = -1; // TODO
+    public static final double ELEVATOR_PLATFORM_HEIGHT = 2 * 2.54;
+    public static final double ELEVATOR_STEP_HEIGHT = 6.5 * 2.54;
 
-    public static final double ELEVATOR_0_TOTE_HEIGHT = -1; // TODO
-    public static final double ELEVATOR_1_TOTE_HEIGHT = -1; // TODO
-    public static final double ELEVATOR_2_TOTE_HEIGHT = -1; // TODO
-    public static final double ELEVATOR_3_TOTE_HEIGHT = -1; // TODO
+    public static final double ELEVATOR_0_TOTE_HEIGHT = 0;
+    public static final double ELEVATOR_1_TOTE_HEIGHT = 16 * 2.54;
+    public static final double ELEVATOR_2_TOTE_HEIGHT = 27.5 * 2.54;
+    public static final double ELEVATOR_3_TOTE_HEIGHT = 39 * 2.54;
 
-    public static final double ELEVATOR_MIN_HEIGHT = 0.0; // TODO
-    public static final double ELEVATOR_MAX_HEIGHT = 0.0; // TODO
+    public static final double ELEVATOR_MIN_HEIGHT = 0.0;
+    public static final double ELEVATOR_MAX_HEIGHT = 40 * 2.54;
     public static final double ELEVATOR_MAX_POWER_POSITIONAL_NON_PID = 0.2; // max power level (positional, non-PID)
 
-    public static final double ELEVATOR_PULSE_DISTANCE = 4.5 * 2.54;
+    public static final double ELEVATOR_PULSE_DISTANCE = 4.5 * 2.54 / 360.0;
 }

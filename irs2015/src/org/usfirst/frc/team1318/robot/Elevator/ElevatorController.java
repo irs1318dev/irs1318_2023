@@ -5,12 +5,15 @@ import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.Common.IController;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.PIDHandler;
+import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Timer;
 
 public class ElevatorController implements IController
 {
+    public static final String POSITION_GOAL_LOG_KEY = "e.positionGoal";
+
     private final ElevatorComponent component;
     private final IDriver driver;
 
@@ -38,6 +41,8 @@ public class ElevatorController implements IController
         this.timer = new Timer();
         this.timer.start();
         this.lastTime = this.timer.get();
+
+        this.createPIDHandler();
     }
 
     @Override
@@ -100,7 +105,7 @@ public class ElevatorController implements IController
             // if usePID is true, calculate velocity using PID.
             if (this.usePID)
             {
-                this.position -= TuningConstants.ELEVATOR_MAX_VELOCITY * (currentTime - this.lastTime);
+                this.position -= TuningConstants.ELEVATOR_MAX_VELOCITY * (0.02);
 
                 // reset in case position is less than minimum, or more then maximum
                 this.position = Math.max(this.position, HardwareConstants.ELEVATOR_MIN_HEIGHT);
@@ -118,7 +123,7 @@ public class ElevatorController implements IController
             // if usePID is true, calculate velocity using PID.
             if (this.usePID)
             {
-                this.position += TuningConstants.ELEVATOR_MAX_VELOCITY * (currentTime - this.lastTime);
+                this.position += TuningConstants.ELEVATOR_MAX_VELOCITY * (0.02);
 
                 // reset in case position is less than minimum, or more then maximum
                 this.position = Math.max(this.position, HardwareConstants.ELEVATOR_MIN_HEIGHT);
@@ -151,6 +156,8 @@ public class ElevatorController implements IController
                 powerLevel = 0.0;
             }
         }
+
+        SmartDashboardLogger.putNumber(ElevatorController.POSITION_GOAL_LOG_KEY, this.position);
 
         this.component.setMotorPowerLevel(powerLevel);
 
@@ -206,17 +213,17 @@ public class ElevatorController implements IController
             Preferences prefs = Preferences.getInstance();
             this.pidHandler = new PIDHandler(
                 prefs.getDouble(
-                    TuningConstants.ELEVATOR_VELOCITY_PID_KP_KEY,
-                    TuningConstants.ELEVATOR_VELOCITY_PID_KP_DEFAULT),
+                    TuningConstants.ELEVATOR_POSITION_PID_KP_KEY,
+                    TuningConstants.ELEVATOR_POSITION_PID_KP_DEFAULT),
                 prefs.getDouble(
-                    TuningConstants.ELEVATOR_VELOCITY_PID_KI_KEY,
-                    TuningConstants.ELEVATOR_VELOCITY_PID_KI_DEFAULT),
+                    TuningConstants.ELEVATOR_POSITION_PID_KI_KEY,
+                    TuningConstants.ELEVATOR_POSITION_PID_KI_DEFAULT),
                 prefs.getDouble(
-                    TuningConstants.ELEVATOR_VELOCITY_PID_KD_KEY,
-                    TuningConstants.ELEVATOR_VELOCITY_PID_KD_DEFAULT),
+                    TuningConstants.ELEVATOR_POSITION_PID_KD_KEY,
+                    TuningConstants.ELEVATOR_POSITION_PID_KD_DEFAULT),
                 prefs.getDouble(
-                    TuningConstants.ELEVATOR_VELOCITY_PID_KF_KEY,
-                    TuningConstants.ELEVATOR_VELOCITY_PID_KF_DEFAULT),
+                    TuningConstants.ELEVATOR_POSITION_PID_KF_KEY,
+                    TuningConstants.ELEVATOR_POSITION_PID_KF_DEFAULT),
                 -TuningConstants.ELEVATOR_MAX_POWER_LEVEL,
                 TuningConstants.ELEVATOR_MAX_POWER_LEVEL);
         }
@@ -228,9 +235,4 @@ public class ElevatorController implements IController
         return this.pidHandler.calculate(desired, current);
     }
 
-    private double calculateVelocityModePowerSetting(double desired)
-    {
-        double current = this.component.getEncoderVelocity();
-        return this.pidHandler.calculate(desired, current);
-    }
 }
