@@ -39,5 +39,5 @@ public class HardwareConstants
     public static final double ELEVATOR_MAX_HEIGHT = 0.0; // TODO
     public static final double ELEVATOR_MAX_POWER_POSITIONAL_NON_PID = 0.2; // max power level (positional, non-PID)
 
-    public static final double ELEVATOR_PULSE_DISTANCE = -1; // TODO
+    public static final double ELEVATOR_PULSE_DISTANCE = 4.5 * 2.54;
 }

@@ -7,6 +7,7 @@ import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.PIDHandler;
 
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.Timer;
 
 public class ElevatorController implements IController
 {
@@ -17,26 +18,33 @@ public class ElevatorController implements IController
     private double position;
     private double encoderZeroOffset;
 
-    private boolean useVelocityPID;
     private boolean usePID;
     private PIDHandler pidHandler;
+
+    private double lastTime;
+    private Timer timer;
 
     public ElevatorController(IDriver driver, ElevatorComponent component)
     {
         this.component = component;
         this.driver = driver;
 
-        this.useVelocityPID = false;
         this.usePID = true;
 
         this.baseLevel = HardwareConstants.ELEVATOR_FLOOR_HEIGHT;
         this.position = 0;
         this.encoderZeroOffset = 0;
+
+        this.timer = new Timer();
+        this.timer.start();
+        this.lastTime = this.timer.get();
     }
 
     @Override
     public void update()
     {
+        double currentTime = this.timer.get();
+
         // check offset - if we hit the bottom or top, adjust the encoder zero offset
         if (this.component.getBottomHallEffectSensorValue())
         {
@@ -90,14 +98,13 @@ public class ElevatorController implements IController
             // if usePID is true, calculate velocity using PID.
             if (this.usePID)
             {
-                // recreate PID handler if we are changing modes...
-                if (!this.useVelocityPID)
-                {
-                    this.useVelocityPID = true;
-                    this.createPIDHandler();
-                }
+                this.position -= TuningConstants.ELEVATOR_MAX_VELOCITY * (currentTime - this.lastTime);
 
-                powerLevel = this.calculateVelocityModePowerSetting(-TuningConstants.ELEVATOR_OVERRIDE_POWER_LEVEL);
+                // reset in case position is less than minimum, or more then maximum
+                this.position = Math.max(this.position, HardwareConstants.ELEVATOR_MIN_HEIGHT);
+                this.position = Math.min(this.position, HardwareConstants.ELEVATOR_MAX_HEIGHT);
+
+                powerLevel = this.calculatePositionModePowerSetting(this.position);
             }
             else
             {
@@ -109,14 +116,13 @@ public class ElevatorController implements IController
             // if usePID is true, calculate velocity using PID.
             if (this.usePID)
             {
-                // recreate PID handler if we are changing modes...
-                if (!this.useVelocityPID)
-                {
-                    this.useVelocityPID = true;
-                    this.createPIDHandler();
-                }
+                this.position += TuningConstants.ELEVATOR_MAX_VELOCITY * (currentTime - this.lastTime);
 
-                powerLevel = this.calculateVelocityModePowerSetting(TuningConstants.ELEVATOR_OVERRIDE_POWER_LEVEL);
+                // reset in case position is less than minimum, or more then maximum
+                this.position = Math.max(this.position, HardwareConstants.ELEVATOR_MIN_HEIGHT);
+                this.position = Math.min(this.position, HardwareConstants.ELEVATOR_MAX_HEIGHT);
+
+                powerLevel = this.calculatePositionModePowerSetting(this.position);
             }
             else
             {
@@ -128,12 +134,6 @@ public class ElevatorController implements IController
             // if usePID is true, calculate power-level using PID
             if (this.usePID)
             {
-                if (this.useVelocityPID)
-                {
-                    this.useVelocityPID = false;
-                    this.createPIDHandler();
-                }
-
                 // calculate position to set elevator
                 this.position = this.getPositionShift();
 
@@ -151,6 +151,8 @@ public class ElevatorController implements IController
         }
 
         this.component.setMotorPowerLevel(powerLevel);
+
+        this.lastTime = currentTime;
     }
 
     /**
@@ -200,42 +202,21 @@ public class ElevatorController implements IController
         else
         {
             Preferences prefs = Preferences.getInstance();
-            if (!this.useVelocityPID)
-            {
-                this.pidHandler = new PIDHandler(
-                    prefs.getDouble(
-                        TuningConstants.ELEVATOR_POSITION_PID_KP_KEY,
-                        TuningConstants.ELEVATOR_POSITION_PID_KP_DEFAULT),
-                    prefs.getDouble(
-                        TuningConstants.ELEVATOR_POSITION_PID_KI_KEY,
-                        TuningConstants.ELEVATOR_POSITION_PID_KI_DEFAULT),
-                    prefs.getDouble(
-                        TuningConstants.ELEVATOR_POSITION_PID_KD_KEY,
-                        TuningConstants.ELEVATOR_POSITION_PID_KD_DEFAULT),
-                    prefs.getDouble(
-                        TuningConstants.ELEVATOR_POSITION_PID_KF_KEY,
-                        TuningConstants.ELEVATOR_POSITION_PID_KF_DEFAULT),
-                    -TuningConstants.ELEVATOR_MAX_POWER_LEVEL,
-                    TuningConstants.ELEVATOR_MAX_POWER_LEVEL);
-            }
-            else
-            {
-                this.pidHandler = new PIDHandler(
-                    prefs.getDouble(
-                        TuningConstants.ELEVATOR_VELOCITY_PID_KP_KEY,
-                        TuningConstants.ELEVATOR_VELOCITY_PID_KP_DEFAULT),
-                    prefs.getDouble(
-                        TuningConstants.ELEVATOR_VELOCITY_PID_KI_KEY,
-                        TuningConstants.ELEVATOR_VELOCITY_PID_KI_DEFAULT),
-                    prefs.getDouble(
-                        TuningConstants.ELEVATOR_VELOCITY_PID_KD_KEY,
-                        TuningConstants.ELEVATOR_VELOCITY_PID_KD_DEFAULT),
-                    prefs.getDouble(
-                        TuningConstants.ELEVATOR_VELOCITY_PID_KF_KEY,
-                        TuningConstants.ELEVATOR_VELOCITY_PID_KF_DEFAULT),
-                    -TuningConstants.ELEVATOR_MAX_POWER_LEVEL,
-                    TuningConstants.ELEVATOR_MAX_POWER_LEVEL);
-            }
+            this.pidHandler = new PIDHandler(
+                prefs.getDouble(
+                    TuningConstants.ELEVATOR_VELOCITY_PID_KP_KEY,
+                    TuningConstants.ELEVATOR_VELOCITY_PID_KP_DEFAULT),
+                prefs.getDouble(
+                    TuningConstants.ELEVATOR_VELOCITY_PID_KI_KEY,
+                    TuningConstants.ELEVATOR_VELOCITY_PID_KI_DEFAULT),
+                prefs.getDouble(
+                    TuningConstants.ELEVATOR_VELOCITY_PID_KD_KEY,
+                    TuningConstants.ELEVATOR_VELOCITY_PID_KD_DEFAULT),
+                prefs.getDouble(
+                    TuningConstants.ELEVATOR_VELOCITY_PID_KF_KEY,
+                    TuningConstants.ELEVATOR_VELOCITY_PID_KF_DEFAULT),
+                -TuningConstants.ELEVATOR_MAX_POWER_LEVEL,
+                TuningConstants.ELEVATOR_MAX_POWER_LEVEL);
         }
     }
 
