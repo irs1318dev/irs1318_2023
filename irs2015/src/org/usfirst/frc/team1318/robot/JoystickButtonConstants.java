@@ -45,11 +45,11 @@ public class JoystickButtonConstants
     public static final int ELEVATOR_MOVE_TO_1_TOTE_BUTTON = -1;
     public static final int ELEVATOR_MOVE_TO_2_TOTES_BUTTON = -1;
     public static final int ELEVATOR_MOVE_TO_3_TOTES_BUTTON = -1;
-    public static final int ELEVATOR_PID_ON = -1;
-    public static final int ELEVATOR_PID_OFF = -1;
+    public static final int ELEVATOR_PID_ON = 6;
+    public static final int ELEVATOR_PID_OFF = 4;
     public static final int ELEVATOR_STOP_BUTTON = -1;
-    public static final int ELEVATOR_UP_BUTTON = -1;
-    public static final int ELEVATOR_DOWN_BUTTON = -1;
+    public static final int ELEVATOR_UP_BUTTON = 5;
+    public static final int ELEVATOR_DOWN_BUTTON = 3;
     public static final int ELEVATOR_IGNORE_SENSORS_BUTTON = -1;
     public static final int ELEVATOR_USE_SENSORS_BUTTON = -1;
     public static final int ELEVATOR_ZERO_ENCODERS = -1;

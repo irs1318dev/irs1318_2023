@@ -102,7 +102,7 @@ public class TuningConstants
     public static final double ELEVATOR_POSITION_PID_KI_DEFAULT = 0.0;
 
     public static final String ELEVATOR_POSITION_PID_KD_KEY = "ELEVATOR_POSITION_PID_KD";
-    public static final double ELEVATOR_POSITION_PID_KD_DEFAULT = 0.5;
+    public static final double ELEVATOR_POSITION_PID_KD_DEFAULT = 0.0;
 
     public static final String ELEVATOR_POSITION_PID_KF_KEY = "ELEVATOR_POSITION_PID_KF";
     public static final double ELEVATOR_POSITION_PID_KF_DEFAULT = 0.0;

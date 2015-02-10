@@ -4,17 +4,16 @@ import org.usfirst.frc.team1318.robot.ElectronicsConstants;
 import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Talon;
 
 public class ElevatorComponent
 {
-    private final DigitalInput throughBeamSensor;
+    //private final DigitalInput throughBeamSensor;
     private final Talon motor;
     private final Encoder encoder;
-    private final DigitalInput topHallEffectSensor;
-    private final DigitalInput bottomHallEffectSensor;
+    //private final DigitalInput topHallEffectSensor;
+    //private final DigitalInput bottomHallEffectSensor;
 
     public static final String THROUGH_BEAM_SENSOR_LOG_KEY = "e.throughBeamSensor";
     public static final String MOTOR_POWER_LOG_KEY = "e.motorPower";
@@ -29,15 +28,15 @@ public class ElevatorComponent
         this.motor = new Talon(ElectronicsConstants.ELEVATOR_TALON_CHANNEL);
 
         this.encoder = new Encoder(
-            ElectronicsConstants.ELEVATOR_ENCODER_CHANNELA,
-            ElectronicsConstants.ELEVATOR_ENCODER_CHANNELB);
+            ElectronicsConstants.ELEVATOR_ENCODER_CHANNEL_A,
+            ElectronicsConstants.ELEVATOR_ENCODER_CHANNEL_B);
 
         this.encoder.setDistancePerPulse(HardwareConstants.ELEVATOR_PULSE_DISTANCE);
 
-        this.throughBeamSensor = new DigitalInput(ElectronicsConstants.ELEVATOR_THROUGH_BEAM_SENSOR_CHANNEL);
+        //this.throughBeamSensor = new DigitalInput(ElectronicsConstants.ELEVATOR_THROUGH_BEAM_SENSOR_CHANNEL);
 
-        this.topHallEffectSensor = new DigitalInput(ElectronicsConstants.ELEVATOR_HALL_EFFECT_TOP_CHANNEL);
-        this.bottomHallEffectSensor = new DigitalInput(ElectronicsConstants.ELEVATOR_HALL_EFFECT_BOTTOM_CHANNEL);
+        //this.topHallEffectSensor = new DigitalInput(ElectronicsConstants.ELEVATOR_HALL_EFFECT_TOP_CHANNEL);
+        //this.bottomHallEffectSensor = new DigitalInput(ElectronicsConstants.ELEVATOR_HALL_EFFECT_BOTTOM_CHANNEL);
     }
 
     /**
@@ -46,7 +45,7 @@ public class ElevatorComponent
      */
     public double getEncoderDistance()
     {
-        double value = this.encoder.getDistance();
+        double value = -this.encoder.getDistance();
         SmartDashboardLogger.putNumber(ElevatorComponent.ENCODER_DISTANCE_LOG_KEY, value);
         return value;
     }
@@ -57,7 +56,7 @@ public class ElevatorComponent
      */
     public int getEncoderTicks()
     {
-        int value = this.encoder.get();
+        int value = -this.encoder.get();
         SmartDashboardLogger.putNumber(ElevatorComponent.ENCODER_TICKS_LOG_KEY, value);
         return value;
     }
@@ -68,7 +67,7 @@ public class ElevatorComponent
      */
     public double getEncoderVelocity()
     {
-        double value = this.encoder.getRate();
+        double value = -this.encoder.getRate();
         SmartDashboardLogger.putNumber(ElevatorComponent.ENCODER_VELOCITY_LOG_KEY, value);
         return value;
     }
@@ -89,9 +88,9 @@ public class ElevatorComponent
      */
     public boolean getThroughBeamSensor()
     {
-        boolean value = this.throughBeamSensor.get();
-        SmartDashboardLogger.putBoolean(ElevatorComponent.THROUGH_BEAM_SENSOR_LOG_KEY, value);
-        return value;
+        //boolean value = this.throughBeamSensor.get();
+        //SmartDashboardLogger.putBoolean(ElevatorComponent.THROUGH_BEAM_SENSOR_LOG_KEY, value);
+        return false;//value;
     }
 
     /**
@@ -100,9 +99,9 @@ public class ElevatorComponent
      */
     public boolean getTopHallEffectSensorValue()
     {
-        boolean value = this.topHallEffectSensor.get();
-        SmartDashboardLogger.putBoolean(ElevatorComponent.TOP_HALL_EFFECT_SENSOR_LOG_KEY, value);
-        return value;
+        //boolean value = this.topHallEffectSensor.get();
+        //SmartDashboardLogger.putBoolean(ElevatorComponent.TOP_HALL_EFFECT_SENSOR_LOG_KEY, value);
+        return false;//value;
     }
 
     /**
@@ -111,8 +110,8 @@ public class ElevatorComponent
      */
     public boolean getBottomHallEffectSensorValue()
     {
-        boolean value = this.bottomHallEffectSensor.get();
-        SmartDashboardLogger.putBoolean(ElevatorComponent.BOTTOM_HALL_EFFECT_SENSOR_LOG_KEY, value);
-        return value;
+        //boolean value = this.bottomHallEffectSensor.get();
+        //SmartDashboardLogger.putBoolean(ElevatorComponent.BOTTOM_HALL_EFFECT_SENSOR_LOG_KEY, value);
+        return false;//value;
     }
 }

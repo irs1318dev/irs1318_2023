@@ -27,7 +27,7 @@ public class ElevatorController implements IController
         this.driver = driver;
 
         this.useVelocityPID = false;
-        this.usePID = true;
+        this.usePID = false;//true;
 
         this.baseLevel = HardwareConstants.ELEVATOR_FLOOR_HEIGHT;
         this.position = 0;
@@ -40,11 +40,11 @@ public class ElevatorController implements IController
         // check offset - if we hit the bottom or top, adjust the encoder zero offset
         if (this.component.getBottomHallEffectSensorValue())
         {
-            this.encoderZeroOffset = HardwareConstants.ELEVATOR_MIN_HEIGHT - this.component.getEncoderDistance();
+            //this.encoderZeroOffset = HardwareConstants.ELEVATOR_MIN_HEIGHT - this.component.getEncoderDistance();
         }
         else if (this.component.getTopHallEffectSensorValue())
         {
-            this.encoderZeroOffset = HardwareConstants.ELEVATOR_MAX_HEIGHT - this.component.getEncoderDistance();
+            //this.encoderZeroOffset = HardwareConstants.ELEVATOR_MAX_HEIGHT - this.component.getEncoderDistance();
         }
 
         // set elevator state here
@@ -69,6 +69,8 @@ public class ElevatorController implements IController
             {
                 this.usePID = true;
                 this.createPIDHandler();
+                this.position = component.getEncoderDistance() + this.encoderZeroOffset;
+
             }
         }
         else if (this.driver.getElevatorPIDOff())
@@ -132,6 +134,7 @@ public class ElevatorController implements IController
                 {
                     this.useVelocityPID = false;
                     this.createPIDHandler();
+                    this.position = this.component.getEncoderDistance() + this.encoderZeroOffset;
                 }
 
                 // calculate position to set elevator
