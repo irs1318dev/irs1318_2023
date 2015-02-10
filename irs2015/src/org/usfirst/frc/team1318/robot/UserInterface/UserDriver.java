@@ -99,8 +99,6 @@ public class UserDriver implements IDriver
     private SimpleButton elevatorPIDOn;
     private SimpleButton elevatorPIDOff;
     private SimpleButton elevatorStop;
-    //private SimpleButton elevatorUp;
-    //private SimpleButton elevatorDown;
     private SimpleButton elevatorIgnoreSensors;
     private SimpleButton elevatorUseSensors;
     private SimpleButton elevatorZeroEncoders;
@@ -145,8 +143,6 @@ public class UserDriver implements IDriver
         this.elevatorPIDOn = new SimpleButton();
         this.elevatorPIDOff = new SimpleButton();
         this.elevatorStop = new SimpleButton();
-        //this.elevatorUp = new SimpleButton();
-        //this.elevatorDown = new SimpleButton();
     }
 
     /**
@@ -198,8 +194,6 @@ public class UserDriver implements IDriver
         this.elevatorPIDOn.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_PID_ON));//TODO: change to CoDriver
         this.elevatorPIDOff.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_PID_OFF));//TODO: change to CoDriver
         //        this.elevatorStop.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_STOP_BUTTON));
-        ///this.elevatorUp.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_UP_BUTTON));
-        //this.elevatorDown.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_DOWN_BUTTON));
         //        this.elevatorIgnoreSensors.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_IGNORE_SENSORS_BUTTON));
         //        this.elevatorUseSensors.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_USE_SENSORS_BUTTON));
         //        this.elevatorZeroEncoders.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_ZERO_ENCODERS));
@@ -387,7 +381,6 @@ public class UserDriver implements IDriver
     @Override
     public boolean getElevatorUpButton()
     {
-        //boolean mode = this.elevatorUp.isActivated();
         boolean mode = this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_UP_BUTTON);
         SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_UP_STATE_LOG_KEY, mode);
         return mode;
@@ -396,7 +389,6 @@ public class UserDriver implements IDriver
     @Override
     public boolean getElevatorDownButton()
     {
-        //boolean mode = this.elevatorDown.isActivated();
         boolean mode = this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_DOWN_BUTTON);
         SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_DOWN_STATE_LOG_KEY, mode);
         return mode;
