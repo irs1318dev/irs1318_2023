@@ -70,8 +70,234 @@
 //            return false;
 //        }
 //
-//        public boolean getDriveTrainShifterMode()
+//        @Override
+//        public boolean getElevatorContainerMacroButton()
 //        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getElevatorSetStateToFloorButton()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getElevatorSetStateToPlatformButton()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getElevatorSetStateToStepButton()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getElevatorMoveTo0TotesButton()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getElevatorMoveTo1ToteButton()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getElevatorMoveTo2TotesButton()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getElevatorMoveTo3TotesButton()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getElevatorPIDOn()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getElevatorPIDOff()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getStopElevatorButton()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getElevatorUpButton()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getElevatorDownButton()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public double getElevatorVelocityOverride()
+//        {
+//            // TODO Auto-generated method stub
+//            return 0;
+//        }
+//
+//        @Override
+//        public boolean getIgnoreElevatorSensors()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getUseElevatorSensors()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getZeroElevatorEncoder()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getArmMacroExtendButton()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getArmMacroRetractButton()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getArmExtenderExtendOverride()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getArmExtenderRetractOverride()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getArmTiltExtendOverride()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getArmTiltRetractOverride()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getArmTromboneExtendOverride()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getArmTromboneRetractOverride()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getIntakeUpButton()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getIntakeDownButton()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getIntakeRightExtendOverride()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getIntakeRightRetractOverride()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getIntakeLeftExtendOverride()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getIntakeLeftRetractOverride()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getIntakeForwardButton()
+//        {
+//            // TODO Auto-generated method stub
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean getIntakeBackwardButton()
+//        {
+//            // TODO Auto-generated method stub
 //            return false;
 //        }
 //    }
@@ -116,10 +342,6 @@
 //        public double getRightEncoderDistance()
 //        {
 //            return 0.0;
-//        }
-//
-//        public void setShifterState(boolean state)
-//        {
 //        }
 //    }
 //
@@ -276,5 +498,4 @@
 //
 //        controller.update();
 //    }
-//
 //}
