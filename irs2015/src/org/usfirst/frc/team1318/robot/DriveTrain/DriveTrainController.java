@@ -161,12 +161,14 @@ public class DriveTrainController implements IController
         double xVelocity = this.driver.getDriveTrainXVelocity();
         double yVelocity = this.driver.getDriveTrainYVelocity();
 
+        // calculate the distance from the joystick origin we are
+        double radius = Math.sqrt(xVelocity * xVelocity + yVelocity * yVelocity);
+
         // adjust the intensity of the input
         xVelocity = this.adjustIntensity(xVelocity);
         yVelocity = this.adjustIntensity(yVelocity);
 
         // if we are outside of our dead zone, calculate desired power values
-        double radius = Math.sqrt(xVelocity * xVelocity + yVelocity * yVelocity);
         if (radius > TuningConstants.DRIVETRAIN_DEAD_ZONE)
         {
             if (simpleDriveModeEnabled)
