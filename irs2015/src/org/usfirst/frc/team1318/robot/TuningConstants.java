@@ -81,20 +81,7 @@ public class TuningConstants
 
     //================================================== Elevator ==============================================================
 
-    // Velocity PID (right)
-    public static final String ELEVATOR_VELOCITY_PID_KP_KEY = "ELEVATOR_VELOCITY_PID_KP";
-    public static final double ELEVATOR_VELOCITY_PID_KP_DEFAULT = 0.0005;
-
-    public static final String ELEVATOR_VELOCITY_PID_KI_KEY = "ELEVATOR_VELOCITY_PID_KI";
-    public static final double ELEVATOR_VELOCITY_PID_KI_DEFAULT = 0.0;
-
-    public static final String ELEVATOR_VELOCITY_PID_KD_KEY = "ELEVATOR_VELOCITY_PID_KD";
-    public static final double ELEVATOR_VELOCITY_PID_KD_DEFAULT = 0.0;
-
-    public static final String ELEVATOR_VELOCITY_PID_KF_KEY = "ELEVATOR_VELOCITY_PID_KF";
-    public static final double ELEVATOR_VELOCITY_PID_KF_DEFAULT = 0.5;
-
-    // Position PID (right)
+    // Position PID
     public static final String ELEVATOR_POSITION_PID_KP_KEY = "ELEVATOR_POSITION_PID_KP";
     public static final double ELEVATOR_POSITION_PID_KP_DEFAULT = 0.8;
 

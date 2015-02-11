@@ -467,35 +467,6 @@ public class Robot extends IterativeRobot
                 TuningConstants.ELEVATOR_POSITION_PID_KF_KEY,
                 TuningConstants.ELEVATOR_POSITION_PID_KF_DEFAULT);
         }
-
-        // Velocity
-        if (!this.prefs.containsKey(TuningConstants.ELEVATOR_VELOCITY_PID_KP_KEY))
-        {
-            this.prefs.putDouble(
-                TuningConstants.ELEVATOR_VELOCITY_PID_KP_KEY,
-                TuningConstants.ELEVATOR_VELOCITY_PID_KP_DEFAULT);
-        }
-
-        if (!this.prefs.containsKey(TuningConstants.ELEVATOR_VELOCITY_PID_KI_KEY))
-        {
-            this.prefs.putDouble(
-                TuningConstants.ELEVATOR_VELOCITY_PID_KI_KEY,
-                TuningConstants.ELEVATOR_VELOCITY_PID_KI_DEFAULT);
-        }
-
-        if (!this.prefs.containsKey(TuningConstants.ELEVATOR_VELOCITY_PID_KD_KEY))
-        {
-            this.prefs.putDouble(
-                TuningConstants.ELEVATOR_VELOCITY_PID_KD_KEY,
-                TuningConstants.ELEVATOR_VELOCITY_PID_KD_DEFAULT);
-        }
-
-        if (!this.prefs.containsKey(TuningConstants.ELEVATOR_VELOCITY_PID_KF_KEY))
-        {
-            this.prefs.putDouble(
-                TuningConstants.ELEVATOR_VELOCITY_PID_KF_KEY,
-                TuningConstants.ELEVATOR_VELOCITY_PID_KF_DEFAULT);
-        }
     }
 }
 
