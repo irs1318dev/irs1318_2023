@@ -12,16 +12,16 @@ public class TuningConstants
     public static final boolean DRIVETRAIN_USE_PID_DEFAULT = true;
 
     // Velocity PID (right)
-    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KP_DEFAULT = 0.0005;
+    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KP_DEFAULT = 0.1;
     public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KI_DEFAULT = 0.0;
     public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KD_DEFAULT = 0.0;
-    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KF_DEFAULT = 0.5;
+    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KF_DEFAULT = 0.0;
 
     // Velocity PID (left)
     public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KP_DEFAULT = 0.0005;
     public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KI_DEFAULT = 0.0;
     public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KD_DEFAULT = 0.0;
-    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KF_DEFAULT = 0.5;
+    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KF_DEFAULT = 1.0;
 
     // Position PID (right)
     public static final double DRIVETRAIN_POSITION_PID_RIGHT_KP_DEFAULT = 0.0005;
@@ -45,6 +45,6 @@ public class TuningConstants
 
     // Drivetrain deadzone/max power levels
     public static final double DRIVETRAIN_DEAD_ZONE = 0.1;
-    public static final double DRIVETRAIN_MAX_POWER_LEVEL = 1.0; // max power level (velocity)
+    public static final double DRIVETRAIN_MAX_POWER_LEVEL = 0.8; // max power level (velocity)
     public static final double DRIVETRAIN_MAX_POWER_POSITIONAL_NON_PID = 0.2; // max power level (positional, non-PID)
 }
