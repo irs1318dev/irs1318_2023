@@ -39,18 +39,18 @@ public class JoystickButtonConstants
     //Elevator
     public static final int ELEVATOR_CONTAINER_MACRO_BUTTON = -1;
 
-    public static final int ELEVATOR_SET_STAE_TO_FLOOR_BUTTON = -1;
-    public static final int ELEVATOR_SET_STATE_TO_PLATFORM_BUTTON = -1;
-    public static final int ELEVATOR_SET_STATE_TO_STEP_BUTTON = -1;
-    public static final int ELEVATOR_MOVE_TO_0_TOTES_BUTTON = -1;
-    public static final int ELEVATOR_MOVE_TO_1_TOTE_BUTTON = -1;
-    public static final int ELEVATOR_MOVE_TO_2_TOTES_BUTTON = -1;
-    public static final int ELEVATOR_MOVE_TO_3_TOTES_BUTTON = -1;
-    public static final int ELEVATOR_PID_ON = -1;
-    public static final int ELEVATOR_PID_OFF = -1;
+    public static final int ELEVATOR_SET_STAE_TO_FLOOR_BUTTON = 12;
+    public static final int ELEVATOR_SET_STATE_TO_PLATFORM_BUTTON = 10;
+    public static final int ELEVATOR_SET_STATE_TO_STEP_BUTTON = 8;
+    public static final int ELEVATOR_MOVE_TO_0_TOTES_BUTTON = 2;
+    public static final int ELEVATOR_MOVE_TO_1_TOTE_BUTTON = 11;
+    public static final int ELEVATOR_MOVE_TO_2_TOTES_BUTTON = 9;
+    public static final int ELEVATOR_MOVE_TO_3_TOTES_BUTTON = 7;
+    public static final int ELEVATOR_PID_ON = 6;
+    public static final int ELEVATOR_PID_OFF = 4;
     public static final int ELEVATOR_STOP_BUTTON = -1;
-    public static final int ELEVATOR_UP_BUTTON = -1;
-    public static final int ELEVATOR_DOWN_BUTTON = -1;
+    public static final int ELEVATOR_UP_BUTTON = 5;
+    public static final int ELEVATOR_DOWN_BUTTON = 3;
     public static final int ELEVATOR_MOVE_TO_BOTTOM = -1;
     public static final int ELEVATOR_IGNORE_SENSORS_BUTTON = -1;
     public static final int ELEVATOR_USE_SENSORS_BUTTON = -1;
