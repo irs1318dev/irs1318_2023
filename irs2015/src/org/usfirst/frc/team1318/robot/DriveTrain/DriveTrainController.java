@@ -26,6 +26,9 @@ public class DriveTrainController implements IController
     private PIDHandler leftPID;
     private PIDHandler rightPID;
 
+    private int prevLeftTicks;
+    private int prevRightTicks;
+
     /**
      * Initializes a new DriveTrainController
      * @param operator to use to control the drive train
@@ -40,6 +43,9 @@ public class DriveTrainController implements IController
         this.usePositionalMode = false;
 
         this.createPIDHandler();
+
+        this.prevLeftTicks = 0;
+        this.prevRightTicks = 0;
     }
 
     /**
@@ -152,6 +158,11 @@ public class DriveTrainController implements IController
         // read the encoder distance just in case we want it output in smart dashboard
         this.component.getLeftEncoderDistance();
         this.component.getRightEncoderDistance();
+        this.component.getLeftEncoderVelocity();
+        this.component.getRightEncoderVelocity();
+
+        int currentLeftTicks = this.component.getLeftEncoderTicks();
+        int currentRightTicks = this.component.getRightEncoderTicks();
 
         // get a value indicating that we should be in simple mode...
         boolean simpleDriveModeEnabled = this.driver.getDriveTrainSimpleMode();
@@ -297,12 +308,12 @@ public class DriveTrainController implements IController
             leftPower =
                 this.leftPID.calculate(
                     leftVelocityGoal,
-                    this.component.getLeftEncoderVelocity() / TuningConstants.DRIVETRAIN_LEFT_ENCODER_MAX_SPEED);
+                    (currentLeftTicks - this.prevLeftTicks));
 
             rightPower =
                 this.rightPID.calculate(
                     rightVelocityGoal,
-                    this.component.getRightEncoderVelocity() / TuningConstants.DRIVETRAIN_RIGHT_ENCODER_MAX_SPEED);
+                    (currentRightTicks - this.prevRightTicks));
         }
         else
         {
@@ -316,6 +327,9 @@ public class DriveTrainController implements IController
         rightPower = this.applyPowerLevelRange(rightPower);
         this.assertPowerLevelRange(leftPower, "left velocity (goal)");
         this.assertPowerLevelRange(rightPower, "right velocity (goal)");
+
+        this.prevLeftTicks = currentLeftTicks;
+        this.prevRightTicks = currentRightTicks;
 
         return new PowerSetting(leftPower, rightPower);
     }
