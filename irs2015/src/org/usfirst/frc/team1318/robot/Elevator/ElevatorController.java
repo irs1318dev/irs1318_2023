@@ -105,7 +105,7 @@ public class ElevatorController implements IController
             // if usePID is true, calculate velocity using PID.
             if (this.usePID)
             {
-                this.position -= TuningConstants.ELEVATOR_MAX_VELOCITY * (0.02);
+                this.position -= TuningConstants.ELEVATOR_MAX_VELOCITY * (currentTime - this.lastTime);
 
                 // reset in case position is less than minimum, or more then maximum
                 this.position = Math.max(this.position, HardwareConstants.ELEVATOR_MIN_HEIGHT);
@@ -123,7 +123,7 @@ public class ElevatorController implements IController
             // if usePID is true, calculate velocity using PID.
             if (this.usePID)
             {
-                this.position += TuningConstants.ELEVATOR_MAX_VELOCITY * (0.02);
+                this.position += TuningConstants.ELEVATOR_MAX_VELOCITY * (currentTime - this.lastTime);
 
                 // reset in case position is less than minimum, or more then maximum
                 this.position = Math.max(this.position, HardwareConstants.ELEVATOR_MIN_HEIGHT);
