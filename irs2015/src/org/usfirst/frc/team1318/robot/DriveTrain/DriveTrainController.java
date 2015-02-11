@@ -179,7 +179,6 @@ public class DriveTrainController implements IController
         xVelocity = this.adjustIntensity(xVelocity);
         yVelocity = this.adjustIntensity(yVelocity);
 
-        // if we are outside of our dead zone, calculate desired power values
         if (radius > TuningConstants.DRIVETRAIN_DEAD_ZONE)
         {
             if (simpleDriveModeEnabled)
