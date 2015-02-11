@@ -119,4 +119,30 @@ public class DriveTrainComponent implements IDriveTrainComponent
 
         return rightDistance;
     }
+
+    /**
+     * get the ticks from the left encoder
+     * @return a value indicating the number of ticks we are at
+     */
+    public int getLeftEncoderTicks()
+    {
+        int leftDistance = this.leftEncoder.get();
+
+        SmartDashboardLogger.putNumber(DriveTrainComponent.LEFT_ENCODER_DISTANCE_LOG_KEY, leftDistance);
+
+        return leftDistance;
+    }
+
+    /**
+     * get the ticks from the right encoder
+     * @return a value indicating the number of ticks we are at
+     */
+    public int getRightEncoderTicks()
+    {
+        int rightDistance = this.rightEncoder.get();
+
+        SmartDashboardLogger.putNumber(DriveTrainComponent.RIGHT_ENCODER_DISTANCE_LOG_KEY, rightDistance);
+
+        return rightDistance;
+    }
 }
