@@ -27,6 +27,7 @@ public class PIDHandler
     private final double ki;        // proportion for integral
     private final double kd;        // proportion for derivative
     private final double kf;        // proportion for feed-forward
+    private final double ks;        // multiplicand for adjusting scale of setpoint to match scale of measured value
 
     // instance variables
     private double setpoint = 0.0;          // the input, desired value for
@@ -58,11 +59,28 @@ public class PIDHandler
      */
     public PIDHandler(String prefix, double kp, double ki, double kd, double kf, Double minOutput, Double maxOutput)
     {
+        this(prefix, kp, ki, kd, kf, 1.0, minOutput, maxOutput);
+    }
+
+    /**
+     * This constructor initializes the object and sets constants to affect gain
+     * 
+     * @param kp scalar for proportional component
+     * @param ki scalar for integral component
+     * @param kd scalar for derivative component
+     * @param kf scalar for feed-forward control
+     * @param kS scalar for adjusting scale difference between measured value and setpoint value
+     * @param minOutput indicates the minimum output value acceptable, or null
+     * @param maxOutput indicates the maximum output value acceptable, or null
+     */
+    public PIDHandler(String prefix, double kp, double ki, double kd, double kf, double ks, Double minOutput, Double maxOutput)
+    {
         this.prefix = prefix;
         this.ki = ki;
         this.kd = kd;
         this.kp = kp;
         this.kf = kf;
+        this.ks = ks;
 
         this.minOutput = minOutput;
         this.maxOutput = maxOutput;
@@ -167,10 +185,11 @@ public class PIDHandler
             this.prevTime = this.curTime;
 
             // calculate error
-            double adjustedMeasuredValue = ((this.measuredValue - this.prevMeasuredValue)) / 100.0;
+            double adjustedMeasuredValue = this.ks * (this.measuredValue - this.prevMeasuredValue);
+
             this.error = this.setpoint - adjustedMeasuredValue;
 
-            SmartDashboardLogger.putNumber(this.prefix + "adjusted: ", adjustedMeasuredValue);
+            SmartDashboardLogger.putNumber(this.prefix + "AdjustedValue: ", adjustedMeasuredValue);
 
             // calculate integral, limiting it based on MaxOutput/MinOutput
             double potentialI = this.ki * (this.integral + this.error * this.dt);

@@ -6,8 +6,6 @@ import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.PIDHandler;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
-import edu.wpi.first.wpilibj.Timer;
-
 /**
  * Drivetrain controller.
  * The controller defines the logic that controls a mechanism given inputs (component) and operator-requested actions, and 
@@ -29,12 +27,6 @@ public class DriveTrainController implements IController
     private PIDHandler leftPID;
     private PIDHandler rightPID;
 
-    private int prevLeftTicks;
-    private int prevRightTicks;
-
-    private Timer timer;
-    private double prevTime;
-
     /**
      * Initializes a new DriveTrainController
      * @param operator to use to control the drive train
@@ -49,13 +41,6 @@ public class DriveTrainController implements IController
         this.usePositionalMode = false;
 
         this.createPIDHandler();
-
-        this.prevLeftTicks = 0;
-        this.prevRightTicks = 0;
-
-        this.timer = new Timer();
-        this.timer.start();
-        this.prevTime = this.timer.get();
     }
 
     /**
@@ -119,7 +104,7 @@ public class DriveTrainController implements IController
             if (this.usePositionalMode)
             {
                 this.leftPID = new PIDHandler(
-                    "left",
+                    "dt.leftPID",
                     TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KP_DEFAULT,
                     TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KI_DEFAULT,
                     TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KD_DEFAULT,
@@ -128,7 +113,7 @@ public class DriveTrainController implements IController
                     DriveTrainController.POWERLEVEL_MAX);
 
                 this.rightPID = new PIDHandler(
-                    "right",
+                    "dt.rightPID",
                     TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KP_DEFAULT,
                     TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KI_DEFAULT,
                     TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KD_DEFAULT,
@@ -139,20 +124,22 @@ public class DriveTrainController implements IController
             else
             {
                 this.leftPID = new PIDHandler(
-                    "left",
+                    "dt.leftPID",
                     TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KP_DEFAULT,
                     TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KI_DEFAULT,
                     TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KD_DEFAULT,
                     TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KF_DEFAULT,
+                    TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KS_DEFAULT,
                     DriveTrainController.POWERLEVEL_MIN,
                     DriveTrainController.POWERLEVEL_MAX);
 
                 this.rightPID = new PIDHandler(
-                    "right",
+                    "dt.rightPID",
                     TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KP_DEFAULT,
                     TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KI_DEFAULT,
                     TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KD_DEFAULT,
                     TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF_DEFAULT,
+                    TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KS_DEFAULT,
                     DriveTrainController.POWERLEVEL_MIN,
                     DriveTrainController.POWERLEVEL_MAX);
             }
@@ -165,8 +152,6 @@ public class DriveTrainController implements IController
      */
     private PowerSetting calculateVelocityModePowerSetting()
     {
-        double currentTime = this.timer.get();
-
         // velocity goals represent the desired percentage of the max velocity
         double leftVelocityGoal = 0.0;
         double rightVelocityGoal = 0.0;
@@ -320,23 +305,19 @@ public class DriveTrainController implements IController
         double rightPower;
         if (this.usePID)
         {
-            //double leftVelocityRatio = (double)(currentLeftTicks - this.prevLeftTicks) / 56.0;
             leftPower =
                 this.leftPID.calculateVelocity(
                     leftVelocityGoal,
                     currentLeftTicks);
 
-            //SmartDashboardLogger.putNumber("leftVelocityRatio", leftVelocityRatio);
             SmartDashboardLogger.putNumber("leftVelocityGoal", leftVelocityGoal);
             SmartDashboardLogger.putNumber("leftPower", leftPower);
 
-            //double rightVelocityRatio = (double)(currentRightTicks - this.prevRightTicks) / 56.0;
             rightPower =
                 this.rightPID.calculateVelocity(
                     rightVelocityGoal,
                     currentRightTicks);
 
-            //SmartDashboardLogger.putNumber("rightVelocityRatio", rightVelocityRatio);
             SmartDashboardLogger.putNumber("rightVelocityGoal", rightVelocityGoal);
             SmartDashboardLogger.putNumber("rightPower", rightPower);
         }
@@ -352,9 +333,6 @@ public class DriveTrainController implements IController
         rightPower = this.applyPowerLevelRange(rightPower);
         this.assertPowerLevelRange(leftPower, "left velocity (goal)");
         this.assertPowerLevelRange(rightPower, "right velocity (goal)");
-
-        this.prevLeftTicks = currentLeftTicks;
-        this.prevRightTicks = currentRightTicks;
 
         return new PowerSetting(leftPower, rightPower);
     }
