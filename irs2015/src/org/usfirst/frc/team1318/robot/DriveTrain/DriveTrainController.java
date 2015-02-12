@@ -4,6 +4,7 @@ import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.Common.IController;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.PIDHandler;
+import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
 /**
  * Drivetrain controller.
@@ -304,15 +305,26 @@ public class DriveTrainController implements IController
         double rightPower;
         if (this.usePID)
         {
+
+            double leftVelocityRatio = (double)(currentLeftTicks - this.prevLeftTicks) / 56.0;
             leftPower =
                 this.leftPID.calculate(
                     leftVelocityGoal,
-                    (double)(currentLeftTicks - this.prevLeftTicks) / 56.0);
+                    leftVelocityRatio);
 
+            SmartDashboardLogger.putNumber("leftVelocityRatio", leftVelocityRatio);
+            SmartDashboardLogger.putNumber("leftVelocityGoal", leftVelocityGoal);
+            SmartDashboardLogger.putNumber("leftPower", leftPower);
+
+            double rightVelocityRatio = (double)(currentRightTicks - this.prevRightTicks) / 56.0;
             rightPower =
                 this.rightPID.calculate(
                     rightVelocityGoal,
-                    (double)(currentRightTicks - this.prevRightTicks) / 56.0);
+                    rightVelocityRatio);
+
+            SmartDashboardLogger.putNumber("rightVelocityRatio", rightVelocityRatio);
+            SmartDashboardLogger.putNumber("rightVelocityGoal", rightVelocityGoal);
+            SmartDashboardLogger.putNumber("rightPower", rightPower);
         }
         else
         {
