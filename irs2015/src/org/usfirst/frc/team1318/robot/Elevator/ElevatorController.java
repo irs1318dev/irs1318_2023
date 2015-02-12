@@ -7,7 +7,6 @@ import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.PIDHandler;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
-import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Timer;
 
 public class ElevatorController implements IController
@@ -210,20 +209,12 @@ public class ElevatorController implements IController
         }
         else
         {
-            Preferences prefs = Preferences.getInstance();
             this.pidHandler = new PIDHandler(
-                prefs.getDouble(
-                    TuningConstants.ELEVATOR_POSITION_PID_KP_KEY,
-                    TuningConstants.ELEVATOR_POSITION_PID_KP_DEFAULT),
-                prefs.getDouble(
-                    TuningConstants.ELEVATOR_POSITION_PID_KI_KEY,
-                    TuningConstants.ELEVATOR_POSITION_PID_KI_DEFAULT),
-                prefs.getDouble(
-                    TuningConstants.ELEVATOR_POSITION_PID_KD_KEY,
-                    TuningConstants.ELEVATOR_POSITION_PID_KD_DEFAULT),
-                prefs.getDouble(
-                    TuningConstants.ELEVATOR_POSITION_PID_KF_KEY,
-                    TuningConstants.ELEVATOR_POSITION_PID_KF_DEFAULT),
+                "e.PID",
+                TuningConstants.ELEVATOR_POSITION_PID_KP_DEFAULT,
+                TuningConstants.ELEVATOR_POSITION_PID_KI_DEFAULT,
+                TuningConstants.ELEVATOR_POSITION_PID_KD_DEFAULT,
+                TuningConstants.ELEVATOR_POSITION_PID_KF_DEFAULT,
                 -TuningConstants.ELEVATOR_MAX_POWER_LEVEL,
                 TuningConstants.ELEVATOR_MAX_POWER_LEVEL);
         }
@@ -232,7 +223,6 @@ public class ElevatorController implements IController
     private double calculatePositionModePowerSetting(double desired)
     {
         double current = this.component.getEncoderDistance() - this.encoderZeroOffset;
-        return this.pidHandler.calculate(desired, current);
+        return this.pidHandler.calculatePosition(desired, current);
     }
-
 }
