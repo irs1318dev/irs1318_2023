@@ -81,34 +81,15 @@ public class TuningConstants
 
     //================================================== Elevator ==============================================================
 
-    // Velocity PID (right)
-    public static final String ELEVATOR_VELOCITY_PID_KP_KEY = "ELEVATOR_VELOCITY_PID_KP";
-    public static final double ELEVATOR_VELOCITY_PID_KP_DEFAULT = 0.0005;
-
-    public static final String ELEVATOR_VELOCITY_PID_KI_KEY = "ELEVATOR_VELOCITY_PID_KI";
-    public static final double ELEVATOR_VELOCITY_PID_KI_DEFAULT = 0.0;
-
-    public static final String ELEVATOR_VELOCITY_PID_KD_KEY = "ELEVATOR_VELOCITY_PID_KD";
-    public static final double ELEVATOR_VELOCITY_PID_KD_DEFAULT = 0.0;
-
-    public static final String ELEVATOR_VELOCITY_PID_KF_KEY = "ELEVATOR_VELOCITY_PID_KF";
-    public static final double ELEVATOR_VELOCITY_PID_KF_DEFAULT = 0.5;
-
-    public static final String ELEVATOR_VELOCITY_PID_KO_KEY = "ELEVATOR_VELOCITY_PID_KO";
-    public static final double ELEVATOR_VELOCITY_PID_KO_DEFAULT = 0.0;
-
-    public static final String ELEVATOR_VELOCITY_PID_KN_KEY = "ELEVATOR_VELOCITY_PID_KN";
-    public static final double ELEVATOR_VELOCITY_PID_KN_DEFAULT = 1.0;
-
-    // Position PID (right)
+    // Position PID
     public static final String ELEVATOR_POSITION_PID_KP_KEY = "ELEVATOR_POSITION_PID_KP";
-    public static final double ELEVATOR_POSITION_PID_KP_DEFAULT = 0.8;
+    public static final double ELEVATOR_POSITION_PID_KP_DEFAULT = 0.2;
 
     public static final String ELEVATOR_POSITION_PID_KI_KEY = "ELEVATOR_POSITION_PID_KI";
     public static final double ELEVATOR_POSITION_PID_KI_DEFAULT = 0.0;
 
     public static final String ELEVATOR_POSITION_PID_KD_KEY = "ELEVATOR_POSITION_PID_KD";
-    public static final double ELEVATOR_POSITION_PID_KD_DEFAULT = 0.01;
+    public static final double ELEVATOR_POSITION_PID_KD_DEFAULT = 0.0;
 
     public static final String ELEVATOR_POSITION_PID_KF_KEY = "ELEVATOR_POSITION_PID_KF";
     public static final double ELEVATOR_POSITION_PID_KF_DEFAULT = 0.0;
@@ -124,7 +105,7 @@ public class TuningConstants
 
     // Elevator deadzone/max power levels
     public static final double ELEVATOR_DEAD_ZONE = 0.1;
-    public static final double ELEVATOR_MAX_POWER_LEVEL = 1.0; // max power level (velocity)
+    public static final double ELEVATOR_MAX_POWER_LEVEL = 0.5; // max power level (velocity)
 
     public static final double ELEVATOR_OVERRIDE_POWER_LEVEL = 0.5;
     public static final double ELEVATOR_BELOW_MINIMUM_POSITION = -10000;
