@@ -23,7 +23,8 @@ public class DriveTrainComponent implements IDriveTrainComponent
     public static final String RIGHT_ENCODER_VELOCITY_LOG_KEY = "dt.rightEncoderVelocity";
     public static final String LEFT_ENCODER_DISTANCE_LOG_KEY = "dt.leftEncoderDistance";
     public static final String RIGHT_ENCODER_DISTANCE_LOG_KEY = "dt.rightEncoderDistance";
-    public static final String SHIFTER_STATE_LOG_KEY = "dt.shifterState";
+    public static final String LEFT_ENCODER_TICKS_LOG_KEY = "dt.leftEncoderTicks";
+    public static final String RIGHT_ENCODER_TICKS_LOG_KEY = "dt.rightEncoderTicks";
 
     private final Talon leftTalon;
     private final Talon rightTalon;
@@ -126,11 +127,11 @@ public class DriveTrainComponent implements IDriveTrainComponent
      */
     public int getLeftEncoderTicks()
     {
-        int leftDistance = this.leftEncoder.get();
+        int leftTicks = this.leftEncoder.get();
 
-        SmartDashboardLogger.putNumber(DriveTrainComponent.LEFT_ENCODER_DISTANCE_LOG_KEY, leftDistance);
+        SmartDashboardLogger.putNumber(DriveTrainComponent.LEFT_ENCODER_TICKS_LOG_KEY, leftTicks);
 
-        return leftDistance;
+        return leftTicks;
     }
 
     /**
@@ -139,10 +140,10 @@ public class DriveTrainComponent implements IDriveTrainComponent
      */
     public int getRightEncoderTicks()
     {
-        int rightDistance = this.rightEncoder.get();
+        int rightTicks = this.rightEncoder.get();
 
-        SmartDashboardLogger.putNumber(DriveTrainComponent.RIGHT_ENCODER_DISTANCE_LOG_KEY, rightDistance);
+        SmartDashboardLogger.putNumber(DriveTrainComponent.RIGHT_ENCODER_TICKS_LOG_KEY, rightTicks);
 
-        return rightDistance;
+        return rightTicks;
     }
 }

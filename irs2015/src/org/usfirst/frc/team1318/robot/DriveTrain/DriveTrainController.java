@@ -307,12 +307,12 @@ public class DriveTrainController implements IController
             leftPower =
                 this.leftPID.calculate(
                     leftVelocityGoal,
-                    (currentLeftTicks - this.prevLeftTicks));
+                    (double)(currentLeftTicks - this.prevLeftTicks) / 56.0);
 
             rightPower =
                 this.rightPID.calculate(
                     rightVelocityGoal,
-                    (currentRightTicks - this.prevRightTicks));
+                    (double)(currentRightTicks - this.prevRightTicks) / 56.0);
         }
         else
         {
