@@ -108,11 +108,11 @@ public class PIDHandler
             }
             else
             {
-                this.integral += this.error * this.dt;
+                this.integral += this.error; // * this.dt;
             }
 
             // calculate derivative
-            this.derivative = (this.error - this.prevError) / this.dt;
+            this.derivative = (this.error - this.prevError); // / this.dt;
 
             // store error
             this.prevError = this.error;

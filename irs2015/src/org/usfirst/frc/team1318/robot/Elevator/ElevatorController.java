@@ -35,7 +35,7 @@ public class ElevatorController implements IController
         this.usePID = true;
 
         this.baseLevel = HardwareConstants.ELEVATOR_FLOOR_HEIGHT;
-        this.position = 0;
+        this.position = this.component.getEncoderDistance();
         this.encoderZeroOffset = 0;
 
         this.timer = new Timer();
