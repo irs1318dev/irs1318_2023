@@ -25,7 +25,7 @@ package org.usfirst.frc.team1318.robot;
  */
 public class JoystickButtonConstants
 {
-    public static final int JOYSTICK_PORT = 0;
+    public static final int JOYSTICK_DRIVER_PORT = 0;
 
     public static final int DRIVETRAIN_SIMPLE_BUTTON = 3;
 
@@ -50,6 +50,9 @@ public class JoystickButtonConstants
     public static final int ELEVATOR_STOP_BUTTON = -1;
     public static final int ELEVATOR_UP_BUTTON = -1;
     public static final int ELEVATOR_DOWN_BUTTON = -1;
+    public static final int ELEVATOR_IGNORE_SENSORS_BUTTON = -1;
+    public static final int ELEVATOR_USE_SENSORS_BUTTON = -1;
+    public static final int ELEVATOR_ZERO_ENCODERS = -1;
 
     //Arm
     public static final int ARM_MACRO_EXTEND_BUTTON = 5;

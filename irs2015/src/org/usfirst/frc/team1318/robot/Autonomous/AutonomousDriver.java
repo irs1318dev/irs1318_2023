@@ -38,6 +38,10 @@ public class AutonomousDriver implements IDriver
     private static final String ELEVATOR_STOP_STATE_LOG_KEY = "a.elevatorStop";
     private static final String ELEVATOR_UP_STATE_LOG_KEY = "a.elevatorUp";
     private static final String ELEVATOR_DOWN_STATE_LOG_KEY = "a.elevatorDown";
+    private static final String ELEVATOR_VELOCITY_OVERRIDE_LOG_KEY = "a.elevatorVelocityOverride";
+    private static final String ELEVATOR_IGNORE_SENSORS_LOG_KEY = "a.elevatorIgnoreSensors";
+    private static final String ELEVATOR_USE_SENSORS_LOG_KEY = "a.elevatorUseSensors";
+    private static final String ELEVATOR_ZERO_ENCODERS_LOG_KEY = "a.elevatorZeroEncoders";
 
     //Arm 
     private static final String ARM_MACRO_EXTEND_STATE_LOG_KEY = "a.armMacroExtendState";
@@ -302,6 +306,38 @@ public class AutonomousDriver implements IDriver
     {
         boolean mode = this.controlData.getElevatorDownState();
         SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_DOWN_STATE_LOG_KEY, mode);
+        return mode;
+    }
+
+    @Override
+    public double getElevatorVelocityOverride()
+    {
+        double value = this.controlData.getElevatorVelocityOverrideState();
+        SmartDashboardLogger.putNumber(AutonomousDriver.ELEVATOR_VELOCITY_OVERRIDE_LOG_KEY, value);
+        return value;
+    }
+
+    @Override
+    public boolean getIgnoreElevatorSensors()
+    {
+        boolean mode = this.controlData.getElevatorIgnoreSensorsState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_IGNORE_SENSORS_LOG_KEY, mode);
+        return mode;
+    }
+
+    @Override
+    public boolean getUseElevatorSensors()
+    {
+        boolean mode = this.controlData.getElevatorUseSensorsState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_USE_SENSORS_LOG_KEY, mode);
+        return mode;
+    }
+
+    @Override
+    public boolean getZeroElevatorEncoder()
+    {
+        boolean mode = this.controlData.getElevatorZeroEncoderState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_ZERO_ENCODERS_LOG_KEY, mode);
         return mode;
     }
 
