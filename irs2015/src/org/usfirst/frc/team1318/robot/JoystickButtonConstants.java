@@ -27,15 +27,18 @@ public class JoystickButtonConstants
 {
     public static final int JOYSTICK_DRIVER_PORT = 0;
 
-    public static final int DRIVETRAIN_SIMPLE_BUTTON = 3;
-
     // change INVERT_X_AXIS to true if positive on the joystick isn't to the right, and negative isn't to the left
     public static final boolean INVERT_X_AXIS = false;
 
     // change INVERT_Y_AXIS to true if positive on the joystick isn't forward, and negative isn't backwards.
     public static final boolean INVERT_Y_AXIS = true;
 
-    //Elevator
+    //================================================== DriveTrain ==============================================================
+
+    public static final int DRIVETRAIN_SIMPLE_BUTTON = 3;
+
+    //================================================== Elevator ==============================================================
+
     public static final int ELEVATOR_CONTAINER_MACRO_BUTTON = -1;
 
     public static final int ELEVATOR_SET_STAE_TO_FLOOR_BUTTON = -1;
@@ -54,7 +57,8 @@ public class JoystickButtonConstants
     public static final int ELEVATOR_USE_SENSORS_BUTTON = -1;
     public static final int ELEVATOR_ZERO_ENCODERS = -1;
 
-    //Arm
+    //================================================== Arm ==============================================================
+
     public static final int ARM_MACRO_EXTEND_BUTTON = -1;
     public static final int ARM_MACRO_RETRACT_BUTTON = -1;
     public static final int ARM_EXTENDER_EXTEND_BUTTON = -1;
@@ -64,7 +68,8 @@ public class JoystickButtonConstants
     public static final int ARM_TROMBONE_EXTEND_BUTTON = -1;
     public static final int ARM_TROMBONE_RETRACT_BUTTON = -1;
 
-    //Intake 
+    //================================================== Intake ==============================================================
+
     public static final int INTAKE_UP_BUTTON = -1;
     public static final int INTAKE_DOWN_BUTTON = -1;
     public static final int INTAKE_RIGHT_EXTEND_OVERRIDE = -1;
