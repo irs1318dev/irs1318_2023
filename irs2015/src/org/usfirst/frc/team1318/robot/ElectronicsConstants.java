@@ -31,11 +31,12 @@ public class ElectronicsConstants
     public static final int INTAKE_LEFT_TALON_CHANNEL = 1;
     public static final int INTAKE_RIGHT_TALON_CHANNEL = 0;
 
-    public static final int INTAKE_LEFT_ARM_CHANNEL_A = -1; // TODO
-    public static final int INTAKE_LEFT_ARM_CHANNEL_B = -1; // TODO
+    // All in PCM "B":
+    public static final int INTAKE_LEFT_ARM_CHANNEL_A = 1;
+    public static final int INTAKE_LEFT_ARM_CHANNEL_B = 6;
 
-    public static final int INTAKE_RIGHT_ARM_CHANNEL_A = -1; // TODO
-    public static final int INTAKE_RIGHT_ARM_CHANNEL_B = -1; // TODO
+    public static final int INTAKE_RIGHT_ARM_CHANNEL_A = 0;
+    public static final int INTAKE_RIGHT_ARM_CHANNEL_B = 7;
 
     public static final double MAX_POWER_LEVEL = 1.0;
 }
