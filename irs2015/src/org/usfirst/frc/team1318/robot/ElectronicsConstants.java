@@ -32,11 +32,11 @@ public class ElectronicsConstants
     public static final int INTAKE_RIGHT_TALON_CHANNEL = 0;
 
     public static final int PCM_B_MODULE = 0;
-    public static final int INTAKE_LEFT_ARM_CHANNEL_A = 1;
-    public static final int INTAKE_LEFT_ARM_CHANNEL_B = 6;
+    public static final int INTAKE_LEFT_ARM_CHANNEL_A = 6;
+    public static final int INTAKE_LEFT_ARM_CHANNEL_B = 1;
 
-    public static final int INTAKE_RIGHT_ARM_CHANNEL_A = 0;
-    public static final int INTAKE_RIGHT_ARM_CHANNEL_B = 7;
+    public static final int INTAKE_RIGHT_ARM_CHANNEL_A = 7;
+    public static final int INTAKE_RIGHT_ARM_CHANNEL_B = 0;
 
     public static final double MAX_POWER_LEVEL = 1.0;
 }
