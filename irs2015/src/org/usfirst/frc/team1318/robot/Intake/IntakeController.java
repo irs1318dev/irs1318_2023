@@ -49,16 +49,17 @@ public class IntakeController implements IController
         }
 
         // gets joystick input and translates it into wanted solenoid state
+        // Up means retract, down means extend
         if (this.operator.getIntakeUpButton())
         {
-            this.solenoidLeftState = true;
-            this.solenoidRightState = true;
+            this.solenoidLeftState = false;
+            this.solenoidRightState = false;
         }
 
         if (this.operator.getIntakeDownButton())
         {
-            this.solenoidLeftState = false;
-            this.solenoidRightState = false;
+            this.solenoidLeftState = true;
+            this.solenoidRightState = true;
         }
 
         if (this.operator.getIntakeLeftExtendOverride())
