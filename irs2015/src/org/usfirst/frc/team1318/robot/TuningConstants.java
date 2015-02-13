@@ -58,4 +58,7 @@ public class TuningConstants
     public static final double TILT_RETRACT_WAIT_TIME = 1;
     public static final double TROMBONE_RETRACT_WAIT_TIME = 2;
     public static final double SAFETY_WAIT = 1;
+
+    // Intake motor constants
+    public static final double INTAKE_MOTOR_SPEED = .7;
 }
