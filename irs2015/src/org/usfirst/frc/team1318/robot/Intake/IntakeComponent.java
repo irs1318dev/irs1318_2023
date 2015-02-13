@@ -42,6 +42,8 @@ public class IntakeComponent
             ElectronicsConstants.PCM_B_MODULE,
             ElectronicsConstants.INTAKE_RIGHT_ARM_CHANNEL_A,
             ElectronicsConstants.INTAKE_RIGHT_ARM_CHANNEL_B);
+
+        DoubleSolenoid fakeSolenoid = new DoubleSolenoid(1, 2, 5);
     }
 
     /**
@@ -92,7 +94,7 @@ public class IntakeComponent
     */
     public void setIntakeMotorSpeed(double velocity)
     {
-        this.leftTalon.set(velocity);
+        this.leftTalon.set(-velocity);
         this.rightTalon.set(velocity);
         SmartDashboardLogger.putNumber(IntakeComponent.INTAKE_MOTOR_SPEED_KEY, velocity);
     }

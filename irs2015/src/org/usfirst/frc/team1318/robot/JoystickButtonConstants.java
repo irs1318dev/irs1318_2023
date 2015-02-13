@@ -62,12 +62,12 @@ public class JoystickButtonConstants
     public static final int ARM_TROMBONE_RETRACT_BUTTON = -1;
 
     //Intake 
-    public static final int INTAKE_UP_BUTTON = -1;
-    public static final int INTAKE_DOWN_BUTTON = -1;
-    public static final int INTAKE_RIGHT_EXTEND_OVERRIDE = -1;
-    public static final int INTAKE_RIGHT_RETRACT_OVERRIDE = -1;
-    public static final int INTAKE_LEFT_EXTEND_OVERRIDE = -1;
-    public static final int INTAKE_LEFT_RETRACT_OVERRIDE = -1;
-    public static final int INTAKE_FORWARD_BUTTON = -1;
-    public static final int INTAKE_BACKWARD_BUTTON = -1;
+    public static final int INTAKE_UP_BUTTON = 5;
+    public static final int INTAKE_DOWN_BUTTON = 3;
+    public static final int INTAKE_RIGHT_EXTEND_OVERRIDE = 10;
+    public static final int INTAKE_RIGHT_RETRACT_OVERRIDE = 12;
+    public static final int INTAKE_LEFT_EXTEND_OVERRIDE = 9;
+    public static final int INTAKE_LEFT_RETRACT_OVERRIDE = 11;
+    public static final int INTAKE_FORWARD_BUTTON = 6;
+    public static final int INTAKE_BACKWARD_BUTTON = 4;
 }
