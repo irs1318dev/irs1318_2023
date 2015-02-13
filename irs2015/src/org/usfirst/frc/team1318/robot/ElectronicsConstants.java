@@ -31,7 +31,7 @@ public class ElectronicsConstants
     public static final int INTAKE_LEFT_TALON_CHANNEL = 1;
     public static final int INTAKE_RIGHT_TALON_CHANNEL = 0;
 
-    // All in PCM "B":
+    public static final int PCM_B_MODULE = 0;
     public static final int INTAKE_LEFT_ARM_CHANNEL_A = 1;
     public static final int INTAKE_LEFT_ARM_CHANNEL_B = 6;
 

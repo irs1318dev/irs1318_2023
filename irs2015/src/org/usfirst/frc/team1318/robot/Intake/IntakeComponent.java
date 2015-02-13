@@ -34,10 +34,12 @@ public class IntakeComponent
         this.rightTalon = new Talon(ElectronicsConstants.INTAKE_RIGHT_TALON_CHANNEL);
 
         this.intakeDoubleSolenoidLeft = new DoubleSolenoid(
+            ElectronicsConstants.PCM_B_MODULE,
             ElectronicsConstants.INTAKE_LEFT_ARM_CHANNEL_A,
             ElectronicsConstants.INTAKE_LEFT_ARM_CHANNEL_B);
 
         this.intakeDoubleSolenoidRight = new DoubleSolenoid(
+            ElectronicsConstants.PCM_B_MODULE,
             ElectronicsConstants.INTAKE_RIGHT_ARM_CHANNEL_A,
             ElectronicsConstants.INTAKE_RIGHT_ARM_CHANNEL_B);
     }
