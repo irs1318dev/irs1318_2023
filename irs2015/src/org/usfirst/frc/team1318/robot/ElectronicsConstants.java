@@ -31,11 +31,11 @@ public class ElectronicsConstants
     public static final int INTAKE_LEFT_TALON_CHANNEL = 1;
     public static final int INTAKE_RIGHT_TALON_CHANNEL = 0;
 
-    public static final int TROMBONE_SOLANOID_EXTEND = 1; // TODO
+    public static final int TROMBONE_SOLANOID_EXTEND = 7; // TODO A
     public static final int TROMBONE_SOLANOID_RETRACT = 0; // TODO
-    public static final int TILT_LINK_SOLANOID_EXTEND = 5; // TODO
-    public static final int TILT_LINK_SOLANOID_RETRACT = 4; // TODO
-    public static final int EXTEND_LINK_SOLANOID_EXTEND = 3; // TODO
+    public static final int TILT_LINK_SOLANOID_EXTEND = 6; // TODO A
+    public static final int TILT_LINK_SOLANOID_RETRACT = 1; // TODO 
+    public static final int EXTEND_LINK_SOLANOID_EXTEND = 5; // TODO A
     public static final int EXTEND_LINK_SOLANOID_RETRACT = 2; // TODO
 
     public static final double MAX_POWER_LEVEL = 1.0;
