@@ -21,16 +21,19 @@ public class ArmComponent
     public ArmComponent()
     {
         this.trombone = new DoubleSolenoid(
-            ElectronicsConstants.TROMBONE_SOLANOID_EXTEND,
-            ElectronicsConstants.TROMBONE_SOLANOID_RETRACT);
+            ElectronicsConstants.PCM_A_MODULE,
+            ElectronicsConstants.ARM_TROMBONE_SOLANOID_EXTEND,
+            ElectronicsConstants.ARM_TROMBONE_SOLANOID_RETRACT);
 
         this.tiltLinkage = new DoubleSolenoid(
-            ElectronicsConstants.TILT_LINK_SOLANOID_EXTEND,
-            ElectronicsConstants.TILT_LINK_SOLANOID_RETRACT);
+            ElectronicsConstants.PCM_A_MODULE,
+            ElectronicsConstants.ARM_TILT_LINK_SOLANOID_EXTEND,
+            ElectronicsConstants.ARM_TILT_LINK_SOLANOID_RETRACT);
 
         this.extendLinkage = new DoubleSolenoid(
-            ElectronicsConstants.EXTEND_LINK_SOLANOID_EXTEND,
-            ElectronicsConstants.EXTEND_LINK_SOLANOID_RETRACT);
+            ElectronicsConstants.PCM_A_MODULE,
+            ElectronicsConstants.ARM_EXTEND_LINK_SOLANOID_EXTEND,
+            ElectronicsConstants.ARM_EXTEND_LINK_SOLANOID_RETRACT);
     }
 
     /**

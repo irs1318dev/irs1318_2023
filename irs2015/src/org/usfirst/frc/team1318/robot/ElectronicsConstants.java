@@ -31,12 +31,16 @@ public class ElectronicsConstants
     public static final int INTAKE_LEFT_TALON_CHANNEL = 1;
     public static final int INTAKE_RIGHT_TALON_CHANNEL = 0;
 
-    public static final int TROMBONE_SOLANOID_EXTEND = 7; // TODO A
-    public static final int TROMBONE_SOLANOID_RETRACT = 0; // TODO
-    public static final int TILT_LINK_SOLANOID_EXTEND = 6; // TODO A
-    public static final int TILT_LINK_SOLANOID_RETRACT = 1; // TODO 
-    public static final int EXTEND_LINK_SOLANOID_EXTEND = 5; // TODO A
-    public static final int EXTEND_LINK_SOLANOID_RETRACT = 2; // TODO
+    // All in PCM "A":
+    public static final int PCM_A_MODULE = 0;
+    public static final int ARM_TROMBONE_SOLANOID_EXTEND = 7;
+    public static final int ARM_TROMBONE_SOLANOID_RETRACT = 0;
+
+    public static final int ARM_TILT_LINK_SOLANOID_EXTEND = 6;
+    public static final int ARM_TILT_LINK_SOLANOID_RETRACT = 1;
+
+    public static final int ARM_EXTEND_LINK_SOLANOID_EXTEND = 5;
+    public static final int ARM_EXTEND_LINK_SOLANOID_RETRACT = 2;
 
     public static final double MAX_POWER_LEVEL = 1.0;
 }
