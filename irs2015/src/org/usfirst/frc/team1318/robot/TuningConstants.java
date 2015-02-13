@@ -76,4 +76,18 @@ public class TuningConstants
     public static final double ELEVATOR_OVERRIDE_POWER_LEVEL = 0.5;
     public static final double ELEVATOR_BELOW_MINIMUM_POSITION = -10000;
     public static final double ELEVATOR_MAX_VELOCITY = 20;
+
+    //================================================== Arm ==============================================================
+
+    public static final double TILT_EXTEND_WAIT_TIME = 1;
+    public static final double EXTENDOR_EXTEND_WAIT_TIME = 2;
+    public static final double TROMBONE_EXTEND_WAIT_TIME = 2;
+
+    public static final double TILT_RETRACT_WAIT_TIME = 1;
+    public static final double TROMBONE_RETRACT_WAIT_TIME = 2;
+    public static final double SAFETY_WAIT = 1;
+
+    //================================================== Intake ==============================================================
+
+    public static final double INTAKE_MOTOR_SPEED = .7;
 }

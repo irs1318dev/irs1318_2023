@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.usfirst.frc.team1318.robot.Arm.ArmComponent;
+import org.usfirst.frc.team1318.robot.Arm.ArmController;
 import org.usfirst.frc.team1318.robot.Autonomous.AutonomousDriver;
 import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveDistanceAutonomousTask;
@@ -21,6 +23,8 @@ import org.usfirst.frc.team1318.robot.DriveTrain.IDriveTrainComponent;
 import org.usfirst.frc.team1318.robot.DriveTrain.PositionManager;
 import org.usfirst.frc.team1318.robot.Elevator.ElevatorComponent;
 import org.usfirst.frc.team1318.robot.Elevator.ElevatorController;
+import org.usfirst.frc.team1318.robot.Intake.IntakeComponent;
+import org.usfirst.frc.team1318.robot.Intake.IntakeController;
 import org.usfirst.frc.team1318.robot.UserInterface.UserDriver;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -71,6 +75,14 @@ public class Robot extends IterativeRobot
     private ElevatorComponent elevatorComponent;
     private ElevatorController elevatorController;
 
+    // Arm 
+    private ArmComponent armComponent;
+    private ArmController armController;
+
+    // Intake
+    private IntakeComponent intakeComponent;
+    private IntakeController intakeController;
+
     // Position manager - holds position information relative to our starting point
     private PositionManager position;
 
@@ -85,6 +97,8 @@ public class Robot extends IterativeRobot
         this.compressorComponent = new CompressorComponent();
         this.driveTrainComponent = new DriveTrainComponent();
         this.elevatorComponent = new ElevatorComponent();
+        this.armComponent = new ArmComponent();
+        this.intakeComponent = new IntakeComponent();
 
         // create position manager
         this.position = new PositionManager(this.driveTrainComponent);
@@ -127,6 +141,18 @@ public class Robot extends IterativeRobot
         {
             this.elevatorController.stop();
             this.elevatorController = null;
+        }
+
+        if (this.armController != null)
+        {
+            this.armController.stop();
+            this.armController = null;
+        }
+
+        if (this.intakeController != null)
+        {
+            this.intakeController.stop();
+            this.intakeController = null;
         }
 
         SmartDashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Disabled");
@@ -198,6 +224,8 @@ public class Robot extends IterativeRobot
                 this.driveTrainComponent,
                 TuningConstants.DRIVETRAIN_USE_PID_DEFAULT);
         this.elevatorController = new ElevatorController(this.driver, this.elevatorComponent);
+        this.armController = new ArmController(this.driver, this.armComponent);
+        this.intakeController = new IntakeController(this.driver, this.intakeComponent);
 
         // we will run the compressor controller here because we should start it in advance...
         this.compressorController.update();
@@ -243,6 +271,8 @@ public class Robot extends IterativeRobot
         this.compressorController.update();
         this.driveTrainController.update();
         this.elevatorController.update();
+        this.armController.update();
+        this.intakeController.update();
     }
 
     /**
