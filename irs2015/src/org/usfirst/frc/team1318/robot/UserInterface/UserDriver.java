@@ -470,7 +470,7 @@ public class UserDriver implements IDriver
     @Override
     public boolean getArmTiltRetractOverride()
     {
-        boolean mode = this.armTiltExtendOverride.isActivated();
+        boolean mode = this.armTiltRetractOverride.isActivated();
         SmartDashboardLogger.putBoolean(UserDriver.ARM_TILT_RETRACT_OVERRIDE_LOG_KEY, mode);
         return mode;
     }
