@@ -173,120 +173,118 @@ public class DriveTrainController implements IController
         double xVelocity = this.driver.getDriveTrainXVelocity();
         double yVelocity = this.driver.getDriveTrainYVelocity();
 
-        // calculate the distance from the joystick origin we are
-        double radius = Math.sqrt(xVelocity * xVelocity + yVelocity * yVelocity);
+        // adjust for joystick deadzone
+        xVelocity = this.adjustForDeadZone(xVelocity, TuningConstants.DRIVETRAIN_X_DEAD_ZONE);
+        yVelocity = this.adjustForDeadZone(yVelocity, TuningConstants.DRIVETRAIN_Y_DEAD_ZONE);
 
         // adjust the intensity of the input
         xVelocity = this.adjustIntensity(xVelocity);
         yVelocity = this.adjustIntensity(yVelocity);
 
-        if (radius > TuningConstants.DRIVETRAIN_DEAD_ZONE)
+        if (simpleDriveModeEnabled)
         {
-            if (simpleDriveModeEnabled)
-            {
-                // simple drive enables either forward/back or in-place left/right turn only
-                //
-                //                   forward
-                //               ---------------
-                //               |      |      |
-                //               |      |      |
-                // In-place left |-------------| In-place right
-                //               |      |      |
-                //               |      |      |
-                //               ---------------
-                //                  backward
-                //
+            // simple drive enables either forward/back or in-place left/right turn only
+            //
+            //                   forward
+            //               ---------------
+            //               |      |      |
+            //               |      |      |
+            // In-place left |-------------| In-place right
+            //               |      |      |
+            //               |      |      |
+            //               ---------------
+            //                  backward
+            //
 
-                if (Math.abs(yVelocity) < Math.abs(xVelocity))
+            if (Math.abs(yVelocity) < Math.abs(xVelocity))
+            {
+                // in-place turn
+                leftVelocityGoal = xVelocity;
+                rightVelocityGoal = -xVelocity;
+            }
+            else
+            {
+                // forward/backward
+                leftVelocityGoal = yVelocity;
+                rightVelocityGoal = yVelocity;
+            }
+        }
+        else
+        {
+            // advanced drive enables varying-degree turns.
+            // math is derived using linear interpolation
+            //
+            //     a,1       1,1       1,a
+            //      ---------------------
+            //      |         |         |
+            //      |   Q2    |   Q1    |
+            //      |         |         |
+            // -b,b |-------------------| b,-b
+            //      |         |         |
+            //      |   Q3    |   Q4    |
+            //      |         |         |
+            //      ---------------------
+            //    -a,-1     -1,-1     -1,-a
+            //
+            // for x: 0 -> 1, power(x) = power(0) + x*(power(1) - power(0)) 
+            // for y: 0 -> 1, power(x,y) = power(x,0) + y*(power(x,1) - power(x,0))
+
+            if (xVelocity >= 0)
+            {
+                if (yVelocity >= 0)
                 {
-                    // in-place turn
-                    leftVelocityGoal = xVelocity;
-                    rightVelocityGoal = -xVelocity;
+                    // Q1:
+                    // y=1 => lp = 1.  rp = 1 + x*(a - 1)
+                    // y=0 => lp = 0 + x*b = x*b.  rp = 0 + x*-b = -x*b
+                    // lp = x*b + y*(1 - x*b)
+                    // rp = x*-b + y*(1+x*(a-1) - x*-b)
+                    leftVelocityGoal = xVelocity
+                        * TuningConstants.DRIVETRAIN_B + yVelocity * (1 - xVelocity * TuningConstants.DRIVETRAIN_B);
+                    rightVelocityGoal = -xVelocity
+                        * TuningConstants.DRIVETRAIN_B + yVelocity
+                        * (1 + xVelocity * (TuningConstants.DRIVETRAIN_A - 1) + xVelocity * TuningConstants.DRIVETRAIN_B);
                 }
                 else
                 {
-                    // forward/backward
-                    leftVelocityGoal = yVelocity;
-                    rightVelocityGoal = yVelocity;
+                    // Q4:
+                    // y=-1 => lp = -1.  rp = -1 + x*(-a - -1)  
+                    // y=0  => lp = x*B.  rp = -x*B (see Q1)
+                    // lp = x*B + -1*y*(-1 - x*B)
+                    // rp = x*-B + -1*y*(-1+x*(-a - -1) - x*-B)
+                    leftVelocityGoal = xVelocity
+                        * TuningConstants.DRIVETRAIN_B - yVelocity * (-1 - xVelocity * TuningConstants.DRIVETRAIN_B);
+                    rightVelocityGoal = -xVelocity
+                        * TuningConstants.DRIVETRAIN_B - yVelocity
+                        * (-1 + xVelocity * (-TuningConstants.DRIVETRAIN_A + 1) + xVelocity * TuningConstants.DRIVETRAIN_B);
                 }
             }
             else
             {
-                // advanced drive enables varying-degree turns.
-                // math is derived using linear interpolation
-                //
-                //     a,1       1,1       1,a
-                //      ---------------------
-                //      |         |         |
-                //      |   Q2    |   Q1    |
-                //      |         |         |
-                // -b,b |-------------------| b,-b
-                //      |         |         |
-                //      |   Q3    |   Q4    |
-                //      |         |         |
-                //      ---------------------
-                //    -a,-1     -1,-1     -1,-a
-                //
-                // for x: 0 -> 1, power(x) = power(0) + x*(power(1) - power(0)) 
-                // for y: 0 -> 1, power(x,y) = power(x,0) + y*(power(x,1) - power(x,0))
-
-                if (xVelocity >= 0)
+                if (yVelocity >= 0)
                 {
-                    if (yVelocity >= 0)
-                    {
-                        // Q1:
-                        // y=1 => lp = 1.  rp = 1 + x*(a - 1)
-                        // y=0 => lp = 0 + x*b = x*b.  rp = 0 + x*-b = -x*b
-                        // lp = x*b + y*(1 - x*b)
-                        // rp = x*-b + y*(1+x*(a-1) - x*-b)
-                        leftVelocityGoal = xVelocity
-                            * TuningConstants.DRIVETRAIN_B + yVelocity * (1 - xVelocity * TuningConstants.DRIVETRAIN_B);
-                        rightVelocityGoal = -xVelocity
-                            * TuningConstants.DRIVETRAIN_B + yVelocity
-                            * (1 + xVelocity * (TuningConstants.DRIVETRAIN_A - 1) + xVelocity * TuningConstants.DRIVETRAIN_B);
-                    }
-                    else
-                    {
-                        // Q4:
-                        // y=-1 => lp = -1.  rp = -1 + x*(-a - -1)  
-                        // y=0  => lp = x*B.  rp = -x*B (see Q1)
-                        // lp = x*B + -1*y*(-1 - x*B)
-                        // rp = x*-B + -1*y*(-1+x*(-a - -1) - x*-B)
-                        leftVelocityGoal = xVelocity
-                            * TuningConstants.DRIVETRAIN_B - yVelocity * (-1 - xVelocity * TuningConstants.DRIVETRAIN_B);
-                        rightVelocityGoal = -xVelocity
-                            * TuningConstants.DRIVETRAIN_B - yVelocity
-                            * (-1 + xVelocity * (-TuningConstants.DRIVETRAIN_A + 1) + xVelocity * TuningConstants.DRIVETRAIN_B);
-                    }
+                    // Q2:
+                    // y=1 => lp = 1 + -1*x*(a - 1) = 1 - x*(a - 1).  rp = 1
+                    // y=0 => lp = 0 + -1*x*(-b - 0) = x*b.  rp = 0 + -1*x*(b - 0) = -x*b
+                    // lp = x*b + y*(1 - x*(a-1) - x*b)
+                    // rp = -x*b + y*(1 - -x*B)
+                    leftVelocityGoal = xVelocity
+                        * TuningConstants.DRIVETRAIN_B + yVelocity
+                        * (1 - xVelocity * (TuningConstants.DRIVETRAIN_A - 1) - xVelocity * TuningConstants.DRIVETRAIN_B);
+                    rightVelocityGoal = -xVelocity
+                        * TuningConstants.DRIVETRAIN_B + yVelocity * (1 + xVelocity * TuningConstants.DRIVETRAIN_B);
                 }
                 else
                 {
-                    if (yVelocity >= 0)
-                    {
-                        // Q2:
-                        // y=1 => lp = 1 + -1*x*(a - 1) = 1 - x*(a - 1).  rp = 1
-                        // y=0 => lp = 0 + -1*x*(-b - 0) = x*b.  rp = 0 + -1*x*(b - 0) = -x*b
-                        // lp = x*b + y*(1 - x*(a-1) - x*b)
-                        // rp = -x*b + y*(1 - -x*B)
-                        leftVelocityGoal = xVelocity
-                            * TuningConstants.DRIVETRAIN_B + yVelocity
-                            * (1 - xVelocity * (TuningConstants.DRIVETRAIN_A - 1) - xVelocity * TuningConstants.DRIVETRAIN_B);
-                        rightVelocityGoal = -xVelocity
-                            * TuningConstants.DRIVETRAIN_B + yVelocity * (1 + xVelocity * TuningConstants.DRIVETRAIN_B);
-                    }
-                    else
-                    {
-                        // Q3:
-                        // y=-1 => lp = -1 + -1*x*(-a - -1) = -1 - x*(-a + 1).  rp = -1 
-                        // y=0  => lp = x*b.  rp = -x*b (see Q2) 
-                        // lp = x*b + -1*y*(-1 - x*(-a + 1) - x*b)
-                        // rp = -x*b + -1*y*(-1 - -x*b)
-                        leftVelocityGoal = xVelocity
-                            * TuningConstants.DRIVETRAIN_B - yVelocity
-                            * (-1 - xVelocity * (-TuningConstants.DRIVETRAIN_A + 1) - xVelocity * TuningConstants.DRIVETRAIN_B);
-                        rightVelocityGoal = -xVelocity
-                            * TuningConstants.DRIVETRAIN_B - yVelocity * (-1 + xVelocity * TuningConstants.DRIVETRAIN_B);
-                    }
+                    // Q3:
+                    // y=-1 => lp = -1 + -1*x*(-a - -1) = -1 - x*(-a + 1).  rp = -1 
+                    // y=0  => lp = x*b.  rp = -x*b (see Q2) 
+                    // lp = x*b + -1*y*(-1 - x*(-a + 1) - x*b)
+                    // rp = -x*b + -1*y*(-1 - -x*b)
+                    leftVelocityGoal = xVelocity
+                        * TuningConstants.DRIVETRAIN_B - yVelocity
+                        * (-1 - xVelocity * (-TuningConstants.DRIVETRAIN_A + 1) - xVelocity * TuningConstants.DRIVETRAIN_B);
+                    rightVelocityGoal = -xVelocity
+                        * TuningConstants.DRIVETRAIN_B - yVelocity * (-1 + xVelocity * TuningConstants.DRIVETRAIN_B);
                 }
             }
         }
@@ -390,6 +388,29 @@ public class DriveTrainController implements IController
     }
 
     /**
+     * Adjust the velocity as a part of dead zone calculation
+     * @param velocity to adjust
+     * @param deadZone to consider
+     * @return adjusted velocity for deadZone
+     */
+    private double adjustForDeadZone(double velocity, double deadZone)
+    {
+        if (velocity < deadZone && velocity > -deadZone)
+        {
+            return 0.0;
+        }
+
+        double sign = 1.0;
+        if (velocity < 0.0)
+        {
+            sign = -1.0;
+        }
+
+        // scale so that we have the area just outside the deadzone be the starting point
+        return (velocity - sign * deadZone) / (1 - deadZone);
+    }
+
+    /**
      * Assert that the power level is within the required range
      * @param powerLevel to verify
      * @param side indicator for the exception message if incorrect
@@ -434,15 +455,18 @@ public class DriveTrainController implements IController
      */
     private double adjustIntensity(double value)
     {
+        // Jim prefers linear
+        return value;
+
         // we will use simple quadratic scaling to adjust input intensity
-        if (value < 0)
-        {
-            return -value * value;
-        }
-        else
-        {
-            return value * value;
-        }
+        //        if (value < 0)
+        //        {
+        //            return -value * value;
+        //        }
+        //        else
+        //        {
+        //            return value * value;
+        //        }
     }
 
     /**
