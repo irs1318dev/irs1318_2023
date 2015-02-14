@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.Timer;
 public class PIDHandler
 {
     // constants
-    private static final double MinTimeStep = 0.01;
+    private static final double MinTimeStep = 0; //0.01;
     private final Double minOutput;
     private final Double maxOutput;
 
@@ -229,6 +229,7 @@ public class PIDHandler
         // update dt
         this.curTime = this.timer.get();
         this.dt = this.curTime - this.prevTime;
+        SmartDashboardLogger.putNumber(this.prefix + "DT", this.dt);
 
         // To prevent division by zero and over-aggressive measurement, output updates at a max of 1kHz
         if (this.dt >= PIDHandler.MinTimeStep)
@@ -236,11 +237,11 @@ public class PIDHandler
             this.prevTime = this.curTime;
 
             // calculate error
-            double adjustedMeasuredValue = this.ks * (this.measuredValue - this.prevMeasuredValue);
+            double deltaX = this.measuredValue - this.prevMeasuredValue;
 
-            this.error = this.setpoint - adjustedMeasuredValue;
+            this.error = this.ks * this.setpoint - deltaX;
 
-            SmartDashboardLogger.putNumber(this.prefix + "AdjustedValue: ", adjustedMeasuredValue);
+            SmartDashboardLogger.putNumber(this.prefix + "DeltaX: ", deltaX);
 
             // calculate integral, limiting it based on MaxOutput/MinOutput
             double potentialI = this.ki * (this.integral + this.error * this.dt);

@@ -421,7 +421,7 @@ public class AutonomousControlData
 
     public boolean getArmTromboneRetractOverrideState()
     {
-        return this.armTromboneExtendOverrideState;
+        return this.armTromboneRetractOverrideState;
     }
 
     public void setArmTromboneRetractOverrideState(boolean armTromboneRetractOverrideState)
