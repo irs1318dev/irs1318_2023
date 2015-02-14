@@ -36,7 +36,7 @@ public class HardwareConstants
     public static final double ELEVATOR_3_TOTE_HEIGHT = 39 * 2.54;
 
     public static final double ELEVATOR_MIN_HEIGHT = 0.0;
-    public static final double ELEVATOR_MAX_HEIGHT = 40 * 2.54;
+    public static final double ELEVATOR_MAX_HEIGHT = 101.147; // (approximately 40 inches - we rely on the actual height from the encoder here...) 40 * 2.54;
     public static final double ELEVATOR_MAX_POWER_POSITIONAL_NON_PID = 0.2; // max power level (positional, non-PID)
 
     public static final double ELEVATOR_PULSE_DISTANCE = 4.5 * 2.54 / 360.0;

@@ -159,13 +159,20 @@ public class ElevatorController implements IController
         // also note that we should enforce hardware safety requirements
         if (this.component.getBottomLimitSwitchValue() && !this.ignoreSensors)
         {
-            this.encoderZeroOffset = HardwareConstants.ELEVATOR_MIN_HEIGHT - this.component.getEncoderDistance();
-            this.movingToBottom = false;
+            this.encoderZeroOffset = HardwareConstants.ELEVATOR_MIN_HEIGHT + this.component.getEncoderDistance();
+
+            if (this.movingToBottom)
+            {
+                this.position = 0.0;
+                this.movingToBottom = false;
+            }
+
             enforceNonNegative = true;
         }
         else if (this.component.getTopLimitSwitchValue() && !this.ignoreSensors)
         {
-            this.encoderZeroOffset = HardwareConstants.ELEVATOR_MAX_HEIGHT - this.component.getEncoderDistance();
+            this.encoderZeroOffset = this.component.getEncoderDistance() - HardwareConstants.ELEVATOR_MAX_HEIGHT;
+            this.position = HardwareConstants.ELEVATOR_MAX_HEIGHT;
             enforceNonPositive = true;
         }
 

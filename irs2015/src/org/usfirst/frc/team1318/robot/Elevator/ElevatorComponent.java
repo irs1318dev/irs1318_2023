@@ -21,8 +21,8 @@ public class ElevatorComponent
     public static final String ENCODER_DISTANCE_LOG_KEY = "e.encoderDistance";
     public static final String ENCODER_TICKS_LOG_KEY = "e.encoderTicks";
     public static final String ENCODER_VELOCITY_LOG_KEY = "e.encoderVelocity";
-    public static final String TOP_LIMIT_SWITCH_LOG_KEY = "e.topHallEffectSensor";
-    public static final String BOTTOM_LIMIT_SWITCH_LOG_KEY = "e.bottomHallEffectSendor";
+    public static final String TOP_LIMIT_SWITCH_LOG_KEY = "e.topLimitSwitch";
+    public static final String BOTTOM_LIMIT_SWITCH_LOG_KEY = "e.bottomLimitSwitch";
 
     public ElevatorComponent()
     {
