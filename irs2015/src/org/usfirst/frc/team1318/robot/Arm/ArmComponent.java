@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1318.robot.Arm;
 
 import org.usfirst.frc.team1318.robot.ElectronicsConstants;
+import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -50,7 +51,7 @@ public class ArmComponent
             this.trombone.set(Value.kReverse);
         }
 
-        //        SmartDashboardLogger.putBoolean(ArmComponent.TROMBONE_STATE_LOG_KEY, state);
+        SmartDashboardLogger.putBoolean(ArmComponent.TROMBONE_STATE_LOG_KEY, state);
     }
 
     /**
@@ -68,7 +69,7 @@ public class ArmComponent
             this.tiltLinkage.set(Value.kReverse);
         }
 
-        //        SmartDashboardLogger.putBoolean(ArmComponent.TILT_LINKAGE_STATE_LOG_KEY, state);
+        SmartDashboardLogger.putBoolean(ArmComponent.TILT_LINKAGE_STATE_LOG_KEY, state);
     }
 
     /**
@@ -86,6 +87,6 @@ public class ArmComponent
             this.extendLinkage.set(Value.kReverse);
         }
 
-        //        SmartDashboardLogger.putBoolean(ArmComponent.EXTEND_LINKAGE_STATE_LOG_KEY, state);
+        SmartDashboardLogger.putBoolean(ArmComponent.EXTEND_LINKAGE_STATE_LOG_KEY, state);
     }
 }

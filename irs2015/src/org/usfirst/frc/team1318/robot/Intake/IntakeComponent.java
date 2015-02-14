@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1318.robot.Intake;
 
 import org.usfirst.frc.team1318.robot.ElectronicsConstants;
+import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -60,7 +61,7 @@ public class IntakeComponent
             this.intakeDoubleSolenoidLeft.set(Value.kReverse);
         }
 
-        //        SmartDashboardLogger.putBoolean(IntakeComponent.LEFT_INTAKE_ARM_DIRECTION_KEY, leftForward);
+        SmartDashboardLogger.putBoolean(IntakeComponent.LEFT_INTAKE_ARM_DIRECTION_KEY, leftForward);
     }
 
     /**
@@ -80,7 +81,7 @@ public class IntakeComponent
             this.intakeDoubleSolenoidRight.set(Value.kReverse);
         }
 
-        //        SmartDashboardLogger.putBoolean(IntakeComponent.RIGHT_INTAKE_ARM_DIRECTION_KEY, rightForward);
+        SmartDashboardLogger.putBoolean(IntakeComponent.RIGHT_INTAKE_ARM_DIRECTION_KEY, rightForward);
     }
 
     /**
@@ -93,6 +94,6 @@ public class IntakeComponent
     {
         this.leftTalon.set(-velocity);
         this.rightTalon.set(velocity);
-        //        SmartDashboardLogger.putNumber(IntakeComponent.INTAKE_MOTOR_SPEED_KEY, velocity);
+        SmartDashboardLogger.putNumber(IntakeComponent.INTAKE_MOTOR_SPEED_KEY, velocity);
     }
 }

@@ -11,7 +11,8 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class ElevatorController implements IController
 {
-    public static final String POSITION_GOAL_LOG_KEY = "e.positionGoal";
+    private static final String ENCODER_ZERO_OFFSET_LOG_KEY = "e.encoderZeroOffset";
+    private static final String POSITION_GOAL_LOG_KEY = "e.positionGoal";
 
     private final ElevatorComponent component;
     private final IDriver driver;
@@ -52,6 +53,8 @@ public class ElevatorController implements IController
     @Override
     public void update()
     {
+        boolean enforceNonPositive = false;
+        boolean enforceNonNegative = false;
         double currentTime = this.timer.get();
 
         // check whether ignore or use sensors; using sensors takes precedence over ignoring them
@@ -103,7 +106,7 @@ public class ElevatorController implements IController
         if (this.driver.getZeroElevatorEncoder())
         {
             this.encoderZeroOffset = HardwareConstants.ELEVATOR_MIN_HEIGHT + this.component.getEncoderDistance();
-            position -= encoderZeroOffset;
+            this.position -= this.encoderZeroOffset;
         }
 
         double powerLevel = 0.0;
@@ -152,17 +155,18 @@ public class ElevatorController implements IController
             this.movingToBottom = false;
         }
 
-        // check offset - if we hit the bottom or top, adjust the encoder zero offset
-        if (this.component.getBottomHallEffectSensorValue() && !this.ignoreSensors)
+        // if we hit the bottom or top, adjust the encoder zero offset
+        // also note that we should enforce hardware safety requirements
+        if (this.component.getBottomLimitSwitchValue() && !this.ignoreSensors)
         {
             this.encoderZeroOffset = HardwareConstants.ELEVATOR_MIN_HEIGHT - this.component.getEncoderDistance();
             this.movingToBottom = false;
-            powerLevel = Math.max(powerLevel, 0);
+            enforceNonNegative = true;
         }
-        else if (this.component.getTopHallEffectSensorValue() && !this.ignoreSensors)
+        else if (this.component.getTopLimitSwitchValue() && !this.ignoreSensors)
         {
             this.encoderZeroOffset = HardwareConstants.ELEVATOR_MAX_HEIGHT - this.component.getEncoderDistance();
-            powerLevel = Math.min(powerLevel, 0);
+            enforceNonPositive = true;
         }
 
         // if elevator up or down button is pushed, these take precedence over the normal controls 
@@ -217,6 +221,19 @@ public class ElevatorController implements IController
             powerLevel = this.calculatePositionModePowerSetting(this.position);
         }
 
+        // Safety requirement: don't go lower if we are hitting the bottom limit switch
+        if (enforceNonPositive)
+        {
+            powerLevel = Math.min(powerLevel, 0);
+        }
+
+        // Safety requirement: don't go higher if we are hitting the upper limit switch
+        if (enforceNonNegative)
+        {
+            powerLevel = Math.max(powerLevel, 0);
+        }
+
+        // Safety requirement: stop if the elevator stop button has been pressed
         if (this.driver.getStopElevatorButton())
         {
             powerLevel = 0.0;
@@ -231,8 +248,7 @@ public class ElevatorController implements IController
         }
 
         SmartDashboardLogger.putNumber(ElevatorController.POSITION_GOAL_LOG_KEY, this.position);
-
-        SmartDashboardLogger.putNumber("e.encoderZeroOffset", encoderZeroOffset);
+        SmartDashboardLogger.putNumber(ElevatorController.ENCODER_ZERO_OFFSET_LOG_KEY, encoderZeroOffset);
 
         this.component.setMotorPowerLevel(powerLevel);
 
