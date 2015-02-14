@@ -66,6 +66,7 @@ public class UserDriver implements IDriver
 
     private Joystick joystickDriver;
     private Joystick joystickCoDriver;
+    private Joystick joystickCoDriver2;
 
     // DriveTrain toggles
     private final SimpleToggleButton simpleDriveModeButton;
@@ -112,6 +113,7 @@ public class UserDriver implements IDriver
     {
         this.joystickDriver = new Joystick(JoystickButtonConstants.JOYSTICK_DRIVER_PORT);
         this.joystickCoDriver = new Joystick(JoystickButtonConstants.JOYSTICK_CO_DRIVER_PORT);
+        this.joystickCoDriver2 = new Joystick(2);
 
         // initialize DriveTrain toggles
         this.simpleDriveModeButton = new SimpleToggleButton();
