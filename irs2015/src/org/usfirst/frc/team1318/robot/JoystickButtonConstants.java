@@ -49,35 +49,35 @@ public class JoystickButtonConstants
     public static final int ELEVATOR_MOVE_TO_1_TOTE_BUTTON = 11;
     public static final int ELEVATOR_MOVE_TO_2_TOTES_BUTTON = 9;
     public static final int ELEVATOR_MOVE_TO_3_TOTES_BUTTON = 7;
-    public static final int ELEVATOR_PID_ON = 6; // codriver
-    public static final int ELEVATOR_PID_OFF = 4; // codriver
-    public static final int ELEVATOR_STOP_BUTTON = 1; // codriver
-    public static final int ELEVATOR_UP_BUTTON = 5;
-    public static final int ELEVATOR_DOWN_BUTTON = 3;
-    public static final int ELEVATOR_MOVE_TO_BOTTOM = 2; // codriver
-    public static final int ELEVATOR_IGNORE_SENSORS_BUTTON = 5; // codriver
-    public static final int ELEVATOR_USE_SENSORS_BUTTON = 3; // codriver
-    public static final int ELEVATOR_ZERO_ENCODERS = 12; // codriver
+    public static final int ELEVATOR_PID_ON = -1; // codriver
+    public static final int ELEVATOR_PID_OFF = -1; // codriver
+    public static final int ELEVATOR_STOP_BUTTON = -1; // codriver
+    public static final int ELEVATOR_UP_BUTTON = -1;    //POV
+    public static final int ELEVATOR_DOWN_BUTTON = -1;  //POV
+    public static final int ELEVATOR_MOVE_TO_BOTTOM = -1; // codriver
+    public static final int ELEVATOR_IGNORE_SENSORS_BUTTON = -1; // codriver
+    public static final int ELEVATOR_USE_SENSORS_BUTTON = -1; // codriver
+    public static final int ELEVATOR_ZERO_ENCODERS = -1; // codriver
 
     //================================================== Arm ==============================================================
 
-    public static final int ARM_MACRO_EXTEND_BUTTON = -1;
-    public static final int ARM_MACRO_RETRACT_BUTTON = -1;
-    public static final int ARM_EXTENDER_EXTEND_BUTTON = -1;
-    public static final int ARM_EXTENDER_RETRACT_BUTTON = -1;
-    public static final int ARM_TILT_EXTEND_BUTTON = -1;
-    public static final int ARM_TILT_RETRACT_BUTTON = -1;
-    public static final int ARM_TROMBONE_EXTEND_BUTTON = -1;
-    public static final int ARM_TROMBONE_RETRACT_BUTTON = -1;
+    public static final int ARM_MACRO_EXTEND_BUTTON = -1;   //throttle
+    public static final int ARM_MACRO_RETRACT_BUTTON = -1;  //throttle
+    public static final int ARM_EXTENDER_EXTEND_BUTTON = 1;
+    public static final int ARM_EXTENDER_RETRACT_BUTTON = 6;
+    public static final int ARM_TILT_EXTEND_BUTTON = 2;
+    public static final int ARM_TILT_RETRACT_BUTTON = 7;
+    public static final int ARM_TROMBONE_EXTEND_BUTTON = 3;
+    public static final int ARM_TROMBONE_RETRACT_BUTTON = 8;
 
     //================================================== Intake ==============================================================
 
-    public static final int INTAKE_UP_BUTTON = -1;
-    public static final int INTAKE_DOWN_BUTTON = -1;
-    public static final int INTAKE_RIGHT_EXTEND_OVERRIDE = -1;
-    public static final int INTAKE_RIGHT_RETRACT_OVERRIDE = -1;
-    public static final int INTAKE_LEFT_EXTEND_OVERRIDE = -1;
-    public static final int INTAKE_LEFT_RETRACT_OVERRIDE = -1;
-    public static final int INTAKE_FORWARD_BUTTON = -1;
-    public static final int INTAKE_BACKWARD_BUTTON = -1;
+    public static final int INTAKE_UP_BUTTON = 6;
+    public static final int INTAKE_DOWN_BUTTON = 4;
+    public static final int INTAKE_RIGHT_EXTEND_OVERRIDE = 5;
+    public static final int INTAKE_RIGHT_RETRACT_OVERRIDE = 10;
+    public static final int INTAKE_LEFT_EXTEND_OVERRIDE = 4;
+    public static final int INTAKE_LEFT_RETRACT_OVERRIDE = 9;
+    public static final int INTAKE_FORWARD_BUTTON = 5;
+    public static final int INTAKE_BACKWARD_BUTTON = 3;
 }
