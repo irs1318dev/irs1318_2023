@@ -137,6 +137,12 @@ public interface IDriver
     public boolean getElevatorDownButton();
 
     /**
+     * Get a value indicating whether to move the elevator to the lowest possible point 
+     * @return true for move to the bottom, otherwise false 
+     */
+    public boolean getElevatorMoveToBottom();
+
+    /**
      * Get a value indicating the desired elevator velocity 
      * @return desired elevator velocity 
      */
@@ -149,8 +155,8 @@ public interface IDriver
     public boolean getIgnoreElevatorSensors();
 
     /**
-     * Get a value indicating whether to use the Hall Effect sensors or limit switches
-     * @return true for use them, otherwise false 
+     * Get a value indicating whether to use the Hall Effect or limit switch sensors, or not
+     * @return true for use sensors, otherwise false 
      */
     public boolean getUseElevatorSensors();
 

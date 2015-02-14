@@ -4,6 +4,7 @@ import org.usfirst.frc.team1318.robot.ElectronicsConstants;
 import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Talon;
 
@@ -12,16 +13,16 @@ public class ElevatorComponent
     //private final DigitalInput throughBeamSensor;
     private final Talon motor;
     private final Encoder encoder;
-    //private final DigitalInput topHallEffectSensor;
-    //private final DigitalInput bottomHallEffectSensor;
+    private final DigitalInput topLimitSwtich;
+    private final DigitalInput bottomLimitSwitch;
 
     public static final String THROUGH_BEAM_SENSOR_LOG_KEY = "e.throughBeamSensor";
     public static final String MOTOR_POWER_LOG_KEY = "e.motorPower";
     public static final String ENCODER_DISTANCE_LOG_KEY = "e.encoderDistance";
     public static final String ENCODER_TICKS_LOG_KEY = "e.encoderTicks";
     public static final String ENCODER_VELOCITY_LOG_KEY = "e.encoderVelocity";
-    public static final String TOP_HALL_EFFECT_SENSOR_LOG_KEY = "e.topHallEffectSensor";
-    public static final String BOTTOM_HALL_EFFECT_SENSOR_LOG_KEY = "e.bottomHallEffectSendor";
+    public static final String TOP_LIMIT_SWITCH_LOG_KEY = "e.topLimitSwitch";
+    public static final String BOTTOM_LIMIT_SWITCH_LOG_KEY = "e.bottomLimitSwitch";
 
     public ElevatorComponent()
     {
@@ -35,8 +36,8 @@ public class ElevatorComponent
 
         //this.throughBeamSensor = new DigitalInput(ElectronicsConstants.ELEVATOR_THROUGH_BEAM_SENSOR_CHANNEL);
 
-        //this.topHallEffectSensor = new DigitalInput(ElectronicsConstants.ELEVATOR_HALL_EFFECT_TOP_CHANNEL);
-        //this.bottomHallEffectSensor = new DigitalInput(ElectronicsConstants.ELEVATOR_HALL_EFFECT_BOTTOM_CHANNEL);
+        this.topLimitSwtich = new DigitalInput(ElectronicsConstants.ELEVATOR_TOP_LIMIT_SWITCH_CHANNEL);
+        this.bottomLimitSwitch = new DigitalInput(ElectronicsConstants.ELEVATOR_BOTTOM_LIMIT_SWITCH_CHANNEL);
     }
 
     /**
@@ -94,24 +95,24 @@ public class ElevatorComponent
     }
 
     /**
-     * Gets the current value of the Hall Effect Sensor at the top of the elevator 
-     * @return true for (TODO), otherwise false 
+     * Gets the current value of the Limit Switch at the top of the elevator 
+     * @return true for pressed, otherwise false 
      */
-    public boolean getTopHallEffectSensorValue()
+    public boolean getTopLimitSwitchValue()
     {
-        //boolean value = this.topHallEffectSensor.get();
-        //SmartDashboardLogger.putBoolean(ElevatorComponent.TOP_HALL_EFFECT_SENSOR_LOG_KEY, value);
-        return false;//value;
+        boolean value = this.topLimitSwtich.get();
+        SmartDashboardLogger.putBoolean(ElevatorComponent.TOP_LIMIT_SWITCH_LOG_KEY, value);
+        return value;
     }
 
     /**
-     * Gets the current value of the Hall Effect Sensor at the bottom of the elevator 
-     * @return true for (TODO), otherwise false 
+     * Gets the current value of the LimitSwitch at the bottom of the elevator 
+     * @return true for pressed, otherwise false 
      */
-    public boolean getBottomHallEffectSensorValue()
+    public boolean getBottomLimitSwitchValue()
     {
-        //boolean value = this.bottomHallEffectSensor.get();
-        //SmartDashboardLogger.putBoolean(ElevatorComponent.BOTTOM_HALL_EFFECT_SENSOR_LOG_KEY, value);
-        return false;//value;
+        boolean value = this.bottomLimitSwitch.get();
+        SmartDashboardLogger.putBoolean(ElevatorComponent.BOTTOM_LIMIT_SWITCH_LOG_KEY, value);
+        return value;
     }
 }

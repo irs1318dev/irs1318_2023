@@ -61,14 +61,21 @@ public class TuningConstants
     public static final double ELEVATOR_POSITION_PID_KD_DEFAULT = 0.0;
     public static final double ELEVATOR_POSITION_PID_KF_DEFAULT = 0.0;
 
+    public static final String ELEVATOR_POSITION_PID_KO_KEY = "ELEVATOR_POSITION_PID_KO";
+    public static final double ELEVATOR_POSITION_PID_KO_DEFAULT = 0.0;
+
+    public static final String ELEVATOR_POSITION_PID_KN_KEY = "ELEVATOR_POSITION_PID_KN";
+    public static final double ELEVATOR_POSITION_PID_KN_DEFAULT = 1.0;
+
     // Elevator max speeds from encoder
     public static final double ELEVATOR_ENCODER_MAX_SPEED = 170.0; // max speed we expect to detect from the left encoder
 
-    // Drivetrain deadzone/max power levels
+    // Elevator deadzone/max power levels
     public static final double ELEVATOR_DEAD_ZONE = 0.1;
     public static final double ELEVATOR_MAX_POWER_LEVEL = 0.5; // max power level (velocity)
 
     public static final double ELEVATOR_OVERRIDE_POWER_LEVEL = 0.5;
+    public static final double ELEVATOR_BELOW_MINIMUM_POSITION = -10000;
     public static final double ELEVATOR_MAX_VELOCITY = 20;
 
     //================================================== Arm ==============================================================

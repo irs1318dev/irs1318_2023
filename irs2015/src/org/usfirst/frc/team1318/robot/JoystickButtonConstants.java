@@ -26,6 +26,7 @@ package org.usfirst.frc.team1318.robot;
 public class JoystickButtonConstants
 {
     public static final int JOYSTICK_DRIVER_PORT = 0;
+    public static final int JOYSTICK_CO_DRIVER_PORT = 1;
 
     // change INVERT_X_AXIS to true if positive on the joystick isn't to the right, and negative isn't to the left
     public static final boolean INVERT_X_AXIS = false;
@@ -41,21 +42,22 @@ public class JoystickButtonConstants
 
     public static final int ELEVATOR_CONTAINER_MACRO_BUTTON = -1;
 
-    public static final int ELEVATOR_SET_STAE_TO_FLOOR_BUTTON = 12;
-    public static final int ELEVATOR_SET_STATE_TO_PLATFORM_BUTTON = 10;
-    public static final int ELEVATOR_SET_STATE_TO_STEP_BUTTON = 8;
-    public static final int ELEVATOR_MOVE_TO_0_TOTES_BUTTON = 2;
-    public static final int ELEVATOR_MOVE_TO_1_TOTE_BUTTON = 11;
-    public static final int ELEVATOR_MOVE_TO_2_TOTES_BUTTON = 9;
-    public static final int ELEVATOR_MOVE_TO_3_TOTES_BUTTON = 7;
-    public static final int ELEVATOR_PID_ON = 6;
-    public static final int ELEVATOR_PID_OFF = 4;
-    public static final int ELEVATOR_STOP_BUTTON = -1;
-    public static final int ELEVATOR_UP_BUTTON = 5;
-    public static final int ELEVATOR_DOWN_BUTTON = 3;
-    public static final int ELEVATOR_IGNORE_SENSORS_BUTTON = -1;
-    public static final int ELEVATOR_USE_SENSORS_BUTTON = -1;
-    public static final int ELEVATOR_ZERO_ENCODERS = -1;
+    public static final int ELEVATOR_SET_STAE_TO_FLOOR_BUTTON = 12; //1
+    public static final int ELEVATOR_SET_STATE_TO_PLATFORM_BUTTON = 10; //1
+    public static final int ELEVATOR_SET_STATE_TO_STEP_BUTTON = 8;  //1
+    public static final int ELEVATOR_MOVE_TO_0_TOTES_BUTTON = 2;    //1
+    public static final int ELEVATOR_MOVE_TO_1_TOTE_BUTTON = 11;    //1
+    public static final int ELEVATOR_MOVE_TO_2_TOTES_BUTTON = 9;    //1
+    public static final int ELEVATOR_MOVE_TO_3_TOTES_BUTTON = 7;    //1
+    public static final int ELEVATOR_PID_ON = 6;    //2
+    public static final int ELEVATOR_PID_OFF = 4;   //2
+    public static final int ELEVATOR_STOP_BUTTON = 1;   //2
+    public static final int ELEVATOR_UP_BUTTON = 5; //1
+    public static final int ELEVATOR_DOWN_BUTTON = 3;   //1
+    public static final int ELEVATOR_MOVE_TO_BOTTOM = 2;    //2
+    public static final int ELEVATOR_IGNORE_SENSORS_BUTTON = 5; //2
+    public static final int ELEVATOR_USE_SENSORS_BUTTON = 3;    //2
+    public static final int ELEVATOR_ZERO_ENCODERS = 12;    //2
 
     //================================================== Arm ==============================================================
 
