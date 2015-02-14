@@ -42,7 +42,7 @@ public class ElevatorController implements IController
         this.baseLevel = HardwareConstants.ELEVATOR_FLOOR_HEIGHT;
         this.position = this.component.getEncoderDistance();
         this.encoderZeroOffset = 0;
-        this.movingToBottom = true;  // move to bottom to calibrate the encoder offset on start
+        this.movingToBottom = false;  // move to bottom to calibrate the encoder offset on start
 
         this.timer = new Timer();
         this.timer.start();
@@ -102,7 +102,8 @@ public class ElevatorController implements IController
 
         if (this.driver.getZeroElevatorEncoder())
         {
-            this.encoderZeroOffset = HardwareConstants.ELEVATOR_MIN_HEIGHT - this.component.getEncoderDistance();
+            this.encoderZeroOffset = HardwareConstants.ELEVATOR_MIN_HEIGHT + this.component.getEncoderDistance();
+            position -= encoderZeroOffset;
         }
 
         double powerLevel = 0.0;
@@ -230,6 +231,8 @@ public class ElevatorController implements IController
         }
 
         SmartDashboardLogger.putNumber(ElevatorController.POSITION_GOAL_LOG_KEY, this.position);
+
+        SmartDashboardLogger.putNumber("e.encoderZeroOffset", encoderZeroOffset);
 
         this.component.setMotorPowerLevel(powerLevel);
 

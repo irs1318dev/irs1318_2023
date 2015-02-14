@@ -34,8 +34,8 @@ public class ElectronicsConstants
     public static final int ELEVATOR_UPPER_LIMIT_SWITCH = 7;
 
     public static final int ELEVATOR_THROUGH_BEAM_SENSOR_CHANNEL = -1;
-    public static final int ELEVATOR_HALL_EFFECT_TOP_CHANNEL = -1;
-    public static final int ELEVATOR_HALL_EFFECT_BOTTOM_CHANNEL = -1;
+    public static final int ELEVATOR_HALL_EFFECT_TOP_CHANNEL = 7;
+    public static final int ELEVATOR_HALL_EFFECT_BOTTOM_CHANNEL = 6;
 
     //================================================== Intake ==============================================================
 
