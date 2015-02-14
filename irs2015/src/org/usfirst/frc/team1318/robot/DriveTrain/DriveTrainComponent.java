@@ -5,7 +5,7 @@ import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Victor;
 
 /**
  * The drivetrain component class describes the electronics of the drivetrain and defines the abstract way to control it.
@@ -26,8 +26,8 @@ public class DriveTrainComponent implements IDriveTrainComponent
     public static final String LEFT_ENCODER_TICKS_LOG_KEY = "dt.leftEncoderTicks";
     public static final String RIGHT_ENCODER_TICKS_LOG_KEY = "dt.rightEncoderTicks";
 
-    private final Talon leftTalon;
-    private final Talon rightTalon;
+    private final Victor leftTalon;
+    private final Victor rightTalon;
 
     private final Encoder leftEncoder;
     private final Encoder rightEncoder;
@@ -37,10 +37,10 @@ public class DriveTrainComponent implements IDriveTrainComponent
      */
     public DriveTrainComponent()
     {
-        this.leftTalon = new Talon(
+        this.leftTalon = new Victor(
             ElectronicsConstants.DRIVETRAIN_LEFT_TALON_CHANNEL);
 
-        this.rightTalon = new Talon(
+        this.rightTalon = new Victor(
             ElectronicsConstants.DRIVETRAIN_RIGHT_TALON_CHANNEL);
 
         this.leftEncoder = new Encoder(
@@ -62,8 +62,8 @@ public class DriveTrainComponent implements IDriveTrainComponent
      */
     public void setDriveTrainPower(double leftPower, double rightPower)
     {
-        this.leftTalon.set(-leftPower); // note: left motors are oriented facing "backwards"
-        this.rightTalon.set(rightPower);
+        this.leftTalon.set(leftPower); // note: left motors are oriented facing "backwards"
+        this.rightTalon.set(-rightPower);
 
         SmartDashboardLogger.putNumber(DriveTrainComponent.LEFT_TALON_POWER_LOG_KEY, leftPower);
         SmartDashboardLogger.putNumber(DriveTrainComponent.RIGHT_TALON_POWER_LOG_KEY, rightPower);
@@ -114,7 +114,7 @@ public class DriveTrainComponent implements IDriveTrainComponent
      */
     public double getRightEncoderDistance()
     {
-        double rightDistance = this.rightEncoder.getDistance();
+        double rightDistance = -this.rightEncoder.getDistance();
 
         SmartDashboardLogger.putNumber(DriveTrainComponent.RIGHT_ENCODER_DISTANCE_LOG_KEY, rightDistance);
 
@@ -140,7 +140,7 @@ public class DriveTrainComponent implements IDriveTrainComponent
      */
     public int getRightEncoderTicks()
     {
-        int rightTicks = this.rightEncoder.get();
+        int rightTicks = -this.rightEncoder.get();
 
         SmartDashboardLogger.putNumber(DriveTrainComponent.RIGHT_ENCODER_TICKS_LOG_KEY, rightTicks);
 

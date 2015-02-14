@@ -170,17 +170,18 @@ public class DriveTrainController implements IController
 
         // get the X and Y values from the operator.  We expect these to be between -1.0 and 1.0,
         // with this value representing the forward velocity percentage and right turn percentage (of max speed)
-        double xVelocity = this.driver.getDriveTrainXVelocity();
+        double xVelocity = 0.0;//this.driver.getDriveTrainXVelocity();
         double yVelocity = this.driver.getDriveTrainYVelocity();
 
         // calculate the distance from the joystick origin we are
         double radius = Math.sqrt(xVelocity * xVelocity + yVelocity * yVelocity);
+        SmartDashboardLogger.putNumber("dtc.radius", radius);
 
         // adjust the intensity of the input
         xVelocity = this.adjustIntensity(xVelocity);
         yVelocity = this.adjustIntensity(yVelocity);
 
-        if (radius > TuningConstants.DRIVETRAIN_DEAD_ZONE)
+        if (true)//Math.abs(radius) > TuningConstants.DRIVETRAIN_DEAD_ZONE)
         {
             if (simpleDriveModeEnabled)
             {
