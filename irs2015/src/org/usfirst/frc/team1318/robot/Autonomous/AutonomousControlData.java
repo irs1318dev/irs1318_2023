@@ -30,6 +30,7 @@ public class AutonomousControlData
     private boolean elevatorStopState;
     private boolean elevatorUpState;
     private boolean elevatorDownState;
+    private boolean elevatorMoveToBottomState;
     private double elevatorVelocityOverrideState;
     private boolean elevatorIgnoreSensorsState;
     private boolean elevatorUseSensorsState;
@@ -298,6 +299,16 @@ public class AutonomousControlData
         this.elevatorDownState = elevatorDownState;
     }
 
+    public boolean getElevatorMoveToBottomState()
+    {
+        return elevatorMoveToBottomState;
+    }
+
+    public void setElebvatorMoveToBottomState(boolean elevatorMoveToBottomState)
+    {
+        this.elevatorMoveToBottomState = elevatorMoveToBottomState;
+    }
+
     public boolean getArmMacroExtendState()
     {
         return this.armMacroExtendState;
@@ -410,7 +421,7 @@ public class AutonomousControlData
 
     public boolean getArmTromboneRetractOverrideState()
     {
-        return this.armTromboneExtendOverrideState;
+        return this.armTromboneRetractOverrideState;
     }
 
     public void setArmTromboneRetractOverrideState(boolean armTromboneRetractOverrideState)

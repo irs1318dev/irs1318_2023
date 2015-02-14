@@ -38,6 +38,7 @@ public class UserDriver implements IDriver
     private static final String ELEVATOR_STOP_LOG_KEY = "u.elevatorStop";
     private static final String ELEVATOR_UP_STATE_LOG_KEY = "u.elevatorUp";
     private static final String ELEVATOR_DOWN_STATE_LOG_KEY = "u.elevatorDown";
+    private static final String ELEVATOR_MOVE_TO_BOTTOM_LOG_KEY = "u.elevatorMoveToBottom";
     private static final String ELEVATOR_VELOCITY_OVERRIDE_LOG_KEY = "u.elevatorVelocityOverride";
     private static final String ELEVATOR_IGNORE_SENSORS_LOG_KEY = "u.elevatorIgnoreSensors";
     private static final String ELEVATOR_USE_SENSORS_LOG_KEY = "u.elevatorUseSensors";
@@ -99,8 +100,7 @@ public class UserDriver implements IDriver
     private SimpleButton elevatorPIDOn;
     private SimpleButton elevatorPIDOff;
     private SimpleButton elevatorStop;
-    private SimpleButton elevatorUp;
-    private SimpleButton elevatorDown;
+    private SimpleButton elevatorMoveToBottom;
     private SimpleButton elevatorIgnoreSensors;
     private SimpleButton elevatorUseSensors;
     private SimpleButton elevatorZeroEncoders;
@@ -111,6 +111,7 @@ public class UserDriver implements IDriver
     public UserDriver()
     {
         this.joystickDriver = new Joystick(JoystickButtonConstants.JOYSTICK_DRIVER_PORT);
+        this.joystickCoDriver = new Joystick(JoystickButtonConstants.JOYSTICK_CO_DRIVER_PORT);
 
         // initialize DriveTrain toggles
         this.simpleDriveModeButton = new SimpleToggleButton();
@@ -145,8 +146,10 @@ public class UserDriver implements IDriver
         this.elevatorPIDOn = new SimpleButton();
         this.elevatorPIDOff = new SimpleButton();
         this.elevatorStop = new SimpleButton();
-        this.elevatorUp = new SimpleButton();
-        this.elevatorDown = new SimpleButton();
+        this.elevatorIgnoreSensors = new SimpleButton();
+        this.elevatorUseSensors = new SimpleButton();
+        this.elevatorMoveToBottom = new SimpleButton();
+        this.elevatorZeroEncoders = new SimpleButton();
     }
 
     /**
@@ -182,7 +185,7 @@ public class UserDriver implements IDriver
         //        this.intakeLeftRetractOverride
         //            .updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.INTAKE_LEFT_RETRACT_OVERRIDE));
 
-        //Elevator
+        //Elevator  TODO: change CoDriver buttons back to CoDriver 
         this.elevatorContainerMacroButton.updateState(this.joystickDriver
             .getRawButton(JoystickButtonConstants.ELEVATOR_CONTAINER_MACRO_BUTTON));
         this.elevatorSetStateToFloorButton.updateState(this.joystickDriver
@@ -195,15 +198,13 @@ public class UserDriver implements IDriver
         this.elevatorMoveTo1Tote.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_1_TOTE_BUTTON));
         this.elevatorMoveTo2Totes.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_2_TOTES_BUTTON));
         this.elevatorMoveTo3Totes.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_3_TOTES_BUTTON));
-        //        this.elevatorPIDOn.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_PID_ON));
-        //        this.elevatorPIDOff.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_PID_OFF));
-        //        this.elevatorStop.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_STOP_BUTTON));
-        this.elevatorUp.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_UP_BUTTON));
-        this.elevatorDown.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_DOWN_BUTTON));
-        //        this.elevatorIgnoreSensors.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_IGNORE_SENSORS_BUTTON));
-        //        this.elevatorUseSensors.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_USE_SENSORS_BUTTON));
-        //        this.elevatorZeroEncoders.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_ZERO_ENCODERS));
-
+        this.elevatorPIDOn.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_PID_ON));//TODO: change to CoDriver
+        this.elevatorPIDOff.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_PID_OFF));//TODO: change to CoDriver
+        this.elevatorStop.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_STOP_BUTTON));
+        this.elevatorIgnoreSensors.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_IGNORE_SENSORS_BUTTON));
+        this.elevatorUseSensors.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_USE_SENSORS_BUTTON));
+        this.elevatorZeroEncoders.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_ZERO_ENCODERS));
+        this.elevatorMoveToBottom.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_BOTTOM));
     }
 
     /**
@@ -259,7 +260,7 @@ public class UserDriver implements IDriver
     {
         boolean simpleMode = this.simpleDriveModeButton.isToggled();
 
-        SmartDashboardLogger.putBoolean(UserDriver.DRIVETRAIN_SIMPLE_MODE_LOG_KEY, simpleMode);
+        //        SmartDashboardLogger.putBoolean(UserDriver.DRIVETRAIN_SIMPLE_MODE_LOG_KEY, simpleMode);
 
         return simpleMode;
     }
@@ -300,7 +301,7 @@ public class UserDriver implements IDriver
     public boolean getElevatorContainerMacroButton()
     {
         boolean state = this.elevatorContainerMacroButton.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_CONTAINER_MACRO_STATE_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_CONTAINER_MACRO_STATE_LOG_KEY, state);
         return state;
     }
 
@@ -308,7 +309,7 @@ public class UserDriver implements IDriver
     public boolean getElevatorSetStateToFloorButton()
     {
         boolean state = this.elevatorSetStateToFloorButton.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_SET_STATE_TO_FLOOR_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_SET_STATE_TO_FLOOR_LOG_KEY, state);
         return state;
     }
 
@@ -316,7 +317,7 @@ public class UserDriver implements IDriver
     public boolean getElevatorSetStateToPlatformButton()
     {
         boolean state = this.elevatorSetStateToPlatformButton.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_SET_STATE_TO_PLATFORM_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_SET_STATE_TO_PLATFORM_LOG_KEY, state);
         return state;
     }
 
@@ -324,7 +325,7 @@ public class UserDriver implements IDriver
     public boolean getElevatorSetStateToStepButton()
     {
         boolean state = this.elevatorSetStateToStepButton.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_SET_STATE_TO_STEP_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_SET_STATE_TO_STEP_LOG_KEY, state);
         return state;
     }
 
@@ -332,7 +333,7 @@ public class UserDriver implements IDriver
     public boolean getElevatorMoveTo0TotesButton()
     {
         boolean state = this.elevatorMoveTo0Totes.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_MOVE_TO_0_TOTES_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_MOVE_TO_0_TOTES_LOG_KEY, state);
         return state;
     }
 
@@ -340,7 +341,7 @@ public class UserDriver implements IDriver
     public boolean getElevatorMoveTo1ToteButton()
     {
         boolean state = this.elevatorMoveTo1Tote.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_MOVE_TO_1_TOTE_STATE_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_MOVE_TO_1_TOTE_STATE_LOG_KEY, state);
         return state;
     }
 
@@ -348,7 +349,7 @@ public class UserDriver implements IDriver
     public boolean getElevatorMoveTo2TotesButton()
     {
         boolean state = this.elevatorMoveTo2Totes.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_MOVE_TO_2_TOTES_STATE_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_MOVE_TO_2_TOTES_STATE_LOG_KEY, state);
         return state;
     }
 
@@ -356,7 +357,7 @@ public class UserDriver implements IDriver
     public boolean getElevatorMoveTo3TotesButton()
     {
         boolean state = this.elevatorMoveTo3Totes.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_MOVE_TO_3_TOTES_STATE_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_MOVE_TO_3_TOTES_STATE_LOG_KEY, state);
         return state;
     }
 
@@ -364,7 +365,7 @@ public class UserDriver implements IDriver
     public boolean getElevatorPIDOn()
     {
         boolean state = this.elevatorPIDOn.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_PID_ON_STATE_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_PID_ON_STATE_LOG_KEY, state);
         return state;
     }
 
@@ -372,7 +373,7 @@ public class UserDriver implements IDriver
     public boolean getElevatorPIDOff()
     {
         boolean state = this.elevatorPIDOff.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_PID_OFF_STATE_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_PID_OFF_STATE_LOG_KEY, state);
         return state;
     }
 
@@ -380,31 +381,39 @@ public class UserDriver implements IDriver
     public boolean getStopElevatorButton()
     {
         boolean mode = this.elevatorStop.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_STOP_LOG_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_STOP_LOG_KEY, mode);
         return mode;
     }
 
     @Override
     public boolean getElevatorUpButton()
     {
-        boolean mode = this.elevatorUp.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_UP_STATE_LOG_KEY, mode);
+        boolean mode = this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_UP_BUTTON);
+        //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_UP_STATE_LOG_KEY, mode);
         return mode;
     }
 
     @Override
     public boolean getElevatorDownButton()
     {
-        boolean mode = this.elevatorDown.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_DOWN_STATE_LOG_KEY, mode);
+        boolean mode = this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_DOWN_BUTTON);
+        //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_DOWN_STATE_LOG_KEY, mode);
+        return mode;
+    }
+
+    @Override
+    public boolean getElevatorMoveToBottom()
+    {
+        boolean mode = this.elevatorMoveToBottom.isActivated();
+        //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_MOVE_TO_BOTTOM_LOG_KEY, mode);
         return mode;
     }
 
     @Override
     public double getElevatorVelocityOverride()
     {
-        double value = this.joystickCoDriver.getY();
-        SmartDashboardLogger.putNumber(UserDriver.ELEVATOR_VELOCITY_OVERRIDE_LOG_KEY, value);
+        double value = 0;//this.joystickCoDriver.getY();
+        //        SmartDashboardLogger.putNumber(UserDriver.ELEVATOR_VELOCITY_OVERRIDE_LOG_KEY, value);
         return value;
     }
 
@@ -412,7 +421,7 @@ public class UserDriver implements IDriver
     public boolean getIgnoreElevatorSensors()
     {
         boolean mode = this.elevatorIgnoreSensors.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_IGNORE_SENSORS_LOG_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_IGNORE_SENSORS_LOG_KEY, mode);
         return mode;
     }
 
@@ -420,7 +429,7 @@ public class UserDriver implements IDriver
     public boolean getUseElevatorSensors()
     {
         boolean mode = this.elevatorUseSensors.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_USE_SENSORS_LOG_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_USE_SENSORS_LOG_KEY, mode);
         return mode;
     }
 
@@ -428,7 +437,7 @@ public class UserDriver implements IDriver
     public boolean getZeroElevatorEncoder()
     {
         boolean mode = this.elevatorZeroEncoders.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_ZERO_ENCODERS_LOG_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_ZERO_ENCODERS_LOG_KEY, mode);
         return mode;
     }
 
@@ -438,7 +447,7 @@ public class UserDriver implements IDriver
     public boolean getArmMacroExtendButton()
     {
         boolean mode = this.armMacroExtendButton.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.ARM_MACRO_EXTEND_STATE_LOG_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(UserDriver.ARM_MACRO_EXTEND_STATE_LOG_KEY, mode);
         return mode;
     }
 
@@ -446,7 +455,7 @@ public class UserDriver implements IDriver
     public boolean getArmMacroRetractButton()
     {
         boolean mode = this.armMacroRetractButton.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.ARM_MACRO_RETRACT_STATE_LOG_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(UserDriver.ARM_MACRO_RETRACT_STATE_LOG_KEY, mode);
         return mode;
     }
 
@@ -454,7 +463,7 @@ public class UserDriver implements IDriver
     public boolean getArmExtenderExtendOverride()
     {
         boolean mode = this.armExtenderExtendOverride.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.ARM_EXTENDER_EXTEND_OVERRIDE_LOG_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(UserDriver.ARM_EXTENDER_EXTEND_OVERRIDE_LOG_KEY, mode);
         return mode;
     }
 
@@ -462,7 +471,7 @@ public class UserDriver implements IDriver
     public boolean getArmExtenderRetractOverride()
     {
         boolean mode = this.armExtenderRetractOverride.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.ARM_EXTENDER_RETRACT_OVERRIDE_LOG_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(UserDriver.ARM_EXTENDER_RETRACT_OVERRIDE_LOG_KEY, mode);
         return mode;
     }
 
@@ -470,15 +479,15 @@ public class UserDriver implements IDriver
     public boolean getArmTiltExtendOverride()
     {
         boolean mode = this.armTiltExtendOverride.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.ARM_TILT_EXTEND_OVERRIDE_LOG_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(UserDriver.ARM_TILT_EXTEND_OVERRIDE_LOG_KEY, mode);
         return mode;
     }
 
     @Override
     public boolean getArmTiltRetractOverride()
     {
-        boolean mode = this.armTiltExtendOverride.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.ARM_TILT_RETRACT_OVERRIDE_LOG_KEY, mode);
+        boolean mode = this.armTiltRetractOverride.isActivated();
+        //        SmartDashboardLogger.putBoolean(UserDriver.ARM_TILT_RETRACT_OVERRIDE_LOG_KEY, mode);
         return mode;
     }
 
@@ -486,7 +495,7 @@ public class UserDriver implements IDriver
     public boolean getArmTromboneExtendOverride()
     {
         boolean mode = this.armTromboneExtendOverride.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.ARM_TROMBONE_EXTEND_OVERRIDE_LOG_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(UserDriver.ARM_TROMBONE_EXTEND_OVERRIDE_LOG_KEY, mode);
         return mode;
     }
 
@@ -494,7 +503,7 @@ public class UserDriver implements IDriver
     public boolean getArmTromboneRetractOverride()
     {
         boolean mode = this.armTromboneRetractOverride.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.ARM_TROMBONE_RETRACT_OVERRIDE_LOG_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(UserDriver.ARM_TROMBONE_RETRACT_OVERRIDE_LOG_KEY, mode);
         return mode;
     }
 
@@ -504,7 +513,7 @@ public class UserDriver implements IDriver
     public boolean getIntakeUpButton()
     {
         boolean mode = this.intakeUpButton.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_UP_STATE_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_UP_STATE_KEY, mode);
         return mode;
     }
 
@@ -512,7 +521,7 @@ public class UserDriver implements IDriver
     public boolean getIntakeDownButton()
     {
         boolean mode = this.intakeDownButton.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_DOWN_STATE_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_DOWN_STATE_KEY, mode);
         return mode;
     }
 
@@ -520,7 +529,7 @@ public class UserDriver implements IDriver
     public boolean getIntakeRightExtendOverride()
     {
         boolean mode = this.intakeRightExtendOverride.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_RIGHT_EXTEND_OVERRIDE_STATE_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_RIGHT_EXTEND_OVERRIDE_STATE_KEY, mode);
         return mode;
     }
 
@@ -528,7 +537,7 @@ public class UserDriver implements IDriver
     public boolean getIntakeRightRetractOverride()
     {
         boolean mode = this.intakeRightRetractOverride.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_RIGHT_RETRACT_OVERRIDE_STATE_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_RIGHT_RETRACT_OVERRIDE_STATE_KEY, mode);
         return mode;
     }
 
@@ -536,7 +545,7 @@ public class UserDriver implements IDriver
     public boolean getIntakeLeftExtendOverride()
     {
         boolean mode = this.intakeLeftExtendOverride.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_LEFT_EXTEND_OVERRIDE_STATE_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_LEFT_EXTEND_OVERRIDE_STATE_KEY, mode);
         return mode;
     }
 
@@ -544,7 +553,7 @@ public class UserDriver implements IDriver
     public boolean getIntakeLeftRetractOverride()
     {
         boolean mode = this.intakeLeftRetractOverride.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_LEFT_RETRACT_OVERRIDE_STATE_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_LEFT_RETRACT_OVERRIDE_STATE_KEY, mode);
         return mode;
     }
 
@@ -552,7 +561,7 @@ public class UserDriver implements IDriver
     public boolean getIntakeForwardButton()
     {
         boolean mode = this.joystickDriver.getRawButton(JoystickButtonConstants.INTAKE_FORWARD_BUTTON);
-        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_FORWARD_STATE_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_FORWARD_STATE_KEY, mode);
         return mode;
     }
 
@@ -560,7 +569,7 @@ public class UserDriver implements IDriver
     public boolean getIntakeBackwardButton()
     {
         boolean mode = this.joystickDriver.getRawButton(JoystickButtonConstants.INTAKE_BACKWARD_BUTTON);
-        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_BACKWARD_STATE_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_BACKWARD_STATE_KEY, mode);
         return mode;
     }
 }
