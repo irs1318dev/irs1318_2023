@@ -204,6 +204,7 @@ public class UserDriver implements IDriver
         this.elevatorIgnoreSensors.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_IGNORE_SENSORS_BUTTON));
         this.elevatorUseSensors.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_USE_SENSORS_BUTTON));
         this.elevatorZeroEncoders.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_ZERO_ENCODERS));
+        this.elevatorMoveToBottom.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_BOTTOM));
     }
 
     /**
