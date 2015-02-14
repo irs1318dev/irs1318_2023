@@ -27,7 +27,7 @@ public class DriveTrainComponent implements IDriveTrainComponent
     public static final String LEFT_ENCODER_TICKS_LOG_KEY = "dt.leftEncoderTicks";
     public static final String RIGHT_ENCODER_TICKS_LOG_KEY = "dt.rightEncoderTicks";
 
-    private static final double MinTimeStep = 0.015;
+    private static final double MinTimeStep = 0.01;
 
     private final Victor leftTalon;
     private final Victor rightTalon;
@@ -39,9 +39,9 @@ public class DriveTrainComponent implements IDriveTrainComponent
     private final Timer timer;
     private double prevTime;
 
-    private double prevLeftDistance;
+    private int prevLeftTicks;
     private double prevLeftRate;
-    private double prevRightDistance;
+    private int prevRightTicks;
     private double prevRightRate;
 
     /**
@@ -70,8 +70,8 @@ public class DriveTrainComponent implements IDriveTrainComponent
         this.timer.start();
 
         this.prevTime = this.timer.get();
-        this.prevLeftDistance = this.leftEncoder.getDistance();
-        this.prevRightDistance = this.rightEncoder.getDistance();
+        this.prevLeftTicks = -this.leftEncoder.get();
+        this.prevRightTicks = this.rightEncoder.get();
     }
 
     /**
@@ -99,11 +99,13 @@ public class DriveTrainComponent implements IDriveTrainComponent
 
         double currentTime = this.timer.get();
         double dt = currentTime - this.prevTime;
-        if (dt < DriveTrainComponent.MinTimeStep)
+        if (dt > DriveTrainComponent.MinTimeStep)
         {
-            double currentLeftDistance = -this.leftEncoder.getDistance();
-            double deltaLeftDistance = currentLeftDistance - this.prevLeftDistance;
-            leftVelocity = deltaLeftDistance / dt;
+            int currentLeftTicks = -this.leftEncoder.get();
+            double deltaLeftTicks = currentLeftTicks - this.prevLeftTicks;
+            leftVelocity = deltaLeftTicks / dt;
+
+            this.prevLeftTicks = currentLeftTicks;
         }
 
         SmartDashboardLogger.putNumber(DriveTrainComponent.LEFT_ENCODER_VELOCITY_LOG_KEY, leftVelocity);
@@ -122,11 +124,13 @@ public class DriveTrainComponent implements IDriveTrainComponent
 
         double currentTime = this.timer.get();
         double dt = currentTime - this.prevTime;
-        if (dt < DriveTrainComponent.MinTimeStep)
+        if (dt > DriveTrainComponent.MinTimeStep)
         {
-            double currentRightDistance = -this.rightEncoder.getDistance();
-            double deltaRightDistance = currentRightDistance - this.prevRightDistance;
-            rightVelocity = deltaRightDistance / dt;
+            int currentRightTicks = this.rightEncoder.get();
+            double deltaRightTicks = currentRightTicks - this.prevRightTicks;
+            rightVelocity = deltaRightTicks / dt;
+
+            this.prevRightTicks = currentRightTicks;
         }
 
         SmartDashboardLogger.putNumber(DriveTrainComponent.RIGHT_ENCODER_VELOCITY_LOG_KEY, rightVelocity);
