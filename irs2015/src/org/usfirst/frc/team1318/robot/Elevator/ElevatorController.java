@@ -17,6 +17,13 @@ public class ElevatorController implements IController
     private final ElevatorComponent component;
     private final IDriver driver;
 
+    private enum ContainerMacroStates
+    {
+        STATE_0, STATE_1_LOWER, STATE_2_WAIT;
+    }
+
+    private ContainerMacroStates containerMacroState;
+
     private double baseLevel;
     private double position;
     private double encoderZeroOffset;
@@ -48,6 +55,7 @@ public class ElevatorController implements IController
         this.timer = new Timer();
         this.timer.start();
         this.lastTime = this.timer.get();
+        this.containerMacroState = ContainerMacroStates.STATE_0;
     }
 
     @Override
@@ -111,10 +119,55 @@ public class ElevatorController implements IController
 
         double powerLevel = 0.0;
 
+        switch (this.containerMacroState)
+        {
+            case STATE_0:
+                if (this.driver.getElevatorPickUpMacro())
+                {
+                    this.containerMacroState = ContainerMacroStates.STATE_1_LOWER;
+                }
+                break;
+            case STATE_1_LOWER:
+                if (!this.ignoreSensors)
+                {
+                    this.movingToBottom = true;
+                    this.containerMacroState = ContainerMacroStates.STATE_2_WAIT;
+                }
+                else
+                {
+                    this.containerMacroState = ContainerMacroStates.STATE_0;
+                }
+                break;
+            case STATE_2_WAIT:
+                if (!this.movingToBottom)
+                {
+                    if (this.usePID)
+                    {
+                        this.position = HardwareConstants.ELEVATOR_1_TOTE_HEIGHT;
+                    }
+                    this.containerMacroState = ContainerMacroStates.STATE_0;
+                }
+                break;
+        }
+
+        if (this.containerMacroState == ContainerMacroStates.STATE_0)
+        {
+            SmartDashboardLogger.putNumber("e.macroState", 0);
+        }
+        else if (this.containerMacroState == ContainerMacroStates.STATE_1_LOWER)
+        {
+            SmartDashboardLogger.putNumber("e.macroState", 1);
+        }
+        else if (this.containerMacroState == ContainerMacroStates.STATE_2_WAIT)
+        {
+            SmartDashboardLogger.putNumber("e.macroState", 2);
+        }
+
         // checks whether it is in a mode to move down until the sensor is triggered 
         if (this.driver.getElevatorMoveToBottom())
         {
             this.movingToBottom = true;
+            this.containerMacroState = ContainerMacroStates.STATE_0;
         }
 
         if (this.movingToBottom)
@@ -171,6 +224,7 @@ public class ElevatorController implements IController
         }
         else if (this.component.getTopLimitSwitchValue() && !this.ignoreSensors)
         {
+            this.containerMacroState = ContainerMacroStates.STATE_0;
             this.encoderZeroOffset = this.component.getEncoderDistance() - HardwareConstants.ELEVATOR_MAX_HEIGHT;
             this.position = HardwareConstants.ELEVATOR_MAX_HEIGHT;
             enforceNonPositive = true;
@@ -180,6 +234,7 @@ public class ElevatorController implements IController
         // Also, down override button takes precedence over the up override button.
         if (this.driver.getElevatorDownButton())
         {
+            this.containerMacroState = ContainerMacroStates.STATE_0;
             // if usePID is true, calculate velocity using PID.
             if (this.usePID)
             {
@@ -200,6 +255,7 @@ public class ElevatorController implements IController
         }
         else if (this.driver.getElevatorUpButton())
         {
+            this.containerMacroState = ContainerMacroStates.STATE_0;
             // if usePID is true, calculate velocity using PID.
             if (this.usePID)
             {
@@ -219,6 +275,7 @@ public class ElevatorController implements IController
             this.movingToBottom = false;
         }
 
+        //TODO: take out
         if (Math.abs(this.driver.getElevatorVelocityOverride()) > TuningConstants.ELEVATOR_DEAD_ZONE)
         {
             double velocityIntensity = this.adjustIntensity(this.driver.getElevatorVelocityOverride());
@@ -243,6 +300,7 @@ public class ElevatorController implements IController
         // Safety requirement: stop if the elevator stop button has been pressed
         if (this.driver.getStopElevatorButton())
         {
+            this.containerMacroState = ContainerMacroStates.STATE_0;
             powerLevel = 0.0;
 
             // also disable PID when we stop the elevator - otherwise the next iteration will cause us 
@@ -271,21 +329,25 @@ public class ElevatorController implements IController
         if (this.driver.getElevatorMoveTo0TotesButton())
         {
             this.movingToBottom = false;
+            this.containerMacroState = ContainerMacroStates.STATE_0;
             return HardwareConstants.ELEVATOR_0_TOTE_HEIGHT + this.baseLevel;
         }
         else if (this.driver.getElevatorMoveTo1ToteButton())
         {
             this.movingToBottom = false;
+            this.containerMacroState = ContainerMacroStates.STATE_0;
             return HardwareConstants.ELEVATOR_1_TOTE_HEIGHT + this.baseLevel;
         }
         else if (this.driver.getElevatorMoveTo2TotesButton())
         {
             this.movingToBottom = false;
+            this.containerMacroState = ContainerMacroStates.STATE_0;
             return HardwareConstants.ELEVATOR_2_TOTE_HEIGHT + this.baseLevel;
         }
         else if (this.driver.getElevatorMoveTo3TotesButton())
         {
             this.movingToBottom = false;
+            this.containerMacroState = ContainerMacroStates.STATE_0;
             return HardwareConstants.ELEVATOR_3_TOTE_HEIGHT + this.baseLevel;
         }
         else

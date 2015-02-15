@@ -107,6 +107,12 @@ public interface IDriver
     public boolean getElevatorMoveTo3TotesButton();
 
     /**
+     * Get a value indicating whether to start a macro to pick up a tote 
+     * @return true for start macro, otherwise false 
+     */
+    public boolean getElevatorPickUpMacro();
+
+    /**
      * Get a value indicating whether to turn on elevator PID
      * @return true if turn on, otherwise false
      */

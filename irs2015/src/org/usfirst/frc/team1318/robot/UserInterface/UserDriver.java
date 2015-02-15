@@ -33,6 +33,7 @@ public class UserDriver implements IDriver
     private static final String ELEVATOR_MOVE_TO_1_TOTE_STATE_LOG_KEY = "u.elevatorMoveTo1Tote";
     private static final String ELEVATOR_MOVE_TO_2_TOTES_STATE_LOG_KEY = "u.elevatorMoveTo2Totes";
     private static final String ELEVATOR_MOVE_TO_3_TOTES_STATE_LOG_KEY = "u.elevatorMoveTo3Totes";
+    private static final String ELEVATOR_PICK_UP_MACRO_LOG_KEY = "u.elevatorPickUpMacro";
     private static final String ELEVATOR_PID_ON_STATE_LOG_KEY = "u.elevatorPIDOnState";
     private static final String ELEVATOR_PID_OFF_STATE_LOG_KEY = "u.elevatorPIDOffState";
     private static final String ELEVATOR_STOP_LOG_KEY = "u.elevatorStop";
@@ -99,6 +100,7 @@ public class UserDriver implements IDriver
     private SimpleButton elevatorMoveTo1Tote;
     private SimpleButton elevatorMoveTo2Totes;
     private SimpleButton elevatorMoveTo3Totes;
+    private SimpleButton elevatorPickUpMacro;
     private SimpleButton elevatorPIDOn;
     private SimpleButton elevatorPIDOff;
     private SimpleButton elevatorStop;
@@ -145,6 +147,7 @@ public class UserDriver implements IDriver
         this.elevatorMoveTo1Tote = new SimpleButton();
         this.elevatorMoveTo2Totes = new SimpleButton();
         this.elevatorMoveTo3Totes = new SimpleButton();
+        this.elevatorPickUpMacro = new SimpleButton();
         this.elevatorPIDOn = new SimpleButton();
         this.elevatorPIDOff = new SimpleButton();
         this.elevatorStop = new SimpleButton();
@@ -200,6 +203,7 @@ public class UserDriver implements IDriver
         this.elevatorMoveTo1Tote.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_1_TOTE_BUTTON));
         this.elevatorMoveTo2Totes.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_2_TOTES_BUTTON));
         this.elevatorMoveTo3Totes.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_3_TOTES_BUTTON));
+        this.elevatorPickUpMacro.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_PICK_UP_MACRO_BUTTON));
         this.elevatorPIDOn.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_PID_ON));//TODO: change to CoDriver
         this.elevatorPIDOff.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_PID_OFF));//TODO: change to CoDriver
         this.elevatorStop.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_STOP_BUTTON));
@@ -360,6 +364,14 @@ public class UserDriver implements IDriver
     {
         boolean state = this.elevatorMoveTo3Totes.isActivated();
         //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_MOVE_TO_3_TOTES_STATE_LOG_KEY, state);
+        return state;
+    }
+
+    @Override
+    public boolean getElevatorPickUpMacro()
+    {
+        boolean state = this.elevatorPickUpMacro.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_PICK_UP_MACRO_LOG_KEY, state);
         return state;
     }
 
