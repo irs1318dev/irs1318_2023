@@ -371,7 +371,7 @@ public class UserDriver implements IDriver
     public boolean getElevatorPickUpMacro()
     {
         boolean state = this.elevatorPickUpMacro.isActivated();
-        //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_PICK_UP_MACRO_LOG_KEY, state);
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_PICK_UP_MACRO_LOG_KEY, state);
         return state;
     }
 
