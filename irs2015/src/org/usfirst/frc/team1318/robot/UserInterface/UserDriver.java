@@ -496,9 +496,9 @@ public class UserDriver implements IDriver
     }
 
     @Override
-    public boolean getArmTiltHoldButton()
+    public boolean getArmTiltRetractHoldButton()
     {
-        boolean mode = this.joystickDriver.getRawButton(JoystickButtonConstants.ARM_TILT_RETRACT_BUTTON);
+        boolean mode = this.joystickDriver.getRawButton(JoystickButtonConstants.ARM_TILT_RETRACT_HOLD_BUTTON);
         SmartDashboardLogger.putBoolean(UserDriver.ARM_TILT_EXTEND_HOLD_LOG_KEY, mode);
         return mode;
     }

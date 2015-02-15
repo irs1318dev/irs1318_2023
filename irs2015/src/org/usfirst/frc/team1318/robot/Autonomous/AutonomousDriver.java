@@ -400,7 +400,7 @@ public class AutonomousDriver implements IDriver
     }
 
     @Override
-    public boolean getArmTiltHoldButton()
+    public boolean getArmTiltRetractHoldButton()
     {
         //we probably shouldn't use this for autonomous  
         return false;
