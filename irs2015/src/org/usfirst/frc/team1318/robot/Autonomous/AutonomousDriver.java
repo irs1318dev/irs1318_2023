@@ -271,6 +271,13 @@ public class AutonomousDriver implements IDriver
     }
 
     @Override
+    public boolean getElevatorPickUpMacro()
+    {
+        //TODO: implement 
+        return false;
+    }
+
+    @Override
     public boolean getElevatorPIDOn()
     {
         boolean state = this.controlData.getElevatorPIDOnState();

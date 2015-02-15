@@ -17,6 +17,13 @@ public class ElevatorController implements IController
     private final ElevatorComponent component;
     private final IDriver driver;
 
+    private enum ContainerMacroStates
+    {
+        STATE_0, STATE_1_LOWER, STATE_2_WAIT;
+    }
+
+    private ContainerMacroStates containerMacroState;
+
     private double baseLevel;
     private double position;
     private double encoderZeroOffset;
@@ -110,6 +117,37 @@ public class ElevatorController implements IController
         }
 
         double powerLevel = 0.0;
+
+        switch (this.containerMacroState)
+        {
+            case STATE_0:
+                if (this.driver.getElevatorPickUpMacro())
+                {
+                    this.containerMacroState = ContainerMacroStates.STATE_1_LOWER;
+                }
+                break;
+            case STATE_1_LOWER:
+                if (!this.ignoreSensors)
+                {
+                    this.movingToBottom = true;
+                    this.containerMacroState = ContainerMacroStates.STATE_2_WAIT;
+                }
+                else
+                {
+                    this.containerMacroState = ContainerMacroStates.STATE_0;
+                }
+                break;
+            case STATE_2_WAIT:
+                if (!this.movingToBottom)
+                {
+                    if (this.usePID)
+                    {
+                        this.position = HardwareConstants.ELEVATOR_1_TOTE_HEIGHT;
+                    }
+                    this.containerMacroState = ContainerMacroStates.STATE_0;
+                }
+                break;
+        }
 
         // checks whether it is in a mode to move down until the sensor is triggered 
         if (this.driver.getElevatorMoveToBottom())
