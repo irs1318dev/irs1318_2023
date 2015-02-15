@@ -49,15 +49,15 @@ public class JoystickButtonConstants
     public static final int ELEVATOR_MOVE_TO_1_TOTE_BUTTON = 11;
     public static final int ELEVATOR_MOVE_TO_2_TOTES_BUTTON = 9;
     public static final int ELEVATOR_MOVE_TO_3_TOTES_BUTTON = 7;
-    public static final int ELEVATOR_PID_ON = -1; // codriver
-    public static final int ELEVATOR_PID_OFF = -1; // codriver
-    public static final int ELEVATOR_STOP_BUTTON = -1; // codriver
+    public static final int ELEVATOR_PID_ON = 13; // codriver
+    public static final int ELEVATOR_PID_OFF = 14; // codriver
+    public static final int ELEVATOR_STOP_BUTTON = 11; // codriver
     public static final int ELEVATOR_UP_BUTTON = -1;    //POV
     public static final int ELEVATOR_DOWN_BUTTON = -1;  //POV
-    public static final int ELEVATOR_MOVE_TO_BOTTOM = -1; // codriver
-    public static final int ELEVATOR_IGNORE_SENSORS_BUTTON = -1; // codriver
-    public static final int ELEVATOR_USE_SENSORS_BUTTON = -1; // codriver
-    public static final int ELEVATOR_ZERO_ENCODERS = -1; // codriver
+    public static final int ELEVATOR_MOVE_TO_BOTTOM = 12; // codriver
+    public static final int ELEVATOR_IGNORE_SENSORS_BUTTON = 6; // codriver
+    public static final int ELEVATOR_USE_SENSORS_BUTTON = 4; // codriver
+    public static final int ELEVATOR_ZERO_ENCODERS = 11; // codriver
 
     //================================================== Arm ==============================================================
 
