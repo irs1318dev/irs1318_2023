@@ -50,8 +50,11 @@ public class TuningConstants
     // Drivetrain deadzone/max power levels
     public static final double DRIVETRAIN_X_DEAD_ZONE = 0.1;
     public static final double DRIVETRAIN_Y_DEAD_ZONE = 0.1;
-    public static final double DRIVETRAIN_MAX_POWER_LEVEL = 1.0; // max power level (velocity)
+    public static final double DRIVETRAIN_MAX_POWER_LEVEL = 0.85; // max power level (velocity)
     public static final double DRIVETRAIN_MAX_POWER_POSITIONAL_NON_PID = 0.2; // max power level (positional, non-PID)
+
+    public static final double DRIVETRAIN_REVERSE_RIGHT_SCALE_FACTOR = 1.15; //moving forwards
+    public static final double DRIVETRAIN_REVERSE_LEFT_SCALE_FACTOR = 1.17; //moving backwards
 
     //================================================== Elevator ==============================================================
 

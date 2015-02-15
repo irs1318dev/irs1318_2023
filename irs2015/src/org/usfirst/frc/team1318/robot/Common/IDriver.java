@@ -213,7 +213,7 @@ public interface IDriver
      * Get a value indicating whether to lower the arm tilt solenoid 
      * @return true for extend, false for retract 
      */
-    public boolean getArmTiltHoldButton();
+    public boolean getArmTiltRetractHoldButton();
 
     /**
      * Get a value indicating whether to extend the arm trombone solenoid 

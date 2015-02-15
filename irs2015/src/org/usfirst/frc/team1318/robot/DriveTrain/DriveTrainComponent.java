@@ -2,6 +2,7 @@ package org.usfirst.frc.team1318.robot.DriveTrain;
 
 import org.usfirst.frc.team1318.robot.ElectronicsConstants;
 import org.usfirst.frc.team1318.robot.HardwareConstants;
+import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -81,8 +82,20 @@ public class DriveTrainComponent implements IDriveTrainComponent
      */
     public void setDriveTrainPower(double leftPower, double rightPower)
     {
-        this.leftTalon.set(leftPower);
-        this.rightTalon.set(-rightPower); // note: right motors are oriented facing "backwards"
+        double outLeftPower = leftPower;
+        double outRightPower = -rightPower;
+
+        if (outLeftPower < 0)
+        {
+            outLeftPower *= TuningConstants.DRIVETRAIN_REVERSE_LEFT_SCALE_FACTOR;
+        }
+        if (outRightPower < 0)
+        {
+            outRightPower *= TuningConstants.DRIVETRAIN_REVERSE_RIGHT_SCALE_FACTOR;
+        }
+
+        this.leftTalon.set(outLeftPower);
+        this.rightTalon.set(outRightPower); // note: right motors are oriented facing "backwards"
 
         SmartDashboardLogger.putNumber(DriveTrainComponent.LEFT_TALON_POWER_LOG_KEY, leftPower);
         SmartDashboardLogger.putNumber(DriveTrainComponent.RIGHT_TALON_POWER_LOG_KEY, rightPower);

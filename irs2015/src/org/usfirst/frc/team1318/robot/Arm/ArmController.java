@@ -178,14 +178,14 @@ public class ArmController implements IController
          * The retract overrides take precedence over the corresponding extend overrides.
          */
 
-        if (this.driver.getArmTiltHoldButton())
+        if (this.driver.getArmTiltRetractHoldButton())
         {
-            this.tiltState = true;
+            this.tiltState = false;
             this.prevTiltHoldState = true;
         }
         else if (prevTiltHoldState)
         {
-            this.tiltState = false;
+            this.tiltState = true;
             this.prevTiltHoldState = false;
         }
 
