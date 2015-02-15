@@ -1,9 +1,5 @@
 package org.usfirst.frc.team1318.robot;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.usfirst.frc.team1318.robot.Arm.ArmComponent;
 import org.usfirst.frc.team1318.robot.Arm.ArmController;
 import org.usfirst.frc.team1318.robot.Autonomous.AutonomousDriver;
@@ -165,7 +161,7 @@ public class Robot extends IterativeRobot
     public void autonomousInit()
     {
         // determine our desired autonomous routine
-        List<IAutonomousTask> autonomousRoutine;
+        IAutonomousTask[] autonomousRoutine;
 
         // select autonomous routine based on setting in SmartDashboard
         switch ((int)this.autonomousRoutineChooser.getSelected() % 3)
@@ -188,7 +184,7 @@ public class Robot extends IterativeRobot
         }
 
         // create autonomous driver based on our desired routine
-        this.driver = new AutonomousDriver(new LinkedList<IAutonomousTask>(autonomousRoutine));
+        this.driver = new AutonomousDriver(autonomousRoutine);
 
         this.generalInit();
 
@@ -280,9 +276,10 @@ public class Robot extends IterativeRobot
      * 
      * @return list of autonomous tasks
      */
-    private static List<IAutonomousTask> GetDriveInSquareByDistanceRoutine(IDriveTrainComponent driveTrainComponent)
+    private static IAutonomousTask[] GetDriveInSquareByDistanceRoutine(IDriveTrainComponent driveTrainComponent)
     {
-        return Arrays.asList(
+        return new IAutonomousTask[]
+        {
             // drive in a square
             new DriveDistanceAutonomousTask(600, driveTrainComponent),
             new WaitAutonomousTask(5),
@@ -295,7 +292,8 @@ public class Robot extends IterativeRobot
             new TurnAutonomousTask(90, driveTrainComponent),
             new DriveDistanceAutonomousTask(600, driveTrainComponent),
             new WaitAutonomousTask(5),
-            new TurnAutonomousTask(90, driveTrainComponent));
+            new TurnAutonomousTask(90, driveTrainComponent)
+        };
     }
 
     /**
@@ -303,9 +301,10 @@ public class Robot extends IterativeRobot
      * 
      * @return list of autonomous tasks
      */
-    private static List<IAutonomousTask> GetDriveInSquareRoutine()
+    private static IAutonomousTask[] GetDriveInSquareRoutine()
     {
-        return Arrays.asList(
+        return new IAutonomousTask[]
+        {
             // drive in a square
             new DriveTimedAutonomousTask(5, 0.0, 0.8),  // drive forward
             new WaitAutonomousTask(5),
@@ -318,7 +317,8 @@ public class Robot extends IterativeRobot
             new DriveTimedAutonomousTask(2, 0.8, 0.0),  // turn right
             new DriveTimedAutonomousTask(5, 0.0, 0.8),  // drive forward
             new WaitAutonomousTask(5),
-            new DriveTimedAutonomousTask(2, 0.8, 0.0)); // turn right
+            new DriveTimedAutonomousTask(2, 0.8, 0.0), // turn right
+        };
     }
 
     /**
@@ -326,9 +326,9 @@ public class Robot extends IterativeRobot
      * 
      * @return list of autonomous tasks
      */
-    private static List<IAutonomousTask> GetDriveForwardRoutine()
+    private static IAutonomousTask[] GetDriveForwardRoutine()
     {
-        return Arrays.asList(new DriveForwardTask());
+        return new IAutonomousTask[] { new DriveForwardTask() };
     }
 }
 
