@@ -26,6 +26,8 @@ public class ArmController implements IController
     private Boolean tiltState;
     private Boolean extenderState;
 
+    private boolean prevTiltHoldState;
+
     public ArmController(IDriver driver, ArmComponent component)
     {
         this.armstateExtendor = ArmStates.STAGE_0;
@@ -37,6 +39,8 @@ public class ArmController implements IController
         this.tromboneState = null;
         this.tiltState = null;
         this.extenderState = null;
+
+        this.prevTiltHoldState = false;
 
         //initialize new Timer but start it between actual stages of arm-movement
         this.timer = new Timer();
@@ -67,7 +71,7 @@ public class ArmController implements IController
                 }
                 else
                 {
-                    this.continueTime = this.timer.get() + TuningConstants.TILT_EXTEND_WAIT_TIME;
+                    this.continueTime = this.timer.get() + TuningConstants.ARM_TILT_EXTEND_WAIT_TIME;
                     this.tiltState = true;
                 }
                 this.armstateExtendor = ArmStates.STAGE_2;
@@ -78,11 +82,11 @@ public class ArmController implements IController
                     if (this.extenderState != null && this.extenderState == true)
                     {
                         //don't wait for extender to retract
-                        this.continueTime = this.timer.get() + TuningConstants.SAFETY_WAIT;
+                        this.continueTime = this.timer.get() + TuningConstants.ARM_SAFETY_WAIT;
                     }
                     else
                     {
-                        this.continueTime = this.timer.get() + TuningConstants.EXTENDOR_EXTEND_WAIT_TIME;
+                        this.continueTime = this.timer.get() + TuningConstants.ARM_EXTENDOR_EXTEND_WAIT_TIME;
                         this.extenderState = true;
                     }
                     this.armstateExtendor = ArmStates.STAGE_3;
@@ -94,11 +98,11 @@ public class ArmController implements IController
                     if (this.tromboneState != null && this.tromboneState == true)
                     {
                         //don't wait for trombone to extend
-                        this.continueTime = this.timer.get() + TuningConstants.SAFETY_WAIT;
+                        this.continueTime = this.timer.get() + TuningConstants.ARM_SAFETY_WAIT;
                     }
                     else
                     {
-                        this.continueTime = this.timer.get() + TuningConstants.TROMBONE_EXTEND_WAIT_TIME;
+                        this.continueTime = this.timer.get() + TuningConstants.ARM_TROMBONE_EXTEND_WAIT_TIME;
                         this.tromboneState = true;
                     }
                     this.armstateExtendor = ArmStates.STAGE_4;
@@ -133,11 +137,11 @@ public class ArmController implements IController
                 if (this.tiltState != null && this.tiltState == true)
                 {
                     //don't wait for tilt to extend
-                    this.continueTime = this.timer.get() + TuningConstants.SAFETY_WAIT;
+                    this.continueTime = this.timer.get() + TuningConstants.ARM_SAFETY_WAIT;
                 }
                 else
                 {
-                    this.continueTime = this.timer.get() + TuningConstants.TILT_RETRACT_WAIT_TIME;
+                    this.continueTime = this.timer.get() + TuningConstants.ARM_TILT_RETRACT_WAIT_TIME;
                     this.tiltState = true;
                 }
                 this.armstateRetractor = ArmStates.STAGE_2;
@@ -148,11 +152,11 @@ public class ArmController implements IController
                     if (this.tromboneState != null && this.tromboneState == false)
                     {
                         //don't wait for trombone to retract
-                        this.continueTime = this.timer.get() + TuningConstants.SAFETY_WAIT;
+                        this.continueTime = this.timer.get() + TuningConstants.ARM_SAFETY_WAIT;
                     }
                     else
                     {
-                        this.continueTime = this.timer.get() + TuningConstants.TROMBONE_RETRACT_WAIT_TIME;
+                        this.continueTime = this.timer.get() + TuningConstants.ARM_TROMBONE_RETRACT_WAIT_TIME;
                         this.tromboneState = false;
                     }
                     this.armstateRetractor = ArmStates.STAGE_3;
@@ -173,6 +177,18 @@ public class ArmController implements IController
          * Any override takes precedence over any macro
          * The retract overrides take precedence over the corresponding extend overrides.
          */
+
+        if (this.driver.getArmTiltHoldButton())
+        {
+            this.tiltState = true;
+            this.prevTiltHoldState = true;
+        }
+        else if (prevTiltHoldState)
+        {
+            this.tiltState = false;
+            this.prevTiltHoldState = false;
+        }
+
         if (this.driver.getArmExtenderExtendOverride())
         {
             this.extenderState = true;

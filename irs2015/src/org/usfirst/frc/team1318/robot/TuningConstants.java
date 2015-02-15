@@ -80,13 +80,13 @@ public class TuningConstants
 
     //================================================== Arm ==============================================================
 
-    public static final double TILT_EXTEND_WAIT_TIME = 1;
-    public static final double EXTENDOR_EXTEND_WAIT_TIME = 2;
-    public static final double TROMBONE_EXTEND_WAIT_TIME = 2;
+    public static final double ARM_TILT_EXTEND_WAIT_TIME = 1;
+    public static final double ARM_EXTENDOR_EXTEND_WAIT_TIME = 2;
+    public static final double ARM_TROMBONE_EXTEND_WAIT_TIME = 1;
 
-    public static final double TILT_RETRACT_WAIT_TIME = 1;
-    public static final double TROMBONE_RETRACT_WAIT_TIME = 2;
-    public static final double SAFETY_WAIT = 1;
+    public static final double ARM_TILT_RETRACT_WAIT_TIME = 1;
+    public static final double ARM_TROMBONE_RETRACT_WAIT_TIME = 1;
+    public static final double ARM_SAFETY_WAIT = 1;
 
     //================================================== Intake ==============================================================
 

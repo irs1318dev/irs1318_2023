@@ -204,6 +204,12 @@ public interface IDriver
     public boolean getArmTiltRetractOverride();
 
     /**
+     * Get a value indicating whether to lower the arm tilt solenoid 
+     * @return true for extend, false for retract 
+     */
+    public boolean getArmTiltHoldButton();
+
+    /**
      * Get a value indicating whether to extend the arm trombone solenoid 
      * @return true for extend, otherwise false 
      */
@@ -227,6 +233,12 @@ public interface IDriver
      * @return true for move down, otherwise false 
      */
     public boolean getIntakeDownButton();
+
+    /**
+     * Get a value indicating whether to move both sides of the intake down 
+     * @return true for down, false for up 
+     */
+    public boolean getIntakeDownHoldButton();
 
     /**
      * Get a value indicating whether to extend the right intake solenoid 

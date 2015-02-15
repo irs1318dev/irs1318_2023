@@ -170,8 +170,8 @@ public class DriveTrainController implements IController
 
         // get the X and Y values from the operator.  We expect these to be between -1.0 and 1.0,
         // with this value representing the forward velocity percentage and right turn percentage (of max speed)
-        double xVelocity = this.driver.getDriveTrainXVelocity();
-        double yVelocity = this.driver.getDriveTrainYVelocity();
+        double xVelocity = this.driver.getDriveTrainYVelocity();
+        double yVelocity = this.driver.getDriveTrainXVelocity();
 
         // adjust for joystick deadzone
         xVelocity = this.adjustForDeadZone(xVelocity, TuningConstants.DRIVETRAIN_X_DEAD_ZONE);
@@ -229,64 +229,72 @@ public class DriveTrainController implements IController
             // for x: 0 -> 1, power(x) = power(0) + x*(power(1) - power(0)) 
             // for y: 0 -> 1, power(x,y) = power(x,0) + y*(power(x,1) - power(x,0))
 
-            if (xVelocity >= 0)
-            {
-                if (yVelocity >= 0)
-                {
-                    // Q1:
-                    // y=1 => lp = 1.  rp = 1 + x*(a - 1)
-                    // y=0 => lp = 0 + x*b = x*b.  rp = 0 + x*-b = -x*b
-                    // lp = x*b + y*(1 - x*b)
-                    // rp = x*-b + y*(1+x*(a-1) - x*-b)
-                    leftVelocityGoal = xVelocity
-                        * TuningConstants.DRIVETRAIN_B + yVelocity * (1 - xVelocity * TuningConstants.DRIVETRAIN_B);
-                    rightVelocityGoal = -xVelocity
-                        * TuningConstants.DRIVETRAIN_B + yVelocity
-                        * (1 + xVelocity * (TuningConstants.DRIVETRAIN_A - 1) + xVelocity * TuningConstants.DRIVETRAIN_B);
-                }
-                else
-                {
-                    // Q4:
-                    // y=-1 => lp = -1.  rp = -1 + x*(-a - -1)  
-                    // y=0  => lp = x*B.  rp = -x*B (see Q1)
-                    // lp = x*B + -1*y*(-1 - x*B)
-                    // rp = x*-B + -1*y*(-1+x*(-a - -1) - x*-B)
-                    leftVelocityGoal = xVelocity
-                        * TuningConstants.DRIVETRAIN_B - yVelocity * (-1 - xVelocity * TuningConstants.DRIVETRAIN_B);
-                    rightVelocityGoal = -xVelocity
-                        * TuningConstants.DRIVETRAIN_B - yVelocity
-                        * (-1 + xVelocity * (-TuningConstants.DRIVETRAIN_A + 1) + xVelocity * TuningConstants.DRIVETRAIN_B);
-                }
-            }
-            else
-            {
-                if (yVelocity >= 0)
-                {
-                    // Q2:
-                    // y=1 => lp = 1 + -1*x*(a - 1) = 1 - x*(a - 1).  rp = 1
-                    // y=0 => lp = 0 + -1*x*(-b - 0) = x*b.  rp = 0 + -1*x*(b - 0) = -x*b
-                    // lp = x*b + y*(1 - x*(a-1) - x*b)
-                    // rp = -x*b + y*(1 - -x*B)
-                    leftVelocityGoal = xVelocity
-                        * TuningConstants.DRIVETRAIN_B + yVelocity
-                        * (1 - xVelocity * (TuningConstants.DRIVETRAIN_A - 1) - xVelocity * TuningConstants.DRIVETRAIN_B);
-                    rightVelocityGoal = -xVelocity
-                        * TuningConstants.DRIVETRAIN_B + yVelocity * (1 + xVelocity * TuningConstants.DRIVETRAIN_B);
-                }
-                else
-                {
-                    // Q3:
-                    // y=-1 => lp = -1 + -1*x*(-a - -1) = -1 - x*(-a + 1).  rp = -1 
-                    // y=0  => lp = x*b.  rp = -x*b (see Q2) 
-                    // lp = x*b + -1*y*(-1 - x*(-a + 1) - x*b)
-                    // rp = -x*b + -1*y*(-1 - -x*b)
-                    leftVelocityGoal = xVelocity
-                        * TuningConstants.DRIVETRAIN_B - yVelocity
-                        * (-1 - xVelocity * (-TuningConstants.DRIVETRAIN_A + 1) - xVelocity * TuningConstants.DRIVETRAIN_B);
-                    rightVelocityGoal = -xVelocity
-                        * TuningConstants.DRIVETRAIN_B - yVelocity * (-1 + xVelocity * TuningConstants.DRIVETRAIN_B);
-                }
-            }
+            //            if (xVelocity >= 0)
+            //            {
+            //                if (yVelocity >= 0)
+            //                {
+            //                    // Q1:
+            //                    // y=1 => lp = 1.  rp = 1 + x*(a - 1)
+            //                    // y=0 => lp = 0 + x*b = x*b.  rp = 0 + x*-b = -x*b
+            //                    // lp = x*b + y*(1 - x*b)
+            //                    // rp = x*-b + y*(1+x*(a-1) - x*-b)
+            //                    leftVelocityGoal = xVelocity
+            //                        * TuningConstants.DRIVETRAIN_B + yVelocity * (1 - xVelocity * TuningConstants.DRIVETRAIN_B);
+            //                    rightVelocityGoal = -xVelocity
+            //                        * TuningConstants.DRIVETRAIN_B + yVelocity
+            //                        * (1 + xVelocity * (TuningConstants.DRIVETRAIN_A - 1) + xVelocity * TuningConstants.DRIVETRAIN_B);
+            //                }
+            //                else
+            //                {
+            //                    // Q4:
+            //                    // y=-1 => lp = -1.  rp = -1 + x*(-a - -1)  
+            //                    // y=0  => lp = x*B.  rp = -x*B (see Q1)
+            //                    // lp = x*B + -1*y*(-1 - x*B)
+            //                    // rp = x*-B + -1*y*(-1+x*(-a - -1) - x*-B)
+            //                    leftVelocityGoal = xVelocity
+            //                        * TuningConstants.DRIVETRAIN_B - yVelocity * (-1 - xVelocity * TuningConstants.DRIVETRAIN_B);
+            //                    rightVelocityGoal = -xVelocity
+            //                        * TuningConstants.DRIVETRAIN_B - yVelocity
+            //                        * (-1 + xVelocity * (-TuningConstants.DRIVETRAIN_A + 1) + xVelocity * TuningConstants.DRIVETRAIN_B);
+            //                }
+            //            }
+            //            else
+            //            {
+            //                if (yVelocity >= 0)
+            //                {
+            //                    // Q2:
+            //                    // y=1 => lp = 1 + -1*x*(a - 1) = 1 - x*(a - 1).  rp = 1
+            //                    // y=0 => lp = 0 + -1*x*(-b - 0) = x*b.  rp = 0 + -1*x*(b - 0) = -x*b
+            //                    // lp = x*b + y*(1 - x*(a-1) - x*b)
+            //                    // rp = -x*b + y*(1 - -x*B)
+            //                    leftVelocityGoal = xVelocity
+            //                        * TuningConstants.DRIVETRAIN_B + yVelocity
+            //                        * (1 - xVelocity * (TuningConstants.DRIVETRAIN_A - 1) - xVelocity * TuningConstants.DRIVETRAIN_B);
+            //                    rightVelocityGoal = -xVelocity
+            //                        * TuningConstants.DRIVETRAIN_B + yVelocity * (1 + xVelocity * TuningConstants.DRIVETRAIN_B);
+            //                }
+            //                else
+            //                {
+            //                    // Q3:
+            //                    // y=-1 => lp = -1 + -1*x*(-a - -1) = -1 - x*(-a + 1).  rp = -1 
+            //                    // y=0  => lp = x*b.  rp = -x*b (see Q2) 
+            //                    // lp = x*b + -1*y*(-1 - x*(-a + 1) - x*b)
+            //                    // rp = -x*b + -1*y*(-1 - -x*b)
+            //                    leftVelocityGoal = xVelocity
+            //                        * TuningConstants.DRIVETRAIN_B - yVelocity
+            //                        * (-1 - xVelocity * (-TuningConstants.DRIVETRAIN_A + 1) - xVelocity * TuningConstants.DRIVETRAIN_B);
+            //                    rightVelocityGoal = -xVelocity
+            //                        * TuningConstants.DRIVETRAIN_B - yVelocity * (-1 + xVelocity * TuningConstants.DRIVETRAIN_B);
+            //                }
+            //            }
+
+            double K1 = 1.5;
+            double K2 = .4;
+            double K3 = K1;
+            double K4 = -K2;
+
+            leftVelocityGoal = (K1 * xVelocity) + (K2 * yVelocity);
+            rightVelocityGoal = (K3 * xVelocity) + (K4 * yVelocity);
         }
 
         // ensure that our algorithms are correct and don't give values outside

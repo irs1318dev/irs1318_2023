@@ -22,6 +22,7 @@ public class IntakeController implements IController
     // true = outward(motor)/extending(piston), false = inward/retracting
     private Boolean solenoidLeftState;
     private Boolean solenoidRightState;
+    private boolean prevHoldButton;
 
     public IntakeController(IDriver operator, IntakeComponent intake)
     {
@@ -30,6 +31,7 @@ public class IntakeController implements IController
         this.motorSpeed = 0.0;
         this.solenoidLeftState = null;
         this.solenoidRightState = null;
+        this.prevHoldButton = false;
     }
 
     public void update()
@@ -46,6 +48,19 @@ public class IntakeController implements IController
         else
         {
             this.motorSpeed = 0;
+        }
+
+        if (this.operator.getIntakeDownHoldButton())
+        {
+            this.solenoidLeftState = false;
+            this.solenoidRightState = false;
+            this.prevHoldButton = true;
+        }
+        else if (prevHoldButton)
+        {
+            this.solenoidLeftState = true;
+            this.solenoidRightState = true;
+            this.prevHoldButton = false;
         }
 
         // gets joystick input and translates it into wanted solenoid state

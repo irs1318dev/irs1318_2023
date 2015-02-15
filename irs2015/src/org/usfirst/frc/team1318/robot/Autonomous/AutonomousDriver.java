@@ -400,6 +400,13 @@ public class AutonomousDriver implements IDriver
     }
 
     @Override
+    public boolean getArmTiltHoldButton()
+    {
+        //we probably shouldn't use this for autonomous  
+        return false;
+    }
+
+    @Override
     public boolean getArmTromboneExtendOverride()
     {
         boolean state = this.controlData.getArmTromboneExtendOverrideState();
@@ -431,6 +438,13 @@ public class AutonomousDriver implements IDriver
         boolean state = this.controlData.getIntakeDownState();
         SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_DOWN_STATE_KEY, state);
         return state;
+    }
+
+    @Override
+    public boolean getIntakeDownHoldButton()
+    {
+        //we probably shouldn't use this method in autonomous 
+        return false;
     }
 
     @Override
