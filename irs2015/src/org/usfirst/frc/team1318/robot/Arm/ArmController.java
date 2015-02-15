@@ -105,13 +105,13 @@ public class ArmController implements IController
                         this.continueTime = this.timer.get() + TuningConstants.ARM_TROMBONE_EXTEND_WAIT_TIME;
                         this.tromboneState = true;
                     }
-                    this.armstateExtendor = ArmStates.STAGE_4;
+                    this.armstateExtendor = ArmStates.STAGE_0;//ArmStates.STAGE_4;
                 }
                 break;
             case STAGE_4:
                 if (this.timer.get() >= this.continueTime)
                 {
-                    this.tiltState = false;
+                    //this.tiltState = false;
                     this.armstateExtendor = ArmStates.STAGE_0;
                 }
                 break;
