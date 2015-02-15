@@ -1,7 +1,6 @@
 package org.usfirst.frc.team1318.robot.Autonomous;
 
-import java.util.Queue;
-
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.OrderedTask;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
@@ -64,19 +63,49 @@ public class AutonomousDriver implements IDriver
     private static final String INTAKE_FORWARD_STATE_KEY = "a.intakeForwardStateKey";
     private static final String INTAKE_BACKWARD_STATE_KEY = "a.intakeBackwardStateKey";
 
-    private final Queue<IAutonomousTask> autonomousTasks;
-    private IAutonomousTask currentTask;
+    private final IAutonomousTask autonomousTask;
     private final AutonomousControlData controlData;
+
+    private boolean hasBegun;
+    private boolean hasEnded;
+
+    /**
+     * Initializes a new AutonomousDriver
+     * @param autonomousTask to execute as a part of this driver
+     */
+    public AutonomousDriver(IAutonomousTask autonomousTask)
+    {
+        this.autonomousTask = autonomousTask;
+        this.controlData = new AutonomousControlData();
+
+        this.hasBegun = false;
+        this.hasEnded = false;
+    }
 
     /**
      * Initializes a new AutonomousDriver
      * @param autonomousTasks to execute as a part of this driver
      */
-    public AutonomousDriver(Queue<IAutonomousTask> autonomousTasks)
+    public AutonomousDriver(IAutonomousTask[] autonomousTasks)
     {
-        this.autonomousTasks = autonomousTasks;
-        this.currentTask = null;
+        IAutonomousTask singleTask = null;
+        if (autonomousTasks != null)
+        {
+            if (autonomousTasks.length > 1)
+            {
+                singleTask = new OrderedTask(autonomousTasks);
+            }
+            else
+            {
+                singleTask = autonomousTasks[0];
+            }
+        }
+
+        this.autonomousTask = singleTask;
         this.controlData = new AutonomousControlData();
+
+        this.hasBegun = false;
+        this.hasEnded = false;
     }
 
     /**
@@ -84,32 +113,27 @@ public class AutonomousDriver implements IDriver
      */
     public void update()
     {
-        // check whether we should continue with the current task
-        if (this.currentTask != null)
+        if (!this.hasEnded)
         {
-            if (!this.currentTask.shouldContinue())
+            if (!this.hasBegun)
             {
-                this.currentTask.end(this.controlData);
-                this.currentTask = null;
-            }
-        }
-
-        // if there's no current task, find the next one and start it (if any)
-        if (this.currentTask == null)
-        {
-            this.currentTask = this.autonomousTasks.poll();
-
-            // if there's no next task to run, then we are done
-            if (this.currentTask == null)
-            {
-                return;
+                // if we haven't begun, begin
+                this.autonomousTask.begin();
+                this.hasBegun = true;
             }
 
-            this.currentTask.begin();
+            if (!this.autonomousTask.shouldContinue())
+            {
+                // if we shouldn't continue, end the task
+                this.autonomousTask.end(this.controlData);
+                this.hasEnded = true;
+            }
+            else
+            {
+                // run the current task and apply the result to the control data
+                this.autonomousTask.update(this.controlData);
+            }
         }
-
-        // run the current task and apply the result to the control data
-        this.currentTask.update(this.controlData);
     }
 
     /**
@@ -117,10 +141,10 @@ public class AutonomousDriver implements IDriver
      */
     public void stop()
     {
-        if (this.currentTask != null)
+        if (this.autonomousTask != null)
         {
-            this.currentTask.cancel(this.controlData);
-            this.currentTask = null;
+            this.autonomousTask.cancel(this.controlData);
+            this.hasEnded = true;
         }
     }
 

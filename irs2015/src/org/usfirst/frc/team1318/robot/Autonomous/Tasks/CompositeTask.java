@@ -1,7 +1,10 @@
-package org.usfirst.frc.team1318.robot.Autonomous;
+package org.usfirst.frc.team1318.robot.Autonomous.Tasks;
 
 import java.util.Arrays;
 import java.util.List;
+
+import org.usfirst.frc.team1318.robot.Autonomous.AutonomousControlData;
+import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 
 /**
  * Autonomous task that holds multiple other tasks and executes them in parallel until certain conditions
