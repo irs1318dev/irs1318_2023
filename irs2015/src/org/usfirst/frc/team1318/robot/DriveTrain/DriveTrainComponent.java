@@ -94,6 +94,11 @@ public class DriveTrainComponent implements IDriveTrainComponent
             outRightPower /= TuningConstants.DRIVETRAIN_REVERSE_RIGHT_SCALE_FACTOR;
         }
 
+        outLeftPower = Math.min(outLeftPower, 1);
+        outLeftPower = Math.max(outLeftPower, -1);
+        outRightPower = Math.min(outRightPower, 1);
+        outRightPower = Math.max(outRightPower, -1);
+
         this.leftTalon.set(outLeftPower);
         this.rightTalon.set(outRightPower); // note: right motors are oriented facing "backwards"
 

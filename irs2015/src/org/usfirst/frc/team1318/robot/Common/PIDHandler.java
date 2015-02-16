@@ -50,6 +50,8 @@ public class PIDHandler
 
     private String prefix;
 
+    private double prevDeltaX = 0.0;
+
     /**
      * This constructor initializes the object and sets constants to affect gain
      * 
@@ -138,6 +140,7 @@ public class PIDHandler
         this.timer = new Timer();
         this.timer.start();
         this.prevTime = this.timer.get();
+
     }
 
     /**
@@ -238,8 +241,20 @@ public class PIDHandler
 
             // calculate error
             double deltaX = this.measuredValue - this.prevMeasuredValue;
+            //            this.prevDeltaX = deltaX;
 
-            this.error = this.ks * this.setpoint - deltaX;
+            if (this.dt > 0.002)
+            {
+                double timeRatio = 0.02 / this.dt;
+                this.error = this.ks * this.setpoint - deltaX * timeRatio;
+                this.prevDeltaX = deltaX * timeRatio;
+            }
+            else
+            {
+                this.error = this.ks * this.setpoint - prevDeltaX;
+            }
+
+            //            this.error = this.ks * this.setpoint - deltaX;
 
             SmartDashboardLogger.putNumber(this.prefix + "DeltaX: ", deltaX);
 

@@ -61,6 +61,8 @@ public class ElevatorController implements IController
     @Override
     public void update()
     {
+        component.getThroughBeamBroken();
+
         boolean enforceNonPositive = false;
         boolean enforceNonNegative = false;
         double currentTime = this.timer.get();

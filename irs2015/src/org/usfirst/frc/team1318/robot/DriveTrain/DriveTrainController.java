@@ -74,8 +74,8 @@ public class DriveTrainController implements IController
 
         // ensure that our algorithms are correct and don't give values outside
         // the appropriate range
-        this.assertPowerLevelRange(leftPower, "left");
-        this.assertPowerLevelRange(rightPower, "right");
+        //        this.assertPowerLevelRange(leftPower, "left");
+        //        this.assertPowerLevelRange(rightPower, "right");
 
         // apply the power settings to the drivetrain component
         this.component.setDriveTrainPower(leftPower, rightPower);
@@ -299,8 +299,8 @@ public class DriveTrainController implements IController
 
         // ensure that our algorithms are correct and don't give values outside
         // the appropriate range
-        //this.assertPowerLevelRange(leftVelocityGoal, "left velocity (goal)");
-        //this.assertPowerLevelRange(rightVelocityGoal, "right velocity (goal)");
+        //        this.assertPowerLevelRange(leftVelocityGoal, "left velocity (goal)");
+        //        this.assertPowerLevelRange(rightVelocityGoal, "right velocity (goal)");
 
         // decrease the desired velocity based on the configured max power level
         leftVelocityGoal = leftVelocityGoal * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL;
@@ -337,8 +337,8 @@ public class DriveTrainController implements IController
         // the appropriate range
         leftPower = this.applyPowerLevelRange(leftPower);
         rightPower = this.applyPowerLevelRange(rightPower);
-        this.assertPowerLevelRange(leftPower, "left velocity (goal)");
-        this.assertPowerLevelRange(rightPower, "right velocity (goal)");
+        //        this.assertPowerLevelRange(leftPower, "left velocity (goal)");
+        //        this.assertPowerLevelRange(rightPower, "right velocity (goal)");
 
         return new PowerSetting(leftPower, rightPower);
     }

@@ -10,19 +10,20 @@ import edu.wpi.first.wpilibj.Talon;
 
 public class ElevatorComponent
 {
-    //private final DigitalInput throughBeamSensor;
+    //    private final AnalogInput throughBeamSensor;
     private final Talon motor;
     private final Encoder encoder;
     private final DigitalInput topLimitSwtich;
     private final DigitalInput bottomLimitSwitch;
 
-    public static final String THROUGH_BEAM_SENSOR_LOG_KEY = "e.throughBeamSensor";
     public static final String MOTOR_POWER_LOG_KEY = "e.motorPower";
     public static final String ENCODER_DISTANCE_LOG_KEY = "e.encoderDistance";
     public static final String ENCODER_TICKS_LOG_KEY = "e.encoderTicks";
     public static final String ENCODER_VELOCITY_LOG_KEY = "e.encoderVelocity";
     public static final String TOP_LIMIT_SWITCH_LOG_KEY = "e.topLimitSwitch";
     public static final String BOTTOM_LIMIT_SWITCH_LOG_KEY = "e.bottomLimitSwitch";
+    private static final String THROUGH_BEAM_SENSOR_ANALOG_LOG_KEY = "e.throughBeamAnalog";
+    private static final String THROUGH_BEAM_SENSOR_BOOLEAN_LOG_KEY = "e.throughBeamSensorBoolean";
 
     public ElevatorComponent()
     {
@@ -34,7 +35,7 @@ public class ElevatorComponent
 
         this.encoder.setDistancePerPulse(HardwareConstants.ELEVATOR_PULSE_DISTANCE);
 
-        //this.throughBeamSensor = new DigitalInput(ElectronicsConstants.ELEVATOR_THROUGH_BEAM_SENSOR_CHANNEL);
+        //        this.throughBeamSensor = new AnalogInput(ElectronicsConstants.ELEVATOR_THROUGH_BEAM_SENSOR_CHANNEL);
 
         this.topLimitSwtich = new DigitalInput(ElectronicsConstants.ELEVATOR_TOP_LIMIT_SWITCH_CHANNEL);
         this.bottomLimitSwitch = new DigitalInput(ElectronicsConstants.ELEVATOR_BOTTOM_LIMIT_SWITCH_CHANNEL);
@@ -84,14 +85,27 @@ public class ElevatorComponent
     }
 
     /**
-     * Gets the current value of the Through Beam Sensor 
-     * @return true for (TODO), otherwise false 
+     * Gets the current value of the through beam sensor 
+     * @return current voltage of the through beam sensor 
      */
-    public boolean getThroughBeamSensor()
+    public double getThroughBeamVoltage()
     {
-        //boolean value = this.throughBeamSensor.get();
-        //SmartDashboardLogger.putBoolean(ElevatorComponent.THROUGH_BEAM_SENSOR_LOG_KEY, value);
-        return false;//value;
+        //        double value = throughBeamSensor.getVoltage();
+        double value = 0;
+        SmartDashboardLogger.putNumber(THROUGH_BEAM_SENSOR_ANALOG_LOG_KEY, value);
+        return value;
+    }
+
+    /**
+     * Gets a boolean representing whether or not the through beam sensor is broken 
+     * @return true for broken, otherwise false 
+     */
+    public boolean getThroughBeamBroken()
+    {
+        //        boolean valueBool = (throughBeamSensor.getVoltage() < 2.5);
+        boolean valueBool = false;
+        SmartDashboardLogger.putBoolean(THROUGH_BEAM_SENSOR_BOOLEAN_LOG_KEY, valueBool);
+        return valueBool;
     }
 
     /**
