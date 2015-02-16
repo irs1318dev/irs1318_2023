@@ -295,13 +295,12 @@ public class DriveTrainController implements IController
 
             leftVelocityGoal = (K1 * xVelocity) + (K2 * yVelocity);
             rightVelocityGoal = (K3 * xVelocity) + (K4 * yVelocity);
-
         }
 
         // ensure that our algorithms are correct and don't give values outside
         // the appropriate range
-        this.assertPowerLevelRange(leftVelocityGoal, "left velocity (goal)");
-        this.assertPowerLevelRange(rightVelocityGoal, "right velocity (goal)");
+        //this.assertPowerLevelRange(leftVelocityGoal, "left velocity (goal)");
+        //this.assertPowerLevelRange(rightVelocityGoal, "right velocity (goal)");
 
         // decrease the desired velocity based on the configured max power level
         leftVelocityGoal = leftVelocityGoal * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL;

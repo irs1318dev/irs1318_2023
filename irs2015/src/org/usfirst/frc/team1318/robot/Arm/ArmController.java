@@ -71,7 +71,7 @@ public class ArmController implements IController
                 }
                 else
                 {
-                    this.continueTime = this.timer.get() + TuningConstants.ARM_TILT_EXTEND_WAIT_TIME;
+                    this.continueTime = this.timer.get();// + TuningConstants.ARM_TILT_EXTEND_WAIT_TIME;
                     this.tiltState = true;
                 }
                 this.armstateExtendor = ArmStates.STAGE_2;

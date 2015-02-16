@@ -45,7 +45,7 @@ public class TuningConstants
 
     // Drivetrain kinematics choices for advanced one-stick drive
     public static final double DRIVETRAIN_A = 0.4; // "a" coefficient (advancing turn)
-    public static final double DRIVETRAIN_B = 1.0; // "b" coefficient (in-place turn)
+    public static final double DRIVETRAIN_B = 0.4; // "b" coefficient (in-place turn)
 
     // Drivetrain deadzone/max power levels
     public static final double DRIVETRAIN_X_DEAD_ZONE = 0.1;

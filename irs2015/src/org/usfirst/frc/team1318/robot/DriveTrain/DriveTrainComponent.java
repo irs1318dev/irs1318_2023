@@ -85,13 +85,13 @@ public class DriveTrainComponent implements IDriveTrainComponent
         double outLeftPower = leftPower;
         double outRightPower = -rightPower;
 
-        if (outLeftPower < 0)
+        if (outLeftPower > 0)
         {
-            outLeftPower *= TuningConstants.DRIVETRAIN_REVERSE_LEFT_SCALE_FACTOR;
+            outLeftPower /= TuningConstants.DRIVETRAIN_REVERSE_LEFT_SCALE_FACTOR;
         }
-        if (outRightPower < 0)
+        if (outRightPower > 0)
         {
-            outRightPower *= TuningConstants.DRIVETRAIN_REVERSE_RIGHT_SCALE_FACTOR;
+            outRightPower /= TuningConstants.DRIVETRAIN_REVERSE_RIGHT_SCALE_FACTOR;
         }
 
         this.leftTalon.set(outLeftPower);
