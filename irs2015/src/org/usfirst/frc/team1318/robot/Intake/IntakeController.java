@@ -20,8 +20,8 @@ public class IntakeController implements IController
 
     // state variables
     // true = outward(motor)/extending(piston), false = inward/retracting
-    private Boolean solenoidLeftState;
-    private Boolean solenoidRightState;
+    private Boolean solenoidState;
+    //    private Boolean solenoidRightState;
     private boolean prevHoldButton;
 
     public IntakeController(IDriver operator, IntakeComponent intake)
@@ -29,8 +29,8 @@ public class IntakeController implements IController
         this.intake = intake;
         this.operator = operator;
         this.motorSpeed = 0.0;
-        this.solenoidLeftState = null;
-        this.solenoidRightState = null;
+        this.solenoidState = null;
+        //        this.solenoidRightState = null;
         this.prevHoldButton = false;
     }
 
@@ -52,14 +52,14 @@ public class IntakeController implements IController
 
         if (this.operator.getIntakeDownHoldButton())
         {
-            this.solenoidLeftState = false;
-            this.solenoidRightState = false;
+            this.solenoidState = false;
+            //            this.solenoidRightState = false;
             this.prevHoldButton = true;
         }
         else if (prevHoldButton)
         {
-            this.solenoidLeftState = true;
-            this.solenoidRightState = true;
+            this.solenoidState = true;
+            //            this.solenoidRightState = true;
             this.prevHoldButton = false;
         }
 
@@ -67,45 +67,45 @@ public class IntakeController implements IController
         // Up means retract, down means extend
         if (this.operator.getIntakeUpButton())
         {
-            this.solenoidLeftState = false;
-            this.solenoidRightState = false;
+            this.solenoidState = false;
+            //            this.solenoidRightState = false;
         }
 
         if (this.operator.getIntakeDownButton())
         {
-            this.solenoidLeftState = true;
-            this.solenoidRightState = true;
+            this.solenoidState = true;
+            //            this.solenoidRightState = true;
         }
 
-        if (this.operator.getIntakeLeftExtendOverride())
-        {
-            this.solenoidLeftState = true;
-        }
-
-        if (this.operator.getIntakeLeftRetractOverride())
-        {
-            this.solenoidLeftState = false;
-        }
-
-        if (this.operator.getIntakeRightExtendOverride())
-        {
-            this.solenoidRightState = true;
-        }
-
-        if (this.operator.getIntakeRightRetractOverride())
-        {
-            this.solenoidRightState = false;
-        }
+        //        if (this.operator.getIntakeLeftExtendOverride())
+        //        {
+        //            this.solenoidState = true;
+        //        }
+        //
+        //        if (this.operator.getIntakeLeftRetractOverride())
+        //        {
+        //            this.solenoidState = false;
+        //        }
+        //
+        //        if (this.operator.getIntakeRightExtendOverride())
+        //        {
+        //            this.solenoidRightState = true;
+        //        }
+        //
+        //        if (this.operator.getIntakeRightRetractOverride())
+        //        {
+        //            this.solenoidRightState = false;
+        //        }
 
         // sets IntakeComponent using solenoid and motor states
-        if (this.solenoidLeftState != null)
+        if (this.solenoidState != null)
         {
-            this.intake.setLeftIntake(this.solenoidLeftState);
+            this.intake.setLeftIntake(this.solenoidState);
         }
-        if (this.solenoidRightState != null)
-        {
-            this.intake.setRightIntake(this.solenoidRightState);
-        }
+        //        if (this.solenoidRightState != null)
+        //        {
+        //            this.intake.setRightIntake(this.solenoidRightState);
+        //        }
         this.intake.setIntakeMotorSpeed(this.motorSpeed);
     }
 
