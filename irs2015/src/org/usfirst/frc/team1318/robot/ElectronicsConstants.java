@@ -27,11 +27,11 @@ public class ElectronicsConstants
     //================================================== Elevator ==============================================================
 
     public static final int ELEVATOR_TALON_CHANNEL = 0;
-    public static final int ELEVATOR_ENCODER_CHANNEL_A = 0;
-    public static final int ELEVATOR_ENCODER_CHANNEL_B = 1;
+    public static final int ELEVATOR_ENCODER_CHANNEL_A = 1;
+    public static final int ELEVATOR_ENCODER_CHANNEL_B = 0;
 
-    public static final int ELEVATOR_BOTTOM_LIMIT_SWITCH_CHANNEL = 7;
-    public static final int ELEVATOR_TOP_LIMIT_SWITCH_CHANNEL = 6;
+    public static final int ELEVATOR_BOTTOM_LIMIT_SWITCH_CHANNEL = 6;
+    public static final int ELEVATOR_TOP_LIMIT_SWITCH_CHANNEL = 7;
 
     public static final int ELEVATOR_THROUGH_BEAM_SENSOR_CHANNEL = -1;
 

@@ -2,7 +2,6 @@ package org.usfirst.frc.team1318.robot.Autonomous;
 
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.OrderedTask;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
-import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
 /**
  * Driver for autonomous mode.  Autonomous driver acts as the operator of the robot,
@@ -158,7 +157,7 @@ public class AutonomousDriver implements IDriver
     {
         double xVelocity = this.controlData.getDriveTrainXVelocity();
 
-        SmartDashboardLogger.putNumber(AutonomousDriver.DRIVETRAIN_X_VELOCITY_LOG_KEY, xVelocity);
+        //        SmartDashboardLogger.putNumber(AutonomousDriver.DRIVETRAIN_X_VELOCITY_LOG_KEY, xVelocity);
 
         return xVelocity;
     }
@@ -171,7 +170,7 @@ public class AutonomousDriver implements IDriver
     {
         double yVelocity = this.controlData.getDriveTrainYVelocity();
 
-        SmartDashboardLogger.putNumber(AutonomousDriver.DRIVETRAIN_Y_VELOCITY_LOG_KEY, yVelocity);
+        //        SmartDashboardLogger.putNumber(AutonomousDriver.DRIVETRAIN_Y_VELOCITY_LOG_KEY, yVelocity);
 
         return yVelocity;
     }
@@ -184,7 +183,7 @@ public class AutonomousDriver implements IDriver
     {
         boolean simpleMode = this.controlData.getDriveTrainSimpleMode();
 
-        SmartDashboardLogger.putBoolean(AutonomousDriver.DRIVETRAIN_SIMPLE_MODE_LOG_KEY, simpleMode);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.DRIVETRAIN_SIMPLE_MODE_LOG_KEY, simpleMode);
 
         return simpleMode;
     }
@@ -197,7 +196,7 @@ public class AutonomousDriver implements IDriver
     {
         double leftPosition = this.controlData.getDriveTrainLeftPosition();
 
-        SmartDashboardLogger.putNumber(AutonomousDriver.DRIVETRAIN_LEFT_POSITION_LOG_KEY, leftPosition);
+        //        SmartDashboardLogger.putNumber(AutonomousDriver.DRIVETRAIN_LEFT_POSITION_LOG_KEY, leftPosition);
 
         return leftPosition;
     }
@@ -210,7 +209,7 @@ public class AutonomousDriver implements IDriver
     {
         double rightPosition = this.controlData.getDriveTrainRightPosition();
 
-        SmartDashboardLogger.putNumber(AutonomousDriver.DRIVETRAIN_RIGHT_POSITION_LOG_KEY, rightPosition);
+        //        SmartDashboardLogger.putNumber(AutonomousDriver.DRIVETRAIN_RIGHT_POSITION_LOG_KEY, rightPosition);
 
         return rightPosition;
     }
@@ -223,7 +222,7 @@ public class AutonomousDriver implements IDriver
     {
         boolean positionMode = this.controlData.getDriveTrainPositionMode();
 
-        SmartDashboardLogger.putBoolean(AutonomousDriver.DRIVETRAIN_POSITION_MODE_LOG_KEY, positionMode);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.DRIVETRAIN_POSITION_MODE_LOG_KEY, positionMode);
 
         return positionMode;
     }
@@ -234,7 +233,7 @@ public class AutonomousDriver implements IDriver
     public boolean getElevatorContainerMacroButton()
     {
         boolean mode = this.controlData.getElevatorContainerMacroState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_CONTAINER_MACRO_STATE_LOG_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_CONTAINER_MACRO_STATE_LOG_KEY, mode);
         return mode;
     }
 
@@ -242,7 +241,7 @@ public class AutonomousDriver implements IDriver
     public boolean getElevatorSetStateToFloorButton()
     {
         boolean state = this.controlData.getElevatorSetStateToFloor();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_SET_STATE_TO_FLOOR_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_SET_STATE_TO_FLOOR_LOG_KEY, state);
         return state;
     }
 
@@ -250,7 +249,7 @@ public class AutonomousDriver implements IDriver
     public boolean getElevatorSetStateToPlatformButton()
     {
         boolean state = this.controlData.getElevatorSetStateToPlatform();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_SET_STATE_TO_PLATFORM_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_SET_STATE_TO_PLATFORM_LOG_KEY, state);
         return state;
     }
 
@@ -258,7 +257,7 @@ public class AutonomousDriver implements IDriver
     public boolean getElevatorSetStateToStepButton()
     {
         boolean state = this.controlData.getElevatorSetStateToStep();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_SET_STATE_TO_STEP_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_SET_STATE_TO_STEP_LOG_KEY, state);
         return state;
     }
 
@@ -266,7 +265,7 @@ public class AutonomousDriver implements IDriver
     public boolean getElevatorMoveTo0TotesButton()
     {
         boolean state = this.controlData.getElevatorMoveTo0Totes();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_MOVE_TO_0_TOTES_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_MOVE_TO_0_TOTES_LOG_KEY, state);
         return state;
     }
 
@@ -274,7 +273,7 @@ public class AutonomousDriver implements IDriver
     public boolean getElevatorMoveTo1ToteButton()
     {
         boolean state = this.controlData.getElevatorMoveTo1Tote();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_MOVE_TO_1_TOTE_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_MOVE_TO_1_TOTE_LOG_KEY, state);
         return state;
     }
 
@@ -282,7 +281,7 @@ public class AutonomousDriver implements IDriver
     public boolean getElevatorMoveTo2TotesButton()
     {
         boolean state = this.controlData.getElevatorMoveTo2Totes();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_MOVE_TO_2_TOTES_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_MOVE_TO_2_TOTES_LOG_KEY, state);
         return state;
     }
 
@@ -290,7 +289,7 @@ public class AutonomousDriver implements IDriver
     public boolean getElevatorMoveTo3TotesButton()
     {
         boolean state = this.controlData.getElevatorMoveTo3Totes();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_MOVE_TO_3_TOTES_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_MOVE_TO_3_TOTES_LOG_KEY, state);
         return state;
     }
 
@@ -305,7 +304,7 @@ public class AutonomousDriver implements IDriver
     public boolean getElevatorPIDOn()
     {
         boolean state = this.controlData.getElevatorPIDOnState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_PID_ON_STATE_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_PID_ON_STATE_LOG_KEY, state);
         return state;
     }
 
@@ -313,7 +312,7 @@ public class AutonomousDriver implements IDriver
     public boolean getElevatorPIDOff()
     {
         boolean state = this.controlData.getElevatorPIDOffState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_PID_OFF_STATE_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_PID_OFF_STATE_LOG_KEY, state);
         return state;
     }
 
@@ -321,7 +320,7 @@ public class AutonomousDriver implements IDriver
     public boolean getStopElevatorButton()
     {
         boolean mode = this.controlData.getElevatorStopState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_STOP_STATE_LOG_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_STOP_STATE_LOG_KEY, mode);
         return mode;
     }
 
@@ -329,7 +328,7 @@ public class AutonomousDriver implements IDriver
     public boolean getElevatorUpButton()
     {
         boolean mode = this.controlData.getElevatorUpState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_UP_STATE_LOG_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_UP_STATE_LOG_KEY, mode);
         return mode;
     }
 
@@ -337,7 +336,7 @@ public class AutonomousDriver implements IDriver
     public boolean getElevatorDownButton()
     {
         boolean mode = this.controlData.getElevatorDownState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_DOWN_STATE_LOG_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_DOWN_STATE_LOG_KEY, mode);
         return mode;
     }
 
@@ -345,14 +344,14 @@ public class AutonomousDriver implements IDriver
     public boolean getElevatorMoveToBottom()
     {
         boolean mode = this.controlData.getElevatorMoveToBottomState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_MOVE_TO_BOTTOM_STATE_LOG_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_MOVE_TO_BOTTOM_STATE_LOG_KEY, mode);
         return mode;
     }
 
     public double getElevatorVelocityOverride()
     {
         double value = this.controlData.getElevatorVelocityOverrideState();
-        SmartDashboardLogger.putNumber(AutonomousDriver.ELEVATOR_VELOCITY_OVERRIDE_LOG_KEY, value);
+        //        SmartDashboardLogger.putNumber(AutonomousDriver.ELEVATOR_VELOCITY_OVERRIDE_LOG_KEY, value);
         return value;
     }
 
@@ -360,7 +359,7 @@ public class AutonomousDriver implements IDriver
     public boolean getIgnoreElevatorSensors()
     {
         boolean mode = this.controlData.getElevatorIgnoreSensorsState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_IGNORE_SENSORS_LOG_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_IGNORE_SENSORS_LOG_KEY, mode);
         return mode;
     }
 
@@ -368,7 +367,7 @@ public class AutonomousDriver implements IDriver
     public boolean getUseElevatorSensors()
     {
         boolean mode = this.controlData.getElevatorUseSensorsState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_USE_SENSORS_LOG_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_USE_SENSORS_LOG_KEY, mode);
         return mode;
     }
 
@@ -376,7 +375,7 @@ public class AutonomousDriver implements IDriver
     public boolean getZeroElevatorEncoder()
     {
         boolean mode = this.controlData.getElevatorZeroEncoderState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_ZERO_ENCODERS_LOG_KEY, mode);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_ZERO_ENCODERS_LOG_KEY, mode);
         return mode;
     }
 
@@ -386,7 +385,7 @@ public class AutonomousDriver implements IDriver
     public boolean getArmMacroExtendButton()
     {
         boolean state = this.controlData.getArmMacroExtendState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_MACRO_EXTEND_STATE_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_MACRO_EXTEND_STATE_LOG_KEY, state);
         return state;
     }
 
@@ -394,7 +393,7 @@ public class AutonomousDriver implements IDriver
     public boolean getArmMacroRetractButton()
     {
         boolean state = this.controlData.getArmMacroRetractState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_MACRO_RETRACT_STATE_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_MACRO_RETRACT_STATE_LOG_KEY, state);
         return state;
     }
 
@@ -402,7 +401,7 @@ public class AutonomousDriver implements IDriver
     public boolean getArmExtenderExtendOverride()
     {
         boolean state = this.controlData.getArmExtenderExtendOverrideState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_EXTENDER_EXTEND_OVERRIDE_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_EXTENDER_EXTEND_OVERRIDE_LOG_KEY, state);
         return state;
     }
 
@@ -410,7 +409,7 @@ public class AutonomousDriver implements IDriver
     public boolean getArmExtenderRetractOverride()
     {
         boolean state = this.controlData.getArmExtenderRetractOverrideState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_EXTENDER_RETRACT_OVERRIDE_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_EXTENDER_RETRACT_OVERRIDE_LOG_KEY, state);
         return state;
     }
 
@@ -418,7 +417,7 @@ public class AutonomousDriver implements IDriver
     public boolean getArmTiltExtendOverride()
     {
         boolean state = this.controlData.getArmTiltExtendOverrideState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_TILT_EXTEND_OVERRIDE_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_TILT_EXTEND_OVERRIDE_LOG_KEY, state);
         return state;
     }
 
@@ -426,7 +425,7 @@ public class AutonomousDriver implements IDriver
     public boolean getArmTiltRetractOverride()
     {
         boolean state = this.controlData.getArmTiltRetractOverrideState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_TILT_RETRACT_OVERRIDE_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_TILT_RETRACT_OVERRIDE_LOG_KEY, state);
         return state;
     }
 
@@ -441,7 +440,7 @@ public class AutonomousDriver implements IDriver
     public boolean getArmTromboneExtendOverride()
     {
         boolean state = this.controlData.getArmTromboneExtendOverrideState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_TROMBONE_EXTEND_OVERRIDE_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_TROMBONE_EXTEND_OVERRIDE_LOG_KEY, state);
         return state;
     }
 
@@ -449,7 +448,7 @@ public class AutonomousDriver implements IDriver
     public boolean getArmTromboneRetractOverride()
     {
         boolean state = this.controlData.getArmTromboneRetractOverrideState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_TROMBONE_RETRACT_OVERRIDE_LOG_KEY, state);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ARM_TROMBONE_RETRACT_OVERRIDE_LOG_KEY, state);
         return state;
     }
 
@@ -459,7 +458,7 @@ public class AutonomousDriver implements IDriver
     public boolean getIntakeUpButton()
     {
         boolean state = this.controlData.getIntakeUpState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_UP_STATE_KEY, state);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_UP_STATE_KEY, state);
         return state;
     }
 
@@ -467,7 +466,7 @@ public class AutonomousDriver implements IDriver
     public boolean getIntakeDownButton()
     {
         boolean state = this.controlData.getIntakeDownState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_DOWN_STATE_KEY, state);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_DOWN_STATE_KEY, state);
         return state;
     }
 
@@ -482,7 +481,7 @@ public class AutonomousDriver implements IDriver
     public boolean getIntakeRightExtendOverride()
     {
         boolean state = this.controlData.getIntakeRightExtendOverrideState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_RIGHT_EXTEND_OVERRIDE_STATE_KEY, state);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_RIGHT_EXTEND_OVERRIDE_STATE_KEY, state);
         return state;
     }
 
@@ -490,7 +489,7 @@ public class AutonomousDriver implements IDriver
     public boolean getIntakeRightRetractOverride()
     {
         boolean state = this.controlData.getIntakeRightRetractOverrideState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_RIGHT_RETRACT_OVERRIDE_STATE_KEY, state);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_RIGHT_RETRACT_OVERRIDE_STATE_KEY, state);
         return state;
     }
 
@@ -498,7 +497,7 @@ public class AutonomousDriver implements IDriver
     public boolean getIntakeLeftExtendOverride()
     {
         boolean state = this.controlData.getIntakeLeftExtendOverrideState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_LEFT_EXTEND_OVERRIDE_STATE_KEY, state);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_LEFT_EXTEND_OVERRIDE_STATE_KEY, state);
         return state;
     }
 
@@ -506,7 +505,7 @@ public class AutonomousDriver implements IDriver
     public boolean getIntakeLeftRetractOverride()
     {
         boolean state = this.controlData.getIntakeLeftRetractOverrideState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_LEFT_RETRACT_OVERRIDE_STATE_KEY, state);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_LEFT_RETRACT_OVERRIDE_STATE_KEY, state);
         return state;
     }
 
@@ -514,7 +513,7 @@ public class AutonomousDriver implements IDriver
     public boolean getIntakeForwardButton()
     {
         boolean state = this.controlData.getIntakeForwardState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_FORWARD_STATE_KEY, state);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_FORWARD_STATE_KEY, state);
         return state;
     }
 
@@ -522,7 +521,7 @@ public class AutonomousDriver implements IDriver
     public boolean getIntakeBackwardButton()
     {
         boolean state = this.controlData.getIntakeBackwardState();
-        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_BACKWARD_STATE_KEY, state);
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_BACKWARD_STATE_KEY, state);
         return state;
     }
 
