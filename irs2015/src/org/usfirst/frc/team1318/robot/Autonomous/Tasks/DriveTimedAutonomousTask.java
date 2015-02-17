@@ -31,4 +31,30 @@ public class DriveTimedAutonomousTask extends TimedAutonomousTask
         data.setDriveTrainXVelocity(this.xVelocity);
         data.setDriveTrainYVelocity(this.yVelocity);
     }
+
+    /**
+     * Cancel the current task and clear control changes
+     * @param data to which we should clear any updated control settings
+     */
+    @Override
+    public void cancel(AutonomousControlData data)
+    {
+        super.cancel(data);
+
+        data.setDriveTrainXVelocity(0.0);
+        data.setDriveTrainYVelocity(0.0);
+    }
+
+    /**
+     * End the current task and reset control changes appropriately
+     * @param data to which we should apply updated settings
+     */
+    @Override
+    public void end(AutonomousControlData data)
+    {
+        super.end(data);
+
+        data.setDriveTrainXVelocity(0.0);
+        data.setDriveTrainYVelocity(0.0);
+    }
 }

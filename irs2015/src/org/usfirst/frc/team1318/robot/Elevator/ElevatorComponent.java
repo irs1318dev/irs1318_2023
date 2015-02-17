@@ -4,13 +4,14 @@ import org.usfirst.frc.team1318.robot.ElectronicsConstants;
 import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Talon;
 
 public class ElevatorComponent
 {
-    //    private final AnalogInput throughBeamSensor;
+    private final AnalogInput throughBeamSensor;
     private final Talon motor;
     private final Encoder encoder;
     private final DigitalInput topLimitSwtich;
@@ -35,7 +36,7 @@ public class ElevatorComponent
 
         this.encoder.setDistancePerPulse(HardwareConstants.ELEVATOR_PULSE_DISTANCE);
 
-        //        this.throughBeamSensor = new AnalogInput(ElectronicsConstants.ELEVATOR_THROUGH_BEAM_SENSOR_CHANNEL);
+        this.throughBeamSensor = new AnalogInput(ElectronicsConstants.ELEVATOR_THROUGH_BEAM_SENSOR_CHANNEL);
 
         this.topLimitSwtich = new DigitalInput(ElectronicsConstants.ELEVATOR_TOP_LIMIT_SWITCH_CHANNEL);
         this.bottomLimitSwitch = new DigitalInput(ElectronicsConstants.ELEVATOR_BOTTOM_LIMIT_SWITCH_CHANNEL);
@@ -90,8 +91,7 @@ public class ElevatorComponent
      */
     public double getThroughBeamVoltage()
     {
-        //        double value = throughBeamSensor.getVoltage();
-        double value = 0;
+        double value = throughBeamSensor.getVoltage();
         SmartDashboardLogger.putNumber(THROUGH_BEAM_SENSOR_ANALOG_LOG_KEY, value);
         return value;
     }
@@ -102,8 +102,7 @@ public class ElevatorComponent
      */
     public boolean getThroughBeamBroken()
     {
-        //        boolean valueBool = (throughBeamSensor.getVoltage() < 2.5);
-        boolean valueBool = false;
+        boolean valueBool = (throughBeamSensor.getVoltage() < 2.5);
         SmartDashboardLogger.putBoolean(THROUGH_BEAM_SENSOR_BOOLEAN_LOG_KEY, valueBool);
         return valueBool;
     }

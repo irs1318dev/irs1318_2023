@@ -18,6 +18,7 @@ public class AutonomousControlData
 
     //Elevator 
     private boolean elevatorContainerMacroState;
+    private boolean elevatorTotePickUpMacroState;
     private boolean elevatorSetStateToFloor;
     private boolean elevatorSetStateToPlatform;
     private boolean elevatorSetStateToStep;
@@ -247,6 +248,16 @@ public class AutonomousControlData
     public void setElevatorMoveTo3Totes(boolean elevatorMoveTo3Totes)
     {
         this.elevatorMoveTo3Totes = elevatorMoveTo3Totes;
+    }
+
+    public boolean getElevatorTotePickUpMacroState()
+    {
+        return elevatorTotePickUpMacroState;
+    }
+
+    public void setElevatorTotePickUpMacroState(boolean elevatorTotePickUpMacroState)
+    {
+        this.elevatorTotePickUpMacroState = elevatorTotePickUpMacroState;
     }
 
     public boolean getElevatorPIDOnState()

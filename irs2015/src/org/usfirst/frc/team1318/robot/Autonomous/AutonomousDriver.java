@@ -2,6 +2,7 @@ package org.usfirst.frc.team1318.robot.Autonomous;
 
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.OrderedTask;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
+import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
 /**
  * Driver for autonomous mode.  Autonomous driver acts as the operator of the robot,
@@ -31,6 +32,7 @@ public class AutonomousDriver implements IDriver
     private static final String ELEVATOR_MOVE_TO_1_TOTE_LOG_KEY = "a.elevatorHeight4";
     private static final String ELEVATOR_MOVE_TO_2_TOTES_LOG_KEY = "a.elevatorHeight5";
     private static final String ELEVATOR_MOVE_TO_3_TOTES_LOG_KEY = "a.elevatorHeight6";
+    private static final String ELEVATOR_PICK_UP_MACRO_LOG_KEY = "a.elevatorPickUpMacro";
     private static final String ELEVATOR_PID_ON_STATE_LOG_KEY = "a.elevatorPIDOnState";
     private static final String ELEVATOR_PID_OFF_STATE_LOG_KEY = "a.elevatorPIDOffState";
     private static final String ELEVATOR_STOP_STATE_LOG_KEY = "a.elevatorStop";
@@ -296,8 +298,9 @@ public class AutonomousDriver implements IDriver
     @Override
     public boolean getElevatorPickUpMacro()
     {
-        //TODO: implement 
-        return false;
+        boolean state = this.controlData.getElevatorMoveTo3Totes();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_PICK_UP_MACRO_LOG_KEY, state);
+        return state;
     }
 
     @Override

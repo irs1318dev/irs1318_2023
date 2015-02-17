@@ -4,8 +4,8 @@ import org.usfirst.frc.team1318.robot.Arm.ArmComponent;
 import org.usfirst.frc.team1318.robot.Arm.ArmController;
 import org.usfirst.frc.team1318.robot.Autonomous.AutonomousDriver;
 import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.CollectToteTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveDistanceAutonomousTask;
-import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveForwardTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveTimedAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.TurnAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.WaitAutonomousTask;
@@ -161,27 +161,27 @@ public class Robot extends IterativeRobot
     public void autonomousInit()
     {
         // determine our desired autonomous routine
-        IAutonomousTask[] autonomousRoutine;
+        IAutonomousTask[] autonomousRoutine = Robot.GetSampleRoutine(this.elevatorComponent);
 
-        // select autonomous routine based on setting in SmartDashboard
-        switch ((int)this.autonomousRoutineChooser.getSelected() % 3)
-        {
-            case 0:
-                autonomousRoutine = Robot.GetDriveInSquareRoutine();
-                break;
-
-            case 1:
-                autonomousRoutine = Robot.GetDriveInSquareByDistanceRoutine(this.driveTrainComponent);
-                break;
-
-            case 2:
-                autonomousRoutine = Robot.GetDriveForwardRoutine();
-                break;
-
-            default:
-                autonomousRoutine = Robot.GetDriveInSquareRoutine();
-                break;
-        }
+        //        // select autonomous routine based on setting in SmartDashboard
+        //        switch ((int)this.autonomousRoutineChooser.getSelected() % 3)
+        //        {
+        //            case 0:
+        //                autonomousRoutine = Robot.GetDriveInSquareRoutine();
+        //                break;
+        //
+        //            case 1:
+        //                autonomousRoutine = Robot.GetDriveInSquareByDistanceRoutine(this.driveTrainComponent);
+        //                break;
+        //
+        //            case 2:
+        //                autonomousRoutine = Robot.GetDriveForwardRoutine();
+        //                break;
+        //
+        //            default:
+        //                autonomousRoutine = Robot.GetDriveInSquareRoutine();
+        //                break;
+        //        }
 
         // create autonomous driver based on our desired routine
         this.driver = new AutonomousDriver(autonomousRoutine);
@@ -326,9 +326,16 @@ public class Robot extends IterativeRobot
      * 
      * @return list of autonomous tasks
      */
-    private static IAutonomousTask[] GetDriveForwardRoutine()
+    private static IAutonomousTask[] GetSampleRoutine(ElevatorComponent elevatorComponent)
     {
-        return new IAutonomousTask[] { new DriveForwardTask() };
+        //        return new IAutonomousTask[] { new DriveTimedAutonomousTask(2, 0.0, 0.3) };
+        return new IAutonomousTask[] { new CollectToteTask(elevatorComponent) };
+        //        return new IAutonomousTask[]
+        //        {
+        //            CompositeTask.AndTasks(
+        //                new DriveTimedAutonomousTask(2, 0.0, 0.3),
+        //                new CollectToteTask(elevatorComponent)),
+        //        };
     }
 }
 
