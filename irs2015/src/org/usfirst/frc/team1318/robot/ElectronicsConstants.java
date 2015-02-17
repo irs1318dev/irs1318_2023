@@ -27,9 +27,6 @@ public class ElectronicsConstants
     public static final int TEST_PROXIMITY_SENSOR_BACK_PORT = 1;
     public static final int TEST_PROXIMITY_SENSOR_FRONT_PORT = 2;
 
-    public static final int TEST_PROXIMITY_SENSOR_BACK_PORT = 1;
-    public static final int TEST_PROXIMITY_SENSOR_FRONT_PORT = 2;
-
     //================================================== Elevator ==============================================================
 
     public static final int ELEVATOR_TALON_CHANNEL = 0;
