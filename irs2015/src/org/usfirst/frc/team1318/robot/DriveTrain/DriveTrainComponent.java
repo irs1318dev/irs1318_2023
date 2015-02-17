@@ -72,8 +72,8 @@ public class DriveTrainComponent implements IDriveTrainComponent
         //this.leftEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_LEFT_PULSE_DISTANCE);
         //this.rightEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_RIGHT_PULSE_DISTANCE);
 
-        proximitySensorBack = new AnalogInput(ElectronicsConstants.TEST_PROXIMITY_SENSOR_BACK_PORT);
-        proximitySensorFront = new AnalogInput(ElectronicsConstants.TEST_PROXIMITY_SENSOR_FRONT_PORT);
+        proximitySensorBack = new AnalogInput(ElectronicsConstants.DRIVETRAIN_PROXIMITY_SENSOR_BACK_PORT);
+        proximitySensorFront = new AnalogInput(ElectronicsConstants.DRIVETRAIN_PROXIMITY_SENSOR_FRONT_PORT);
 
         this.timer = new Timer();
         this.timer.start();
