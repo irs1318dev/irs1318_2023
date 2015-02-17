@@ -38,6 +38,9 @@ public class ElectronicsConstants
 
     public static final int ELEVATOR_THROUGH_BEAM_SENSOR_CHANNEL = 0;
 
+    public static final int ELEVATOR_LIMIT_SWITCH_RELAY_CHANNEL = 0;
+    public static final int ELEVATOR_THROUGH_BEAM_RELAY_CHANNEL = 1;
+
     //================================================== Intake ==============================================================
 
     public static final int INTAKE_LEFT_TALON_CHANNEL = 3;

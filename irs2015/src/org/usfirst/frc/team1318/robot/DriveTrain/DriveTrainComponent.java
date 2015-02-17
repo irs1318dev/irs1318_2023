@@ -28,8 +28,8 @@ public class DriveTrainComponent implements IDriveTrainComponent
     public static final String RIGHT_ENCODER_DISTANCE_LOG_KEY = "dt.rightEncoderDistance";
     public static final String LEFT_ENCODER_TICKS_LOG_KEY = "dt.leftEncoderTicks";
     public static final String RIGHT_ENCODER_TICKS_LOG_KEY = "dt.rightEncoderTicks";
-    private static final String PROXIMITY_SENSOR_BACK_LOG_KEY = "dt.proximitySensorBack";
-    private static final String PROXIMITY_SENSOR_FRONT_LOG_KEY = "dt.proximitySensorFront";
+    public static final String PROXIMITY_SENSOR_BACK_LOG_KEY = "dt.proximitySensorBack";
+    public static final String PROXIMITY_SENSOR_FRONT_LOG_KEY = "dt.proximitySensorFront";
 
     private static final double MinTimeStep = 0.01;
 

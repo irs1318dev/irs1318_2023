@@ -320,6 +320,25 @@ public class ElevatorController implements IController
         this.component.setMotorPowerLevel(powerLevel);
 
         this.lastTime = currentTime;
+
+        if ((this.usePID && this.position < HardwareConstants.ELEVATOR_0_TOTE_HEIGHT)
+            || (!this.usePID && !this.ignoreSensors && this.component.getBottomLimitSwitchValue()))
+        {
+            this.component.setLimitSwitchRelayValue(true);
+        }
+        else
+        {
+            this.component.setLimitSwitchRelayValue(false);
+        }
+
+        if (this.component.getThroughBeamBroken())
+        {
+            this.component.setThroughBeamRelayValue(true);
+        }
+        else
+        {
+            this.component.setThroughBeamRelayValue(false);
+        }
     }
 
     /**
