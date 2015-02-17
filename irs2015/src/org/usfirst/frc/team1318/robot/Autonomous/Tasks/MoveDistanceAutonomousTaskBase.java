@@ -33,6 +33,7 @@ public abstract class MoveDistanceAutonomousTaskBase implements IAutonomousTask
     /**
      * Begin the current task
      */
+    @Override
     public void begin()
     {
         // get the start location
@@ -52,6 +53,7 @@ public abstract class MoveDistanceAutonomousTaskBase implements IAutonomousTask
      * Run an iteration of the current task and apply any control changes 
      * @param data to which we should apply updated settings
      */
+    @Override
     public void update(AutonomousControlData data)
     {
         data.setDriveTrainLeftPosition(this.desiredFinalLeftEncoderDistance);
@@ -63,6 +65,7 @@ public abstract class MoveDistanceAutonomousTaskBase implements IAutonomousTask
      * Cancel the current task and clear control changes
      * @param data to which we should clear any updated control settings
      */
+    @Override
     public void cancel(AutonomousControlData data)
     {
         data.setDriveTrainLeftPosition(0.0);
@@ -74,6 +77,7 @@ public abstract class MoveDistanceAutonomousTaskBase implements IAutonomousTask
      * End the current task and reset control changes appropriately
      * @param data to which we should apply updated settings
      */
+    @Override
     public void end(AutonomousControlData data)
     {
         data.setDriveTrainLeftPosition(0.0);
@@ -82,10 +86,11 @@ public abstract class MoveDistanceAutonomousTaskBase implements IAutonomousTask
     }
 
     /**
-     * Checks whether we should continue processing this task or whether it should end
-     * @return true if we should continue on the current task, otherwise false (to move to the next task)
+     * Checks whether this task has completed, or whether it should continue being processed
+     * @return true if we should continue onto the next task, otherwise false (to keep processing this task)
      */
-    public boolean shouldContinueProcessingTask()
+    @Override
+    public boolean hasCompleted()
     {
         double leftEncoderDistance = this.driveTrain.getLeftEncoderDistance();
         double rightEncoderDistance = this.driveTrain.getRightEncoderDistance();
@@ -94,9 +99,9 @@ public abstract class MoveDistanceAutonomousTaskBase implements IAutonomousTask
         double leftDelta = Math.abs(this.desiredFinalLeftEncoderDistance - leftEncoderDistance);
         double rightDelta = Math.abs(this.desiredFinalRightEncoderDistance - rightEncoderDistance);
 
-        // return that we should continue processing this task if we not are within an acceptable distance
+        // return that we have completed this task if are within an acceptable distance
         // from the desired end location for both left and right. 
-        return leftDelta >= AutonomousConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA &&
-            rightDelta >= AutonomousConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA;
+        return leftDelta < AutonomousConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA &&
+            rightDelta < AutonomousConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA;
     }
 }

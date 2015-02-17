@@ -21,13 +21,17 @@ public class CollectToteTask implements IAutonomousTask
 {
     private static final double DELAY_TIME = 0.1;
 
-    private ElevatorComponent elevatorComponent;
-    private Timer timer;
+    private final ElevatorComponent elevatorComponent;
+    private final Timer timer;
 
     private Double startWait;
     private boolean hasDetectedThroughBeamBroken;
     private boolean hasHitBottomLimitSwitch;
 
+    /**
+     * Initializes a new CollectToteTask
+     * @param elevatorComponent to use to detect whether we have hit our bottom limit switch or broken the through beam
+     */
     public CollectToteTask(ElevatorComponent elevatorComponent)
     {
         this.elevatorComponent = elevatorComponent;
@@ -38,6 +42,9 @@ public class CollectToteTask implements IAutonomousTask
         this.hasHitBottomLimitSwitch = false;
     }
 
+    /**
+     * Begin the current task
+     */
     @Override
     public void begin()
     {
@@ -47,6 +54,10 @@ public class CollectToteTask implements IAutonomousTask
         this.startWait = null;
     }
 
+    /**
+     * Run an iteration of the current task and apply any control changes 
+     * @param data to which we should apply updated settings
+     */
     @Override
     public void update(AutonomousControlData data)
     {
@@ -72,6 +83,10 @@ public class CollectToteTask implements IAutonomousTask
         data.setElevatorMoveTo3Totes(this.hasHitBottomLimitSwitch);
     }
 
+    /**
+     * Cancel the current task and clear control changes
+     * @param data to which we should clear any updated control settings
+     */
     @Override
     public void cancel(AutonomousControlData data)
     {
@@ -80,6 +95,10 @@ public class CollectToteTask implements IAutonomousTask
         data.setElevatorMoveTo3Totes(false);
     }
 
+    /**
+     * End the current task and reset control changes appropriately
+     * @param data to which we should apply updated settings
+     */
     @Override
     public void end(AutonomousControlData data)
     {
@@ -88,16 +107,20 @@ public class CollectToteTask implements IAutonomousTask
         data.setElevatorMoveTo3Totes(false);
     }
 
+    /**
+     * Checks whether this task has completed, or whether it should continue being processed
+     * @return true if we should continue onto the next task, otherwise false (to keep processing this task)
+     */
     @Override
-    public boolean shouldContinueProcessingTask()
+    public boolean hasCompleted()
     {
         if (this.startWait == null)
         {
-            return true;
+            return false;
         }
 
         return this.hasDetectedThroughBeamBroken
             && this.hasHitBottomLimitSwitch
-            && this.timer.get() < this.startWait + CollectToteTask.DELAY_TIME;
+            && this.timer.get() >= this.startWait + CollectToteTask.DELAY_TIME;
     }
 }

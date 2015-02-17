@@ -123,7 +123,7 @@ public class AutonomousDriver implements IDriver
                 this.hasBegun = true;
             }
 
-            if (!this.autonomousTask.shouldContinueProcessingTask())
+            if (this.autonomousTask.hasCompleted())
             {
                 // if we shouldn't continue, end the task
                 this.autonomousTask.end(this.controlData);

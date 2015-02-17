@@ -29,6 +29,7 @@ public class TurnAutonomousTask extends MoveDistanceAutonomousTaskBase implement
     /**
      * Determine the final encoder distance
      */
+    @Override
     protected void determineFinalEncoderDistance()
     {
         double arcLength = Math.PI * HardwareConstants.DRIVETRAIN_WHEEL_SEPARATION_DISTANCE * (this.degrees / 360.0);

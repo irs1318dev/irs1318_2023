@@ -34,8 +34,8 @@ public interface IAutonomousTask
     public void end(AutonomousControlData data);
 
     /**
-     * Checks whether we should continue processing this task or whether it should end
-     * @return true if we should continue on the current task, otherwise false (to move to the next task)
+     * Checks whether this task has completed, or whether it should continue being processed
+     * @return true if we should continue onto the next task, otherwise false (to keep processing this task)
      */
-    public boolean shouldContinueProcessingTask();
+    public boolean hasCompleted();
 }

@@ -28,6 +28,7 @@ public class DriveDistanceAutonomousTask extends MoveDistanceAutonomousTaskBase 
     /**
      * Determine the final encoder distance
      */
+    @Override
     protected void determineFinalEncoderDistance()
     {
         this.desiredFinalLeftEncoderDistance = this.startLeftEncoderDistance + this.distance;

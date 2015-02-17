@@ -33,6 +33,7 @@ public abstract class TimedAutonomousTask implements IAutonomousTask
     /**
      * Begin the current task
      */
+    @Override
     public void begin()
     {
         this.timer.start();
@@ -49,6 +50,7 @@ public abstract class TimedAutonomousTask implements IAutonomousTask
      * Cancel the current task and clear control changes
      * @param data to which we should clear any updated control settings
      */
+    @Override
     public void cancel(AutonomousControlData data)
     {
         this.startTime = null;
@@ -58,16 +60,18 @@ public abstract class TimedAutonomousTask implements IAutonomousTask
      * End the current task and reset control changes appropriately
      * @param data to which we should apply updated settings
      */
+    @Override
     public void end(AutonomousControlData data)
     {
     }
 
     /**
-     * Checks whether we should continue processing this task or whether it should end
-     * @return true if we should continue on the current task, otherwise false (to move to the next task)
+     * Checks whether this task has completed, or whether it should continue being processed
+     * @return true if we should continue onto the next task, otherwise false (to keep processing this task)
      */
-    public boolean shouldContinueProcessingTask()
+    @Override
+    public boolean hasCompleted()
     {
-        return this.timer.get() < this.startTime + this.duration;
+        return this.timer.get() >= this.startTime + this.duration;
     }
 }

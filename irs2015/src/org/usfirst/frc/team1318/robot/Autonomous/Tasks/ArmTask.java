@@ -1,24 +1,30 @@
 package org.usfirst.frc.team1318.robot.Autonomous.Tasks;
 
 import org.usfirst.frc.team1318.robot.Autonomous.AutonomousControlData;
+import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 
 /**
- * IntakeOutTask:
+ * ArmTask:
  * 
- * This task runs the intake out for a certain period of time
+ * This task runs the arm extend or arm retract macro, sleeping for a certain (provided) length of time.
  * 
  * @author Will
  *
  */
-public class IntakeOutTask extends TimedAutonomousTask
+public class ArmTask extends TimedAutonomousTask implements IAutonomousTask
 {
+    private final boolean extend;
+
     /**
-     * Initializes a new IntakeOutTask
+     * Initializes a new ArmTask
      * @param duration to perform the task in seconds
+     * @param extend the arm (true) or retract the arm (false)
      */
-    public IntakeOutTask(double duration)
+    public ArmTask(double duration, boolean extend)
     {
         super(duration);
+
+        this.extend = extend;
     }
 
     /**
@@ -28,7 +34,8 @@ public class IntakeOutTask extends TimedAutonomousTask
     @Override
     public void update(AutonomousControlData data)
     {
-        data.setIntakeBackwardState(true);
+        data.setArmMacroExtendState(this.extend);
+        data.setArmMacroRetractState(!this.extend);
     }
 
     /**
@@ -40,7 +47,8 @@ public class IntakeOutTask extends TimedAutonomousTask
     {
         super.cancel(data);
 
-        data.setIntakeBackwardState(false);
+        data.setArmMacroExtendState(false);
+        data.setArmMacroRetractState(false);
     }
 
     /**
@@ -52,6 +60,7 @@ public class IntakeOutTask extends TimedAutonomousTask
     {
         super.end(data);
 
-        data.setIntakeBackwardState(false);
+        data.setArmMacroExtendState(false);
+        data.setArmMacroRetractState(false);
     }
 }

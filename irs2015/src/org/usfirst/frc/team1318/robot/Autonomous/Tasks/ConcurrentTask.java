@@ -55,6 +55,7 @@ public class ConcurrentTask implements IAutonomousTask
     /**
      * Begin the current task
      */
+    @Override
     public void begin()
     {
         for (IAutonomousTask task : this.tasks)
@@ -67,6 +68,7 @@ public class ConcurrentTask implements IAutonomousTask
      * Run an iteration of the current task and apply any control changes 
      * @param data to which we should apply updated settings
      */
+    @Override
     public void update(AutonomousControlData data)
     {
         for (IAutonomousTask task : this.tasks)
@@ -79,6 +81,7 @@ public class ConcurrentTask implements IAutonomousTask
      * Cancel the current task and clear control changes
      * @param data to which we should clear any updated control settings
      */
+    @Override
     public void cancel(AutonomousControlData data)
     {
         for (IAutonomousTask task : this.tasks)
@@ -91,6 +94,7 @@ public class ConcurrentTask implements IAutonomousTask
      * End the current task and reset control changes appropriately
      * @param data to which we should apply updated settings
      */
+    @Override
     public void end(AutonomousControlData data)
     {
         for (IAutonomousTask task : this.tasks)
@@ -100,29 +104,30 @@ public class ConcurrentTask implements IAutonomousTask
     }
 
     /**
-     * Checks whether we should continue processing this task or whether it should end
-     * @return true if we should continue on the current task, otherwise false (to move to the next task)
+     * Checks whether this task has completed, or whether it should continue being processed
+     * @return true if we should continue onto the next task, otherwise false (to keep processing this task)
      */
-    public boolean shouldContinueProcessingTask()
+    @Override
+    public boolean hasCompleted()
     {
         for (IAutonomousTask task : this.tasks)
         {
-            boolean taskShouldContinueTask = task.shouldContinueProcessingTask();
+            boolean taskHasCompleted = task.hasCompleted();
 
-            // for AnyTask tasks, return that we're ready to end (false) if any of them are ready to end (false).
-            if (this.anyTask && !taskShouldContinueTask)
-            {
-                return false;
-            }
-
-            // for AllTask tasks, that we aren't ready to end (true) if any is not ready to end (true).
-            if (!this.anyTask && taskShouldContinueTask)
+            // for AnyTask tasks, return that we're completed (true) if any of them have completed (true).
+            if (this.anyTask && taskHasCompleted)
             {
                 return true;
             }
+
+            // for AllTask tasks, return that we haven't completed (false) if any hasn't completed (false).
+            if (!this.anyTask && !taskHasCompleted)
+            {
+                return false;
+            }
         }
 
-        // AnyTasks return true when none of them are false.  AllTasks return false when none of them are true.
-        return this.anyTask;
+        // AnyTasks return false when none of them are true.  AllTasks return true when none of them are false.
+        return !this.anyTask;
     }
 }
