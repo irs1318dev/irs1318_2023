@@ -163,27 +163,28 @@ public class Robot extends IterativeRobot
     public void autonomousInit()
     {
         // determine our desired autonomous routine
-        IAutonomousTask[] autonomousRoutine;
+        IAutonomousTask[] autonomousRoutine = Robot.GetTestingRoutine(this.elevatorComponent);
+        ;
 
-        // select autonomous routine based on setting in SmartDashboard
-        switch ((int)this.autonomousRoutineChooser.getSelected() % 3)
-        {
-            case 0:
-                autonomousRoutine = Robot.GetTestingRoutine(this.elevatorComponent);
-                break;
-
-            case 1:
-                autonomousRoutine = Robot.GetDriveInSquareByDistanceRoutine(this.driveTrainComponent);
-                break;
-
-            case 2:
-                autonomousRoutine = Robot.GetDriveForwardRoutine();
-                break;
-
-            default:
-                autonomousRoutine = Robot.GetDriveInSquareRoutine();
-                break;
-        }
+        //        // select autonomous routine based on setting in SmartDashboard
+        //        switch ((int)this.autonomousRoutineChooser.getSelected() % 3)
+        //        {
+        //            case 0:
+        //                autonomousRoutine = Robot.GetTestingRoutine(this.elevatorComponent);
+        //                break;
+        //
+        //            case 1:
+        //                autonomousRoutine = Robot.GetDriveInSquareByDistanceRoutine(this.driveTrainComponent);
+        //                break;
+        //
+        //            case 2:
+        //                autonomousRoutine = Robot.GetDriveForwardRoutine();
+        //                break;
+        //
+        //            default:
+        //                autonomousRoutine = Robot.GetDriveInSquareRoutine();
+        //                break;
+        //        }
 
         // create autonomous driver based on our desired routine
         this.driver = new AutonomousDriver(autonomousRoutine);

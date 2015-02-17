@@ -403,6 +403,7 @@ public class UserDriver implements IDriver
     public boolean getElevatorUpButton()
     {
         boolean mode = this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_UP_BUTTON);
+        SmartDashboardLogger.putNumber("throttle", this.joystickDriver.getThrottle());
         //        boolean mode = this.joystickDriver.getPOV() == 0;
         //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_UP_STATE_LOG_KEY, mode);
         return mode;
