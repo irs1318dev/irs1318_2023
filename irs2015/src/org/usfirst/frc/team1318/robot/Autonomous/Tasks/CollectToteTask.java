@@ -9,8 +9,10 @@ import edu.wpi.first.wpilibj.Timer;
 /**
  * CollectToteTask:
  * 
- * This task runs the intake until it notices that the through beam sensor has been broken, and then it 
- * stops the intake and indicates that the elevator pick-up macro should be run (for enough time that the command will be detected).
+ * This task:
+ * 1. Runs the intake until it notices that the through beam sensor has been broken, then
+ * 2. Stops the intake and tells the elevator to go to the bottom (move to bottom) until the bottom limit switch is hit, then 
+ * 3. Tells the elevator to go up to the 3rd level
  * 
  * @author Will
  *
