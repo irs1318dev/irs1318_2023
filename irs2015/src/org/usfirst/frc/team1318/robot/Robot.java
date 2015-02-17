@@ -331,11 +331,8 @@ public class Robot extends IterativeRobot
      */
     private static IAutonomousTask[] GetSampleRoutine(ElevatorComponent elevatorComponent)
     {
-        //        return new IAutonomousTask[] { new DriveTimedAutonomousTask(2, 0.0, 0.3) };
-        //        return new IAutonomousTask[] { new CollectToteTask(elevatorComponent) };
         return new IAutonomousTask[]
         {
-            // continue processing this batch of tasks until all of them report being done
             ConcurrentTask.AllTasks(
                 new DriveTimedAutonomousTask(2, 0.0, 0.3),
                 new CollectToteTask(elevatorComponent)),
