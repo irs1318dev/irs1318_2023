@@ -57,6 +57,6 @@ public class ElevatorBottomTask implements IAutonomousTask
     @Override
     public boolean shouldContinueProcessingTask()
     {
-        return this.hasHitBottomLimitSwitch;
+        return !this.hasHitBottomLimitSwitch;
     }
 }

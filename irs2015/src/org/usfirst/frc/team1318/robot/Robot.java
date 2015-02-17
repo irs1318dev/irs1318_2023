@@ -10,7 +10,6 @@ import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveDistanceAutonomousTa
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveTimedAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ElevatorBottomTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.IntakeOutTask;
-import org.usfirst.frc.team1318.robot.Autonomous.Tasks.OrderedTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.TurnAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.WaitAutonomousTask;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
@@ -341,14 +340,10 @@ public class Robot extends IterativeRobot
                 new DriveTimedAutonomousTask(2, 0.0, 0.3),
                 new CollectToteTask(elevatorComponent)),
             new WaitAutonomousTask(2.0),
-            new OrderedTask(
-                new IAutonomousTask[]
-                {
-                    new ElevatorBottomTask(elevatorComponent),
-                    CompositeTask.AllTasks(
-                        new IntakeOutTask(1.0),
-                        new DriveTimedAutonomousTask(1.0, 0.0, -0.2)),
-                }),
+            new ElevatorBottomTask(elevatorComponent),
+            CompositeTask.AllTasks(
+                new IntakeOutTask(1.0),
+                new DriveTimedAutonomousTask(1.0, 0.0, -0.2))
         };
     }
 }
