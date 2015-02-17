@@ -85,11 +85,11 @@ public class ElectronicsConstants
     public static final int DRIVETRAIN_LEFT_TALON_CHANNEL = 2; // kitbot - 9
     public static final int DRIVETRAIN_RIGHT_TALON_CHANNEL = 1; // kitbot - 8
 
-    public static final int DRIVETRAIN_RIGHT_ENCODER_CHANNEL_A = 4; // kitbot - 6
-    public static final int DRIVETRAIN_RIGHT_ENCODER_CHANNEL_B = 5; // kitbot - 7
+    public static final int DRIVETRAIN_RIGHT_ENCODER_CHANNEL_A = 5; // kitbot - 6
+    public static final int DRIVETRAIN_RIGHT_ENCODER_CHANNEL_B = 4; // kitbot - 7
 
-    public static final int DRIVETRAIN_LEFT_ENCODER_CHANNEL_A = 2; // kitbot - 8
-    public static final int DRIVETRAIN_LEFT_ENCODER_CHANNEL_B = 3; // kitbot - 9
+    public static final int DRIVETRAIN_LEFT_ENCODER_CHANNEL_A = 3; // kitbot - 8
+    public static final int DRIVETRAIN_LEFT_ENCODER_CHANNEL_B = 2; // kitbot - 9
 
     public static final int DRIVETRAIN_PROXIMITY_SENSOR_BACK_PORT = 1;
     public static final int DRIVETRAIN_PROXIMITY_SENSOR_FRONT_PORT = 2;

@@ -22,7 +22,7 @@ public class CollectToteTask implements IAutonomousTask
     private ElevatorComponent elevatorComponent;
     private Timer timer;
 
-    private double startPickUpTime;
+    private Double startPickUpTime;
     private boolean hasDetectedThroughBeamBroken;
 
     public CollectToteTask(ElevatorComponent elevatorComponent)
@@ -30,7 +30,7 @@ public class CollectToteTask implements IAutonomousTask
         this.elevatorComponent = elevatorComponent;
         this.timer = new Timer();
 
-        this.startPickUpTime = 0.0;
+        this.startPickUpTime = null;
         this.hasDetectedThroughBeamBroken = false;
     }
 
@@ -39,7 +39,7 @@ public class CollectToteTask implements IAutonomousTask
     {
         this.hasDetectedThroughBeamBroken = false;
         this.timer.start();
-        this.startPickUpTime = 0.0;
+        this.startPickUpTime = null;
     }
 
     @Override
@@ -75,6 +75,11 @@ public class CollectToteTask implements IAutonomousTask
     @Override
     public boolean shouldContinue()
     {
-        return this.timer.get() >= this.startPickUpTime + CollectToteTask.MACRO_DETECTION_TIME;
+        if (this.startPickUpTime == null)
+        {
+            return true;
+        }
+
+        return this.timer.get() < this.startPickUpTime + CollectToteTask.MACRO_DETECTION_TIME;
     }
 }
