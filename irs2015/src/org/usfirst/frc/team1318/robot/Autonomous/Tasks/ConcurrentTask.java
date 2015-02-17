@@ -10,8 +10,8 @@ import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
  * Autonomous task that holds multiple other tasks and executes them in parallel until certain conditions
  * are met.
  * 
- * AndTask indicates all tasks should be run until all tasks are considered "complete"
- * OrTask indicates that all tasks should be run until at least one of the tasks are considered "complete"
+ * AnyTask - a task that continues processing all of the provided tasks until any of them is ready to continue
+ * AllTask - a task that continues processing all of the provided tasks until all of them are ready to continue
  * 
  * @author Will
  *
@@ -22,7 +22,7 @@ public class ConcurrentTask implements IAutonomousTask
     private final List<IAutonomousTask> tasks;
 
     /**
-     * Initializes a new CompositeTask
+     * Initializes a new ConcurrentTask
      * @param anyTask indicates that we want to use AnyTask semantics as opposed to AllTask semantics
      * @param tasks to run
      */

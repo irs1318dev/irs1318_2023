@@ -8,7 +8,7 @@ import org.usfirst.frc.team1318.robot.Autonomous.AutonomousControlData;
 import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 
 /**
- * Autonomous task that holds multiple other tasks and executes them in in order.
+ * Autonomous task that holds multiple other tasks and executes them sequentially (in order).
  * 
  * @author Will
  *
@@ -19,7 +19,7 @@ public class SequentialTask implements IAutonomousTask
     private IAutonomousTask currentTask;
 
     /**
-     * Initializes a new OrderedTask
+     * Initializes a new SequentialTask
      * @param tasks to run
      */
     public SequentialTask(IAutonomousTask[] tasks)
