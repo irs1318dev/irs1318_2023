@@ -44,6 +44,8 @@ public class UserDriver implements IDriver
     private static final String ELEVATOR_IGNORE_SENSORS_LOG_KEY = "u.elevatorIgnoreSensors";
     private static final String ELEVATOR_USE_SENSORS_LOG_KEY = "u.elevatorUseSensors";
     private static final String ELEVATOR_ZERO_ENCODERS_LOG_KEY = "u.elevatorZeroEncoders";
+    private static final String ELEVATOR_SLOW_LOG_KEY = "u.elevatorSlow";
+    private static final String ELEVATOR_FAST_LOG_KEY = "u.elevatorFast";
 
     //Arm 
     private static final String ARM_MACRO_EXTEND_STATE_LOG_KEY = "u.armMacroExtendState";
@@ -108,6 +110,8 @@ public class UserDriver implements IDriver
     private SimpleButton elevatorIgnoreSensors;
     private SimpleButton elevatorUseSensors;
     private SimpleButton elevatorZeroEncoders;
+    private SimpleButton elevatorSlowButton;
+    private SimpleButton elevatorFastButton;
 
     /**
      * Initializes a new UserDriver
@@ -155,6 +159,8 @@ public class UserDriver implements IDriver
         this.elevatorUseSensors = new SimpleButton();
         this.elevatorMoveToBottom = new SimpleButton();
         this.elevatorZeroEncoders = new SimpleButton();
+        this.elevatorSlowButton = new SimpleButton();
+        this.elevatorFastButton = new SimpleButton();
     }
 
     /**
@@ -211,6 +217,8 @@ public class UserDriver implements IDriver
         this.elevatorUseSensors.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_USE_SENSORS_BUTTON));
         this.elevatorZeroEncoders.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_ZERO_ENCODERS));
         this.elevatorMoveToBottom.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_BOTTOM));
+        this.elevatorSlowButton.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_SLOW_BUTTON));
+        this.elevatorFastButton.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_FAST_BUTTON));
     }
 
     /**
@@ -454,6 +462,22 @@ public class UserDriver implements IDriver
     {
         boolean mode = this.elevatorZeroEncoders.isActivated();
         //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_ZERO_ENCODERS_LOG_KEY, mode);
+        return mode;
+    }
+
+    @Override
+    public boolean getSlowElevatorButton()
+    {
+        boolean mode = this.elevatorSlowButton.isActivated();
+        //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_SLOW_LOG_KEY, mode);
+        return mode;
+    }
+
+    @Override
+    public boolean getFastElevatorButton()
+    {
+        boolean mode = this.elevatorFastButton.isActivated();
+        //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_FAST_LOG_KEY, mode);
         return mode;
     }
 

@@ -27,7 +27,7 @@ public class HardwareConstants
     //================================================== Elevator ==============================================================
 
     public static final double ELEVATOR_FLOOR_HEIGHT = 0;
-    public static final double ELEVATOR_PLATFORM_HEIGHT = 2 * 2.54;
+    //    public static final double ELEVATOR_PLATFORM_HEIGHT = 2 * 2.54;
     public static final double ELEVATOR_STEP_HEIGHT = 6.5 * 2.54;
 
     public static final double ELEVATOR_0_TOTE_HEIGHT = 0;
