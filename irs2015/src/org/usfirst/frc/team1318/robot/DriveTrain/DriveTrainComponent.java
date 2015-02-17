@@ -1,7 +1,6 @@
 package org.usfirst.frc.team1318.robot.DriveTrain;
 
 import org.usfirst.frc.team1318.robot.ElectronicsConstants;
-import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
@@ -28,7 +27,7 @@ public class DriveTrainComponent implements IDriveTrainComponent
     public static final String LEFT_ENCODER_TICKS_LOG_KEY = "dt.leftEncoderTicks";
     public static final String RIGHT_ENCODER_TICKS_LOG_KEY = "dt.rightEncoderTicks";
 
-    private static final double MinTimeStep = 0.01;
+    private static final double MinTimeStep = 0.02;
 
     private final Victor leftTalon;
     private final Victor rightTalon;
@@ -64,8 +63,8 @@ public class DriveTrainComponent implements IDriveTrainComponent
             ElectronicsConstants.DRIVETRAIN_RIGHT_ENCODER_CHANNEL_A,
             ElectronicsConstants.DRIVETRAIN_RIGHT_ENCODER_CHANNEL_B);
 
-        this.leftEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_LEFT_PULSE_DISTANCE);
-        this.rightEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_RIGHT_PULSE_DISTANCE);
+        //this.leftEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_LEFT_PULSE_DISTANCE);
+        //this.rightEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_RIGHT_PULSE_DISTANCE);
 
         this.timer = new Timer();
         this.timer.start();
@@ -89,6 +88,7 @@ public class DriveTrainComponent implements IDriveTrainComponent
         {
             outLeftPower /= TuningConstants.DRIVETRAIN_REVERSE_LEFT_SCALE_FACTOR;
         }
+
         if (outRightPower > 0)
         {
             outRightPower /= TuningConstants.DRIVETRAIN_REVERSE_RIGHT_SCALE_FACTOR;
@@ -126,7 +126,8 @@ public class DriveTrainComponent implements IDriveTrainComponent
             this.prevLeftTicks = currentLeftTicks;
         }
 
-        SmartDashboardLogger.putNumber(DriveTrainComponent.LEFT_ENCODER_VELOCITY_LOG_KEY, leftVelocity);
+        SmartDashboardLogger.putNumber(DriveTrainComponent.LEFT_ENCODER_VELOCITY_LOG_KEY + "Calculated", leftVelocity);
+        SmartDashboardLogger.putNumber(DriveTrainComponent.LEFT_ENCODER_VELOCITY_LOG_KEY + "Reported", this.leftEncoder.getRate());
 
         return leftVelocity;
     }
@@ -151,7 +152,8 @@ public class DriveTrainComponent implements IDriveTrainComponent
             this.prevRightTicks = currentRightTicks;
         }
 
-        SmartDashboardLogger.putNumber(DriveTrainComponent.RIGHT_ENCODER_VELOCITY_LOG_KEY, rightVelocity);
+        SmartDashboardLogger.putNumber(DriveTrainComponent.RIGHT_ENCODER_VELOCITY_LOG_KEY + "Calculated", rightVelocity);
+        SmartDashboardLogger.putNumber(DriveTrainComponent.RIGHT_ENCODER_VELOCITY_LOG_KEY + "Reported", this.rightEncoder.getRate());
 
         return rightVelocity;
     }

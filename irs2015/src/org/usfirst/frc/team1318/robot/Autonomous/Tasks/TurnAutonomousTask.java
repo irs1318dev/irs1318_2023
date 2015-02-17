@@ -5,7 +5,7 @@ import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 import org.usfirst.frc.team1318.robot.DriveTrain.IDriveTrainComponent;
 
 /**
- * Autonomous task that turns the robot a certain amount clockwise or counterclockwise in-place.
+ * Autonomous task that turns the robot a certain amount clockwise or counterclockwise in-place using Positional PID.
  * 
  * @author Will
  *

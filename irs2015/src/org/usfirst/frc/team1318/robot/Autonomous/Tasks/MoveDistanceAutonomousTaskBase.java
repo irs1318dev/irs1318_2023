@@ -6,7 +6,7 @@ import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 import org.usfirst.frc.team1318.robot.DriveTrain.IDriveTrainComponent;
 
 /**
- * Abstract class defining a task that moves the robot a certain distance using the drive train.
+ * Abstract class defining a task that moves the robot a certain distance using Positional PID.
  * 
  * @author Will
  *

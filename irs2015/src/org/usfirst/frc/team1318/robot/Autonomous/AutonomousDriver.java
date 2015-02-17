@@ -297,8 +297,9 @@ public class AutonomousDriver implements IDriver
     @Override
     public boolean getElevatorPickUpMacro()
     {
-        //TODO: implement 
-        return false;
+        boolean state = this.controlData.getElevatorPickUpMacro();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_MOVE_TO_3_TOTES_LOG_KEY, state);
+        return state;
     }
 
     @Override

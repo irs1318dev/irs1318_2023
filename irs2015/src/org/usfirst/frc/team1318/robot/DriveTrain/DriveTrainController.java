@@ -371,7 +371,7 @@ public class DriveTrainController implements IController
         }
         else
         {
-            // calculate a desired 
+            // calculate a desired speed based on our distance to the desired position
             leftPower = leftPosition - leftDistance;
             rightPower = rightPosition - rightDistance;
             if (Math.abs(leftPower) < 0.1)
@@ -383,11 +383,11 @@ public class DriveTrainController implements IController
             {
                 rightPower = 0.0;
             }
-
-            // ensure that we are within our power level range, and then scale it down
-            leftPower = this.applyPowerLevelRange(leftPower) * TuningConstants.DRIVETRAIN_MAX_POWER_POSITIONAL_NON_PID;
-            rightPower = this.applyPowerLevelRange(rightPower) * TuningConstants.DRIVETRAIN_MAX_POWER_POSITIONAL_NON_PID;
         }
+
+        // ensure that we are within our power level range, and then scale it down
+        leftPower = this.applyPowerLevelRange(leftPower) * TuningConstants.DRIVETRAIN_MAX_POWER_POSITIONAL_NON_PID;
+        rightPower = this.applyPowerLevelRange(rightPower) * TuningConstants.DRIVETRAIN_MAX_POWER_POSITIONAL_NON_PID;
 
         this.assertPowerLevelRange(leftPower, "left velocity (goal)");
         this.assertPowerLevelRange(rightPower, "right velocity (goal)");

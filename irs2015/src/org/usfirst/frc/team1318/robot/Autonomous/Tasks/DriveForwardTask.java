@@ -3,12 +3,16 @@ package org.usfirst.frc.team1318.robot.Autonomous.Tasks;
 import org.usfirst.frc.team1318.robot.Autonomous.AutonomousControlData;
 import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 
+/**
+ * Simple drive-forward task
+ * 
+ * @author Caroline
+ *
+ */
 public class DriveForwardTask implements IAutonomousTask
 {
-
     public DriveForwardTask()
     {
-
     }
 
     @Override
@@ -40,5 +44,4 @@ public class DriveForwardTask implements IAutonomousTask
     {
         return true;
     }
-
 }
