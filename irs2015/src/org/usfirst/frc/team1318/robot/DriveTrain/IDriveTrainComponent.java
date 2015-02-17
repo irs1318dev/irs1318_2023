@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1318.robot.DriveTrain;
 
-
 /**
  * Interface describing the drivetrain component, so that it could be mock-implemented for unit tests.
  * 
