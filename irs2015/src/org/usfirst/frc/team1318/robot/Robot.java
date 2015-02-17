@@ -4,6 +4,8 @@ import org.usfirst.frc.team1318.robot.Arm.ArmComponent;
 import org.usfirst.frc.team1318.robot.Arm.ArmController;
 import org.usfirst.frc.team1318.robot.Autonomous.AutonomousDriver;
 import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.CollectToteTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.CompositeTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveDistanceAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveForwardTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveTimedAutonomousTask;
@@ -167,7 +169,7 @@ public class Robot extends IterativeRobot
         switch ((int)this.autonomousRoutineChooser.getSelected() % 3)
         {
             case 0:
-                autonomousRoutine = Robot.GetDriveInSquareRoutine();
+                autonomousRoutine = Robot.GetTestingRoutine(this.elevatorComponent);
                 break;
 
             case 1:
@@ -329,6 +331,16 @@ public class Robot extends IterativeRobot
     private static IAutonomousTask[] GetDriveForwardRoutine()
     {
         return new IAutonomousTask[] { new DriveForwardTask() };
+    }
+
+    private static IAutonomousTask[] GetTestingRoutine(ElevatorComponent elevatorComponent)
+    {
+        return new IAutonomousTask[]
+        {
+            CompositeTask.AndTasks(
+                new DriveForwardTask(),
+                new CollectToteTask(elevatorComponent)),
+        };
     }
 }
 
