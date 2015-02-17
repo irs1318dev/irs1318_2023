@@ -48,6 +48,9 @@ public class DriveTrainController implements IController
      */
     public void update()
     {
+        component.getProximitySensorFront();
+        component.getProximitySensorBack();
+
         // check our desired PID mode
         boolean newUsePositionalMode = this.driver.getDriveTrainPositionMode();
         if (newUsePositionalMode != this.usePositionalMode)

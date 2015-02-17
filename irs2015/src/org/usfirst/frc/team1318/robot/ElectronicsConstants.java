@@ -24,6 +24,9 @@ public class ElectronicsConstants
     public static final int DRIVETRAIN_LEFT_ENCODER_CHANNEL_A = 2; // kitbot - 8
     public static final int DRIVETRAIN_LEFT_ENCODER_CHANNEL_B = 3; // kitbot - 9
 
+    public static final int TEST_PROXIMITY_SENSOR_BACK_PORT = 1;
+    public static final int TEST_PROXIMITY_SENSOR_FRONT_PORT = 2;
+
     //================================================== Elevator ==============================================================
 
     public static final int ELEVATOR_TALON_CHANNEL = 4;
@@ -33,7 +36,7 @@ public class ElectronicsConstants
     public static final int ELEVATOR_BOTTOM_LIMIT_SWITCH_CHANNEL = 6;
     public static final int ELEVATOR_TOP_LIMIT_SWITCH_CHANNEL = 7;
 
-    public static final int ELEVATOR_THROUGH_BEAM_SENSOR_CHANNEL = -1;
+    public static final int ELEVATOR_THROUGH_BEAM_SENSOR_CHANNEL = 0;
 
     //================================================== Intake ==============================================================
 
