@@ -46,8 +46,8 @@ public class ElevatorComponent
         this.topLimitSwtich = new DigitalInput(ElectronicsConstants.ELEVATOR_TOP_LIMIT_SWITCH_CHANNEL);
         this.bottomLimitSwitch = new DigitalInput(ElectronicsConstants.ELEVATOR_BOTTOM_LIMIT_SWITCH_CHANNEL);
 
-        this.throughBeamRelay = new Relay(ElectronicsConstants.ELEVATOR_THROUGH_BEAM_RELAY_CHANNEL, Relay.Direction.kReverse);
-        this.limitSwitchRelay = new Relay(ElectronicsConstants.ELEVATOR_LIMIT_SWITCH_RELAY_CHANNEL, Relay.Direction.kReverse);
+        this.throughBeamRelay = new Relay(ElectronicsConstants.ELEVATOR_THROUGH_BEAM_RELAY_CHANNEL, Relay.Direction.kForward);
+        this.limitSwitchRelay = new Relay(ElectronicsConstants.ELEVATOR_LIMIT_SWITCH_RELAY_CHANNEL, Relay.Direction.kForward);
     }
 
     /**
@@ -143,11 +143,11 @@ public class ElevatorComponent
     {
         if (value)
         {
-            throughBeamRelay.setDirection(Relay.Direction.kForward);
+            throughBeamRelay.set(Relay.Value.kOn);
         }
         else
         {
-            throughBeamRelay.setDirection(Relay.Direction.kReverse);
+            throughBeamRelay.set(Relay.Value.kOff);
         }
         SmartDashboardLogger.putBoolean(ElevatorComponent.THROUGH_BEAM_RELAY_LOG_KEY, value);
     }
@@ -156,12 +156,10 @@ public class ElevatorComponent
     {
         if (value)
         {
-            //limitSwitchRelay.setDirection(Relay.Direction.kForward);
             limitSwitchRelay.set(Relay.Value.kOn);
         }
         else
         {
-            //            limitSwitchRelay.setDirection(Relay.Direction.kReverse);
             limitSwitchRelay.set(Relay.Value.kOff);
         }
         SmartDashboardLogger.putBoolean(ElevatorComponent.LIMIT_SWITCH_RELAY_LOG_KEY, value);
