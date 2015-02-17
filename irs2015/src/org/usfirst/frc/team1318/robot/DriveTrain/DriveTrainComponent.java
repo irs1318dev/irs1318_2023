@@ -5,6 +5,7 @@ import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
@@ -27,6 +28,8 @@ public class DriveTrainComponent implements IDriveTrainComponent
     public static final String RIGHT_ENCODER_DISTANCE_LOG_KEY = "dt.rightEncoderDistance";
     public static final String LEFT_ENCODER_TICKS_LOG_KEY = "dt.leftEncoderTicks";
     public static final String RIGHT_ENCODER_TICKS_LOG_KEY = "dt.rightEncoderTicks";
+    public static final String PROXIMITY_SENSOR_BACK_LOG_KEY = "dt.proximitySensorBack";
+    public static final String PROXIMITY_SENSOR_FRONT_LOG_KEY = "dt.proximitySensorFront";
 
     private static final double MinTimeStep = 0.01;
 
@@ -36,9 +39,12 @@ public class DriveTrainComponent implements IDriveTrainComponent
     private final Encoder leftEncoder;
     private final Encoder rightEncoder;
 
+    private final AnalogInput proximitySensorBack;
+    private final AnalogInput proximitySensorFront;
+
     // For adjusting rate based on our own timing:
     private final Timer timer;
-    private double prevTime;
+    private final double prevTime;
 
     private int prevLeftTicks;
     private double prevLeftRate;
@@ -66,6 +72,9 @@ public class DriveTrainComponent implements IDriveTrainComponent
 
         this.leftEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_LEFT_PULSE_DISTANCE);
         this.rightEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_RIGHT_PULSE_DISTANCE);
+
+        this.proximitySensorBack = new AnalogInput(ElectronicsConstants.DRIVETRAIN_PROXIMITY_SENSOR_BACK_PORT);
+        this.proximitySensorFront = new AnalogInput(ElectronicsConstants.DRIVETRAIN_PROXIMITY_SENSOR_FRONT_PORT);
 
         this.timer = new Timer();
         this.timer.start();
@@ -206,5 +215,25 @@ public class DriveTrainComponent implements IDriveTrainComponent
         SmartDashboardLogger.putNumber(DriveTrainComponent.RIGHT_ENCODER_TICKS_LOG_KEY, rightTicks);
 
         return rightTicks;
+    }
+
+    @Override
+    public double getProximitySensorFront()
+    {
+        double value = this.proximitySensorFront.getVoltage();
+
+        SmartDashboardLogger.putNumber(DriveTrainComponent.PROXIMITY_SENSOR_FRONT_LOG_KEY, value);
+
+        return value;
+    }
+
+    @Override
+    public double getProximitySensorBack()
+    {
+        double value = this.proximitySensorBack.getVoltage();
+
+        SmartDashboardLogger.putNumber(DriveTrainComponent.PROXIMITY_SENSOR_BACK_LOG_KEY, value);
+
+        return value;
     }
 }

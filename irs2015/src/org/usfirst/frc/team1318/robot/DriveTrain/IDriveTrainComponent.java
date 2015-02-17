@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1318.robot.DriveTrain;
 
+
 /**
  * Interface describing the drivetrain component, so that it could be mock-implemented for unit tests.
  * 
@@ -50,4 +51,8 @@ public interface IDriveTrainComponent
      * @return a value indicating the number of ticks we are at
      */
     public int getRightEncoderTicks();
+
+    public double getProximitySensorFront();
+
+    public double getProximitySensorBack();
 }
