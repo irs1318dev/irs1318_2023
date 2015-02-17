@@ -156,11 +156,13 @@ public class ElevatorComponent
     {
         if (value)
         {
-            limitSwitchRelay.setDirection(Relay.Direction.kForward);
+            //limitSwitchRelay.setDirection(Relay.Direction.kForward);
+            limitSwitchRelay.set(Relay.Value.kOn);
         }
         else
         {
-            limitSwitchRelay.setDirection(Relay.Direction.kReverse);
+            //            limitSwitchRelay.setDirection(Relay.Direction.kReverse);
+            limitSwitchRelay.set(Relay.Value.kOff);
         }
         SmartDashboardLogger.putBoolean(ElevatorComponent.LIMIT_SWITCH_RELAY_LOG_KEY, value);
     }

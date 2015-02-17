@@ -63,6 +63,15 @@ public class ElevatorController implements IController
     {
         component.getThroughBeamBroken();
 
+        if (driver.getArmTiltExtendOverride())
+        {
+            component.setLimitSwitchRelayValue(true);
+        }
+        else if (driver.getArmTiltRetractOverride())
+        {
+            component.setLimitSwitchRelayValue(false);
+        }
+
         boolean enforceNonPositive = false;
         boolean enforceNonNegative = false;
         double currentTime = this.timer.get();
@@ -321,15 +330,15 @@ public class ElevatorController implements IController
 
         this.lastTime = currentTime;
 
-        if ((this.usePID && this.position < HardwareConstants.ELEVATOR_0_TOTE_HEIGHT)
-            || (!this.usePID && !this.ignoreSensors && this.component.getBottomLimitSwitchValue()))
-        {
-            this.component.setLimitSwitchRelayValue(true);
-        }
-        else
-        {
-            this.component.setLimitSwitchRelayValue(false);
-        }
+        //        if ((this.usePID && this.position < HardwareConstants.ELEVATOR_0_TOTE_HEIGHT)
+        //            || (!this.usePID && !this.ignoreSensors && this.component.getBottomLimitSwitchValue()))
+        //        {
+        //            this.component.setLimitSwitchRelayValue(true);
+        //        }
+        //        else
+        //        {
+        //            this.component.setLimitSwitchRelayValue(false);
+        //        }
 
         if (this.component.getThroughBeamBroken())
         {
