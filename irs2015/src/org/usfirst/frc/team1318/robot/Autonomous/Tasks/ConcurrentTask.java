@@ -16,7 +16,7 @@ import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
  * @author Will
  *
  */
-public class CompositeTask implements IAutonomousTask
+public class ConcurrentTask implements IAutonomousTask
 {
     private final boolean anyTask;
     private final List<IAutonomousTask> tasks;
@@ -26,7 +26,7 @@ public class CompositeTask implements IAutonomousTask
      * @param anyTask indicates that we want to use AnyTask semantics as opposed to AllTask semantics
      * @param tasks to run
      */
-    private CompositeTask(boolean anyTask, IAutonomousTask... tasks)
+    private ConcurrentTask(boolean anyTask, IAutonomousTask... tasks)
     {
         this.anyTask = anyTask;
         this.tasks = Arrays.asList(tasks);
@@ -39,7 +39,7 @@ public class CompositeTask implements IAutonomousTask
      */
     public static IAutonomousTask AnyTasks(IAutonomousTask... tasks)
     {
-        return new CompositeTask(true, tasks);
+        return new ConcurrentTask(true, tasks);
     }
 
     /**
@@ -49,7 +49,7 @@ public class CompositeTask implements IAutonomousTask
      */
     public static IAutonomousTask AllTasks(IAutonomousTask... tasks)
     {
-        return new CompositeTask(false, tasks);
+        return new ConcurrentTask(false, tasks);
     }
 
     /**

@@ -5,7 +5,7 @@ import org.usfirst.frc.team1318.robot.Arm.ArmController;
 import org.usfirst.frc.team1318.robot.Autonomous.AutonomousDriver;
 import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.CollectToteTask;
-import org.usfirst.frc.team1318.robot.Autonomous.Tasks.CompositeTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ConcurrentTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveDistanceAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveTimedAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ElevatorBottomTask;
@@ -336,12 +336,12 @@ public class Robot extends IterativeRobot
         return new IAutonomousTask[]
         {
             // continue processing this batch of tasks until all of them report being done
-            CompositeTask.AllTasks(
+            ConcurrentTask.AllTasks(
                 new DriveTimedAutonomousTask(2, 0.0, 0.3),
                 new CollectToteTask(elevatorComponent)),
             new WaitAutonomousTask(2.0),
             new ElevatorBottomTask(elevatorComponent),
-            CompositeTask.AllTasks(
+            ConcurrentTask.AllTasks(
                 new IntakeOutTask(1.0),
                 new DriveTimedAutonomousTask(1.0, 0.0, -0.2))
         };

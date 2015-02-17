@@ -13,7 +13,7 @@ import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
  * @author Will
  *
  */
-public class OrderedTask implements IAutonomousTask
+public class SequentialTask implements IAutonomousTask
 {
     private final Queue<IAutonomousTask> autonomousTasks;
     private IAutonomousTask currentTask;
@@ -22,7 +22,7 @@ public class OrderedTask implements IAutonomousTask
      * Initializes a new OrderedTask
      * @param tasks to run
      */
-    public OrderedTask(IAutonomousTask[] tasks)
+    public SequentialTask(IAutonomousTask[] tasks)
     {
         this.autonomousTasks = new LinkedList<IAutonomousTask>(Arrays.asList(tasks));
         this.currentTask = null;

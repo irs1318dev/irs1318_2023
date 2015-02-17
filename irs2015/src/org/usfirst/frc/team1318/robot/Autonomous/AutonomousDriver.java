@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1318.robot.Autonomous;
 
-import org.usfirst.frc.team1318.robot.Autonomous.Tasks.OrderedTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.SequentialTask;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
@@ -94,7 +94,7 @@ public class AutonomousDriver implements IDriver
         {
             if (autonomousTasks.length > 1)
             {
-                singleTask = new OrderedTask(autonomousTasks);
+                singleTask = new SequentialTask(autonomousTasks);
             }
             else
             {
