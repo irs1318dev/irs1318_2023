@@ -17,29 +17,32 @@ import edu.wpi.first.wpilibj.Timer;
  */
 public class CollectToteTask implements IAutonomousTask
 {
-    private static final double MACRO_DETECTION_TIME = 0.4;
+    private static final double DELAY_TIME = 0.1;
 
     private ElevatorComponent elevatorComponent;
     private Timer timer;
 
-    private Double startPickUpTime;
+    private Double startWait;
     private boolean hasDetectedThroughBeamBroken;
+    private boolean hasHitBottomLimitSwitch;
 
     public CollectToteTask(ElevatorComponent elevatorComponent)
     {
         this.elevatorComponent = elevatorComponent;
         this.timer = new Timer();
 
-        this.startPickUpTime = null;
+        this.startWait = null;
         this.hasDetectedThroughBeamBroken = false;
+        this.hasHitBottomLimitSwitch = false;
     }
 
     @Override
     public void begin()
     {
         this.hasDetectedThroughBeamBroken = false;
+        this.hasHitBottomLimitSwitch = false;
         this.timer.start();
-        this.startPickUpTime = null;
+        this.startWait = null;
     }
 
     @Override
@@ -49,37 +52,50 @@ public class CollectToteTask implements IAutonomousTask
         {
             if (this.elevatorComponent.getThroughBeamBroken())
             {
-                this.startPickUpTime = this.timer.get();
                 this.hasDetectedThroughBeamBroken = true;
             }
         }
+        else if (!this.hasHitBottomLimitSwitch)
+        {
+            if (this.elevatorComponent.getBottomLimitSwitchValue())
+            {
+                this.hasHitBottomLimitSwitch = true;
 
-        data.setElevatorTotePickUpMacroState(this.hasDetectedThroughBeamBroken);
+                this.startWait = this.timer.get();
+            }
+        }
+
         data.setIntakeForwardState(!this.hasDetectedThroughBeamBroken);
+        data.setElevatorMoveToBottomState(this.hasDetectedThroughBeamBroken && !this.hasHitBottomLimitSwitch);
+        data.setElevatorMoveTo3Totes(this.hasHitBottomLimitSwitch);
     }
 
     @Override
     public void cancel(AutonomousControlData data)
     {
         data.setIntakeForwardState(false);
-        data.setElevatorTotePickUpMacroState(false);
+        data.setElevatorMoveToBottomState(false);
+        data.setElevatorMoveTo3Totes(false);
     }
 
     @Override
     public void end(AutonomousControlData data)
     {
         data.setIntakeForwardState(false);
-        data.setElevatorTotePickUpMacroState(false);
+        data.setElevatorMoveToBottomState(false);
+        data.setElevatorMoveTo3Totes(false);
     }
 
     @Override
-    public boolean shouldContinue()
+    public boolean shouldContinueProcessingTask()
     {
-        if (this.startPickUpTime == null)
+        if (this.startWait == null)
         {
             return true;
         }
 
-        return this.timer.get() < this.startPickUpTime + CollectToteTask.MACRO_DETECTION_TIME;
+        return this.hasDetectedThroughBeamBroken
+            && this.hasHitBottomLimitSwitch
+            && this.timer.get() < this.startWait + CollectToteTask.DELAY_TIME;
     }
 }

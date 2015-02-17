@@ -18,36 +18,36 @@ import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
  */
 public class CompositeTask implements IAutonomousTask
 {
-    private final boolean andTask;
+    private final boolean anyTask;
     private final List<IAutonomousTask> tasks;
 
     /**
      * Initializes a new CompositeTask
-     * @param andTask indicates that we want to use AndTask semantics as opposed to OrTask semantics
+     * @param anyTask indicates that we want to use AnyTask semantics as opposed to AllTask semantics
      * @param tasks to run
      */
-    private CompositeTask(boolean andTask, IAutonomousTask... tasks)
+    private CompositeTask(boolean anyTask, IAutonomousTask... tasks)
     {
-        this.andTask = andTask;
+        this.anyTask = anyTask;
         this.tasks = Arrays.asList(tasks);
     }
 
     /**
-     * Create a task that combines all of the tasks and continues to run all of them until all are ready to continue
+     * Create a task that continues processing all of the provided tasks until any of them is ready to continue
      * @param tasks to run
      * @return a task that runs all of the provided tasks until all of them are ready to continue
      */
-    public static IAutonomousTask AndTasks(IAutonomousTask... tasks)
+    public static IAutonomousTask AnyTasks(IAutonomousTask... tasks)
     {
         return new CompositeTask(true, tasks);
     }
 
     /**
-     * Create a task that combines all of the tasks and continues to run all of them until one is ready to continue
+     * Create a task that continues processing all of the provided tasks until all of them are ready to continue
      * @param tasks to run
      * @return a task that runs all of the provided tasks until one of them is ready to continue
      */
-    public static IAutonomousTask OrTasks(IAutonomousTask... tasks)
+    public static IAutonomousTask AllTasks(IAutonomousTask... tasks)
     {
         return new CompositeTask(false, tasks);
     }
@@ -71,7 +71,7 @@ public class CompositeTask implements IAutonomousTask
     {
         for (IAutonomousTask task : this.tasks)
         {
-            task.begin();
+            task.update(data);
         }
     }
 
@@ -103,26 +103,26 @@ public class CompositeTask implements IAutonomousTask
      * Checks whether we should continue processing this task or whether it should end
      * @return true if we should continue on the current task, otherwise false (to move to the next task)
      */
-    public boolean shouldContinue()
+    public boolean shouldContinueProcessingTask()
     {
         for (IAutonomousTask task : this.tasks)
         {
-            boolean taskShouldContinue = task.shouldContinue();
+            boolean taskShouldContinueTask = task.shouldContinueProcessingTask();
 
-            // for AndTasks, return false if any of them is false
-            if (this.andTask && !taskShouldContinue)
+            // for AnyTask tasks, return that we're ready to end (false) if any of them are ready to end (false).
+            if (this.anyTask && !taskShouldContinueTask)
             {
                 return false;
             }
 
-            // for OrTasks, return true if any of them is true
-            if (!this.andTask && taskShouldContinue)
+            // for AllTask tasks, that we aren't ready to end (true) if any is not ready to end (true).
+            if (!this.anyTask && taskShouldContinueTask)
             {
                 return true;
             }
         }
 
-        // AndTasks return true when none of them are false.  OrTasks return false when none of them are true.
-        return this.andTask;
+        // AnyTasks return true when none of them are false.  AllTasks return false when none of them are true.
+        return this.anyTask;
     }
 }

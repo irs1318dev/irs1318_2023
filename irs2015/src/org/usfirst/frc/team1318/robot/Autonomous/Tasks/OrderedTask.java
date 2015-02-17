@@ -46,7 +46,7 @@ public class OrderedTask implements IAutonomousTask
         // check whether we should continue with the current task
         if (this.currentTask != null)
         {
-            if (!this.currentTask.shouldContinue())
+            if (!this.currentTask.shouldContinueProcessingTask())
             {
                 this.currentTask.end(data);
                 this.currentTask = null;
@@ -102,7 +102,7 @@ public class OrderedTask implements IAutonomousTask
      * @return true if we should continue on the current task, otherwise false (to move to the next task)
      */
     @Override
-    public boolean shouldContinue()
+    public boolean shouldContinueProcessingTask()
     {
         return this.currentTask != null || !this.autonomousTasks.isEmpty();
     }

@@ -66,7 +66,7 @@ public abstract class TimedAutonomousTask implements IAutonomousTask
      * Checks whether we should continue processing this task or whether it should end
      * @return true if we should continue on the current task, otherwise false (to move to the next task)
      */
-    public boolean shouldContinue()
+    public boolean shouldContinueProcessingTask()
     {
         return this.timer.get() < this.startTime + this.duration;
     }

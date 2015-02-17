@@ -123,7 +123,7 @@ public class AutonomousDriver implements IDriver
                 this.hasBegun = true;
             }
 
-            if (!this.autonomousTask.shouldContinue())
+            if (!this.autonomousTask.shouldContinueProcessingTask())
             {
                 // if we shouldn't continue, end the task
                 this.autonomousTask.end(this.controlData);
@@ -298,7 +298,7 @@ public class AutonomousDriver implements IDriver
     @Override
     public boolean getElevatorPickUpMacro()
     {
-        boolean state = this.controlData.getElevatorMoveTo3Totes();
+        boolean state = this.controlData.getElevatorTotePickUpMacroState();
         SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_PICK_UP_MACRO_LOG_KEY, state);
         return state;
     }

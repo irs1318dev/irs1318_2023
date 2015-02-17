@@ -5,6 +5,7 @@ import org.usfirst.frc.team1318.robot.Arm.ArmController;
 import org.usfirst.frc.team1318.robot.Autonomous.AutonomousDriver;
 import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.CollectToteTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.CompositeTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveDistanceAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveTimedAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.TurnAutonomousTask;
@@ -329,13 +330,14 @@ public class Robot extends IterativeRobot
     private static IAutonomousTask[] GetSampleRoutine(ElevatorComponent elevatorComponent)
     {
         //        return new IAutonomousTask[] { new DriveTimedAutonomousTask(2, 0.0, 0.3) };
-        return new IAutonomousTask[] { new CollectToteTask(elevatorComponent) };
-        //        return new IAutonomousTask[]
-        //        {
-        //            CompositeTask.AndTasks(
-        //                new DriveTimedAutonomousTask(2, 0.0, 0.3),
-        //                new CollectToteTask(elevatorComponent)),
-        //        };
+        //        return new IAutonomousTask[] { new CollectToteTask(elevatorComponent) };
+        return new IAutonomousTask[]
+        {
+            // continue processing this batch of tasks until all of them report being done
+            CompositeTask.AllTasks(
+                new DriveTimedAutonomousTask(2, 0.0, 0.3),
+                new CollectToteTask(elevatorComponent)),
+        };
     }
 }
 

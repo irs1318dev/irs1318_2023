@@ -315,7 +315,7 @@ public class AutonomousControlData
         return elevatorMoveToBottomState;
     }
 
-    public void setElebvatorMoveToBottomState(boolean elevatorMoveToBottomState)
+    public void setElevatorMoveToBottomState(boolean elevatorMoveToBottomState)
     {
         this.elevatorMoveToBottomState = elevatorMoveToBottomState;
     }

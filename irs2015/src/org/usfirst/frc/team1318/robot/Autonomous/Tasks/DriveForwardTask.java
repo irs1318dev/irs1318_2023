@@ -40,7 +40,7 @@ public class DriveForwardTask implements IAutonomousTask
     }
 
     @Override
-    public boolean shouldContinue()
+    public boolean shouldContinueProcessingTask()
     {
         return true;
     }
