@@ -43,8 +43,8 @@ public class JoystickButtonConstants
     public static final int ELEVATOR_CONTAINER_MACRO_BUTTON = -1;
 
     public static final int ELEVATOR_SET_STAE_TO_FLOOR_BUTTON = 12;
-    public static final int ELEVATOR_SET_STATE_TO_PLATFORM_BUTTON = 10;
-    public static final int ELEVATOR_SET_STATE_TO_STEP_BUTTON = 8;
+    public static final int ELEVATOR_SET_STATE_TO_PLATFORM_BUTTON = -1;
+    public static final int ELEVATOR_SET_STATE_TO_STEP_BUTTON = 10;
     public static final int ELEVATOR_MOVE_TO_0_TOTES_BUTTON = 2;
     public static final int ELEVATOR_MOVE_TO_1_TOTE_BUTTON = 11;
     public static final int ELEVATOR_MOVE_TO_2_TOTES_BUTTON = 9;
@@ -59,6 +59,8 @@ public class JoystickButtonConstants
     public static final int ELEVATOR_IGNORE_SENSORS_BUTTON = 14;
     public static final int ELEVATOR_USE_SENSORS_BUTTON = 13;
     public static final int ELEVATOR_ZERO_ENCODERS = 16;
+    public static final int ELEVATOR_SLOW_BUTTON = 5;
+    public static final int ELEVATOR_FAST_BUTTON = 10;
 
     //================================================== Arm ==============================================================
 
@@ -74,8 +76,8 @@ public class JoystickButtonConstants
 
     //================================================== Intake ==============================================================
 
-    public static final int INTAKE_UP_BUTTON = 5;
-    public static final int INTAKE_DOWN_BUTTON = 10;
+    public static final int INTAKE_UP_BUTTON = -1;
+    public static final int INTAKE_DOWN_BUTTON = -1;
     public static final int INTAKE_DOWN_HOLD_BUTTON = 4;
     public static final int INTAKE_RIGHT_EXTEND_OVERRIDE = -5;
     public static final int INTAKE_RIGHT_RETRACT_OVERRIDE = -10;

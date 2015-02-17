@@ -20,8 +20,8 @@ public class IntakeComponent
     private final Talon leftTalon;
     private final Talon rightTalon;
 
-    private final DoubleSolenoid intakeDoubleSolenoidLeft;
-    private final DoubleSolenoid intakeDoubleSolenoidRight;
+    private final DoubleSolenoid intakeDoubleSolenoid;
+    //    private final DoubleSolenoid intakeDoubleSolenoidRight;
 
     // SmartDashboard keys
     public static final String INTAKE_MOTOR_SPEED_KEY = "i.motorSpeed";
@@ -33,15 +33,15 @@ public class IntakeComponent
         this.leftTalon = new Talon(ElectronicsConstants.INTAKE_LEFT_TALON_CHANNEL);
         this.rightTalon = new Talon(ElectronicsConstants.INTAKE_RIGHT_TALON_CHANNEL);
 
-        this.intakeDoubleSolenoidLeft = new DoubleSolenoid(
+        this.intakeDoubleSolenoid = new DoubleSolenoid(
             ElectronicsConstants.PCM_B_MODULE,
             ElectronicsConstants.INTAKE_LEFT_ARM_CHANNEL_A,
             ElectronicsConstants.INTAKE_LEFT_ARM_CHANNEL_B);
 
-        this.intakeDoubleSolenoidRight = new DoubleSolenoid(
-            ElectronicsConstants.PCM_B_MODULE,
-            ElectronicsConstants.INTAKE_RIGHT_ARM_CHANNEL_A,
-            ElectronicsConstants.INTAKE_RIGHT_ARM_CHANNEL_B);
+        //        this.intakeDoubleSolenoidRight = new DoubleSolenoid(
+        //            ElectronicsConstants.PCM_B_MODULE,
+        //            ElectronicsConstants.INTAKE_RIGHT_ARM_CHANNEL_A,
+        //            ElectronicsConstants.INTAKE_RIGHT_ARM_CHANNEL_B);
     }
 
     /**
@@ -54,11 +54,11 @@ public class IntakeComponent
     {
         if (leftForward)
         {
-            this.intakeDoubleSolenoidLeft.set(Value.kForward);
+            this.intakeDoubleSolenoid.set(Value.kForward);
         }
         else
         {
-            this.intakeDoubleSolenoidLeft.set(Value.kReverse);
+            this.intakeDoubleSolenoid.set(Value.kReverse);
         }
 
         SmartDashboardLogger.putBoolean(IntakeComponent.LEFT_INTAKE_ARM_DIRECTION_KEY, leftForward);
@@ -70,19 +70,19 @@ public class IntakeComponent
      * if false the right piston will retract
     */
 
-    public void setRightIntake(boolean rightForward)
-    {
-        if (rightForward)
-        {
-            this.intakeDoubleSolenoidRight.set(Value.kForward);
-        }
-        else
-        {
-            this.intakeDoubleSolenoidRight.set(Value.kReverse);
-        }
-
-        SmartDashboardLogger.putBoolean(IntakeComponent.RIGHT_INTAKE_ARM_DIRECTION_KEY, rightForward);
-    }
+    //    public void setRightIntake(boolean rightForward)
+    //    {
+    //        if (rightForward)
+    //        {
+    //            this.intakeDoubleSolenoidRight.set(Value.kForward);
+    //        }
+    //        else
+    //        {
+    //            this.intakeDoubleSolenoidRight.set(Value.kReverse);
+    //        }
+    //
+    //        SmartDashboardLogger.putBoolean(IntakeComponent.RIGHT_INTAKE_ARM_DIRECTION_KEY, rightForward);
+    //    }
 
     /**
      * sets the intake motors speed
