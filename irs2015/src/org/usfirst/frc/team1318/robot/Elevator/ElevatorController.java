@@ -67,15 +67,6 @@ public class ElevatorController implements IController
     {
         component.getThroughBeamBroken();
 
-        //        if (driver.getArmTiltExtendOverride())
-        //        {
-        //            component.setLimitSwitchRelayValue(true);
-        //        }
-        //        else if (driver.getArmTiltRetractOverride())
-        //        {
-        //            component.setLimitSwitchRelayValue(false);
-        //        }
-
         boolean enforceNonPositive = false;
         boolean enforceNonNegative = false;
         double currentTime = this.timer.get();
