@@ -39,8 +39,8 @@ public class DriveTrainComponent implements IDriveTrainComponent
     private final Encoder leftEncoder;
     private final Encoder rightEncoder;
 
-    private final AnalogInput proximitySensorBack;
     private final AnalogInput proximitySensorFront;
+    private final AnalogInput proximitySensorBack;
 
     // For adjusting rate based on our own timing:
     private final Timer timer;
@@ -221,9 +221,7 @@ public class DriveTrainComponent implements IDriveTrainComponent
     public double getProximitySensorFront()
     {
         double value = this.proximitySensorFront.getVoltage();
-
         SmartDashboardLogger.putNumber(DriveTrainComponent.PROXIMITY_SENSOR_FRONT_LOG_KEY, value);
-
         return value;
     }
 
@@ -231,9 +229,7 @@ public class DriveTrainComponent implements IDriveTrainComponent
     public double getProximitySensorBack()
     {
         double value = this.proximitySensorBack.getVoltage();
-
         SmartDashboardLogger.putNumber(DriveTrainComponent.PROXIMITY_SENSOR_BACK_LOG_KEY, value);
-
         return value;
     }
 }

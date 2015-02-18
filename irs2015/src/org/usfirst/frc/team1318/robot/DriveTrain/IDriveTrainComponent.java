@@ -51,7 +51,15 @@ public interface IDriveTrainComponent
      */
     public int getRightEncoderTicks();
 
+    /**
+     * get a value that is the voltage returned from the front proximity sensor proportional to the distance it detects 
+     * @return voltage from the front proximity sensor 
+     */
     public double getProximitySensorFront();
 
+    /**
+     * get a value that is the voltage returned from the back proximity sensor proportional to the distance it detects 
+     * @return voltage from the back proximity sensor 
+     */
     public double getProximitySensorBack();
 }
