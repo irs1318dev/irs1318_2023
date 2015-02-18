@@ -366,8 +366,8 @@ public class Robot extends IterativeRobot
                 new SequentialTask(
                     new IAutonomousTask[]
                     {
-                        new ElevatorBottomTask(elevatorComponent),
-                        new ElevatorLevelTask(1.0, 1, 0),
+                        new ElevatorBottomTask(elevatorComponent, true),
+                        new ElevatorLevelTask(1.0, 1, 0, true),
                     }),
                 new DriveTimedAutonomousTask(1.5, 0.0, 0.2)),
             ConcurrentTask.AnyTasks(
@@ -377,8 +377,8 @@ public class Robot extends IterativeRobot
                 new SequentialTask(
                     new IAutonomousTask[]
                     {
-                        new ElevatorBottomTask(elevatorComponent),
-                        new ElevatorLevelTask(1.0, 1, 0),
+                        new ElevatorBottomTask(elevatorComponent, true),
+                        new ElevatorLevelTask(1.0, 1, 0, true),
                     }),
                 new DriveTimedAutonomousTask(1.5, 0.0, 0.2)),
             ConcurrentTask.AnyTasks(
@@ -388,12 +388,12 @@ public class Robot extends IterativeRobot
                 new SequentialTask(
                     new IAutonomousTask[]
                     {
-                        new ElevatorBottomTask(elevatorComponent),
-                        new ElevatorLevelTask(1.0, 1, 0),
+                        new ElevatorBottomTask(elevatorComponent, true),
+                        new ElevatorLevelTask(1.0, 1, 0, true),
                     }),
                 new DriveTimedAutonomousTask(1.5, 0.0, 0.2)),
             new WaitAutonomousTask(1.0),
-            new ElevatorBottomTask(elevatorComponent),
+            new ElevatorBottomTask(elevatorComponent, false),
             ConcurrentTask.AllTasks(
                 new IntakeTask(1.5, true),
                 new DriveTimedAutonomousTask(1.5, 0.0, -0.25))

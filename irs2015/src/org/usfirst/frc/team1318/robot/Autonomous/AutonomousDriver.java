@@ -43,6 +43,8 @@ public class AutonomousDriver implements IDriver
     private static final String ELEVATOR_IGNORE_SENSORS_LOG_KEY = "a.elevatorIgnoreSensors";
     private static final String ELEVATOR_USE_SENSORS_LOG_KEY = "a.elevatorUseSensors";
     private static final String ELEVATOR_ZERO_ENCODERS_LOG_KEY = "a.elevatorZeroEncoders";
+    private static final String ELEVATOR_SLOW_LOG_KEY = "a.elevatorSlow";
+    private static final String ELEVATOR_FAST_LOG_KEY = "a.elevatorFast";
 
     //Arm 
     private static final String ARM_MACRO_EXTEND_STATE_LOG_KEY = "a.armMacroExtendState";
@@ -385,15 +387,17 @@ public class AutonomousDriver implements IDriver
     @Override
     public boolean getSlowElevatorButton()
     {
-        //TODO: add 
-        return false;
+        boolean mode = this.controlData.getElevatorSlowButton();
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_SLOW_LOG_KEY, mode);
+        return mode;
     }
 
     @Override
     public boolean getFastElevatorButton()
     {
-        //TODO: add 
-        return false;
+        boolean mode = this.controlData.getElevatorFastButton();
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_FAST_LOG_KEY, mode);
+        return mode;
     }
 
     //===================================================== Arm =================================================================

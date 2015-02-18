@@ -15,16 +15,19 @@ import org.usfirst.frc.team1318.robot.Elevator.ElevatorComponent;
 public class ElevatorBottomTask implements IAutonomousTask
 {
     private final ElevatorComponent elevatorComponent;
+    private final boolean fast;
 
     private boolean hasHitBottomLimitSwitch;
 
     /**
      * Initializes a new ElevatorBottomTask
      * @param elevatorComponent to use to detect whether we have hit our bottom limit switch
+     * @param fast indicates that we should switch into fast mode
      */
-    public ElevatorBottomTask(ElevatorComponent elevatorComponent)
+    public ElevatorBottomTask(ElevatorComponent elevatorComponent, boolean fast)
     {
         this.elevatorComponent = elevatorComponent;
+        this.fast = fast;
 
         this.hasHitBottomLimitSwitch = false;
     }
@@ -50,6 +53,7 @@ public class ElevatorBottomTask implements IAutonomousTask
             this.hasHitBottomLimitSwitch = true;
         }
 
+        data.setElevatorFastButton(this.fast);
         data.setElevatorMoveToBottomState(!this.hasHitBottomLimitSwitch);
     }
 
@@ -60,6 +64,7 @@ public class ElevatorBottomTask implements IAutonomousTask
     @Override
     public void cancel(AutonomousControlData data)
     {
+        data.setElevatorFastButton(false);
         data.setElevatorMoveToBottomState(false);
     }
 
@@ -70,6 +75,7 @@ public class ElevatorBottomTask implements IAutonomousTask
     @Override
     public void end(AutonomousControlData data)
     {
+        data.setElevatorFastButton(false);
         data.setElevatorMoveToBottomState(false);
     }
 

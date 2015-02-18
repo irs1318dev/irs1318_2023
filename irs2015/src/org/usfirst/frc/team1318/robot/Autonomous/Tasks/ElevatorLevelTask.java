@@ -13,20 +13,23 @@ import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
  */
 public class ElevatorLevelTask extends TimedAutonomousTask implements IAutonomousTask
 {
-    private int toteLevel;
-    private int baseLevel;
+    private final int toteLevel;
+    private final int baseLevel;
+    private final boolean fast;
 
     /**
      * Initializes a new ElevatorFloorTask
      * @param toteLevel - whether to go to 0, 1, 2, or 3 tote height.
      * @param baseLevel - whether to go to floor (0), scoring platform (1), or step (2)
+     * @param fast indicates that we should switch into fast mode
      */
-    public ElevatorLevelTask(double duration, int toteLevel, int baseLevel)
+    public ElevatorLevelTask(double duration, int toteLevel, int baseLevel, boolean fast)
     {
         super(duration);
 
         this.toteLevel = toteLevel;
         this.baseLevel = baseLevel;
+        this.fast = fast;
     }
 
     /**
@@ -85,6 +88,8 @@ public class ElevatorLevelTask extends TimedAutonomousTask implements IAutonomou
         data.setElevatorMoveTo1Tote(tote1);
         data.setElevatorMoveTo2Totes(tote2);
         data.setElevatorMoveTo3Totes(tote3);
+
+        data.setElevatorFastButton(this.fast);
     }
 
     /**
@@ -102,6 +107,8 @@ public class ElevatorLevelTask extends TimedAutonomousTask implements IAutonomou
         data.setElevatorMoveTo1Tote(false);
         data.setElevatorMoveTo2Totes(false);
         data.setElevatorMoveTo3Totes(false);
+
+        data.setElevatorFastButton(false);
     }
 
     /**
@@ -119,5 +126,7 @@ public class ElevatorLevelTask extends TimedAutonomousTask implements IAutonomou
         data.setElevatorMoveTo1Tote(false);
         data.setElevatorMoveTo2Totes(false);
         data.setElevatorMoveTo3Totes(false);
+
+        data.setElevatorFastButton(false);
     }
 }
