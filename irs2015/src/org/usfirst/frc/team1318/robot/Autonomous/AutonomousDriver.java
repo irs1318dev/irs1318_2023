@@ -382,6 +382,20 @@ public class AutonomousDriver implements IDriver
         return mode;
     }
 
+    @Override
+    public boolean getSlowElevatorButton()
+    {
+        //TODO: add 
+        return false;
+    }
+
+    @Override
+    public boolean getFastElevatorButton()
+    {
+        //TODO: add 
+        return false;
+    }
+
     //===================================================== Arm =================================================================
 
     @Override

@@ -7,6 +7,7 @@ import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Talon;
 
 public class ElevatorComponent
@@ -16,6 +17,8 @@ public class ElevatorComponent
     private final Encoder encoder;
     private final DigitalInput topLimitSwtich;
     private final DigitalInput bottomLimitSwitch;
+    private final Relay limitSwitchRelay;
+    private final Relay throughBeamRelay;
 
     public static final String MOTOR_POWER_LOG_KEY = "e.motorPower";
     public static final String ENCODER_DISTANCE_LOG_KEY = "e.encoderDistance";
@@ -23,8 +26,10 @@ public class ElevatorComponent
     public static final String ENCODER_VELOCITY_LOG_KEY = "e.encoderVelocity";
     public static final String TOP_LIMIT_SWITCH_LOG_KEY = "e.topLimitSwitch";
     public static final String BOTTOM_LIMIT_SWITCH_LOG_KEY = "e.bottomLimitSwitch";
-    private static final String THROUGH_BEAM_SENSOR_ANALOG_LOG_KEY = "e.throughBeamAnalog";
-    private static final String THROUGH_BEAM_SENSOR_BOOLEAN_LOG_KEY = "e.throughBeamSensorBoolean";
+    public static final String THROUGH_BEAM_SENSOR_ANALOG_LOG_KEY = "e.throughBeamAnalog";
+    public static final String THROUGH_BEAM_SENSOR_BOOLEAN_LOG_KEY = "e.throughBeamSensorBoolean";
+    public static final String THROUGH_BEAM_RELAY_LOG_KEY = "e.throughBeamRelay";
+    public static final String LIMIT_SWITCH_RELAY_LOG_KEY = "e.limitSwitchRelay";
 
     public ElevatorComponent()
     {
@@ -40,6 +45,9 @@ public class ElevatorComponent
 
         this.topLimitSwtich = new DigitalInput(ElectronicsConstants.ELEVATOR_TOP_LIMIT_SWITCH_CHANNEL);
         this.bottomLimitSwitch = new DigitalInput(ElectronicsConstants.ELEVATOR_BOTTOM_LIMIT_SWITCH_CHANNEL);
+
+        this.throughBeamRelay = new Relay(ElectronicsConstants.ELEVATOR_THROUGH_BEAM_RELAY_CHANNEL, Relay.Direction.kForward);
+        this.limitSwitchRelay = new Relay(ElectronicsConstants.ELEVATOR_LIMIT_SWITCH_RELAY_CHANNEL, Relay.Direction.kForward);
     }
 
     /**
@@ -127,5 +135,31 @@ public class ElevatorComponent
         boolean value = this.bottomLimitSwitch.get();
         SmartDashboardLogger.putBoolean(ElevatorComponent.BOTTOM_LIMIT_SWITCH_LOG_KEY, value);
         return value;
+    }
+
+    public void setThroughBeamRelayValue(boolean value)
+    {
+        if (value)
+        {
+            throughBeamRelay.set(Relay.Value.kOn);
+        }
+        else
+        {
+            throughBeamRelay.set(Relay.Value.kOff);
+        }
+        SmartDashboardLogger.putBoolean(ElevatorComponent.THROUGH_BEAM_RELAY_LOG_KEY, value);
+    }
+
+    public void setLimitSwitchRelayValue(boolean value)
+    {
+        if (value)
+        {
+            limitSwitchRelay.set(Relay.Value.kOn);
+        }
+        else
+        {
+            limitSwitchRelay.set(Relay.Value.kOff);
+        }
+        SmartDashboardLogger.putBoolean(ElevatorComponent.LIMIT_SWITCH_RELAY_LOG_KEY, value);
     }
 }

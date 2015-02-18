@@ -172,6 +172,10 @@ public interface IDriver
      */
     public boolean getZeroElevatorEncoder();
 
+    public boolean getSlowElevatorButton();
+
+    public boolean getFastElevatorButton();
+
     //===================================================== Arm =================================================================
     /**
      * Get a value indicating whether to run the macro to extend the whole arm state 
