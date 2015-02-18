@@ -37,7 +37,7 @@ public class ElevatorController implements IController
     private boolean movingToBottom;
     private boolean ignoreSensors;
 
-    private boolean prevSpeedSlow;
+    private boolean elevatorSlowMode;
 
     public ElevatorController(IDriver driver, ElevatorComponent component)
     {
@@ -59,7 +59,7 @@ public class ElevatorController implements IController
         this.lastTime = this.timer.get();
         this.containerMacroState = ContainerMacroStates.STATE_0;
 
-        prevSpeedSlow = false;
+        this.elevatorSlowMode = false;
     }
 
     @Override
@@ -80,15 +80,37 @@ public class ElevatorController implements IController
         boolean enforceNonNegative = false;
         double currentTime = this.timer.get();
 
-        if (prevSpeedSlow && this.driver.getFastElevatorButton())
+        if (this.elevatorSlowMode && this.driver.getFastElevatorButton())
         {
+            this.elevatorSlowMode = false;
             this.createPIDHandler();
-            this.prevSpeedSlow = false;
         }
-        else if (!prevSpeedSlow && this.driver.getSlowElevatorButton())
+        else if (!this.elevatorSlowMode && this.driver.getSlowElevatorButton())
         {
-            this.createSlowPIDHandler();
-            this.prevSpeedSlow = true;
+            this.elevatorSlowMode = true;
+            this.createPIDHandler();
+        }
+
+        // handle enabling/disabling PID (enabling PID takes precedence)
+        if (this.driver.getElevatorPIDOn())
+        {
+            // create PID handler if we are changing modes...
+            if (!this.usePID)
+            {
+                this.usePID = true;
+                this.createPIDHandler();
+                this.position = component.getEncoderDistance() + this.encoderZeroOffset;
+
+            }
+        }
+        else if (this.driver.getElevatorPIDOff())
+        {
+            // remove PID handler if we are changing modes...
+            if (this.usePID)
+            {
+                this.usePID = false;
+                this.createPIDHandler();
+            }
         }
 
         // check whether ignore or use sensors; using sensors takes precedence over ignoring them
@@ -113,42 +135,6 @@ public class ElevatorController implements IController
         else if (this.driver.getElevatorSetStateToStepButton())
         {
             this.baseLevel = HardwareConstants.ELEVATOR_STEP_HEIGHT;
-        }
-
-        // handle enabling/disabling PID (enabling PID takes precedence)
-        if (this.driver.getElevatorPIDOn())
-        {
-            // create PID handler if we are changing modes...
-            if (!this.usePID)
-            {
-                this.usePID = true;
-                if (prevSpeedSlow)
-                {
-                    this.createSlowPIDHandler();
-                }
-                else
-                {
-                    this.createPIDHandler();
-                }
-                this.position = component.getEncoderDistance() + this.encoderZeroOffset;
-
-            }
-        }
-        else if (this.driver.getElevatorPIDOff())
-        {
-            // remove PID handler if we are changing modes...
-            if (this.usePID)
-            {
-                this.usePID = false;
-                if (prevSpeedSlow)
-                {
-                    this.createSlowPIDHandler();
-                }
-                else
-                {
-                    this.createPIDHandler();
-                }
-            }
         }
 
         if (this.driver.getZeroElevatorEncoder())
@@ -348,14 +334,7 @@ public class ElevatorController implements IController
             if (this.usePID)
             {
                 this.usePID = false;
-                if (prevSpeedSlow)
-                {
-                    this.createSlowPIDHandler();
-                }
-                else
-                {
-                    this.createPIDHandler();
-                }
+                this.createPIDHandler();
             }
         }
 
@@ -464,33 +443,28 @@ public class ElevatorController implements IController
         }
         else
         {
-            this.pidHandler = new PIDHandler(
-                "e.PID",
-                TuningConstants.ELEVATOR_POSITION_PID_KP_DEFAULT,
-                TuningConstants.ELEVATOR_POSITION_PID_KI_DEFAULT,
-                TuningConstants.ELEVATOR_POSITION_PID_KD_DEFAULT,
-                TuningConstants.ELEVATOR_POSITION_PID_KF_DEFAULT,
-                -TuningConstants.ELEVATOR_MAX_POWER_LEVEL,
-                TuningConstants.ELEVATOR_MAX_POWER_LEVEL);
-        }
-    }
-
-    private void createSlowPIDHandler()
-    {
-        if (!this.usePID)
-        {
-            this.pidHandler = null;
-        }
-        else
-        {
-            this.pidHandler = new PIDHandler(
-                "e.PID",
-                TuningConstants.ELEVATOR_POSITION_PID_KP_DEFAULT,
-                TuningConstants.ELEVATOR_POSITION_PID_KI_DEFAULT,
-                TuningConstants.ELEVATOR_POSITION_PID_KD_DEFAULT,
-                TuningConstants.ELEVATOR_POSITION_PID_KF_DEFAULT,
-                -TuningConstants.ELEVATOR_MAX_POWER_LEVEL / 2,
-                TuningConstants.ELEVATOR_MAX_POWER_LEVEL / 2);
+            if (this.elevatorSlowMode)
+            {
+                this.pidHandler = new PIDHandler(
+                    "e.PID",
+                    TuningConstants.ELEVATOR_POSITION_PID_KP_DEFAULT,
+                    TuningConstants.ELEVATOR_POSITION_PID_KI_DEFAULT,
+                    TuningConstants.ELEVATOR_POSITION_PID_KD_DEFAULT,
+                    TuningConstants.ELEVATOR_POSITION_PID_KF_DEFAULT,
+                    -TuningConstants.ELEVATOR_MAX_POWER_LEVEL / 2,
+                    TuningConstants.ELEVATOR_MAX_POWER_LEVEL / 2);
+            }
+            else
+            {
+                this.pidHandler = new PIDHandler(
+                    "e.PID",
+                    TuningConstants.ELEVATOR_POSITION_PID_KP_DEFAULT,
+                    TuningConstants.ELEVATOR_POSITION_PID_KI_DEFAULT,
+                    TuningConstants.ELEVATOR_POSITION_PID_KD_DEFAULT,
+                    TuningConstants.ELEVATOR_POSITION_PID_KF_DEFAULT,
+                    -TuningConstants.ELEVATOR_MAX_POWER_LEVEL,
+                    TuningConstants.ELEVATOR_MAX_POWER_LEVEL);
+            }
         }
     }
 
