@@ -62,4 +62,9 @@ public class ElectronicsConstants
 
     public static final int ARM_EXTEND_LINK_SOLANOID_EXTEND = 4;
     public static final int ARM_EXTEND_LINK_SOLANOID_RETRACT = 3;
+
+    //================================================== Autonomous ==============================================================
+
+    public static final int AUTONOMOUS_DIP_SWITCH_A = -1;
+    public static final int AUTONOMOUS_DIP_SWITCH_B = -1;
 }

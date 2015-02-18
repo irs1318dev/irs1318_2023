@@ -4,15 +4,16 @@ import org.usfirst.frc.team1318.robot.Arm.ArmComponent;
 import org.usfirst.frc.team1318.robot.Arm.ArmController;
 import org.usfirst.frc.team1318.robot.Autonomous.AutonomousDriver;
 import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ArmExtenderTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ArmTiltTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ArmTromboneTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.CollectToteTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ConcurrentTask;
-import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveDistanceAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveTimedAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ElevatorBottomTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ElevatorLevelTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.IntakeTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.SequentialTask;
-import org.usfirst.frc.team1318.robot.Autonomous.Tasks.TurnAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.WaitAutonomousTask;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
@@ -20,7 +21,6 @@ import org.usfirst.frc.team1318.robot.Compressor.CompressorComponent;
 import org.usfirst.frc.team1318.robot.Compressor.CompressorController;
 import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainComponent;
 import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainController;
-import org.usfirst.frc.team1318.robot.DriveTrain.IDriveTrainComponent;
 import org.usfirst.frc.team1318.robot.DriveTrain.PositionManager;
 import org.usfirst.frc.team1318.robot.Elevator.ElevatorComponent;
 import org.usfirst.frc.team1318.robot.Elevator.ElevatorController;
@@ -165,26 +165,39 @@ public class Robot extends IterativeRobot
      */
     public void autonomousInit()
     {
-        // determine our desired autonomous routine
+        // Find desired autonomous routine.
         IAutonomousTask[] autonomousRoutine = Robot.GetSampleRoutine(this.elevatorComponent, this.driveTrainComponent);
 
+        //        int routineSelection = 0;
+        //        DigitalInput dipSwitchOne = new DigitalInput(ElectronicsConstants.AUTONOMOUS_DIP_SWITCH_A);
+        //        DigitalInput dipSwitchTwo = new DigitalInput(ElectronicsConstants.AUTONOMOUS_DIP_SWITCH_B);
+        //        if (dipSwitchOne.get())
+        //        {
+        //            routineSelection += 1;
+        //        }
+        //
+        //        if (dipSwitchTwo.get())
+        //        {
+        //            routineSelection += 2;
+        //        }
+        //
         //        // select autonomous routine based on setting in SmartDashboard
-        //        switch ((int)this.autonomousRoutineChooser.getSelected() % 3)
+        //        switch (routineSelection)
         //        {
         //            case 0:
-        //                autonomousRoutine = Robot.GetDriveInSquareRoutine();
-        //                break;
-        //
-        //            case 1:
-        //                autonomousRoutine = Robot.GetDriveInSquareByDistanceRoutine(this.driveTrainComponent);
-        //                break;
-        //
-        //            case 2:
         //                autonomousRoutine = Robot.GetDriveForwardRoutine();
         //                break;
         //
+        //            case 1:
+        //                autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine();
+        //                break;
+        //
+        //            case 2:
+        //                autonomousRoutine = Robot.GetCollectThreeTotesRoutine(this.elevatorComponent);
+        //                break;
+        //
         //            default:
-        //                autonomousRoutine = Robot.GetDriveInSquareRoutine();
+        //                autonomousRoutine = Robot.GetSampleRoutine(this.elevatorComponent, this.driveTrainComponent);
         //                break;
         //        }
 
@@ -277,27 +290,37 @@ public class Robot extends IterativeRobot
     }
 
     /**
-     * Gets an autonomous routine that represents driving in a square based on positional PID
+     * Gets an autonomous routine that drives straight forward for a certain length of time
      * 
      * @return list of autonomous tasks
      */
-    private static IAutonomousTask[] GetDriveInSquareByDistanceRoutine(IDriveTrainComponent driveTrainComponent)
+    private static IAutonomousTask[] GetDriveForwardRoutine()
     {
+        // Drive forwards at .4 speed for 2 seconds
         return new IAutonomousTask[]
         {
-            // drive in a square
-            new DriveDistanceAutonomousTask(600, driveTrainComponent),
-            new WaitAutonomousTask(5),
-            new TurnAutonomousTask(90, driveTrainComponent),
-            new DriveDistanceAutonomousTask(600, driveTrainComponent),
-            new WaitAutonomousTask(5),
-            new TurnAutonomousTask(90, driveTrainComponent),
-            new DriveDistanceAutonomousTask(600, driveTrainComponent),
-            new WaitAutonomousTask(5),
-            new TurnAutonomousTask(90, driveTrainComponent),
-            new DriveDistanceAutonomousTask(600, driveTrainComponent),
-            new WaitAutonomousTask(5),
-            new TurnAutonomousTask(90, driveTrainComponent)
+            new DriveTimedAutonomousTask(2.0, 0.0, 0.4),
+        };
+    }
+
+    /**
+     * Gets an autonomous routine that retrieves containers from the step
+     * 
+     * @return list of autonomous tasks
+     */
+    private static IAutonomousTask[] GetRetrieveContainersFromStepRoutine()
+    {
+        // Drive backwards, extend the arm (extender, trombone, tilt), drive forwards, [retract the arm (tilt, trombone, extender)]
+        return new IAutonomousTask[]
+        {
+            new DriveTimedAutonomousTask(1.5, 0.0, -0.4),
+            new ArmExtenderTask(2, true),
+            new ArmTromboneTask(2, true),
+            new ArmTiltTask(2, true),
+            new DriveTimedAutonomousTask(4.0, 0.0, 0.2),
+        //new ArmTiltTask(2, false),
+        //new ArmTromboneTask(2, false),
+        //new ArmExtenderTask(2, false),
         };
     }
 
@@ -306,57 +329,60 @@ public class Robot extends IterativeRobot
      * 
      * @return list of autonomous tasks
      */
-    private static IAutonomousTask[] GetDriveInSquareRoutine()
+    private static IAutonomousTask[] GetCollectThreeTotesRoutine(ElevatorComponent elevatorComponent)
     {
+        // Move forward and collect a tote 3 times, wait 2 seconds, then move elevator to bottom and unload tote.
         return new IAutonomousTask[]
         {
-            // drive in a square
-            new DriveTimedAutonomousTask(5, 0.0, 0.8),  // drive forward
-            new WaitAutonomousTask(5),
-            new DriveTimedAutonomousTask(2, 0.8, 0.0),  // turn right
-            new DriveTimedAutonomousTask(5, 0.0, 0.8),  // drive forward
-            new WaitAutonomousTask(5),
-            new DriveTimedAutonomousTask(2, 0.8, 0.0),  // turn right
-            new DriveTimedAutonomousTask(5, 0.0, 0.8),  // drive forward
-            new WaitAutonomousTask(5),
-            new DriveTimedAutonomousTask(2, 0.8, 0.0),  // turn right
-            new DriveTimedAutonomousTask(5, 0.0, 0.8),  // drive forward
-            new WaitAutonomousTask(5),
-            new DriveTimedAutonomousTask(2, 0.8, 0.0), // turn right
+            ConcurrentTask.AnyTasks(
+                new DriveTimedAutonomousTask(3.0, 0.0, 0.25),
+                new CollectToteTask(elevatorComponent)),
+            ConcurrentTask.AllTasks(
+                new SequentialTask(
+                    new IAutonomousTask[]
+                    {
+                        new ElevatorBottomTask(elevatorComponent, false),
+                        new ElevatorLevelTask(1.0, 2, 0, true),
+                    }),
+                new DriveTimedAutonomousTask(1.5, 0.0, 0.2)),
+            ConcurrentTask.AnyTasks(
+                new DriveTimedAutonomousTask(3.0, 0.0, 0.25),
+                new CollectToteTask(elevatorComponent)),
+            ConcurrentTask.AllTasks(
+                new SequentialTask(
+                    new IAutonomousTask[]
+                    {
+                        new ElevatorBottomTask(elevatorComponent, false),
+                        new ElevatorLevelTask(1.0, 2, 0, true),
+                    }),
+                new DriveTimedAutonomousTask(1.5, 0.0, 0.2)),
+            ConcurrentTask.AnyTasks(
+                new DriveTimedAutonomousTask(3.0, 0.0, 0.25),
+                new CollectToteTask(elevatorComponent)),
+            ConcurrentTask.AllTasks(
+                new SequentialTask(
+                    new IAutonomousTask[]
+                    {
+                        new ElevatorBottomTask(elevatorComponent, false),
+                        new ElevatorLevelTask(1.0, 2, 0, true),
+                    }),
+                new DriveTimedAutonomousTask(1.5, 0.0, 0.2)),
+            new WaitAutonomousTask(1.0),
+            new ElevatorBottomTask(elevatorComponent, false),
+            ConcurrentTask.AllTasks(
+                new IntakeTask(1.5, true),
+                new DriveTimedAutonomousTask(1.5, 0.0, -0.25))
         };
     }
 
     /**
-     * Gets an autonomous routine that represents driving straight forward forever.
+     * Gets an autonomous routine that is currently being experimented on
      * 
      * @return list of autonomous tasks
      */
     private static IAutonomousTask[] GetSampleRoutine(ElevatorComponent elevatorComponent, DriveTrainComponent driveTrainComponent)
     {
-        // Drive backwards, extend the arm (extender, trombone, tilt), drive forwards, [retract the arm (tilt, trombone, extender)]
-        //        return new IAutonomousTask[]
-        //        {
-        //            new DriveTimedAutonomousTask(1.5, 0.0, -0.4),
-        //            new ArmExtenderTask(2, true),
-        //            new ArmTromboneTask(2, true),
-        //            new ArmTiltTask(2, true),
-        //            new DriveTimedAutonomousTask(4.0, 0.0, 0.2),
-        //            //new ArmTiltTask(2, false),
-        //            //new ArmTromboneTask(2, false),
-        //            //new ArmExtenderTask(2, false),
-        //        };
-
-        // Drive backwards for 200 centimeters, turn 90 degrees, drive forwards for 100 centimeters
-        //        return new IAutonomousTask[]
-        //        {
-        //            new DriveDistanceAutonomousTask(-200, driveTrainComponent),
-        //            new WaitAutonomousTask(0.5),
-        //            new TurnAutonomousTask(90, driveTrainComponent),
-        //            new WaitAutonomousTask(0.5),
-        //            new DriveDistanceAutonomousTask(100, driveTrainComponent),
-        //        };
-
-        // Move forward and collect a tote 3 times, wait 2 seconds, then move elevator to bottom and unload tote.
+        // Move forward and collect a tote 3 times in elevator fast mode, wait 1 second, then move elevator to bottom and unload tote.
         return new IAutonomousTask[]
         {
             ConcurrentTask.AnyTasks(
@@ -398,19 +424,6 @@ public class Robot extends IterativeRobot
                 new IntakeTask(1.5, true),
                 new DriveTimedAutonomousTask(1.5, 0.0, -0.25))
         };
-
-        // Move forward and collect tote, wait 2 seconds, then move elevator to bottom and unload tote.
-        //        return new IAutonomousTask[]
-        //        {
-        //            ConcurrentTask.AllTasks(
-        //                new DriveTimedAutonomousTask(2, 0.0, 0.3),
-        //                new CollectToteTask(elevatorComponent)),
-        //            new WaitAutonomousTask(2.0),
-        //            new ElevatorBottomTask(elevatorComponent),
-        //            ConcurrentTask.AllTasks(
-        //                new IntakeTask(1.0, true),
-        //                new DriveTimedAutonomousTask(1.0, 0.0, -0.2))
-        //        };
     }
 }
 
