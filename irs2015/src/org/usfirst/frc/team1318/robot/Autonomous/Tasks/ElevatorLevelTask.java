@@ -11,7 +11,7 @@ import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
  * @author Will
  *
  */
-public class ElevatorFloorTask extends TimedAutonomousTask implements IAutonomousTask
+public class ElevatorLevelTask extends TimedAutonomousTask implements IAutonomousTask
 {
     private int toteLevel;
     private int baseLevel;
@@ -21,7 +21,7 @@ public class ElevatorFloorTask extends TimedAutonomousTask implements IAutonomou
      * @param toteLevel - whether to go to 0, 1, 2, or 3 tote height.
      * @param baseLevel - whether to go to floor (0), scoring platform (1), or step (2)
      */
-    public ElevatorFloorTask(double duration, int toteLevel, int baseLevel)
+    public ElevatorLevelTask(double duration, int toteLevel, int baseLevel)
     {
         super(duration);
 
