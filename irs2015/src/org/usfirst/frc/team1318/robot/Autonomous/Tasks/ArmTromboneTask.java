@@ -6,25 +6,25 @@ import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 /**
  * ArmTiltTask:
  * 
- * This task tilts or untilts the arm, sleeping for a certain (provided) length of time.
+ * This task opens or closes the arm's trombone, sleeping for a certain (provided) length of time.
  * 
  * @author Will
  *
  */
-public class ArmTiltTask extends TimedAutonomousTask implements IAutonomousTask
+public class ArmTromboneTask extends TimedAutonomousTask implements IAutonomousTask
 {
-    private final boolean tilt;
+    private final boolean open;
 
     /**
-     * Initializes a new ArmTiltTask
+     * Initializes a new ArmTromboneTask
      * @param duration to perform the task in seconds
-     * @param tilt the arm (true) or retract the arm (false)
+     * @param open the trobone (true) or close the trombone (false)
      */
-    public ArmTiltTask(double duration, boolean tilt)
+    public ArmTromboneTask(double duration, boolean open)
     {
         super(duration);
 
-        this.tilt = tilt;
+        this.open = open;
     }
 
     /**
@@ -34,8 +34,8 @@ public class ArmTiltTask extends TimedAutonomousTask implements IAutonomousTask
     @Override
     public void update(AutonomousControlData data)
     {
-        data.setArmTiltExtendOverrideState(!this.tilt);
-        data.setArmTiltRetractOverrideState(this.tilt);
+        data.setArmTromboneExtendOverrideState(this.open);
+        data.setArmTromboneRetractOverrideState(!this.open);
     }
 
     /**
@@ -47,8 +47,8 @@ public class ArmTiltTask extends TimedAutonomousTask implements IAutonomousTask
     {
         super.cancel(data);
 
-        data.setArmTiltExtendOverrideState(false);
-        data.setArmTiltRetractOverrideState(false);
+        data.setArmTromboneExtendOverrideState(false);
+        data.setArmTromboneRetractOverrideState(false);
     }
 
     /**
@@ -60,7 +60,7 @@ public class ArmTiltTask extends TimedAutonomousTask implements IAutonomousTask
     {
         super.end(data);
 
-        data.setArmTiltExtendOverrideState(false);
-        data.setArmTiltRetractOverrideState(false);
+        data.setArmTromboneExtendOverrideState(false);
+        data.setArmTromboneRetractOverrideState(false);
     }
 }

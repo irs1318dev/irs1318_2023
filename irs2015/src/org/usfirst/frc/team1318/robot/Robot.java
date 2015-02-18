@@ -4,10 +4,14 @@ import org.usfirst.frc.team1318.robot.Arm.ArmComponent;
 import org.usfirst.frc.team1318.robot.Arm.ArmController;
 import org.usfirst.frc.team1318.robot.Autonomous.AutonomousDriver;
 import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
-import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ArmMacroTask;
-import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ArmTiltTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.CollectToteTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ConcurrentTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveDistanceAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveTimedAutonomousTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ElevatorBottomTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ElevatorLevelTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.IntakeTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.SequentialTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.TurnAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.WaitAutonomousTask;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
@@ -329,41 +333,71 @@ public class Robot extends IterativeRobot
      */
     private static IAutonomousTask[] GetSampleRoutine(ElevatorComponent elevatorComponent, DriveTrainComponent driveTrainComponent)
     {
-        // Drive backwards for 1.5 seconds, extend the arm, drive forwards for .5 seconds, retract the arm
+        // Drive backwards, extend the arm (extender, trombone, tilt), drive forwards, [retract the arm (tilt, trombone, extender)]
+        //        return new IAutonomousTask[]
+        //        {
+        //            new DriveTimedAutonomousTask(1.5, 0.0, -0.4),
+        //            new ArmExtenderTask(2, true),
+        //            new ArmTromboneTask(2, true),
+        //            new ArmTiltTask(2, true),
+        //            new DriveTimedAutonomousTask(4.0, 0.0, 0.2),
+        //            //new ArmTiltTask(2, false),
+        //            //new ArmTromboneTask(2, false),
+        //            //new ArmExtenderTask(2, false),
+        //        };
+
+        // Drive backwards for 200 centimeters, turn 90 degrees, drive forwards for 100 centimeters
+        //        return new IAutonomousTask[]
+        //        {
+        //            new DriveDistanceAutonomousTask(-200, driveTrainComponent),
+        //            new WaitAutonomousTask(0.5),
+        //            new TurnAutonomousTask(90, driveTrainComponent),
+        //            new WaitAutonomousTask(0.5),
+        //            new DriveDistanceAutonomousTask(100, driveTrainComponent),
+        //        };
+
+        // Move forward and collect a tote 3 times, wait 2 seconds, then move elevator to bottom and unload tote.
         return new IAutonomousTask[]
         {
-            new DriveTimedAutonomousTask(1.5, 0.0, -0.4),
-            new ArmMacroTask(1.5, true),
-            new ArmTiltTask(1.0, true),
-            new DriveTimedAutonomousTask(0.5, 0.0, 0.4),
-            new ArmTiltTask(1.0, false),
-            new ArmMacroTask(1.5, false),
+            ConcurrentTask.AnyTasks(
+                new DriveTimedAutonomousTask(3.0, 0.0, 0.25),
+                new CollectToteTask(elevatorComponent)),
+            ConcurrentTask.AllTasks(
+                new SequentialTask(
+                    new IAutonomousTask[]
+                    {
+                        new ElevatorBottomTask(elevatorComponent),
+                        new ElevatorLevelTask(1.0, 1, 0),
+                    }),
+                new DriveTimedAutonomousTask(1.5, 0.0, 0.2)),
+            ConcurrentTask.AnyTasks(
+                new DriveTimedAutonomousTask(3.0, 0.0, 0.25),
+                new CollectToteTask(elevatorComponent)),
+            ConcurrentTask.AllTasks(
+                new SequentialTask(
+                    new IAutonomousTask[]
+                    {
+                        new ElevatorBottomTask(elevatorComponent),
+                        new ElevatorLevelTask(1.0, 1, 0),
+                    }),
+                new DriveTimedAutonomousTask(1.5, 0.0, 0.2)),
+            ConcurrentTask.AnyTasks(
+                new DriveTimedAutonomousTask(3.0, 0.0, 0.25),
+                new CollectToteTask(elevatorComponent)),
+            ConcurrentTask.AllTasks(
+                new SequentialTask(
+                    new IAutonomousTask[]
+                    {
+                        new ElevatorBottomTask(elevatorComponent),
+                        new ElevatorLevelTask(1.0, 1, 0),
+                    }),
+                new DriveTimedAutonomousTask(1.5, 0.0, 0.2)),
+            new WaitAutonomousTask(1.0),
+            new ElevatorBottomTask(elevatorComponent),
+            ConcurrentTask.AllTasks(
+                new IntakeTask(1.5, true),
+                new DriveTimedAutonomousTask(1.5, 0.0, -0.25))
         };
-
-        // Drive backwards for 150 centimeters, extend the arm, drive forwards for 50 centimeters, retract the arm
-        //        return new IAutonomousTask[]
-        //        {
-        //            new DriveDistanceAutonomousTask(-150, driveTrainComponent),
-        //            new ArmTask(2.0, true),
-        //            new DriveDistanceAutonomousTask(50, driveTrainComponent),
-        //            new ArmTask(2.0, false),
-        //        };
-
-        // Move forward and collect a tote, then move forward and collect another tote, wait 2 seconds, then move elevator to bottom and unload tote.
-        //        return new IAutonomousTask[]
-        //        {
-        //            ConcurrentTask.AllTasks(
-        //                new DriveTimedAutonomousTask(1.5, 0.0, 0.3),
-        //                new CollectToteTask(elevatorComponent)),
-        //            ConcurrentTask.AllTasks(
-        //                new DriveTimedAutonomousTask(1.5, 0.0, 0.3),
-        //                new CollectToteTask(elevatorComponent)),
-        //            new WaitAutonomousTask(2.0),
-        //            new ElevatorBottomTask(elevatorComponent),
-        //            ConcurrentTask.AllTasks(
-        //                new IntakeTask(1.0, true),
-        //                new DriveTimedAutonomousTask(1.0, 0.0, -0.2))
-        //        };
 
         // Move forward and collect tote, wait 2 seconds, then move elevator to bottom and unload tote.
         //        return new IAutonomousTask[]

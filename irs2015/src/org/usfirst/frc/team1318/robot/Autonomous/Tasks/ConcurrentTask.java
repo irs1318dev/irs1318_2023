@@ -1,8 +1,5 @@
 package org.usfirst.frc.team1318.robot.Autonomous.Tasks;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.usfirst.frc.team1318.robot.Autonomous.AutonomousControlData;
 import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 
@@ -19,7 +16,8 @@ import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 public class ConcurrentTask implements IAutonomousTask
 {
     private final boolean anyTask;
-    private final List<IAutonomousTask> tasks;
+    private final IAutonomousTask[] tasks;
+    private final boolean[] completedTasks;
 
     /**
      * Initializes a new ConcurrentTask
@@ -29,7 +27,12 @@ public class ConcurrentTask implements IAutonomousTask
     private ConcurrentTask(boolean anyTask, IAutonomousTask... tasks)
     {
         this.anyTask = anyTask;
-        this.tasks = Arrays.asList(tasks);
+        this.tasks = tasks;
+        this.completedTasks = new boolean[tasks.length];
+        for (int i = 0; i < this.completedTasks.length; i++)
+        {
+            this.completedTasks[i] = false;
+        }
     }
 
     /**
@@ -71,9 +74,20 @@ public class ConcurrentTask implements IAutonomousTask
     @Override
     public void update(AutonomousControlData data)
     {
-        for (IAutonomousTask task : this.tasks)
+        for (int i = 0; i < this.tasks.length; i++)
         {
-            task.update(data);
+            if (!this.completedTasks[i])
+            {
+                if (this.tasks[i].hasCompleted())
+                {
+                    this.completedTasks[i] = true;
+                    this.tasks[i].end(data);
+                }
+                else
+                {
+                    this.tasks[i].update(data);
+                }
+            }
         }
     }
 
@@ -84,9 +98,9 @@ public class ConcurrentTask implements IAutonomousTask
     @Override
     public void cancel(AutonomousControlData data)
     {
-        for (IAutonomousTask task : this.tasks)
+        for (int i = 0; i < this.tasks.length; i++)
         {
-            task.cancel(data);
+            this.tasks[i].cancel(data);
         }
     }
 
@@ -97,9 +111,12 @@ public class ConcurrentTask implements IAutonomousTask
     @Override
     public void end(AutonomousControlData data)
     {
-        for (IAutonomousTask task : this.tasks)
+        for (int i = 0; i < this.tasks.length; i++)
         {
-            task.end(data);
+            if (!this.completedTasks[i])
+            {
+                this.tasks[i].end(data);
+            }
         }
     }
 
@@ -110,9 +127,9 @@ public class ConcurrentTask implements IAutonomousTask
     @Override
     public boolean hasCompleted()
     {
-        for (IAutonomousTask task : this.tasks)
+        for (int i = 0; i < this.tasks.length; i++)
         {
-            boolean taskHasCompleted = task.hasCompleted();
+            boolean taskHasCompleted = this.completedTasks[i];
 
             // for AnyTask tasks, return that we're completed (true) if any of them have completed (true).
             if (this.anyTask && taskHasCompleted)

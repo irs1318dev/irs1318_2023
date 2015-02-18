@@ -6,25 +6,25 @@ import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 /**
  * ArmTiltTask:
  * 
- * This task tilts or untilts the arm, sleeping for a certain (provided) length of time.
+ * This task extends or unextends the arm, sleeping for a certain (provided) length of time.
  * 
  * @author Will
  *
  */
-public class ArmTiltTask extends TimedAutonomousTask implements IAutonomousTask
+public class ArmExtenderTask extends TimedAutonomousTask implements IAutonomousTask
 {
-    private final boolean tilt;
+    private final boolean extend;
 
     /**
-     * Initializes a new ArmTiltTask
+     * Initializes a new ArmExtendTask
      * @param duration to perform the task in seconds
-     * @param tilt the arm (true) or retract the arm (false)
+     * @param extend the arm (true) or retract the arm (false)
      */
-    public ArmTiltTask(double duration, boolean tilt)
+    public ArmExtenderTask(double duration, boolean extend)
     {
         super(duration);
 
-        this.tilt = tilt;
+        this.extend = extend;
     }
 
     /**
@@ -34,8 +34,8 @@ public class ArmTiltTask extends TimedAutonomousTask implements IAutonomousTask
     @Override
     public void update(AutonomousControlData data)
     {
-        data.setArmTiltExtendOverrideState(!this.tilt);
-        data.setArmTiltRetractOverrideState(this.tilt);
+        data.setArmExtenderExtendOverrideState(this.extend);
+        data.setArmExtenderRetractOverrideState(!this.extend);
     }
 
     /**
@@ -47,8 +47,8 @@ public class ArmTiltTask extends TimedAutonomousTask implements IAutonomousTask
     {
         super.cancel(data);
 
-        data.setArmTiltExtendOverrideState(false);
-        data.setArmTiltRetractOverrideState(false);
+        data.setArmExtenderExtendOverrideState(false);
+        data.setArmExtenderRetractOverrideState(false);
     }
 
     /**
@@ -60,7 +60,7 @@ public class ArmTiltTask extends TimedAutonomousTask implements IAutonomousTask
     {
         super.end(data);
 
-        data.setArmTiltExtendOverrideState(false);
-        data.setArmTiltRetractOverrideState(false);
+        data.setArmExtenderExtendOverrideState(false);
+        data.setArmExtenderRetractOverrideState(false);
     }
 }
