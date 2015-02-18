@@ -4,27 +4,27 @@ import org.usfirst.frc.team1318.robot.Autonomous.AutonomousControlData;
 import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 
 /**
- * ArmTask:
+ * ArmTiltTask:
  * 
- * This task runs the arm extend or arm retract macro, sleeping for a certain (provided) length of time.
+ * This task tilts or untilts the arm, sleeping for a certain (provided) length of time.
  * 
  * @author Will
  *
  */
-public class ArmTask extends TimedAutonomousTask implements IAutonomousTask
+public class ArmTiltTask extends TimedAutonomousTask implements IAutonomousTask
 {
-    private final boolean extend;
+    private final boolean tilt;
 
     /**
-     * Initializes a new ArmTask
+     * Initializes a new ArmTiltTask
      * @param duration to perform the task in seconds
-     * @param extend the arm (true) or retract the arm (false)
+     * @param tilt the arm (true) or retract the arm (false)
      */
-    public ArmTask(double duration, boolean extend)
+    public ArmTiltTask(double duration, boolean tilt)
     {
         super(duration);
 
-        this.extend = extend;
+        this.tilt = tilt;
     }
 
     /**
@@ -34,8 +34,8 @@ public class ArmTask extends TimedAutonomousTask implements IAutonomousTask
     @Override
     public void update(AutonomousControlData data)
     {
-        data.setArmMacroExtendState(this.extend);
-        data.setArmMacroRetractState(!this.extend);
+        data.setArmTiltExtendOverrideState(this.tilt);
+        data.setArmTiltRetractOverrideState(!this.tilt);
     }
 
     /**
