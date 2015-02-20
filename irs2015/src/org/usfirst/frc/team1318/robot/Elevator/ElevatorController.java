@@ -15,7 +15,7 @@ public class ElevatorController implements IController
     private static final String POSITION_GOAL_LOG_KEY = "e.positionGoal";
 
     private final ElevatorComponent component;
-    private final IDriver driver;
+    private IDriver driver;
 
     private enum ContainerMacroStates
     {
@@ -60,6 +60,12 @@ public class ElevatorController implements IController
         this.containerMacroState = ContainerMacroStates.STATE_0;
 
         this.elevatorSlowMode = false;
+    }
+
+    @Override
+    public void setDriver(IDriver driver)
+    {
+        this.driver = driver;
     }
 
     @Override
