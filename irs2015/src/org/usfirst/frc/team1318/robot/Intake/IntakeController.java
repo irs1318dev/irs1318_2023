@@ -15,7 +15,7 @@ import org.usfirst.frc.team1318.robot.Common.IDriver;
 public class IntakeController implements IController
 {
     private final IntakeComponent intake;
-    private final IDriver operator;
+    private IDriver driver;
     private double motorSpeed;
 
     // state variables
@@ -27,21 +27,28 @@ public class IntakeController implements IController
     public IntakeController(IDriver operator, IntakeComponent intake)
     {
         this.intake = intake;
-        this.operator = operator;
+        this.driver = operator;
         this.motorSpeed = 0.0;
         this.solenoidState = null;
         //        this.solenoidRightState = null;
         this.prevHoldButton = false;
     }
 
+    @Override
+    public void setDriver(IDriver driver)
+    {
+        this.driver = driver;
+    }
+
+    @Override
     public void update()
     {
         // gets joystick input and translates it into wanted motor state
-        if (this.operator.getIntakeForwardButton())
+        if (this.driver.getIntakeForwardButton())
         {
             this.motorSpeed = TuningConstants.INTAKE_MOTOR_SPEED;
         }
-        else if (this.operator.getIntakeBackwardButton())
+        else if (this.driver.getIntakeBackwardButton())
         {
             this.motorSpeed = -TuningConstants.INTAKE_MOTOR_SPEED;
         }
@@ -50,7 +57,7 @@ public class IntakeController implements IController
             this.motorSpeed = 0;
         }
 
-        if (this.operator.getIntakeDownHoldButton())
+        if (this.driver.getIntakeDownHoldButton())
         {
             this.solenoidState = false;
             //            this.solenoidRightState = false;
@@ -65,13 +72,13 @@ public class IntakeController implements IController
 
         // gets joystick input and translates it into wanted solenoid state
         // Up means retract, down means extend
-        if (this.operator.getIntakeUpButton())
+        if (this.driver.getIntakeUpButton())
         {
             this.solenoidState = false;
             //            this.solenoidRightState = false;
         }
 
-        if (this.operator.getIntakeDownButton())
+        if (this.driver.getIntakeDownButton())
         {
             this.solenoidState = true;
             //            this.solenoidRightState = true;

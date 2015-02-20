@@ -43,9 +43,16 @@ public class DriveTrainController implements IController
         this.createPIDHandler();
     }
 
+    @Override
+    public void setDriver(IDriver driver)
+    {
+        this.driver = driver;
+    }
+
     /**
      * calculate the various outputs to use based on the inputs and apply them to the outputs for the relevant component
      */
+    @Override
     public void update()
     {
         component.getProximitySensorFront();
@@ -87,6 +94,7 @@ public class DriveTrainController implements IController
     /**
      * stop the relevant component
      */
+    @Override
     public void stop()
     {
         this.component.setDriveTrainPower(0.0, 0.0);
