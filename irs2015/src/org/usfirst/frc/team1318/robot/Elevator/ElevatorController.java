@@ -19,7 +19,7 @@ public class ElevatorController implements IController
 
     private enum ContainerMacroStates
     {
-        STATE_0, STATE_1_LOWER, STATE_2_WAIT, STATE_3_ALTERNATE_WAIT, STATE_4;
+        STATE_0, STATE_1_LOWER, STATE_2_WAIT, STATE_3_ALTERNATE_WAIT;
     }
 
     private ContainerMacroStates containerMacroState;
@@ -179,7 +179,7 @@ public class ElevatorController implements IController
             case STATE_3_ALTERNATE_WAIT:
                 if (this.component.getEncoderDistance() - this.encoderZeroOffset < 1)
                 {
-                    this.position = HardwareConstants.ELEVATOR_0_TOTE_HEIGHT;
+                    this.position = HardwareConstants.ELEVATOR_1_TOTE_HEIGHT;
                     this.containerMacroState = ContainerMacroStates.STATE_0;
                 }
         }
