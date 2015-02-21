@@ -167,6 +167,11 @@ public class ElevatorController implements IController
                 }
                 break;
             case STATE_2_WAIT:
+                if (this.ignoreSensors)
+                {
+                    this.position = this.component.getEncoderDistance() - this.encoderZeroOffset;
+                    this.containerMacroState = ContainerMacroStates.STATE_0;
+                }
                 if (!this.movingToBottom)
                 {
                     if (this.usePID)
