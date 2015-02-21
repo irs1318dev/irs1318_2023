@@ -19,7 +19,7 @@ public class ElevatorController implements IController
 
     private enum ContainerMacroStates
     {
-        STATE_0, STATE_1_LOWER, STATE_2_WAIT;
+        STATE_0, STATE_1_LOWER, STATE_2_WAIT, STATE_3_ALTERNATE_WAIT, STATE_4;
     }
 
     private ContainerMacroStates containerMacroState;
@@ -162,7 +162,8 @@ public class ElevatorController implements IController
                 }
                 else
                 {
-                    this.containerMacroState = ContainerMacroStates.STATE_0;
+                    this.position = HardwareConstants.ELEVATOR_0_TOTE_HEIGHT;
+                    this.containerMacroState = ContainerMacroStates.STATE_3_ALTERNATE_WAIT;
                 }
                 break;
             case STATE_2_WAIT:
@@ -175,6 +176,12 @@ public class ElevatorController implements IController
                     this.containerMacroState = ContainerMacroStates.STATE_0;
                 }
                 break;
+            case STATE_3_ALTERNATE_WAIT:
+                if (this.component.getEncoderDistance() - this.encoderZeroOffset < 1)
+                {
+                    this.position = HardwareConstants.ELEVATOR_0_TOTE_HEIGHT;
+                    this.containerMacroState = ContainerMacroStates.STATE_0;
+                }
         }
 
         //        
@@ -306,16 +313,6 @@ public class ElevatorController implements IController
             this.movingToBottom = false;
         }
 
-        //TODO: take out
-        //        if (Math.abs(this.driver.getElevatorVelocityOverride()) > TuningConstants.ELEVATOR_DEAD_ZONE)
-        //        {
-        //            double velocityIntensity = this.adjustIntensity(this.driver.getElevatorVelocityOverride());
-        //
-        //            this.position += TuningConstants.ELEVATOR_MAX_VELOCITY * velocityIntensity * (currentTime - this.lastTime);
-        //
-        //            powerLevel = this.calculatePositionModePowerSetting(this.position);
-        //        }
-
         //--> use limit switches 
         // Safety requirement: don't go lower if we are hitting the bottom limit switch
         if (enforceNonPositive)
@@ -352,7 +349,7 @@ public class ElevatorController implements IController
         this.lastTime = currentTime;
 
         //--> lights 
-        if ((this.usePID && this.position < HardwareConstants.ELEVATOR_1_TOTE_HEIGHT))
+        if ((this.usePID && (this.component.getEncoderDistance() - this.encoderZeroOffset < HardwareConstants.ELEVATOR_1_TOTE_HEIGHT)))
         //|| (!this.usePID && !this.ignoreSensors && this.component.getBottomLimitSwitchValue()))
         {
             this.component.setLimitSwitchRelayValue(true);
