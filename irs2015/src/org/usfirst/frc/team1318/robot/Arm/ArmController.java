@@ -20,7 +20,7 @@ public class ArmController implements IController
     private double continueTime;
 
     private final ArmComponent component;
-    private final IDriver driver;
+    private IDriver driver;
 
     private Boolean tromboneState;
     private Boolean tiltState;
@@ -45,6 +45,12 @@ public class ArmController implements IController
         //initialize new Timer but start it between actual stages of arm-movement
         this.timer = new Timer();
         this.timer.start();
+    }
+
+    @Override
+    public void setDriver(IDriver driver)
+    {
+        this.driver = driver;
     }
 
     @Override

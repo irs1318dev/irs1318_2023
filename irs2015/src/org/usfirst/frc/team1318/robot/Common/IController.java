@@ -18,4 +18,6 @@ public interface IController
      * stop the relevant component
      */
     public void stop();
+
+    public void setDriver(IDriver driver);
 }

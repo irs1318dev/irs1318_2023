@@ -84,7 +84,7 @@ public class TuningConstants
     //================================================== Arm ==============================================================
 
     public static final double ARM_TILT_EXTEND_WAIT_TIME = 1;
-    public static final double ARM_EXTENDOR_EXTEND_WAIT_TIME = 2;
+    public static final double ARM_EXTENDOR_EXTEND_WAIT_TIME = 1;//2;
     public static final double ARM_TROMBONE_EXTEND_WAIT_TIME = 1;
 
     public static final double ARM_TILT_RETRACT_WAIT_TIME = 1;
