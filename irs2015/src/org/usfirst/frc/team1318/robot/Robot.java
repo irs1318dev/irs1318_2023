@@ -166,7 +166,8 @@ public class Robot extends IterativeRobot
     public void autonomousInit()
     {
         // Find desired autonomous routine.
-        IAutonomousTask[] autonomousRoutine = Robot.GetSampleRoutine(this.elevatorComponent, this.driveTrainComponent);
+        //        IAutonomousTask[] autonomousRoutine = Robot.GetSampleRoutine(this.elevatorComponent, this.driveTrainComponent);
+        IAutonomousTask[] autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine();
 
         //        int routineSelection = 0;
         //        DigitalInput dipSwitchOne = new DigitalInput(ElectronicsConstants.AUTONOMOUS_DIP_SWITCH_A);
