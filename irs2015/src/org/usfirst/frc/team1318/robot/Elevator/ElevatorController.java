@@ -354,7 +354,7 @@ public class ElevatorController implements IController
         this.lastTime = currentTime;
 
         //--> lights 
-        if ((this.usePID && (this.component.getEncoderDistance() - this.encoderZeroOffset < HardwareConstants.ELEVATOR_1_TOTE_HEIGHT)))
+        if ((this.usePID && (this.component.getEncoderDistance() - this.encoderZeroOffset < HardwareConstants.ELEVATOR_1_TOTE_HEIGHT - 2)))
         //|| (!this.usePID && !this.ignoreSensors && this.component.getBottomLimitSwitchValue()))
         {
             this.component.setLimitSwitchRelayValue(true);
