@@ -167,7 +167,7 @@ public class Robot extends IterativeRobot
     {
         // Find desired autonomous routine.
         //        IAutonomousTask[] autonomousRoutine = Robot.GetSampleRoutine(this.elevatorComponent, this.driveTrainComponent);
-        IAutonomousTask[] autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine();
+        IAutonomousTask[] autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine(this.driveTrainComponent);
 
         //        int routineSelection = 0;
         //        DigitalInput dipSwitchOne = new DigitalInput(ElectronicsConstants.AUTONOMOUS_DIP_SWITCH_A);
@@ -309,19 +309,23 @@ public class Robot extends IterativeRobot
      * 
      * @return list of autonomous tasks
      */
-    private static IAutonomousTask[] GetRetrieveContainersFromStepRoutine()
+    private static IAutonomousTask[] GetRetrieveContainersFromStepRoutine(DriveTrainComponent driveTrainComponent)
     {
         // Drive backwards, extend the arm (extender, trombone, tilt), drive forwards, [retract the arm (tilt, trombone, extender)]
         return new IAutonomousTask[]
         {
-            new DriveTimedAutonomousTask(1.5, 0.0, -0.4),
-            new ArmExtenderTask(2, true),
-            new ArmTromboneTask(2, true),
+            new DriveTimedAutonomousTask(0.5, 0.0, -0.2),
+            //            new DriveDistanceAutonomousTask(-50, driveTrainComponent),
+            new ArmExtenderTask(1, true),
+            new ArmTromboneTask(1, true),
             new ArmTiltTask(2, true),
             new DriveTimedAutonomousTask(4.0, 0.0, 0.2),
-        //new ArmTiltTask(2, false),
-        //new ArmTromboneTask(2, false),
-        //new ArmExtenderTask(2, false),
+            new WaitAutonomousTask(0.5),
+            new DriveTimedAutonomousTask(0.5, 0, -0.2),
+            //            new DriveDistanceAutonomousTask(100, driveTrainComponent)
+            new ArmTiltTask(1, false),
+            new ArmTromboneTask(1, false),
+            new ArmExtenderTask(1, false),
         };
     }
 
