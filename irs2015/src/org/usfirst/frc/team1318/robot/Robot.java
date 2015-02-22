@@ -101,6 +101,19 @@ public class Robot extends IterativeRobot
         this.armComponent = new ArmComponent();
         this.intakeComponent = new IntakeComponent();
 
+        this.driver = new UserDriver();
+
+        // create controllers for each mechanism
+        this.compressorController = new CompressorController(this.compressorComponent);
+        this.driveTrainController =
+            new DriveTrainController(
+                this.driver,
+                this.driveTrainComponent,
+                TuningConstants.DRIVETRAIN_USE_PID_DEFAULT);
+        this.elevatorController = new ElevatorController(this.driver, this.elevatorComponent);
+        this.armController = new ArmController(this.driver, this.armComponent);
+        this.intakeController = new IntakeController(this.driver, this.intakeComponent);
+
         // create position manager
         this.position = new PositionManager(this.driveTrainComponent);
 
@@ -123,37 +136,37 @@ public class Robot extends IterativeRobot
         if (this.driver != null)
         {
             this.driver.stop();
-            this.driver = null;
+            //this.driver = null;
         }
 
         if (this.compressorController != null)
         {
             this.compressorController.stop();
-            this.compressorController = null;
+            //this.compressorController = null;
         }
 
         if (this.driveTrainController != null)
         {
             this.driveTrainController.stop();
-            this.driveTrainController = null;
+            //this.driveTrainController = null;
         }
 
         if (this.elevatorController != null)
         {
             this.elevatorController.stop();
-            this.elevatorController = null;
+            //this.elevatorController = null;
         }
 
         if (this.armController != null)
         {
             this.armController.stop();
-            this.armController = null;
+            //this.armController = null;
         }
 
         if (this.intakeController != null)
         {
             this.intakeController.stop();
-            this.intakeController = null;
+            //this.intakeController = null;
         }
 
         SmartDashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Disabled");
@@ -231,16 +244,21 @@ public class Robot extends IterativeRobot
      */
     public void generalInit()
     {
-        // create controllers for each mechanism
-        this.compressorController = new CompressorController(this.compressorComponent);
-        this.driveTrainController =
-            new DriveTrainController(
-                this.driver,
-                this.driveTrainComponent,
-                TuningConstants.DRIVETRAIN_USE_PID_DEFAULT);
-        this.elevatorController = new ElevatorController(this.driver, this.elevatorComponent);
-        this.armController = new ArmController(this.driver, this.armComponent);
-        this.intakeController = new IntakeController(this.driver, this.intakeComponent);
+        //        // create controllers for each mechanism
+        //        this.compressorController = new CompressorController(this.compressorComponent);
+        //        this.driveTrainController =
+        //            new DriveTrainController(
+        //                this.driver,
+        //                this.driveTrainComponent,
+        //                TuningConstants.DRIVETRAIN_USE_PID_DEFAULT);
+        //        this.elevatorController = new ElevatorController(this.driver, this.elevatorComponent);
+        //        this.armController = new ArmController(this.driver, this.armComponent);
+        //        this.intakeController = new IntakeController(this.driver, this.intakeComponent);
+
+        this.driveTrainController.setDriver(this.driver);
+        this.elevatorController.setDriver(this.driver);
+        this.armController.setDriver(this.driver);
+        this.intakeController.setDriver(this.driver);
 
         // we will run the compressor controller here because we should start it in advance...
         this.compressorController.update();
