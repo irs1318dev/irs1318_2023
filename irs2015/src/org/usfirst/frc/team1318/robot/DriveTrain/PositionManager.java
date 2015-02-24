@@ -2,6 +2,7 @@ package org.usfirst.frc.team1318.robot.DriveTrain;
 
 import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.Common.IController;
+import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
 /**
@@ -50,9 +51,16 @@ public class PositionManager implements IController
         this.driveTrainComponent = driveTrainComponent;
     }
 
+    @Override
+    public void setDriver(IDriver driver)
+    {
+        //not needed for this controller 
+    }
+
     /**
      * calculate the various outputs to use based on the inputs and apply them to the outputs for the relevant component
      */
+    @Override
     public void update()
     {
         // check the current distance recorded by the encoders
@@ -82,6 +90,7 @@ public class PositionManager implements IController
     /**
      * stop the relevant component
      */
+    @Override
     public void stop()
     {
     }
