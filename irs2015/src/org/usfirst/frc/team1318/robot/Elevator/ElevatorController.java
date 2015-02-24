@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class ElevatorController implements IController
 {
-    private static final String ENCODER_ZERO_OFFSET_LOG_KEY = "e.encoderZeroOffset";
     private static final String POSITION_GOAL_LOG_KEY = "e.positionGoal";
 
     private final ElevatorComponent component;
@@ -26,13 +25,12 @@ public class ElevatorController implements IController
 
     private double baseLevel;
     private double position;
-    private double encoderZeroOffset;
 
     private boolean usePID;
     private PIDHandler pidHandler;
 
     private double lastTime;
-    private Timer timer;
+    private final Timer timer;
 
     private boolean movingToBottom;
     private boolean ignoreSensors;
@@ -52,7 +50,6 @@ public class ElevatorController implements IController
 
         this.baseLevel = HardwareConstants.ELEVATOR_FLOOR_HEIGHT;
         this.position = this.component.getEncoderDistance();
-        this.encoderZeroOffset = 0;
         this.movingToBottom = false;  // move to bottom to calibrate the encoder offset on start
 
         this.timer = new Timer();
@@ -73,7 +70,7 @@ public class ElevatorController implements IController
     @Override
     public void update()
     {
-        component.getThroughBeamBroken();
+        this.component.getThroughBeamBroken();
 
         boolean enforceNonPositive = false;
         boolean enforceNonNegative = false;
@@ -116,7 +113,7 @@ public class ElevatorController implements IController
             {
                 this.usePID = true;
                 this.createPIDHandler();
-                this.position = component.getEncoderDistance() + this.encoderZeroOffset;
+                this.position = this.component.getEncoderDistance() + this.component.getEncoderZeroOffset();
 
             }
         }
@@ -157,8 +154,9 @@ public class ElevatorController implements IController
         //--> get zero encoders 
         if (this.driver.getZeroElevatorEncoder())
         {
-            this.encoderZeroOffset = HardwareConstants.ELEVATOR_MIN_HEIGHT + this.component.getEncoderDistance();
-            this.position -= this.encoderZeroOffset;
+            double newOffset = HardwareConstants.ELEVATOR_MIN_HEIGHT + this.component.getEncoderDistance();
+            this.component.setEncoderZeroOffset(newOffset);
+            this.position -= newOffset;
         }
 
         //--> set position and power level 
@@ -261,7 +259,7 @@ public class ElevatorController implements IController
         // also note that we should enforce hardware safety requirements
         if (this.component.getBottomLimitSwitchValue() && !this.ignoreSensors)
         {
-            this.encoderZeroOffset = HardwareConstants.ELEVATOR_MIN_HEIGHT + this.component.getEncoderDistance();
+            this.component.setEncoderZeroOffset(HardwareConstants.ELEVATOR_MIN_HEIGHT + this.component.getEncoderDistance());
 
             if (this.movingToBottom)
             {
@@ -274,7 +272,7 @@ public class ElevatorController implements IController
         else if (this.component.getTopLimitSwitchValue() && !this.ignoreSensors)
         {
             this.containerMacroState = ContainerMacroStates.STATE_0;
-            this.encoderZeroOffset = this.component.getEncoderDistance() - HardwareConstants.ELEVATOR_MAX_HEIGHT;
+            this.component.setEncoderZeroOffset(this.component.getEncoderDistance() - HardwareConstants.ELEVATOR_MAX_HEIGHT);
             this.position = HardwareConstants.ELEVATOR_MAX_HEIGHT;
             enforceNonPositive = true;
         }
@@ -364,7 +362,6 @@ public class ElevatorController implements IController
         }
 
         SmartDashboardLogger.putNumber(ElevatorController.POSITION_GOAL_LOG_KEY, this.position);
-        SmartDashboardLogger.putNumber(ElevatorController.ENCODER_ZERO_OFFSET_LOG_KEY, encoderZeroOffset);
 
         this.component.setMotorPowerLevel(powerLevel);
 
@@ -443,24 +440,6 @@ public class ElevatorController implements IController
         this.component.setMotorPowerLevel(0.0);
     }
 
-    /**
-     * Adjust the intensity of the input value
-     * @param value to adjust
-     * @return adjusted value
-     */
-    private double adjustIntensity(double value)
-    {
-        // we will use simple quadratic scaling to adjust input intensity
-        if (value < 0)
-        {
-            return -value * value;
-        }
-        else
-        {
-            return value * value;
-        }
-    }
-
     private void createPIDHandler()
     {
         if (!this.usePID)
@@ -507,7 +486,7 @@ public class ElevatorController implements IController
 
     private double calculatePositionModePowerSetting(double desired)
     {
-        double current = this.component.getEncoderDistance() - this.encoderZeroOffset;
+        double current = this.component.getEncoderDistance() - this.component.getEncoderZeroOffset();
         return this.pidHandler.calculatePosition(desired, current);
     }
 }

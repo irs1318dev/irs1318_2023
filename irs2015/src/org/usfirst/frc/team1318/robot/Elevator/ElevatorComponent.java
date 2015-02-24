@@ -12,6 +12,18 @@ import edu.wpi.first.wpilibj.Talon;
 
 public class ElevatorComponent
 {
+    private static final String MOTOR_POWER_LOG_KEY = "e.motorPower";
+    private static final String ENCODER_DISTANCE_LOG_KEY = "e.encoderDistance";
+    private static final String ENCODER_TICKS_LOG_KEY = "e.encoderTicks";
+    private static final String ENCODER_VELOCITY_LOG_KEY = "e.encoderVelocity";
+    private static final String ENCODER_ZERO_OFFSET_LOG_KEY = "e.encoderZeroOffset";
+    private static final String TOP_LIMIT_SWITCH_LOG_KEY = "e.topLimitSwitch";
+    private static final String BOTTOM_LIMIT_SWITCH_LOG_KEY = "e.bottomLimitSwitch";
+    private static final String THROUGH_BEAM_SENSOR_ANALOG_LOG_KEY = "e.throughBeamAnalog";
+    private static final String THROUGH_BEAM_SENSOR_BOOLEAN_LOG_KEY = "e.throughBeamSensorBoolean";
+    private static final String THROUGH_BEAM_RELAY_LOG_KEY = "e.throughBeamRelay";
+    private static final String LIMIT_SWITCH_RELAY_LOG_KEY = "e.limitSwitchRelay";
+
     private final AnalogInput throughBeamSensor;
     private final Talon motor;
     private final Encoder encoder;
@@ -20,16 +32,7 @@ public class ElevatorComponent
     private final Relay limitSwitchRelay;
     private final Relay throughBeamRelay;
 
-    public static final String MOTOR_POWER_LOG_KEY = "e.motorPower";
-    public static final String ENCODER_DISTANCE_LOG_KEY = "e.encoderDistance";
-    public static final String ENCODER_TICKS_LOG_KEY = "e.encoderTicks";
-    public static final String ENCODER_VELOCITY_LOG_KEY = "e.encoderVelocity";
-    public static final String TOP_LIMIT_SWITCH_LOG_KEY = "e.topLimitSwitch";
-    public static final String BOTTOM_LIMIT_SWITCH_LOG_KEY = "e.bottomLimitSwitch";
-    public static final String THROUGH_BEAM_SENSOR_ANALOG_LOG_KEY = "e.throughBeamAnalog";
-    public static final String THROUGH_BEAM_SENSOR_BOOLEAN_LOG_KEY = "e.throughBeamSensorBoolean";
-    public static final String THROUGH_BEAM_RELAY_LOG_KEY = "e.throughBeamRelay";
-    public static final String LIMIT_SWITCH_RELAY_LOG_KEY = "e.limitSwitchRelay";
+    private double encoderZeroOffset;
 
     public ElevatorComponent()
     {
@@ -48,6 +51,8 @@ public class ElevatorComponent
 
         this.throughBeamRelay = new Relay(ElectronicsConstants.ELEVATOR_THROUGH_BEAM_RELAY_CHANNEL, Relay.Direction.kForward);
         this.limitSwitchRelay = new Relay(ElectronicsConstants.ELEVATOR_LIMIT_SWITCH_RELAY_CHANNEL, Relay.Direction.kForward);
+
+        this.encoderZeroOffset = 0.0;
     }
 
     /**
@@ -84,6 +89,25 @@ public class ElevatorComponent
     }
 
     /**
+     * Sets the encoder zero offset
+     * @param encoderZeroOffset to apply
+     */
+    public void setEncoderZeroOffset(double encoderZeroOffset)
+    {
+        this.encoderZeroOffset = encoderZeroOffset;
+        SmartDashboardLogger.putNumber(ElevatorComponent.ENCODER_ZERO_OFFSET_LOG_KEY, encoderZeroOffset);
+    }
+
+    /**
+     * Gets the currently set encoder zero offset
+     * @return the encoder zero offset
+     */
+    public double getEncoderZeroOffset()
+    {
+        return this.encoderZeroOffset;
+    }
+
+    /**
      * Sets the power level of the elevator motor 
      * @param powerLevel value to set the power level to 
      */
@@ -99,8 +123,8 @@ public class ElevatorComponent
      */
     public double getThroughBeamVoltage()
     {
-        double value = throughBeamSensor.getVoltage();
-        SmartDashboardLogger.putNumber(THROUGH_BEAM_SENSOR_ANALOG_LOG_KEY, value);
+        double value = this.throughBeamSensor.getVoltage();
+        SmartDashboardLogger.putNumber(ElevatorComponent.THROUGH_BEAM_SENSOR_ANALOG_LOG_KEY, value);
         return value;
     }
 
@@ -110,8 +134,8 @@ public class ElevatorComponent
      */
     public boolean getThroughBeamBroken()
     {
-        boolean valueBool = (throughBeamSensor.getVoltage() < 2.5);
-        SmartDashboardLogger.putBoolean(THROUGH_BEAM_SENSOR_BOOLEAN_LOG_KEY, valueBool);
+        boolean valueBool = (this.throughBeamSensor.getVoltage() < 2.5);
+        SmartDashboardLogger.putBoolean(ElevatorComponent.THROUGH_BEAM_SENSOR_BOOLEAN_LOG_KEY, valueBool);
         return valueBool;
     }
 
@@ -141,11 +165,11 @@ public class ElevatorComponent
     {
         if (value)
         {
-            throughBeamRelay.set(Relay.Value.kOn);
+            this.throughBeamRelay.set(Relay.Value.kOn);
         }
         else
         {
-            throughBeamRelay.set(Relay.Value.kOff);
+            this.throughBeamRelay.set(Relay.Value.kOff);
         }
         SmartDashboardLogger.putBoolean(ElevatorComponent.THROUGH_BEAM_RELAY_LOG_KEY, value);
     }
@@ -154,11 +178,11 @@ public class ElevatorComponent
     {
         if (value)
         {
-            limitSwitchRelay.set(Relay.Value.kOn);
+            this.limitSwitchRelay.set(Relay.Value.kOn);
         }
         else
         {
-            limitSwitchRelay.set(Relay.Value.kOff);
+            this.limitSwitchRelay.set(Relay.Value.kOff);
         }
         SmartDashboardLogger.putBoolean(ElevatorComponent.LIMIT_SWITCH_RELAY_LOG_KEY, value);
     }

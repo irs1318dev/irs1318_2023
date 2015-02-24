@@ -1,51 +1,36 @@
 package org.usfirst.frc.team1318.robot.Autonomous.Tasks;
 
-import org.usfirst.frc.team1318.robot.HardwareConstants;
-import org.usfirst.frc.team1318.robot.Autonomous.AutonomousConstants;
 import org.usfirst.frc.team1318.robot.Autonomous.AutonomousControlData;
 import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
-import org.usfirst.frc.team1318.robot.Elevator.ElevatorComponent;
 
 /**
- * ElevatorFloorTask:
+ * ElevatorTimedLevelTask:
  * 
  * This task tells the elevator to go to a certain position until we detect that we have hit that position.
  * 
  * @author Will
  *
  */
-public class ElevatorLevelTask implements IAutonomousTask
+public class ElevatorTimedLevelTask extends TimedAutonomousTask implements IAutonomousTask
 {
-    private final ElevatorComponent elevatorComponent;
     private final int toteLevel;
     private final int baseLevel;
     private final boolean fast;
 
-    private boolean hasReachedLevel;
-
     /**
      * Initializes a new ElevatorFloorTask
-     * @param elevatorComponent to use to detect whether we have hit our bottom limit switch
+     * @param duration to perform the task in seconds
      * @param toteLevel - whether to go to 0, 1, 2, or 3 tote height.
      * @param baseLevel - whether to go to floor (0), scoring platform (1), or step (2)
      * @param fast indicates that we should switch into fast mode
      */
-    public ElevatorLevelTask(ElevatorComponent elevatorComponent, int toteLevel, int baseLevel, boolean fast)
+    public ElevatorTimedLevelTask(double duration, int toteLevel, int baseLevel, boolean fast)
     {
-        this.elevatorComponent = elevatorComponent;
+        super(duration);
 
         this.toteLevel = toteLevel;
         this.baseLevel = baseLevel;
         this.fast = fast;
-    }
-
-    /**
-     * Begin the current task
-     */
-    @Override
-    public void begin()
-    {
-        this.hasReachedLevel = false;
     }
 
     /**
@@ -55,8 +40,6 @@ public class ElevatorLevelTask implements IAutonomousTask
     @Override
     public void update(AutonomousControlData data)
     {
-        double expectedPosition = this.elevatorComponent.getEncoderZeroOffset();
-
         boolean tote0 = false;
         boolean tote1 = false;
         boolean tote2 = false;
@@ -64,22 +47,18 @@ public class ElevatorLevelTask implements IAutonomousTask
         switch (this.toteLevel)
         {
             case 0:
-                expectedPosition += HardwareConstants.ELEVATOR_0_TOTE_HEIGHT;
                 tote0 = true;
                 break;
 
             case 1:
-                expectedPosition += HardwareConstants.ELEVATOR_1_TOTE_HEIGHT;
                 tote1 = true;
                 break;
 
             case 2:
-                expectedPosition += HardwareConstants.ELEVATOR_2_TOTE_HEIGHT;
                 tote2 = true;
                 break;
 
             case 3:
-                expectedPosition += HardwareConstants.ELEVATOR_3_TOTE_HEIGHT;
                 tote3 = true;
                 break;
         }
@@ -90,7 +69,6 @@ public class ElevatorLevelTask implements IAutonomousTask
         switch (this.baseLevel)
         {
             case 0:
-                expectedPosition += HardwareConstants.ELEVATOR_FLOOR_HEIGHT;
                 floor = true;
                 break;
 
@@ -99,7 +77,6 @@ public class ElevatorLevelTask implements IAutonomousTask
                 break;
 
             case 2:
-                expectedPosition += HardwareConstants.ELEVATOR_STEP_HEIGHT;
                 step = true;
                 break;
         }
@@ -114,13 +91,6 @@ public class ElevatorLevelTask implements IAutonomousTask
         data.setElevatorMoveTo3Totes(tote3);
 
         data.setElevatorFastButton(this.fast);
-
-        double delta = this.elevatorComponent.getEncoderDistance() - expectedPosition;
-        if (delta < AutonomousConstants.ELEVATOR_POSITIONAL_ACCEPTABLE_DELTA
-            && delta > -AutonomousConstants.ELEVATOR_POSITIONAL_ACCEPTABLE_DELTA)
-        {
-            this.hasReachedLevel = true;
-        }
     }
 
     /**
@@ -159,15 +129,5 @@ public class ElevatorLevelTask implements IAutonomousTask
         data.setElevatorMoveTo3Totes(false);
 
         data.setElevatorFastButton(false);
-    }
-
-    /**
-     * Checks whether this task has completed, or whether it should continue being processed
-     * @return true if we should continue onto the next task, otherwise false (to keep processing this task)
-     */
-    @Override
-    public boolean hasCompleted()
-    {
-        return this.hasReachedLevel;
     }
 }
