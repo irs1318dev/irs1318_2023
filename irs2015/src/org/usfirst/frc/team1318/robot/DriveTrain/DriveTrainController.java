@@ -120,8 +120,8 @@ public class DriveTrainController implements IController
                     TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KI_DEFAULT,
                     TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KD_DEFAULT,
                     TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KF_DEFAULT,
-                    DriveTrainController.POWERLEVEL_MIN,
-                    DriveTrainController.POWERLEVEL_MAX);
+                    -TuningConstants.DRIVETRAIN_POSITIONAL_MIN_POWER_LEVEL,
+                    TuningConstants.DRIVETRAIN_POSITIONAL_MIN_POWER_LEVEL);
 
                 this.rightPID = new PIDHandler(
                     "dt.rightPID",
@@ -129,8 +129,8 @@ public class DriveTrainController implements IController
                     TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KI_DEFAULT,
                     TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KD_DEFAULT,
                     TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KF_DEFAULT,
-                    DriveTrainController.POWERLEVEL_MIN,
-                    DriveTrainController.POWERLEVEL_MAX);
+                    -TuningConstants.DRIVETRAIN_POSITIONAL_MIN_POWER_LEVEL,
+                    TuningConstants.DRIVETRAIN_POSITIONAL_MIN_POWER_LEVEL);
             }
             else
             {
@@ -141,8 +141,8 @@ public class DriveTrainController implements IController
                     TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KD_DEFAULT,
                     TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KF_DEFAULT,
                     TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KS_DEFAULT,
-                    DriveTrainController.POWERLEVEL_MIN,
-                    DriveTrainController.POWERLEVEL_MAX);
+                    -TuningConstants.DRIVETRAIN_VELOCITY_MIN_POWER_LEVEL,
+                    TuningConstants.DRIVETRAIN_VELOCITY_MIN_POWER_LEVEL);
 
                 this.rightPID = new PIDHandler(
                     "dt.rightPID",
@@ -151,8 +151,9 @@ public class DriveTrainController implements IController
                     TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KD_DEFAULT,
                     TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF_DEFAULT,
                     TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KS_DEFAULT,
-                    DriveTrainController.POWERLEVEL_MIN,
-                    DriveTrainController.POWERLEVEL_MAX);
+                    -TuningConstants.DRIVETRAIN_VELOCITY_MIN_POWER_LEVEL,
+                    TuningConstants.DRIVETRAIN_VELOCITY_MIN_POWER_LEVEL);
+                ;
             }
         }
     }

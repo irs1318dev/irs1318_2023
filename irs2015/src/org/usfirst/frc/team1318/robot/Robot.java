@@ -392,7 +392,7 @@ public class Robot extends IterativeRobot
                 new DriveTimedAutonomousTask(3.0, 0.0, 0.25),
                 new CollectToteTask(elevatorComponent)),
 
-            // Lift tote #3 while driving forward more slowly
+            // Lift tote #3 and start turning to the right.
             ConcurrentTask.AllTasks(
                 new SequentialTask(
                     new IAutonomousTask[]
@@ -400,7 +400,7 @@ public class Robot extends IterativeRobot
                         new ElevatorBottomTask(elevatorComponent, true),
                         new ElevatorLevelTask(1.0, 2, 0, true),
                     }),
-                new DriveTimedAutonomousTask(1.5, 0.0, 0.2)),
+                new DriveTimedAutonomousTask(1.5, 0.2, 0.2)),
 
             // Wait a second
             new WaitAutonomousTask(1.0),
