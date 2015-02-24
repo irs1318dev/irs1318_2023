@@ -111,7 +111,7 @@ public class UserDriver implements IDriver
     private SimpleButton elevatorUseSensors;
     private SimpleButton elevatorZeroEncoders;
     private SimpleButton elevatorSlowButton;
-    private SimpleButton elevatorFastButton;
+    private SimpleButton elevatorRegularButton;
 
     /**
      * Initializes a new UserDriver
@@ -160,7 +160,7 @@ public class UserDriver implements IDriver
         this.elevatorMoveToBottom = new SimpleButton();
         this.elevatorZeroEncoders = new SimpleButton();
         this.elevatorSlowButton = new SimpleButton();
-        this.elevatorFastButton = new SimpleButton();
+        this.elevatorRegularButton = new SimpleButton();
     }
 
     /**
@@ -218,7 +218,7 @@ public class UserDriver implements IDriver
         this.elevatorZeroEncoders.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_ZERO_ENCODERS));
         this.elevatorMoveToBottom.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_BOTTOM));
         this.elevatorSlowButton.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_SLOW_BUTTON));
-        this.elevatorFastButton.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_FAST_BUTTON));
+        this.elevatorRegularButton.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_REGULAR_BUTTON));
     }
 
     /**
@@ -466,7 +466,7 @@ public class UserDriver implements IDriver
     }
 
     @Override
-    public boolean getSlowElevatorButton()
+    public boolean getElevatorSlowButton()
     {
         boolean mode = this.elevatorSlowButton.isActivated();
         //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_SLOW_LOG_KEY, mode);
@@ -474,9 +474,17 @@ public class UserDriver implements IDriver
     }
 
     @Override
-    public boolean getFastElevatorButton()
+    public boolean getElevatorRegularSpeedButton()
     {
-        boolean mode = this.elevatorFastButton.isActivated();
+        boolean mode = this.elevatorRegularButton.isActivated();
+        //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_FAST_LOG_KEY, mode);
+        return mode;
+    }
+
+    @Override
+    public boolean getElevatorFastButton()
+    {
+        boolean mode = false;
         //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_FAST_LOG_KEY, mode);
         return mode;
     }

@@ -385,7 +385,7 @@ public class AutonomousDriver implements IDriver
     }
 
     @Override
-    public boolean getSlowElevatorButton()
+    public boolean getElevatorSlowButton()
     {
         boolean mode = this.controlData.getElevatorSlowButton();
         //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_SLOW_LOG_KEY, mode);
@@ -393,7 +393,15 @@ public class AutonomousDriver implements IDriver
     }
 
     @Override
-    public boolean getFastElevatorButton()
+    public boolean getElevatorRegularSpeedButton()
+    {
+        boolean mode = this.controlData.getElevatorRegularSpeedButton();
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_FAST_LOG_KEY, mode);
+        return mode;
+    }
+
+    @Override
+    public boolean getElevatorFastButton()
     {
         boolean mode = this.controlData.getElevatorFastButton();
         //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_FAST_LOG_KEY, mode);

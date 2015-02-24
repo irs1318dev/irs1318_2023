@@ -37,6 +37,7 @@ public class AutonomousControlData
     private boolean elevatorUseSensorsState;
     private boolean elevatorZeroEncodersState;
     private boolean elevatorSlowState;
+    private boolean elevatorRegularSpeedState;
     private boolean elevatorFastState;
 
     //Arm
@@ -375,6 +376,16 @@ public class AutonomousControlData
     public boolean getElevatorSlowButton()
     {
         return this.elevatorSlowState;
+    }
+
+    public void setElevatorRegularSpeedButton(boolean elevatorRegularSpeedState)
+    {
+        this.elevatorRegularSpeedState = elevatorRegularSpeedState;
+    }
+
+    public boolean getElevatorRegularSpeedButton()
+    {
+        return this.elevatorRegularSpeedState;
     }
 
     public void setElevatorFastButton(boolean elevatorFastState)

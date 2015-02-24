@@ -38,6 +38,7 @@ public class ElevatorController implements IController
     private boolean ignoreSensors;
 
     private boolean elevatorSlowMode;
+    private boolean elevatorFastMode;
 
     public ElevatorController(IDriver driver, ElevatorComponent component)
     {
@@ -60,6 +61,7 @@ public class ElevatorController implements IController
         this.containerMacroState = ContainerMacroStates.STATE_0;
 
         this.elevatorSlowMode = false;
+        this.elevatorFastMode = false;
     }
 
     @Override
@@ -77,16 +79,33 @@ public class ElevatorController implements IController
         boolean enforceNonNegative = false;
         double currentTime = this.timer.get();
 
-        //--> jello 
-        if (this.elevatorSlowMode && this.driver.getFastElevatorButton())
+        //--> jello/sprint
+        if (this.driver.getElevatorRegularSpeedButton())
         {
-            this.elevatorSlowMode = false;
-            this.createPIDHandler();
+            if (this.elevatorSlowMode || this.elevatorFastMode)
+            {
+                this.elevatorSlowMode = false;
+                this.elevatorFastMode = false;
+                this.createPIDHandler();
+            }
         }
-        else if (!this.elevatorSlowMode && this.driver.getSlowElevatorButton())
+        else if (this.driver.getElevatorFastButton())
         {
-            this.elevatorSlowMode = true;
-            this.createPIDHandler();
+            if (!this.elevatorFastMode || this.elevatorSlowMode)
+            {
+                this.elevatorSlowMode = false;
+                this.elevatorFastMode = true;
+                this.createPIDHandler();
+            }
+        }
+        else if (this.driver.getElevatorSlowButton())
+        {
+            if (this.elevatorFastMode || !this.elevatorSlowMode)
+            {
+                this.elevatorSlowMode = true;
+                this.elevatorFastMode = false;
+                this.createPIDHandler();
+            }
         }
 
         //--> handle enabling/disabling PID (enabling PID takes precedence)
@@ -458,8 +477,19 @@ public class ElevatorController implements IController
                     TuningConstants.ELEVATOR_POSITION_PID_KI_DEFAULT,
                     TuningConstants.ELEVATOR_POSITION_PID_KD_DEFAULT,
                     TuningConstants.ELEVATOR_POSITION_PID_KF_DEFAULT,
-                    -TuningConstants.ELEVATOR_MAX_POWER_LEVEL / 2,
-                    TuningConstants.ELEVATOR_MAX_POWER_LEVEL / 2);
+                    -TuningConstants.ELEVATOR_SLOW_MODE_MAX_POWER_LEVEL,
+                    TuningConstants.ELEVATOR_SLOW_MODE_MAX_POWER_LEVEL);
+            }
+            else if (this.elevatorFastMode)
+            {
+                this.pidHandler = new PIDHandler(
+                    "e.PID",
+                    TuningConstants.ELEVATOR_POSITION_PID_KP_DEFAULT,
+                    TuningConstants.ELEVATOR_POSITION_PID_KI_DEFAULT,
+                    TuningConstants.ELEVATOR_POSITION_PID_KD_DEFAULT,
+                    TuningConstants.ELEVATOR_POSITION_PID_KF_DEFAULT,
+                    -TuningConstants.ELEVATOR_FAST_MODE_MAX_POWER_LEVEL,
+                    TuningConstants.ELEVATOR_FAST_MODE_MAX_POWER_LEVEL);
             }
             else
             {

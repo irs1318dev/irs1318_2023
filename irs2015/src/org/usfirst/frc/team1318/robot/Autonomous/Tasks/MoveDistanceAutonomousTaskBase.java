@@ -80,9 +80,6 @@ public abstract class MoveDistanceAutonomousTaskBase implements IAutonomousTask
     @Override
     public void end(AutonomousControlData data)
     {
-        data.setDriveTrainLeftPosition(0.0);
-        data.setDriveTrainRightPosition(0.0);
-        data.setDriveTrainPositionMode(false);
     }
 
     /**

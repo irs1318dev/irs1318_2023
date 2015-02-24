@@ -172,9 +172,11 @@ public interface IDriver
      */
     public boolean getZeroElevatorEncoder();
 
-    public boolean getSlowElevatorButton();
+    public boolean getElevatorSlowButton();
 
-    public boolean getFastElevatorButton();
+    public boolean getElevatorRegularSpeedButton();
+
+    public boolean getElevatorFastButton();
 
     //===================================================== Arm =================================================================
     /**
