@@ -357,40 +357,55 @@ public class Robot extends IterativeRobot
         // Move forward and collect a tote 3 times, wait 2 seconds, then move elevator to bottom and unload tote.
         return new IAutonomousTask[]
         {
+            // Collect tote #1 while driving forward
             ConcurrentTask.AnyTasks(
                 new DriveTimedAutonomousTask(3.0, 0.0, 0.25),
                 new CollectToteTask(elevatorComponent)),
+
+            // Lift tote #1 while driving forward more slowly
             ConcurrentTask.AllTasks(
                 new SequentialTask(
                     new IAutonomousTask[]
                     {
-                        new ElevatorBottomTask(elevatorComponent, false),
+                        new ElevatorBottomTask(elevatorComponent, true),
                         new ElevatorLevelTask(1.0, 2, 0, true),
                     }),
                 new DriveTimedAutonomousTask(1.5, 0.0, 0.2)),
+
+            // Collect tote #2 while driving forward
             ConcurrentTask.AnyTasks(
                 new DriveTimedAutonomousTask(3.0, 0.0, 0.25),
                 new CollectToteTask(elevatorComponent)),
+
+            // Lift tote #2 while driving forward more slowly
             ConcurrentTask.AllTasks(
                 new SequentialTask(
                     new IAutonomousTask[]
                     {
-                        new ElevatorBottomTask(elevatorComponent, false),
+                        new ElevatorBottomTask(elevatorComponent, true),
                         new ElevatorLevelTask(1.0, 2, 0, true),
                     }),
                 new DriveTimedAutonomousTask(1.5, 0.0, 0.2)),
+
+            // Collect tote #3 while driving forward                
             ConcurrentTask.AnyTasks(
                 new DriveTimedAutonomousTask(3.0, 0.0, 0.25),
                 new CollectToteTask(elevatorComponent)),
+
+            // Lift tote #3 while driving forward more slowly
             ConcurrentTask.AllTasks(
                 new SequentialTask(
                     new IAutonomousTask[]
                     {
-                        new ElevatorBottomTask(elevatorComponent, false),
+                        new ElevatorBottomTask(elevatorComponent, true),
                         new ElevatorLevelTask(1.0, 2, 0, true),
                     }),
                 new DriveTimedAutonomousTask(1.5, 0.0, 0.2)),
+
+            // Wait a second
             new WaitAutonomousTask(1.0),
+
+            // Lower the elevator, and then spit out the totes while driving backwards slowly
             new ElevatorBottomTask(elevatorComponent, false),
             ConcurrentTask.AllTasks(
                 new IntakeTask(1.5, true),

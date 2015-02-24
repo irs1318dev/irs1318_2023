@@ -65,6 +65,6 @@ public class ElectronicsConstants
 
     //================================================== Autonomous ==============================================================
 
-    public static final int AUTONOMOUS_DIP_SWITCH_A = -1;
-    public static final int AUTONOMOUS_DIP_SWITCH_B = -1;
+    public static final int AUTONOMOUS_DIP_SWITCH_A = 8; // ??
+    public static final int AUTONOMOUS_DIP_SWITCH_B = 9; // ??
 }
