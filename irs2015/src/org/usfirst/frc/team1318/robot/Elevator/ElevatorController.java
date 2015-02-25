@@ -458,8 +458,8 @@ public class ElevatorController implements IController
                     TuningConstants.ELEVATOR_POSITION_PID_KI_DEFAULT,
                     TuningConstants.ELEVATOR_POSITION_PID_KD_DEFAULT,
                     TuningConstants.ELEVATOR_POSITION_PID_KF_DEFAULT,
-                    -TuningConstants.ELEVATOR_MAX_POWER_LEVEL / 2,
-                    TuningConstants.ELEVATOR_MAX_POWER_LEVEL / 2);
+                    -TuningConstants.ELEVATOR_MAX_POWER_LEVEL / 1.5,
+                    TuningConstants.ELEVATOR_MAX_POWER_LEVEL / 1.5);
             }
             else
             {

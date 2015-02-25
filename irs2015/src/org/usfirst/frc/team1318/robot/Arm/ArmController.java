@@ -143,7 +143,7 @@ public class ArmController implements IController
                 if (this.tiltState != null && this.tiltState == true)
                 {
                     //don't wait for tilt to extend
-                    this.continueTime = this.timer.get() + TuningConstants.ARM_SAFETY_WAIT;
+                    this.continueTime = this.timer.get();// + TuningConstants.ARM_SAFETY_WAIT;
                 }
                 else
                 {
