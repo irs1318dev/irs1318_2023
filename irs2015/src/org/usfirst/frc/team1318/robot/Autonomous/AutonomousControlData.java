@@ -18,6 +18,7 @@ public class AutonomousControlData
 
     //Elevator 
     private boolean elevatorContainerMacroState;
+    private boolean elevatorTotePickUpMacroState;
     private boolean elevatorSetStateToFloor;
     private boolean elevatorSetStateToPlatform;
     private boolean elevatorSetStateToStep;
@@ -35,6 +36,9 @@ public class AutonomousControlData
     private boolean elevatorIgnoreSensorsState;
     private boolean elevatorUseSensorsState;
     private boolean elevatorZeroEncodersState;
+    private boolean elevatorSlowState;
+    private boolean elevatorRegularSpeedState;
+    private boolean elevatorFastState;
 
     //Arm
     private boolean armMacroExtendState;
@@ -249,6 +253,16 @@ public class AutonomousControlData
         this.elevatorMoveTo3Totes = elevatorMoveTo3Totes;
     }
 
+    public boolean getElevatorTotePickUpMacroState()
+    {
+        return elevatorTotePickUpMacroState;
+    }
+
+    public void setElevatorTotePickUpMacroState(boolean elevatorTotePickUpMacroState)
+    {
+        this.elevatorTotePickUpMacroState = elevatorTotePickUpMacroState;
+    }
+
     public boolean getElevatorPIDOnState()
     {
         return this.elevatorPIDOnState;
@@ -304,7 +318,7 @@ public class AutonomousControlData
         return elevatorMoveToBottomState;
     }
 
-    public void setElebvatorMoveToBottomState(boolean elevatorMoveToBottomState)
+    public void setElevatorMoveToBottomState(boolean elevatorMoveToBottomState)
     {
         this.elevatorMoveToBottomState = elevatorMoveToBottomState;
     }
@@ -352,6 +366,36 @@ public class AutonomousControlData
     public boolean getElevatorZeroEncoderState()
     {
         return this.elevatorZeroEncodersState;
+    }
+
+    public void setElevatorSlowButton(boolean elevatorSlowState)
+    {
+        this.elevatorSlowState = elevatorSlowState;
+    }
+
+    public boolean getElevatorSlowButton()
+    {
+        return this.elevatorSlowState;
+    }
+
+    public void setElevatorRegularSpeedButton(boolean elevatorRegularSpeedState)
+    {
+        this.elevatorRegularSpeedState = elevatorRegularSpeedState;
+    }
+
+    public boolean getElevatorRegularSpeedButton()
+    {
+        return this.elevatorRegularSpeedState;
+    }
+
+    public void setElevatorFastButton(boolean elevatorFastState)
+    {
+        this.elevatorFastState = elevatorFastState;
+    }
+
+    public boolean getElevatorFastButton()
+    {
+        return this.elevatorFastState;
     }
 
     public void setArmMacroExtendState(boolean armMacroExtendState)
@@ -508,4 +552,5 @@ public class AutonomousControlData
     {
         this.intakeBackwardState = intakeBackwardState;
     }
+
 }

@@ -41,6 +41,8 @@ public class AutonomousDriver implements IDriver
     private static final String ELEVATOR_IGNORE_SENSORS_LOG_KEY = "a.elevatorIgnoreSensors";
     private static final String ELEVATOR_USE_SENSORS_LOG_KEY = "a.elevatorUseSensors";
     private static final String ELEVATOR_ZERO_ENCODERS_LOG_KEY = "a.elevatorZeroEncoders";
+    private static final String ELEVATOR_SLOW_LOG_KEY = "a.elevatorSlow";
+    private static final String ELEVATOR_FAST_LOG_KEY = "a.elevatorFast";
 
     //Arm 
     private static final String ARM_MACRO_EXTEND_STATE_LOG_KEY = "a.armMacroExtendState";
@@ -296,8 +298,9 @@ public class AutonomousDriver implements IDriver
     @Override
     public boolean getElevatorPickUpMacro()
     {
-        //TODO: implement 
-        return false;
+        boolean state = this.controlData.getElevatorTotePickUpMacroState();
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_PICK_UP_MACRO_LOG_KEY, state);
+        return state;
     }
 
     @Override
@@ -380,17 +383,27 @@ public class AutonomousDriver implements IDriver
     }
 
     @Override
-    public boolean getSlowElevatorButton()
+    public boolean getElevatorSlowButton()
     {
-        //TODO: add 
-        return false;
+        boolean mode = this.controlData.getElevatorSlowButton();
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_SLOW_LOG_KEY, mode);
+        return mode;
     }
 
     @Override
-    public boolean getFastElevatorButton()
+    public boolean getElevatorRegularSpeedButton()
     {
-        //TODO: add 
-        return false;
+        boolean mode = this.controlData.getElevatorRegularSpeedButton();
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_FAST_LOG_KEY, mode);
+        return mode;
+    }
+
+    @Override
+    public boolean getElevatorFastButton()
+    {
+        boolean mode = this.controlData.getElevatorFastButton();
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_FAST_LOG_KEY, mode);
+        return mode;
     }
 
     //===================================================== Arm =================================================================
@@ -537,6 +550,12 @@ public class AutonomousDriver implements IDriver
         boolean state = this.controlData.getIntakeBackwardState();
         //        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_BACKWARD_STATE_KEY, state);
         return state;
+    }
+
+    @Override
+    public boolean getIntakeMotorSameSpeed()
+    {
+        return false;
     }
 
 }

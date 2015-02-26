@@ -172,9 +172,11 @@ public interface IDriver
      */
     public boolean getZeroElevatorEncoder();
 
-    public boolean getSlowElevatorButton();
+    public boolean getElevatorSlowButton();
 
-    public boolean getFastElevatorButton();
+    public boolean getElevatorRegularSpeedButton();
+
+    public boolean getElevatorFastButton();
 
     //===================================================== Arm =================================================================
     /**
@@ -285,5 +287,7 @@ public interface IDriver
      * @return true for move forward, otherwise false 
      */
     public boolean getIntakeBackwardButton();
+
+    public boolean getIntakeMotorSameSpeed();
 
 }
