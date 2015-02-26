@@ -200,4 +200,10 @@ public class IntakeComponent
         this.rightTalon.set(velocity);
         SmartDashboardLogger.putNumber(IntakeComponent.INTAKE_MOTOR_SPEED_KEY, velocity);
     }
+
+    public void setIntakeMotorSameSpeed(double velocity)
+    {
+        this.leftTalon.set(velocity);
+        this.rightTalon.set(velocity);
+    }
 }

@@ -554,4 +554,10 @@ public class AutonomousDriver implements IDriver
         return state;
     }
 
+    @Override
+    public boolean getIntakeMotorSameSpeed()
+    {
+        return false;
+    }
+
 }

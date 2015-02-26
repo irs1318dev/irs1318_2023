@@ -52,13 +52,13 @@ public class JoystickButtonConstants
     public static final int ELEVATOR_PICK_UP_MACRO_BUTTON = 1;
     public static final int ELEVATOR_PID_ON = 12;
     public static final int ELEVATOR_PID_OFF = -14;
-    public static final int ELEVATOR_STOP_BUTTON = 15;
+    public static final int ELEVATOR_STOP_BUTTON = 16;
     public static final int ELEVATOR_UP_BUTTON = 1;
     public static final int ELEVATOR_DOWN_BUTTON = 6;
     public static final int ELEVATOR_MOVE_TO_BOTTOM = 11;
     public static final int ELEVATOR_IGNORE_SENSORS_BUTTON = 14;
     public static final int ELEVATOR_USE_SENSORS_BUTTON = 13;
-    public static final int ELEVATOR_ZERO_ENCODERS = 16;
+    public static final int ELEVATOR_ZERO_ENCODERS = 15;
     public static final int ELEVATOR_SLOW_BUTTON = 2;//5;
     public static final int ELEVATOR_REGULAR_BUTTON = 7;//10;
 

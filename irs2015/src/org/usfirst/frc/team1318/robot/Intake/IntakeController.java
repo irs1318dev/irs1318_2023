@@ -138,6 +138,7 @@ public class IntakeController implements IController
     private final IntakeComponent intake;
     private IDriver driver;
     private double motorSpeed;
+    private boolean moveSame;
 
     // state variables
     // true = outward(motor)/extending(piston), false = inward/retracting
@@ -153,6 +154,7 @@ public class IntakeController implements IController
         this.solenoidState = null;
         //        this.solenoidRightState = null;
         this.prevHoldButton = false;
+        this.moveSame = false;
     }
 
     @Override
@@ -168,10 +170,17 @@ public class IntakeController implements IController
         if (this.driver.getIntakeForwardButton())
         {
             this.motorSpeed = TuningConstants.INTAKE_MOTOR_SPEED;
+            moveSame = false;
         }
         else if (this.driver.getIntakeBackwardButton())
         {
             this.motorSpeed = -TuningConstants.INTAKE_MOTOR_SPEED;
+            moveSame = false;
+        }
+        else if (this.driver.getIntakeMotorSameSpeed())
+        {
+            this.motorSpeed = TuningConstants.INTAKE_MOTOR_SPEED;
+            this.moveSame = true;
         }
         else
         {
@@ -234,7 +243,14 @@ public class IntakeController implements IController
         //        {
         //            this.intake.setRightIntake(this.solenoidRightState);
         //        }
-        this.intake.setIntakeMotorSpeed(this.motorSpeed);
+        if (moveSame)
+        {
+            this.intake.setIntakeMotorSameSpeed(this.motorSpeed);
+        }
+        else
+        {
+            this.intake.setIntakeMotorSpeed(this.motorSpeed);
+        }
     }
 
     public void stop()
