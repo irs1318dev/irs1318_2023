@@ -60,7 +60,7 @@ public class JoystickButtonConstants
     public static final int ELEVATOR_USE_SENSORS_BUTTON = 13;
     public static final int ELEVATOR_ZERO_ENCODERS = 15;
     public static final int ELEVATOR_SLOW_BUTTON = 2;//5;
-    public static final int ELEVATOR_FAST_BUTTON = 7;//10;
+    public static final int ELEVATOR_REGULAR_BUTTON = 7;//10;
 
     //================================================== Arm ==============================================================
 
