@@ -53,7 +53,7 @@ public class TuningConstants
     public static final double DRIVETRAIN_MAX_POWER_LEVEL = 0.775; // max power level (velocity)
     public static final double DRIVETRAIN_MAX_POWER_POSITIONAL_NON_PID = 0.2; // max power level (positional, non-PID)
 
-    public static final double DRIVETRAIN_POSITIONAL_MAX_POWER_LEVEL = 0.4;
+    public static final double DRIVETRAIN_POSITIONAL_MAX_POWER_LEVEL = 0.6;
     public static final double DRIVETRAIN_VELOCITY_MAX_POWER_LEVEL = 1.0;
 
     public static final double DRIVETRAIN_REVERSE_RIGHT_SCALE_FACTOR = 1.15; //moving forwards

@@ -54,7 +54,7 @@ public class DriveTrainController implements IController
         if (!this.usePID || this.usePositionalMode)
         {
             this.usePID = true;
-            this.usePositionalMode = true;
+            this.usePositionalMode = false;
 
             this.createPIDHandler();
         }
