@@ -49,6 +49,17 @@ public class DriveTrainController implements IController
         this.driver = driver;
     }
 
+    public void setVelocityPIDMode()
+    {
+        if (!this.usePID || this.usePositionalMode)
+        {
+            this.usePID = true;
+            this.usePositionalMode = true;
+
+            this.createPIDHandler();
+        }
+    }
+
     /**
      * calculate the various outputs to use based on the inputs and apply them to the outputs for the relevant component
      */

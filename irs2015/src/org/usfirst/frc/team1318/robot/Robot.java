@@ -259,6 +259,9 @@ public class Robot extends IterativeRobot
 
         // we will run the compressor controller here because we should start it in advance...
         this.compressorController.update();
+
+        // by default we want to be in Velocity PID mode whenever we start (or switch between) a periodic mode
+        this.driveTrainController.setVelocityPIDMode();
     }
 
     /**
@@ -502,9 +505,9 @@ public class Robot extends IterativeRobot
                 new DriveTimedAutonomousTask(2.0, 0.0, 0.2)),
 
             // 3: Turn to the right side, spit out the container, and then turn back
-            new TurnAutonomousTask(90, driveTrainComponent),
+            new TurnAutonomousTask(45, driveTrainComponent),
             new IntakeTask(1.5, true),
-            new TurnAutonomousTask(-90, driveTrainComponent),
+            new TurnAutonomousTask(-45, driveTrainComponent),
 
             // 4: Drive forward until we have collected tote #2
             ConcurrentTask.AnyTasks(
@@ -521,9 +524,9 @@ public class Robot extends IterativeRobot
                 new DriveTimedAutonomousTask(2.0, 0.0, 0.2)),
 
             // 7: Turn to the right side, spit out the container, and then turn back
-            new TurnAutonomousTask(90, driveTrainComponent),
+            new TurnAutonomousTask(45, driveTrainComponent),
             new IntakeTask(1.5, true),
-            new TurnAutonomousTask(-90, driveTrainComponent),
+            new TurnAutonomousTask(-45, driveTrainComponent),
 
             // 8: Drive forward until we have collected tote #3
             ConcurrentTask.AnyTasks(

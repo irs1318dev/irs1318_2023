@@ -31,6 +31,7 @@ public class DriveForwardTask implements IAutonomousTask
     @Override
     public void update(AutonomousControlData data)
     {
+        data.setDriveTrainPositionMode(false);
         data.setDriveTrainYVelocity(.1);
     }
 

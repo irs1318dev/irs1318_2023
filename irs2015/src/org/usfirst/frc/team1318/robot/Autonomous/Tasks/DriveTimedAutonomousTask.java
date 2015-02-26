@@ -28,6 +28,7 @@ public class DriveTimedAutonomousTask extends TimedAutonomousTask
     @Override
     public void update(AutonomousControlData data)
     {
+        data.setDriveTrainPositionMode(false);
         data.setDriveTrainXVelocity(this.xVelocity);
         data.setDriveTrainYVelocity(this.yVelocity);
     }
