@@ -4,6 +4,9 @@ import org.usfirst.frc.team1318.robot.Arm.ArmComponent;
 import org.usfirst.frc.team1318.robot.Arm.ArmController;
 import org.usfirst.frc.team1318.robot.Autonomous.AutonomousDriver;
 import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ArmExtenderTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ArmTiltTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ArmTromboneTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.CollectToteTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ConcurrentTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveTimedAutonomousTask;
@@ -11,6 +14,7 @@ import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ElevatorBottomTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ElevatorLevelTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.IntakeTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.TurnAutonomousTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.WaitAutonomousTask;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 import org.usfirst.frc.team1318.robot.Compressor.CompressorComponent;
@@ -175,7 +179,8 @@ public class Robot extends IterativeRobot
     public void autonomousInit()
     {
         // Find desired autonomous routine.
-        IAutonomousTask[] autonomousRoutine = Robot.GetSampleRoutine(this.elevatorComponent, this.driveTrainComponent);
+        //        IAutonomousTask[] autonomousRoutine = Robot.GetSampleRoutine(this.elevatorComponent, this.driveTrainComponent);
+        IAutonomousTask[] autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine(this.driveTrainComponent);
         //        IAutonomousTask[] autonomousRoutine = Robot.GetCollectThreeTotesRoutine(this.elevatorComponent);
         //        IAutonomousTask[] autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine(this.driveTrainComponent);
 
@@ -340,25 +345,25 @@ public class Robot extends IterativeRobot
     //     * 
     //     * @return list of autonomous tasks
     //     */
-    //    private static IAutonomousTask[] GetRetrieveContainersFromStepRoutine(DriveTrainComponent driveTrainComponent)
-    //    {
-    //        // Drive backwards, extend the arm (extender, trombone, tilt), drive forwards, [retract the arm (tilt, trombone, extender)]
-    //        return new IAutonomousTask[]
-    //        {
-    //            new DriveTimedAutonomousTask(0.5, 0.0, -0.2),
-    //            //            new DriveDistanceAutonomousTask(-50, driveTrainComponent),
-    //            new ArmExtenderTask(1, true),
-    //            new ArmTromboneTask(1, true),
-    //            new ArmTiltTask(2, true),
-    //            new DriveTimedAutonomousTask(4.0, 0.0, 0.2),
-    //            new WaitAutonomousTask(0.5),
-    //            new DriveTimedAutonomousTask(0.5, 0, -0.2),
-    //            //            new DriveDistanceAutonomousTask(100, driveTrainComponent)
-    //            new ArmTiltTask(1, false),
-    //            new ArmTromboneTask(1, false),
-    //            new ArmExtenderTask(1, false),
-    //        };
-    //    }
+    private static IAutonomousTask[] GetRetrieveContainersFromStepRoutine(DriveTrainComponent driveTrainComponent)
+    {
+        // Drive backwards, extend the arm (extender, trombone, tilt), drive forwards, [retract the arm (tilt, trombone, extender)]
+        return new IAutonomousTask[]
+        {
+            new DriveTimedAutonomousTask(0.5, 0.0, -0.2),
+            //            new DriveDistanceAutonomousTask(-50, driveTrainComponent),
+            new ArmExtenderTask(1, true),
+            //            new ArmTromboneTask(1, true),
+            new ArmTiltTask(2, true),
+            new DriveTimedAutonomousTask(2.0, 0.0, 0.32),
+            new WaitAutonomousTask(0.3),
+            new DriveTimedAutonomousTask(0.7, 0, -0.2),
+            //            new DriveDistanceAutonomousTask(100, driveTrainComponent)
+            new ArmTiltTask(1, false),
+            new ArmTromboneTask(1, false),
+            new ArmExtenderTask(1, false),
+        };
+    }
 
     //
     //    /**

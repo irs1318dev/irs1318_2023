@@ -636,4 +636,10 @@ public class UserDriver implements IDriver
         //        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_BACKWARD_STATE_KEY, mode);
         return mode;
     }
+
+    @Override
+    public boolean getIntakeMotorSameSpeed()
+    {
+        return this.joystickDriver.getRawButton(8);
+    }
 }
