@@ -9,7 +9,6 @@ import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ArmTiltTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ArmTromboneTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.CollectToteTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ConcurrentTask;
-import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveDistanceAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveTimedAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ElevatorBottomTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ElevatorLevelTask;
@@ -184,19 +183,22 @@ public class Robot extends IterativeRobot
         //        IAutonomousTask[] autonomousRoutine = Robot.GetSampleRoutine(this.elevatorComponent, this.driveTrainComponent);
         //        IAutonomousTask[] autonomousRoutine = Robot.GetMoveForwardRoutine(this.driveTrainComponent);
         //        IAutonomousTask[] autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine(this.driveTrainComponent);
+
         IAutonomousTask[] autonomousRoutine = Robot.GetContainerlessCollectThreeTotesRoutine(this.elevatorComponent);
+        //        IAutonomousTask[] autonomousRoutine = Robot.GetFillerRoutine();
+
         //        IAutonomousTask[] autonomousRoutine = Robot.GetPushContainersCollectThreeTotesRoutine(this.elevatorComponent);
         //        IAutonomousTask[] autonomousRoutine = Robot.GetSpitContainersCollectThreeTotesRoutine(this.elevatorComponent, this.driveTrainComponent);
 
         //        int routineSelection = 0;
-        //        DigitalInput dipSwitchOne = new DigitalInput(ElectronicsConstants.AUTONOMOUS_DIP_SWITCH_A);
-        //        DigitalInput dipSwitchTwo = new DigitalInput(ElectronicsConstants.AUTONOMOUS_DIP_SWITCH_B);
-        //        if (dipSwitchOne.get())
+        //        DigitalInput dipSwitchA = new DigitalInput(ElectronicsConstants.AUTONOMOUS_DIP_SWITCH_A);
+        //        DigitalInput dipSwitchB = new DigitalInput(ElectronicsConstants.AUTONOMOUS_DIP_SWITCH_B);
+        //        if (dipSwitchA.get())
         //        {
         //            routineSelection += 1;
         //        }
         //
-        //        if (dipSwitchTwo.get())
+        //        if (dipSwitchB.get())
         //        {
         //            routineSelection += 2;
         //        }
@@ -205,19 +207,19 @@ public class Robot extends IterativeRobot
         //        switch (routineSelection)
         //        {
         //            case 0:
-        //                autonomousRoutine = Robot.GetDriveForwardRoutine();
+        //                autonomousRoutine = Robot.GetContainerlessCollectThreeTotesRoutine(this.elevatorComponent);
         //                break;
         //
         //            case 1:
-        //                autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine();
+        //                autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine(this.driveTrainComponent);
         //                break;
         //
         //            case 2:
-        //                autonomousRoutine = Robot.GetCollectThreeTotesRoutine(this.elevatorComponent);
+        //                autonomousRoutine = Robot.GetMoveForwardRoutine(this.driveTrainComponent);
         //                break;
         //
         //            default:
-        //                autonomousRoutine = Robot.GetSampleRoutine(this.elevatorComponent, this.driveTrainComponent);
+        //                autonomousRoutine = Robot.GetFillerRoutine();
         //                break;
         //        }
 
@@ -326,7 +328,8 @@ public class Robot extends IterativeRobot
     {
         return new IAutonomousTask[]
         {
-            new DriveDistanceAutonomousTask(10 * 12 * 2.54, driveTrainComponent),
+            //            new DriveDistanceAutonomousTask(10 * 12 * 2.54, driveTrainComponent),
+            new DriveTimedAutonomousTask(2.0, 0.0, 0.32)
         };
     }
 
@@ -352,6 +355,14 @@ public class Robot extends IterativeRobot
             new ArmTiltTask(1, false),
             new ArmTromboneTask(1, false),
             new ArmExtenderTask(1, false),
+        };
+    }
+
+    private static IAutonomousTask[] GetFillerRoutine()
+    {
+        return new IAutonomousTask[]
+        {
+            new WaitAutonomousTask(0)
         };
     }
 

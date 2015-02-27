@@ -36,14 +36,14 @@ public class JoystickButtonConstants
 
     //================================================== DriveTrain ==============================================================
 
-    public static final int DRIVETRAIN_SIMPLE_BUTTON = -1;
+    //    public static final int DRIVETRAIN_SIMPLE_BUTTON = -1;
 
     //================================================== Elevator ==============================================================
 
-    public static final int ELEVATOR_CONTAINER_MACRO_BUTTON = -1;
+    //    public static final int ELEVATOR_CONTAINER_MACRO_BUTTON = -1;
 
     public static final int ELEVATOR_SET_STAE_TO_FLOOR_BUTTON = 12;
-    public static final int ELEVATOR_SET_STATE_TO_PLATFORM_BUTTON = -1;
+    //    public static final int ELEVATOR_SET_STATE_TO_PLATFORM_BUTTON = -1;
     public static final int ELEVATOR_SET_STATE_TO_STEP_BUTTON = 10;
     public static final int ELEVATOR_MOVE_TO_0_TOTES_BUTTON = 2;
     public static final int ELEVATOR_MOVE_TO_1_TOTE_BUTTON = 11;
@@ -51,7 +51,7 @@ public class JoystickButtonConstants
     public static final int ELEVATOR_MOVE_TO_3_TOTES_BUTTON = 7;
     public static final int ELEVATOR_PICK_UP_MACRO_BUTTON = 1;
     public static final int ELEVATOR_PID_ON = 12;
-    public static final int ELEVATOR_PID_OFF = -14;
+    //    public static final int ELEVATOR_PID_OFF = -1;
     public static final int ELEVATOR_STOP_BUTTON = 16;
     public static final int ELEVATOR_UP_BUTTON = 1;
     public static final int ELEVATOR_DOWN_BUTTON = 6;
@@ -64,8 +64,8 @@ public class JoystickButtonConstants
 
     //================================================== Arm ==============================================================
 
-    public static final int ARM_MACRO_EXTEND_BUTTON = -1;
-    public static final int ARM_MACRO_RETRACT_BUTTON = -1;
+    //    public static final int ARM_MACRO_EXTEND_BUTTON = -1;
+    //    public static final int ARM_MACRO_RETRACT_BUTTON = -1;
     public static final int ARM_EXTENDER_EXTEND_BUTTON = 3;//2;
     public static final int ARM_EXTENDER_RETRACT_BUTTON = 8;//7;
     public static final int ARM_TILT_EXTEND_BUTTON = 9;//8;
@@ -76,13 +76,13 @@ public class JoystickButtonConstants
 
     //================================================== Intake ==============================================================
 
-    public static final int INTAKE_UP_BUTTON = -1;
-    public static final int INTAKE_DOWN_BUTTON = -1;
+    //    public static final int INTAKE_UP_BUTTON = -1;
+    //    public static final int INTAKE_DOWN_BUTTON = -1;
     public static final int INTAKE_DOWN_HOLD_BUTTON = 4;
-    public static final int INTAKE_RIGHT_EXTEND_OVERRIDE = -5;
-    public static final int INTAKE_RIGHT_RETRACT_OVERRIDE = -10;
-    public static final int INTAKE_LEFT_EXTEND_OVERRIDE = -5;
-    public static final int INTAKE_LEFT_RETRACT_OVERRIDE = -10;
+    //    public static final int INTAKE_RIGHT_EXTEND_OVERRIDE = -1;
+    //    public static final int INTAKE_RIGHT_RETRACT_OVERRIDE = -1;
+    //    public static final int INTAKE_LEFT_EXTEND_OVERRIDE = -1;
+    //    public static final int INTAKE_LEFT_RETRACT_OVERRIDE = -1;
     public static final int INTAKE_FORWARD_BUTTON = 3;
     public static final int INTAKE_BACKWARD_BUTTON = 5;
 }
