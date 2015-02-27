@@ -29,6 +29,7 @@ import org.usfirst.frc.team1318.robot.Intake.IntakeComponent;
 import org.usfirst.frc.team1318.robot.Intake.IntakeController;
 import org.usfirst.frc.team1318.robot.UserInterface.UserDriver;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -85,6 +86,9 @@ public class Robot extends IterativeRobot
     private IntakeComponent intakeComponent;
     private IntakeController intakeController;
 
+    DigitalInput dipSwitchA;
+    DigitalInput dipSwitchB;
+
     // Position manager - holds position information relative to our starting point
     private PositionManager position;
 
@@ -126,6 +130,9 @@ public class Robot extends IterativeRobot
         this.autonomousRoutineChooser.addObject("Drive In Square Positional", 1);
         this.autonomousRoutineChooser.addObject("Drive Forward", 2);
         SmartDashboard.putData(Robot.AUTONOMOUS_ROUTINE_PREFERENCE_KEY, this.autonomousRoutineChooser);
+
+        dipSwitchA = new DigitalInput(ElectronicsConstants.AUTONOMOUS_DIP_SWITCH_A);
+        dipSwitchB = new DigitalInput(ElectronicsConstants.AUTONOMOUS_DIP_SWITCH_B);
     }
 
     /**
@@ -184,44 +191,42 @@ public class Robot extends IterativeRobot
         //        IAutonomousTask[] autonomousRoutine = Robot.GetMoveForwardRoutine(this.driveTrainComponent);
         //        IAutonomousTask[] autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine(this.driveTrainComponent);
 
-        IAutonomousTask[] autonomousRoutine = Robot.GetContainerlessCollectThreeTotesRoutine(this.elevatorComponent);
-        //        IAutonomousTask[] autonomousRoutine = Robot.GetFillerRoutine();
+        //        IAutonomousTask[] autonomousRoutine = Robot.GetContainerlessCollectThreeTotesRoutine(this.elevatorComponent);
+        IAutonomousTask[] autonomousRoutine = Robot.GetFillerRoutine();
 
         //        IAutonomousTask[] autonomousRoutine = Robot.GetPushContainersCollectThreeTotesRoutine(this.elevatorComponent);
         //        IAutonomousTask[] autonomousRoutine = Robot.GetSpitContainersCollectThreeTotesRoutine(this.elevatorComponent, this.driveTrainComponent);
 
-        //        int routineSelection = 0;
-        //        DigitalInput dipSwitchA = new DigitalInput(ElectronicsConstants.AUTONOMOUS_DIP_SWITCH_A);
-        //        DigitalInput dipSwitchB = new DigitalInput(ElectronicsConstants.AUTONOMOUS_DIP_SWITCH_B);
-        //        if (dipSwitchA.get())
-        //        {
-        //            routineSelection += 1;
-        //        }
-        //
-        //        if (dipSwitchB.get())
-        //        {
-        //            routineSelection += 2;
-        //        }
-        //
-        //        // select autonomous routine based on setting in SmartDashboard
-        //        switch (routineSelection)
-        //        {
-        //            case 0:
-        //                autonomousRoutine = Robot.GetContainerlessCollectThreeTotesRoutine(this.elevatorComponent);
-        //                break;
-        //
-        //            case 1:
-        //                autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine(this.driveTrainComponent);
-        //                break;
-        //
-        //            case 2:
-        //                autonomousRoutine = Robot.GetMoveForwardRoutine(this.driveTrainComponent);
-        //                break;
-        //
-        //            default:
-        //                autonomousRoutine = Robot.GetFillerRoutine();
-        //                break;
-        //        }
+        int routineSelection = 0;
+        if (dipSwitchA.get())
+        {
+            routineSelection += 1;
+        }
+
+        if (dipSwitchB.get())
+        {
+            routineSelection += 2;
+        }
+
+        // select autonomous routine based on setting in SmartDashboard
+        switch (routineSelection)
+        {
+            case 0:
+                autonomousRoutine = Robot.GetContainerlessCollectThreeTotesRoutine(this.elevatorComponent);
+                break;
+
+            case 1:
+                autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine(this.driveTrainComponent);
+                break;
+
+            case 2:
+                autonomousRoutine = Robot.GetMoveForwardRoutine(this.driveTrainComponent);
+                break;
+
+            default:
+                autonomousRoutine = Robot.GetFillerRoutine();
+                break;
+        }
 
         // create autonomous driver based on our desired routine
         this.driver = new AutonomousDriver(autonomousRoutine);
