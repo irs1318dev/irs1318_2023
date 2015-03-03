@@ -193,8 +193,8 @@ public class DriveTrainController implements IController
 
         // get the X and Y values from the operator.  We expect these to be between -1.0 and 1.0,
         // with this value representing the forward velocity percentage and right turn percentage (of max speed)
-        double xVelocity = this.driver.getDriveTrainYVelocity();
-        double yVelocity = this.driver.getDriveTrainXVelocity();
+        double xVelocity = this.driver.getDriveTrainXVelocity();
+        double yVelocity = this.driver.getDriveTrainYVelocity();
 
         // adjust for joystick deadzone
         xVelocity = this.adjustForDeadZone(xVelocity, TuningConstants.DRIVETRAIN_X_DEAD_ZONE);
@@ -316,8 +316,8 @@ public class DriveTrainController implements IController
             double K3 = K1;
             double K4 = -K2;
 
-            leftVelocityGoal = (K1 * xVelocity) + (K2 * yVelocity);
-            rightVelocityGoal = (K3 * xVelocity) + (K4 * yVelocity);
+            leftVelocityGoal = (K1 * yVelocity) + (K2 * xVelocity);
+            rightVelocityGoal = (K3 * yVelocity) + (K4 * xVelocity);
         }
 
         // ensure that our algorithms are correct and don't give values outside
