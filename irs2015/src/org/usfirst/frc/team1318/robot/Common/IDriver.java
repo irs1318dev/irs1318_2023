@@ -288,6 +288,5 @@ public interface IDriver
      */
     public boolean getIntakeBackwardButton();
 
-    public boolean getIntakeMotorSameSpeed();
-
+    public boolean getIntakeJitterButton();
 }

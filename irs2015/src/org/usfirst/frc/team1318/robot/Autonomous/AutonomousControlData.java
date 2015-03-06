@@ -59,6 +59,7 @@ public class AutonomousControlData
     private boolean intakeLeftRetractOverrideState;
     private boolean intakeForwardState;
     private boolean intakeBackwardState;
+    private boolean intakeJitterState;
 
     /**
      * Initializes a new AutonomousControlData
@@ -111,6 +112,7 @@ public class AutonomousControlData
         this.intakeLeftRetractOverrideState = false;
         this.intakeForwardState = false;
         this.intakeBackwardState = false;
+        this.intakeJitterState = false;
     }
 
     public double getDriveTrainXVelocity()
@@ -551,6 +553,16 @@ public class AutonomousControlData
     public void setIntakeBackwardState(boolean intakeBackwardState)
     {
         this.intakeBackwardState = intakeBackwardState;
+    }
+
+    public boolean getIntakeJitterState()
+    {
+        return this.intakeJitterState;
+    }
+
+    public void setIntakeJitterState(boolean intakeJitterState)
+    {
+        this.intakeJitterState = intakeJitterState;
     }
 
 }

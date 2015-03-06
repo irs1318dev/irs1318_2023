@@ -135,16 +135,19 @@ import org.usfirst.frc.team1318.robot.Common.IDriver;
 
 public class IntakeController implements IController
 {
+    private static final int JITTER_DURATION = 4;
     private final IntakeComponent intake;
     private IDriver driver;
     private double motorSpeed;
-    private boolean moveSame;
+    //    private boolean moveSame;
 
     // state variables
     // true = outward(motor)/extending(piston), false = inward/retracting
     private Boolean solenoidState;
     //    private Boolean solenoidRightState;
     private boolean prevHoldButton;
+
+    private Integer jitterCount;
 
     public IntakeController(IDriver operator, IntakeComponent intake)
     {
@@ -154,7 +157,9 @@ public class IntakeController implements IController
         this.solenoidState = null;
         //        this.solenoidRightState = null;
         this.prevHoldButton = false;
-        this.moveSame = false;
+        //        this.moveSame = false;
+
+        this.jitterCount = null;
     }
 
     @Override
@@ -170,20 +175,34 @@ public class IntakeController implements IController
         if (this.driver.getIntakeForwardButton())
         {
             this.motorSpeed = TuningConstants.INTAKE_MOTOR_SPEED;
-            moveSame = false;
+            this.jitterCount = null;
+            //            moveSame = false;
         }
         else if (this.driver.getIntakeBackwardButton())
         {
             this.motorSpeed = -TuningConstants.INTAKE_MOTOR_SPEED;
-            moveSame = false;
+            this.jitterCount = null;
+            //            moveSame = false;
         }
-        else if (this.driver.getIntakeMotorSameSpeed())
+        else if (this.driver.getIntakeJitterButton())
         {
-            this.motorSpeed = TuningConstants.INTAKE_MOTOR_SPEED;
-            this.moveSame = true;
+            if (this.jitterCount == null)
+            {
+                this.jitterCount = 0;
+                this.motorSpeed = 1.0; //TuningConstants.INTAKE_MOTOR_SPEED;
+            }
+
+            if (this.jitterCount > IntakeController.JITTER_DURATION)
+            {
+                this.motorSpeed = -this.motorSpeed;
+                this.jitterCount = 0;
+            }
+
+            this.jitterCount++;
         }
         else
         {
+            this.jitterCount = null;
             this.motorSpeed = 0;
         }
 
@@ -243,14 +262,14 @@ public class IntakeController implements IController
         //        {
         //            this.intake.setRightIntake(this.solenoidRightState);
         //        }
-        if (moveSame)
-        {
-            this.intake.setIntakeMotorSameSpeed(this.motorSpeed);
-        }
-        else
-        {
-            this.intake.setIntakeMotorSpeed(this.motorSpeed);
-        }
+        //        if (moveSame)
+        //        {
+        //            this.intake.setIntakeMotorSameSpeed(this.motorSpeed);
+        //        }
+        //        else
+        //        {
+        this.intake.setIntakeMotorSpeed(this.motorSpeed);
+        //        }
     }
 
     public void stop()

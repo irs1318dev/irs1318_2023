@@ -555,9 +555,10 @@ public class AutonomousDriver implements IDriver
     }
 
     @Override
-    public boolean getIntakeMotorSameSpeed()
+    public boolean getIntakeJitterButton()
     {
-        return false;
+        boolean state = this.controlData.getIntakeJitterState();
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_BACKWARD_STATE_KEY, state);
+        return state;
     }
-
 }

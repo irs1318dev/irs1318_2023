@@ -638,8 +638,8 @@ public class UserDriver implements IDriver
     }
 
     @Override
-    public boolean getIntakeMotorSameSpeed()
+    public boolean getIntakeJitterButton()
     {
-        return this.joystickDriver.getRawButton(8);
+        return this.joystickDriver.getRawButton(JoystickButtonConstants.INTAKE_JITTER_BUTTON);
     }
 }
