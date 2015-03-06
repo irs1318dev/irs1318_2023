@@ -1,7 +1,8 @@
 package org.usfirst.frc.team1318.robot.Autonomous;
 
-import org.usfirst.frc.team1318.robot.Autonomous.Tasks.OrderedTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.SequentialTask;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
+import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
 /**
  * Driver for autonomous mode.  Autonomous driver acts as the operator of the robot,
@@ -31,6 +32,7 @@ public class AutonomousDriver implements IDriver
     private static final String ELEVATOR_MOVE_TO_1_TOTE_LOG_KEY = "a.elevatorHeight4";
     private static final String ELEVATOR_MOVE_TO_2_TOTES_LOG_KEY = "a.elevatorHeight5";
     private static final String ELEVATOR_MOVE_TO_3_TOTES_LOG_KEY = "a.elevatorHeight6";
+    private static final String ELEVATOR_PICK_UP_MACRO_LOG_KEY = "a.elevatorPickUpMacro";
     private static final String ELEVATOR_PID_ON_STATE_LOG_KEY = "a.elevatorPIDOnState";
     private static final String ELEVATOR_PID_OFF_STATE_LOG_KEY = "a.elevatorPIDOffState";
     private static final String ELEVATOR_STOP_STATE_LOG_KEY = "a.elevatorStop";
@@ -94,7 +96,7 @@ public class AutonomousDriver implements IDriver
         {
             if (autonomousTasks.length > 1)
             {
-                singleTask = new OrderedTask(autonomousTasks);
+                singleTask = new SequentialTask(autonomousTasks);
             }
             else
             {
@@ -123,7 +125,7 @@ public class AutonomousDriver implements IDriver
                 this.hasBegun = true;
             }
 
-            if (!this.autonomousTask.shouldContinue())
+            if (this.autonomousTask.hasCompleted())
             {
                 // if we shouldn't continue, end the task
                 this.autonomousTask.end(this.controlData);
@@ -299,7 +301,7 @@ public class AutonomousDriver implements IDriver
     public boolean getElevatorPickUpMacro()
     {
         boolean state = this.controlData.getElevatorTotePickUpMacroState();
-        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_PICK_UP_MACRO_LOG_KEY, state);
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_PICK_UP_MACRO_LOG_KEY, state);
         return state;
     }
 

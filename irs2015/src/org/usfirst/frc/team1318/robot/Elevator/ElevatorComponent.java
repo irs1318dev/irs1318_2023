@@ -123,9 +123,8 @@ public class ElevatorComponent
      */
     public double getThroughBeamVoltage()
     {
-        //        double value = throughBeamSensor.getVoltage();
-        double value = 0;
-        SmartDashboardLogger.putNumber(THROUGH_BEAM_SENSOR_ANALOG_LOG_KEY, value);
+        double value = this.throughBeamSensor.getVoltage();
+        SmartDashboardLogger.putNumber(ElevatorComponent.THROUGH_BEAM_SENSOR_ANALOG_LOG_KEY, value);
         return value;
     }
 

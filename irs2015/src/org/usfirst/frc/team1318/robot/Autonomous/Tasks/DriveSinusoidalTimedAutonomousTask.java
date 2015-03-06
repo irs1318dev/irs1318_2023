@@ -2,23 +2,26 @@ package org.usfirst.frc.team1318.robot.Autonomous.Tasks;
 
 import org.usfirst.frc.team1318.robot.Autonomous.AutonomousControlData;
 
-public class DriveTimedAutonomousTask extends TimedAutonomousTask
+public class DriveSinusoidalTimedAutonomousTask extends TimedAutonomousTask
 {
-    private final double xVelocity;
     private final double yVelocity;
+    private final double magnitude;
+    private final double rightMult;
 
     /**
-     * Initializes a new DriveTimedAutonomousTask
+     * Initializes a new DriveSinusoidalTimedAutonomousTask
      * @param duration to perform the task in seconds
-     * @param xVelocity to apply to the driveTrain
      * @param yVelocity to apply to the driveTrain
+     * @param magnitude of the sine wave to use for X velocity
+     * @param rightMulti multiplier to use for the right side
      */
-    public DriveTimedAutonomousTask(double duration, double xVelocity, double yVelocity)
+    public DriveSinusoidalTimedAutonomousTask(double duration, double yVelocity, double magnitude, double rightMult)
     {
         super(duration);
 
-        this.xVelocity = xVelocity;
         this.yVelocity = yVelocity;
+        this.magnitude = magnitude;
+        this.rightMult = rightMult;
     }
 
     /**
@@ -28,8 +31,26 @@ public class DriveTimedAutonomousTask extends TimedAutonomousTask
     @Override
     public void update(AutonomousControlData data)
     {
+        // calculate how far through our duration we are (as a percentage)
+        double percentageTime = (this.timer.get() - this.startTime) / this.duration;
+        if (percentageTime > 1.0)
+        {
+            percentageTime = 1.0;
+        }
+        else if (percentageTime < 0.0)
+        {
+            percentageTime = 0.0;
+        }
+
+        // apply x velocity based on how far through our duration we are 
+        double xVelocity = this.magnitude * Math.sin(2 * Math.PI * percentageTime);
+        if (xVelocity > 0.0)
+        {
+            xVelocity *= this.rightMult;
+        }
+
         data.setDriveTrainPositionMode(false);
-        data.setDriveTrainXVelocity(this.xVelocity);
+        data.setDriveTrainXVelocity(xVelocity);
         data.setDriveTrainYVelocity(this.yVelocity);
     }
 
