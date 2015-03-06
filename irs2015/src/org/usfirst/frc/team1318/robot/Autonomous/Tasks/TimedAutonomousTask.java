@@ -13,10 +13,9 @@ import edu.wpi.first.wpilibj.Timer;
  */
 public abstract class TimedAutonomousTask implements IAutonomousTask
 {
-    private final double duration;
-
-    private final Timer timer;
-    private Double startTime;
+    protected final double duration;
+    protected final Timer timer;
+    protected Double startTime;
 
     /**
      * Initializes a new TimedAutonomousTask
@@ -26,7 +25,6 @@ public abstract class TimedAutonomousTask implements IAutonomousTask
     {
         this.duration = duration;
         this.timer = new Timer();
-
         this.startTime = null;
     }
 
