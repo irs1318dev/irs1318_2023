@@ -212,11 +212,11 @@ public class Robot extends IterativeRobot
         switch (routineSelection)
         {
             case 0:
-                autonomousRoutine = Robot.GetContainerlessCollectThreeTotesRoutine(this.elevatorComponent);
+                autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine(this.driveTrainComponent);
                 break;
 
             case 1:
-                autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine(this.driveTrainComponent);
+                autonomousRoutine = Robot.GetContainerlessCollectThreeTotesRoutine(this.elevatorComponent);
                 break;
 
             case 2:

@@ -196,6 +196,10 @@ public class IntakeComponent
     */
     public void setIntakeMotorSpeed(double velocity)
     {
+        if (velocity < 0)
+        {
+            velocity *= 0.68;
+        }
         this.leftTalon.set(-velocity);
         this.rightTalon.set(velocity);
         SmartDashboardLogger.putNumber(IntakeComponent.INTAKE_MOTOR_SPEED_KEY, velocity);
