@@ -49,14 +49,25 @@ public class DriveTrainController implements IController
         this.driver = driver;
     }
 
+    public void setVelocityPIDMode()
+    {
+        if (!this.usePID || this.usePositionalMode)
+        {
+            this.usePID = true;
+            this.usePositionalMode = false;
+
+            this.createPIDHandler();
+        }
+    }
+
     /**
      * calculate the various outputs to use based on the inputs and apply them to the outputs for the relevant component
      */
     @Override
     public void update()
     {
-        component.getProximitySensorFront();
-        component.getProximitySensorBack();
+        this.component.getProximitySensorFront();
+        this.component.getProximitySensorBack();
 
         // check our desired PID mode
         boolean newUsePositionalMode = this.driver.getDriveTrainPositionMode();
@@ -120,8 +131,8 @@ public class DriveTrainController implements IController
                     TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KI_DEFAULT,
                     TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KD_DEFAULT,
                     TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KF_DEFAULT,
-                    DriveTrainController.POWERLEVEL_MIN,
-                    DriveTrainController.POWERLEVEL_MAX);
+                    -TuningConstants.DRIVETRAIN_POSITIONAL_MAX_POWER_LEVEL,
+                    TuningConstants.DRIVETRAIN_POSITIONAL_MAX_POWER_LEVEL);
 
                 this.rightPID = new PIDHandler(
                     "dt.rightPID",
@@ -129,8 +140,8 @@ public class DriveTrainController implements IController
                     TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KI_DEFAULT,
                     TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KD_DEFAULT,
                     TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KF_DEFAULT,
-                    DriveTrainController.POWERLEVEL_MIN,
-                    DriveTrainController.POWERLEVEL_MAX);
+                    -TuningConstants.DRIVETRAIN_POSITIONAL_MAX_POWER_LEVEL,
+                    TuningConstants.DRIVETRAIN_POSITIONAL_MAX_POWER_LEVEL);
             }
             else
             {
@@ -141,8 +152,8 @@ public class DriveTrainController implements IController
                     TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KD_DEFAULT,
                     TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KF_DEFAULT,
                     TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KS_DEFAULT,
-                    DriveTrainController.POWERLEVEL_MIN,
-                    DriveTrainController.POWERLEVEL_MAX);
+                    -TuningConstants.DRIVETRAIN_VELOCITY_MAX_POWER_LEVEL,
+                    TuningConstants.DRIVETRAIN_VELOCITY_MAX_POWER_LEVEL);
 
                 this.rightPID = new PIDHandler(
                     "dt.rightPID",
@@ -151,8 +162,9 @@ public class DriveTrainController implements IController
                     TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KD_DEFAULT,
                     TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF_DEFAULT,
                     TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KS_DEFAULT,
-                    DriveTrainController.POWERLEVEL_MIN,
-                    DriveTrainController.POWERLEVEL_MAX);
+                    -TuningConstants.DRIVETRAIN_VELOCITY_MAX_POWER_LEVEL,
+                    TuningConstants.DRIVETRAIN_VELOCITY_MAX_POWER_LEVEL);
+                ;
             }
         }
     }
@@ -181,8 +193,8 @@ public class DriveTrainController implements IController
 
         // get the X and Y values from the operator.  We expect these to be between -1.0 and 1.0,
         // with this value representing the forward velocity percentage and right turn percentage (of max speed)
-        double xVelocity = this.driver.getDriveTrainYVelocity();
-        double yVelocity = this.driver.getDriveTrainXVelocity();
+        double xVelocity = this.driver.getDriveTrainXVelocity();
+        double yVelocity = this.driver.getDriveTrainYVelocity();
 
         // adjust for joystick deadzone
         xVelocity = this.adjustForDeadZone(xVelocity, TuningConstants.DRIVETRAIN_X_DEAD_ZONE);
@@ -304,8 +316,8 @@ public class DriveTrainController implements IController
             double K3 = K1;
             double K4 = -K2;
 
-            leftVelocityGoal = (K1 * xVelocity) + (K2 * yVelocity);
-            rightVelocityGoal = (K3 * xVelocity) + (K4 * yVelocity);
+            leftVelocityGoal = (K1 * yVelocity) + (K2 * xVelocity);
+            rightVelocityGoal = (K3 * yVelocity) + (K4 * xVelocity);
         }
 
         // ensure that our algorithms are correct and don't give values outside

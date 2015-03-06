@@ -4,24 +4,27 @@ import org.usfirst.frc.team1318.robot.Autonomous.AutonomousControlData;
 import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 
 /**
- * Simple drive-forward task
+ * ArmTiltTask:
  * 
- * @author Caroline
+ * This task tilts or untilts the arm, sleeping for a certain (provided) length of time.
+ * 
+ * @author Will
  *
  */
-public class DriveForwardTask implements IAutonomousTask
+public class ArmTiltTask extends TimedAutonomousTask implements IAutonomousTask
 {
-    public DriveForwardTask()
-    {
-    }
+    private final boolean tilt;
 
     /**
-     * Begin the current task
+     * Initializes a new ArmTiltTask
+     * @param duration to perform the task in seconds
+     * @param tilt the arm (true) or retract the arm (false)
      */
-    @Override
-    public void begin()
+    public ArmTiltTask(double duration, boolean tilt)
     {
+        super(duration);
 
+        this.tilt = tilt;
     }
 
     /**
@@ -31,8 +34,8 @@ public class DriveForwardTask implements IAutonomousTask
     @Override
     public void update(AutonomousControlData data)
     {
-        data.setDriveTrainPositionMode(false);
-        data.setDriveTrainYVelocity(.1);
+        data.setArmTiltExtendOverrideState(!this.tilt);
+        data.setArmTiltRetractOverrideState(this.tilt);
     }
 
     /**
@@ -42,7 +45,10 @@ public class DriveForwardTask implements IAutonomousTask
     @Override
     public void cancel(AutonomousControlData data)
     {
-        data.setDriveTrainYVelocity(0);
+        super.cancel(data);
+
+        data.setArmTiltExtendOverrideState(false);
+        data.setArmTiltRetractOverrideState(false);
     }
 
     /**
@@ -52,16 +58,9 @@ public class DriveForwardTask implements IAutonomousTask
     @Override
     public void end(AutonomousControlData data)
     {
-        data.setDriveTrainYVelocity(0);
-    }
+        super.end(data);
 
-    /**
-     * Checks whether this task has completed, or whether it should continue being processed
-     * @return true if we should continue onto the next task, otherwise false (to keep processing this task)
-     */
-    @Override
-    public boolean hasCompleted()
-    {
-        return false;
+        data.setArmTiltExtendOverrideState(false);
+        data.setArmTiltRetractOverrideState(false);
     }
 }

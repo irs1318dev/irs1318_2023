@@ -4,7 +4,7 @@ import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 import org.usfirst.frc.team1318.robot.DriveTrain.IDriveTrainComponent;
 
 /**
- * Autonomous task that drives the robot a certain distance directly forward or backward.
+ * Autonomous task that drives the robot a certain distance directly forward or backward using Positional PID.
  * 
  * @author Will
  *
@@ -28,6 +28,7 @@ public class DriveDistanceAutonomousTask extends MoveDistanceAutonomousTaskBase 
     /**
      * Determine the final encoder distance
      */
+    @Override
     protected void determineFinalEncoderDistance()
     {
         this.desiredFinalLeftEncoderDistance = this.startLeftEncoderDistance + this.distance;

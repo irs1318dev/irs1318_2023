@@ -4,9 +4,16 @@ import org.usfirst.frc.team1318.robot.Arm.ArmComponent;
 import org.usfirst.frc.team1318.robot.Arm.ArmController;
 import org.usfirst.frc.team1318.robot.Autonomous.AutonomousDriver;
 import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
-import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveDistanceAutonomousTask;
-import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveForwardTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ArmExtenderTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ArmTiltTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ArmTromboneTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.CollectToteTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ConcurrentTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveTimedAutonomousTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ElevatorBottomTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ElevatorLevelTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.IntakeTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.SequentialTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.TurnAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.WaitAutonomousTask;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
@@ -15,7 +22,6 @@ import org.usfirst.frc.team1318.robot.Compressor.CompressorComponent;
 import org.usfirst.frc.team1318.robot.Compressor.CompressorController;
 import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainComponent;
 import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainController;
-import org.usfirst.frc.team1318.robot.DriveTrain.IDriveTrainComponent;
 import org.usfirst.frc.team1318.robot.DriveTrain.PositionManager;
 import org.usfirst.frc.team1318.robot.Elevator.ElevatorComponent;
 import org.usfirst.frc.team1318.robot.Elevator.ElevatorController;
@@ -23,6 +29,7 @@ import org.usfirst.frc.team1318.robot.Intake.IntakeComponent;
 import org.usfirst.frc.team1318.robot.Intake.IntakeController;
 import org.usfirst.frc.team1318.robot.UserInterface.UserDriver;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -79,6 +86,9 @@ public class Robot extends IterativeRobot
     private IntakeComponent intakeComponent;
     private IntakeController intakeController;
 
+    DigitalInput dipSwitchA;
+    DigitalInput dipSwitchB;
+
     // Position manager - holds position information relative to our starting point
     private PositionManager position;
 
@@ -120,6 +130,9 @@ public class Robot extends IterativeRobot
         this.autonomousRoutineChooser.addObject("Drive In Square Positional", 1);
         this.autonomousRoutineChooser.addObject("Drive Forward", 2);
         SmartDashboard.putData(Robot.AUTONOMOUS_ROUTINE_PREFERENCE_KEY, this.autonomousRoutineChooser);
+
+        dipSwitchA = new DigitalInput(ElectronicsConstants.AUTONOMOUS_DIP_SWITCH_A);
+        dipSwitchB = new DigitalInput(ElectronicsConstants.AUTONOMOUS_DIP_SWITCH_B);
     }
 
     /**
@@ -173,26 +186,45 @@ public class Robot extends IterativeRobot
      */
     public void autonomousInit()
     {
-        // determine our desired autonomous routine
-        IAutonomousTask[] autonomousRoutine;
+        // Find desired autonomous routine.
+        //        IAutonomousTask[] autonomousRoutine = Robot.GetSampleRoutine(this.elevatorComponent, this.driveTrainComponent);
+        //        IAutonomousTask[] autonomousRoutine = Robot.GetMoveForwardRoutine(this.driveTrainComponent);
+        //        IAutonomousTask[] autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine(this.driveTrainComponent);
+
+        //        IAutonomousTask[] autonomousRoutine = Robot.GetContainerlessCollectThreeTotesRoutine(this.elevatorComponent);
+        IAutonomousTask[] autonomousRoutine = Robot.GetFillerRoutine();
+
+        //        IAutonomousTask[] autonomousRoutine = Robot.GetPushContainersCollectThreeTotesRoutine(this.elevatorComponent);
+        //        IAutonomousTask[] autonomousRoutine = Robot.GetSpitContainersCollectThreeTotesRoutine(this.elevatorComponent, this.driveTrainComponent);
+
+        int routineSelection = 0;
+        if (dipSwitchA.get())
+        {
+            routineSelection += 1;
+        }
+
+        if (dipSwitchB.get())
+        {
+            routineSelection += 2;
+        }
 
         // select autonomous routine based on setting in SmartDashboard
-        switch ((int)this.autonomousRoutineChooser.getSelected() % 3)
+        switch (routineSelection)
         {
             case 0:
-                autonomousRoutine = Robot.GetDriveInSquareRoutine();
+                autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine(this.driveTrainComponent);
                 break;
 
             case 1:
-                autonomousRoutine = Robot.GetDriveInSquareByDistanceRoutine(this.driveTrainComponent);
+                autonomousRoutine = Robot.GetContainerlessCollectThreeTotesRoutine(this.elevatorComponent);
                 break;
 
             case 2:
-                autonomousRoutine = Robot.GetDriveForwardRoutine();
+                autonomousRoutine = Robot.GetMoveForwardRoutine(this.driveTrainComponent);
                 break;
 
             default:
-                autonomousRoutine = Robot.GetDriveInSquareRoutine();
+                autonomousRoutine = Robot.GetFillerRoutine();
                 break;
         }
 
@@ -243,6 +275,9 @@ public class Robot extends IterativeRobot
 
         // we will run the compressor controller here because we should start it in advance...
         this.compressorController.update();
+
+        // by default we want to be in Velocity PID mode whenever we start (or switch between) a periodic mode
+        this.driveTrainController.setVelocityPIDMode();
     }
 
     /**
@@ -290,63 +325,308 @@ public class Robot extends IterativeRobot
     }
 
     /**
-     * Gets an autonomous routine that represents driving in a square based on positional PID
+     * Gets an autonomous routine that drives forward into the appropriate zone
      * 
      * @return list of autonomous tasks
      */
-    private static IAutonomousTask[] GetDriveInSquareByDistanceRoutine(IDriveTrainComponent driveTrainComponent)
+    private static IAutonomousTask[] GetMoveForwardRoutine(DriveTrainComponent driveTrainComponent)
     {
         return new IAutonomousTask[]
         {
-            // drive in a square
-            new DriveDistanceAutonomousTask(600, driveTrainComponent),
-            new WaitAutonomousTask(5),
-            new TurnAutonomousTask(90, driveTrainComponent),
-            new DriveDistanceAutonomousTask(600, driveTrainComponent),
-            new WaitAutonomousTask(5),
-            new TurnAutonomousTask(90, driveTrainComponent),
-            new DriveDistanceAutonomousTask(600, driveTrainComponent),
-            new WaitAutonomousTask(5),
-            new TurnAutonomousTask(90, driveTrainComponent),
-            new DriveDistanceAutonomousTask(600, driveTrainComponent),
-            new WaitAutonomousTask(5),
-            new TurnAutonomousTask(90, driveTrainComponent)
+            //            new DriveDistanceAutonomousTask(10 * 12 * 2.54, driveTrainComponent),
+            new DriveTimedAutonomousTask(2.0, 0.0, 0.32)
         };
     }
 
     /**
-     * Gets an autonomous routine that represents driving in a square based on drive times
+     * Gets an autonomous routine that retrieves containers from the step
      * 
      * @return list of autonomous tasks
      */
-    private static IAutonomousTask[] GetDriveInSquareRoutine()
+    private static IAutonomousTask[] GetRetrieveContainersFromStepRoutine(DriveTrainComponent driveTrainComponent)
+    {
+        // Drive backwards, extend the arm (extender, trombone, tilt), drive forwards, [retract the arm (tilt, trombone, extender)]
+        return new IAutonomousTask[]
+        {
+            new DriveTimedAutonomousTask(0.5, 0.0, -0.2),
+            //            new DriveDistanceAutonomousTask(-50, driveTrainComponent),
+            new ArmExtenderTask(1, true),
+            //            new ArmTromboneTask(1, true),
+            new ArmTiltTask(2, true),
+            new DriveTimedAutonomousTask(2.0, 0.0, 0.32),
+            new WaitAutonomousTask(0.3),
+            new DriveTimedAutonomousTask(0.7, 0, -0.2),
+            //            new DriveDistanceAutonomousTask(100, driveTrainComponent)
+            new ArmTiltTask(1, false),
+            new ArmTromboneTask(1, false),
+            new ArmExtenderTask(1, false),
+        };
+    }
+
+    private static IAutonomousTask[] GetFillerRoutine()
     {
         return new IAutonomousTask[]
         {
-            // drive in a square
-            new DriveTimedAutonomousTask(5, 0.0, 0.8),  // drive forward
-            new WaitAutonomousTask(5),
-            new DriveTimedAutonomousTask(2, 0.8, 0.0),  // turn right
-            new DriveTimedAutonomousTask(5, 0.0, 0.8),  // drive forward
-            new WaitAutonomousTask(5),
-            new DriveTimedAutonomousTask(2, 0.8, 0.0),  // turn right
-            new DriveTimedAutonomousTask(5, 0.0, 0.8),  // drive forward
-            new WaitAutonomousTask(5),
-            new DriveTimedAutonomousTask(2, 0.8, 0.0),  // turn right
-            new DriveTimedAutonomousTask(5, 0.0, 0.8),  // drive forward
-            new WaitAutonomousTask(5),
-            new DriveTimedAutonomousTask(2, 0.8, 0.0), // turn right
+            new WaitAutonomousTask(0)
         };
     }
 
     /**
-     * Gets an autonomous routine that represents driving straight forward forever.
+     * Gets an autonomous routine that represents collecting 3 totes using the "other robots push containers away" method
      * 
      * @return list of autonomous tasks
      */
-    private static IAutonomousTask[] GetDriveForwardRoutine()
+    private static IAutonomousTask[] GetContainerlessCollectThreeTotesRoutine(ElevatorComponent elevatorComponent)
     {
-        return new IAutonomousTask[] { new DriveForwardTask() };
+        // Move forward and collect a tote 3 times, wait 2 seconds, then move elevator to bottom and unload tote.
+        return new IAutonomousTask[]
+        {
+            new WaitAutonomousTask(2.5),
+
+            // Collect tote #1, which should be pre-set in place
+            new CollectToteTask(elevatorComponent),
+
+            // Lift tote #1 while driving forward more slowly
+            ConcurrentTask.AnyTasks(
+                new SequentialTask(
+                    new IAutonomousTask[]
+                    {
+                        new ElevatorBottomTask(elevatorComponent, true),
+                        new ElevatorLevelTask(elevatorComponent, 2, 0, true),
+                    }),
+                new DriveTimedAutonomousTask(2.5, 0.0, 0.2)),
+
+            // Collect tote #2 while driving forward
+            ConcurrentTask.AnyTasks(
+                new DriveTimedAutonomousTask(3.0, 0.0, 0.25),
+                new CollectToteTask(elevatorComponent)),
+
+            // Lift tote #2 while driving forward more slowly
+            ConcurrentTask.AnyTasks(
+                new SequentialTask(
+                    new IAutonomousTask[]
+                    {
+                        new ElevatorBottomTask(elevatorComponent, true),
+                        new ElevatorLevelTask(elevatorComponent, 2, 0, true),
+                    }),
+                new DriveTimedAutonomousTask(2.5, 0.0, 0.2)),
+
+            // Collect tote #3 while driving forward                
+            ConcurrentTask.AnyTasks(
+                new DriveTimedAutonomousTask(3.0, 0.0, 0.25),
+                new CollectToteTask(elevatorComponent)),
+
+            // Set first two totes on top of 3rd tote
+            // Turn around to the right, dragging all 3 totes at regular level
+            ConcurrentTask.AllTasks(
+                new ElevatorBottomTask(elevatorComponent, true),
+                new DriveTimedAutonomousTask(4.0, 0.325, 0.3)),
+
+            // Spit out the totes while driving backwards slowly
+            ConcurrentTask.AllTasks(
+                new IntakeTask(1.5, true),
+                new DriveTimedAutonomousTask(1.5, 0.0, -0.25))
+        };
+    }
+
+    /**
+     * Gets an autonomous routine that collects 3 totes using the "push container aside" method
+     * 
+     * @return list of autonomous tasks
+     */
+    private static IAutonomousTask[] GetPushContainersCollectThreeTotesRoutine(ElevatorComponent elevatorComponent)
+    {
+        // Move forward and collect a tote 3 times, wait 2 seconds, then move elevator to bottom and unload tote.
+        return new IAutonomousTask[]
+        {
+            // Collect tote #1
+            new CollectToteTask(elevatorComponent),
+
+            // Lift tote #1 to level 3 (fast)
+            new ElevatorLevelTask(elevatorComponent, 3, 0, true),
+
+            // Spin intake out while driving forward for 1 second to kick container out of the way
+            ConcurrentTask.AllTasks(
+                new IntakeTask(1.0, true),
+                new DriveTimedAutonomousTask(1.0, 0.0, 0.2)),
+
+            // Drive forward until we have collected tote #2
+            ConcurrentTask.AnyTasks(
+                new DriveTimedAutonomousTask(2.0, 0.0, 0.25),
+                new CollectToteTask(elevatorComponent)),
+
+            // Drop elevator to bottom, then lift tote #2
+            new ElevatorBottomTask(elevatorComponent, true),
+            new ElevatorLevelTask(elevatorComponent, 3, 0, true),
+
+            // Spin intake out while driving forward for 1 second to kick container out of the way
+            ConcurrentTask.AllTasks(
+                new IntakeTask(1.0, true),
+                new DriveTimedAutonomousTask(1.0, 0.0, 0.2)),
+
+            // Drive forward until we have collected tote #3
+            ConcurrentTask.AnyTasks(
+                new DriveTimedAutonomousTask(2.0, 0.0, 0.25),
+                new CollectToteTask(elevatorComponent)),
+
+            // Drop elevator to bottom.  This will put the tote under our control, but we don't want to lift it.
+            new ElevatorBottomTask(elevatorComponent, true),
+
+            // Drive in a curve to the right.
+            new DriveTimedAutonomousTask(2.0, 0.3, 0.2),
+
+            // Spit out the totes while driving backwards slowly
+            ConcurrentTask.AllTasks(
+                new IntakeTask(1.5, true),
+                new DriveTimedAutonomousTask(1.5, 0.0, -0.25))
+        };
+    }
+
+    /**
+     * Gets an autonomous routine that collects 3 totes using the "push container aside" method
+     * 
+     * @return list of autonomous tasks
+     */
+    private static IAutonomousTask[] GetSpitContainersCollectThreeTotesRoutine(
+        ElevatorComponent elevatorComponent, DriveTrainComponent driveTrainComponent)
+    {
+        // Move forward and collect a tote 3 times, wait 2 seconds, then move elevator to bottom and unload tote.
+        return new IAutonomousTask[]
+        {
+            // 0: Collect tote #1 (spin intake in until the through beam sensor is hit)
+            new CollectToteTask(elevatorComponent),
+
+            // 1: Lift tote #1 to level 3 (fast)
+            new ElevatorLevelTask(elevatorComponent, 3, 0, true),
+
+            // 2: Spin intake in while driving forward for 2 seconds to collect the container
+            ConcurrentTask.AllTasks(
+                new IntakeTask(1.5, false),
+                new DriveTimedAutonomousTask(1.5, 0.0, 0.2)),
+
+            // 3: Turn to the right side, spit out the container, and then turn back
+            ConcurrentTask.AllTasks(
+                new IntakeTask(2.0, false),
+                new SequentialTask(
+                    new IAutonomousTask[]
+                    {
+                        new TurnAutonomousTask(45, driveTrainComponent),
+                        new TurnAutonomousTask(-45, driveTrainComponent),
+                    })),
+
+            // 4: Drive forward until we have collected tote #2
+            ConcurrentTask.AnyTasks(
+                new DriveTimedAutonomousTask(2.0, 0.0, 0.25),
+                new CollectToteTask(elevatorComponent)),
+
+            // 5: Drop elevator to bottom, then lift tote #2
+            new ElevatorBottomTask(elevatorComponent, true),
+            new ElevatorLevelTask(elevatorComponent, 3, 0, true),
+
+            // 6: Spin intake in while driving forward for 2 seconds to collect the container
+            ConcurrentTask.AllTasks(
+                new IntakeTask(2.0, false),
+                new DriveTimedAutonomousTask(2.0, 0.0, 0.2)),
+
+            // 7: Turn to the right side, spit out the container, and then turn back
+            ConcurrentTask.AllTasks(
+                new IntakeTask(2.0, false),
+                new SequentialTask(
+                    new IAutonomousTask[]
+                    {
+                        new TurnAutonomousTask(45, driveTrainComponent),
+                        new TurnAutonomousTask(-45, driveTrainComponent)
+                    })),
+
+            // 8: Drive forward until we have collected tote #3
+            ConcurrentTask.AnyTasks(
+                new DriveTimedAutonomousTask(2.0, 0.0, 0.25),
+                new CollectToteTask(elevatorComponent)),
+
+            // Drop elevator to bottom.  This will complete the stack with the tote under our control, but we don't want to lift it.
+            new ElevatorBottomTask(elevatorComponent, true),
+
+            // Drive in a curve to the right.
+            new DriveTimedAutonomousTask(2.0, 0.3, 0.2),
+
+            // Spit out the totes while driving backwards slowly
+            ConcurrentTask.AllTasks(
+                new IntakeTask(1.5, true),
+                new DriveTimedAutonomousTask(1.5, 0.0, -0.25)),
+        };
+    }
+
+    /**
+     * Gets an autonomous routine that is currently being experimented on
+     * 
+     * @return list of autonomous tasks
+     */
+    private static IAutonomousTask[] GetSampleRoutine(ElevatorComponent elevatorComponent, DriveTrainComponent driveTrainComponent)
+    {
+        // Move forward and collect a tote 3 times, wait 2 seconds, then move elevator to bottom and unload tote.
+        return new IAutonomousTask[]
+        {
+            // 0: Collect tote #1 (spin intake in until the through beam sensor is hit)
+            new CollectToteTask(elevatorComponent),
+
+            // 1: Lift tote #1 to level 3 (fast)
+            new ElevatorLevelTask(elevatorComponent, 3, 0, true),
+
+            // 2: Spin intake in while driving forward for 2 seconds to collect the container
+            ConcurrentTask.AllTasks(
+                new IntakeTask(1.5, false),
+                new DriveTimedAutonomousTask(1.5, 0.0, 0.2)),
+
+            // 3: Turn to the right side, spit out the container, and then turn back
+            ConcurrentTask.AllTasks(
+                new IntakeTask(2.0, false),
+                new SequentialTask(
+                    new IAutonomousTask[]
+                    {
+                        new TurnAutonomousTask(45, driveTrainComponent),
+                        new TurnAutonomousTask(-45, driveTrainComponent),
+                    })),
+
+            // 4: Drive forward until we have collected tote #2
+            ConcurrentTask.AnyTasks(
+                new DriveTimedAutonomousTask(2.0, 0.0, 0.25),
+                new CollectToteTask(elevatorComponent)),
+
+            // 5: Drop elevator to bottom, then lift tote #2
+            new ElevatorBottomTask(elevatorComponent, true),
+            new ElevatorLevelTask(elevatorComponent, 3, 0, true),
+
+            // 6: Spin intake in while driving forward for 2 seconds to collect the container
+            ConcurrentTask.AllTasks(
+                new IntakeTask(2.0, false),
+                new DriveTimedAutonomousTask(2.0, 0.0, 0.2)),
+
+            // 7: Turn to the right side, spit out the container, and then turn back
+            ConcurrentTask.AllTasks(
+                new IntakeTask(2.0, false),
+                new SequentialTask(
+                    new IAutonomousTask[]
+                    {
+                        new TurnAutonomousTask(45, driveTrainComponent),
+                        new TurnAutonomousTask(-45, driveTrainComponent)
+                    })),
+
+            // 8: Drive forward until we have collected tote #3
+            ConcurrentTask.AnyTasks(
+                new DriveTimedAutonomousTask(2.0, 0.0, 0.25),
+                new CollectToteTask(elevatorComponent)),
+
+            // Drop elevator to bottom.  This will complete the stack with the tote under our control, but we don't want to lift it.
+            new ElevatorBottomTask(elevatorComponent, true),
+
+            // Drive in a curve to the right.
+            new DriveTimedAutonomousTask(2.0, 0.3, 0.2),
+
+            // Spit out the totes while driving backwards slowly
+            ConcurrentTask.AllTasks(
+                new IntakeTask(1.5, true),
+                new DriveTimedAutonomousTask(1.5, 0.0, -0.25)),
+        };
     }
 }
 

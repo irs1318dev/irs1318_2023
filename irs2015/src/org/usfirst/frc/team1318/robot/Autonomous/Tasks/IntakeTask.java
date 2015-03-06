@@ -1,27 +1,29 @@
 package org.usfirst.frc.team1318.robot.Autonomous.Tasks;
 
 import org.usfirst.frc.team1318.robot.Autonomous.AutonomousControlData;
-import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 
 /**
- * Simple drive-forward task
+ * IntakeOutTask:
  * 
- * @author Caroline
+ * This task runs the intake in a certain direction for a certain period of time
+ * 
+ * @author Will
  *
  */
-public class DriveForwardTask implements IAutonomousTask
+public class IntakeTask extends TimedAutonomousTask
 {
-    public DriveForwardTask()
-    {
-    }
+    private final boolean out;
 
     /**
-     * Begin the current task
+     * Initializes a new IntakeOutTask
+     * @param duration to perform the task in seconds
+     * @param out indicates whether the intake should be run "out" (true) or "in" (false) 
      */
-    @Override
-    public void begin()
+    public IntakeTask(double duration, boolean out)
     {
+        super(duration);
 
+        this.out = out;
     }
 
     /**
@@ -31,8 +33,8 @@ public class DriveForwardTask implements IAutonomousTask
     @Override
     public void update(AutonomousControlData data)
     {
-        data.setDriveTrainPositionMode(false);
-        data.setDriveTrainYVelocity(.1);
+        data.setIntakeBackwardState(this.out);
+        data.setIntakeForwardState(!this.out);
     }
 
     /**
@@ -42,7 +44,10 @@ public class DriveForwardTask implements IAutonomousTask
     @Override
     public void cancel(AutonomousControlData data)
     {
-        data.setDriveTrainYVelocity(0);
+        super.cancel(data);
+
+        data.setIntakeBackwardState(false);
+        data.setIntakeForwardState(false);
     }
 
     /**
@@ -52,16 +57,9 @@ public class DriveForwardTask implements IAutonomousTask
     @Override
     public void end(AutonomousControlData data)
     {
-        data.setDriveTrainYVelocity(0);
-    }
+        super.end(data);
 
-    /**
-     * Checks whether this task has completed, or whether it should continue being processed
-     * @return true if we should continue onto the next task, otherwise false (to keep processing this task)
-     */
-    @Override
-    public boolean hasCompleted()
-    {
-        return false;
+        data.setIntakeBackwardState(false);
+        data.setIntakeForwardState(false);
     }
 }

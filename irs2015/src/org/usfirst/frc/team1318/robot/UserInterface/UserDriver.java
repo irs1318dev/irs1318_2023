@@ -111,7 +111,7 @@ public class UserDriver implements IDriver
     private SimpleButton elevatorUseSensors;
     private SimpleButton elevatorZeroEncoders;
     private SimpleButton elevatorSlowButton;
-    private SimpleButton elevatorFastButton;
+    private SimpleButton elevatorRegularButton;
 
     /**
      * Initializes a new UserDriver
@@ -160,7 +160,7 @@ public class UserDriver implements IDriver
         this.elevatorMoveToBottom = new SimpleButton();
         this.elevatorZeroEncoders = new SimpleButton();
         this.elevatorSlowButton = new SimpleButton();
-        this.elevatorFastButton = new SimpleButton();
+        this.elevatorRegularButton = new SimpleButton();
     }
 
     /**
@@ -171,7 +171,7 @@ public class UserDriver implements IDriver
         // update the state of the various toggle buttons
 
         // DriveTrain
-        this.simpleDriveModeButton.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.DRIVETRAIN_SIMPLE_BUTTON));
+        //        this.simpleDriveModeButton.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.DRIVETRAIN_SIMPLE_BUTTON));
 
         //Arm 
         this.armMacroExtendButton.updateState(this.joystickDriver.getPOV() == 0);//this.joystickDriver.getRawButton(JoystickButtonConstants.ARM_MACRO_EXTEND_BUTTON));
@@ -186,23 +186,23 @@ public class UserDriver implements IDriver
             .updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_TROMBONE_RETRACT_BUTTON));
 
         //Intake
-        this.intakeUpButton.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.INTAKE_UP_BUTTON));
-        this.intakeDownButton.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.INTAKE_DOWN_BUTTON));
-        this.intakeRightExtendOverride
-            .updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.INTAKE_RIGHT_EXTEND_OVERRIDE));
-        this.intakeRightRetractOverride
-            .updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.INTAKE_RIGHT_RETRACT_OVERRIDE));
-        this.intakeLeftExtendOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.INTAKE_LEFT_EXTEND_OVERRIDE));
-        this.intakeLeftRetractOverride
-            .updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.INTAKE_LEFT_RETRACT_OVERRIDE));
+        //        this.intakeUpButton.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.INTAKE_UP_BUTTON));
+        //        this.intakeDownButton.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.INTAKE_DOWN_BUTTON));
+        //        this.intakeRightExtendOverride
+        //            .updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.INTAKE_RIGHT_EXTEND_OVERRIDE));
+        //        this.intakeRightRetractOverride
+        //            .updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.INTAKE_RIGHT_RETRACT_OVERRIDE));
+        //        this.intakeLeftExtendOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.INTAKE_LEFT_EXTEND_OVERRIDE));
+        //        this.intakeLeftRetractOverride
+        //            .updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.INTAKE_LEFT_RETRACT_OVERRIDE));
 
         //Elevator  TODO: change CoDriver buttons back to CoDriver 
-        this.elevatorContainerMacroButton.updateState(this.joystickDriver
-            .getRawButton(JoystickButtonConstants.ELEVATOR_CONTAINER_MACRO_BUTTON));
+        //        this.elevatorContainerMacroButton.updateState(this.joystickDriver
+        //            .getRawButton(JoystickButtonConstants.ELEVATOR_CONTAINER_MACRO_BUTTON));
         this.elevatorSetStateToFloorButton.updateState(this.joystickDriver
             .getRawButton(JoystickButtonConstants.ELEVATOR_SET_STAE_TO_FLOOR_BUTTON));
-        this.elevatorSetStateToPlatformButton.updateState(this.joystickDriver
-            .getRawButton(JoystickButtonConstants.ELEVATOR_SET_STATE_TO_PLATFORM_BUTTON));
+        //        this.elevatorSetStateToPlatformButton.updateState(this.joystickDriver
+        //            .getRawButton(JoystickButtonConstants.ELEVATOR_SET_STATE_TO_PLATFORM_BUTTON));
         this.elevatorSetStateToStepButton.updateState(this.joystickDriver
             .getRawButton(JoystickButtonConstants.ELEVATOR_SET_STATE_TO_STEP_BUTTON));
         this.elevatorMoveTo0Totes.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_0_TOTES_BUTTON));
@@ -210,15 +210,15 @@ public class UserDriver implements IDriver
         this.elevatorMoveTo2Totes.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_2_TOTES_BUTTON));
         this.elevatorMoveTo3Totes.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_3_TOTES_BUTTON));
         this.elevatorPickUpMacro.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.ELEVATOR_PICK_UP_MACRO_BUTTON));
-        this.elevatorPIDOn.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_PID_ON));//TODO: change to CoDriver
-        this.elevatorPIDOff.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_PID_OFF));//TODO: change to CoDriver
+        this.elevatorPIDOn.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_PID_ON));
+        //        this.elevatorPIDOff.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_PID_OFF));
         this.elevatorStop.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_STOP_BUTTON));
         this.elevatorIgnoreSensors.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_IGNORE_SENSORS_BUTTON));
         this.elevatorUseSensors.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_USE_SENSORS_BUTTON));
         this.elevatorZeroEncoders.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_ZERO_ENCODERS));
         this.elevatorMoveToBottom.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_BOTTOM));
         this.elevatorSlowButton.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_SLOW_BUTTON));
-        this.elevatorFastButton.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_FAST_BUTTON));
+        this.elevatorRegularButton.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_REGULAR_BUTTON));
     }
 
     /**
@@ -466,7 +466,7 @@ public class UserDriver implements IDriver
     }
 
     @Override
-    public boolean getSlowElevatorButton()
+    public boolean getElevatorSlowButton()
     {
         boolean mode = this.elevatorSlowButton.isActivated();
         //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_SLOW_LOG_KEY, mode);
@@ -474,9 +474,17 @@ public class UserDriver implements IDriver
     }
 
     @Override
-    public boolean getFastElevatorButton()
+    public boolean getElevatorRegularSpeedButton()
     {
-        boolean mode = this.elevatorFastButton.isActivated();
+        boolean mode = this.elevatorRegularButton.isActivated();
+        //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_FAST_LOG_KEY, mode);
+        return mode;
+    }
+
+    @Override
+    public boolean getElevatorFastButton()
+    {
+        boolean mode = false;
         //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_FAST_LOG_KEY, mode);
         return mode;
     }
@@ -627,5 +635,11 @@ public class UserDriver implements IDriver
         boolean mode = this.joystickDriver.getRawButton(JoystickButtonConstants.INTAKE_BACKWARD_BUTTON);
         //        SmartDashboardLogger.putBoolean(UserDriver.INTAKE_BACKWARD_STATE_KEY, mode);
         return mode;
+    }
+
+    @Override
+    public boolean getIntakeJitterButton()
+    {
+        return this.joystickDriver.getRawButton(JoystickButtonConstants.INTAKE_JITTER_BUTTON);
     }
 }

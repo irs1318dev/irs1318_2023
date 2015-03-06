@@ -24,8 +24,8 @@ public class ElectronicsConstants
     public static final int DRIVETRAIN_LEFT_ENCODER_CHANNEL_A = 4; // kitbot - 8
     public static final int DRIVETRAIN_LEFT_ENCODER_CHANNEL_B = 5; // kitbot - 9
 
-    public static final int TEST_PROXIMITY_SENSOR_BACK_PORT = 1;
-    public static final int TEST_PROXIMITY_SENSOR_FRONT_PORT = 2;
+    public static final int DRIVETRAIN_PROXIMITY_SENSOR_BACK_PORT = 1;
+    public static final int DRIVETRAIN_PROXIMITY_SENSOR_FRONT_PORT = 2;
 
     //================================================== Elevator ==============================================================
 
@@ -62,4 +62,9 @@ public class ElectronicsConstants
 
     public static final int ARM_EXTEND_LINK_SOLANOID_EXTEND = 4;
     public static final int ARM_EXTEND_LINK_SOLANOID_RETRACT = 3;
+
+    //================================================== Autonomous ==============================================================
+
+    public static final int AUTONOMOUS_DIP_SWITCH_A = 8; // ??
+    public static final int AUTONOMOUS_DIP_SWITCH_B = 9; // ??
 }

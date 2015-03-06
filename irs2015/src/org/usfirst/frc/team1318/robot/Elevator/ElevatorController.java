@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class ElevatorController implements IController
 {
-    private static final String ENCODER_ZERO_OFFSET_LOG_KEY = "e.encoderZeroOffset";
     private static final String POSITION_GOAL_LOG_KEY = "e.positionGoal";
 
     private final ElevatorComponent component;
@@ -26,18 +25,18 @@ public class ElevatorController implements IController
 
     private double baseLevel;
     private double position;
-    private double encoderZeroOffset;
 
     private boolean usePID;
     private PIDHandler pidHandler;
 
     private double lastTime;
-    private Timer timer;
+    private final Timer timer;
 
     private boolean movingToBottom;
     private boolean ignoreSensors;
 
     private boolean elevatorSlowMode;
+    private boolean elevatorFastMode;
 
     public ElevatorController(IDriver driver, ElevatorComponent component)
     {
@@ -51,7 +50,6 @@ public class ElevatorController implements IController
 
         this.baseLevel = HardwareConstants.ELEVATOR_FLOOR_HEIGHT;
         this.position = this.component.getEncoderDistance();
-        this.encoderZeroOffset = 0;
         this.movingToBottom = false;  // move to bottom to calibrate the encoder offset on start
 
         this.timer = new Timer();
@@ -60,6 +58,7 @@ public class ElevatorController implements IController
         this.containerMacroState = ContainerMacroStates.STATE_0;
 
         this.elevatorSlowMode = false;
+        this.elevatorFastMode = false;
     }
 
     @Override
@@ -71,22 +70,39 @@ public class ElevatorController implements IController
     @Override
     public void update()
     {
-        component.getThroughBeamBroken();
+        this.component.getThroughBeamBroken();
 
         boolean enforceNonPositive = false;
         boolean enforceNonNegative = false;
         double currentTime = this.timer.get();
 
-        //--> jello 
-        if (this.elevatorSlowMode && this.driver.getFastElevatorButton())
+        //--> jello/sprint
+        if (this.driver.getElevatorRegularSpeedButton())
         {
-            this.elevatorSlowMode = false;
-            this.createPIDHandler();
+            if (this.elevatorSlowMode || this.elevatorFastMode)
+            {
+                this.elevatorSlowMode = false;
+                this.elevatorFastMode = false;
+                this.createPIDHandler();
+            }
         }
-        else if (!this.elevatorSlowMode && this.driver.getSlowElevatorButton())
+        else if (this.driver.getElevatorFastButton())
         {
-            this.elevatorSlowMode = true;
-            this.createPIDHandler();
+            if (!this.elevatorFastMode || this.elevatorSlowMode)
+            {
+                this.elevatorSlowMode = false;
+                this.elevatorFastMode = true;
+                this.createPIDHandler();
+            }
+        }
+        else if (this.driver.getElevatorSlowButton())
+        {
+            if (this.elevatorFastMode || !this.elevatorSlowMode)
+            {
+                this.elevatorSlowMode = true;
+                this.elevatorFastMode = false;
+                this.createPIDHandler();
+            }
         }
 
         //--> handle enabling/disabling PID (enabling PID takes precedence)
@@ -97,7 +113,7 @@ public class ElevatorController implements IController
             {
                 this.usePID = true;
                 this.createPIDHandler();
-                this.position = component.getEncoderDistance() + this.encoderZeroOffset;
+                this.position = this.component.getEncoderDistance() + this.component.getEncoderZeroOffset();
 
             }
         }
@@ -138,8 +154,9 @@ public class ElevatorController implements IController
         //--> get zero encoders 
         if (this.driver.getZeroElevatorEncoder())
         {
-            this.encoderZeroOffset = HardwareConstants.ELEVATOR_MIN_HEIGHT + this.component.getEncoderDistance();
-            this.position -= this.encoderZeroOffset;
+            double newOffset = HardwareConstants.ELEVATOR_MIN_HEIGHT + this.component.getEncoderDistance();
+            this.component.setEncoderZeroOffset(newOffset);
+            this.position -= newOffset;
         }
 
         //--> set position and power level 
@@ -169,7 +186,7 @@ public class ElevatorController implements IController
             case STATE_2_WAIT:
                 if (this.ignoreSensors)
                 {
-                    this.position = this.component.getEncoderDistance() - this.encoderZeroOffset;
+                    this.position = this.component.getEncoderDistance() - this.component.getEncoderZeroOffset();
                     this.containerMacroState = ContainerMacroStates.STATE_0;
                 }
                 if (!this.movingToBottom)
@@ -182,7 +199,7 @@ public class ElevatorController implements IController
                 }
                 break;
             case STATE_3_ALTERNATE_WAIT:
-                if (this.component.getEncoderDistance() - this.encoderZeroOffset < 1)
+                if (this.component.getEncoderDistance() - this.component.getEncoderZeroOffset() < 1)
                 {
                     this.position = HardwareConstants.ELEVATOR_1_TOTE_HEIGHT;
                     this.containerMacroState = ContainerMacroStates.STATE_0;
@@ -254,7 +271,7 @@ public class ElevatorController implements IController
         // also note that we should enforce hardware safety requirements
         if (this.component.getBottomLimitSwitchValue() && !this.ignoreSensors)
         {
-            this.encoderZeroOffset = HardwareConstants.ELEVATOR_MIN_HEIGHT + this.component.getEncoderDistance();
+            this.component.setEncoderZeroOffset(HardwareConstants.ELEVATOR_MIN_HEIGHT + this.component.getEncoderDistance());
 
             if (this.movingToBottom)
             {
@@ -267,7 +284,7 @@ public class ElevatorController implements IController
         else if (this.component.getTopLimitSwitchValue() && !this.ignoreSensors)
         {
             this.containerMacroState = ContainerMacroStates.STATE_0;
-            this.encoderZeroOffset = this.component.getEncoderDistance() - HardwareConstants.ELEVATOR_MAX_HEIGHT;
+            this.component.setEncoderZeroOffset(this.component.getEncoderDistance() - HardwareConstants.ELEVATOR_MAX_HEIGHT);
             this.position = HardwareConstants.ELEVATOR_MAX_HEIGHT;
             enforceNonPositive = true;
         }
@@ -347,14 +364,13 @@ public class ElevatorController implements IController
         }
 
         SmartDashboardLogger.putNumber(ElevatorController.POSITION_GOAL_LOG_KEY, this.position);
-        SmartDashboardLogger.putNumber(ElevatorController.ENCODER_ZERO_OFFSET_LOG_KEY, encoderZeroOffset);
 
         this.component.setMotorPowerLevel(powerLevel);
 
         this.lastTime = currentTime;
 
         //--> lights 
-        if ((this.usePID && (this.component.getEncoderDistance() - this.encoderZeroOffset < HardwareConstants.ELEVATOR_1_TOTE_HEIGHT - 2)))
+        if ((this.usePID && (this.component.getEncoderDistance() + this.component.getEncoderZeroOffset() < HardwareConstants.ELEVATOR_1_TOTE_HEIGHT)))
         //|| (!this.usePID && !this.ignoreSensors && this.component.getBottomLimitSwitchValue()))
         {
             this.component.setLimitSwitchRelayValue(true);
@@ -426,24 +442,6 @@ public class ElevatorController implements IController
         this.component.setMotorPowerLevel(0.0);
     }
 
-    /**
-     * Adjust the intensity of the input value
-     * @param value to adjust
-     * @return adjusted value
-     */
-    private double adjustIntensity(double value)
-    {
-        // we will use simple quadratic scaling to adjust input intensity
-        if (value < 0)
-        {
-            return -value * value;
-        }
-        else
-        {
-            return value * value;
-        }
-    }
-
     private void createPIDHandler()
     {
         if (!this.usePID)
@@ -460,8 +458,19 @@ public class ElevatorController implements IController
                     TuningConstants.ELEVATOR_POSITION_PID_KI_DEFAULT,
                     TuningConstants.ELEVATOR_POSITION_PID_KD_DEFAULT,
                     TuningConstants.ELEVATOR_POSITION_PID_KF_DEFAULT,
-                    -TuningConstants.ELEVATOR_MAX_POWER_LEVEL / 2,
-                    TuningConstants.ELEVATOR_MAX_POWER_LEVEL / 2);
+                    -TuningConstants.ELEVATOR_SLOW_MODE_MAX_POWER_LEVEL,
+                    TuningConstants.ELEVATOR_SLOW_MODE_MAX_POWER_LEVEL);
+            }
+            else if (this.elevatorFastMode)
+            {
+                this.pidHandler = new PIDHandler(
+                    "e.PID",
+                    TuningConstants.ELEVATOR_POSITION_PID_KP_DEFAULT,
+                    TuningConstants.ELEVATOR_POSITION_PID_KI_DEFAULT,
+                    TuningConstants.ELEVATOR_POSITION_PID_KD_DEFAULT,
+                    TuningConstants.ELEVATOR_POSITION_PID_KF_DEFAULT,
+                    -TuningConstants.ELEVATOR_FAST_MODE_MAX_POWER_LEVEL,
+                    TuningConstants.ELEVATOR_FAST_MODE_MAX_POWER_LEVEL);
             }
             else
             {
@@ -479,7 +488,7 @@ public class ElevatorController implements IController
 
     private double calculatePositionModePowerSetting(double desired)
     {
-        double current = this.component.getEncoderDistance() - this.encoderZeroOffset;
+        double current = this.component.getEncoderDistance() - this.component.getEncoderZeroOffset();
         return this.pidHandler.calculatePosition(desired, current);
     }
 }

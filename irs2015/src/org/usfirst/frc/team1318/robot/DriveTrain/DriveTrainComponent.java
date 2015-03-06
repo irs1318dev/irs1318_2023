@@ -39,12 +39,12 @@ public class DriveTrainComponent implements IDriveTrainComponent
     private final Encoder leftEncoder;
     private final Encoder rightEncoder;
 
-    private AnalogInput proximitySensorFront;
-    private AnalogInput proximitySensorBack;
+    private final AnalogInput proximitySensorFront;
+    private final AnalogInput proximitySensorBack;
 
     // For adjusting rate based on our own timing:
     private final Timer timer;
-    private double prevTime;
+    private final double prevTime;
 
     private int prevLeftTicks;
     private double prevLeftRate;
@@ -73,8 +73,8 @@ public class DriveTrainComponent implements IDriveTrainComponent
         this.leftEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_LEFT_PULSE_DISTANCE);
         this.rightEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_RIGHT_PULSE_DISTANCE);
 
-        proximitySensorBack = new AnalogInput(ElectronicsConstants.TEST_PROXIMITY_SENSOR_BACK_PORT);
-        proximitySensorFront = new AnalogInput(ElectronicsConstants.TEST_PROXIMITY_SENSOR_FRONT_PORT);
+        this.proximitySensorBack = new AnalogInput(ElectronicsConstants.DRIVETRAIN_PROXIMITY_SENSOR_BACK_PORT);
+        this.proximitySensorFront = new AnalogInput(ElectronicsConstants.DRIVETRAIN_PROXIMITY_SENSOR_FRONT_PORT);
 
         this.timer = new Timer();
         this.timer.start();
@@ -220,7 +220,7 @@ public class DriveTrainComponent implements IDriveTrainComponent
     @Override
     public double getProximitySensorFront()
     {
-        double value = proximitySensorFront.getVoltage();
+        double value = this.proximitySensorFront.getVoltage();
         SmartDashboardLogger.putNumber(DriveTrainComponent.PROXIMITY_SENSOR_FRONT_LOG_KEY, value);
         return value;
     }
@@ -228,9 +228,8 @@ public class DriveTrainComponent implements IDriveTrainComponent
     @Override
     public double getProximitySensorBack()
     {
-        double value = proximitySensorBack.getVoltage();
+        double value = this.proximitySensorBack.getVoltage();
         SmartDashboardLogger.putNumber(DriveTrainComponent.PROXIMITY_SENSOR_BACK_LOG_KEY, value);
         return value;
     }
-
 }

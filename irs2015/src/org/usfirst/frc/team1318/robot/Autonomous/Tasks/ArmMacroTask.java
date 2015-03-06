@@ -4,24 +4,27 @@ import org.usfirst.frc.team1318.robot.Autonomous.AutonomousControlData;
 import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 
 /**
- * Simple drive-forward task
+ * ArmMacroTask:
  * 
- * @author Caroline
+ * This task runs the arm extend or arm retract macro, sleeping for a certain (provided) length of time.
+ * 
+ * @author Will
  *
  */
-public class DriveForwardTask implements IAutonomousTask
+public class ArmMacroTask extends TimedAutonomousTask implements IAutonomousTask
 {
-    public DriveForwardTask()
-    {
-    }
+    private final boolean extend;
 
     /**
-     * Begin the current task
+     * Initializes a new ArmMacroTask
+     * @param duration to perform the task in seconds
+     * @param extend the arm (true) or retract the arm (false)
      */
-    @Override
-    public void begin()
+    public ArmMacroTask(double duration, boolean extend)
     {
+        super(duration);
 
+        this.extend = extend;
     }
 
     /**
@@ -31,8 +34,8 @@ public class DriveForwardTask implements IAutonomousTask
     @Override
     public void update(AutonomousControlData data)
     {
-        data.setDriveTrainPositionMode(false);
-        data.setDriveTrainYVelocity(.1);
+        data.setArmMacroExtendState(this.extend);
+        data.setArmMacroRetractState(!this.extend);
     }
 
     /**
@@ -42,7 +45,10 @@ public class DriveForwardTask implements IAutonomousTask
     @Override
     public void cancel(AutonomousControlData data)
     {
-        data.setDriveTrainYVelocity(0);
+        super.cancel(data);
+
+        data.setArmMacroExtendState(false);
+        data.setArmMacroRetractState(false);
     }
 
     /**
@@ -52,16 +58,9 @@ public class DriveForwardTask implements IAutonomousTask
     @Override
     public void end(AutonomousControlData data)
     {
-        data.setDriveTrainYVelocity(0);
-    }
+        super.end(data);
 
-    /**
-     * Checks whether this task has completed, or whether it should continue being processed
-     * @return true if we should continue onto the next task, otherwise false (to keep processing this task)
-     */
-    @Override
-    public boolean hasCompleted()
-    {
-        return false;
+        data.setArmMacroExtendState(false);
+        data.setArmMacroRetractState(false);
     }
 }

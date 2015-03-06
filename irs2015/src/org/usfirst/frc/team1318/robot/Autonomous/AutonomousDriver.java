@@ -1,7 +1,8 @@
 package org.usfirst.frc.team1318.robot.Autonomous;
 
-import org.usfirst.frc.team1318.robot.Autonomous.Tasks.OrderedTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.SequentialTask;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
+import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
 /**
  * Driver for autonomous mode.  Autonomous driver acts as the operator of the robot,
@@ -31,6 +32,7 @@ public class AutonomousDriver implements IDriver
     private static final String ELEVATOR_MOVE_TO_1_TOTE_LOG_KEY = "a.elevatorHeight4";
     private static final String ELEVATOR_MOVE_TO_2_TOTES_LOG_KEY = "a.elevatorHeight5";
     private static final String ELEVATOR_MOVE_TO_3_TOTES_LOG_KEY = "a.elevatorHeight6";
+    private static final String ELEVATOR_PICK_UP_MACRO_LOG_KEY = "a.elevatorPickUpMacro";
     private static final String ELEVATOR_PID_ON_STATE_LOG_KEY = "a.elevatorPIDOnState";
     private static final String ELEVATOR_PID_OFF_STATE_LOG_KEY = "a.elevatorPIDOffState";
     private static final String ELEVATOR_STOP_STATE_LOG_KEY = "a.elevatorStop";
@@ -41,6 +43,8 @@ public class AutonomousDriver implements IDriver
     private static final String ELEVATOR_IGNORE_SENSORS_LOG_KEY = "a.elevatorIgnoreSensors";
     private static final String ELEVATOR_USE_SENSORS_LOG_KEY = "a.elevatorUseSensors";
     private static final String ELEVATOR_ZERO_ENCODERS_LOG_KEY = "a.elevatorZeroEncoders";
+    private static final String ELEVATOR_SLOW_LOG_KEY = "a.elevatorSlow";
+    private static final String ELEVATOR_FAST_LOG_KEY = "a.elevatorFast";
 
     //Arm 
     private static final String ARM_MACRO_EXTEND_STATE_LOG_KEY = "a.armMacroExtendState";
@@ -92,7 +96,7 @@ public class AutonomousDriver implements IDriver
         {
             if (autonomousTasks.length > 1)
             {
-                singleTask = new OrderedTask(autonomousTasks);
+                singleTask = new SequentialTask(autonomousTasks);
             }
             else
             {
@@ -121,7 +125,7 @@ public class AutonomousDriver implements IDriver
                 this.hasBegun = true;
             }
 
-            if (!this.autonomousTask.shouldContinue())
+            if (this.autonomousTask.hasCompleted())
             {
                 // if we shouldn't continue, end the task
                 this.autonomousTask.end(this.controlData);
@@ -296,8 +300,9 @@ public class AutonomousDriver implements IDriver
     @Override
     public boolean getElevatorPickUpMacro()
     {
-        //TODO: implement 
-        return false;
+        boolean state = this.controlData.getElevatorTotePickUpMacroState();
+        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_PICK_UP_MACRO_LOG_KEY, state);
+        return state;
     }
 
     @Override
@@ -380,17 +385,27 @@ public class AutonomousDriver implements IDriver
     }
 
     @Override
-    public boolean getSlowElevatorButton()
+    public boolean getElevatorSlowButton()
     {
-        //TODO: add 
-        return false;
+        boolean mode = this.controlData.getElevatorSlowButton();
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_SLOW_LOG_KEY, mode);
+        return mode;
     }
 
     @Override
-    public boolean getFastElevatorButton()
+    public boolean getElevatorRegularSpeedButton()
     {
-        //TODO: add 
-        return false;
+        boolean mode = this.controlData.getElevatorRegularSpeedButton();
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_FAST_LOG_KEY, mode);
+        return mode;
+    }
+
+    @Override
+    public boolean getElevatorFastButton()
+    {
+        boolean mode = this.controlData.getElevatorFastButton();
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.ELEVATOR_FAST_LOG_KEY, mode);
+        return mode;
     }
 
     //===================================================== Arm =================================================================
@@ -539,4 +554,11 @@ public class AutonomousDriver implements IDriver
         return state;
     }
 
+    @Override
+    public boolean getIntakeJitterButton()
+    {
+        boolean state = this.controlData.getIntakeJitterState();
+        //        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_BACKWARD_STATE_KEY, state);
+        return state;
+    }
 }
