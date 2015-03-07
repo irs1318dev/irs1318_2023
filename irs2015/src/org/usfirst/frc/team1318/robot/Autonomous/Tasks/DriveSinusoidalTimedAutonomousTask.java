@@ -43,7 +43,7 @@ public class DriveSinusoidalTimedAutonomousTask extends TimedAutonomousTask
         }
 
         // apply x velocity based on how far through our duration we are 
-        double xVelocity = this.magnitude * Math.sin(2 * Math.PI * percentageTime);
+        double xVelocity = this.magnitude * Math.cos(2 * Math.PI * percentageTime);
         if (xVelocity > 0.0)
         {
             xVelocity *= this.rightMult;
