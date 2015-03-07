@@ -32,11 +32,9 @@ import org.usfirst.frc.team1318.robot.UserInterface.UserDriver;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Main class for the FRC 2015 Robot for IRS1318 - [robot_name]
+ * Main class for the FRC 2015 Robot for IRS1318 - Toothless
  * 
  * 
  * The VM is configured to automatically run this class, and to call the
@@ -61,9 +59,6 @@ public class Robot extends IterativeRobot
     // smartdash other constants 
     private static final String AUTONOMOUS_ROUTINE_PREFERENCE_KEY = "a.routine";
 
-    // smartdash preferences and other inputs
-    private SendableChooser autonomousRoutineChooser;
-
     // Driver (e.g. joystick, autonomous)
     private IDriver driver;
 
@@ -87,8 +82,9 @@ public class Robot extends IterativeRobot
     private IntakeComponent intakeComponent;
     private IntakeController intakeController;
 
-    DigitalInput dipSwitchA;
-    DigitalInput dipSwitchB;
+    // DipSwitches for selecting autonomous mode
+    private DigitalInput dipSwitchA;
+    private DigitalInput dipSwitchB;
 
     // Position manager - holds position information relative to our starting point
     private PositionManager position;
@@ -125,15 +121,8 @@ public class Robot extends IterativeRobot
 
         SmartDashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Init");
 
-        // set up chooser on SmartDashboard
-        this.autonomousRoutineChooser = new SendableChooser();
-        this.autonomousRoutineChooser.addDefault("Drive In Square", 0);
-        this.autonomousRoutineChooser.addObject("Drive In Square Positional", 1);
-        this.autonomousRoutineChooser.addObject("Drive Forward", 2);
-        SmartDashboard.putData(Robot.AUTONOMOUS_ROUTINE_PREFERENCE_KEY, this.autonomousRoutineChooser);
-
-        dipSwitchA = new DigitalInput(ElectronicsConstants.AUTONOMOUS_DIP_SWITCH_A);
-        dipSwitchB = new DigitalInput(ElectronicsConstants.AUTONOMOUS_DIP_SWITCH_B);
+        this.dipSwitchA = new DigitalInput(ElectronicsConstants.AUTONOMOUS_DIP_SWITCH_A);
+        this.dipSwitchB = new DigitalInput(ElectronicsConstants.AUTONOMOUS_DIP_SWITCH_B);
     }
 
     /**
@@ -193,7 +182,7 @@ public class Robot extends IterativeRobot
         //        IAutonomousTask[] autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine(this.driveTrainComponent);
 
         //        IAutonomousTask[] autonomousRoutine = Robot.GetContainerlessCollectThreeTotesRoutine(this.elevatorComponent);
-        IAutonomousTask[] autonomousRoutine = Robot.GetSinusoidalTestRoutine(this.elevatorComponent);//Robot.GetFillerRoutine();
+        IAutonomousTask[] autonomousRoutine = Robot.GetSinusoidalCollectThreeTotesRoutine(this.elevatorComponent);//Robot.GetFillerRoutine();
 
         //        IAutonomousTask[] autonomousRoutine = Robot.GetPushContainersCollectThreeTotesRoutine(this.elevatorComponent);
         //        IAutonomousTask[] autonomousRoutine = Robot.GetSpitContainersCollectThreeTotesRoutine(this.elevatorComponent, this.driveTrainComponent);
@@ -221,13 +210,15 @@ public class Robot extends IterativeRobot
         //                break;
         //
         //            case 2:
-        //                autonomousRoutine = Robot.GetMoveForwardRoutine(this.driveTrainComponent);
+        //                autonomousRoutine = Robot.GetSinusoidalCollectThreeTotesRoutine(this.elevatorComponent);
         //                break;
         //
         //            default:
         //                autonomousRoutine = Robot.GetFillerRoutine();
         //                break;
         //        }
+        //
+        //        SmartDashboardLogger.putNumber(Robot.AUTONOMOUS_ROUTINE_PREFERENCE_KEY, routineSelection);
 
         // create autonomous driver based on our desired routine
         this.driver = new AutonomousDriver(autonomousRoutine);
@@ -361,12 +352,15 @@ public class Robot extends IterativeRobot
         };
     }
 
-    private static IAutonomousTask[] GetSinusoidalTestRoutine(ElevatorComponent elevatorComponent)
+    /**
+     * Gets an autonomous routine that represents collecting 3 totes using the "other robots push containers away" method
+     * 
+     * @return list of autonomous tasks
+     */
+    private static IAutonomousTask[] GetSinusoidalCollectThreeTotesRoutine(ElevatorComponent elevatorComponent)
     {
         return new IAutonomousTask[]
         {
-            //            new DriveSinusoidalTimedAutonomousTask(4, .2, -.475, .95)
-
             // Collect tote #1, which should be pre-set in place
             new CollectToteTask(elevatorComponent),
 
@@ -383,7 +377,12 @@ public class Robot extends IterativeRobot
 
             // Collect tote #2 while driving forward
             ConcurrentTask.AnyTasks(
-                new DriveTimedAutonomousTask(3.0, 0.0, 0.15),
+                new SequentialTask(
+                    new IAutonomousTask[]
+                    {
+                        new DriveTimedAutonomousTask(3.0, 0.0, 0.15),
+                        new WaitAutonomousTask(20),
+                    }),
                 new CollectToteTask(elevatorComponent)),
 
             // Lift tote #2 while driving slowly around container #2
@@ -399,7 +398,12 @@ public class Robot extends IterativeRobot
 
             // Collect tote #3 while driving forward                
             ConcurrentTask.AnyTasks(
-                new DriveTimedAutonomousTask(3.0, 0.0, 0.15),
+                new SequentialTask(
+                    new IAutonomousTask[]
+                    {
+                        new DriveTimedAutonomousTask(3.0, 0.0, 0.15),
+                        new WaitAutonomousTask(20),
+                    }),
                 new CollectToteTask(elevatorComponent)),
 
             // Set first two totes on top of 3rd tote
