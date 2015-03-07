@@ -134,37 +134,31 @@ public class Robot extends IterativeRobot
         if (this.driver != null)
         {
             this.driver.stop();
-            //this.driver = null;
         }
 
         if (this.compressorController != null)
         {
             this.compressorController.stop();
-            //this.compressorController = null;
         }
 
         if (this.driveTrainController != null)
         {
             this.driveTrainController.stop();
-            //this.driveTrainController = null;
         }
 
         if (this.elevatorController != null)
         {
             this.elevatorController.stop();
-            //this.elevatorController = null;
         }
 
         if (this.armController != null)
         {
             this.armController.stop();
-            //this.armController = null;
         }
 
         if (this.intakeController != null)
         {
             this.intakeController.stop();
-            //this.intakeController = null;
         }
 
         SmartDashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Disabled");
@@ -180,45 +174,42 @@ public class Robot extends IterativeRobot
         //        IAutonomousTask[] autonomousRoutine = Robot.GetSampleRoutine(this.elevatorComponent, this.driveTrainComponent);
         //        IAutonomousTask[] autonomousRoutine = Robot.GetMoveForwardRoutine(this.driveTrainComponent);
         //        IAutonomousTask[] autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine(this.driveTrainComponent);
-
         //        IAutonomousTask[] autonomousRoutine = Robot.GetContainerlessCollectThreeTotesRoutine(this.elevatorComponent);
-        IAutonomousTask[] autonomousRoutine = Robot.GetSinusoidalCollectThreeTotesRoutine(this.elevatorComponent);//Robot.GetFillerRoutine();
-
-        //        IAutonomousTask[] autonomousRoutine = Robot.GetPushContainersCollectThreeTotesRoutine(this.elevatorComponent);
         //        IAutonomousTask[] autonomousRoutine = Robot.GetSpitContainersCollectThreeTotesRoutine(this.elevatorComponent, this.driveTrainComponent);
+        IAutonomousTask[] autonomousRoutine = Robot.GetSinusoidalCollectThreeTotesRoutine(this.elevatorComponent);
 
-        //        int routineSelection = 0;
-        //        if (dipSwitchA.get())
-        //        {
-        //            routineSelection += 1;
-        //        }
-        //
-        //        if (dipSwitchB.get())
-        //        {
-        //            routineSelection += 2;
-        //        }
-        //
-        //        // select autonomous routine based on setting in SmartDashboard
-        //        switch (routineSelection)
-        //        {
-        //            case 0:
-        //                autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine(this.driveTrainComponent);
-        //                break;
-        //
-        //            case 1:
-        //                autonomousRoutine = Robot.GetContainerlessCollectThreeTotesRoutine(this.elevatorComponent);
-        //                break;
-        //
-        //            case 2:
-        //                autonomousRoutine = Robot.GetSinusoidalCollectThreeTotesRoutine(this.elevatorComponent);
-        //                break;
-        //
-        //            default:
-        //                autonomousRoutine = Robot.GetFillerRoutine();
-        //                break;
-        //        }
-        //
-        //        SmartDashboardLogger.putNumber(Robot.AUTONOMOUS_ROUTINE_PREFERENCE_KEY, routineSelection);
+        int routineSelection = 0;
+        if (this.dipSwitchA.get())
+        {
+            routineSelection += 1;
+        }
+
+        if (this.dipSwitchB.get())
+        {
+            routineSelection += 2;
+        }
+
+        // select autonomous routine based on the dipswitch positions
+        switch (routineSelection)
+        {
+            case 0:
+                autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine(this.driveTrainComponent);
+                break;
+
+            case 1:
+                autonomousRoutine = Robot.GetContainerlessCollectThreeTotesRoutine(this.elevatorComponent);
+                break;
+
+            case 2:
+                autonomousRoutine = Robot.GetSinusoidalCollectThreeTotesRoutine(this.elevatorComponent);
+                break;
+
+            default:
+                autonomousRoutine = Robot.GetFillerRoutine();
+                break;
+        }
+
+        SmartDashboardLogger.putNumber(Robot.AUTONOMOUS_ROUTINE_PREFERENCE_KEY, routineSelection);
 
         // create autonomous driver based on our desired routine
         this.driver = new AutonomousDriver(autonomousRoutine);
@@ -249,17 +240,7 @@ public class Robot extends IterativeRobot
      */
     public void generalInit()
     {
-        //        // create controllers for each mechanism
-        //        this.compressorController = new CompressorController(this.compressorComponent);
-        //        this.driveTrainController =
-        //            new DriveTrainController(
-        //                this.driver,
-        //                this.driveTrainComponent,
-        //                TuningConstants.DRIVETRAIN_USE_PID_DEFAULT);
-        //        this.elevatorController = new ElevatorController(this.driver, this.elevatorComponent);
-        //        this.armController = new ArmController(this.driver, this.armComponent);
-        //        this.intakeController = new IntakeController(this.driver, this.intakeComponent);
-
+        // apply the driver to the controllers
         this.driveTrainController.setDriver(this.driver);
         this.elevatorController.setDriver(this.driver);
         this.armController.setDriver(this.driver);
