@@ -177,7 +177,7 @@ public class Robot extends IterativeRobot
         //        IAutonomousTask[] autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine(this.driveTrainComponent);
         //        IAutonomousTask[] autonomousRoutine = Robot.GetContainerlessCollectThreeTotesRoutine(this.elevatorComponent);
         //        IAutonomousTask[] autonomousRoutine = Robot.GetSpitContainersCollectThreeTotesRoutine(this.elevatorComponent, this.driveTrainComponent);
-        IAutonomousTask[] autonomousRoutine = Robot.GetSampleRoutine(this.elevatorComponent);
+        IAutonomousTask[] autonomousRoutine = Robot.GetSampleRoutine(this.driveTrainComponent, this.position, this.elevatorComponent);
 
         int routineSelection = 0;
         if (this.dipSwitchA.get())
@@ -624,8 +624,15 @@ public class Robot extends IterativeRobot
      * 
      * @return list of autonomous tasks
      */
-    private static IAutonomousTask[] GetSampleRoutine(ElevatorComponent elevatorComponent)
+    private static IAutonomousTask[] GetSampleRoutine(
+        DriveTrainComponent driveTrainComponent, PositionManager positionManager, ElevatorComponent elevatorComponent)
     {
+        //        return new IAutonomousTask[]
+        //        {
+        //            new DriveSinusoidalTimedAutonomousTask(3.5, .2, -.6, 1.25),
+        //            new TurnAbsoluteTask(0, driveTrainComponent, positionManager)
+        //        };
+
         return new IAutonomousTask[]
         {
             // Collect tote #1, which should be pre-set in place

@@ -68,14 +68,16 @@ public class PositionManager implements IController
         double rightDistance = this.driveTrainComponent.getRightEncoderDistance();
 
         // calculate the angle (in radians) based on the total distance traveled
-        this.angle = ((rightDistance - leftDistance) / HardwareConstants.DRIVETRAIN_WHEEL_DISTANCE) % (2 * Math.PI);
+        double angleR = ((leftDistance - rightDistance) / HardwareConstants.DRIVETRAIN_WHEEL_SEPARATION_DISTANCE);
 
         // calculate the average distance traveled
         double averagePositionChange = ((leftDistance - this.prevLeftDistance) + (rightDistance - this.prevRightDistance)) / 2;
 
         // calculate the change since last time, and update our relative position
-        this.x += averagePositionChange * Math.cos(this.angle);
-        this.y += averagePositionChange * Math.sin(this.angle);
+        this.x += averagePositionChange * Math.cos(angleR);
+        this.y += averagePositionChange * Math.sin(angleR);
+
+        this.angle = (angleR * 360 / (2 * Math.PI)) % 360;
 
         // record distance for next time
         this.prevLeftDistance = leftDistance;
