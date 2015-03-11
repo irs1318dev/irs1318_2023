@@ -80,8 +80,8 @@ public class UserDriver implements IDriver
     private SimpleButton armMacroRetractButton;
     private SimpleButton armExtenderExtendOverride;
     private SimpleButton armExtenderRetractOverride;
-    private SimpleButton armTiltExtendOverride;
-    private SimpleButton armTiltRetractOverride;
+    //    private SimpleButton armTiltExtendOverride;
+    //    private SimpleButton armTiltRetractOverride;
     private SimpleButton armTromboneExtendOverride;
     private SimpleButton armTromboneRetractOverride;
 
@@ -129,8 +129,8 @@ public class UserDriver implements IDriver
         this.armMacroRetractButton = new SimpleButton();
         this.armExtenderExtendOverride = new SimpleButton();
         this.armExtenderRetractOverride = new SimpleButton();
-        this.armTiltExtendOverride = new SimpleButton();
-        this.armTiltRetractOverride = new SimpleButton();
+        //        this.armTiltExtendOverride = new SimpleButton();
+        //        this.armTiltRetractOverride = new SimpleButton();
         this.armTromboneExtendOverride = new SimpleButton();
         this.armTromboneRetractOverride = new SimpleButton();
 
@@ -179,8 +179,8 @@ public class UserDriver implements IDriver
         this.armExtenderExtendOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_EXTENDER_EXTEND_BUTTON));
         this.armExtenderRetractOverride
             .updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_EXTENDER_RETRACT_BUTTON));
-        this.armTiltExtendOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_TILT_EXTEND_BUTTON));
-        this.armTiltRetractOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_TILT_RETRACT_BUTTON));
+        //        this.armTiltExtendOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_TILT_EXTEND_BUTTON));
+        //        this.armTiltRetractOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_TILT_RETRACT_BUTTON));
         this.armTromboneExtendOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_TROMBONE_EXTEND_BUTTON));
         this.armTromboneRetractOverride
             .updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_TROMBONE_RETRACT_BUTTON));
@@ -523,20 +523,26 @@ public class UserDriver implements IDriver
         return mode;
     }
 
+    /**
+     * not implemented 
+     */
     @Override
     public boolean getArmTiltExtendOverride()
     {
-        boolean mode = this.armTiltExtendOverride.isActivated();
+        //        boolean mode = this.armTiltExtendOverride.isActivated();
         //        SmartDashboardLogger.putBoolean(UserDriver.ARM_TILT_EXTEND_OVERRIDE_LOG_KEY, mode);
-        return mode;
+        return false;//mode;
     }
 
+    /**
+     * not implemented 
+     */
     @Override
     public boolean getArmTiltRetractOverride()
     {
-        boolean mode = this.armTiltRetractOverride.isActivated();
+        //        boolean mode = this.armTiltRetractOverride.isActivated();
         //        SmartDashboardLogger.putBoolean(UserDriver.ARM_TILT_RETRACT_OVERRIDE_LOG_KEY, mode);
-        return mode;
+        return false;//mode;
     }
 
     @Override
