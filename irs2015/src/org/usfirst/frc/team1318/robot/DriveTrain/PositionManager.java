@@ -70,6 +70,9 @@ public class PositionManager implements IController
         // calculate the angle (in radians) based on the total distance traveled
         double angleR = ((leftDistance - rightDistance) / HardwareConstants.DRIVETRAIN_WHEEL_SEPARATION_DISTANCE);
 
+        // correct for weirdness (7 degree offset in the angle)
+        angleR *= 0.979858464888405;
+
         // calculate the average distance traveled
         double averagePositionChange = ((leftDistance - this.prevLeftDistance) + (rightDistance - this.prevRightDistance)) / 2;
 
@@ -103,7 +106,7 @@ public class PositionManager implements IController
      */
     public double getAngle()
     {
-        return this.angle * 180 / Math.PI;
+        return this.angle;
     }
 
     /**

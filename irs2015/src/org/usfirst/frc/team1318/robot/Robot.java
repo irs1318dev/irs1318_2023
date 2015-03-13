@@ -10,6 +10,7 @@ import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ArmTromboneTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.CollectToteTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ConcurrentTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveSinusoidalTimedAutonomousTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveSinusoidalTimedWithAngleTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveTimedAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ElevatorBottomTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ElevatorLevelTask;
@@ -647,7 +648,7 @@ public class Robot extends IterativeRobot
                         new ElevatorBottomTask(elevatorComponent, true),
                         new ElevatorLevelTask(elevatorComponent, 1, 0, true),
                     }),
-                new DriveSinusoidalTimedAutonomousTask(3.5, .2, -.6, 1.25)),
+                new DriveSinusoidalTimedWithAngleTask(3.5, .2, .6, 0.95, positionManager, driveTrainComponent)),
 
             // Collect tote #2 while driving forward
             ConcurrentTask.AnyTasks(
@@ -668,7 +669,8 @@ public class Robot extends IterativeRobot
                         new ElevatorBottomTask(elevatorComponent, true),
                         new ElevatorLevelTask(elevatorComponent, 1, 0, true),
                     }),
-                new DriveSinusoidalTimedAutonomousTask(3.5, .2, -.6, 1)),
+                new DriveSinusoidalTimedWithAngleTask(3.5, .2, .6, 0.8, positionManager, driveTrainComponent)),
+            //                new DriveSinusoidalTimedAutonomousTask(3.5, .2, .6, 0.8)),
 
             // Collect tote #3 while driving forward                
             ConcurrentTask.AnyTasks(
@@ -676,15 +678,19 @@ public class Robot extends IterativeRobot
                     new IAutonomousTask[]
                     {
                         new DriveTimedAutonomousTask(2.0, 0.0, 0.25),
-                        new WaitForeverTask(),
                     }),
                 new CollectToteTask(elevatorComponent)),
 
             // Set first two totes on top of 3rd tote
             // Turn around to the right, dragging all 3 totes at regular level
             ConcurrentTask.AllTasks(
-                new ElevatorBottomTask(elevatorComponent, true),
-                new DriveTimedAutonomousTask(4.0, 0.325, 0.3)),
+                new ElevatorLevelTask(elevatorComponent, 0, 2, true),
+                new SequentialTask(
+                    new IAutonomousTask[]
+                    {
+                        new DriveTimedAutonomousTask(1, .7, 0),
+                        new DriveTimedAutonomousTask(2, 0.2, 0.325)
+                    })),
 
             // Spit out the totes while driving backwards slowly
             ConcurrentTask.AllTasks(

@@ -31,7 +31,7 @@ public class HardwareConstants
     public static final double ELEVATOR_STEP_HEIGHT = 6.5 * 2.54;
 
     public static final double ELEVATOR_0_TOTE_HEIGHT = 0;
-    public static final double ELEVATOR_1_TOTE_HEIGHT = 16 * 2.54;
+    public static final double ELEVATOR_1_TOTE_HEIGHT = 15 * 2.54;  //16
     public static final double ELEVATOR_2_TOTE_HEIGHT = 27.5 * 2.54;
     public static final double ELEVATOR_3_TOTE_HEIGHT = 39 * 2.54;
 
