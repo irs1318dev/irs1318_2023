@@ -182,7 +182,7 @@ public class Robot extends IterativeRobot
         //        IAutonomousTask[] autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine(this.driveTrainComponent);
         //        IAutonomousTask[] autonomousRoutine = Robot.GetContainerlessCollectThreeTotesRoutine(this.elevatorComponent);
         //        IAutonomousTask[] autonomousRoutine = Robot.GetSpitContainersCollectThreeTotesRoutine(this.elevatorComponent, this.driveTrainComponent);
-        IAutonomousTask[] autonomousRoutine = Robot.GetSampleRoutine(this.driveTrainComponent, this.position, this.elevatorComponent);
+        IAutonomousTask[] autonomousRoutine = Robot.GetFillerRoutine();
 
         int routineSelection = 0;
         if (this.dipSwitchA.get())
@@ -195,25 +195,26 @@ public class Robot extends IterativeRobot
             routineSelection += 2;
         }
 
-        // select autonomous routine based on the dipswitch positions
-        //        switch (routineSelection)
-        //        {
-        //            case 0:
-        //                autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine(this.driveTrainComponent);
-        //                break;
-        //
-        //            case 1:
-        //                autonomousRoutine = Robot.GetContainerlessCollectThreeTotesRoutine(this.elevatorComponent);
-        //                break;
-        //
-        //            case 2:
-        //                autonomousRoutine = Robot.GetSinusoidalCollectThreeTotesRoutine(this.elevatorComponent);
-        //                break;
-        //
-        //            default:
-        //                autonomousRoutine = Robot.GetFillerRoutine();
-        //                break;
-        //        }
+        //select autonomous routine based on the dipswitch positions
+        switch (routineSelection)
+        {
+            case 0: //neither flipped 
+                autonomousRoutine = Robot.GetSinusoidalCollectThreeTotesRoutine(this.driveTrainComponent, this.position,
+                    this.elevatorComponent);
+                break;
+
+            case 1: //switch A flipped 
+                autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine(this.driveTrainComponent);
+                break;
+
+            case 2: //switch B flipped 
+                autonomousRoutine = Robot.GetContainerlessCollectThreeTotesRoutine(this.elevatorComponent);
+                break;
+
+            default:    //both flipped or can't read 
+                autonomousRoutine = Robot.GetFillerRoutine();
+                break;
+        }
 
         SmartDashboardLogger.putNumber(Robot.AUTONOMOUS_ROUTINE_PREFERENCE_KEY, routineSelection);
 
@@ -344,7 +345,7 @@ public class Robot extends IterativeRobot
      * 
      * @return list of autonomous tasks
      */
-    private static IAutonomousTask[] GetSinusoidalCollectThreeTotesRoutine(ElevatorComponent elevatorComponent)
+    private static IAutonomousTask[] GetSinusoidalCollectThreeTotesRoutineOld(ElevatorComponent elevatorComponent)
     {
         return new IAutonomousTask[]
         {
@@ -625,11 +626,11 @@ public class Robot extends IterativeRobot
     }
 
     /**
-     * Gets an autonomous routine that is currently being experimented on
+     * Gets an autonomous routine that drives around the containers to collect the three autonomous totes and deposit them in the auto zone 
      * 
      * @return list of autonomous tasks
      */
-    private static IAutonomousTask[] GetSampleRoutine(
+    private static IAutonomousTask[] GetSinusoidalCollectThreeTotesRoutine(
         DriveTrainComponent driveTrainComponent, PositionManager positionManager, ElevatorComponent elevatorComponent)
     {
         //        return new IAutonomousTask[]
