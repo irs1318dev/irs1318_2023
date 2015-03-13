@@ -92,7 +92,7 @@ public class TurnAbsoluteTask extends TimedAutonomousTask
         }
 
         double currentAngle = this.position.getAngle();
-        double currentError = currentAngle - this.absoluteDegrees;
+        double currentError = this.absoluteDegrees - currentAngle;
         return currentError > -this.acceptableError && currentError < this.acceptableError;
     }
 }
