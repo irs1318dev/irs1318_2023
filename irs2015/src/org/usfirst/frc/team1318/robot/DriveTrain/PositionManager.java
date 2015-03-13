@@ -123,4 +123,15 @@ public class PositionManager implements IController
     {
         return this.y;
     }
+
+    public void reset()
+    {
+        this.x = 0.0;
+        this.y = 0.0;
+
+        this.angle = 0.0;
+
+        this.prevLeftDistance = 0.0;
+        this.prevRightDistance = 0.0;
+    }
 }

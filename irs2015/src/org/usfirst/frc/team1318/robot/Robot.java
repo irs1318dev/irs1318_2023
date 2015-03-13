@@ -171,6 +171,10 @@ public class Robot extends IterativeRobot
      */
     public void autonomousInit()
     {
+        // reset the drivetrain component and position manager so that we consider ourself at the origin (0,0) and facing the 0 direction.
+        this.driveTrainComponent.reset();
+        this.position.reset();
+
         // Find desired autonomous routine.
         //        IAutonomousTask[] autonomousRoutine = Robot.GetSampleRoutine(this.elevatorComponent, this.driveTrainComponent);
         //        IAutonomousTask[] autonomousRoutine = Robot.GetMoveForwardRoutine(this.driveTrainComponent);
