@@ -208,18 +208,18 @@ public class ArmController implements IController
             this.armstateRetractor = ArmStates.STAGE_0;
         }
 
-        //        if (this.driver.getArmTiltExtendOverride())
-        //        {
-        //            this.tiltState = true;
-        //            this.armstateExtendor = ArmStates.STAGE_0;
-        //            this.armstateRetractor = ArmStates.STAGE_0;
-        //        }
-        //        if (this.driver.getArmTiltRetractOverride())
-        //        {
-        //            this.tiltState = false;
-        //            this.armstateExtendor = ArmStates.STAGE_0;
-        //            this.armstateRetractor = ArmStates.STAGE_0;
-        //        }
+        if (this.driver.getArmTiltExtendOverride())
+        {
+            this.tiltState = true;
+            this.armstateExtendor = ArmStates.STAGE_0;
+            this.armstateRetractor = ArmStates.STAGE_0;
+        }
+        if (this.driver.getArmTiltRetractOverride())
+        {
+            this.tiltState = false;
+            this.armstateExtendor = ArmStates.STAGE_0;
+            this.armstateRetractor = ArmStates.STAGE_0;
+        }
 
         if (this.driver.getArmTromboneExtendOverride())
         {
