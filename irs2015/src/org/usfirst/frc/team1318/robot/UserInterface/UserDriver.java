@@ -112,6 +112,7 @@ public class UserDriver implements IDriver
     private SimpleButton elevatorZeroEncoders;
     private SimpleButton elevatorSlowButton;
     private SimpleButton elevatorRegularButton;
+    private SimpleButton elevatorFastButton;
 
     /**
      * Initializes a new UserDriver
@@ -161,6 +162,7 @@ public class UserDriver implements IDriver
         this.elevatorZeroEncoders = new SimpleButton();
         this.elevatorSlowButton = new SimpleButton();
         this.elevatorRegularButton = new SimpleButton();
+        this.elevatorFastButton = new SimpleButton();
     }
 
     /**
@@ -219,6 +221,7 @@ public class UserDriver implements IDriver
         this.elevatorMoveToBottom.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_MOVE_TO_BOTTOM));
         this.elevatorSlowButton.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_SLOW_BUTTON));
         this.elevatorRegularButton.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_REGULAR_BUTTON));
+        this.elevatorFastButton.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ELEVATOR_FAST_BUTTON));
     }
 
     /**
@@ -484,8 +487,8 @@ public class UserDriver implements IDriver
     @Override
     public boolean getElevatorFastButton()
     {
-        boolean mode = false;
-        //        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_FAST_LOG_KEY, mode);
+        boolean mode = this.elevatorFastButton.isActivated();
+        SmartDashboardLogger.putBoolean(UserDriver.ELEVATOR_FAST_LOG_KEY, mode);
         return mode;
     }
 

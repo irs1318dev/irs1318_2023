@@ -50,17 +50,18 @@ public class JoystickButtonConstants
     public static final int ELEVATOR_MOVE_TO_2_TOTES_BUTTON = 9;
     public static final int ELEVATOR_MOVE_TO_3_TOTES_BUTTON = 7;
     public static final int ELEVATOR_PICK_UP_MACRO_BUTTON = 1;
-    public static final int ELEVATOR_PID_ON = 10;//12;
+    public static final int ELEVATOR_PID_ON = 10;
     //    public static final int ELEVATOR_PID_OFF = -1;
-    public static final int ELEVATOR_STOP_BUTTON = 5;//16;
+    public static final int ELEVATOR_STOP_BUTTON = 5;
     public static final int ELEVATOR_UP_BUTTON = 1;
     public static final int ELEVATOR_DOWN_BUTTON = 6;
     public static final int ELEVATOR_MOVE_TO_BOTTOM = 11;
-    public static final int ELEVATOR_IGNORE_SENSORS_BUTTON = 15;//14;
-    public static final int ELEVATOR_USE_SENSORS_BUTTON = 14;//13;
-    public static final int ELEVATOR_ZERO_ENCODERS = 12;//15;
+    public static final int ELEVATOR_IGNORE_SENSORS_BUTTON = 15;
+    public static final int ELEVATOR_USE_SENSORS_BUTTON = 14;
+    public static final int ELEVATOR_ZERO_ENCODERS = 13;//12;
     public static final int ELEVATOR_SLOW_BUTTON = 2;
     public static final int ELEVATOR_REGULAR_BUTTON = 7;
+    public static final int ELEVATOR_FAST_BUTTON = 12;
 
     //================================================== Arm ==============================================================
 
@@ -71,8 +72,8 @@ public class JoystickButtonConstants
     //    public static final int ARM_TILT_EXTEND_BUTTON = 9;
     //    public static final int ARM_TILT_RETRACT_BUTTON = 4;
     public static final int ARM_TILT_RETRACT_HOLD_BUTTON = 6;
-    public static final int ARM_TROMBONE_EXTEND_BUTTON = 4;//5;
-    public static final int ARM_TROMBONE_RETRACT_BUTTON = 9;//10;
+    public static final int ARM_TROMBONE_EXTEND_BUTTON = 4;
+    public static final int ARM_TROMBONE_RETRACT_BUTTON = 9;
 
     //================================================== Intake ==============================================================
 
