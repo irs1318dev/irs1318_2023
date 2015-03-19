@@ -418,21 +418,16 @@ public class Robot extends IterativeRobot
         return new IAutonomousTask[]
         {
             //            new DriveTimedAutonomousTask(0.5, 0.0, -0.2),
-            new DriveTimedAutonomousTask(0.7, 0.0, -0.2),
+
             //            new DriveDistanceAutonomousTask(-50, driveTrainComponent),
             ConcurrentTask.AllTasks(
                 new ArmExtenderTask(1.5, true),
-                new SequentialTask(
-                    new IAutonomousTask[]
-                    {
-                        new DriveTimedAutonomousTask(0.45, 0.0, 0.15),
-                        new WaitAutonomousTask(2),
-                    })
+                new DriveTimedAutonomousTask(0.7, 0.0, -0.3)
                 ),
-
+            new DriveTimedAutonomousTask(0.4, 0.0, 0.17),
             //            new ArmTromboneTask(1, true),
             new ArmTiltTask(2, true),
-            new DriveTimedAutonomousTask(2.0, 0.0, 0.32),
+            new DriveTimedAutonomousTask(2.25, 0.0, 0.32),
             new WaitAutonomousTask(0.3),
             new DriveTimedAutonomousTask(0.7, 0, -0.2),
             //            new DriveDistanceAutonomousTask(100, driveTrainComponent)
@@ -664,7 +659,7 @@ public class Robot extends IterativeRobot
                         new ElevatorLevelTask(elevatorComponent, 1, 0, true),
                     }),
                 //                new DriveSinusoidalTimedWithAngleTask(3.5, .2, .6, 0.95, positionManager, driveTrainComponent)),
-                new DriveSinusoidalTimedWithAngleTask(3.5, .2, .65, 0.9, positionManager, driveTrainComponent)),
+                new DriveSinusoidalTimedWithAngleTask(3.5, .2, .7, 0.9, positionManager, driveTrainComponent)),
 
             // Collect tote #2 while driving forward
             ConcurrentTask.AnyTasks(
@@ -686,7 +681,7 @@ public class Robot extends IterativeRobot
                         new ElevatorLevelTask(elevatorComponent, 1, 0, true),
                     }),
                 //                new DriveSinusoidalTimedWithAngleTask(3.5, .2, .6, 0.8, positionManager, driveTrainComponent)),
-                new DriveSinusoidalTimedWithAngleTask(3.5, .2, .6, 0.75, positionManager, driveTrainComponent)),
+                new DriveSinusoidalTimedWithAngleTask(3.5, .2, .65, 0.75, positionManager, driveTrainComponent)),
             //                new DriveSinusoidalTimedAutonomousTask(3.5, .2, .6, 0.8)),
 
             // Collect tote #3 while driving forward                
@@ -705,7 +700,7 @@ public class Robot extends IterativeRobot
                 new SequentialTask(
                     new IAutonomousTask[]
                     {
-                        new DriveTimedAutonomousTask(1, .7, 0),
+                        new DriveTimedAutonomousTask(1, .5, 0),
                         new DriveTimedAutonomousTask(2, 0.2, 0.325)
                     })),
 
