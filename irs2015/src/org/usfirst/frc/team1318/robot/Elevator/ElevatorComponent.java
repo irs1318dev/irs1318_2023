@@ -6,6 +6,7 @@ import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
@@ -27,6 +28,7 @@ public class ElevatorComponent
     private final AnalogInput throughBeamSensor;
     private final Talon motor;
     private final Encoder encoder;
+    private final DoubleSolenoid canStabilizer;
     private final DigitalInput topLimitSwtich;
     private final DigitalInput bottomLimitSwitch;
     private final Solenoid limitSwitchLight;
@@ -43,6 +45,9 @@ public class ElevatorComponent
         this.encoder = new Encoder(
             ElectronicsConstants.ELEVATOR_ENCODER_CHANNEL_A,
             ElectronicsConstants.ELEVATOR_ENCODER_CHANNEL_B);
+
+        this.canStabilizer = new DoubleSolenoid(ElectronicsConstants.PCM_B_MODULE, ElectronicsConstants.ELEVATOR_CAN_STABILIZER_EXTEND,
+            ElectronicsConstants.ELEVATOR_CAN_STABILIZER_RETRACT);
 
         this.encoder.setDistancePerPulse(HardwareConstants.ELEVATOR_PULSE_DISTANCE);
 
@@ -122,6 +127,18 @@ public class ElevatorComponent
     {
         this.motor.set(powerLevel);
         SmartDashboardLogger.putNumber(ElevatorComponent.MOTOR_POWER_LOG_KEY, powerLevel);
+    }
+
+    public void setCanStabilizer(boolean value)
+    {
+        if (value)
+        {
+            this.canStabilizer.set(DoubleSolenoid.Value.kForward);
+        }
+        else
+        {
+            this.canStabilizer.set(DoubleSolenoid.Value.kReverse);
+        }
     }
 
     /**
