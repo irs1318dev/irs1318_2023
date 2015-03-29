@@ -56,22 +56,24 @@ public class JoystickButtonConstants
     public static final int ELEVATOR_UP_BUTTON = 1;
     public static final int ELEVATOR_DOWN_BUTTON = 6;
     public static final int ELEVATOR_MOVE_TO_BOTTOM = 11;
-    public static final int ELEVATOR_IGNORE_SENSORS_BUTTON = 15;
-    public static final int ELEVATOR_USE_SENSORS_BUTTON = 14;
-    public static final int ELEVATOR_ZERO_ENCODERS = 13;//12;
-    public static final int ELEVATOR_SLOW_BUTTON = 2;
-    public static final int ELEVATOR_REGULAR_BUTTON = 7;
-    public static final int ELEVATOR_FAST_BUTTON = 12;
+    public static final int ELEVATOR_IGNORE_SENSORS_BUTTON = 14;
+    public static final int ELEVATOR_USE_SENSORS_BUTTON = 13;
+    public static final int ELEVATOR_ZERO_ENCODERS = 15;
+    //    public static final int ELEVATOR_SLOW_BUTTON = 2;
+    //    public static final int ELEVATOR_REGULAR_BUTTON = 7;
+    //    public static final int ELEVATOR_FAST_BUTTON = 12;
+    public static final int ELEVATOR_CAN_STABILIZER_OPEN_BUTTON = 4;
+    public static final int ELEVATOR_CAN_STABILIZER_CLOSE_BUTTON = 6;
 
     //================================================== Arm ==============================================================
 
     //    public static final int ARM_MACRO_EXTEND_BUTTON = -1;
     //    public static final int ARM_MACRO_RETRACT_BUTTON = -1;
-    public static final int ARM_EXTENDER_EXTEND_BUTTON = 3;
-    public static final int ARM_EXTENDER_RETRACT_BUTTON = 8;
-    //    public static final int ARM_TILT_EXTEND_BUTTON = 9;
-    //    public static final int ARM_TILT_RETRACT_BUTTON = 4;
-    public static final int ARM_TILT_RETRACT_HOLD_BUTTON = 6;
+    public static final int ARM_EXTENDER_EXTEND_BUTTON = 2;
+    public static final int ARM_EXTENDER_RETRACT_BUTTON = 7;
+    public static final int ARM_TILT_EXTEND_BUTTON = 8;
+    public static final int ARM_TILT_RETRACT_BUTTON = 3;
+    //    public static final int ARM_TILT_RETRACT_HOLD_BUTTON = 6;
     public static final int ARM_TROMBONE_EXTEND_BUTTON = 4;
     public static final int ARM_TROMBONE_RETRACT_BUTTON = 9;
 
@@ -79,12 +81,12 @@ public class JoystickButtonConstants
 
     //    public static final int INTAKE_UP_BUTTON = -1;
     //    public static final int INTAKE_DOWN_BUTTON = -1;
-    public static final int INTAKE_DOWN_HOLD_BUTTON = 4;
+    public static final int INTAKE_DOWN_HOLD_BUTTON = 8;
     //    public static final int INTAKE_RIGHT_EXTEND_OVERRIDE = -1;
     //    public static final int INTAKE_RIGHT_RETRACT_OVERRIDE = -1;
     //    public static final int INTAKE_LEFT_EXTEND_OVERRIDE = -1;
     //    public static final int INTAKE_LEFT_RETRACT_OVERRIDE = -1;
     public static final int INTAKE_FORWARD_BUTTON = 3;
     public static final int INTAKE_BACKWARD_BUTTON = 5;
-    public static final int INTAKE_JITTER_BUTTON = 8;
+    //    public static final int INTAKE_JITTER_BUTTON = 8;
 }

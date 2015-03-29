@@ -26,6 +26,8 @@ public class ElevatorController implements IController
     private double baseLevel;
     private double position;
 
+    private Boolean canStabilizerState;
+
     private boolean usePID;
     private PIDHandler pidHandler;
 
@@ -157,6 +159,20 @@ public class ElevatorController implements IController
             double newOffset = HardwareConstants.ELEVATOR_MIN_HEIGHT + this.component.getEncoderDistance();
             this.component.setEncoderZeroOffset(newOffset);
             this.position -= newOffset;
+        }
+
+        if (this.driver.getElevatorOpenCanStabilizerButton())
+        {
+            this.canStabilizerState = true;
+        }
+        else if (this.driver.getElevatorCloseCanStabilizerButton())
+        {
+            this.canStabilizerState = false;
+        }
+
+        if (this.canStabilizerState != null)
+        {
+            this.component.setCanStabilizer(this.canStabilizerState);
         }
 
         //--> set position and power level 

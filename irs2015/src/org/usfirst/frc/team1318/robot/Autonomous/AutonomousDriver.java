@@ -408,6 +408,20 @@ public class AutonomousDriver implements IDriver
         return mode;
     }
 
+    @Override
+    public boolean getElevatorOpenCanStabilizerButton()
+    {
+        //TODO: implement 
+        return false;
+    }
+
+    @Override
+    public boolean getElevatorCloseCanStabilizerButton()
+    {
+        //TODO: implement 
+        return false;
+    }
+
     //===================================================== Arm =================================================================
 
     @Override
