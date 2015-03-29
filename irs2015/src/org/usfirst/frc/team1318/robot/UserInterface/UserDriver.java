@@ -165,6 +165,8 @@ public class UserDriver implements IDriver
         //        this.elevatorSlowButton = new SimpleButton();
         //        this.elevatorRegularButton = new SimpleButton();
         //        this.elevatorFastButton = new SimpleButton();
+        this.elevatorCanStabilizerOpenButton = new SimpleButton();
+        this.elevatorCanStabilizerCloseButton = new SimpleButton();
     }
 
     /**
@@ -183,8 +185,8 @@ public class UserDriver implements IDriver
         this.armExtenderExtendOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_EXTENDER_EXTEND_BUTTON));
         this.armExtenderRetractOverride
             .updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_EXTENDER_RETRACT_BUTTON));
-        //        this.armTiltExtendOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_TILT_EXTEND_BUTTON));
-        //        this.armTiltRetractOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_TILT_RETRACT_BUTTON));
+        this.armTiltExtendOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_TILT_EXTEND_BUTTON));
+        this.armTiltRetractOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_TILT_RETRACT_BUTTON));
         this.armTromboneExtendOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_TROMBONE_EXTEND_BUTTON));
         this.armTromboneRetractOverride
             .updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_TROMBONE_RETRACT_BUTTON));
@@ -557,7 +559,7 @@ public class UserDriver implements IDriver
     {
         boolean mode = this.armTiltExtendOverride.isActivated();
         //        SmartDashboardLogger.putBoolean(UserDriver.ARM_TILT_EXTEND_OVERRIDE_LOG_KEY, mode);
-        return false;//mode;
+        return mode;
     }
 
     /**
@@ -568,7 +570,7 @@ public class UserDriver implements IDriver
     {
         boolean mode = this.armTiltRetractOverride.isActivated();
         //        SmartDashboardLogger.putBoolean(UserDriver.ARM_TILT_RETRACT_OVERRIDE_LOG_KEY, mode);
-        return false;//mode;
+        return mode;
     }
 
     @Override
