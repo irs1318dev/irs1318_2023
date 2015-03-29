@@ -7,7 +7,7 @@ import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 
 public class ElevatorComponent
@@ -29,8 +29,10 @@ public class ElevatorComponent
     private final Encoder encoder;
     private final DigitalInput topLimitSwtich;
     private final DigitalInput bottomLimitSwitch;
-    private final Relay limitSwitchRelay;
-    private final Relay throughBeamRelay;
+    private final Solenoid limitSwitchLight;
+    private final Solenoid throughBeamLightUpper;
+    private final Solenoid throughBeamLightLeft;
+    private final Solenoid throughBeamLightRight;
 
     private double encoderZeroOffset;
 
@@ -49,8 +51,13 @@ public class ElevatorComponent
         this.topLimitSwtich = new DigitalInput(ElectronicsConstants.ELEVATOR_TOP_LIMIT_SWITCH_CHANNEL);
         this.bottomLimitSwitch = new DigitalInput(ElectronicsConstants.ELEVATOR_BOTTOM_LIMIT_SWITCH_CHANNEL);
 
-        this.throughBeamRelay = new Relay(ElectronicsConstants.ELEVATOR_THROUGH_BEAM_RELAY_CHANNEL, Relay.Direction.kForward);
-        this.limitSwitchRelay = new Relay(ElectronicsConstants.ELEVATOR_LIMIT_SWITCH_RELAY_CHANNEL, Relay.Direction.kForward);
+        this.limitSwitchLight = new Solenoid(ElectronicsConstants.PCM_B_MODULE, ElectronicsConstants.ELEVATOR_LIMIT_SWITCH_LIGHT_CHANNEL);
+        this.throughBeamLightUpper = new Solenoid(ElectronicsConstants.PCM_B_MODULE,
+            ElectronicsConstants.ELEVATOR_THROUGH_BEAM_LIGHT_CHANNEL_UPPER);
+        this.throughBeamLightLeft = new Solenoid(ElectronicsConstants.PCM_B_MODULE,
+            ElectronicsConstants.ELEVATOR_THROUGH_BEAM_LIGHT_CHANNEL_LEFT);
+        this.throughBeamLightRight = new Solenoid(ElectronicsConstants.PCM_B_MODULE,
+            ElectronicsConstants.ELEVATOR_THROUGH_BEAM_LIGHT_CHANNEL_RIGHT);
 
         this.encoderZeroOffset = 0.0;
     }
@@ -165,11 +172,15 @@ public class ElevatorComponent
     {
         if (value)
         {
-            this.throughBeamRelay.set(Relay.Value.kOn);
+            this.throughBeamLightUpper.set(true);
+            this.throughBeamLightLeft.set(true);
+            this.throughBeamLightRight.set(true);
         }
         else
         {
-            this.throughBeamRelay.set(Relay.Value.kOff);
+            this.throughBeamLightUpper.set(false);
+            this.throughBeamLightLeft.set(false);
+            this.throughBeamLightRight.set(false);
         }
         SmartDashboardLogger.putBoolean(ElevatorComponent.THROUGH_BEAM_RELAY_LOG_KEY, value);
     }
@@ -178,11 +189,11 @@ public class ElevatorComponent
     {
         if (value)
         {
-            this.limitSwitchRelay.set(Relay.Value.kOn);
+            this.limitSwitchLight.set(true);
         }
         else
         {
-            this.limitSwitchRelay.set(Relay.Value.kOff);
+            this.limitSwitchLight.set(false);
         }
         SmartDashboardLogger.putBoolean(ElevatorComponent.LIMIT_SWITCH_RELAY_LOG_KEY, value);
     }
