@@ -47,7 +47,9 @@ public class DriveTrainController implements IController
         this.usePositionalMode = false;
         this.macroData = driveTrainMacroData;
         this.timer = new Timer();
-        timer.start();
+
+        this.timer.start();
+        this.startTime = this.timer.get();
 
         this.createPIDHandler();
     }
@@ -122,17 +124,38 @@ public class DriveTrainController implements IController
 
     private PowerSetting runCollectCansFromStepMacro()
     {
+        PowerSetting result = new PowerSetting(0, 0);
         switch (this.macroData.state)
         {
-            case WAIT_FOR_PRESS_0:
+            case STATE_0_WAIT_FOR_PRESS:
                 if (this.driver.getDriveTrainCollectCansFromStepMacro())
                 {
-                    this.macroData.state = DriveTrainMacroData.MacroStates.DRIVE_FORWARD_EXTEND_1;
+                    this.macroData.state = DriveTrainMacroData.MacroStates.STATE_1_DRIVE_BACK;
+                    this.startTime = this.timer.get();
+                    this.macroData.setRunningMacro(true);
+
+                    this.macroData.setExtenderState(true);
+                    this.macroData.setTiltState(false);
+                    this.macroData.setTromboneState(true);
+                }
+                this.macroData.setRunningMacro(false);
+                break;
+            case STATE_1_DRIVE_BACK:
+                if (this.timer.get() < this.startTime + this.macroData.DRIVE_BACK_TIME_1)
+                {
+                    result = new PowerSetting(0.0, 0.17);
+                }
+                else
+                {
+                    this.startTime = this.timer.get();
+                    this.macroData.setTiltState(true);
+                    this.macroData.state = DriveTrainMacroData.MacroStates.STATE_2_SETTLE_WAIT;
                 }
                 break;
+            case STATE_2_SETTLE_WAIT:
 
         }
-        return new PowerSetting(0, 0);
+        return result;
     }
 
     /**
@@ -232,7 +255,7 @@ public class DriveTrainController implements IController
         }
         else
         {
-            this.macroData.state = DriveTrainMacroData.MacroStates.WAIT_FOR_PRESS_0;
+            this.macroData.state = DriveTrainMacroData.MacroStates.STATE_0_WAIT_FOR_PRESS;
         }
 
         // adjust the intensity of the input
