@@ -188,7 +188,7 @@ public class ElevatorComponent
     public void setThroughBeamRelayValue(boolean value)
     {
 
-        this.throughBeamLightUpper.set(value);
+        //        this.throughBeamLightUpper.set(value);
         this.throughBeamLightLeft.set(value);
         this.throughBeamLightRight.set(value);
         SmartDashboardLogger.putBoolean(ElevatorComponent.THROUGH_BEAM_RELAY_LOG_KEY, value);
@@ -196,7 +196,7 @@ public class ElevatorComponent
 
     public void setLimitSwitchRelayValue(boolean value)
     {
-        this.limitSwitchLight.set(value);
-        SmartDashboardLogger.putBoolean(ElevatorComponent.LIMIT_SWITCH_RELAY_LOG_KEY, value);
+        //        this.limitSwitchLight.set(value);
+        //        SmartDashboardLogger.putBoolean(ElevatorComponent.LIMIT_SWITCH_RELAY_LOG_KEY, value);
     }
 }

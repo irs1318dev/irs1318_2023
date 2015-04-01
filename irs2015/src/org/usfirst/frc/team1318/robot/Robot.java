@@ -443,6 +443,37 @@ public class Robot extends IterativeRobot
         };
     }
 
+    private static IAutonomousTask[] GetRetrieveContainersFromStepFastRoutine(DriveTrainComponent driveTrainComponent)
+    {
+        // Drive backwards, extend the arm (extender, trombone, tilt), drive forwards, [retract the arm (tilt, trombone, extender)]
+        return new IAutonomousTask[]
+        {
+            //            new DriveTimedAutonomousTask(0.5, 0.0, -0.2),
+
+            //            new DriveDistanceAutonomousTask(-50, driveTrainComponent),
+            ConcurrentTask.AllTasks(
+                new ArmExtenderTask(1.5, true),
+                new SequentialTask(
+                    new IAutonomousTask[]
+                    {
+                        new WaitAutonomousTask(.5),
+                        new DriveTimedAutonomousTask(0.7, 0.0, -0.3)
+                    })
+
+                ),
+            new DriveTimedAutonomousTask(0.4, 0.0, 0.17),
+            //            new ArmTromboneTask(1, true),
+            new ArmTiltTask(2, true),
+            new DriveTimedAutonomousTask(2.25, 0.0, 0.32),
+            new WaitAutonomousTask(0.3),
+            new DriveTimedAutonomousTask(1, 0, -0.2),
+            //            new DriveDistanceAutonomousTask(100, driveTrainComponent)
+            new ArmTiltTask(1, false),
+            new ArmTromboneTask(1, false),
+            new ArmExtenderTask(1, false),
+        };
+    }
+
     private static IAutonomousTask[] GetFillerRoutine()
     {
         return new IAutonomousTask[]
