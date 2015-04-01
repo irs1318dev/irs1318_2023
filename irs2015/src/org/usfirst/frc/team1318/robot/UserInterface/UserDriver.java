@@ -84,8 +84,8 @@ public class UserDriver implements IDriver
     private SimpleButton armMacroRetractButton;
     private SimpleButton armExtenderExtendOverride;
     private SimpleButton armExtenderRetractOverride;
-    //    private SimpleButton armTiltExtendOverride;
-    //    private SimpleButton armTiltRetractOverride;
+    private SimpleButton armTiltExtendOverride;
+    private SimpleButton armTiltRetractOverride;
     private SimpleButton armTromboneExtendOverride;
     private SimpleButton armTromboneRetractOverride;
 
@@ -135,8 +135,8 @@ public class UserDriver implements IDriver
         this.armMacroRetractButton = new SimpleButton();
         this.armExtenderExtendOverride = new SimpleButton();
         this.armExtenderRetractOverride = new SimpleButton();
-        //        this.armTiltExtendOverride = new SimpleButton();
-        //        this.armTiltRetractOverride = new SimpleButton();
+        this.armTiltExtendOverride = new SimpleButton();
+        this.armTiltRetractOverride = new SimpleButton();
         this.armTromboneExtendOverride = new SimpleButton();
         this.armTromboneRetractOverride = new SimpleButton();
 
@@ -176,25 +176,62 @@ public class UserDriver implements IDriver
     public void update()
     {
         // update the state of the various toggle buttons
+        updateDriveTrain();
+        updateArm();
+        updateIntake();
+        updateElevator();
+    }
 
-        // DriveTrain
+    private void updateDriveTrain()
+    {
         //        this.simpleDriveModeButton.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.DRIVETRAIN_SIMPLE_BUTTON));
         this.driveTrainCollectCansFromStepMacro.updateState(this.joystickDriver
             .getRawButton(JoystickButtonConstants.COLLECT_CANS_FROM_STEP_MACRO));
+    }
 
-        //Arm 
-        this.armMacroExtendButton.updateState(this.joystickDriver.getPOV() == 0);//this.joystickDriver.getRawButton(JoystickButtonConstants.ARM_MACRO_EXTEND_BUTTON));
-        this.armMacroRetractButton.updateState(this.joystickDriver.getPOV() == 180);//this.joystickDriver.getRawButton(JoystickButtonConstants.ARM_MACRO_RETRACT_BUTTON));
-        this.armExtenderExtendOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_EXTENDER_EXTEND_BUTTON));
-        this.armExtenderRetractOverride
-            .updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_EXTENDER_RETRACT_BUTTON));
-        //        this.armTiltExtendOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_TILT_EXTEND_BUTTON));
-        //        this.armTiltRetractOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_TILT_RETRACT_BUTTON));
-        this.armTromboneExtendOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_TROMBONE_EXTEND_BUTTON));
-        this.armTromboneRetractOverride
-            .updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_TROMBONE_RETRACT_BUTTON));
+    private void updateArm()
+    {
+        if (!this.driveTrainMacroData.getRunningMacro())
+        {
+            this.armMacroExtendButton.updateState(this.joystickDriver.getPOV() == 0);//this.joystickDriver.getRawButton(JoystickButtonConstants.ARM_MACRO_EXTEND_BUTTON));
+            this.armMacroRetractButton.updateState(this.joystickDriver.getPOV() == 180);//this.joystickDriver.getRawButton(JoystickButtonConstants.ARM_MACRO_RETRACT_BUTTON));
+            this.armExtenderExtendOverride.updateState(this.joystickCoDriver
+                .getRawButton(JoystickButtonConstants.ARM_EXTENDER_EXTEND_BUTTON));
+            this.armExtenderRetractOverride
+                .updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_EXTENDER_RETRACT_BUTTON));
+            //        this.armTiltExtendOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_TILT_EXTEND_BUTTON));
+            //        this.armTiltRetractOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_TILT_RETRACT_BUTTON));
+            this.armTromboneExtendOverride.updateState(this.joystickCoDriver
+                .getRawButton(JoystickButtonConstants.ARM_TROMBONE_EXTEND_BUTTON));
+            this.armTromboneRetractOverride
+                .updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_TROMBONE_RETRACT_BUTTON));
+        }
+        else
+        {
+            if (this.joystickDriver.getPOV() == 0 ||
+                this.joystickDriver.getPOV() == 180 ||
+                this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_EXTENDER_EXTEND_BUTTON) ||
+                this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_EXTENDER_RETRACT_BUTTON) ||
+                this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_TROMBONE_EXTEND_BUTTON) ||
+                this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_TROMBONE_RETRACT_BUTTON))
+            {
+                this.driveTrainMacroData.state = DriveTrainMacroData.MacroStates.STATE_0_WAIT_FOR_PRESS;
+                this.driveTrainMacroData.setRunningMacro(false);
+            }
+            else
+            {
+                this.armExtenderExtendOverride.updateState(this.driveTrainMacroData.getExtenderExtendActivated());
+                this.armExtenderRetractOverride.updateState(this.driveTrainMacroData.getExtenderRetractActivated());
+                this.armTiltExtendOverride.updateState(this.driveTrainMacroData.getTiltExtendActivated());
+                this.armTiltRetractOverride.updateState(this.driveTrainMacroData.getTiltRetractActivated());
+                this.armTromboneExtendOverride.updateState(this.driveTrainMacroData.getTromboneExtendActivated());
+                this.armTromboneRetractOverride.updateState(this.driveTrainMacroData.getTromboneRetractActivated());
+            }
+        }
+    }
 
-        //Intake
+    private void updateIntake()
+    {
         //        this.intakeUpButton.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.INTAKE_UP_BUTTON));
         //        this.intakeDownButton.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.INTAKE_DOWN_BUTTON));
         //        this.intakeRightExtendOverride
@@ -204,8 +241,10 @@ public class UserDriver implements IDriver
         //        this.intakeLeftExtendOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.INTAKE_LEFT_EXTEND_OVERRIDE));
         //        this.intakeLeftRetractOverride
         //            .updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.INTAKE_LEFT_RETRACT_OVERRIDE));
+    }
 
-        //Elevator  TODO: change CoDriver buttons back to CoDriver 
+    private void updateElevator()
+    {
         //        this.elevatorContainerMacroButton.updateState(this.joystickDriver
         //            .getRawButton(JoystickButtonConstants.ELEVATOR_CONTAINER_MACRO_BUTTON));
         this.elevatorSetStateToFloorButton.updateState(this.joystickDriver
@@ -547,7 +586,7 @@ public class UserDriver implements IDriver
     @Override
     public boolean getArmTiltExtendOverride()
     {
-        //        boolean mode = this.armTiltExtendOverride.isActivated();
+        boolean mode = this.armTiltExtendOverride.isActivated();
         //        SmartDashboardLogger.putBoolean(UserDriver.ARM_TILT_EXTEND_OVERRIDE_LOG_KEY, mode);
         return false;//mode;
     }
@@ -558,7 +597,7 @@ public class UserDriver implements IDriver
     @Override
     public boolean getArmTiltRetractOverride()
     {
-        //        boolean mode = this.armTiltRetractOverride.isActivated();
+        boolean mode = this.armTiltRetractOverride.isActivated();
         //        SmartDashboardLogger.putBoolean(UserDriver.ARM_TILT_RETRACT_OVERRIDE_LOG_KEY, mode);
         return false;//mode;
     }

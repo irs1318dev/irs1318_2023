@@ -125,6 +125,7 @@ public class DriveTrainController implements IController
     private PowerSetting runCollectCansFromStepMacro()
     {
         PowerSetting result = new PowerSetting(0, 0);
+
         switch (this.macroData.state)
         {
             case STATE_0_WAIT_FOR_PRESS:
@@ -138,12 +139,15 @@ public class DriveTrainController implements IController
                     this.macroData.setTiltState(false);
                     this.macroData.setTromboneState(true);
                 }
-                this.macroData.setRunningMacro(false);
+                else
+                {
+                    this.macroData.setRunningMacro(false);
+                }
                 break;
             case STATE_1_DRIVE_BACK:
-                if (this.timer.get() < this.startTime + this.macroData.DRIVE_BACK_TIME_1)
+                if (this.timer.get() < this.startTime + DriveTrainMacroData.DRIVE_BACK_TIME_1)
                 {
-                    result = new PowerSetting(0.0, 0.17);
+                    result = new PowerSetting(0.0, DriveTrainMacroData.DRIVE_BACK_SPEED_1);
                 }
                 else
                 {
@@ -153,6 +157,57 @@ public class DriveTrainController implements IController
                 }
                 break;
             case STATE_2_SETTLE_WAIT:
+                if (this.timer.get() > this.startTime + DriveTrainMacroData.SETTLE_WAIT_TIME_2)
+                {
+                    this.startTime = this.timer.get();
+                    this.macroData.state = DriveTrainMacroData.MacroStates.STATE_3_DRIVE_BACK;
+                }
+                break;
+            case STATE_3_DRIVE_BACK:
+                if (this.timer.get() < this.startTime + DriveTrainMacroData.DRIVE_BACK_TIME_3)
+                {
+                    result = new PowerSetting(0.0, DriveTrainMacroData.DRIVE_BACK_SPEED_3);
+                }
+                else
+                {
+                    startTime = this.timer.get();
+                    this.macroData.state = DriveTrainMacroData.MacroStates.STATE_4_WAIT;
+                }
+                break;
+            case STATE_4_WAIT:
+                if (this.timer.get() > this.startTime + DriveTrainMacroData.SETTLE_WAIT_TIME_4)
+                {
+                    this.startTime = this.timer.get();
+                    this.macroData.state = DriveTrainMacroData.MacroStates.STATE_5_DRIVE_FORWARD;
+                }
+                break;
+            case STATE_5_DRIVE_FORWARD:
+                if (this.timer.get() < this.startTime + DriveTrainMacroData.DRIVE_FORWARD_TIME_5)
+                {
+                    result = new PowerSetting(0.0, DriveTrainMacroData.DRIVE_FORWARD_SPEED_5);
+                }
+                else
+                {
+                    this.startTime = this.timer.get();
+                    this.macroData.setTiltState(false);
+                    this.macroData.state = DriveTrainMacroData.MacroStates.STATE_6_UNTILT;
+                }
+                break;
+            case STATE_6_UNTILT:
+                if (this.timer.get() > this.startTime + DriveTrainMacroData.UNTILT_WAIT_TIME_6)
+                {
+                    this.startTime = this.timer.get();
+                    this.macroData.setTromboneState(false);
+                    this.macroData.state = DriveTrainMacroData.MacroStates.STATE_7_UNEXTEND;
+                }
+                break;
+            case STATE_7_UNEXTEND:
+                if (this.timer.get() > this.startTime + DriveTrainMacroData.UNEXTEND_WAIT_TIME_7)
+                {
+                    this.macroData.setExtenderState(false);
+                    this.macroData.state = DriveTrainMacroData.MacroStates.STATE_0_WAIT_FOR_PRESS;
+                }
+                break;
 
         }
         return result;
