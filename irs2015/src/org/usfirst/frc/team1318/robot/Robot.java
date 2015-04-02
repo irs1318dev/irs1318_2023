@@ -199,12 +199,12 @@ public class Robot extends IterativeRobot
         switch (routineSelection)
         {
             case 0: //neither flipped 
-                autonomousRoutine = Robot.GetSinusoidalCollectThreeTotesRoutine(this.driveTrainComponent, this.position,
-                    this.elevatorComponent);
+                autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine(this.driveTrainComponent);
                 break;
 
             case 1: //switch A flipped 
-                autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine(this.driveTrainComponent);
+                autonomousRoutine = Robot.GetSinusoidalCollectThreeTotesRoutine(this.driveTrainComponent, this.position,
+                    this.elevatorComponent);
                 break;
 
             case 2: //switch B flipped 
