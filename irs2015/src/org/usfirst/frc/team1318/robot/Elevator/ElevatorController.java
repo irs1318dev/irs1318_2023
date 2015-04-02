@@ -297,13 +297,13 @@ public class ElevatorController implements IController
 
             enforceNonNegative = true;
         }
-        else if (this.component.getTopLimitSwitchValue() && !this.ignoreSensors)
-        {
-            this.containerMacroState = ContainerMacroStates.STATE_0;
-            this.component.setEncoderZeroOffset(this.component.getEncoderDistance() - HardwareConstants.ELEVATOR_MAX_HEIGHT);
-            this.position = HardwareConstants.ELEVATOR_MAX_HEIGHT;
-            enforceNonPositive = true;
-        }
+        //        else if (this.component.getTopLimitSwitchValue() && !this.ignoreSensors)
+        //        {
+        //            this.containerMacroState = ContainerMacroStates.STATE_0;
+        //            this.component.setEncoderZeroOffset(this.component.getEncoderDistance() - HardwareConstants.ELEVATOR_MAX_HEIGHT);
+        //            this.position = HardwareConstants.ELEVATOR_MAX_HEIGHT;
+        //            enforceNonPositive = true;
+        //        }
 
         //--> overrides 
         // if elevator up or down button is pushed, these take precedence over the normal controls 

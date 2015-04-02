@@ -29,7 +29,7 @@ public class ElevatorComponent
     private final Talon motor;
     private final Encoder encoder;
     private final DoubleSolenoid canStabilizer;
-    private final DigitalInput topLimitSwtich;
+    //    private final DigitalInput topLimitSwtich;
     private final DigitalInput bottomLimitSwitch;
     private final Solenoid limitSwitchLight;
     private final Solenoid throughBeamLightUpper;
@@ -53,7 +53,7 @@ public class ElevatorComponent
 
         this.throughBeamSensor = new AnalogInput(ElectronicsConstants.ELEVATOR_THROUGH_BEAM_SENSOR_CHANNEL);
 
-        this.topLimitSwtich = new DigitalInput(ElectronicsConstants.ELEVATOR_TOP_LIMIT_SWITCH_CHANNEL);
+        //        this.topLimitSwtich = new DigitalInput(ElectronicsConstants.ELEVATOR_TOP_LIMIT_SWITCH_CHANNEL);
         this.bottomLimitSwitch = new DigitalInput(ElectronicsConstants.ELEVATOR_BOTTOM_LIMIT_SWITCH_CHANNEL);
 
         this.limitSwitchLight = new Solenoid(ElectronicsConstants.PCM_B_MODULE, ElectronicsConstants.ELEVATOR_LIMIT_SWITCH_LIGHT_CHANNEL);
@@ -167,12 +167,12 @@ public class ElevatorComponent
      * Gets the current value of the Limit Switch at the top of the elevator 
      * @return true for pressed, otherwise false 
      */
-    public boolean getTopLimitSwitchValue()
-    {
-        boolean value = this.topLimitSwtich.get();
-        SmartDashboardLogger.putBoolean(ElevatorComponent.TOP_LIMIT_SWITCH_LOG_KEY, value);
-        return value;
-    }
+    //    public boolean getTopLimitSwitchValue()
+    //    {
+    //        boolean value = this.topLimitSwtich.get();
+    //        SmartDashboardLogger.putBoolean(ElevatorComponent.TOP_LIMIT_SWITCH_LOG_KEY, value);
+    //        return value;
+    //    }
 
     /**
      * Gets the current value of the LimitSwitch at the bottom of the elevator 
