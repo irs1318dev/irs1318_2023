@@ -136,7 +136,7 @@ public class DriveTrainController implements IController
                     this.macroData.setRunningMacro(true);
 
                     this.macroData.setExtenderState(true);
-                    this.macroData.setTiltState(false);
+                    this.macroData.setTiltState(true);
                     this.macroData.setTromboneState(true);
                 }
                 else
@@ -152,7 +152,7 @@ public class DriveTrainController implements IController
                 else
                 {
                     this.startTime = this.timer.get();
-                    this.macroData.setTiltState(true);
+                    this.macroData.setTiltState(false);
                     this.macroData.state = DriveTrainMacroData.MacroStates.STATE_2_SETTLE_WAIT;
                 }
                 break;
@@ -189,7 +189,7 @@ public class DriveTrainController implements IController
                 else
                 {
                     this.startTime = this.timer.get();
-                    this.macroData.setTiltState(false);
+                    this.macroData.setTiltState(true);
                     this.macroData.state = DriveTrainMacroData.MacroStates.STATE_6_UNTILT;
                 }
                 break;

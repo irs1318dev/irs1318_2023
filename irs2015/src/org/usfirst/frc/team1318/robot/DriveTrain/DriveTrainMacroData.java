@@ -73,6 +73,14 @@ public class DriveTrainMacroData
 
     public void setTiltState(boolean tiltState)
     {
+        if (tiltState && !this.tiltState)
+        {
+            this.tiltExtendActivated = true;
+        }
+        else if (!tiltState && this.tiltState)
+        {
+            this.tiltRetractActivated = true;
+        }
         this.tiltState = tiltState;
     }
 
@@ -83,6 +91,14 @@ public class DriveTrainMacroData
 
     public void setTromboneState(boolean tromboneState)
     {
+        if (tromboneState && !this.tromboneState)
+        {
+            this.tromboneExtendActivated = true;
+        }
+        else if (!tromboneState && this.tromboneState)
+        {
+            this.tromboneRetractActivated = true;
+        }
         this.tromboneState = tromboneState;
     }
 

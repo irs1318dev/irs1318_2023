@@ -34,7 +34,7 @@ public class JoystickButtonConstants
     // change INVERT_Y_AXIS to true if positive on the joystick isn't forward, and negative isn't backwards.
     public static final boolean INVERT_Y_AXIS = true;
 
-    public static final int COLLECT_CANS_FROM_STEP_MACRO = 8;
+    public static final int COLLECT_CANS_FROM_STEP_MACRO = 12;
 
     //================================================== DriveTrain ==============================================================
 
@@ -71,11 +71,11 @@ public class JoystickButtonConstants
 
     //    public static final int ARM_MACRO_EXTEND_BUTTON = -1;
     //    public static final int ARM_MACRO_RETRACT_BUTTON = -1;
-    public static final int ARM_EXTENDER_EXTEND_BUTTON = 3;
-    public static final int ARM_EXTENDER_RETRACT_BUTTON = 8;
-    //    public static final int ARM_TILT_EXTEND_BUTTON = 9;
-    //    public static final int ARM_TILT_RETRACT_BUTTON = 4;
-    public static final int ARM_TILT_RETRACT_HOLD_BUTTON = 6;
+    public static final int ARM_EXTENDER_EXTEND_BUTTON = 2;
+    public static final int ARM_EXTENDER_RETRACT_BUTTON = 7;
+    public static final int ARM_TILT_EXTEND_BUTTON = 8;
+    public static final int ARM_TILT_RETRACT_BUTTON = 3;
+    //    public static final int ARM_TILT_RETRACT_HOLD_BUTTON = 6;
     public static final int ARM_TROMBONE_EXTEND_BUTTON = 4;
     public static final int ARM_TROMBONE_RETRACT_BUTTON = 9;
 
