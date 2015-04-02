@@ -180,6 +180,10 @@ public interface IDriver
 
     public boolean getElevatorFastButton();
 
+    public boolean getElevatorOpenCanStabilizerButton();
+
+    public boolean getElevatorCloseCanStabilizerButton();
+
     //===================================================== Arm =================================================================
     /**
      * Get a value indicating whether to run the macro to extend the whole arm state 

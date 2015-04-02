@@ -26,6 +26,8 @@ public class ElevatorController implements IController
     private double baseLevel;
     private double position;
 
+    private Boolean canStabilizerState;
+
     private boolean usePID;
     private PIDHandler pidHandler;
 
@@ -159,6 +161,20 @@ public class ElevatorController implements IController
             this.position -= newOffset;
         }
 
+        if (this.driver.getElevatorOpenCanStabilizerButton())
+        {
+            this.canStabilizerState = true;
+        }
+        else if (this.driver.getElevatorCloseCanStabilizerButton())
+        {
+            this.canStabilizerState = false;
+        }
+
+        if (this.canStabilizerState != null)
+        {
+            this.component.setCanStabilizer(this.canStabilizerState);
+        }
+
         //--> set position and power level 
         double powerLevel = 0.0;
 
@@ -281,13 +297,13 @@ public class ElevatorController implements IController
 
             enforceNonNegative = true;
         }
-        else if (this.component.getTopLimitSwitchValue() && !this.ignoreSensors)
-        {
-            this.containerMacroState = ContainerMacroStates.STATE_0;
-            this.component.setEncoderZeroOffset(this.component.getEncoderDistance() - HardwareConstants.ELEVATOR_MAX_HEIGHT);
-            this.position = HardwareConstants.ELEVATOR_MAX_HEIGHT;
-            enforceNonPositive = true;
-        }
+        //        else if (this.component.getTopLimitSwitchValue() && !this.ignoreSensors)
+        //        {
+        //            this.containerMacroState = ContainerMacroStates.STATE_0;
+        //            this.component.setEncoderZeroOffset(this.component.getEncoderDistance() - HardwareConstants.ELEVATOR_MAX_HEIGHT);
+        //            this.position = HardwareConstants.ELEVATOR_MAX_HEIGHT;
+        //            enforceNonPositive = true;
+        //        }
 
         //--> overrides 
         // if elevator up or down button is pushed, these take precedence over the normal controls 

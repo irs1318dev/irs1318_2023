@@ -6,8 +6,9 @@ import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 
 public class ElevatorComponent
@@ -27,10 +28,13 @@ public class ElevatorComponent
     private final AnalogInput throughBeamSensor;
     private final Talon motor;
     private final Encoder encoder;
-    private final DigitalInput topLimitSwtich;
+    private final DoubleSolenoid canStabilizer;
+    //    private final DigitalInput topLimitSwtich;
     private final DigitalInput bottomLimitSwitch;
-    private final Relay limitSwitchRelay;
-    private final Relay throughBeamRelay;
+    private final Solenoid limitSwitchLight;
+    private final Solenoid throughBeamLightUpper;
+    private final Solenoid throughBeamLightLeft;
+    private final Solenoid throughBeamLightRight;
 
     private double encoderZeroOffset;
 
@@ -42,15 +46,23 @@ public class ElevatorComponent
             ElectronicsConstants.ELEVATOR_ENCODER_CHANNEL_A,
             ElectronicsConstants.ELEVATOR_ENCODER_CHANNEL_B);
 
+        this.canStabilizer = new DoubleSolenoid(ElectronicsConstants.PCM_B_MODULE, ElectronicsConstants.ELEVATOR_CAN_STABILIZER_EXTEND,
+            ElectronicsConstants.ELEVATOR_CAN_STABILIZER_RETRACT);
+
         this.encoder.setDistancePerPulse(HardwareConstants.ELEVATOR_PULSE_DISTANCE);
 
         this.throughBeamSensor = new AnalogInput(ElectronicsConstants.ELEVATOR_THROUGH_BEAM_SENSOR_CHANNEL);
 
-        this.topLimitSwtich = new DigitalInput(ElectronicsConstants.ELEVATOR_TOP_LIMIT_SWITCH_CHANNEL);
+        //        this.topLimitSwtich = new DigitalInput(ElectronicsConstants.ELEVATOR_TOP_LIMIT_SWITCH_CHANNEL);
         this.bottomLimitSwitch = new DigitalInput(ElectronicsConstants.ELEVATOR_BOTTOM_LIMIT_SWITCH_CHANNEL);
 
-        this.throughBeamRelay = new Relay(ElectronicsConstants.ELEVATOR_THROUGH_BEAM_RELAY_CHANNEL, Relay.Direction.kForward);
-        this.limitSwitchRelay = new Relay(ElectronicsConstants.ELEVATOR_LIMIT_SWITCH_RELAY_CHANNEL, Relay.Direction.kForward);
+        this.limitSwitchLight = new Solenoid(ElectronicsConstants.PCM_B_MODULE, ElectronicsConstants.ELEVATOR_LIMIT_SWITCH_LIGHT_CHANNEL);
+        this.throughBeamLightUpper = new Solenoid(ElectronicsConstants.PCM_B_MODULE,
+            ElectronicsConstants.ELEVATOR_THROUGH_BEAM_LIGHT_CHANNEL_UPPER);
+        this.throughBeamLightLeft = new Solenoid(ElectronicsConstants.PCM_B_MODULE,
+            ElectronicsConstants.ELEVATOR_THROUGH_BEAM_LIGHT_CHANNEL_LEFT);
+        this.throughBeamLightRight = new Solenoid(ElectronicsConstants.PCM_B_MODULE,
+            ElectronicsConstants.ELEVATOR_THROUGH_BEAM_LIGHT_CHANNEL_RIGHT);
 
         this.encoderZeroOffset = 0.0;
     }
@@ -117,6 +129,18 @@ public class ElevatorComponent
         SmartDashboardLogger.putNumber(ElevatorComponent.MOTOR_POWER_LOG_KEY, powerLevel);
     }
 
+    public void setCanStabilizer(boolean value)
+    {
+        if (value)
+        {
+            this.canStabilizer.set(DoubleSolenoid.Value.kForward);
+        }
+        else
+        {
+            this.canStabilizer.set(DoubleSolenoid.Value.kReverse);
+        }
+    }
+
     /**
      * Gets the current value of the through beam sensor 
      * @return current voltage of the through beam sensor 
@@ -143,12 +167,12 @@ public class ElevatorComponent
      * Gets the current value of the Limit Switch at the top of the elevator 
      * @return true for pressed, otherwise false 
      */
-    public boolean getTopLimitSwitchValue()
-    {
-        boolean value = this.topLimitSwtich.get();
-        SmartDashboardLogger.putBoolean(ElevatorComponent.TOP_LIMIT_SWITCH_LOG_KEY, value);
-        return value;
-    }
+    //    public boolean getTopLimitSwitchValue()
+    //    {
+    //        boolean value = this.topLimitSwtich.get();
+    //        SmartDashboardLogger.putBoolean(ElevatorComponent.TOP_LIMIT_SWITCH_LOG_KEY, value);
+    //        return value;
+    //    }
 
     /**
      * Gets the current value of the LimitSwitch at the bottom of the elevator 
@@ -163,27 +187,16 @@ public class ElevatorComponent
 
     public void setThroughBeamRelayValue(boolean value)
     {
-        if (value)
-        {
-            this.throughBeamRelay.set(Relay.Value.kOn);
-        }
-        else
-        {
-            this.throughBeamRelay.set(Relay.Value.kOff);
-        }
+
+        //        this.throughBeamLightUpper.set(value);
+        this.throughBeamLightLeft.set(value);
+        this.throughBeamLightRight.set(value);
         SmartDashboardLogger.putBoolean(ElevatorComponent.THROUGH_BEAM_RELAY_LOG_KEY, value);
     }
 
     public void setLimitSwitchRelayValue(boolean value)
     {
-        if (value)
-        {
-            this.limitSwitchRelay.set(Relay.Value.kOn);
-        }
-        else
-        {
-            this.limitSwitchRelay.set(Relay.Value.kOff);
-        }
-        SmartDashboardLogger.putBoolean(ElevatorComponent.LIMIT_SWITCH_RELAY_LOG_KEY, value);
+        //        this.limitSwitchLight.set(value);
+        //        SmartDashboardLogger.putBoolean(ElevatorComponent.LIMIT_SWITCH_RELAY_LOG_KEY, value);
     }
 }

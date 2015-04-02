@@ -33,13 +33,18 @@ public class ElectronicsConstants
     public static final int ELEVATOR_ENCODER_CHANNEL_A = 1;
     public static final int ELEVATOR_ENCODER_CHANNEL_B = 0;
 
+    public static final int ELEVATOR_CAN_STABILIZER_EXTEND = 7;
+    public static final int ELEVATOR_CAN_STABILIZER_RETRACT = 0;
+
     public static final int ELEVATOR_BOTTOM_LIMIT_SWITCH_CHANNEL = 6;
     public static final int ELEVATOR_TOP_LIMIT_SWITCH_CHANNEL = 7;
 
     public static final int ELEVATOR_THROUGH_BEAM_SENSOR_CHANNEL = 0;
 
-    public static final int ELEVATOR_LIMIT_SWITCH_RELAY_CHANNEL = 1;
-    public static final int ELEVATOR_THROUGH_BEAM_RELAY_CHANNEL = 0;
+    public static final int ELEVATOR_LIMIT_SWITCH_LIGHT_CHANNEL = 2;
+    public static final int ELEVATOR_THROUGH_BEAM_LIGHT_CHANNEL_UPPER = 1;
+    public static final int ELEVATOR_THROUGH_BEAM_LIGHT_CHANNEL_RIGHT = 6;
+    public static final int ELEVATOR_THROUGH_BEAM_LIGHT_CHANNEL_LEFT = 5;
 
     //================================================== Intake ==============================================================
 
