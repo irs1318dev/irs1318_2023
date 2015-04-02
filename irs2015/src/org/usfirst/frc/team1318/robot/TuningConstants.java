@@ -48,7 +48,7 @@ public class TuningConstants
     public static final double DRIVETRAIN_B = 0.4; // "b" coefficient (in-place turn)
 
     // Drivetrain deadzone/max power levels
-    public static final double DRIVETRAIN_X_DEAD_ZONE = .1;
+    public static final double DRIVETRAIN_X_DEAD_ZONE = .05;
     public static final double DRIVETRAIN_Y_DEAD_ZONE = .1;
     public static final double DRIVETRAIN_MAX_POWER_LEVEL = 0.775; // max power level (velocity)
     public static final double DRIVETRAIN_MAX_POWER_POSITIONAL_NON_PID = 0.2; // max power level (positional, non-PID)
@@ -78,7 +78,7 @@ public class TuningConstants
 
     // Elevator deadzone/max power levels
     public static final double ELEVATOR_DEAD_ZONE = 0.1;
-    public static final double ELEVATOR_MAX_POWER_LEVEL = 0.75; // max power level (velocity)
+    public static final double ELEVATOR_MAX_POWER_LEVEL = 1.0;//0.75; // max power level (velocity)
     public static final double ELEVATOR_SLOW_MODE_MAX_POWER_LEVEL = 0.675;//0.375; // max power level (velocity) for slow mode
     public static final double ELEVATOR_FAST_MODE_MAX_POWER_LEVEL = 0.8; // max power level (velocity) for fast mode
 
