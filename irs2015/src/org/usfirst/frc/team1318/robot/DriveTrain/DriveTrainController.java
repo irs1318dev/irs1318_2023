@@ -302,7 +302,7 @@ public class DriveTrainController implements IController
         xVelocity = this.adjustForDeadZone(xVelocity, TuningConstants.DRIVETRAIN_X_DEAD_ZONE);
         yVelocity = this.adjustForDeadZone(yVelocity, TuningConstants.DRIVETRAIN_Y_DEAD_ZONE);
 
-        if (xVelocity == 0 || yVelocity == 0)
+        if (xVelocity == 0 && yVelocity == 0)
         {
             PowerSetting temp = this.runCollectCansFromStepMacro();
             xVelocity = temp.leftPower;
@@ -311,6 +311,7 @@ public class DriveTrainController implements IController
         else
         {
             this.macroData.state = DriveTrainMacroData.MacroStates.STATE_0_WAIT_FOR_PRESS;
+            this.macroData.setRunningMacro(false);
         }
 
         // adjust the intensity of the input
