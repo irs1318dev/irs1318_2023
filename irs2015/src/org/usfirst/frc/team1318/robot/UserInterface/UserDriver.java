@@ -193,10 +193,7 @@ public class UserDriver implements IDriver
         this.driveTrainCollectCansFromStepMacro.updateState(this.joystickCoDriver
             .getRawButton(JoystickButtonConstants.COLLECT_CANS_FROM_STEP_MACRO));
         boolean activated = false;
-        if (this.joystickCoDriver.getRawButton(JoystickButtonConstants.COLLECT_CANS_FROM_STEP_MACRO))
-        {
-            activated = true;
-        }
+
     }
 
     private void updateArm()
