@@ -7,13 +7,13 @@ public class DriveTrainMacroData
         STATE_0_WAIT_FOR_PRESS, STATE_1_DRIVE_BACK, STATE_2_SETTLE_WAIT, STATE_3_DRIVE_BACK, STATE_4_WAIT, STATE_5_DRIVE_FORWARD, STATE_6_UNTILT, STATE_7_UNEXTEND
     }
 
-    public static final double DRIVE_BACK_TIME_1 = 0.4;
+    public static final double DRIVE_BACK_TIME_1 = 0.2;
     public static final double DRIVE_BACK_SPEED_1 = 0.17;
     public static final double SETTLE_WAIT_TIME_2 = 2.0;
     public static final double DRIVE_BACK_TIME_3 = 2.25;
     public static final double DRIVE_BACK_SPEED_3 = 0.32;
     public static final double SETTLE_WAIT_TIME_4 = 0.3;
-    public static final double DRIVE_FORWARD_TIME_5 = 1.0;
+    public static final double DRIVE_FORWARD_TIME_5 = 0.5;
     public static final double DRIVE_FORWARD_SPEED_5 = -0.2;
     public static final double UNTILT_WAIT_TIME_6 = 1;
     public static final double UNEXTEND_WAIT_TIME_7 = 1;

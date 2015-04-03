@@ -314,6 +314,9 @@ public class DriveTrainController implements IController
             this.macroData.setRunningMacro(false);
         }
 
+        SmartDashboardLogger.putNumber("***joystick x***", xVelocity);
+        SmartDashboardLogger.putNumber("***joystick y***", yVelocity);
+
         // adjust the intensity of the input
         //        xVelocity = this.adjustIntensity(xVelocity);
         //        yVelocity = this.adjustIntensity(yVelocity);
