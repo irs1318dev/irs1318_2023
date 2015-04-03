@@ -39,6 +39,8 @@ public interface IDriver
      */
     public boolean getDriveTrainSimpleMode();
 
+    public boolean getDriveTrainCollectCansFromStepMacro();
+
     /**
      * Get a value indicating the desired drive train left position for positional mode
      * @return position

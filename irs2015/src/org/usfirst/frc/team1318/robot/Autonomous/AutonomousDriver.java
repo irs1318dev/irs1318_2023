@@ -192,6 +192,12 @@ public class AutonomousDriver implements IDriver
         return simpleMode;
     }
 
+    //do not use in autonomous 
+    public boolean getDriveTrainCollectCansFromStepMacro()
+    {
+        return false;
+    }
+
     /**
      * Get a value indicating the desired drive train left position for positional mode
      * @return position

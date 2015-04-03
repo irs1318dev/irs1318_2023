@@ -25,6 +25,7 @@ import org.usfirst.frc.team1318.robot.Compressor.CompressorComponent;
 import org.usfirst.frc.team1318.robot.Compressor.CompressorController;
 import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainComponent;
 import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainController;
+import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainMacroData;
 import org.usfirst.frc.team1318.robot.DriveTrain.PositionManager;
 import org.usfirst.frc.team1318.robot.Elevator.ElevatorComponent;
 import org.usfirst.frc.team1318.robot.Elevator.ElevatorController;
@@ -90,6 +91,7 @@ public class Robot extends IterativeRobot
 
     // Position manager - holds position information relative to our starting point
     private PositionManager position;
+    private DriveTrainMacroData driveTrainMacroData;
 
     /**
      * Robot-wide initialization code should go here.
@@ -105,7 +107,9 @@ public class Robot extends IterativeRobot
         this.armComponent = new ArmComponent();
         this.intakeComponent = new IntakeComponent();
 
-        this.driver = new UserDriver();
+        this.driveTrainMacroData = new DriveTrainMacroData();
+
+        this.driver = new UserDriver(driveTrainMacroData);
 
         // create controllers for each mechanism
         this.compressorController = new CompressorController(this.compressorComponent);
@@ -113,6 +117,7 @@ public class Robot extends IterativeRobot
             new DriveTrainController(
                 this.driver,
                 this.driveTrainComponent,
+                driveTrainMacroData,
                 TuningConstants.DRIVETRAIN_USE_PID_DEFAULT);
         this.elevatorController = new ElevatorController(this.driver, this.elevatorComponent);
         this.armController = new ArmController(this.driver, this.armComponent);
@@ -233,8 +238,13 @@ public class Robot extends IterativeRobot
      */
     public void teleopInit()
     {
+        if (driveTrainMacroData == null)
+        {
+            this.driveTrainMacroData = new DriveTrainMacroData();
+            this.driveTrainController.setMacroData(driveTrainMacroData);
+        }
         // create driver for user's joystick
-        this.driver = new UserDriver();
+        this.driver = new UserDriver(driveTrainMacroData);
 
         this.generalInit();
 

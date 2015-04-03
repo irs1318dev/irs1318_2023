@@ -34,6 +34,8 @@ public class JoystickButtonConstants
     // change INVERT_Y_AXIS to true if positive on the joystick isn't forward, and negative isn't backwards.
     public static final boolean INVERT_Y_AXIS = true;
 
+    public static final int COLLECT_CANS_FROM_STEP_MACRO = 12;
+
     //================================================== DriveTrain ==============================================================
 
     //    public static final int DRIVETRAIN_SIMPLE_BUTTON = -1;
