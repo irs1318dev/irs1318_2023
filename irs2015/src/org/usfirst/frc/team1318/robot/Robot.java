@@ -213,7 +213,8 @@ public class Robot extends IterativeRobot
                 break;
 
             case 2: //switch B flipped 
-                autonomousRoutine = Robot.GetContainerlessCollectThreeTotesRoutine(this.elevatorComponent);
+                //                autonomousRoutine = Robot.GetContainerlessCollectThreeTotesRoutine(this.elevatorComponent);
+                autonomousRoutine = GetRetrieveContainersFromStepFastRoutine(this.driveTrainComponent);
                 break;
 
             default:    //both flipped or can't read 
@@ -466,14 +467,14 @@ public class Robot extends IterativeRobot
                 new SequentialTask(
                     new IAutonomousTask[]
                     {
-                        new WaitAutonomousTask(.5),
+                        new WaitAutonomousTask(.3),
                         new DriveTimedAutonomousTask(0.7, 0.0, -0.3)
                     })
 
                 ),
             new DriveTimedAutonomousTask(0.4, 0.0, 0.17),
             //            new ArmTromboneTask(1, true),
-            new ArmTiltTask(2, true),
+            new ArmTiltTask(1.6, true),
             new DriveTimedAutonomousTask(2.25, 0.0, 0.32),
             new WaitAutonomousTask(0.3),
             //            new DriveTimedAutonomousTask(1, 0, -0.2),
