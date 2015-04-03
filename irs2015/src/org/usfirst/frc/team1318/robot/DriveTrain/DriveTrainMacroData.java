@@ -10,8 +10,8 @@ public class DriveTrainMacroData
     public static final double DRIVE_BACK_TIME_1 = 0.2;
     public static final double DRIVE_BACK_SPEED_1 = 0.17;
     public static final double SETTLE_WAIT_TIME_2 = 2.0;
-    public static final double DRIVE_BACK_TIME_3 = 5;
-    public static final double DRIVE_BACK_SPEED_3 = 0.12;
+    public static final double DRIVE_BACK_TIME_3 = 2.25;//5;
+    public static final double DRIVE_BACK_SPEED_3 = 0.32;//0.12;
     public static final double SETTLE_WAIT_TIME_4 = 0.3;
     public static final double DRIVE_FORWARD_TIME_5 = 0.5;
     public static final double DRIVE_FORWARD_SPEED_5 = -0.2;
