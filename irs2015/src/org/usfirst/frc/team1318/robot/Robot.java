@@ -446,7 +446,7 @@ public class Robot extends IterativeRobot
             new ArmTiltTask(2, true),
             new DriveTimedAutonomousTask(2.25, 0.0, 0.32),
             new WaitAutonomousTask(0.3),
-            new DriveTimedAutonomousTask(1.05, 0, -0.2),
+            new DriveTimedAutonomousTask(1.05, 0, -0.2),//**
             //            new DriveDistanceAutonomousTask(100, driveTrainComponent)
             new ArmTiltTask(1, false),
             new ArmTromboneTask(1, false),
@@ -463,11 +463,11 @@ public class Robot extends IterativeRobot
 
             //            new DriveDistanceAutonomousTask(-50, driveTrainComponent),
             ConcurrentTask.AllTasks(
-                new ArmExtenderTask(1.5, true),
+                new ArmExtenderTask(1.3, true),
                 new SequentialTask(
                     new IAutonomousTask[]
                     {
-                        new WaitAutonomousTask(.3),
+                        new WaitAutonomousTask(.5),
                         new DriveTimedAutonomousTask(0.7, 0.0, -0.3)
                     })
 
