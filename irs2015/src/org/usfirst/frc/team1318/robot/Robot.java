@@ -446,7 +446,7 @@ public class Robot extends IterativeRobot
             new ArmTiltTask(2, true),
             new DriveTimedAutonomousTask(2.25, 0.0, 0.32),
             new WaitAutonomousTask(0.3),
-            new DriveTimedAutonomousTask(1, 0, -0.2),
+            new DriveTimedAutonomousTask(1.05, 0, -0.2),
             //            new DriveDistanceAutonomousTask(100, driveTrainComponent)
             new ArmTiltTask(1, false),
             new ArmTromboneTask(1, false),
