@@ -208,8 +208,7 @@ public class Robot extends IterativeRobot
                 break;
 
             case 1: //switch A flipped 
-                autonomousRoutine = Robot.GetSinusoidalCollectThreeTotesRoutine(this.driveTrainComponent, this.position,
-                    this.elevatorComponent);
+                autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutinePartial(this.driveTrainComponent);
                 break;
 
             case 2: //switch B flipped 
@@ -483,6 +482,30 @@ public class Robot extends IterativeRobot
             new ArmTiltTask(1, false),
             new ArmTromboneTask(1, false),
             new ArmExtenderTask(1, false),
+        };
+    }
+
+    private static IAutonomousTask[] GetRetrieveContainersFromStepRoutinePartial(DriveTrainComponent driveTrainComponent)
+    {
+        // Drive backwards, extend the arm (extender, trombone, tilt), drive forwards, [retract the arm (tilt, trombone, extender)]
+        return new IAutonomousTask[]
+        {
+            //            new DriveTimedAutonomousTask(0.5, 0.0, -0.2),
+
+            //            new DriveDistanceAutonomousTask(-50, driveTrainComponent),
+            ConcurrentTask.AllTasks(
+                new ArmExtenderTask(1.5, true),
+                new SequentialTask(
+                    new IAutonomousTask[]
+                    {
+                        new WaitAutonomousTask(.5),
+                        new DriveTimedAutonomousTask(0.7, 0.0, -0.3)
+                    })
+
+                ),
+            new DriveTimedAutonomousTask(0.4, 0.0, 0.17),
+            //            new ArmTromboneTask(1, true),
+            new ArmTiltTask(2, true)
         };
     }
 
