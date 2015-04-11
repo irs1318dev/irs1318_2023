@@ -352,7 +352,7 @@ public class Robot extends IterativeRobot
 
     /**
      * Gets an autonomous routine that represents collecting 3 totes using the "other robots push containers away" method
-     * 
+     *  
      * @return list of autonomous tasks
      */
     private static IAutonomousTask[] GetSinusoidalCollectThreeTotesRoutineOld(ElevatorComponent elevatorComponent)
