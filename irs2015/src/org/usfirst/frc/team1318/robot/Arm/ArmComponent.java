@@ -6,6 +6,7 @@ import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Solenoid;
 
 public class ArmComponent
 {
@@ -14,6 +15,8 @@ public class ArmComponent
     private final DoubleSolenoid extendLinkage;
     private final AnalogInput extendSensor;
     private boolean extenderExtended;
+    private final Solenoid redLight;
+    private final Solenoid greenLight;
 
     // logging constants
     private static final String TROMBONE_STATE_LOG_KEY = "ar.TromboneState";
@@ -42,6 +45,10 @@ public class ArmComponent
             ElectronicsConstants.ARM_EXTEND_LINK_SOLANOID_RETRACT);
 
         this.extendSensor = new AnalogInput(ElectronicsConstants.ARM_EXTEND_SENSOR);
+
+        this.redLight = new Solenoid(ElectronicsConstants.PCM_B_MODULE, ElectronicsConstants.ELEVATOR_LIMIT_SWITCH_LIGHT_CHANNEL);
+        this.greenLight = new Solenoid(ElectronicsConstants.PCM_B_MODULE,
+            ElectronicsConstants.ELEVATOR_THROUGH_BEAM_LIGHT_CHANNEL_UPPER);
     }
 
     /**
@@ -107,12 +114,19 @@ public class ArmComponent
 
     public boolean getExtendSensorTripped()
     {
-        boolean tripped = this.extendSensor.getVoltage() > 2.5;
+        double value = this.extendSensor.getVoltage();
+        boolean tripped = this.extendSensor.getVoltage() < .01;
         SmartDashboardLogger.putBoolean(ArmComponent.EXTEND_SENSOR_TRIPPED_LOG_KEY, tripped);
+        this.redLight.set(tripped);
         if (tripped)
         {
             this.extenderExtended = !this.extenderExtended;
         }
+        if (this.extendSensor.getVoltage() < .27 || this.extendSensor.getVoltage() > .3)
+        {
+            tripped = tripped;
+        }
+        //this.greenLight.set(this.extenderExtended);
         SmartDashboardLogger.putBoolean(ArmComponent.EXTENDER_EXTENDED_LOG_KEY, this.extenderExtended);
         return tripped;
     }
