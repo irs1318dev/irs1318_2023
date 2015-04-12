@@ -67,6 +67,7 @@ public class ElectronicsConstants
 
     public static final int ARM_EXTEND_LINK_SOLANOID_EXTEND = 4;
     public static final int ARM_EXTEND_LINK_SOLANOID_RETRACT = 3;
+    public static final int ARM_EXTEND_SENSOR = 3;
 
     //================================================== Autonomous ==============================================================
 

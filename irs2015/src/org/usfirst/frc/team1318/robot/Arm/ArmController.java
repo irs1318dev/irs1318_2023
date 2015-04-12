@@ -56,6 +56,9 @@ public class ArmController implements IController
     @Override
     public void update()
     {
+        this.component.getExtendSensorVoltage();
+        this.component.getExtendSensorTripped();
+        this.component.getExtenderExtended();
         /* 
          * Macro Extend operation will retract the extender (Stage 1), extend the trombone (Stage 2), and then retract the tilt (Stage 3)
          * Fully extends entire arm, starting with a check that tilts the arm up
