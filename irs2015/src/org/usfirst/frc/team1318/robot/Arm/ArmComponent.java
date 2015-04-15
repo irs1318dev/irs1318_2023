@@ -114,7 +114,7 @@ public class ArmComponent
 
     public boolean getExtendSensorTripped()
     {
-        double value = this.extendSensor.getVoltage();
+        //        double value = this.extendSensor.getVoltage();
         boolean tripped = this.extendSensor.getVoltage() < .01;
         SmartDashboardLogger.putBoolean(ArmComponent.EXTEND_SENSOR_TRIPPED_LOG_KEY, tripped);
         this.redLight.set(tripped);
@@ -122,10 +122,10 @@ public class ArmComponent
         {
             this.extenderExtended = !this.extenderExtended;
         }
-        if (this.extendSensor.getVoltage() < .27 || this.extendSensor.getVoltage() > .3)
-        {
-            tripped = tripped;
-        }
+        //        if (this.extendSensor.getVoltage() < .27 || this.extendSensor.getVoltage() > .3)
+        //        {
+        //            tripped = tripped;
+        //        }
         //this.greenLight.set(this.extenderExtended);
         SmartDashboardLogger.putBoolean(ArmComponent.EXTENDER_EXTENDED_LOG_KEY, this.extenderExtended);
         return tripped;

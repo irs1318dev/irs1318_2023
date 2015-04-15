@@ -5,6 +5,7 @@ import org.usfirst.frc.team1318.robot.Arm.ArmController;
 import org.usfirst.frc.team1318.robot.Autonomous.AutonomousDriver;
 import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ArmExtenderTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ArmTiltSensorTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ArmTiltTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.ArmTromboneTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.CollectToteTask;
@@ -204,7 +205,7 @@ public class Robot extends IterativeRobot
         switch (routineSelection)
         {
             case 0: //neither flipped 
-                autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine(this.driveTrainComponent);
+                autonomousRoutine = Robot.GetShortArmRetrieveContainersFromStepRoutine(this.driveTrainComponent, this.armComponent);
                 break;
 
             case 1: //switch A flipped 
@@ -213,7 +214,7 @@ public class Robot extends IterativeRobot
 
             case 2: //switch B flipped 
                 //                autonomousRoutine = Robot.GetContainerlessCollectThreeTotesRoutine(this.elevatorComponent);
-                autonomousRoutine = GetRetrieveContainersFromStepFastRoutine(this.driveTrainComponent);
+                autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine(this.driveTrainComponent);
                 break;
 
             default:    //both flipped or can't read 
@@ -414,6 +415,27 @@ public class Robot extends IterativeRobot
             ConcurrentTask.AllTasks(
                 new IntakeTask(1.5, true),
                 new DriveTimedAutonomousTask(1.5, 0.0, -0.25))
+        };
+    }
+
+    private static IAutonomousTask[] GetShortArmRetrieveContainersFromStepRoutine(
+        DriveTrainComponent driveTrainComponent, ArmComponent armComponent)
+    {
+        return new IAutonomousTask[]
+        {
+            ConcurrentTask.AllTasks
+                (
+                    new ArmExtenderTask(1.5, true),
+                    new DriveTimedAutonomousTask(0.7, 0.0, -0.3),
+                    new ArmTiltSensorTask(armComponent, 1.5, true)
+                ),
+            new WaitAutonomousTask(1),
+            new DriveTimedAutonomousTask(2.25, 0.0, 0.32),
+            new WaitAutonomousTask(0.3),
+            new DriveTimedAutonomousTask(1.05, 0, -0.2),
+            new ArmTiltTask(1, false),
+            new ArmTromboneTask(1, false),
+            new ArmExtenderTask(1, false),
         };
     }
 
