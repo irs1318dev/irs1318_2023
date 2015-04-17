@@ -3,7 +3,8 @@ package org.usfirst.frc.team1318.robot.Arm;
 import org.usfirst.frc.team1318.robot.ElectronicsConstants;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
-import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Counter;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -13,8 +14,8 @@ public class ArmComponent
     private final DoubleSolenoid trombone;
     private final DoubleSolenoid tiltLinkage;
     private final DoubleSolenoid extendLinkage;
-    private final AnalogInput extendSensor;
-    private boolean extenderExtended;
+    private final DigitalInput extendSensor;
+    private final Counter sensorCounter;
     private final Solenoid redLight;
     private final Solenoid greenLight;
 
@@ -22,7 +23,6 @@ public class ArmComponent
     private static final String TROMBONE_STATE_LOG_KEY = "ar.TromboneState";
     private static final String EXTEND_LINKAGE_STATE_LOG_KEY = "ar.ExtendLinkageState";
     private static final String TILT_LINKAGE_STATE_LOG_KEY = "ar.TiltLinkageState";
-    private static final String EXTEND_SENSOR_VOLTAGE_LOG_KEY = "ar.ExtendSensorVoltage";
     private static final String EXTEND_SENSOR_TRIPPED_LOG_KEY = "ar.ExtendSensorTripped";
     private static final String EXTENDER_EXTENDED_LOG_KEY = "ar.ExtenderExtended";
 
@@ -44,7 +44,9 @@ public class ArmComponent
             ElectronicsConstants.ARM_EXTEND_LINK_SOLANOID_EXTEND,
             ElectronicsConstants.ARM_EXTEND_LINK_SOLANOID_RETRACT);
 
-        this.extendSensor = new AnalogInput(ElectronicsConstants.ARM_EXTEND_SENSOR);
+        this.extendSensor = new DigitalInput(ElectronicsConstants.ARM_EXTEND_SENSOR);
+        this.sensorCounter = new Counter(extendSensor);
+        sensorCounter.reset();
 
         this.redLight = new Solenoid(ElectronicsConstants.PCM_B_MODULE, ElectronicsConstants.ELEVATOR_LIMIT_SWITCH_LIGHT_CHANNEL);
         this.greenLight = new Solenoid(ElectronicsConstants.PCM_B_MODULE,
@@ -105,34 +107,12 @@ public class ArmComponent
         SmartDashboardLogger.putBoolean(ArmComponent.EXTEND_LINKAGE_STATE_LOG_KEY, state);
     }
 
-    public double getExtendSensorVoltage()
-    {
-        double voltage = this.extendSensor.getVoltage();
-        SmartDashboardLogger.putNumber(ArmComponent.EXTEND_SENSOR_VOLTAGE_LOG_KEY, voltage);
-        return voltage;
-    }
-
     public boolean getExtendSensorTripped()
     {
-        //        double value = this.extendSensor.getVoltage();
-        boolean tripped = this.extendSensor.getVoltage() < .01;
+        boolean tripped = this.sensorCounter.get() > 0;
         SmartDashboardLogger.putBoolean(ArmComponent.EXTEND_SENSOR_TRIPPED_LOG_KEY, tripped);
         this.redLight.set(tripped);
-        if (tripped)
-        {
-            this.extenderExtended = !this.extenderExtended;
-        }
-        //        if (this.extendSensor.getVoltage() < .27 || this.extendSensor.getVoltage() > .3)
-        //        {
-        //            tripped = tripped;
-        //        }
-        //this.greenLight.set(this.extenderExtended);
-        SmartDashboardLogger.putBoolean(ArmComponent.EXTENDER_EXTENDED_LOG_KEY, this.extenderExtended);
-        return tripped;
-    }
 
-    public boolean getExtenderExtended()
-    {
-        return this.extenderExtended;
+        return tripped;
     }
 }

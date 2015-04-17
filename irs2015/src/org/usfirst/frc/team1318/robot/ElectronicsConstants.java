@@ -37,7 +37,7 @@ public class ElectronicsConstants
     public static final int ELEVATOR_CAN_STABILIZER_RETRACT = 0;
 
     public static final int ELEVATOR_BOTTOM_LIMIT_SWITCH_CHANNEL = 6;
-    public static final int ELEVATOR_TOP_LIMIT_SWITCH_CHANNEL = 7;
+    //    public static final int ELEVATOR_TOP_LIMIT_SWITCH_CHANNEL = 7;
 
     public static final int ELEVATOR_THROUGH_BEAM_SENSOR_CHANNEL = 0;
 
@@ -67,10 +67,10 @@ public class ElectronicsConstants
 
     public static final int ARM_EXTEND_LINK_SOLANOID_EXTEND = 4;
     public static final int ARM_EXTEND_LINK_SOLANOID_RETRACT = 3;
-    public static final int ARM_EXTEND_SENSOR = 3;
+    public static final int ARM_EXTEND_SENSOR = 7;
 
     //================================================== Autonomous ==============================================================
 
-    public static final int AUTONOMOUS_DIP_SWITCH_A = 8; // ??
-    public static final int AUTONOMOUS_DIP_SWITCH_B = 9; // ??
+    public static final int AUTONOMOUS_DIP_SWITCH_A = 8;
+    public static final int AUTONOMOUS_DIP_SWITCH_B = 9;
 }

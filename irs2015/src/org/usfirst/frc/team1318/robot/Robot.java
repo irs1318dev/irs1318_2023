@@ -188,7 +188,9 @@ public class Robot extends IterativeRobot
         //        IAutonomousTask[] autonomousRoutine = Robot.GetRetrieveContainersFromStepRoutine(this.driveTrainComponent);
         //        IAutonomousTask[] autonomousRoutine = Robot.GetContainerlessCollectThreeTotesRoutine(this.elevatorComponent);
         //        IAutonomousTask[] autonomousRoutine = Robot.GetSpitContainersCollectThreeTotesRoutine(this.elevatorComponent, this.driveTrainComponent);
-        IAutonomousTask[] autonomousRoutine = Robot.GetFillerRoutine();
+        //IAutonomousTask[] autonomousRoutine = Robot.GetFillerRoutine();
+        IAutonomousTask[] autonomousRoutine = Robot.GetShortArmRetrieveContainersFromStepFastRoutine(this.driveTrainComponent,
+            this.armComponent);
 
         int routineSelection = 0;
         if (this.dipSwitchA.get())
@@ -205,7 +207,7 @@ public class Robot extends IterativeRobot
         switch (routineSelection)
         {
             case 0: //neither flipped 
-                autonomousRoutine = Robot.GetShortArmRetrieveContainersFromStepRoutine(this.driveTrainComponent, this.armComponent);
+                autonomousRoutine = Robot.GetShortArmRetrieveContainersFromStepFastRoutine(this.driveTrainComponent, this.armComponent);
                 break;
 
             case 1: //switch A flipped 
@@ -218,7 +220,8 @@ public class Robot extends IterativeRobot
                 break;
 
             default:    //both flipped or can't read 
-                autonomousRoutine = Robot.GetFillerRoutine();
+                //autonomousRoutine = Robot.GetFillerRoutine();
+                autonomousRoutine = Robot.GetShortArmRetrieveContainersFromStepFastRoutine(this.driveTrainComponent, this.armComponent);
                 break;
         }
 
@@ -418,7 +421,7 @@ public class Robot extends IterativeRobot
         };
     }
 
-    private static IAutonomousTask[] GetShortArmRetrieveContainersFromStepRoutine(
+    private static IAutonomousTask[] GetShortArmRetrieveContainersFromStepFastRoutine(
         DriveTrainComponent driveTrainComponent, ArmComponent armComponent)
     {
         return new IAutonomousTask[]
@@ -430,7 +433,27 @@ public class Robot extends IterativeRobot
                     new ArmTiltSensorTask(armComponent, 1.5, true)
                 ),
             new WaitAutonomousTask(1),
-            new DriveTimedAutonomousTask(2.25, 0.0, 0.32),
+            new DriveTimedAutonomousTask(/*2.25*/2, 0.0, 0.32),
+            new WaitAutonomousTask(0.3),
+            new DriveTimedAutonomousTask(1.05, 0, -0.2),
+            new ArmTiltTask(1, false),
+            new ArmTromboneTask(1, false),
+            new ArmExtenderTask(1, false),
+        };
+    }
+
+    private static IAutonomousTask[] GetShortArmRetrieveContainersFromStepRoutine(
+        DriveTrainComponent driveTrainComponent)
+    {
+        return new IAutonomousTask[]
+        {
+            ConcurrentTask.AllTasks
+                (
+                    new ArmExtenderTask(1.5, true),
+                    new DriveTimedAutonomousTask(0.7, 0.0, -0.3)
+                ),
+            new ArmTiltTask(2, true),
+            new DriveTimedAutonomousTask(/*2.25*/2, 0.0, 0.32),
             new WaitAutonomousTask(0.3),
             new DriveTimedAutonomousTask(1.05, 0, -0.2),
             new ArmTiltTask(1, false),

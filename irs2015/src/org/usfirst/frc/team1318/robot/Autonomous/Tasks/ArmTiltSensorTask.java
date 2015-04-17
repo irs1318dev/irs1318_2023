@@ -10,6 +10,8 @@ public class ArmTiltSensorTask extends TimedAutonomousTask implements IAutonomou
     private final ArmComponent armComponent;
 
     private boolean sensorTriggered;
+    //    private boolean sensor;
+    //    private boolean timer;
     private boolean extend;
 
     public ArmTiltSensorTask(ArmComponent armComponent, double duration, boolean extend)
@@ -18,13 +20,15 @@ public class ArmTiltSensorTask extends TimedAutonomousTask implements IAutonomou
         this.armComponent = armComponent;
         this.sensorTriggered = false;
         this.extend = extend;
+        //        this.sensor = false;
+        //        this.timer = false;
     }
 
     @Override
     public void begin()
     {
         this.sensorTriggered = false;
-
+        super.begin();
     }
 
     @Override
@@ -36,11 +40,21 @@ public class ArmTiltSensorTask extends TimedAutonomousTask implements IAutonomou
             {
                 this.sensorTriggered = true;
             }
+            //            if (this.armComponent.getExtendSensorTripped())
+            //            {
+            //                sensor = true;
+            //                this.sensorTriggered = true;
+            //            }
+            //            if (super.hasCompleted())
+            //            {
+            //                timer = true;
+            //                this.sensorTriggered = true;
+            //            }
         }
         if (this.sensorTriggered)
         {
-            data.setArmTiltExtendOverrideState(this.extend);
-            data.setArmTiltRetractOverrideState(!this.extend);
+            data.setArmTiltExtendOverrideState(!this.extend);
+            data.setArmTiltRetractOverrideState(this.extend);
         }
     }
 
@@ -59,7 +73,14 @@ public class ArmTiltSensorTask extends TimedAutonomousTask implements IAutonomou
     @Override
     public boolean hasCompleted()
     {
-        return this.sensorTriggered;
+        if (this.sensorTriggered)
+        {
+            return this.sensorTriggered;
+        }
+        else
+        {
+            return false;
+        }
     }
 
 }
