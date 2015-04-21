@@ -115,4 +115,9 @@ public class ArmComponent
 
         return tripped;
     }
+
+    public void resetSensor()
+    {
+        this.sensorCounter.reset();
+    }
 }

@@ -31,8 +31,8 @@ public class ElevatorComponent
     private final DoubleSolenoid canStabilizer;
     //    private final DigitalInput topLimitSwtich;
     private final DigitalInput bottomLimitSwitch;
-    private final Solenoid limitSwitchLight;
-    private final Solenoid throughBeamLightUpper;
+    //    private final Solenoid limitSwitchLight;
+    //    private final Solenoid throughBeamLightUpper;
     private final Solenoid throughBeamLightLeft;
     private final Solenoid throughBeamLightRight;
 
@@ -56,9 +56,9 @@ public class ElevatorComponent
         //        this.topLimitSwtich = new DigitalInput(ElectronicsConstants.ELEVATOR_TOP_LIMIT_SWITCH_CHANNEL);
         this.bottomLimitSwitch = new DigitalInput(ElectronicsConstants.ELEVATOR_BOTTOM_LIMIT_SWITCH_CHANNEL);
 
-        this.limitSwitchLight = new Solenoid(ElectronicsConstants.PCM_B_MODULE, ElectronicsConstants.ELEVATOR_LIMIT_SWITCH_LIGHT_CHANNEL);
-        this.throughBeamLightUpper = new Solenoid(ElectronicsConstants.PCM_B_MODULE,
-            ElectronicsConstants.ELEVATOR_THROUGH_BEAM_LIGHT_CHANNEL_UPPER);
+        //        this.limitSwitchLight = new Solenoid(ElectronicsConstants.PCM_B_MODULE, ElectronicsConstants.ELEVATOR_LIMIT_SWITCH_LIGHT_CHANNEL);
+        //        this.throughBeamLightUpper = new Solenoid(ElectronicsConstants.PCM_B_MODULE,
+        //            ElectronicsConstants.ELEVATOR_THROUGH_BEAM_LIGHT_CHANNEL_UPPER);
         this.throughBeamLightLeft = new Solenoid(ElectronicsConstants.PCM_B_MODULE,
             ElectronicsConstants.ELEVATOR_THROUGH_BEAM_LIGHT_CHANNEL_LEFT);
         this.throughBeamLightRight = new Solenoid(ElectronicsConstants.PCM_B_MODULE,

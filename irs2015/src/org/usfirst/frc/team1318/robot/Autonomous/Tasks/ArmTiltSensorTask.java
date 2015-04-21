@@ -10,8 +10,6 @@ public class ArmTiltSensorTask extends TimedAutonomousTask implements IAutonomou
     private final ArmComponent armComponent;
 
     private boolean sensorTriggered;
-    //    private boolean sensor;
-    //    private boolean timer;
     private boolean extend;
 
     public ArmTiltSensorTask(ArmComponent armComponent, double duration, boolean extend)
@@ -20,8 +18,6 @@ public class ArmTiltSensorTask extends TimedAutonomousTask implements IAutonomou
         this.armComponent = armComponent;
         this.sensorTriggered = false;
         this.extend = extend;
-        //        this.sensor = false;
-        //        this.timer = false;
     }
 
     @Override
@@ -40,16 +36,6 @@ public class ArmTiltSensorTask extends TimedAutonomousTask implements IAutonomou
             {
                 this.sensorTriggered = true;
             }
-            //            if (this.armComponent.getExtendSensorTripped())
-            //            {
-            //                sensor = true;
-            //                this.sensorTriggered = true;
-            //            }
-            //            if (super.hasCompleted())
-            //            {
-            //                timer = true;
-            //                this.sensorTriggered = true;
-            //            }
         }
         if (this.sensorTriggered)
         {

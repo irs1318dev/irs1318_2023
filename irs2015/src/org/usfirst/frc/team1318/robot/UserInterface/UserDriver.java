@@ -76,7 +76,7 @@ public class UserDriver implements IDriver
 
     // DriveTrain toggles
     private final SimpleToggleButton simpleDriveModeButton;
-    private final SimpleButton driveTrainCollectCansFromStepMacro;
+    //    private final SimpleButton driveTrainCollectCansFromStepMacro;
     private DriveTrainMacroData driveTrainMacroData;
 
     //Arm
@@ -130,7 +130,7 @@ public class UserDriver implements IDriver
 
         // initialize DriveTrain toggles
         this.simpleDriveModeButton = new SimpleToggleButton();
-        this.driveTrainCollectCansFromStepMacro = new SimpleButton();
+        //        this.driveTrainCollectCansFromStepMacro = new SimpleButton();
         this.driveTrainMacroData = driveTrainMacroData;
 
         //Arm
@@ -190,8 +190,8 @@ public class UserDriver implements IDriver
     private void updateDriveTrain()
     {
         //        this.simpleDriveModeButton.updateState(this.joystickDriver.getRawButton(JoystickButtonConstants.DRIVETRAIN_SIMPLE_BUTTON));
-        this.driveTrainCollectCansFromStepMacro.updateState(this.joystickCoDriver
-            .getRawButton(JoystickButtonConstants.COLLECT_CANS_FROM_STEP_MACRO));
+        //        this.driveTrainCollectCansFromStepMacro.updateState(this.joystickCoDriver
+        //            .getRawButton(JoystickButtonConstants.COLLECT_CANS_FROM_STEP_MACRO));
         boolean activated = false;
 
     }
@@ -356,9 +356,10 @@ public class UserDriver implements IDriver
 
     public boolean getDriveTrainCollectCansFromStepMacro()
     {
-        boolean mode = this.driveTrainCollectCansFromStepMacro.isActivated();
-        SmartDashboardLogger.putBoolean(UserDriver.DRIVE_TRAIN_COLLECT_CANS_FROM_STEP_MACRO_LOG_KEY, mode);
-        return mode;
+        //        boolean mode = this.driveTrainCollectCansFromStepMacro.isActivated();
+        //        SmartDashboardLogger.putBoolean(UserDriver.DRIVE_TRAIN_COLLECT_CANS_FROM_STEP_MACRO_LOG_KEY, mode);
+        //        return mode;
+        return false;
     }
 
     /**

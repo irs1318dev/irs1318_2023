@@ -131,13 +131,13 @@ public class DriveTrainController implements IController
             case STATE_0_WAIT_FOR_PRESS:
                 if (this.driver.getDriveTrainCollectCansFromStepMacro())
                 {
-                    this.macroData.state = DriveTrainMacroData.MacroStates.STATE_1_DRIVE_BACK;
-                    this.startTime = this.timer.get();
-                    this.macroData.setRunningMacro(true);
-
-                    this.macroData.setExtenderState(true);
-                    this.macroData.setTiltState(true);
-                    this.macroData.setTromboneState(true);
+                    //                    this.macroData.state = DriveTrainMacroData.MacroStates.STATE_1_DRIVE_BACK;
+                    //                    this.startTime = this.timer.get();
+                    //                    this.macroData.setRunningMacro(true);
+                    //
+                    //                    this.macroData.setExtenderState(true);
+                    //                    this.macroData.setTiltState(true);
+                    //                    this.macroData.setTromboneState(true);
                 }
                 else
                 {
