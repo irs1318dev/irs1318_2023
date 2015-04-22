@@ -10,8 +10,8 @@ public class ElectronicsConstants
 {
     public static final double MAX_POWER_LEVEL = 1.0;
 
-    public static final int PCM_A_MODULE = 0;//1;
-    public static final int PCM_B_MODULE = 1;//0;
+    public static final int PCM_A_MODULE = 1;//1;
+    public static final int PCM_B_MODULE = 0;//0;
 
     //================================================== DriveTrain ==============================================================
 
