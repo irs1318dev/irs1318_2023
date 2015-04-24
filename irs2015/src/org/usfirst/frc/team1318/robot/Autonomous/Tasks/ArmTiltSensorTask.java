@@ -24,6 +24,7 @@ public class ArmTiltSensorTask extends TimedAutonomousTask implements IAutonomou
     public void begin()
     {
         this.sensorTriggered = false;
+        this.armComponent.resetSensor();
         super.begin();
     }
 

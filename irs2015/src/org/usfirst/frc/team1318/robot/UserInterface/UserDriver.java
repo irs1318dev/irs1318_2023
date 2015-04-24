@@ -200,8 +200,8 @@ public class UserDriver implements IDriver
     {
         if (!this.driveTrainMacroData.getRunningMacro())
         {
-            this.armMacroExtendButton.updateState(this.joystickDriver.getPOV() == 0);//this.joystickDriver.getRawButton(JoystickButtonConstants.ARM_MACRO_EXTEND_BUTTON));
-            this.armMacroRetractButton.updateState(this.joystickDriver.getPOV() == 180);//this.joystickDriver.getRawButton(JoystickButtonConstants.ARM_MACRO_RETRACT_BUTTON));
+            this.armMacroExtendButton.updateState(this.joystickDriver.getPOV() == 90);//0);
+            this.armMacroRetractButton.updateState(this.joystickDriver.getPOV() == 270);//180);
             this.armExtenderExtendOverride.updateState(this.joystickCoDriver
                 .getRawButton(JoystickButtonConstants.ARM_EXTENDER_EXTEND_BUTTON));
             this.armExtenderRetractOverride
