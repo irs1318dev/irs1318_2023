@@ -7,14 +7,6 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Talon;
 
-/* buttons 
- * up
- * down
- * toggle left 
- * toggle right
- * press and hold for in
- * press and hold for out
- * */
 public class IntakeComponent
 {
     private final Talon leftTalon;
@@ -34,7 +26,7 @@ public class IntakeComponent
         this.rightTalon = new Talon(ElectronicsConstants.INTAKE_RIGHT_TALON_CHANNEL);
 
         this.intakeDoubleSolenoid = new DoubleSolenoid(
-            ElectronicsConstants.PCM_B_MODULE,
+            ElectronicsConstants.PCM_A_MODULE,
             ElectronicsConstants.INTAKE_LEFT_ARM_CHANNEL_A,
             ElectronicsConstants.INTAKE_LEFT_ARM_CHANNEL_B);
 
@@ -92,8 +84,18 @@ public class IntakeComponent
     */
     public void setIntakeMotorSpeed(double velocity)
     {
+        if (velocity < 0)
+        {
+            velocity *= 0.68;
+        }
         this.leftTalon.set(-velocity);
         this.rightTalon.set(velocity);
         SmartDashboardLogger.putNumber(IntakeComponent.INTAKE_MOTOR_SPEED_KEY, velocity);
+    }
+
+    public void setIntakeMotorSameSpeed(double velocity)
+    {
+        this.leftTalon.set(velocity);
+        this.rightTalon.set(velocity);
     }
 }

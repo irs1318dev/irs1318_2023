@@ -39,6 +39,8 @@ public interface IDriver
      */
     public boolean getDriveTrainSimpleMode();
 
+    public boolean getDriveTrainCollectCansFromStepMacro();
+
     /**
      * Get a value indicating the desired drive train left position for positional mode
      * @return position
@@ -172,9 +174,15 @@ public interface IDriver
      */
     public boolean getZeroElevatorEncoder();
 
-    public boolean getSlowElevatorButton();
+    public boolean getElevatorSlowButton();
 
-    public boolean getFastElevatorButton();
+    public boolean getElevatorRegularSpeedButton();
+
+    public boolean getElevatorFastButton();
+
+    public boolean getElevatorOpenCanStabilizerButton();
+
+    public boolean getElevatorCloseCanStabilizerButton();
 
     //===================================================== Arm =================================================================
     /**
@@ -286,4 +294,5 @@ public interface IDriver
      */
     public boolean getIntakeBackwardButton();
 
+    public boolean getIntakeJitterButton();
 }

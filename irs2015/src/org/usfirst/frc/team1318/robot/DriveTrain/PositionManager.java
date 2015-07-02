@@ -2,6 +2,7 @@ package org.usfirst.frc.team1318.robot.DriveTrain;
 
 import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.Common.IController;
+import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
 /**
@@ -50,9 +51,16 @@ public class PositionManager implements IController
         this.driveTrainComponent = driveTrainComponent;
     }
 
+    @Override
+    public void setDriver(IDriver driver)
+    {
+        //not needed for this controller 
+    }
+
     /**
      * calculate the various outputs to use based on the inputs and apply them to the outputs for the relevant component
      */
+    @Override
     public void update()
     {
         // check the current distance recorded by the encoders
@@ -60,14 +68,19 @@ public class PositionManager implements IController
         double rightDistance = this.driveTrainComponent.getRightEncoderDistance();
 
         // calculate the angle (in radians) based on the total distance traveled
-        this.angle = ((rightDistance - leftDistance) / HardwareConstants.DRIVETRAIN_WHEEL_DISTANCE) % (2 * Math.PI);
+        double angleR = ((leftDistance - rightDistance) / HardwareConstants.DRIVETRAIN_WHEEL_SEPARATION_DISTANCE);
+
+        // correct for weirdness (7 degree offset in the angle)
+        angleR *= 0.979858464888405;
 
         // calculate the average distance traveled
         double averagePositionChange = ((leftDistance - this.prevLeftDistance) + (rightDistance - this.prevRightDistance)) / 2;
 
         // calculate the change since last time, and update our relative position
-        this.x += averagePositionChange * Math.cos(this.angle);
-        this.y += averagePositionChange * Math.sin(this.angle);
+        this.x += averagePositionChange * Math.cos(angleR);
+        this.y += averagePositionChange * Math.sin(angleR);
+
+        this.angle = (angleR * 360 / (2 * Math.PI)) % 360;
 
         // record distance for next time
         this.prevLeftDistance = leftDistance;
@@ -82,6 +95,7 @@ public class PositionManager implements IController
     /**
      * stop the relevant component
      */
+    @Override
     public void stop()
     {
     }
@@ -92,7 +106,7 @@ public class PositionManager implements IController
      */
     public double getAngle()
     {
-        return this.angle * 180 / Math.PI;
+        return this.angle;
     }
 
     /**
@@ -111,5 +125,16 @@ public class PositionManager implements IController
     public double getY()
     {
         return this.y;
+    }
+
+    public void reset()
+    {
+        this.x = 0.0;
+        this.y = 0.0;
+
+        this.angle = 0.0;
+
+        this.prevLeftDistance = 0.0;
+        this.prevRightDistance = 0.0;
     }
 }

@@ -20,7 +20,7 @@ public class ArmController implements IController
     private double continueTime;
 
     private final ArmComponent component;
-    private final IDriver driver;
+    private IDriver driver;
 
     private Boolean tromboneState;
     private Boolean tiltState;
@@ -48,8 +48,15 @@ public class ArmController implements IController
     }
 
     @Override
+    public void setDriver(IDriver driver)
+    {
+        this.driver = driver;
+    }
+
+    @Override
     public void update()
     {
+        this.component.getExtendSensorTripped();
         /* 
          * Macro Extend operation will retract the extender (Stage 1), extend the trombone (Stage 2), and then retract the tilt (Stage 3)
          * Fully extends entire arm, starting with a check that tilts the arm up
@@ -137,7 +144,7 @@ public class ArmController implements IController
                 if (this.tiltState != null && this.tiltState == true)
                 {
                     //don't wait for tilt to extend
-                    this.continueTime = this.timer.get() + TuningConstants.ARM_SAFETY_WAIT;
+                    this.continueTime = this.timer.get();// + TuningConstants.ARM_SAFETY_WAIT;
                 }
                 else
                 {

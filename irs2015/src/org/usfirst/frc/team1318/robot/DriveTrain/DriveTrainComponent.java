@@ -5,9 +5,7 @@ import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 
 /**
@@ -28,10 +26,8 @@ public class DriveTrainComponent implements IDriveTrainComponent
     public static final String RIGHT_ENCODER_DISTANCE_LOG_KEY = "dt.rightEncoderDistance";
     public static final String LEFT_ENCODER_TICKS_LOG_KEY = "dt.leftEncoderTicks";
     public static final String RIGHT_ENCODER_TICKS_LOG_KEY = "dt.rightEncoderTicks";
-    private static final String PROXIMITY_SENSOR_BACK_LOG_KEY = "dt.proximitySensorBack";
-    private static final String PROXIMITY_SENSOR_FRONT_LOG_KEY = "dt.proximitySensorFront";
-
-    private static final double MinTimeStep = 0.01;
+    //    public static final String PROXIMITY_SENSOR_BACK_LOG_KEY = "dt.proximitySensorBack";
+    //    public static final String PROXIMITY_SENSOR_FRONT_LOG_KEY = "dt.proximitySensorFront";
 
     private final Victor leftTalon;
     private final Victor rightTalon;
@@ -39,17 +35,8 @@ public class DriveTrainComponent implements IDriveTrainComponent
     private final Encoder leftEncoder;
     private final Encoder rightEncoder;
 
-    private AnalogInput proximitySensorFront;
-    private AnalogInput proximitySensorBack;
-
-    // For adjusting rate based on our own timing:
-    private final Timer timer;
-    private double prevTime;
-
-    private int prevLeftTicks;
-    private double prevLeftRate;
-    private int prevRightTicks;
-    private double prevRightRate;
+    //    private final AnalogInput proximitySensorFront;
+    //    private final AnalogInput proximitySensorBack;
 
     /**
      * Initializes a new DriveTrainComponent
@@ -73,15 +60,8 @@ public class DriveTrainComponent implements IDriveTrainComponent
         this.leftEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_LEFT_PULSE_DISTANCE);
         this.rightEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_RIGHT_PULSE_DISTANCE);
 
-        proximitySensorBack = new AnalogInput(ElectronicsConstants.TEST_PROXIMITY_SENSOR_BACK_PORT);
-        proximitySensorFront = new AnalogInput(ElectronicsConstants.TEST_PROXIMITY_SENSOR_FRONT_PORT);
-
-        this.timer = new Timer();
-        this.timer.start();
-
-        this.prevTime = this.timer.get();
-        this.prevLeftTicks = -this.leftEncoder.get();
-        this.prevRightTicks = this.rightEncoder.get();
+        //        this.proximitySensorBack = new AnalogInput(ElectronicsConstants.DRIVETRAIN_PROXIMITY_SENSOR_BACK_PORT);
+        //        this.proximitySensorFront = new AnalogInput(ElectronicsConstants.DRIVETRAIN_PROXIMITY_SENSOR_FRONT_PORT);
     }
 
     /**
@@ -122,18 +102,7 @@ public class DriveTrainComponent implements IDriveTrainComponent
     public double getLeftEncoderVelocity()
     {
         // if we haven't hit our minimum time step, default to our previously reported rate
-        double leftVelocity = this.prevLeftRate;
-
-        double currentTime = this.timer.get();
-        double dt = currentTime - this.prevTime;
-        if (dt > DriveTrainComponent.MinTimeStep)
-        {
-            int currentLeftTicks = -this.leftEncoder.get();
-            double deltaLeftTicks = currentLeftTicks - this.prevLeftTicks;
-            leftVelocity = deltaLeftTicks / dt;
-
-            this.prevLeftTicks = currentLeftTicks;
-        }
+        double leftVelocity = -this.leftEncoder.getRate();
 
         SmartDashboardLogger.putNumber(DriveTrainComponent.LEFT_ENCODER_VELOCITY_LOG_KEY, leftVelocity);
 
@@ -147,18 +116,7 @@ public class DriveTrainComponent implements IDriveTrainComponent
     public double getRightEncoderVelocity()
     {
         // if we haven't hit our minimum time step, default to our previously reported rate
-        double rightVelocity = this.prevRightRate;
-
-        double currentTime = this.timer.get();
-        double dt = currentTime - this.prevTime;
-        if (dt > DriveTrainComponent.MinTimeStep)
-        {
-            int currentRightTicks = this.rightEncoder.get();
-            double deltaRightTicks = currentRightTicks - this.prevRightTicks;
-            rightVelocity = deltaRightTicks / dt;
-
-            this.prevRightTicks = currentRightTicks;
-        }
+        double rightVelocity = this.rightEncoder.getRate();
 
         SmartDashboardLogger.putNumber(DriveTrainComponent.RIGHT_ENCODER_VELOCITY_LOG_KEY, rightVelocity);
 
@@ -220,17 +178,24 @@ public class DriveTrainComponent implements IDriveTrainComponent
     @Override
     public double getProximitySensorFront()
     {
-        double value = proximitySensorFront.getVoltage();
-        SmartDashboardLogger.putNumber(DriveTrainComponent.PROXIMITY_SENSOR_FRONT_LOG_KEY, value);
-        return value;
+        //        double value = this.proximitySensorFront.getVoltage();
+        //        SmartDashboardLogger.putNumber(DriveTrainComponent.PROXIMITY_SENSOR_FRONT_LOG_KEY, value);
+        //        return value;
+        return 0;
     }
 
     @Override
     public double getProximitySensorBack()
     {
-        double value = proximitySensorBack.getVoltage();
-        SmartDashboardLogger.putNumber(DriveTrainComponent.PROXIMITY_SENSOR_BACK_LOG_KEY, value);
-        return value;
+        //        double value = this.proximitySensorBack.getVoltage();
+        //        SmartDashboardLogger.putNumber(DriveTrainComponent.PROXIMITY_SENSOR_BACK_LOG_KEY, value);
+        //        return value;
+        return 0;
     }
 
+    public void reset()
+    {
+        this.leftEncoder.reset();
+        this.rightEncoder.reset();
+    }
 }

@@ -8,21 +8,21 @@ import org.usfirst.frc.team1318.robot.Autonomous.AutonomousControlData;
 import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 
 /**
- * Autonomous task that holds multiple other tasks and executes them in in order.
+ * Autonomous task that holds multiple other tasks and executes them sequentially (in order).
  * 
  * @author Will
  *
  */
-public class OrderedTask implements IAutonomousTask
+public class SequentialTask implements IAutonomousTask
 {
     private final Queue<IAutonomousTask> autonomousTasks;
     private IAutonomousTask currentTask;
 
     /**
-     * Initializes a new OrderedTask
+     * Initializes a new SequentialTask
      * @param tasks to run
      */
-    public OrderedTask(IAutonomousTask[] tasks)
+    public SequentialTask(IAutonomousTask[] tasks)
     {
         this.autonomousTasks = new LinkedList<IAutonomousTask>(Arrays.asList(tasks));
         this.currentTask = null;
@@ -46,7 +46,7 @@ public class OrderedTask implements IAutonomousTask
         // check whether we should continue with the current task
         if (this.currentTask != null)
         {
-            if (!this.currentTask.shouldContinue())
+            if (this.currentTask.hasCompleted())
             {
                 this.currentTask.end(data);
                 this.currentTask = null;
@@ -98,12 +98,12 @@ public class OrderedTask implements IAutonomousTask
     }
 
     /**
-     * Checks whether we should continue processing this task or whether it should end
-     * @return true if we should continue on the current task, otherwise false (to move to the next task)
+     * Checks whether this task has completed, or whether it should continue being processed
+     * @return true if we should continue onto the next task, otherwise false (to keep processing this task)
      */
     @Override
-    public boolean shouldContinue()
+    public boolean hasCompleted()
     {
-        return this.currentTask != null || !this.autonomousTasks.isEmpty();
+        return this.currentTask == null && this.autonomousTasks.isEmpty();
     }
 }

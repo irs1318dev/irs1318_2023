@@ -10,8 +10,8 @@ public class ElectronicsConstants
 {
     public static final double MAX_POWER_LEVEL = 1.0;
 
-    public static final int PCM_A_MODULE = 0;
-    public static final int PCM_B_MODULE = 0;
+    public static final int PCM_A_MODULE = 1;//1;
+    public static final int PCM_B_MODULE = 0;//0;
 
     //================================================== DriveTrain ==============================================================
 
@@ -24,8 +24,8 @@ public class ElectronicsConstants
     public static final int DRIVETRAIN_LEFT_ENCODER_CHANNEL_A = 4; // kitbot - 8
     public static final int DRIVETRAIN_LEFT_ENCODER_CHANNEL_B = 5; // kitbot - 9
 
-    public static final int TEST_PROXIMITY_SENSOR_BACK_PORT = 1;
-    public static final int TEST_PROXIMITY_SENSOR_FRONT_PORT = 2;
+    public static final int DRIVETRAIN_PROXIMITY_SENSOR_BACK_PORT = 1;
+    public static final int DRIVETRAIN_PROXIMITY_SENSOR_FRONT_PORT = 2;
 
     //================================================== Elevator ==============================================================
 
@@ -33,10 +33,18 @@ public class ElectronicsConstants
     public static final int ELEVATOR_ENCODER_CHANNEL_A = 1;
     public static final int ELEVATOR_ENCODER_CHANNEL_B = 0;
 
+    public static final int ELEVATOR_CAN_STABILIZER_EXTEND = 7;
+    public static final int ELEVATOR_CAN_STABILIZER_RETRACT = 0;
+
     public static final int ELEVATOR_BOTTOM_LIMIT_SWITCH_CHANNEL = 6;
-    public static final int ELEVATOR_TOP_LIMIT_SWITCH_CHANNEL = 7;
+    //    public static final int ELEVATOR_TOP_LIMIT_SWITCH_CHANNEL = 7;
 
     public static final int ELEVATOR_THROUGH_BEAM_SENSOR_CHANNEL = 0;
+
+    public static final int ELEVATOR_LIMIT_SWITCH_LIGHT_CHANNEL = 2;
+    public static final int ELEVATOR_THROUGH_BEAM_LIGHT_CHANNEL_UPPER = 1;
+    public static final int ELEVATOR_THROUGH_BEAM_LIGHT_CHANNEL_RIGHT = 6;
+    public static final int ELEVATOR_THROUGH_BEAM_LIGHT_CHANNEL_LEFT = 5;
 
     //================================================== Intake ==============================================================
 
@@ -59,4 +67,10 @@ public class ElectronicsConstants
 
     public static final int ARM_EXTEND_LINK_SOLANOID_EXTEND = 4;
     public static final int ARM_EXTEND_LINK_SOLANOID_RETRACT = 3;
+    public static final int ARM_EXTEND_SENSOR = 7;
+
+    //================================================== Autonomous ==============================================================
+
+    public static final int AUTONOMOUS_DIP_SWITCH_A = 8;
+    public static final int AUTONOMOUS_DIP_SWITCH_B = 9;
 }

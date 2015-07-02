@@ -4,14 +4,17 @@ import org.usfirst.frc.team1318.robot.Autonomous.AutonomousControlData;
 import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 
 /**
- * Simple drive-forward task
+ * Autonomous task that waits forever.  This task can be used as a way to give up if a certain condition isn't met (by pairing it with an AnyTask)
  * 
- * @author Caroline
+ * @author Will
  *
  */
-public class DriveForwardTask implements IAutonomousTask
+public class WaitForeverTask implements IAutonomousTask
 {
-    public DriveForwardTask()
+    /**
+     * Initializes a new WaitForeverTask
+     */
+    public WaitForeverTask()
     {
     }
 
@@ -21,7 +24,6 @@ public class DriveForwardTask implements IAutonomousTask
     @Override
     public void begin()
     {
-
     }
 
     /**
@@ -31,8 +33,6 @@ public class DriveForwardTask implements IAutonomousTask
     @Override
     public void update(AutonomousControlData data)
     {
-        data.setDriveTrainPositionMode(false);
-        data.setDriveTrainYVelocity(.1);
     }
 
     /**
@@ -42,7 +42,6 @@ public class DriveForwardTask implements IAutonomousTask
     @Override
     public void cancel(AutonomousControlData data)
     {
-        data.setDriveTrainYVelocity(0);
     }
 
     /**
@@ -52,7 +51,6 @@ public class DriveForwardTask implements IAutonomousTask
     @Override
     public void end(AutonomousControlData data)
     {
-        data.setDriveTrainYVelocity(0);
     }
 
     /**

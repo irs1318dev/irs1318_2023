@@ -6,6 +6,8 @@ import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.PIDHandler;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
+import edu.wpi.first.wpilibj.Timer;
+
 /**
  * Drivetrain controller.
  * The controller defines the logic that controls a mechanism given inputs (component) and operator-requested actions, and 
@@ -16,6 +18,10 @@ import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
  */
 public class DriveTrainController implements IController
 {
+    private DriveTrainMacroData macroData;
+    private final Timer timer;
+    private Double startTime;
+
     private static final double POWERLEVEL_MIN = -1.0;
     private static final double POWERLEVEL_MAX = 1.0;
 
@@ -33,23 +39,46 @@ public class DriveTrainController implements IController
      * @param component to control
      * @param usePID indicates whether we should use PID control
      */
-    public DriveTrainController(IDriver operator, IDriveTrainComponent component, boolean usePID)
+    public DriveTrainController(IDriver operator, IDriveTrainComponent component, DriveTrainMacroData driveTrainMacroData, boolean usePID)
     {
         this.driver = operator;
         this.component = component;
         this.usePID = usePID;
         this.usePositionalMode = false;
+        this.macroData = driveTrainMacroData;
+        this.timer = new Timer();
+
+        this.timer.start();
+        this.startTime = this.timer.get();
 
         this.createPIDHandler();
+    }
+
+    @Override
+    public void setDriver(IDriver driver)
+    {
+        this.driver = driver;
+    }
+
+    public void setVelocityPIDMode()
+    {
+        if (!this.usePID || this.usePositionalMode)
+        {
+            this.usePID = true;
+            this.usePositionalMode = false;
+
+            this.createPIDHandler();
+        }
     }
 
     /**
      * calculate the various outputs to use based on the inputs and apply them to the outputs for the relevant component
      */
+    @Override
     public void update()
     {
-        component.getProximitySensorFront();
-        component.getProximitySensorBack();
+        //        this.component.getProximitySensorFront();
+        //        this.component.getProximitySensorBack();
 
         // check our desired PID mode
         boolean newUsePositionalMode = this.driver.getDriveTrainPositionMode();
@@ -75,11 +104,6 @@ public class DriveTrainController implements IController
         double leftPower = powerSetting.getLeftPower();
         double rightPower = powerSetting.getRightPower();
 
-        // ensure that our algorithms are correct and don't give values outside
-        // the appropriate range
-        //        this.assertPowerLevelRange(leftPower, "left");
-        //        this.assertPowerLevelRange(rightPower, "right");
-
         // apply the power settings to the drivetrain component
         this.component.setDriveTrainPower(leftPower, rightPower);
     }
@@ -87,9 +111,106 @@ public class DriveTrainController implements IController
     /**
      * stop the relevant component
      */
+    @Override
     public void stop()
     {
         this.component.setDriveTrainPower(0.0, 0.0);
+    }
+
+    public void setMacroData(DriveTrainMacroData macroData)
+    {
+        this.macroData = macroData;
+    }
+
+    private PowerSetting runCollectCansFromStepMacro()
+    {
+        PowerSetting result = new PowerSetting(0, 0);
+
+        switch (this.macroData.state)
+        {
+            case STATE_0_WAIT_FOR_PRESS:
+                if (this.driver.getDriveTrainCollectCansFromStepMacro())
+                {
+                    //                    this.macroData.state = DriveTrainMacroData.MacroStates.STATE_1_DRIVE_BACK;
+                    //                    this.startTime = this.timer.get();
+                    //                    this.macroData.setRunningMacro(true);
+                    //
+                    //                    this.macroData.setExtenderState(true);
+                    //                    this.macroData.setTiltState(true);
+                    //                    this.macroData.setTromboneState(true);
+                }
+                else
+                {
+                    this.macroData.setRunningMacro(false);
+                }
+                break;
+            case STATE_1_DRIVE_BACK:
+                if (this.timer.get() < this.startTime + DriveTrainMacroData.DRIVE_BACK_TIME_1)
+                {
+                    result = new PowerSetting(0.0, DriveTrainMacroData.DRIVE_BACK_SPEED_1);
+                }
+                else
+                {
+                    this.startTime = this.timer.get();
+                    this.macroData.setTiltState(false);
+                    this.macroData.state = DriveTrainMacroData.MacroStates.STATE_2_SETTLE_WAIT;
+                }
+                break;
+            case STATE_2_SETTLE_WAIT:
+                if (this.timer.get() > this.startTime + DriveTrainMacroData.SETTLE_WAIT_TIME_2)
+                {
+                    this.startTime = this.timer.get();
+                    this.macroData.state = DriveTrainMacroData.MacroStates.STATE_3_DRIVE_BACK;
+                }
+                break;
+            case STATE_3_DRIVE_BACK:
+                if (this.timer.get() < this.startTime + DriveTrainMacroData.DRIVE_BACK_TIME_3)
+                {
+                    result = new PowerSetting(0.0, DriveTrainMacroData.DRIVE_BACK_SPEED_3);
+                }
+                else
+                {
+                    startTime = this.timer.get();
+                    this.macroData.state = DriveTrainMacroData.MacroStates.STATE_4_WAIT;
+                }
+                break;
+            case STATE_4_WAIT:
+                if (this.timer.get() > this.startTime + DriveTrainMacroData.SETTLE_WAIT_TIME_4)
+                {
+                    this.startTime = this.timer.get();
+                    this.macroData.state = DriveTrainMacroData.MacroStates.STATE_5_DRIVE_FORWARD;
+                }
+                break;
+            case STATE_5_DRIVE_FORWARD:
+                if (this.timer.get() < this.startTime + DriveTrainMacroData.DRIVE_FORWARD_TIME_5)
+                {
+                    result = new PowerSetting(0.0, DriveTrainMacroData.DRIVE_FORWARD_SPEED_5);
+                }
+                else
+                {
+                    this.startTime = this.timer.get();
+                    this.macroData.setTiltState(true);
+                    this.macroData.state = DriveTrainMacroData.MacroStates.STATE_6_UNTILT;
+                }
+                break;
+            case STATE_6_UNTILT:
+                if (this.timer.get() > this.startTime + DriveTrainMacroData.UNTILT_WAIT_TIME_6)
+                {
+                    this.startTime = this.timer.get();
+                    this.macroData.setTromboneState(false);
+                    this.macroData.state = DriveTrainMacroData.MacroStates.STATE_7_UNEXTEND;
+                }
+                break;
+            case STATE_7_UNEXTEND:
+                if (this.timer.get() > this.startTime + DriveTrainMacroData.UNEXTEND_WAIT_TIME_7)
+                {
+                    this.macroData.setExtenderState(false);
+                    this.macroData.state = DriveTrainMacroData.MacroStates.STATE_0_WAIT_FOR_PRESS;
+                }
+                break;
+
+        }
+        return result;
     }
 
     /**
@@ -112,8 +233,8 @@ public class DriveTrainController implements IController
                     TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KI_DEFAULT,
                     TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KD_DEFAULT,
                     TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KF_DEFAULT,
-                    DriveTrainController.POWERLEVEL_MIN,
-                    DriveTrainController.POWERLEVEL_MAX);
+                    -TuningConstants.DRIVETRAIN_POSITIONAL_MAX_POWER_LEVEL,
+                    TuningConstants.DRIVETRAIN_POSITIONAL_MAX_POWER_LEVEL);
 
                 this.rightPID = new PIDHandler(
                     "dt.rightPID",
@@ -121,8 +242,8 @@ public class DriveTrainController implements IController
                     TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KI_DEFAULT,
                     TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KD_DEFAULT,
                     TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KF_DEFAULT,
-                    DriveTrainController.POWERLEVEL_MIN,
-                    DriveTrainController.POWERLEVEL_MAX);
+                    -TuningConstants.DRIVETRAIN_POSITIONAL_MAX_POWER_LEVEL,
+                    TuningConstants.DRIVETRAIN_POSITIONAL_MAX_POWER_LEVEL);
             }
             else
             {
@@ -133,8 +254,8 @@ public class DriveTrainController implements IController
                     TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KD_DEFAULT,
                     TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KF_DEFAULT,
                     TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KS_DEFAULT,
-                    DriveTrainController.POWERLEVEL_MIN,
-                    DriveTrainController.POWERLEVEL_MAX);
+                    -TuningConstants.DRIVETRAIN_VELOCITY_MAX_POWER_LEVEL,
+                    TuningConstants.DRIVETRAIN_VELOCITY_MAX_POWER_LEVEL);
 
                 this.rightPID = new PIDHandler(
                     "dt.rightPID",
@@ -143,8 +264,9 @@ public class DriveTrainController implements IController
                     TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KD_DEFAULT,
                     TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF_DEFAULT,
                     TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KS_DEFAULT,
-                    DriveTrainController.POWERLEVEL_MIN,
-                    DriveTrainController.POWERLEVEL_MAX);
+                    -TuningConstants.DRIVETRAIN_VELOCITY_MAX_POWER_LEVEL,
+                    TuningConstants.DRIVETRAIN_VELOCITY_MAX_POWER_LEVEL);
+                ;
             }
         }
     }
@@ -169,141 +291,74 @@ public class DriveTrainController implements IController
         int currentRightTicks = this.component.getRightEncoderTicks();
 
         // get a value indicating that we should be in simple mode...
-        boolean simpleDriveModeEnabled = this.driver.getDriveTrainSimpleMode();
+        boolean simpleDriveModeEnabled = false;//this.driver.getDriveTrainSimpleMode();
 
         // get the X and Y values from the operator.  We expect these to be between -1.0 and 1.0,
         // with this value representing the forward velocity percentage and right turn percentage (of max speed)
-        double xVelocity = this.driver.getDriveTrainYVelocity();
-        double yVelocity = this.driver.getDriveTrainXVelocity();
+        double xVelocity = this.driver.getDriveTrainXVelocity();
+        double yVelocity = this.driver.getDriveTrainYVelocity();
 
         // adjust for joystick deadzone
         xVelocity = this.adjustForDeadZone(xVelocity, TuningConstants.DRIVETRAIN_X_DEAD_ZONE);
         yVelocity = this.adjustForDeadZone(yVelocity, TuningConstants.DRIVETRAIN_Y_DEAD_ZONE);
 
-        // adjust the intensity of the input
-        xVelocity = this.adjustIntensity(xVelocity);
-        yVelocity = this.adjustIntensity(yVelocity);
-
-        if (simpleDriveModeEnabled)
+        if (xVelocity == 0 && yVelocity == 0)
         {
-            // simple drive enables either forward/back or in-place left/right turn only
-            //
-            //                   forward
-            //               ---------------
-            //               |      |      |
-            //               |      |      |
-            // In-place left |-------------| In-place right
-            //               |      |      |
-            //               |      |      |
-            //               ---------------
-            //                  backward
-            //
-
-            if (Math.abs(yVelocity) < Math.abs(xVelocity))
-            {
-                // in-place turn
-                leftVelocityGoal = xVelocity;
-                rightVelocityGoal = -xVelocity;
-            }
-            else
-            {
-                // forward/backward
-                leftVelocityGoal = yVelocity;
-                rightVelocityGoal = yVelocity;
-            }
+            PowerSetting temp = this.runCollectCansFromStepMacro();
+            xVelocity = temp.leftPower;
+            yVelocity = temp.rightPower;
         }
         else
         {
-            // advanced drive enables varying-degree turns.
-            // math is derived using linear interpolation
-            //
-            //     a,1       1,1       1,a
-            //      ---------------------
-            //      |         |         |
-            //      |   Q2    |   Q1    |
-            //      |         |         |
-            // -b,b |-------------------| b,-b
-            //      |         |         |
-            //      |   Q3    |   Q4    |
-            //      |         |         |
-            //      ---------------------
-            //    -a,-1     -1,-1     -1,-a
-            //
-            // for x: 0 -> 1, power(x) = power(0) + x*(power(1) - power(0)) 
-            // for y: 0 -> 1, power(x,y) = power(x,0) + y*(power(x,1) - power(x,0))
-
-            //            if (xVelocity >= 0)
-            //            {
-            //                if (yVelocity >= 0)
-            //                {
-            //                    // Q1:
-            //                    // y=1 => lp = 1.  rp = 1 + x*(a - 1)
-            //                    // y=0 => lp = 0 + x*b = x*b.  rp = 0 + x*-b = -x*b
-            //                    // lp = x*b + y*(1 - x*b)
-            //                    // rp = x*-b + y*(1+x*(a-1) - x*-b)
-            //                    leftVelocityGoal = xVelocity
-            //                        * TuningConstants.DRIVETRAIN_B + yVelocity * (1 - xVelocity * TuningConstants.DRIVETRAIN_B);
-            //                    rightVelocityGoal = -xVelocity
-            //                        * TuningConstants.DRIVETRAIN_B + yVelocity
-            //                        * (1 + xVelocity * (TuningConstants.DRIVETRAIN_A - 1) + xVelocity * TuningConstants.DRIVETRAIN_B);
-            //                }
-            //                else
-            //                {
-            //                    // Q4:
-            //                    // y=-1 => lp = -1.  rp = -1 + x*(-a - -1)  
-            //                    // y=0  => lp = x*B.  rp = -x*B (see Q1)
-            //                    // lp = x*B + -1*y*(-1 - x*B)
-            //                    // rp = x*-B + -1*y*(-1+x*(-a - -1) - x*-B)
-            //                    leftVelocityGoal = xVelocity
-            //                        * TuningConstants.DRIVETRAIN_B - yVelocity * (-1 - xVelocity * TuningConstants.DRIVETRAIN_B);
-            //                    rightVelocityGoal = -xVelocity
-            //                        * TuningConstants.DRIVETRAIN_B - yVelocity
-            //                        * (-1 + xVelocity * (-TuningConstants.DRIVETRAIN_A + 1) + xVelocity * TuningConstants.DRIVETRAIN_B);
-            //                }
-            //            }
-            //            else
-            //            {
-            //                if (yVelocity >= 0)
-            //                {
-            //                    // Q2:
-            //                    // y=1 => lp = 1 + -1*x*(a - 1) = 1 - x*(a - 1).  rp = 1
-            //                    // y=0 => lp = 0 + -1*x*(-b - 0) = x*b.  rp = 0 + -1*x*(b - 0) = -x*b
-            //                    // lp = x*b + y*(1 - x*(a-1) - x*b)
-            //                    // rp = -x*b + y*(1 - -x*B)
-            //                    leftVelocityGoal = xVelocity
-            //                        * TuningConstants.DRIVETRAIN_B + yVelocity
-            //                        * (1 - xVelocity * (TuningConstants.DRIVETRAIN_A - 1) - xVelocity * TuningConstants.DRIVETRAIN_B);
-            //                    rightVelocityGoal = -xVelocity
-            //                        * TuningConstants.DRIVETRAIN_B + yVelocity * (1 + xVelocity * TuningConstants.DRIVETRAIN_B);
-            //                }
-            //                else
-            //                {
-            //                    // Q3:
-            //                    // y=-1 => lp = -1 + -1*x*(-a - -1) = -1 - x*(-a + 1).  rp = -1 
-            //                    // y=0  => lp = x*b.  rp = -x*b (see Q2) 
-            //                    // lp = x*b + -1*y*(-1 - x*(-a + 1) - x*b)
-            //                    // rp = -x*b + -1*y*(-1 - -x*b)
-            //                    leftVelocityGoal = xVelocity
-            //                        * TuningConstants.DRIVETRAIN_B - yVelocity
-            //                        * (-1 - xVelocity * (-TuningConstants.DRIVETRAIN_A + 1) - xVelocity * TuningConstants.DRIVETRAIN_B);
-            //                    rightVelocityGoal = -xVelocity
-            //                        * TuningConstants.DRIVETRAIN_B - yVelocity * (-1 + xVelocity * TuningConstants.DRIVETRAIN_B);
-            //                }
-            //            }
-
-            double K1 = 1.5;
-            double K2 = .4;
-            double K3 = K1;
-            double K4 = -K2;
-
-            leftVelocityGoal = (K1 * xVelocity) + (K2 * yVelocity);
-            rightVelocityGoal = (K3 * xVelocity) + (K4 * yVelocity);
+            this.macroData.state = DriveTrainMacroData.MacroStates.STATE_0_WAIT_FOR_PRESS;
+            this.macroData.setRunningMacro(false);
         }
 
-        // ensure that our algorithms are correct and don't give values outside
-        // the appropriate range
-        //        this.assertPowerLevelRange(leftVelocityGoal, "left velocity (goal)");
-        //        this.assertPowerLevelRange(rightVelocityGoal, "right velocity (goal)");
+        SmartDashboardLogger.putNumber("***joystick x***", xVelocity);
+        SmartDashboardLogger.putNumber("***joystick y***", yVelocity);
+
+        // adjust the intensity of the input
+        //        xVelocity = this.adjustIntensity(xVelocity);
+        //        yVelocity = this.adjustIntensity(yVelocity);
+
+        //        if (simpleDriveModeEnabled)
+        //        {
+        //            // simple drive enables either forward/back or in-place left/right turn only
+        //            //
+        //            //                   forward
+        //            //               ---------------
+        //            //               |      |      |
+        //            //               |      |      |
+        //            // In-place left |-------------| In-place right
+        //            //               |      |      |
+        //            //               |      |      |
+        //            //               ---------------
+        //            //                  backward
+        //            //
+        //
+        //            if (Math.abs(yVelocity) < Math.abs(xVelocity))
+        //            {
+        //                // in-place turn
+        //                leftVelocityGoal = xVelocity;
+        //                rightVelocityGoal = -xVelocity;
+        //            }
+        //            else
+        //            {
+        //                // forward/backward
+        //                leftVelocityGoal = yVelocity;
+        //                rightVelocityGoal = yVelocity;
+        //            }
+        //        }
+        //        else
+        //        {
+        double K1 = 1.5;
+        double K2 = .4;
+        double K3 = K1;
+        double K4 = -K2;
+
+        leftVelocityGoal = (K1 * yVelocity) + (K2 * xVelocity);
+        rightVelocityGoal = (K3 * yVelocity) + (K4 * xVelocity);
+        //        }
 
         // decrease the desired velocity based on the configured max power level
         leftVelocityGoal = leftVelocityGoal * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL;
@@ -340,8 +395,6 @@ public class DriveTrainController implements IController
         // the appropriate range
         leftPower = this.applyPowerLevelRange(leftPower);
         rightPower = this.applyPowerLevelRange(rightPower);
-        //        this.assertPowerLevelRange(leftPower, "left velocity (goal)");
-        //        this.assertPowerLevelRange(rightPower, "right velocity (goal)");
 
         return new PowerSetting(leftPower, rightPower);
     }
