@@ -1,0 +1,16 @@
+package org.usfirst.frc.team1318.robot.Common.Buttons;
+
+/**
+ * Describes a toggle that cycles through multiple different states
+ * 
+ * @author Will
+ * 
+ */
+public interface IMultiToggle<T>
+{
+    /**
+     * Gets a value indicating the currently toggled state
+     * @return current toggle state
+     */
+    public T getToggledState();
+}

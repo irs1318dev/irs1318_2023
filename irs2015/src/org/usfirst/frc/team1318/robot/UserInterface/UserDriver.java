@@ -2,7 +2,7 @@ package org.usfirst.frc.team1318.robot.UserInterface;
 
 import org.usfirst.frc.team1318.robot.JoystickButtonConstants;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
-import org.usfirst.frc.team1318.robot.Common.ToggleButtons.SimpleToggleButton;
+import org.usfirst.frc.team1318.robot.Common.Buttons.SimpleToggleButton;
 
 import edu.wpi.first.wpilibj.Joystick;
 
