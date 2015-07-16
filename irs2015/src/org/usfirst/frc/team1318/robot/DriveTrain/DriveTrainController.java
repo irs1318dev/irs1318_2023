@@ -4,7 +4,6 @@ import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.Common.IController;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.PIDHandler;
-import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 
 import edu.wpi.first.wpilibj.Timer;
 
@@ -18,7 +17,6 @@ import edu.wpi.first.wpilibj.Timer;
  */
 public class DriveTrainController implements IController
 {
-    private DriveTrainMacroData macroData;
     private final Timer timer;
     private Double startTime;
 
@@ -39,13 +37,12 @@ public class DriveTrainController implements IController
      * @param component to control
      * @param usePID indicates whether we should use PID control
      */
-    public DriveTrainController(IDriver operator, IDriveTrainComponent component, DriveTrainMacroData driveTrainMacroData, boolean usePID)
+    public DriveTrainController(IDriver operator, IDriveTrainComponent component, boolean usePID)
     {
         this.driver = operator;
         this.component = component;
         this.usePID = usePID;
         this.usePositionalMode = false;
-        this.macroData = driveTrainMacroData;
         this.timer = new Timer();
 
         this.timer.start();
@@ -115,102 +112,6 @@ public class DriveTrainController implements IController
     public void stop()
     {
         this.component.setDriveTrainPower(0.0, 0.0);
-    }
-
-    public void setMacroData(DriveTrainMacroData macroData)
-    {
-        this.macroData = macroData;
-    }
-
-    private PowerSetting runCollectCansFromStepMacro()
-    {
-        PowerSetting result = new PowerSetting(0, 0);
-
-        switch (this.macroData.state)
-        {
-            case STATE_0_WAIT_FOR_PRESS:
-                if (this.driver.getDriveTrainCollectCansFromStepMacro())
-                {
-                    //                    this.macroData.state = DriveTrainMacroData.MacroStates.STATE_1_DRIVE_BACK;
-                    //                    this.startTime = this.timer.get();
-                    //                    this.macroData.setRunningMacro(true);
-                    //
-                    //                    this.macroData.setExtenderState(true);
-                    //                    this.macroData.setTiltState(true);
-                    //                    this.macroData.setTromboneState(true);
-                }
-                else
-                {
-                    this.macroData.setRunningMacro(false);
-                }
-                break;
-            case STATE_1_DRIVE_BACK:
-                if (this.timer.get() < this.startTime + DriveTrainMacroData.DRIVE_BACK_TIME_1)
-                {
-                    result = new PowerSetting(0.0, DriveTrainMacroData.DRIVE_BACK_SPEED_1);
-                }
-                else
-                {
-                    this.startTime = this.timer.get();
-                    this.macroData.setTiltState(false);
-                    this.macroData.state = DriveTrainMacroData.MacroStates.STATE_2_SETTLE_WAIT;
-                }
-                break;
-            case STATE_2_SETTLE_WAIT:
-                if (this.timer.get() > this.startTime + DriveTrainMacroData.SETTLE_WAIT_TIME_2)
-                {
-                    this.startTime = this.timer.get();
-                    this.macroData.state = DriveTrainMacroData.MacroStates.STATE_3_DRIVE_BACK;
-                }
-                break;
-            case STATE_3_DRIVE_BACK:
-                if (this.timer.get() < this.startTime + DriveTrainMacroData.DRIVE_BACK_TIME_3)
-                {
-                    result = new PowerSetting(0.0, DriveTrainMacroData.DRIVE_BACK_SPEED_3);
-                }
-                else
-                {
-                    startTime = this.timer.get();
-                    this.macroData.state = DriveTrainMacroData.MacroStates.STATE_4_WAIT;
-                }
-                break;
-            case STATE_4_WAIT:
-                if (this.timer.get() > this.startTime + DriveTrainMacroData.SETTLE_WAIT_TIME_4)
-                {
-                    this.startTime = this.timer.get();
-                    this.macroData.state = DriveTrainMacroData.MacroStates.STATE_5_DRIVE_FORWARD;
-                }
-                break;
-            case STATE_5_DRIVE_FORWARD:
-                if (this.timer.get() < this.startTime + DriveTrainMacroData.DRIVE_FORWARD_TIME_5)
-                {
-                    result = new PowerSetting(0.0, DriveTrainMacroData.DRIVE_FORWARD_SPEED_5);
-                }
-                else
-                {
-                    this.startTime = this.timer.get();
-                    this.macroData.setTiltState(true);
-                    this.macroData.state = DriveTrainMacroData.MacroStates.STATE_6_UNTILT;
-                }
-                break;
-            case STATE_6_UNTILT:
-                if (this.timer.get() > this.startTime + DriveTrainMacroData.UNTILT_WAIT_TIME_6)
-                {
-                    this.startTime = this.timer.get();
-                    this.macroData.setTromboneState(false);
-                    this.macroData.state = DriveTrainMacroData.MacroStates.STATE_7_UNEXTEND;
-                }
-                break;
-            case STATE_7_UNEXTEND:
-                if (this.timer.get() > this.startTime + DriveTrainMacroData.UNEXTEND_WAIT_TIME_7)
-                {
-                    this.macroData.setExtenderState(false);
-                    this.macroData.state = DriveTrainMacroData.MacroStates.STATE_0_WAIT_FOR_PRESS;
-                }
-                break;
-
-        }
-        return result;
     }
 
     /**
@@ -302,55 +203,10 @@ public class DriveTrainController implements IController
         xVelocity = this.adjustForDeadZone(xVelocity, TuningConstants.DRIVETRAIN_X_DEAD_ZONE);
         yVelocity = this.adjustForDeadZone(yVelocity, TuningConstants.DRIVETRAIN_Y_DEAD_ZONE);
 
-        if (xVelocity == 0 && yVelocity == 0)
-        {
-            PowerSetting temp = this.runCollectCansFromStepMacro();
-            xVelocity = temp.leftPower;
-            yVelocity = temp.rightPower;
-        }
-        else
-        {
-            this.macroData.state = DriveTrainMacroData.MacroStates.STATE_0_WAIT_FOR_PRESS;
-            this.macroData.setRunningMacro(false);
-        }
-
-        SmartDashboardLogger.putNumber("***joystick x***", xVelocity);
-        SmartDashboardLogger.putNumber("***joystick y***", yVelocity);
+        //        SmartDashboardLogger.putNumber("***joystick x***", xVelocity);
+        //        SmartDashboardLogger.putNumber("***joystick y***", yVelocity);
 
         // adjust the intensity of the input
-        //        xVelocity = this.adjustIntensity(xVelocity);
-        //        yVelocity = this.adjustIntensity(yVelocity);
-
-        //        if (simpleDriveModeEnabled)
-        //        {
-        //            // simple drive enables either forward/back or in-place left/right turn only
-        //            //
-        //            //                   forward
-        //            //               ---------------
-        //            //               |      |      |
-        //            //               |      |      |
-        //            // In-place left |-------------| In-place right
-        //            //               |      |      |
-        //            //               |      |      |
-        //            //               ---------------
-        //            //                  backward
-        //            //
-        //
-        //            if (Math.abs(yVelocity) < Math.abs(xVelocity))
-        //            {
-        //                // in-place turn
-        //                leftVelocityGoal = xVelocity;
-        //                rightVelocityGoal = -xVelocity;
-        //            }
-        //            else
-        //            {
-        //                // forward/backward
-        //                leftVelocityGoal = yVelocity;
-        //                rightVelocityGoal = yVelocity;
-        //            }
-        //        }
-        //        else
-        //        {
         double K1 = 1.5;
         double K2 = .4;
         double K3 = K1;
@@ -358,7 +214,6 @@ public class DriveTrainController implements IController
 
         leftVelocityGoal = (K1 * yVelocity) + (K2 * xVelocity);
         rightVelocityGoal = (K3 * yVelocity) + (K4 * xVelocity);
-        //        }
 
         // decrease the desired velocity based on the configured max power level
         leftVelocityGoal = leftVelocityGoal * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL;
@@ -369,21 +224,19 @@ public class DriveTrainController implements IController
         double rightPower;
         if (this.usePID)
         {
-            leftPower =
-                this.leftPID.calculateVelocity(
-                    leftVelocityGoal,
-                    currentLeftTicks);
+            leftPower = this.leftPID.calculateVelocity(
+                leftVelocityGoal,
+                currentLeftTicks);
 
-            SmartDashboardLogger.putNumber("leftVelocityGoal", leftVelocityGoal);
-            SmartDashboardLogger.putNumber("leftPower", leftPower);
+            //            SmartDashboardLogger.putNumber("leftVelocityGoal", leftVelocityGoal);
+            //            SmartDashboardLogger.putNumber("leftPower", leftPower);
 
-            rightPower =
-                this.rightPID.calculateVelocity(
-                    rightVelocityGoal,
-                    currentRightTicks);
+            rightPower = this.rightPID.calculateVelocity(
+                rightVelocityGoal,
+                currentRightTicks);
 
-            SmartDashboardLogger.putNumber("rightVelocityGoal", rightVelocityGoal);
-            SmartDashboardLogger.putNumber("rightPower", rightPower);
+            //            SmartDashboardLogger.putNumber("rightVelocityGoal", rightVelocityGoal);
+            //            SmartDashboardLogger.putNumber("rightPower", rightPower);
         }
         else
         {
@@ -483,12 +336,12 @@ public class DriveTrainController implements IController
     {
         if (powerLevel < DriveTrainController.POWERLEVEL_MIN)
         {
-            //throw new RuntimeException(side + " power level too low!");
+            throw new RuntimeException(side + " power level too low!");
         }
 
         if (powerLevel > DriveTrainController.POWERLEVEL_MAX)
         {
-            //throw new RuntimeException(side + " power level too high!");
+            throw new RuntimeException(side + " power level too high!");
         }
     }
 
@@ -510,27 +363,6 @@ public class DriveTrainController implements IController
         }
 
         return powerLevel;
-    }
-
-    /**
-     * Adjust the intensity of the input value
-     * @param value to adjust
-     * @return adjusted value
-     */
-    private double adjustIntensity(double value)
-    {
-        // Jim prefers linear
-        return value;
-
-        // we will use simple quadratic scaling to adjust input intensity
-        //        if (value < 0)
-        //        {
-        //            return -value * value;
-        //        }
-        //        else
-        //        {
-        //            return value * value;
-        //        }
     }
 
     /**

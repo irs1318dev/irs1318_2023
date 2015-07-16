@@ -9,7 +9,6 @@ import org.usfirst.frc.team1318.robot.Compressor.CompressorComponent;
 import org.usfirst.frc.team1318.robot.Compressor.CompressorController;
 import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainComponent;
 import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainController;
-import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainMacroData;
 import org.usfirst.frc.team1318.robot.DriveTrain.PositionManager;
 import org.usfirst.frc.team1318.robot.UserInterface.UserDriver;
 
@@ -59,7 +58,6 @@ public class Robot extends IterativeRobot
 
     // Position manager - holds position information relative to our starting point
     private PositionManager position;
-    private DriveTrainMacroData driveTrainMacroData;
 
     /**
      * Robot-wide initialization code should go here.
@@ -72,16 +70,13 @@ public class Robot extends IterativeRobot
         this.compressorComponent = new CompressorComponent();
         this.driveTrainComponent = new DriveTrainComponent();
 
-        this.driveTrainMacroData = new DriveTrainMacroData();
-
-        this.driver = new UserDriver(driveTrainMacroData);
+        this.driver = new UserDriver();
 
         // create controllers for each mechanism
         this.compressorController = new CompressorController(this.compressorComponent);
         this.driveTrainController = new DriveTrainController(
             this.driver,
             this.driveTrainComponent,
-            driveTrainMacroData,
             TuningConstants.DRIVETRAIN_USE_PID_DEFAULT);
 
         // create position manager
@@ -128,7 +123,7 @@ public class Robot extends IterativeRobot
         this.position.reset();
 
         // Find desired autonomous routine.
-        IAutonomousTask[] autonomousRoutine = Robot.GetFillerRoutine();
+        IAutonomousTask autonomousRoutine = Robot.GetFillerRoutine();
 
         int routineSelection = 0;
         if (this.dipSwitchA.get())
@@ -170,7 +165,7 @@ public class Robot extends IterativeRobot
     public void teleopInit()
     {
         // create driver for user's joystick
-        this.driver = new UserDriver(driveTrainMacroData);
+        this.driver = new UserDriver();
 
         this.generalInit();
 
@@ -239,11 +234,9 @@ public class Robot extends IterativeRobot
      * 
      * @return list of autonomous tasks
      */
-    private static IAutonomousTask[] GetFillerRoutine()
+    private static IAutonomousTask GetFillerRoutine()
     {
-        return new IAutonomousTask[] {
-            new WaitAutonomousTask(0)
-        };
+        return new WaitAutonomousTask(0);
     }
 }
 
