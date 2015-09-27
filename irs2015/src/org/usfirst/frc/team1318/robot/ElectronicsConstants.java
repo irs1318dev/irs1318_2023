@@ -8,6 +8,12 @@ package org.usfirst.frc.team1318.robot;
  */
 public class ElectronicsConstants
 {
+    // change INVERT_X_AXIS to true if positive on the joystick isn't to the right, and negative isn't to the left
+    public static final boolean INVERT_X_AXIS = false;
+
+    // change INVERT_Y_AXIS to true if positive on the joystick isn't forward, and negative isn't backwards.
+    public static final boolean INVERT_Y_AXIS = true;
+
     public static final double MAX_POWER_LEVEL = 1.0;
 
     public static final int PCM_A_MODULE = 1;//1;

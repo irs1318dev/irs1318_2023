@@ -2,8 +2,9 @@ package org.usfirst.frc.team1318.robot.DriveTrain;
 
 import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.Common.IController;
-import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.PIDHandler;
+import org.usfirst.frc.team1318.robot.Driver.Driver;
+import org.usfirst.frc.team1318.robot.Driver.Operation;
 
 import edu.wpi.first.wpilibj.Timer;
 
@@ -23,7 +24,7 @@ public class DriveTrainController implements IController
     private static final double POWERLEVEL_MIN = -1.0;
     private static final double POWERLEVEL_MAX = 1.0;
 
-    private IDriver driver;
+    private Driver driver;
     private IDriveTrainComponent component;
 
     private boolean usePID;
@@ -33,13 +34,11 @@ public class DriveTrainController implements IController
 
     /**
      * Initializes a new DriveTrainController
-     * @param operator to use to control the drive train
      * @param component to control
      * @param usePID indicates whether we should use PID control
      */
-    public DriveTrainController(IDriver operator, IDriveTrainComponent component, boolean usePID)
+    public DriveTrainController(IDriveTrainComponent component, boolean usePID)
     {
-        this.driver = operator;
         this.component = component;
         this.usePID = usePID;
         this.usePositionalMode = false;
@@ -52,7 +51,7 @@ public class DriveTrainController implements IController
     }
 
     @Override
-    public void setDriver(IDriver driver)
+    public void setDriver(Driver driver)
     {
         this.driver = driver;
     }
@@ -78,7 +77,7 @@ public class DriveTrainController implements IController
         //        this.component.getProximitySensorBack();
 
         // check our desired PID mode
-        boolean newUsePositionalMode = this.driver.getDriveTrainPositionMode();
+        boolean newUsePositionalMode = this.driver.getDigital(Operation.DriveTrainUsePositionalMode);
         if (newUsePositionalMode != this.usePositionalMode)
         {
             this.usePositionalMode = newUsePositionalMode;
@@ -196,8 +195,8 @@ public class DriveTrainController implements IController
 
         // get the X and Y values from the operator.  We expect these to be between -1.0 and 1.0,
         // with this value representing the forward velocity percentage and right turn percentage (of max speed)
-        double xVelocity = this.driver.getDriveTrainXVelocity();
-        double yVelocity = this.driver.getDriveTrainYVelocity();
+        double xVelocity = this.driver.getAnalog(Operation.DriveTrainTurn);
+        double yVelocity = this.driver.getAnalog(Operation.DriveTrainMoveForward);
 
         // adjust for joystick deadzone
         xVelocity = this.adjustForDeadZone(xVelocity, TuningConstants.DRIVETRAIN_X_DEAD_ZONE);
@@ -259,8 +258,8 @@ public class DriveTrainController implements IController
     private PowerSetting calculatePositionModePowerSetting()
     {
         // get the desired left and right values from the driver.
-        double leftPosition = this.driver.getDriveTrainLeftPosition();
-        double rightPosition = this.driver.getDriveTrainRightPosition();
+        double leftPosition = this.driver.getAnalog(Operation.DriveTrainLeftPosition);
+        double rightPosition = this.driver.getAnalog(Operation.DriveTrainRightPosition);
 
         // get the current encoder distance from the component.
         double leftDistance = this.component.getLeftEncoderDistance();

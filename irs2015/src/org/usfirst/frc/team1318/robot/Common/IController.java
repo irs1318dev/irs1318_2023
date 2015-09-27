@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1318.robot.Common;
 
+import org.usfirst.frc.team1318.robot.Driver.Driver;
+
 /**
  * The controller defines the logic that controls a mechanism given inputs (component) and driver-requested actions, and 
  * translates those into the abstract functions that should be applied to the outputs (component).
@@ -19,5 +21,5 @@ public interface IController
      */
     public void stop();
 
-    public void setDriver(IDriver driver);
+    public void setDriver(Driver driver);
 }

@@ -2,8 +2,8 @@ package org.usfirst.frc.team1318.robot.DriveTrain;
 
 import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.Common.IController;
-import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
+import org.usfirst.frc.team1318.robot.Driver.Driver;
 
 /**
  * Position manager
@@ -52,7 +52,7 @@ public class PositionManager implements IController
     }
 
     @Override
-    public void setDriver(IDriver driver)
+    public void setDriver(Driver driver)
     {
         //not needed for this controller 
     }

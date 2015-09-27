@@ -1,16 +1,16 @@
 package org.usfirst.frc.team1318.robot;
 
-import org.usfirst.frc.team1318.robot.Autonomous.AutonomousDriver;
-import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
-import org.usfirst.frc.team1318.robot.Autonomous.Tasks.WaitAutonomousTask;
-import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 import org.usfirst.frc.team1318.robot.Compressor.CompressorComponent;
 import org.usfirst.frc.team1318.robot.Compressor.CompressorController;
 import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainComponent;
 import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainController;
 import org.usfirst.frc.team1318.robot.DriveTrain.PositionManager;
-import org.usfirst.frc.team1318.robot.UserInterface.UserDriver;
+import org.usfirst.frc.team1318.robot.Driver.Driver;
+import org.usfirst.frc.team1318.robot.Driver.IControlTask;
+import org.usfirst.frc.team1318.robot.Driver.Autonomous.AutonomousDriver;
+import org.usfirst.frc.team1318.robot.Driver.Autonomous.Tasks.WaitAutonomousTask;
+import org.usfirst.frc.team1318.robot.Driver.User.UserDriver;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -41,8 +41,8 @@ public class Robot extends IterativeRobot
     // smartdash other constants 
     private static final String AUTONOMOUS_ROUTINE_PREFERENCE_KEY = "a.routine";
 
-    // Driver (e.g. joystick, autonomous)
-    private IDriver driver;
+    // Driver.  This could either be the UserDriver (joystick) or the AutonomousDriver
+    private Driver driver;
 
     // Compressor
     private CompressorComponent compressorComponent;
@@ -75,7 +75,6 @@ public class Robot extends IterativeRobot
         // create controllers for each mechanism
         this.compressorController = new CompressorController(this.compressorComponent);
         this.driveTrainController = new DriveTrainController(
-            this.driver,
             this.driveTrainComponent,
             TuningConstants.DRIVETRAIN_USE_PID_DEFAULT);
 
@@ -123,7 +122,7 @@ public class Robot extends IterativeRobot
         this.position.reset();
 
         // Find desired autonomous routine.
-        IAutonomousTask autonomousRoutine = Robot.GetFillerRoutine();
+        IControlTask autonomousRoutine = Robot.GetFillerRoutine();
 
         int routineSelection = 0;
         if (this.dipSwitchA.get())
@@ -234,7 +233,7 @@ public class Robot extends IterativeRobot
      * 
      * @return list of autonomous tasks
      */
-    private static IAutonomousTask GetFillerRoutine()
+    private static IControlTask GetFillerRoutine()
     {
         return new WaitAutonomousTask(0);
     }

@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1318.robot.Compressor;
 
 import org.usfirst.frc.team1318.robot.Common.IController;
-import org.usfirst.frc.team1318.robot.Common.IDriver;
+import org.usfirst.frc.team1318.robot.Driver.Driver;
 
 /**
  * Compressor controller.
@@ -27,9 +27,9 @@ public class CompressorController implements IController
     }
 
     @Override
-    public void setDriver(IDriver driver)
+    public void setDriver(Driver driver)
     {
-        //not needed for this controller
+        // not needed for this controller
     }
 
     /**
