@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1318.robot.Driver.States;
 
+import org.usfirst.frc.team1318.robot.Driver.Operation;
 import org.usfirst.frc.team1318.robot.Driver.Buttons.ClickButton;
 import org.usfirst.frc.team1318.robot.Driver.Buttons.IButton;
 import org.usfirst.frc.team1318.robot.Driver.Descriptions.DigitalOperationDescription;
@@ -12,6 +13,7 @@ public class MacroOperationState extends OperationState
 {
     private final IButton button;
     private MacroTask task;
+    private boolean isActive;
 
     public MacroOperationState(MacroOperationDescription description)
     {
@@ -19,6 +21,7 @@ public class MacroOperationState extends OperationState
 
         this.button = new ClickButton();
         this.task = null;
+        this.isActive = false;
     }
 
     /**
@@ -31,12 +34,13 @@ public class MacroOperationState extends OperationState
     }
 
     /**
-     * Update the operation state based on the driver and co-driver joysticks 
+     * Checks whether the operation state should change based on the driver and co-driver joysticks. 
      * @param driver joystick to update from
      * @param coDriver joystick to update from
+     * @return true if there was any active user input that triggered a state change
      */
     @Override
-    public void update(Joystick driver, Joystick coDriver)
+    public boolean checkUserInput(Joystick driver, Joystick coDriver)
     {
         DigitalOperationDescription description = (DigitalOperationDescription)this.getDescription();
 
@@ -45,7 +49,7 @@ public class MacroOperationState extends OperationState
         switch (description.getUserInputDevice())
         {
             case None:
-                return;
+                return false;
 
             case Driver:
                 relevantJoystick = driver;
@@ -61,9 +65,30 @@ public class MacroOperationState extends OperationState
 
         relevantButton = description.getUserInputDeviceButton();
 
-        this.button.updateState(relevantJoystick.getRawButton(relevantButton));
+        boolean buttonPressed = relevantJoystick.getRawButton(relevantButton);
+        this.button.updateState(buttonPressed);
 
         if (this.button.isActivated())
+        {
+            this.isActive = !this.isActive;
+        }
+
+        return buttonPressed;
+    }
+
+    public Operation[] getAffectedOperations()
+    {
+        return ((MacroOperationDescription)this.getDescription()).getAffectedOperations();
+    }
+
+    public boolean getIsActive()
+    {
+        return this.isActive;
+    }
+
+    public void run()
+    {
+        if (this.isActive)
         {
             if (this.task == null)
             {
@@ -73,26 +98,22 @@ public class MacroOperationState extends OperationState
             }
             else
             {
-                // cancel task:
-                this.task.stop();
+                if (this.task.hasCompleted())
+                {
+                    this.task.end();
+                    this.task = null;
+                    this.isActive = false;
+                }
+                else
+                {
+                    this.task.update();
+                }
             }
         }
         else if (this.task != null)
         {
-            if (this.task.hasCompleted())
-            {
-                this.task.end();
-                this.task = null;
-            }
-            else
-            {
-                this.task.update();
-            }
+            // cancel task:
+            this.task.stop();
         }
-    }
-
-    public boolean isRunning()
-    {
-        return this.task != null;
     }
 }

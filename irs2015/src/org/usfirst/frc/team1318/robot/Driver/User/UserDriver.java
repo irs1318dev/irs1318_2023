@@ -53,14 +53,19 @@ public class UserDriver extends Driver
     @Override
     public void update()
     {
+        List<Operation> changedOperations = new ArrayList<Operation>();
         for (Operation operation : this.operationStateMap.keySet())
         {
-            this.operationStateMap.get(operation).update(this.joystickDriver, this.joystickCoDriver);
+            boolean receivedInput = this.operationStateMap.get(operation).checkUserInput(this.joystickDriver, this.joystickCoDriver);
+            if (receivedInput)
+            {
+                changedOperations.add(operation);
+            }
         }
 
         for (MacroOperationState macroState : this.macroStates)
         {
-            macroState.update(this.joystickDriver, this.joystickCoDriver);
+            macroState.checkUserInput(this.joystickDriver, this.joystickCoDriver);
         }
     }
 

@@ -26,12 +26,13 @@ public class AnalogOperationState extends OperationState
     }
 
     /**
-     * Update the operation state based on the driver and co-driver joysticks 
+     * Checks whether the operation state should change based on the driver and co-driver joysticks. 
      * @param driver joystick to update from
      * @param coDriver joystick to update from
+     * @return true if there was any active user input that triggered a state change
      */
     @Override
-    public void update(Joystick driver, Joystick coDriver)
+    public boolean checkUserInput(Joystick driver, Joystick coDriver)
     {
         AnalogOperationDescription description = (AnalogOperationDescription)this.getDescription();
 
@@ -40,7 +41,7 @@ public class AnalogOperationState extends OperationState
         switch (description.getUserInputDevice())
         {
             case None:
-                return;
+                return false;
 
             case Driver:
                 relevantJoystick = driver;
@@ -57,7 +58,7 @@ public class AnalogOperationState extends OperationState
         switch (description.getUserInputDeviceAxis())
         {
             case None:
-                return;
+                return false;
 
             case X:
                 relevantAxis = AxisType.kX;
@@ -84,6 +85,7 @@ public class AnalogOperationState extends OperationState
         }
 
         this.currentValue = relevantJoystick.getAxis(relevantAxis);
+        return this.currentValue != 0.0;
     }
 
     public double getState()

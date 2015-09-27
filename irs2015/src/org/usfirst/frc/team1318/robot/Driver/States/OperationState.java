@@ -27,11 +27,12 @@ public abstract class OperationState
     public abstract void setInterrupt(boolean enable);
 
     /**
-     * Update the operation state based on the driver and co-driver joysticks 
+     * Checks whether the operation state should change based on the driver and co-driver joysticks. 
      * @param driver joystick to update from
      * @param coDriver joystick to update from
+     * @return true if there was any active user input that triggered a state change
      */
-    public abstract void update(Joystick driver, Joystick coDriver);
+    public abstract boolean checkUserInput(Joystick driver, Joystick coDriver);
 
     /**
      * Create the state corresponding to the description

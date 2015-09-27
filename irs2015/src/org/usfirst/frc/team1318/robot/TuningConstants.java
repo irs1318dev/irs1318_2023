@@ -43,7 +43,10 @@ public class TuningConstants
     public static final double DRIVETRAIN_LEFT_ENCODER_MAX_SPEED = 1.0;// max speed we expect to detect from the left encoder
     public static final double DRIVETRAIN_RIGHT_ENCODER_MAX_SPEED = 1.0;// max speed we expect to detect from the right encoder
 
-    // Drivetrain kinematics choices for advanced one-stick drive
+    // Drivetrain choices for one-stick drive
+    public static final double DRIVETRAIN_K1 = 1.5;
+    public static final double DRIVETRAIN_K2 = 0.4;
+
     public static final double DRIVETRAIN_A = 0.4;// "a" coefficient (advancing turn)
     public static final double DRIVETRAIN_B = 0.4;// "b" coefficient (in-place turn)
 

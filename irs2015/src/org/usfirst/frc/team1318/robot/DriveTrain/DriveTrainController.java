@@ -191,7 +191,7 @@ public class DriveTrainController implements IController
         int currentRightTicks = this.component.getRightEncoderTicks();
 
         // get a value indicating that we should be in simple mode...
-        boolean simpleDriveModeEnabled = false;//this.driver.getDriveTrainSimpleMode();
+        boolean simpleDriveModeEnabled = this.driver.getDigital(Operation.DriveTrainSimpleMode);
 
         // get the X and Y values from the operator.  We expect these to be between -1.0 and 1.0,
         // with this value representing the forward velocity percentage and right turn percentage (of max speed)
@@ -202,17 +202,27 @@ public class DriveTrainController implements IController
         xVelocity = this.adjustForDeadZone(xVelocity, TuningConstants.DRIVETRAIN_X_DEAD_ZONE);
         yVelocity = this.adjustForDeadZone(yVelocity, TuningConstants.DRIVETRAIN_Y_DEAD_ZONE);
 
-        //        SmartDashboardLogger.putNumber("***joystick x***", xVelocity);
-        //        SmartDashboardLogger.putNumber("***joystick y***", yVelocity);
-
         // adjust the intensity of the input
-        double K1 = 1.5;
-        double K2 = .4;
-        double K3 = K1;
-        double K4 = -K2;
-
-        leftVelocityGoal = (K1 * yVelocity) + (K2 * xVelocity);
-        rightVelocityGoal = (K3 * yVelocity) + (K4 * xVelocity);
+        if (simpleDriveModeEnabled)
+        {
+            if (Math.abs(yVelocity) < Math.abs(xVelocity))
+            {
+                // in-place turn
+                leftVelocityGoal = xVelocity;
+                rightVelocityGoal = -xVelocity;
+            }
+            else
+            {
+                // forward/backward
+                leftVelocityGoal = yVelocity;
+                rightVelocityGoal = yVelocity;
+            }
+        }
+        else
+        {
+            leftVelocityGoal = (TuningConstants.DRIVETRAIN_K1 * yVelocity) + (TuningConstants.DRIVETRAIN_K2 * xVelocity);
+            rightVelocityGoal = (TuningConstants.DRIVETRAIN_K1 * yVelocity) + (-TuningConstants.DRIVETRAIN_K2 * xVelocity);
+        }
 
         // decrease the desired velocity based on the configured max power level
         leftVelocityGoal = leftVelocityGoal * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL;
@@ -227,15 +237,9 @@ public class DriveTrainController implements IController
                 leftVelocityGoal,
                 currentLeftTicks);
 
-            //            SmartDashboardLogger.putNumber("leftVelocityGoal", leftVelocityGoal);
-            //            SmartDashboardLogger.putNumber("leftPower", leftPower);
-
             rightPower = this.rightPID.calculateVelocity(
                 rightVelocityGoal,
                 currentRightTicks);
-
-            //            SmartDashboardLogger.putNumber("rightVelocityGoal", rightVelocityGoal);
-            //            SmartDashboardLogger.putNumber("rightPower", rightPower);
         }
         else
         {
