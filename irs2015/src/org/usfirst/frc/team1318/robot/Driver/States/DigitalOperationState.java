@@ -11,11 +11,15 @@ import edu.wpi.first.wpilibj.Joystick;
 public class DigitalOperationState extends OperationState
 {
     private final IButton button;
+    private boolean isInterrupted;
+    private boolean interruptValue;
 
     public DigitalOperationState(DigitalOperationDescription description)
     {
         super(description);
 
+        this.isInterrupted = false;
+        this.interruptValue = false;
         switch (description.getButtonType())
         {
             case Simple:
@@ -42,6 +46,11 @@ public class DigitalOperationState extends OperationState
     @Override
     public void setInterrupt(boolean enable)
     {
+        this.isInterrupted = enable;
+        if (enable)
+        {
+            this.interruptValue = false;
+        }
     }
 
     /**
@@ -83,6 +92,16 @@ public class DigitalOperationState extends OperationState
 
     public boolean getState()
     {
+        if (this.isInterrupted)
+        {
+            return this.interruptValue;
+        }
+
         return this.button.isActivated();
+    }
+
+    public void setInterruptState(boolean value)
+    {
+        this.interruptValue = value;
     }
 }

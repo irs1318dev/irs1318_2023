@@ -8,12 +8,16 @@ import edu.wpi.first.wpilibj.Joystick.AxisType;
 public class AnalogOperationState extends OperationState
 {
     private double currentValue;
+    private boolean isInterrupt;
+    private double interruptValue;
 
     public AnalogOperationState(AnalogOperationDescription description)
     {
         super(description);
 
         this.currentValue = 0.0;
+        this.isInterrupt = false;
+        this.interruptValue = 0.0;
     }
 
     /**
@@ -23,6 +27,11 @@ public class AnalogOperationState extends OperationState
     @Override
     public void setInterrupt(boolean enable)
     {
+        this.isInterrupt = enable;
+        if (enable)
+        {
+            this.interruptValue = 0.0;
+        }
     }
 
     /**
@@ -84,12 +93,23 @@ public class AnalogOperationState extends OperationState
                 throw new RuntimeException("unknown axis type " + description.getUserInputDeviceAxis());
         }
 
+        double oldValue = this.currentValue;
         this.currentValue = relevantJoystick.getAxis(relevantAxis);
-        return this.currentValue != 0.0;
+        return this.currentValue != oldValue;
     }
 
     public double getState()
     {
+        if (this.isInterrupt)
+        {
+            return this.interruptValue;
+        }
+
         return this.currentValue;
+    }
+
+    public void setInterruptState(double value)
+    {
+        this.interruptValue = value;
     }
 }

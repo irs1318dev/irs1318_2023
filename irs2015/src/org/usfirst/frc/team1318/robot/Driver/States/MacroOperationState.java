@@ -31,6 +31,10 @@ public class MacroOperationState extends OperationState
     @Override
     public void setInterrupt(boolean enable)
     {
+        if (enable)
+        {
+            this.isActive = false;
+        }
     }
 
     /**
@@ -114,6 +118,7 @@ public class MacroOperationState extends OperationState
         {
             // cancel task:
             this.task.stop();
+            this.task = null;
         }
     }
 }

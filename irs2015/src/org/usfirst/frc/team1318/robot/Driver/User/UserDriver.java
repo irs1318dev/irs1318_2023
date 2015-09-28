@@ -1,9 +1,12 @@
 package org.usfirst.frc.team1318.robot.Driver.User;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.usfirst.frc.team1318.robot.Driver.Driver;
 import org.usfirst.frc.team1318.robot.Driver.JoystickButtonConstants;
@@ -53,7 +56,7 @@ public class UserDriver extends Driver
     @Override
     public void update()
     {
-        List<Operation> changedOperations = new ArrayList<Operation>();
+        Set<Operation> changedOperations = new HashSet<Operation>();
         for (Operation operation : this.operationStateMap.keySet())
         {
             boolean receivedInput = this.operationStateMap.get(operation).checkUserInput(this.joystickDriver, this.joystickCoDriver);
@@ -63,9 +66,28 @@ public class UserDriver extends Driver
             }
         }
 
+        Set<Operation> newlyActiveMacroOperations = new HashSet<Operation>();
+        Set<Operation> newlyInactiveMacroOperations = new HashSet<Operation>();
+        Set<Operation> alreadyActiveMacroOperations = new HashSet<Operation>();
         for (MacroOperationState macroState : this.macroStates)
         {
-            macroState.checkUserInput(this.joystickDriver, this.joystickCoDriver);
+            List<Operation> macroOperations = Arrays.asList(macroState.getAffectedOperations());
+            boolean modifiedMacro = macroState.checkUserInput(this.joystickDriver, this.joystickCoDriver);
+            if (modifiedMacro)
+            {
+                if (macroState.getIsActive())
+                {
+                    newlyActiveMacroOperations.addAll(macroOperations);
+                }
+                else
+                {
+                    newlyInactiveMacroOperations.addAll(macroOperations);
+                }
+            }
+            else
+            {
+                alreadyActiveMacroOperations.addAll(macroOperations);
+            }
         }
     }
 
