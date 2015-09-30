@@ -1,8 +1,6 @@
 package org.usfirst.frc.team1318.robot.Driver;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.usfirst.frc.team1318.robot.Driver.Buttons.AnalogAxis;
@@ -82,13 +80,16 @@ public abstract class Driver
         }
     };
 
-    protected List<MacroOperationDescription> macroSchema = new ArrayList<MacroOperationDescription>()
+    protected Map<MacroOperation, MacroOperationDescription> macroSchema = new HashMap<MacroOperation, MacroOperationDescription>()
     {
         {
-            //            new MacroOperationDescription(
-            //                UserInputDevice.Driver,
-            //                JoystickButtonConstants.JOYSTICK_BASE_BOTTOM_RIGHT_BUTTON,
-            //                
+            //            put(
+            //                MacroOperation.FooBarQux,
+            //                new MacroOperationDescription(
+            //                    UserInputDevice.Driver,
+            //                    JoystickButtonConstants.JOYSTICK_BASE_BOTTOM_RIGHT_BUTTON,
+            //                    (Supplier),
+            //                    new Operation[] { Operation.Foo, Operation.Bar, Operation.Qux });
         }
     };
 

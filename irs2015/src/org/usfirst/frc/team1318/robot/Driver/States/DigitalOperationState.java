@@ -44,13 +44,23 @@ public class DigitalOperationState extends OperationState
      * @param enable value of true indicates that we are interrupted
      */
     @Override
-    public void setInterrupt(boolean enable)
+    public void setIsInterrupted(boolean enable)
     {
         this.isInterrupted = enable;
         if (enable)
         {
             this.interruptValue = false;
         }
+    }
+
+    /**
+     * Gets whether the current operation is being interrupted by a macro
+     * @return value of true indicates that we are interrupted
+     */
+    @Override
+    public boolean getIsInterrupted()
+    {
+        return this.isInterrupted;
     }
 
     /**

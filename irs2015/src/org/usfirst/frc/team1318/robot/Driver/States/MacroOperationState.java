@@ -29,12 +29,22 @@ public class MacroOperationState extends OperationState
      * @param enable value of true indicates that we are interrupted
      */
     @Override
-    public void setInterrupt(boolean enable)
+    public void setIsInterrupted(boolean enable)
     {
         if (enable)
         {
             this.isActive = false;
         }
+    }
+
+    /**
+     * Gets whether the current operation is being interrupted by a macro
+     * @return value of true indicates that we are interrupted
+     */
+    @Override
+    public boolean getIsInterrupted()
+    {
+        return false;
     }
 
     /**

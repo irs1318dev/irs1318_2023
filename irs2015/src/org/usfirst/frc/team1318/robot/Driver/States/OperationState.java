@@ -24,7 +24,13 @@ public abstract class OperationState
      * Sets whether the current operation is being interrupted by a macro
      * @param enable value of true indicates that we are interrupted
      */
-    public abstract void setInterrupt(boolean enable);
+    public abstract void setIsInterrupted(boolean enable);
+
+    /**
+     * Gets whether the current operation is being interrupted by a macro
+     * @return value of true indicates that we are interrupted
+     */
+    public abstract boolean getIsInterrupted();
 
     /**
      * Checks whether the operation state should change based on the driver and co-driver joysticks. 

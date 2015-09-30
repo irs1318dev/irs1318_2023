@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Joystick.AxisType;
 public class AnalogOperationState extends OperationState
 {
     private double currentValue;
-    private boolean isInterrupt;
+    private boolean isInterrupted;
     private double interruptValue;
 
     public AnalogOperationState(AnalogOperationDescription description)
@@ -16,7 +16,7 @@ public class AnalogOperationState extends OperationState
         super(description);
 
         this.currentValue = 0.0;
-        this.isInterrupt = false;
+        this.isInterrupted = false;
         this.interruptValue = 0.0;
     }
 
@@ -25,13 +25,23 @@ public class AnalogOperationState extends OperationState
      * @param enable value of true indicates that we are interrupted
      */
     @Override
-    public void setInterrupt(boolean enable)
+    public void setIsInterrupted(boolean enable)
     {
-        this.isInterrupt = enable;
+        this.isInterrupted = enable;
         if (enable)
         {
             this.interruptValue = 0.0;
         }
+    }
+
+    /**
+     * Gets whether the current operation is being interrupted by a macro
+     * @return value of true indicates that we are interrupted
+     */
+    @Override
+    public boolean getIsInterrupted()
+    {
+        return this.isInterrupted;
     }
 
     /**
@@ -100,7 +110,7 @@ public class AnalogOperationState extends OperationState
 
     public double getState()
     {
-        if (this.isInterrupt)
+        if (this.isInterrupted)
         {
             return this.interruptValue;
         }

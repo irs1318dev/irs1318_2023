@@ -1,15 +1,15 @@
 package org.usfirst.frc.team1318.robot.Driver.User;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.usfirst.frc.team1318.robot.Common.SetHelper;
 import org.usfirst.frc.team1318.robot.Driver.Driver;
 import org.usfirst.frc.team1318.robot.Driver.JoystickButtonConstants;
+import org.usfirst.frc.team1318.robot.Driver.MacroOperation;
 import org.usfirst.frc.team1318.robot.Driver.Operation;
 import org.usfirst.frc.team1318.robot.Driver.States.AnalogOperationState;
 import org.usfirst.frc.team1318.robot.Driver.States.DigitalOperationState;
@@ -31,7 +31,7 @@ public class UserDriver extends Driver
     private final Joystick joystickCoDriver;
 
     private final Map<Operation, OperationState> operationStateMap;
-    private final List<MacroOperationState> macroStates;
+    private final Map<MacroOperation, MacroOperationState> macroStateMap;
 
     /**
      * Initializes a new UserDriver
@@ -47,7 +47,7 @@ public class UserDriver extends Driver
             this.operationStateMap.put(operation, OperationState.createFromDescription(this.operationSchema.get(operation)));
         }
 
-        this.macroStates = new ArrayList<MacroOperationState>();
+        this.macroStateMap = new HashMap<MacroOperation, MacroOperationState>();
     }
 
     /**
@@ -56,38 +56,126 @@ public class UserDriver extends Driver
     @Override
     public void update()
     {
-        Set<Operation> changedOperations = new HashSet<Operation>();
+        // keep track of macros that were running before we checked user input...
+        Set<MacroOperation> previouslyActiveMacroOperations = new HashSet<MacroOperation>();
+        for (MacroOperation macroOperation : this.macroStateMap.keySet())
+        {
+            MacroOperationState macroState = this.macroStateMap.get(macroOperation);
+            if (macroState.getIsActive())
+            {
+                previouslyActiveMacroOperations.add(macroOperation);
+            }
+        }
+
+        // check user inputs for various operations (non-macro) and keep track of:
+        // operations that were interrupted already, and operations that were modified by user input in this update
+        Set<Operation> modifiedOperations = new HashSet<Operation>();
+        Set<Operation> interruptedOperations = new HashSet<Operation>();
         for (Operation operation : this.operationStateMap.keySet())
         {
             boolean receivedInput = this.operationStateMap.get(operation).checkUserInput(this.joystickDriver, this.joystickCoDriver);
             if (receivedInput)
             {
-                changedOperations.add(operation);
+                modifiedOperations.add(operation);
+            }
+
+            if (this.operationStateMap.get(operation).getIsInterrupted())
+            {
+                interruptedOperations.add(operation);
             }
         }
 
-        Set<Operation> newlyActiveMacroOperations = new HashSet<Operation>();
-        Set<Operation> newlyInactiveMacroOperations = new HashSet<Operation>();
-        Set<Operation> alreadyActiveMacroOperations = new HashSet<Operation>();
-        for (MacroOperationState macroState : this.macroStates)
+        // check user inputs for various macro operations
+        // also keep track of modified and active macro operations, and how macro operations and operations link together
+        Set<MacroOperation> activeMacroOperations = new HashSet<MacroOperation>();
+        Map<Operation, Set<MacroOperation>> activeMacroOperationMap = new HashMap<Operation, Set<MacroOperation>>();
+        Set<MacroOperation> modifiedMacroOperations = new HashSet<MacroOperation>();
+        for (MacroOperation macroOperation : this.macroStateMap.keySet())
         {
-            List<Operation> macroOperations = Arrays.asList(macroState.getAffectedOperations());
+            MacroOperationState macroState = this.macroStateMap.get(macroOperation);
             boolean modifiedMacro = macroState.checkUserInput(this.joystickDriver, this.joystickCoDriver);
             if (modifiedMacro)
             {
-                if (macroState.getIsActive())
+                modifiedMacroOperations.add(macroOperation);
+            }
+
+            if (macroState.getIsActive())
+            {
+                activeMacroOperations.add(macroOperation);
+
+                for (Operation affectedOperation : macroState.getAffectedOperations())
                 {
-                    newlyActiveMacroOperations.addAll(macroOperations);
+                    Set<MacroOperation> relevantMacroOperations = activeMacroOperationMap.get(affectedOperation);
+                    if (relevantMacroOperations == null)
+                    {
+                        relevantMacroOperations = new HashSet<MacroOperation>();
+                    }
+
+                    relevantMacroOperations.add(macroOperation);
+                }
+            }
+        }
+
+        // Determine the list of macro operations to cancel.  Only keep macros that:
+        // 1. have not been usurped by a user action
+        // 2. have not been usurped by a new macro (i.e. that was started in this round)
+        // 3. are new macros that do not overlap with other new macros
+        Set<MacroOperation> macroOperationsToCancel = new HashSet<MacroOperation>();
+        for (Operation operation : activeMacroOperationMap.keySet())
+        {
+            Set<MacroOperation> relevantMacroOperations = activeMacroOperationMap.get(operation);
+            if (modifiedOperations.contains(operation))
+            {
+                // disobeys rule #1:
+                // (macro usurped by user action)
+                macroOperationsToCancel.addAll(relevantMacroOperations);
+            }
+            else if (relevantMacroOperations.size() > 1)
+            {
+                Set<MacroOperation> newRelevantMacroOperations = SetHelper.<MacroOperation>RelativeComplement(previouslyActiveMacroOperations, relevantMacroOperations);
+                if (newRelevantMacroOperations.size() > 1)
+                {
+                    // disobeys rule #3:
+                    // (there are 2 or more active macros that weren't previously active)
+                    macroOperationsToCancel.addAll(relevantMacroOperations);
                 }
                 else
                 {
-                    newlyInactiveMacroOperations.addAll(macroOperations);
+                    // some disobey rule #2 (remove only those that were previously active, and not the 1 that is newly active...)
+                    macroOperationsToCancel.addAll(SetHelper.<MacroOperation>RelativeComplement(newRelevantMacroOperations, relevantMacroOperations));
                 }
             }
-            else
-            {
-                alreadyActiveMacroOperations.addAll(macroOperations);
-            }
+        }
+
+        // cancel macros that didn't follow the rules list above
+        for (MacroOperation macroOperationToCancel : macroOperationsToCancel)
+        {
+            this.macroStateMap.get(macroOperationToCancel).setIsInterrupted(true);
+        }
+        
+        // determine which operations should actually be interrupted by our new macro:
+        Set<Operation> desiredInterruptedOperations = new HashSet<Operation>();
+        for (MacroOperation macroOperationToKeep : SetHelper.<MacroOperation>RelativeComplement(macroOperationsToCancel, activeMacroOperations))
+        {
+            desiredInterruptedOperations.addAll(Arrays.asList(this.macroSchema.get(macroOperationToKeep).getAffectedOperations()));
+        }
+
+        // interrupt operations that are not interrupted that should be:
+        for (Operation operationToInterrupt : SetHelper.<Operation>RelativeComplement(interruptedOperations, desiredInterruptedOperations))
+        {
+            this.operationStateMap.get(operationToInterrupt).setIsInterrupted(true);
+        }
+        
+        // clear interruption for operations that are interrupted that should not be:
+        for (Operation operationToUnInterrupt : SetHelper.<Operation>RelativeComplement(desiredInterruptedOperations, interruptedOperations))
+        {
+            this.operationStateMap.get(operationToUnInterrupt).setIsInterrupted(false);
+        }
+        
+        // run all of the macros:
+        for (MacroOperation macroOperation : this.macroStateMap.keySet())
+        {
+            this.macroStateMap.get(macroOperation).run();
         }
     }
 
