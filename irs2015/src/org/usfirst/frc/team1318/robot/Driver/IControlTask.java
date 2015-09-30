@@ -1,5 +1,9 @@
 package org.usfirst.frc.team1318.robot.Driver;
 
+import java.util.Map;
+
+import org.usfirst.frc.team1318.robot.Driver.States.OperationState;
+
 /**
  * Interface describing a task that that controls the functioning of the robot.
  * 
@@ -8,6 +12,12 @@ package org.usfirst.frc.team1318.robot.Driver;
  */
 public interface IControlTask
 {
+    /**
+     * Initialize the task with the mapping of operations to states
+     * @param operationStateMap indicating the mapping of an operation to its current state
+     */
+    public void initialize(Map<Operation, OperationState> operationStateMap);
+
     /**
      * Begin the current task.
      */

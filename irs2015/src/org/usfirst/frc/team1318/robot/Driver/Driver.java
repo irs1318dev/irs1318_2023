@@ -13,6 +13,7 @@ import org.usfirst.frc.team1318.robot.Driver.Descriptions.UserInputDevice;
 
 public abstract class Driver
 {
+    @SuppressWarnings("serial")
     protected Map<Operation, OperationDescription> operationSchema = new HashMap<Operation, OperationDescription>()
     {
         {
@@ -80,6 +81,7 @@ public abstract class Driver
         }
     };
 
+    @SuppressWarnings("serial")
     protected Map<MacroOperation, MacroOperationDescription> macroSchema = new HashMap<MacroOperation, MacroOperationDescription>()
     {
         {

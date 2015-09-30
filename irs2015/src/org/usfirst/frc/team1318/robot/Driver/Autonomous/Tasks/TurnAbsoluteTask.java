@@ -1,7 +1,14 @@
 package org.usfirst.frc.team1318.robot.Driver.Autonomous.Tasks;
 
 import org.usfirst.frc.team1318.robot.DriveTrain.PositionManager;
+import org.usfirst.frc.team1318.robot.Driver.Operation;
 
+/**
+ * Autonomous task that turns the robot a certain amount clockwise or counterclockwise in-place.
+ * This task turns at a certain speed based on the PositionManager to turn until it is within the acceptable
+ * error from the orientation (relative to our starting position) that we want to have.
+ * 
+ */
 public class TurnAbsoluteTask extends TimedAutonomousTask
 {
     private final double xVelocity;
@@ -10,7 +17,7 @@ public class TurnAbsoluteTask extends TimedAutonomousTask
     private final PositionManager position;
 
     /**
-     * Initializes a new DriveTimedAutonomousTask
+     * Initializes a new TurnAbsoluteTask
      * @param maxDuration to perform the task in seconds
      * @param xVelocity to turn in the appropriate direction
      * @param absoluteDegrees indicates the direction we want to face when we are done turning.
@@ -46,9 +53,9 @@ public class TurnAbsoluteTask extends TimedAutonomousTask
             xVelocity = this.xVelocity;
         }
 
-        //        data.setDriveTrainPositionMode(false);
-        //        data.setDriveTrainXVelocity(xVelocity);
-        //        data.setDriveTrainYVelocity(0.0);
+        this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
+        this.setAnalogOperationState(Operation.DriveTrainMoveForward, 0.0);
+        this.setAnalogOperationState(Operation.DriveTrainTurn, xVelocity);
     }
 
     /**
@@ -59,8 +66,8 @@ public class TurnAbsoluteTask extends TimedAutonomousTask
     {
         super.stop();
 
-        //        data.setDriveTrainXVelocity(0.0);
-        //        data.setDriveTrainYVelocity(0.0);
+        this.setAnalogOperationState(Operation.DriveTrainMoveForward, 0.0);
+        this.setAnalogOperationState(Operation.DriveTrainTurn, 0.0);
     }
 
     /**
@@ -71,8 +78,8 @@ public class TurnAbsoluteTask extends TimedAutonomousTask
     {
         super.end();
 
-        //        data.setDriveTrainXVelocity(0.0);
-        //        data.setDriveTrainYVelocity(0.0);
+        this.setAnalogOperationState(Operation.DriveTrainMoveForward, 0.0);
+        this.setAnalogOperationState(Operation.DriveTrainTurn, 0.0);
     }
 
     /**

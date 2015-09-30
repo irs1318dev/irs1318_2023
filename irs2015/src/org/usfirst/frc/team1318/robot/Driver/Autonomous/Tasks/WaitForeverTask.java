@@ -1,14 +1,13 @@
 package org.usfirst.frc.team1318.robot.Driver.Autonomous.Tasks;
 
+import org.usfirst.frc.team1318.robot.Driver.ControlTaskBase;
 import org.usfirst.frc.team1318.robot.Driver.IControlTask;
 
 /**
  * Autonomous task that waits forever.  This task can be used as a way to give up if a certain condition isn't met (by pairing it with an AnyTask)
  * 
- * @author Will
- *
  */
-public class WaitForeverTask implements IControlTask
+public class WaitForeverTask extends ControlTaskBase implements IControlTask
 {
     /**
      * Initializes a new WaitForeverTask

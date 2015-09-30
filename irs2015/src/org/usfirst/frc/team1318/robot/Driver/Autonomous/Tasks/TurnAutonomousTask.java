@@ -7,8 +7,6 @@ import org.usfirst.frc.team1318.robot.Driver.IControlTask;
 /**
  * Autonomous task that turns the robot a certain amount clockwise or counterclockwise in-place using Positional PID.
  * 
- * @author Will
- *
  */
 public class TurnAutonomousTask extends MoveDistanceAutonomousTaskBase implements IControlTask
 {

@@ -1,16 +1,16 @@
 package org.usfirst.frc.team1318.robot.Driver.Autonomous.Tasks;
 
 import org.usfirst.frc.team1318.robot.DriveTrain.IDriveTrainComponent;
+import org.usfirst.frc.team1318.robot.Driver.ControlTaskBase;
 import org.usfirst.frc.team1318.robot.Driver.IControlTask;
+import org.usfirst.frc.team1318.robot.Driver.Operation;
 import org.usfirst.frc.team1318.robot.Driver.Autonomous.AutonomousConstants;
 
 /**
  * Abstract class defining a task that moves the robot a certain distance using Positional PID.
  * 
- * @author Will
- *
  */
-public abstract class MoveDistanceAutonomousTaskBase implements IControlTask
+public abstract class MoveDistanceAutonomousTaskBase extends ControlTaskBase implements IControlTask
 {
     private final IDriveTrainComponent driveTrain;
 
@@ -54,9 +54,9 @@ public abstract class MoveDistanceAutonomousTaskBase implements IControlTask
     @Override
     public void update()
     {
-        //        data.setDriveTrainPositionMode(true);
-        //        data.setDriveTrainLeftPosition(this.desiredFinalLeftEncoderDistance);
-        //        data.setDriveTrainRightPosition(this.desiredFinalRightEncoderDistance);
+        this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, true);
+        this.setAnalogOperationState(Operation.DriveTrainLeftPosition, this.desiredFinalLeftEncoderDistance);
+        this.setAnalogOperationState(Operation.DriveTrainRightPosition, this.desiredFinalRightEncoderDistance);
     }
 
     /**
@@ -65,9 +65,9 @@ public abstract class MoveDistanceAutonomousTaskBase implements IControlTask
     @Override
     public void stop()
     {
-        //        data.setDriveTrainLeftPosition(0.0);
-        //        data.setDriveTrainRightPosition(0.0);
-        //        data.setDriveTrainPositionMode(false);
+        this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
+        this.setAnalogOperationState(Operation.DriveTrainLeftPosition, 0.0);
+        this.setAnalogOperationState(Operation.DriveTrainRightPosition, 0.0);
     }
 
     /**

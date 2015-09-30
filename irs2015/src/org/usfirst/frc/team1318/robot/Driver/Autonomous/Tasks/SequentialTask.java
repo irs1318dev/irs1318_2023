@@ -2,17 +2,19 @@ package org.usfirst.frc.team1318.robot.Driver.Autonomous.Tasks;
 
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 
+import org.usfirst.frc.team1318.robot.Driver.ControlTaskBase;
 import org.usfirst.frc.team1318.robot.Driver.IControlTask;
+import org.usfirst.frc.team1318.robot.Driver.Operation;
+import org.usfirst.frc.team1318.robot.Driver.States.OperationState;
 
 /**
  * Autonomous task that holds multiple other tasks and executes them sequentially (in order).
  * 
- * @author Will
- *
  */
-public class SequentialTask implements IControlTask
+public class SequentialTask extends ControlTaskBase implements IControlTask
 {
     private final Queue<IControlTask> autonomousTasks;
     private IControlTask currentTask;
@@ -25,6 +27,20 @@ public class SequentialTask implements IControlTask
     {
         this.autonomousTasks = new LinkedList<IControlTask>(Arrays.asList(tasks));
         this.currentTask = null;
+    }
+
+    /**
+     * Initialize the task with the mapping of operations to states
+     * @param operationStateMap indicating the mapping of an operation to its current state
+     */
+    @Override
+    public void initialize(Map<Operation, OperationState> operationStateMap)
+    {
+        super.initialize(operationStateMap);
+        for (IControlTask task : this.autonomousTasks)
+        {
+            task.initialize(operationStateMap);
+        }
     }
 
     /**

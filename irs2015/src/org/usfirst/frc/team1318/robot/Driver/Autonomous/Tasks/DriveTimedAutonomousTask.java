@@ -1,5 +1,11 @@
 package org.usfirst.frc.team1318.robot.Driver.Autonomous.Tasks;
 
+import org.usfirst.frc.team1318.robot.Driver.Operation;
+
+/**
+ * Autonomous task that drives at a certain velocity for a certain duration.
+ * 
+ */
 public class DriveTimedAutonomousTask extends TimedAutonomousTask
 {
     private final double xVelocity;
@@ -25,9 +31,9 @@ public class DriveTimedAutonomousTask extends TimedAutonomousTask
     @Override
     public void update()
     {
-        //        data.setDriveTrainPositionMode(false);
-        //        data.setDriveTrainXVelocity(this.xVelocity);
-        //        data.setDriveTrainYVelocity(this.yVelocity);
+        this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
+        this.setAnalogOperationState(Operation.DriveTrainMoveForward, this.yVelocity);
+        this.setAnalogOperationState(Operation.DriveTrainTurn, this.xVelocity);
     }
 
     /**
@@ -38,8 +44,8 @@ public class DriveTimedAutonomousTask extends TimedAutonomousTask
     {
         super.stop();
 
-        //        data.setDriveTrainXVelocity(0.0);
-        //        data.setDriveTrainYVelocity(0.0);
+        this.setAnalogOperationState(Operation.DriveTrainMoveForward, 0.0);
+        this.setAnalogOperationState(Operation.DriveTrainTurn, 0.0);
     }
 
     /**
@@ -50,7 +56,7 @@ public class DriveTimedAutonomousTask extends TimedAutonomousTask
     {
         super.end();
 
-        //        data.setDriveTrainXVelocity(0.0);
-        //        data.setDriveTrainYVelocity(0.0);
+        this.setAnalogOperationState(Operation.DriveTrainMoveForward, 0.0);
+        this.setAnalogOperationState(Operation.DriveTrainTurn, 0.0);
     }
 }

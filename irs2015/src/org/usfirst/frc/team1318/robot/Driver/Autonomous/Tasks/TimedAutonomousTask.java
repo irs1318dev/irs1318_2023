@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1318.robot.Driver.Autonomous.Tasks;
 
+import org.usfirst.frc.team1318.robot.Driver.ControlTaskBase;
 import org.usfirst.frc.team1318.robot.Driver.IControlTask;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -8,7 +9,7 @@ import edu.wpi.first.wpilibj.Timer;
  * Abstract class defining a task that lasts only for a certain duration.
  * 
  */
-public abstract class TimedAutonomousTask implements IControlTask
+public abstract class TimedAutonomousTask extends ControlTaskBase implements IControlTask
 {
     protected final double duration;
     protected final Timer timer;

@@ -1,12 +1,14 @@
 package org.usfirst.frc.team1318.robot.Driver.Autonomous.Tasks;
 
+import org.usfirst.frc.team1318.robot.Driver.ControlTaskBase;
 import org.usfirst.frc.team1318.robot.Driver.IControlTask;
+import org.usfirst.frc.team1318.robot.Driver.Operation;
 
 /**
  * Simple drive-forward task
  *
  */
-public class DriveForwardTask implements IControlTask
+public class DriveForwardTask extends ControlTaskBase implements IControlTask
 {
     public DriveForwardTask()
     {
@@ -27,8 +29,8 @@ public class DriveForwardTask implements IControlTask
     @Override
     public void update()
     {
-        //        data.setDriveTrainPositionMode(false);
-        //        data.setDriveTrainYVelocity(.1);
+        this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
+        this.setAnalogOperationState(Operation.DriveTrainMoveForward, 0.1);
     }
 
     /**
@@ -37,7 +39,7 @@ public class DriveForwardTask implements IControlTask
     @Override
     public void stop()
     {
-        //        data.setDriveTrainYVelocity(0);
+        this.setAnalogOperationState(Operation.DriveTrainMoveForward, 0.0);
     }
 
     /**
@@ -46,7 +48,7 @@ public class DriveForwardTask implements IControlTask
     @Override
     public void end()
     {
-        //        data.setDriveTrainYVelocity(0);
+        this.setAnalogOperationState(Operation.DriveTrainMoveForward, 0.0);
     }
 
     /**

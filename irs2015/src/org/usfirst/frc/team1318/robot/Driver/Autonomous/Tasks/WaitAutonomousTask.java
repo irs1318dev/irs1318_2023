@@ -5,8 +5,6 @@ import org.usfirst.frc.team1318.robot.Driver.IControlTask;
 /**
  * Autonomous task that simply waits for a short period of time.
  * 
- * @author Will
- *
  */
 public class WaitAutonomousTask extends TimedAutonomousTask implements IControlTask
 {
