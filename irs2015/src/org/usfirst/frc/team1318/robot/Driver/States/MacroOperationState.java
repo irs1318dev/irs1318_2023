@@ -1,18 +1,18 @@
 package org.usfirst.frc.team1318.robot.Driver.States;
 
+import org.usfirst.frc.team1318.robot.Driver.IControlTask;
 import org.usfirst.frc.team1318.robot.Driver.Operation;
 import org.usfirst.frc.team1318.robot.Driver.Buttons.ClickButton;
 import org.usfirst.frc.team1318.robot.Driver.Buttons.IButton;
 import org.usfirst.frc.team1318.robot.Driver.Descriptions.DigitalOperationDescription;
 import org.usfirst.frc.team1318.robot.Driver.Descriptions.MacroOperationDescription;
-import org.usfirst.frc.team1318.robot.Driver.Macros.MacroTask;
 
 import edu.wpi.first.wpilibj.Joystick;
 
 public class MacroOperationState extends OperationState
 {
     private final IButton button;
-    private MacroTask task;
+    private IControlTask task;
     private boolean isActive;
 
     public MacroOperationState(MacroOperationDescription description)
@@ -107,7 +107,7 @@ public class MacroOperationState extends OperationState
             if (this.task == null)
             {
                 // start task
-                this.task = ((MacroOperationDescription)this.getDescription()).constructMacroTask();
+                this.task = ((MacroOperationDescription)this.getDescription()).constructTask();
                 this.task.begin();
             }
             else

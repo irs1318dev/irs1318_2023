@@ -2,26 +2,26 @@ package org.usfirst.frc.team1318.robot.Driver.Descriptions;
 
 import java.util.function.Supplier;
 
+import org.usfirst.frc.team1318.robot.Driver.IControlTask;
 import org.usfirst.frc.team1318.robot.Driver.Operation;
-import org.usfirst.frc.team1318.robot.Driver.Macros.MacroTask;
 
 public class MacroOperationDescription extends OperationDescription
 {
     private final int userInputDeviceButton;
     private final Operation[] affectedOperations;
-    private final Supplier<MacroTask> macroSupplier;
+    private final Supplier<IControlTask> taskSupplier;
 
     public MacroOperationDescription(
         UserInputDevice userInputDevice,
         int userInputDeviceButton,
-        Supplier<MacroTask> macroSupplier,
+        Supplier<IControlTask> taskSupplier,
         Operation... affectedOperations)
     {
         super(DriverOperationType.None, userInputDevice);
 
         this.userInputDeviceButton = userInputDeviceButton;
         this.affectedOperations = affectedOperations;
-        this.macroSupplier = macroSupplier;
+        this.taskSupplier = taskSupplier;
     }
 
     public int getUserInputDeviceButton()
@@ -29,9 +29,9 @@ public class MacroOperationDescription extends OperationDescription
         return this.userInputDeviceButton;
     }
 
-    public MacroTask constructMacroTask()
+    public IControlTask constructTask()
     {
-        return this.macroSupplier.get();
+        return this.taskSupplier.get();
     }
 
     public Operation[] getAffectedOperations()
