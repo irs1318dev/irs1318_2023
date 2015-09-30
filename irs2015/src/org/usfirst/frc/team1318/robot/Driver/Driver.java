@@ -10,6 +10,9 @@ import org.usfirst.frc.team1318.robot.Driver.Descriptions.DigitalOperationDescri
 import org.usfirst.frc.team1318.robot.Driver.Descriptions.MacroOperationDescription;
 import org.usfirst.frc.team1318.robot.Driver.Descriptions.OperationDescription;
 import org.usfirst.frc.team1318.robot.Driver.Descriptions.UserInputDevice;
+import org.usfirst.frc.team1318.robot.Driver.States.AnalogOperationState;
+import org.usfirst.frc.team1318.robot.Driver.States.DigitalOperationState;
+import org.usfirst.frc.team1318.robot.Driver.States.OperationState;
 
 public abstract class Driver
 {
@@ -95,6 +98,20 @@ public abstract class Driver
         }
     };
 
+    protected final Map<Operation, OperationState> operationStateMap;
+
+    /**
+     * Initializes a new Driver
+     */
+    protected Driver()
+    {
+        this.operationStateMap = new HashMap<Operation, OperationState>(this.operationSchema.size());
+        for (Operation operation : this.operationSchema.keySet())
+        {
+            this.operationStateMap.put(operation, OperationState.createFromDescription(this.operationSchema.get(operation)));
+        }
+    }
+
     /**
      * Tell the driver that some time has passed
      */
@@ -110,12 +127,32 @@ public abstract class Driver
      * @param digitalOperation to get
      * @return the current value of the digital operation
      */
-    public abstract boolean getDigital(Operation digitalOperation);
+    public boolean getDigital(Operation digitalOperation)
+    {
+        OperationState state = this.operationStateMap.get(digitalOperation);
+        if (!(state instanceof DigitalOperationState))
+        {
+            throw new RuntimeException("not a digital operation!");
+        }
+
+        DigitalOperationState digitalState = (DigitalOperationState)state;
+        return digitalState.getState();
+    }
 
     /**
      * Get a double between -1.0 and 1.0 indicating the current value of the analog operation
      * @param analogOperation to get
      * @return the current value of the analog operation
      */
-    public abstract double getAnalog(Operation analogOperation);
+    public double getAnalog(Operation analogOperation)
+    {
+        OperationState state = this.operationStateMap.get(analogOperation);
+        if (!(state instanceof AnalogOperationState))
+        {
+            throw new RuntimeException("not an analog operation!");
+        }
+
+        AnalogOperationState analogState = (AnalogOperationState)state;
+        return analogState.getState();
+    }
 }

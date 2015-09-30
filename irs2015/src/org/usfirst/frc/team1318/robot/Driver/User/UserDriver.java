@@ -11,10 +11,7 @@ import org.usfirst.frc.team1318.robot.Driver.Driver;
 import org.usfirst.frc.team1318.robot.Driver.JoystickButtonConstants;
 import org.usfirst.frc.team1318.robot.Driver.MacroOperation;
 import org.usfirst.frc.team1318.robot.Driver.Operation;
-import org.usfirst.frc.team1318.robot.Driver.States.AnalogOperationState;
-import org.usfirst.frc.team1318.robot.Driver.States.DigitalOperationState;
 import org.usfirst.frc.team1318.robot.Driver.States.MacroOperationState;
-import org.usfirst.frc.team1318.robot.Driver.States.OperationState;
 
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -30,7 +27,6 @@ public class UserDriver extends Driver
     private final Joystick joystickDriver;
     private final Joystick joystickCoDriver;
 
-    private final Map<Operation, OperationState> operationStateMap;
     private final Map<MacroOperation, MacroOperationState> macroStateMap;
 
     /**
@@ -38,16 +34,17 @@ public class UserDriver extends Driver
      */
     public UserDriver()
     {
+        super();
+
         this.joystickDriver = new Joystick(JoystickButtonConstants.JOYSTICK_DRIVER_PORT);
         this.joystickCoDriver = new Joystick(JoystickButtonConstants.JOYSTICK_CO_DRIVER_PORT);
 
-        this.operationStateMap = new HashMap<Operation, OperationState>();
-        for (Operation operation : this.operationSchema.keySet())
-        {
-            this.operationStateMap.put(operation, OperationState.createFromDescription(this.operationSchema.get(operation)));
-        }
-
         this.macroStateMap = new HashMap<MacroOperation, MacroOperationState>();
+
+        for (MacroOperation macroOperation : this.macroSchema.keySet())
+        {
+            this.macroStateMap.put(macroOperation, new MacroOperationState(this.macroSchema.get(macroOperation)));
+        }
     }
 
     /**
@@ -132,7 +129,8 @@ public class UserDriver extends Driver
             }
             else if (relevantMacroOperations.size() > 1)
             {
-                Set<MacroOperation> newRelevantMacroOperations = SetHelper.<MacroOperation>RelativeComplement(previouslyActiveMacroOperations, relevantMacroOperations);
+                Set<MacroOperation> newRelevantMacroOperations = SetHelper.<MacroOperation> RelativeComplement(
+                    previouslyActiveMacroOperations, relevantMacroOperations);
                 if (newRelevantMacroOperations.size() > 1)
                 {
                     // disobeys rule #3:
@@ -142,7 +140,8 @@ public class UserDriver extends Driver
                 else
                 {
                     // some disobey rule #2 (remove only those that were previously active, and not the 1 that is newly active...)
-                    macroOperationsToCancel.addAll(SetHelper.<MacroOperation>RelativeComplement(newRelevantMacroOperations, relevantMacroOperations));
+                    macroOperationsToCancel.addAll(SetHelper.<MacroOperation> RelativeComplement(newRelevantMacroOperations,
+                        relevantMacroOperations));
                 }
             }
         }
@@ -152,26 +151,28 @@ public class UserDriver extends Driver
         {
             this.macroStateMap.get(macroOperationToCancel).setIsInterrupted(true);
         }
-        
+
         // determine which operations should actually be interrupted by our new macro:
         Set<Operation> desiredInterruptedOperations = new HashSet<Operation>();
-        for (MacroOperation macroOperationToKeep : SetHelper.<MacroOperation>RelativeComplement(macroOperationsToCancel, activeMacroOperations))
+        for (MacroOperation macroOperationToKeep : SetHelper.<MacroOperation> RelativeComplement(macroOperationsToCancel,
+            activeMacroOperations))
         {
             desiredInterruptedOperations.addAll(Arrays.asList(this.macroSchema.get(macroOperationToKeep).getAffectedOperations()));
         }
 
         // interrupt operations that are not interrupted that should be:
-        for (Operation operationToInterrupt : SetHelper.<Operation>RelativeComplement(interruptedOperations, desiredInterruptedOperations))
+        for (Operation operationToInterrupt : SetHelper.<Operation> RelativeComplement(interruptedOperations, desiredInterruptedOperations))
         {
             this.operationStateMap.get(operationToInterrupt).setIsInterrupted(true);
         }
-        
+
         // clear interruption for operations that are interrupted that should not be:
-        for (Operation operationToUnInterrupt : SetHelper.<Operation>RelativeComplement(desiredInterruptedOperations, interruptedOperations))
+        for (Operation operationToUnInterrupt : SetHelper.<Operation> RelativeComplement(desiredInterruptedOperations,
+            interruptedOperations))
         {
             this.operationStateMap.get(operationToUnInterrupt).setIsInterrupted(false);
         }
-        
+
         // run all of the macros:
         for (MacroOperation macroOperation : this.macroStateMap.keySet())
         {
@@ -185,41 +186,5 @@ public class UserDriver extends Driver
     @Override
     public void stop()
     {
-    }
-
-    /**
-     * Get a boolean indicating whether the current digital operation is enabled
-     * @param digitalOperation to get
-     * @return the current value of the digital operation
-     */
-    @Override
-    public boolean getDigital(Operation digitalOperation)
-    {
-        OperationState state = this.operationStateMap.get(digitalOperation);
-        if (!(state instanceof DigitalOperationState))
-        {
-            throw new RuntimeException("not a digital operation!");
-        }
-
-        DigitalOperationState digitalState = (DigitalOperationState)state;
-        return digitalState.getState();
-    }
-
-    /**
-     * Get a double between -1.0 and 1.0 indicating the current value of the analog operation
-     * @param analogOperation to get
-     * @return the current value of the analog operation
-     */
-    @Override
-    public double getAnalog(Operation analogOperation)
-    {
-        OperationState state = this.operationStateMap.get(analogOperation);
-        if (!(state instanceof AnalogOperationState))
-        {
-            throw new RuntimeException("not an analog operation!");
-        }
-
-        AnalogOperationState analogState = (AnalogOperationState)state;
-        return analogState.getState();
     }
 }
