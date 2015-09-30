@@ -1,7 +1,6 @@
-package org.usfirst.frc.team1318.robot.Driver.Autonomous.Tasks;
+package org.usfirst.frc.team1318.robot.Driver.ControlTasks;
 
 import org.usfirst.frc.team1318.robot.DriveTrain.IDriveTrainComponent;
-import org.usfirst.frc.team1318.robot.Driver.ControlTaskBase;
 import org.usfirst.frc.team1318.robot.Driver.IControlTask;
 import org.usfirst.frc.team1318.robot.Driver.Operation;
 import org.usfirst.frc.team1318.robot.Driver.Autonomous.AutonomousConstants;
@@ -10,7 +9,7 @@ import org.usfirst.frc.team1318.robot.Driver.Autonomous.AutonomousConstants;
  * Abstract class defining a task that moves the robot a certain distance using Positional PID.
  * 
  */
-public abstract class MoveDistanceAutonomousTaskBase extends ControlTaskBase implements IControlTask
+public abstract class MoveDistanceTaskBase extends ControlTaskBase implements IControlTask
 {
     private final IDriveTrainComponent driveTrain;
 
@@ -24,7 +23,7 @@ public abstract class MoveDistanceAutonomousTaskBase extends ControlTaskBase imp
      * Initializes a new MoveDistanceAutonomousTaskBase
      * @param driveTrain component to use to detect our current position
      */
-    protected MoveDistanceAutonomousTaskBase(IDriveTrainComponent driveTrain)
+    protected MoveDistanceTaskBase(IDriveTrainComponent driveTrain)
     {
         this.driveTrain = driveTrain;
     }

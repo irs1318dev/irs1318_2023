@@ -9,7 +9,7 @@ import org.usfirst.frc.team1318.robot.DriveTrain.PositionManager;
 import org.usfirst.frc.team1318.robot.Driver.Driver;
 import org.usfirst.frc.team1318.robot.Driver.IControlTask;
 import org.usfirst.frc.team1318.robot.Driver.Autonomous.AutonomousDriver;
-import org.usfirst.frc.team1318.robot.Driver.Autonomous.Tasks.WaitAutonomousTask;
+import org.usfirst.frc.team1318.robot.Driver.ControlTasks.WaitTask;
 import org.usfirst.frc.team1318.robot.Driver.User.UserDriver;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -235,7 +235,7 @@ public class Robot extends IterativeRobot
      */
     private static IControlTask GetFillerRoutine()
     {
-        return new WaitAutonomousTask(0);
+        return new WaitTask(0);
     }
 }
 

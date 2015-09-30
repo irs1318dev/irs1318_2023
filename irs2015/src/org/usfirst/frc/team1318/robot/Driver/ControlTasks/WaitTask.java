@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1318.robot.Driver.Autonomous.Tasks;
+package org.usfirst.frc.team1318.robot.Driver.ControlTasks;
 
 import org.usfirst.frc.team1318.robot.Driver.IControlTask;
 
@@ -6,13 +6,13 @@ import org.usfirst.frc.team1318.robot.Driver.IControlTask;
  * Autonomous task that simply waits for a short period of time.
  * 
  */
-public class WaitAutonomousTask extends TimedAutonomousTask implements IControlTask
+public class WaitTask extends TimedTask implements IControlTask
 {
     /**
      * Initializes a new WaitAutonomousTask
      * @param duration to wait in seconds
      */
-    public WaitAutonomousTask(double duration)
+    public WaitTask(double duration)
     {
         super(duration);
     }

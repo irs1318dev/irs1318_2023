@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1318.robot.Driver.Autonomous.Tasks;
+package org.usfirst.frc.team1318.robot.Driver.ControlTasks;
 
 import org.usfirst.frc.team1318.robot.Driver.Operation;
 
@@ -6,7 +6,7 @@ import org.usfirst.frc.team1318.robot.Driver.Operation;
  * Autonomous task that drives at a certain velocity for a certain duration.
  * 
  */
-public class DriveTimedAutonomousTask extends TimedAutonomousTask
+public class DriveTimedTask extends TimedTask
 {
     private final double xVelocity;
     private final double yVelocity;
@@ -17,7 +17,7 @@ public class DriveTimedAutonomousTask extends TimedAutonomousTask
      * @param xVelocity to apply to the driveTrain
      * @param yVelocity to apply to the driveTrain
      */
-    public DriveTimedAutonomousTask(double duration, double xVelocity, double yVelocity)
+    public DriveTimedTask(double duration, double xVelocity, double yVelocity)
     {
         super(duration);
 

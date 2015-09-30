@@ -1,16 +1,17 @@
-package org.usfirst.frc.team1318.robot.Driver.Autonomous.Tasks;
+package org.usfirst.frc.team1318.robot.Driver.ControlTasks;
 
-import org.usfirst.frc.team1318.robot.Driver.ControlTaskBase;
 import org.usfirst.frc.team1318.robot.Driver.IControlTask;
-import org.usfirst.frc.team1318.robot.Driver.Operation;
 
 /**
- * Simple drive-forward task
- *
+ * Autonomous task that waits forever.  This task can be used as a way to give up if a certain condition isn't met (by pairing it with an AnyTask)
+ * 
  */
-public class DriveForwardTask extends ControlTaskBase implements IControlTask
+public class WaitForeverTask extends ControlTaskBase implements IControlTask
 {
-    public DriveForwardTask()
+    /**
+     * Initializes a new WaitForeverTask
+     */
+    public WaitForeverTask()
     {
     }
 
@@ -20,7 +21,6 @@ public class DriveForwardTask extends ControlTaskBase implements IControlTask
     @Override
     public void begin()
     {
-
     }
 
     /**
@@ -29,8 +29,6 @@ public class DriveForwardTask extends ControlTaskBase implements IControlTask
     @Override
     public void update()
     {
-        this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
-        this.setAnalogOperationState(Operation.DriveTrainMoveForward, 0.1);
     }
 
     /**
@@ -39,7 +37,6 @@ public class DriveForwardTask extends ControlTaskBase implements IControlTask
     @Override
     public void stop()
     {
-        this.setAnalogOperationState(Operation.DriveTrainMoveForward, 0.0);
     }
 
     /**
@@ -48,7 +45,6 @@ public class DriveForwardTask extends ControlTaskBase implements IControlTask
     @Override
     public void end()
     {
-        this.setAnalogOperationState(Operation.DriveTrainMoveForward, 0.0);
     }
 
     /**

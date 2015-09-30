@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1318.robot.Driver.Autonomous.Tasks;
+package org.usfirst.frc.team1318.robot.Driver.ControlTasks;
 
 import org.usfirst.frc.team1318.robot.DriveTrain.PositionManager;
 import org.usfirst.frc.team1318.robot.Driver.Operation;
@@ -9,7 +9,7 @@ import org.usfirst.frc.team1318.robot.Driver.Operation;
  * error from the orientation (relative to our starting position) that we want to have.
  * 
  */
-public class TurnAbsoluteTask extends TimedAutonomousTask
+public class TurnAbsoluteTask extends TimedTask
 {
     private final double xVelocity;
     private final double absoluteDegrees;

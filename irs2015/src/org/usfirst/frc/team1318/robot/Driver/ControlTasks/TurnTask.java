@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1318.robot.Driver.Autonomous.Tasks;
+package org.usfirst.frc.team1318.robot.Driver.ControlTasks;
 
 import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.DriveTrain.IDriveTrainComponent;
@@ -8,7 +8,7 @@ import org.usfirst.frc.team1318.robot.Driver.IControlTask;
  * Autonomous task that turns the robot a certain amount clockwise or counterclockwise in-place using Positional PID.
  * 
  */
-public class TurnAutonomousTask extends MoveDistanceAutonomousTaskBase implements IControlTask
+public class TurnTask extends MoveDistanceTaskBase implements IControlTask
 {
     private final double degrees;
 
@@ -17,7 +17,7 @@ public class TurnAutonomousTask extends MoveDistanceAutonomousTaskBase implement
      * @param degrees from the current orientation to rotate (positive means turn right/clockwise, negative means turn left/counter-clockwise)
      * @param driveTrain component to use to detect our current position
      */
-    public TurnAutonomousTask(double degrees, IDriveTrainComponent driveTrain)
+    public TurnTask(double degrees, IDriveTrainComponent driveTrain)
     {
         super(driveTrain);
 

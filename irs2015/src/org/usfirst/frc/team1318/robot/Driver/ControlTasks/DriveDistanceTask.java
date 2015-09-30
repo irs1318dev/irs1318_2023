@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1318.robot.Driver.Autonomous.Tasks;
+package org.usfirst.frc.team1318.robot.Driver.ControlTasks;
 
 import org.usfirst.frc.team1318.robot.DriveTrain.IDriveTrainComponent;
 import org.usfirst.frc.team1318.robot.Driver.IControlTask;
@@ -7,7 +7,7 @@ import org.usfirst.frc.team1318.robot.Driver.IControlTask;
  * Autonomous task that drives the robot a certain distance directly forward or backward using Positional PID.
  * 
  */
-public class DriveDistanceAutonomousTask extends MoveDistanceAutonomousTaskBase implements IControlTask
+public class DriveDistanceTask extends MoveDistanceTaskBase implements IControlTask
 {
     private final double distance;
 
@@ -16,7 +16,7 @@ public class DriveDistanceAutonomousTask extends MoveDistanceAutonomousTaskBase 
      * @param distance from the current location to move (positive means move forward, negative means move backwards) in centimeters
      * @param driveTrain component to use to detect our current position
      */
-    public DriveDistanceAutonomousTask(double distance, IDriveTrainComponent driveTrain)
+    public DriveDistanceTask(double distance, IDriveTrainComponent driveTrain)
     {
         super(driveTrain);
 
