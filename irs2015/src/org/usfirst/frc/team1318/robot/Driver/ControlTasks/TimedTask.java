@@ -15,7 +15,7 @@ public abstract class TimedTask extends ControlTaskBase implements IControlTask
     protected Double startTime;
 
     /**
-     * Initializes a new TimedAutonomousTask
+     * Initializes a new TimedTask
      * @param duration to perform the task in seconds
      */
     protected TimedTask(double duration)

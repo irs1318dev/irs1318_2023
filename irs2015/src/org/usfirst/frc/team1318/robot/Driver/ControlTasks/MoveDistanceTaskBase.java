@@ -20,7 +20,7 @@ public abstract class MoveDistanceTaskBase extends ControlTaskBase implements IC
     protected double desiredFinalRightEncoderDistance;
 
     /**
-     * Initializes a new MoveDistanceAutonomousTaskBase
+     * Initializes a new MoveDistanceTaskBase
      * @param driveTrain component to use to detect our current position
      */
     protected MoveDistanceTaskBase(IDriveTrainComponent driveTrain)

@@ -10,12 +10,12 @@ import org.usfirst.frc.team1318.robot.Driver.Operation;
 import org.usfirst.frc.team1318.robot.Driver.States.OperationState;
 
 /**
- * Autonomous task that holds multiple other tasks and executes them sequentially (in order).
+ * Task that holds multiple other tasks and executes them sequentially (in order).
  * 
  */
 public class SequentialTask extends ControlTaskBase implements IControlTask
 {
-    private final Queue<IControlTask> autonomousTasks;
+    private final Queue<IControlTask> orderedTasks;
     private IControlTask currentTask;
 
     /**
@@ -24,7 +24,7 @@ public class SequentialTask extends ControlTaskBase implements IControlTask
      */
     public SequentialTask(IControlTask[] tasks)
     {
-        this.autonomousTasks = new LinkedList<IControlTask>(Arrays.asList(tasks));
+        this.orderedTasks = new LinkedList<IControlTask>(Arrays.asList(tasks));
         this.currentTask = null;
     }
 
@@ -36,7 +36,7 @@ public class SequentialTask extends ControlTaskBase implements IControlTask
     public void initialize(Map<Operation, OperationState> operationStateMap)
     {
         super.initialize(operationStateMap);
-        for (IControlTask task : this.autonomousTasks)
+        for (IControlTask task : this.orderedTasks)
         {
             task.initialize(operationStateMap);
         }
@@ -69,7 +69,7 @@ public class SequentialTask extends ControlTaskBase implements IControlTask
         // if there's no current task, find the next one and start it (if any)
         if (this.currentTask == null)
         {
-            this.currentTask = this.autonomousTasks.poll();
+            this.currentTask = this.orderedTasks.poll();
 
             // if there's no next task to run, then we are done
             if (this.currentTask == null)
@@ -115,6 +115,6 @@ public class SequentialTask extends ControlTaskBase implements IControlTask
     @Override
     public boolean hasCompleted()
     {
-        return this.currentTask == null && this.autonomousTasks.isEmpty();
+        return this.currentTask == null && this.orderedTasks.isEmpty();
     }
 }

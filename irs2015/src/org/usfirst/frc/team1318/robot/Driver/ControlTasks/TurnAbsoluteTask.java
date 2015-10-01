@@ -4,7 +4,7 @@ import org.usfirst.frc.team1318.robot.DriveTrain.PositionManager;
 import org.usfirst.frc.team1318.robot.Driver.Operation;
 
 /**
- * Autonomous task that turns the robot a certain amount clockwise or counterclockwise in-place.
+ * Task that turns the robot a certain amount clockwise or counterclockwise in-place.
  * This task turns at a certain speed based on the PositionManager to turn until it is within the acceptable
  * error from the orientation (relative to our starting position) that we want to have.
  * 

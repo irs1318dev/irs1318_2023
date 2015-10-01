@@ -7,7 +7,7 @@ import org.usfirst.frc.team1318.robot.Driver.Operation;
 import org.usfirst.frc.team1318.robot.Driver.States.OperationState;
 
 /**
- * Autonomous task that holds multiple other tasks and executes them in parallel until certain conditions
+ * Task that holds multiple other tasks and executes them in parallel until certain conditions
  * are met.
  * 
  * AnyTask - a task that continues processing all of the provided tasks until any of them is ready to continue

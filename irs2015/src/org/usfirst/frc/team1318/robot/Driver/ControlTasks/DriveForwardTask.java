@@ -9,6 +9,9 @@ import org.usfirst.frc.team1318.robot.Driver.Operation;
  */
 public class DriveForwardTask extends ControlTaskBase implements IControlTask
 {
+    /**
+     * Initializes a new DriveForwardTask
+     */
     public DriveForwardTask()
     {
     }
