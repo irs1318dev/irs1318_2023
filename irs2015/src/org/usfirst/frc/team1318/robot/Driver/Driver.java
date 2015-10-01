@@ -65,23 +65,6 @@ public abstract class Driver
                 new AnalogOperationDescription(
                     UserInputDevice.None,
                     AnalogAxis.None));
-            put(
-                Operation.Foo,
-                new DigitalOperationDescription(
-                    UserInputDevice.Driver,
-                    JoystickButtonConstants.JOYSTICK_STICK_TRIGGER_BUTTON,
-                    ButtonType.Simple));
-            put(
-                Operation.Bar,
-                new AnalogOperationDescription(
-                    UserInputDevice.CoDriver,
-                    AnalogAxis.Throttle));
-            put(
-                Operation.Qux,
-                new DigitalOperationDescription(
-                    UserInputDevice.Driver,
-                    JoystickButtonConstants.JOYSTICK_BASE_BOTTOM_LEFT_BUTTON,
-                    ButtonType.Toggle));
         }
     };
 
@@ -95,7 +78,8 @@ public abstract class Driver
                     UserInputDevice.Driver,
                     JoystickButtonConstants.JOYSTICK_BASE_BOTTOM_RIGHT_BUTTON,
                     () -> ((IControlTask)new DriveTimedTask(20.0, 0.5, 0.5)),
-                    new Operation[] { Operation.DriveTrainMoveForward, Operation.DriveTrainTurn, Operation.DriveTrainUsePositionalMode }));
+                    new Operation[]
+            { Operation.DriveTrainMoveForward, Operation.DriveTrainTurn, Operation.DriveTrainUsePositionalMode }));
         }
     };
 

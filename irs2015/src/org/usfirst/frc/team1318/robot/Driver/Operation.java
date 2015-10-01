@@ -10,8 +10,5 @@ public enum Operation
     DriveTrainSimpleMode,
     DriveTrainUsePositionalMode,
     DriveTrainLeftPosition,
-    DriveTrainRightPosition,
-    Foo,
-    Bar,
-    Qux;
+    DriveTrainRightPosition;
 }
