@@ -43,7 +43,7 @@ public class UserDriver extends Driver
 
         for (MacroOperation macroOperation : this.macroSchema.keySet())
         {
-            this.macroStateMap.put(macroOperation, new MacroOperationState(this.macroSchema.get(macroOperation)));
+            this.macroStateMap.put(macroOperation, new MacroOperationState(this.macroSchema.get(macroOperation), this.operationStateMap));
         }
     }
 
@@ -106,6 +106,7 @@ public class UserDriver extends Driver
                     if (relevantMacroOperations == null)
                     {
                         relevantMacroOperations = new HashSet<MacroOperation>();
+                        activeMacroOperationMap.put(affectedOperation, relevantMacroOperations);
                     }
 
                     relevantMacroOperations.add(macroOperation);
@@ -129,8 +130,7 @@ public class UserDriver extends Driver
             }
             else if (relevantMacroOperations.size() > 1)
             {
-                Set<MacroOperation> newRelevantMacroOperations = SetHelper.<MacroOperation> RelativeComplement(
-                    previouslyActiveMacroOperations, relevantMacroOperations);
+                Set<MacroOperation> newRelevantMacroOperations = SetHelper.<MacroOperation> RelativeComplement(previouslyActiveMacroOperations, relevantMacroOperations);
                 if (newRelevantMacroOperations.size() > 1)
                 {
                     // disobeys rule #3:
@@ -140,8 +140,7 @@ public class UserDriver extends Driver
                 else
                 {
                     // some disobey rule #2 (remove only those that were previously active, and not the 1 that is newly active...)
-                    macroOperationsToCancel.addAll(SetHelper.<MacroOperation> RelativeComplement(newRelevantMacroOperations,
-                        relevantMacroOperations));
+                    macroOperationsToCancel.addAll(SetHelper.<MacroOperation> RelativeComplement(newRelevantMacroOperations, relevantMacroOperations));
                 }
             }
         }
@@ -154,8 +153,7 @@ public class UserDriver extends Driver
 
         // determine which operations should actually be interrupted by our new macro:
         Set<Operation> desiredInterruptedOperations = new HashSet<Operation>();
-        for (MacroOperation macroOperationToKeep : SetHelper.<MacroOperation> RelativeComplement(macroOperationsToCancel,
-            activeMacroOperations))
+        for (MacroOperation macroOperationToKeep : SetHelper.<MacroOperation> RelativeComplement(macroOperationsToCancel, activeMacroOperations))
         {
             desiredInterruptedOperations.addAll(Arrays.asList(this.macroSchema.get(macroOperationToKeep).getAffectedOperations()));
         }
@@ -167,8 +165,7 @@ public class UserDriver extends Driver
         }
 
         // clear interruption for operations that are interrupted that should not be:
-        for (Operation operationToUnInterrupt : SetHelper.<Operation> RelativeComplement(desiredInterruptedOperations,
-            interruptedOperations))
+        for (Operation operationToUnInterrupt : SetHelper.<Operation> RelativeComplement(desiredInterruptedOperations, interruptedOperations))
         {
             this.operationStateMap.get(operationToUnInterrupt).setIsInterrupted(false);
         }

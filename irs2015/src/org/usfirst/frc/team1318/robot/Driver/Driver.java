@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.usfirst.frc.team1318.robot.Driver.Buttons.AnalogAxis;
 import org.usfirst.frc.team1318.robot.Driver.Buttons.ButtonType;
+import org.usfirst.frc.team1318.robot.Driver.ControlTasks.DriveTimedTask;
 import org.usfirst.frc.team1318.robot.Driver.Descriptions.AnalogOperationDescription;
 import org.usfirst.frc.team1318.robot.Driver.Descriptions.DigitalOperationDescription;
 import org.usfirst.frc.team1318.robot.Driver.Descriptions.MacroOperationDescription;
@@ -88,13 +89,13 @@ public abstract class Driver
     protected Map<MacroOperation, MacroOperationDescription> macroSchema = new HashMap<MacroOperation, MacroOperationDescription>()
     {
         {
-            //            put(
-            //                MacroOperation.FooBarQux,
-            //                new MacroOperationDescription(
-            //                    UserInputDevice.Driver,
-            //                    JoystickButtonConstants.JOYSTICK_BASE_BOTTOM_RIGHT_BUTTON,
-            //                    (Supplier),
-            //                    new Operation[] { Operation.Foo, Operation.Bar, Operation.Qux });
+            put(
+                MacroOperation.DriveDistance,
+                new MacroOperationDescription(
+                    UserInputDevice.Driver,
+                    JoystickButtonConstants.JOYSTICK_BASE_BOTTOM_RIGHT_BUTTON,
+                    () -> ((IControlTask)new DriveTimedTask(20.0, 0.5, 0.5)),
+                    new Operation[] { Operation.DriveTrainMoveForward, Operation.DriveTrainTurn, Operation.DriveTrainUsePositionalMode }));
         }
     };
 

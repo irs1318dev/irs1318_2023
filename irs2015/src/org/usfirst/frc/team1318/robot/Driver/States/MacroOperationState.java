@@ -1,10 +1,11 @@
 package org.usfirst.frc.team1318.robot.Driver.States;
 
+import java.util.Map;
+
 import org.usfirst.frc.team1318.robot.Driver.IControlTask;
 import org.usfirst.frc.team1318.robot.Driver.Operation;
 import org.usfirst.frc.team1318.robot.Driver.Buttons.ClickButton;
 import org.usfirst.frc.team1318.robot.Driver.Buttons.IButton;
-import org.usfirst.frc.team1318.robot.Driver.Descriptions.DigitalOperationDescription;
 import org.usfirst.frc.team1318.robot.Driver.Descriptions.MacroOperationDescription;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -12,13 +13,15 @@ import edu.wpi.first.wpilibj.Joystick;
 public class MacroOperationState extends OperationState
 {
     private final IButton button;
+    private final Map<Operation, OperationState> operationStateMap;
     private IControlTask task;
     private boolean isActive;
 
-    public MacroOperationState(MacroOperationDescription description)
+    public MacroOperationState(MacroOperationDescription description, Map<Operation, OperationState> operationStateMap)
     {
         super(description);
 
+        this.operationStateMap = operationStateMap;
         this.button = new ClickButton();
         this.task = null;
         this.isActive = false;
@@ -56,7 +59,7 @@ public class MacroOperationState extends OperationState
     @Override
     public boolean checkUserInput(Joystick driver, Joystick coDriver)
     {
-        DigitalOperationDescription description = (DigitalOperationDescription)this.getDescription();
+        MacroOperationDescription description = (MacroOperationDescription)this.getDescription();
 
         Joystick relevantJoystick;
         int relevantButton;
@@ -108,6 +111,7 @@ public class MacroOperationState extends OperationState
             {
                 // start task
                 this.task = ((MacroOperationDescription)this.getDescription()).constructTask();
+                this.task.initialize(this.operationStateMap);
                 this.task.begin();
             }
             else
