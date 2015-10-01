@@ -21,5 +21,9 @@ public interface IController
      */
     public void stop();
 
+    /**
+     * set the driver that the controller should use
+     * @param driver to use
+     */
     public void setDriver(Driver driver);
 }

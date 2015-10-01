@@ -26,6 +26,10 @@ public class CompressorController implements IController
         this.isStarted = false;
     }
 
+    /**
+     * set the driver that the controller should use
+     * @param driver to use
+     */
     @Override
     public void setDriver(Driver driver)
     {
@@ -35,6 +39,7 @@ public class CompressorController implements IController
     /**
      * calculate the various outputs to use based on the inputs and apply them to the outputs for the relevant component
      */
+    @Override
     public void update()
     {
         if (!this.isStarted)
@@ -47,6 +52,7 @@ public class CompressorController implements IController
     /**
      * stop the relevant component
      */
+    @Override
     public void stop()
     {
         this.component.stop();

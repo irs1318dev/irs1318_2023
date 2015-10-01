@@ -6,8 +6,6 @@ import org.usfirst.frc.team1318.robot.Common.PIDHandler;
 import org.usfirst.frc.team1318.robot.Driver.Driver;
 import org.usfirst.frc.team1318.robot.Driver.Operation;
 
-import edu.wpi.first.wpilibj.Timer;
-
 /**
  * Drivetrain controller.
  * The controller defines the logic that controls a mechanism given inputs (component) and operator-requested actions, and 
@@ -18,9 +16,6 @@ import edu.wpi.first.wpilibj.Timer;
  */
 public class DriveTrainController implements IController
 {
-    private final Timer timer;
-    private Double startTime;
-
     private static final double POWERLEVEL_MIN = -1.0;
     private static final double POWERLEVEL_MAX = 1.0;
 
@@ -42,14 +37,14 @@ public class DriveTrainController implements IController
         this.component = component;
         this.usePID = usePID;
         this.usePositionalMode = false;
-        this.timer = new Timer();
-
-        this.timer.start();
-        this.startTime = this.timer.get();
 
         this.createPIDHandler();
     }
 
+    /**
+     * set the driver that the controller should use
+     * @param driver to use
+     */
     @Override
     public void setDriver(Driver driver)
     {

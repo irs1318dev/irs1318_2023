@@ -51,10 +51,14 @@ public class PositionManager implements IController
         this.driveTrainComponent = driveTrainComponent;
     }
 
+    /**
+     * set the driver that the controller should use
+     * @param driver to use
+     */
     @Override
     public void setDriver(Driver driver)
     {
-        //not needed for this controller 
+        // not needed for this controller 
     }
 
     /**
