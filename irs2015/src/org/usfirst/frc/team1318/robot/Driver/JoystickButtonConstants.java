@@ -20,16 +20,17 @@ package org.usfirst.frc.team1318.robot.Driver;
  * 12 - base bottom right
  * -----------------------
  * 
- * @author Will
- * 
  */
 public class JoystickButtonConstants
 {
+    // None - represents non-button:
     public static final int NONE = -1;
 
+    // Joystick ports:
     public static final int JOYSTICK_DRIVER_PORT = 0;
     public static final int JOYSTICK_CO_DRIVER_PORT = 1;
 
+    // Joystick constants:
     public static final int JOYSTICK_STICK_TRIGGER_BUTTON = 1;
     public static final int JOYSTICK_STICK_THUMB_BUTTON = 2;
     public static final int JOYSTICK_STICK_BOTTOM_LEFT_BUTTON = 3;
@@ -43,6 +44,7 @@ public class JoystickButtonConstants
     public static final int JOYSTICK_BASE_BOTTOM_LEFT_BUTTON = 11;
     public static final int JOYSTICK_BASE_BOTTOM_RIGHT_BUTTON = 12;
 
+    // Button Pad button constants:
     public static final int BUTTON_PAD_BUTTON_1 = 1;
     public static final int BUTTON_PAD_BUTTON_2 = 2;
     public static final int BUTTON_PAD_BUTTON_3 = 3;

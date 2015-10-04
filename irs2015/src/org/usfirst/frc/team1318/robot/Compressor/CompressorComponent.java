@@ -1,7 +1,5 @@
 package org.usfirst.frc.team1318.robot.Compressor;
 
-import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
-
 import edu.wpi.first.wpilibj.Compressor;
 
 /**
@@ -13,11 +11,6 @@ import edu.wpi.first.wpilibj.Compressor;
  */
 public class CompressorComponent
 {
-    // logging constants
-    private static final String RUNNING_LOG_KEY = "cm.running";
-
-    //private static final String PSI_LOG_KEY = "cm.psi";
-
     private final Compressor compressor;
 
     //    private AnalogInput analogPressureSensor;
@@ -42,8 +35,6 @@ public class CompressorComponent
     public void start()
     {
         this.compressor.start();
-
-        SmartDashboardLogger.putBoolean(CompressorComponent.RUNNING_LOG_KEY, true);
     }
 
     /**
@@ -52,8 +43,6 @@ public class CompressorComponent
     public void stop()
     {
         this.compressor.stop();
-
-        SmartDashboardLogger.putBoolean(CompressorComponent.RUNNING_LOG_KEY, false);
     }
 
     /**
@@ -64,8 +53,6 @@ public class CompressorComponent
     //    {
     //        double psi = this.analogPressureSensor.getVoltage()
     //            * (ElectronicsConstants.COMPRESSOR_MAX_PSI / ElectronicsConstants.COMPRESSOR_MAX_VOLTAGE);
-    //
-    //        SmartDashboardLogger.putNumber(CompressorComponent.PSI_LOG_KEY, psi);
     //
     //        return psi;
     //    }

@@ -1,17 +1,21 @@
 package org.usfirst.frc.team1318.robot.Driver.Descriptions;
 
+/**
+ * Describes an operation.
+ *
+ */
 public abstract class OperationDescription
 {
-    private final DriverOperationType type;
+    private final OperationType type;
     private final UserInputDevice userInputDevice;
 
-    protected OperationDescription(DriverOperationType type, UserInputDevice userInputDevice)
+    protected OperationDescription(OperationType type, UserInputDevice userInputDevice)
     {
         this.type = type;
         this.userInputDevice = userInputDevice;
     }
 
-    public DriverOperationType getType()
+    public OperationType getType()
     {
         return this.type;
     }

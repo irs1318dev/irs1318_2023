@@ -5,6 +5,10 @@ import org.usfirst.frc.team1318.robot.Driver.Descriptions.AnalogOperationDescrip
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.AxisType;
 
+/**
+ * The state of the current analog operation.
+ *
+ */
 public class AnalogOperationState extends OperationState
 {
     private double currentValue;

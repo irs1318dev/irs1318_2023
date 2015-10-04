@@ -16,11 +16,9 @@ import org.usfirst.frc.team1318.robot.Driver.States.MacroOperationState;
 import edu.wpi.first.wpilibj.Joystick;
 
 /**
- * Driver for teleop mode.  User driver translates current toggle state and joystick state into
+ * Driver for teleop mode.  User driver translates current state and joystick state information into
  * the specific actions that should be taken by the robot.
  * 
- * @author Will
- *
  */
 public class UserDriver extends Driver
 {
@@ -130,7 +128,8 @@ public class UserDriver extends Driver
             }
             else if (relevantMacroOperations.size() > 1)
             {
-                Set<MacroOperation> newRelevantMacroOperations = SetHelper.<MacroOperation> RelativeComplement(previouslyActiveMacroOperations, relevantMacroOperations);
+                Set<MacroOperation> newRelevantMacroOperations = SetHelper.<MacroOperation> RelativeComplement(
+                    previouslyActiveMacroOperations, relevantMacroOperations);
                 if (newRelevantMacroOperations.size() > 1)
                 {
                     // disobeys rule #3:
@@ -140,7 +139,8 @@ public class UserDriver extends Driver
                 else
                 {
                     // some disobey rule #2 (remove only those that were previously active, and not the 1 that is newly active...)
-                    macroOperationsToCancel.addAll(SetHelper.<MacroOperation> RelativeComplement(newRelevantMacroOperations, relevantMacroOperations));
+                    macroOperationsToCancel.addAll(SetHelper.<MacroOperation> RelativeComplement(newRelevantMacroOperations,
+                        relevantMacroOperations));
                 }
             }
         }
@@ -153,7 +153,8 @@ public class UserDriver extends Driver
 
         // determine which operations should actually be interrupted by our new macro:
         Set<Operation> desiredInterruptedOperations = new HashSet<Operation>();
-        for (MacroOperation macroOperationToKeep : SetHelper.<MacroOperation> RelativeComplement(macroOperationsToCancel, activeMacroOperations))
+        for (MacroOperation macroOperationToKeep : SetHelper.<MacroOperation> RelativeComplement(macroOperationsToCancel,
+            activeMacroOperations))
         {
             desiredInterruptedOperations.addAll(Arrays.asList(this.macroSchema.get(macroOperationToKeep).getAffectedOperations()));
         }
@@ -165,7 +166,8 @@ public class UserDriver extends Driver
         }
 
         // clear interruption for operations that are interrupted that should not be:
-        for (Operation operationToUnInterrupt : SetHelper.<Operation> RelativeComplement(desiredInterruptedOperations, interruptedOperations))
+        for (Operation operationToUnInterrupt : SetHelper.<Operation> RelativeComplement(desiredInterruptedOperations,
+            interruptedOperations))
         {
             this.operationStateMap.get(operationToUnInterrupt).setIsInterrupted(false);
         }

@@ -15,6 +15,10 @@ import org.usfirst.frc.team1318.robot.Driver.States.AnalogOperationState;
 import org.usfirst.frc.team1318.robot.Driver.States.DigitalOperationState;
 import org.usfirst.frc.team1318.robot.Driver.States.OperationState;
 
+/**
+ * Driver that represents something that operates the robot.  This is either autonomous or teleop/user driver.
+ *
+ */
 public abstract class Driver
 {
     @SuppressWarnings("serial")

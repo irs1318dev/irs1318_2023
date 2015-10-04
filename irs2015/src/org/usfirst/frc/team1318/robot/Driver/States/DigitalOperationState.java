@@ -8,6 +8,10 @@ import org.usfirst.frc.team1318.robot.Driver.Descriptions.DigitalOperationDescri
 
 import edu.wpi.first.wpilibj.Joystick;
 
+/**
+ * The state of the current digital operation.
+ *
+ */
 public class DigitalOperationState extends OperationState
 {
     private final IButton button;

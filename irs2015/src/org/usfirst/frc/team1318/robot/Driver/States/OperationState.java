@@ -6,6 +6,10 @@ import org.usfirst.frc.team1318.robot.Driver.Descriptions.OperationDescription;
 
 import edu.wpi.first.wpilibj.Joystick;
 
+/**
+ * The state of a current operation.
+ *
+ */
 public abstract class OperationState
 {
     private final OperationDescription description;

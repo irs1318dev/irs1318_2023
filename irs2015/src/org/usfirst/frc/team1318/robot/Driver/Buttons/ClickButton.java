@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1318.robot.Driver.Buttons;
 
 /**
- * Defines a simple button that switches between true and false, activating when clicked and deactivating when measured
+ * Defines a simple button that activates when clicked and deactivates when measured
  * 
  * Register on press behavior:
  * 
@@ -19,8 +19,6 @@ package org.usfirst.frc.team1318.robot.Driver.Buttons;
  *                                             ^ takes effect when first released
  *                                                 ^ cleared after next update
  * 
- * @author Will
- *
  */
 public class ClickButton implements IButton
 {
@@ -50,7 +48,7 @@ public class ClickButton implements IButton
     }
 
     /**
-     * Check whether we should change the activation of the button
+     * update the state of the button based on information from the user input device.
      * @param buttonState the current position of the button (whether it is currently pressed)
      */
     public void updateState(boolean buttonState)
@@ -70,8 +68,8 @@ public class ClickButton implements IButton
     }
 
     /**
-     * Gets a value indicating whether this is currently activated
-     * @return true if activated, otherwise false
+     * gets a value indicating whether the button is activated 
+     * @return true for active, otherwise false
      */
     public boolean isActivated()
     {

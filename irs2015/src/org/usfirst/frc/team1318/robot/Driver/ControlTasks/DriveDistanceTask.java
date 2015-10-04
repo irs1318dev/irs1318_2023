@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1318.robot.Driver.ControlTasks;
 
-import org.usfirst.frc.team1318.robot.DriveTrain.IDriveTrainComponent;
+import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainComponent;
 import org.usfirst.frc.team1318.robot.Driver.IControlTask;
 
 /**
@@ -16,7 +16,7 @@ public class DriveDistanceTask extends MoveDistanceTaskBase implements IControlT
      * @param distance from the current location to move (positive means move forward, negative means move backwards) in centimeters
      * @param driveTrain component to use to detect our current position
      */
-    public DriveDistanceTask(double distance, IDriveTrainComponent driveTrain)
+    public DriveDistanceTask(double distance, DriveTrainComponent driveTrain)
     {
         super(driveTrain);
 

@@ -7,8 +7,6 @@ import org.usfirst.frc.team1318.robot.Driver.States.OperationState;
 /**
  * Interface describing a task that that controls the functioning of the robot.
  * 
- * @author Will
- *
  */
 public interface IControlTask
 {

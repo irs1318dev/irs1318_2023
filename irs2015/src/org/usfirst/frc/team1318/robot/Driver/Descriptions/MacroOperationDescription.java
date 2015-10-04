@@ -17,7 +17,7 @@ public class MacroOperationDescription extends OperationDescription
         Supplier<IControlTask> taskSupplier,
         Operation... affectedOperations)
     {
-        super(DriverOperationType.None, userInputDevice);
+        super(OperationType.None, userInputDevice);
 
         this.userInputDeviceButton = userInputDeviceButton;
         this.affectedOperations = affectedOperations;

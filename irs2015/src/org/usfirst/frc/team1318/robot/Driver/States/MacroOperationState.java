@@ -10,6 +10,10 @@ import org.usfirst.frc.team1318.robot.Driver.Descriptions.MacroOperationDescript
 
 import edu.wpi.first.wpilibj.Joystick;
 
+/**
+ * The state of the current macro operation.
+ *
+ */
 public class MacroOperationState extends OperationState
 {
     private final IButton button;

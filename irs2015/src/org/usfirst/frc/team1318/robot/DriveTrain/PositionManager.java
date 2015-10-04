@@ -11,7 +11,6 @@ import org.usfirst.frc.team1318.robot.Driver.Driver;
  * This class maintains the approximate current location and orientation of the robot relative to its starting point.
  * This uses Jim's differential odometry algorithm. In the future we can consider adding other sensors to help correct for error.
  * 
- * @author Will
  */
 public class PositionManager implements IController
 {
@@ -131,6 +130,9 @@ public class PositionManager implements IController
         return this.y;
     }
 
+    /**
+     * reset the position manager so it considers the current location to be "0"
+     */
     public void reset()
     {
         this.x = 0.0;

@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1318.robot.Driver.ControlTasks;
 
 import org.usfirst.frc.team1318.robot.HardwareConstants;
-import org.usfirst.frc.team1318.robot.DriveTrain.IDriveTrainComponent;
+import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainComponent;
 import org.usfirst.frc.team1318.robot.Driver.IControlTask;
 
 /**
@@ -17,7 +17,7 @@ public class TurnTask extends MoveDistanceTaskBase implements IControlTask
      * @param degrees from the current orientation to rotate (positive means turn right/clockwise, negative means turn left/counter-clockwise)
      * @param driveTrain component to use to detect our current position
      */
-    public TurnTask(double degrees, IDriveTrainComponent driveTrain)
+    public TurnTask(double degrees, DriveTrainComponent driveTrain)
     {
         super(driveTrain);
 

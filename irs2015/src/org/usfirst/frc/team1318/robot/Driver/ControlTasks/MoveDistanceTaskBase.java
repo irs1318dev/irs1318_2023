@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1318.robot.Driver.ControlTasks;
 
-import org.usfirst.frc.team1318.robot.DriveTrain.IDriveTrainComponent;
+import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainComponent;
 import org.usfirst.frc.team1318.robot.Driver.IControlTask;
 import org.usfirst.frc.team1318.robot.Driver.Operation;
 import org.usfirst.frc.team1318.robot.Driver.Autonomous.AutonomousConstants;
@@ -11,7 +11,7 @@ import org.usfirst.frc.team1318.robot.Driver.Autonomous.AutonomousConstants;
  */
 public abstract class MoveDistanceTaskBase extends ControlTaskBase implements IControlTask
 {
-    private final IDriveTrainComponent driveTrain;
+    private final DriveTrainComponent driveTrain;
 
     protected double startLeftEncoderDistance;
     protected double startRightEncoderDistance;
@@ -23,7 +23,7 @@ public abstract class MoveDistanceTaskBase extends ControlTaskBase implements IC
      * Initializes a new MoveDistanceTaskBase
      * @param driveTrain component to use to detect our current position
      */
-    protected MoveDistanceTaskBase(IDriveTrainComponent driveTrain)
+    protected MoveDistanceTaskBase(DriveTrainComponent driveTrain)
     {
         this.driveTrain = driveTrain;
     }

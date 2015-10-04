@@ -49,7 +49,7 @@ public class ToggleButton implements IButton
     }
 
     /**
-     * Check whether we should change the current state of the toggle
+     * update the state of the button based on information from the user input device.
      * @param buttonState the current position of the button (whether it is currently pressed)
      */
     public void updateState(boolean buttonState)
@@ -65,8 +65,8 @@ public class ToggleButton implements IButton
     }
 
     /**
-     * Gets a value indicating whether this is currently toggled
-     * @return true if toggled, otherwise false
+     * gets a value indicating whether the button is activated 
+     * @return true for active, otherwise false
      */
     public boolean isActivated()
     {

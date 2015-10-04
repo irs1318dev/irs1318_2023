@@ -1,5 +1,15 @@
 package org.usfirst.frc.team1318.robot.Driver.Buttons;
 
+/**
+ * Defines a simple button that activates when pressed and deactivates when released
+ * 
+ *     button pressed:        _________________
+ *                           |                 |
+ * button not pressed: ______|                 |________
+ *                            ^ active
+ *                                              ^ not active
+ * 
+ */
 public class SimpleButton implements IButton
 {
     private final boolean activateOnPress;
@@ -7,7 +17,7 @@ public class SimpleButton implements IButton
     private boolean activated;
 
     /**
-     * Initializes a new SimpleButton that will be considered activate when pressed
+     * Initializes a new SimpleButton
      */
     public SimpleButton()
     {
@@ -24,8 +34,8 @@ public class SimpleButton implements IButton
     }
 
     /**
-     * attempt to activate button, otherwise sets activated to false 
-     * @param buttonState the current position of the button (whether it is currently pressed) 
+     * update the state of the button based on information from the user input device.
+     * @param buttonState the current position of the button (whether it is currently pressed)
      */
     public void updateState(boolean buttonState)
     {
@@ -42,7 +52,7 @@ public class SimpleButton implements IButton
 
     /**
      * gets a value indicating whether the button is activated 
-     * @return true for act, otherwise false 
+     * @return true for active, otherwise false
      */
     public boolean isActivated()
     {

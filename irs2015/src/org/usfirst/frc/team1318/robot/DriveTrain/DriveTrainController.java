@@ -11,8 +11,6 @@ import org.usfirst.frc.team1318.robot.Driver.Operation;
  * The controller defines the logic that controls a mechanism given inputs (component) and operator-requested actions, and 
  * translates those into the abstract functions that should be applied to the outputs (component).
  * 
- * @author Will
- * 
  */
 public class DriveTrainController implements IController
 {
@@ -20,7 +18,7 @@ public class DriveTrainController implements IController
     private static final double POWERLEVEL_MAX = 1.0;
 
     private Driver driver;
-    private IDriveTrainComponent component;
+    private DriveTrainComponent component;
 
     private boolean usePID;
     private boolean usePositionalMode;
@@ -32,7 +30,7 @@ public class DriveTrainController implements IController
      * @param component to control
      * @param usePID indicates whether we should use PID control
      */
-    public DriveTrainController(IDriveTrainComponent component, boolean usePID)
+    public DriveTrainController(DriveTrainComponent component, boolean usePID)
     {
         this.component = component;
         this.usePID = usePID;
@@ -68,9 +66,6 @@ public class DriveTrainController implements IController
     @Override
     public void update()
     {
-        //        this.component.getProximitySensorFront();
-        //        this.component.getProximitySensorBack();
-
         // check our desired PID mode
         boolean newUsePositionalMode = this.driver.getDigital(Operation.DriveTrainUsePositionalMode);
         if (newUsePositionalMode != this.usePositionalMode)
@@ -94,6 +89,21 @@ public class DriveTrainController implements IController
 
         double leftPower = powerSetting.getLeftPower();
         double rightPower = powerSetting.getRightPower();
+
+        if (leftPower > 0)
+        {
+            leftPower /= TuningConstants.DRIVETRAIN_REVERSE_LEFT_SCALE_FACTOR;
+        }
+
+        if (rightPower > 0)
+        {
+            rightPower /= TuningConstants.DRIVETRAIN_REVERSE_RIGHT_SCALE_FACTOR;
+        }
+
+        leftPower = Math.min(leftPower, 1);
+        leftPower = Math.max(leftPower, -1);
+        rightPower = Math.min(rightPower, 1);
+        rightPower = Math.max(rightPower, -1);
 
         // apply the power settings to the drivetrain component
         this.component.setDriveTrainPower(leftPower, rightPower);
@@ -278,7 +288,7 @@ public class DriveTrainController implements IController
         }
         else
         {
-            // calculate a desired 
+            // calculate a desired power level
             leftPower = leftPosition - leftDistance;
             rightPower = rightPosition - rightDistance;
             if (Math.abs(leftPower) < 0.1)

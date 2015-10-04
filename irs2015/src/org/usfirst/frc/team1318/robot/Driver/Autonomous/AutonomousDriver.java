@@ -8,8 +8,6 @@ import org.usfirst.frc.team1318.robot.Driver.IControlTask;
  * telling it what actions to perform as determined by the current task and tasks that have
  * come before it that intentionally don't reset their state.
  * 
- * @author Will
- *
  */
 public class AutonomousDriver extends Driver
 {
