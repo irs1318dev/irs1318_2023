@@ -83,7 +83,7 @@ public abstract class Driver
                     JoystickButtonConstants.JOYSTICK_BASE_BOTTOM_RIGHT_BUTTON,
                     () -> ((IControlTask)new DriveTimedTask(20.0, 0.5, 0.5)),
                     new Operation[]
-            { Operation.DriveTrainMoveForward, Operation.DriveTrainTurn, Operation.DriveTrainUsePositionalMode }));
+                        { Operation.DriveTrainMoveForward, Operation.DriveTrainTurn, Operation.DriveTrainUsePositionalMode }));
         }
     };
 
