@@ -2,6 +2,7 @@ package org.usfirst.frc.team1318.robot.Driver.ControlTasks;
 
 import java.util.Map;
 
+import org.usfirst.frc.team1318.robot.ComponentManager;
 import org.usfirst.frc.team1318.robot.Driver.IControlTask;
 import org.usfirst.frc.team1318.robot.Driver.Operation;
 import org.usfirst.frc.team1318.robot.Driver.States.AnalogOperationState;
@@ -11,15 +12,18 @@ import org.usfirst.frc.team1318.robot.Driver.States.OperationState;
 public abstract class ControlTaskBase implements IControlTask
 {
     private Map<Operation, OperationState> operationStateMap;
+    private ComponentManager components;
 
     /**
      * Initialize the task with the mapping of operations to states
      * @param operationStateMap indicating the mapping of an operation to its current state
+     * @param components to utilize for making any decisions
      */
     @Override
-    public void initialize(Map<Operation, OperationState> operationStateMap)
+    public void initialize(Map<Operation, OperationState> operationStateMap, ComponentManager components)
     {
         this.operationStateMap = operationStateMap;
+        this.components = components;
     }
 
     /**
@@ -68,5 +72,14 @@ public abstract class ControlTaskBase implements IControlTask
     {
         OperationState operationState = this.operationStateMap.get(operation);
         ((DigitalOperationState)operationState).setInterruptState(value);
+    }
+
+    /**
+     * Gets the component manager for the robot
+     * @return the set of robot components
+     */
+    protected ComponentManager getComponents()
+    {
+        return this.components;
     }
 }

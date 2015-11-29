@@ -2,6 +2,7 @@ package org.usfirst.frc.team1318.robot.Driver;
 
 import java.util.Map;
 
+import org.usfirst.frc.team1318.robot.ComponentManager;
 import org.usfirst.frc.team1318.robot.Driver.States.OperationState;
 
 /**
@@ -13,8 +14,9 @@ public interface IControlTask
     /**
      * Initialize the task with the mapping of operations to states
      * @param operationStateMap indicating the mapping of an operation to its current state
+     * @param components to utilize for making any decisions
      */
-    public void initialize(Map<Operation, OperationState> operationStateMap);
+    public void initialize(Map<Operation, OperationState> operationStateMap, ComponentManager components);
 
     /**
      * Begin the current task.

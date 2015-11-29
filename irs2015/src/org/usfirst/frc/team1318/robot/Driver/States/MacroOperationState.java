@@ -2,6 +2,7 @@ package org.usfirst.frc.team1318.robot.Driver.States;
 
 import java.util.Map;
 
+import org.usfirst.frc.team1318.robot.ComponentManager;
 import org.usfirst.frc.team1318.robot.Driver.IControlTask;
 import org.usfirst.frc.team1318.robot.Driver.Operation;
 import org.usfirst.frc.team1318.robot.Driver.Buttons.ClickButton;
@@ -18,14 +19,21 @@ public class MacroOperationState extends OperationState
 {
     private final IButton button;
     private final Map<Operation, OperationState> operationStateMap;
+    private final ComponentManager components;
+
     private IControlTask task;
     private boolean isActive;
 
-    public MacroOperationState(MacroOperationDescription description, Map<Operation, OperationState> operationStateMap)
+    public MacroOperationState(
+        MacroOperationDescription description,
+        Map<Operation, OperationState> operationStateMap,
+        ComponentManager components)
     {
         super(description);
 
         this.operationStateMap = operationStateMap;
+        this.components = components;
+
         this.button = new ClickButton();
         this.task = null;
         this.isActive = false;
@@ -115,7 +123,7 @@ public class MacroOperationState extends OperationState
             {
                 // start task
                 this.task = ((MacroOperationDescription)this.getDescription()).constructTask();
-                this.task.initialize(this.operationStateMap);
+                this.task.initialize(this.operationStateMap, this.components);
                 this.task.begin();
             }
             else

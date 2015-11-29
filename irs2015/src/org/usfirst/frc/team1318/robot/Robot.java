@@ -1,9 +1,7 @@
 package org.usfirst.frc.team1318.robot;
 
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
-import org.usfirst.frc.team1318.robot.Compressor.CompressorComponent;
 import org.usfirst.frc.team1318.robot.Compressor.CompressorController;
-import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainComponent;
 import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainController;
 import org.usfirst.frc.team1318.robot.DriveTrain.PositionManager;
 import org.usfirst.frc.team1318.robot.Driver.Driver;
@@ -44,12 +42,11 @@ public class Robot extends IterativeRobot
     // Driver.  This could either be the UserDriver (joystick) or the AutonomousDriver
     private Driver driver;
 
-    // Compressor
-    private CompressorComponent compressorComponent;
-    private CompressorController compressorController;
+    // Components
+    private ComponentManager components;
 
-    // DriveTrain
-    private DriveTrainComponent driveTrainComponent;
+    // Controllers
+    private CompressorController compressorController;
     private DriveTrainController driveTrainController;
 
     // DipSwitches for selecting autonomous mode
@@ -67,19 +64,16 @@ public class Robot extends IterativeRobot
     public void robotInit()
     {
         // create mechanism components
-        this.compressorComponent = new CompressorComponent();
-        this.driveTrainComponent = new DriveTrainComponent();
-
-        this.driver = new UserDriver();
+        this.components = new ComponentManager();
 
         // create controllers for each mechanism
-        this.compressorController = new CompressorController(this.compressorComponent);
+        this.compressorController = new CompressorController(this.components.getCompressor());
         this.driveTrainController = new DriveTrainController(
-            this.driveTrainComponent,
+            this.components.getDriveTrain(),
             TuningConstants.DRIVETRAIN_USE_PID_DEFAULT);
 
         // create position manager
-        this.position = new PositionManager(this.driveTrainComponent);
+        this.position = new PositionManager(this.components.getDriveTrain());
 
         SmartDashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Init");
 
@@ -118,7 +112,7 @@ public class Robot extends IterativeRobot
     public void autonomousInit()
     {
         // reset the drivetrain component and position manager so that we consider ourself at the origin (0,0) and facing the 0 direction.
-        this.driveTrainComponent.reset();
+        this.components.getDriveTrain().reset();
         this.position.reset();
 
         // Find desired autonomous routine.
@@ -149,7 +143,7 @@ public class Robot extends IterativeRobot
         SmartDashboardLogger.putNumber(Robot.AUTONOMOUS_ROUTINE_PREFERENCE_KEY, routineSelection);
 
         // create autonomous driver based on our desired routine
-        this.driver = new AutonomousDriver(autonomousRoutine);
+        this.driver = new AutonomousDriver(autonomousRoutine, this.components);
 
         this.generalInit();
 
@@ -164,7 +158,7 @@ public class Robot extends IterativeRobot
     public void teleopInit()
     {
         // create driver for user's joystick
-        this.driver = new UserDriver();
+        this.driver = new UserDriver(this.components);
 
         this.generalInit();
 

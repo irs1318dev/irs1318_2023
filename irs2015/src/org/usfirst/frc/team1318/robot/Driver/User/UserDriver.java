@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.usfirst.frc.team1318.robot.ComponentManager;
 import org.usfirst.frc.team1318.robot.Common.SetHelper;
 import org.usfirst.frc.team1318.robot.Driver.Driver;
 import org.usfirst.frc.team1318.robot.Driver.JoystickButtonConstants;
@@ -26,11 +27,13 @@ public class UserDriver extends Driver
     private final Joystick joystickCoDriver;
 
     private final Map<MacroOperation, MacroOperationState> macroStateMap;
+    private final ComponentManager components;
 
     /**
      * Initializes a new UserDriver
+     * @param components to utilize within the robot
      */
-    public UserDriver()
+    public UserDriver(ComponentManager components)
     {
         super();
 
@@ -38,10 +41,16 @@ public class UserDriver extends Driver
         this.joystickCoDriver = new Joystick(JoystickButtonConstants.JOYSTICK_CO_DRIVER_PORT);
 
         this.macroStateMap = new HashMap<MacroOperation, MacroOperationState>();
+        this.components = components;
 
         for (MacroOperation macroOperation : this.macroSchema.keySet())
         {
-            this.macroStateMap.put(macroOperation, new MacroOperationState(this.macroSchema.get(macroOperation), this.operationStateMap));
+            this.macroStateMap.put(
+                macroOperation,
+                new MacroOperationState(
+                    this.macroSchema.get(macroOperation),
+                    this.operationStateMap,
+                    this.components));
         }
     }
 

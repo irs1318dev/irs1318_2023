@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1318.robot.Driver.Autonomous;
 
+import org.usfirst.frc.team1318.robot.ComponentManager;
 import org.usfirst.frc.team1318.robot.Driver.Driver;
 import org.usfirst.frc.team1318.robot.Driver.IControlTask;
 
@@ -20,8 +21,9 @@ public class AutonomousDriver extends Driver
     /**
      * Initializes a new AutonomousDriver
      * @param autonomousTask to execute as a part of this driver
+     * @param components to utilize for making any decisions
      */
-    public AutonomousDriver(IControlTask autonomousTask)
+    public AutonomousDriver(IControlTask autonomousTask, ComponentManager components)
     {
         super();
 
@@ -30,7 +32,7 @@ public class AutonomousDriver extends Driver
         this.hasBegun = false;
         this.hasEnded = false;
 
-        this.autonomousTask.initialize(this.operationStateMap);
+        this.autonomousTask.initialize(this.operationStateMap, components);
     }
 
     /**

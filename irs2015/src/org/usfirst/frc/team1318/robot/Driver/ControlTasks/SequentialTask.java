@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
+import org.usfirst.frc.team1318.robot.ComponentManager;
 import org.usfirst.frc.team1318.robot.Driver.IControlTask;
 import org.usfirst.frc.team1318.robot.Driver.Operation;
 import org.usfirst.frc.team1318.robot.Driver.States.OperationState;
@@ -31,14 +32,15 @@ public class SequentialTask extends ControlTaskBase implements IControlTask
     /**
      * Initialize the task with the mapping of operations to states
      * @param operationStateMap indicating the mapping of an operation to its current state
+     * @param components to utilize for making any decisions
      */
     @Override
-    public void initialize(Map<Operation, OperationState> operationStateMap)
+    public void initialize(Map<Operation, OperationState> operationStateMap, ComponentManager components)
     {
-        super.initialize(operationStateMap);
+        super.initialize(operationStateMap, components);
         for (IControlTask task : this.orderedTasks)
         {
-            task.initialize(operationStateMap);
+            task.initialize(operationStateMap, components);
         }
     }
 
