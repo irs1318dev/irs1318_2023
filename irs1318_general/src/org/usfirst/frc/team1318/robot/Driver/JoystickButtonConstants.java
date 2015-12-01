@@ -43,6 +43,7 @@ public class JoystickButtonConstants
     public static final int JOYSTICK_BASE_MIDDLE_RIGHT_BUTTON = 10;
     public static final int JOYSTICK_BASE_BOTTOM_LEFT_BUTTON = 11;
     public static final int JOYSTICK_BASE_BOTTOM_RIGHT_BUTTON = 12;
+    public static final int JOYSTICK_POV = 13;
 
     // Button Pad button constants:
     public static final int BUTTON_PAD_BUTTON_1 = 1;

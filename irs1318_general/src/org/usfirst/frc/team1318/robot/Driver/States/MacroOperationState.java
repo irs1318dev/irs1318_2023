@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.usfirst.frc.team1318.robot.ComponentManager;
 import org.usfirst.frc.team1318.robot.Driver.IControlTask;
+import org.usfirst.frc.team1318.robot.Driver.JoystickButtonConstants;
 import org.usfirst.frc.team1318.robot.Driver.Operation;
 import org.usfirst.frc.team1318.robot.Driver.Buttons.ClickButton;
 import org.usfirst.frc.team1318.robot.Driver.Buttons.IButton;
@@ -94,7 +95,16 @@ public class MacroOperationState extends OperationState
 
         relevantButton = description.getUserInputDeviceButton();
 
-        boolean buttonPressed = relevantJoystick.getRawButton(relevantButton);
+        boolean buttonPressed;
+        if (relevantButton == JoystickButtonConstants.JOYSTICK_POV)
+        {
+            buttonPressed = relevantJoystick.getPOV() == description.getUserInputDevicePovValue();
+        }
+        else
+        {
+            buttonPressed = relevantJoystick.getRawButton(relevantButton);
+        }
+
         this.button.updateState(buttonPressed);
 
         if (this.button.isActivated())
