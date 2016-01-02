@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1318.robot.Driver.States;
 
+import org.usfirst.frc.team1318.robot.Driver.JoystickButtonConstants;
 import org.usfirst.frc.team1318.robot.Driver.Buttons.ClickButton;
 import org.usfirst.frc.team1318.robot.Driver.Buttons.IButton;
 import org.usfirst.frc.team1318.robot.Driver.Buttons.SimpleButton;
@@ -99,7 +100,16 @@ public class DigitalOperationState extends OperationState
 
         relevantButton = description.getUserInputDeviceButton();
 
-        boolean buttonPressed = relevantJoystick.getRawButton(relevantButton);
+        boolean buttonPressed;
+        if (relevantButton == JoystickButtonConstants.JOYSTICK_POV)
+        {
+            buttonPressed = relevantJoystick.getPOV() == description.getUserInputDevicePovValue();
+        }
+        else
+        {
+            buttonPressed = relevantJoystick.getRawButton(relevantButton);
+        }
+
         this.button.updateState(buttonPressed);
         return buttonPressed;
     }
