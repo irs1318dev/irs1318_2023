@@ -7,9 +7,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.usfirst.frc.team1318.robot.ComponentManager;
+import org.usfirst.frc.team1318.robot.ElectronicsConstants;
 import org.usfirst.frc.team1318.robot.Common.SetHelper;
 import org.usfirst.frc.team1318.robot.Driver.Driver;
-import org.usfirst.frc.team1318.robot.Driver.JoystickButtonConstants;
 import org.usfirst.frc.team1318.robot.Driver.MacroOperation;
 import org.usfirst.frc.team1318.robot.Driver.Operation;
 import org.usfirst.frc.team1318.robot.Driver.States.MacroOperationState;
@@ -37,8 +37,8 @@ public class UserDriver extends Driver
     {
         super();
 
-        this.joystickDriver = new Joystick(JoystickButtonConstants.JOYSTICK_DRIVER_PORT);
-        this.joystickCoDriver = new Joystick(JoystickButtonConstants.JOYSTICK_CO_DRIVER_PORT);
+        this.joystickDriver = new Joystick(ElectronicsConstants.JOYSTICK_DRIVER_PORT);
+        this.joystickCoDriver = new Joystick(ElectronicsConstants.JOYSTICK_CO_DRIVER_PORT);
 
         this.macroStateMap = new HashMap<MacroOperation, MacroOperationState>();
         this.components = components;
@@ -77,7 +77,8 @@ public class UserDriver extends Driver
         Set<Operation> interruptedOperations = new HashSet<Operation>();
         for (Operation operation : this.operationStateMap.keySet())
         {
-            boolean receivedInput = this.operationStateMap.get(operation).checkUserInput(this.joystickDriver, this.joystickCoDriver);
+            boolean receivedInput = this.operationStateMap.get(operation).checkInput(this.joystickDriver, this.joystickCoDriver,
+                this.components);
             if (receivedInput)
             {
                 modifiedOperations.add(operation);
@@ -97,7 +98,7 @@ public class UserDriver extends Driver
         for (MacroOperation macroOperation : this.macroStateMap.keySet())
         {
             MacroOperationState macroState = this.macroStateMap.get(macroOperation);
-            boolean modifiedMacro = macroState.checkUserInput(this.joystickDriver, this.joystickCoDriver);
+            boolean modifiedMacro = macroState.checkInput(this.joystickDriver, this.joystickCoDriver, this.components);
             if (modifiedMacro)
             {
                 modifiedMacroOperations.add(macroOperation);

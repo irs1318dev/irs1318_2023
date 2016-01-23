@@ -39,25 +39,25 @@ public abstract class Driver
                 Operation.DriveTrainShiftGearUp,
                 new DigitalOperationDescription(
                     UserInputDevice.Driver,
-                    JoystickButtonConstants.JOYSTICK_STICK_TOP_LEFT_BUTTON,
+                    UserInputDeviceButton.JOYSTICK_STICK_TOP_LEFT_BUTTON,
                     ButtonType.Click));
             put(
                 Operation.DriveTrainShiftGearDown,
                 new DigitalOperationDescription(
                     UserInputDevice.Driver,
-                    JoystickButtonConstants.JOYSTICK_STICK_BOTTOM_LEFT_BUTTON,
+                    UserInputDeviceButton.JOYSTICK_STICK_BOTTOM_LEFT_BUTTON,
                     ButtonType.Click));
             put(
                 Operation.DriveTrainSimpleMode,
                 new DigitalOperationDescription(
                     UserInputDevice.Driver,
-                    JoystickButtonConstants.JOYSTICK_STICK_THUMB_BUTTON,
+                    UserInputDeviceButton.JOYSTICK_STICK_THUMB_BUTTON,
                     ButtonType.Toggle));
             put(
                 Operation.DriveTrainUsePositionalMode,
                 new DigitalOperationDescription(
                     UserInputDevice.None,
-                    JoystickButtonConstants.NONE,
+                    UserInputDeviceButton.NONE,
                     ButtonType.Toggle));
             put(
                 Operation.DriveTrainLeftPosition,
@@ -80,8 +80,8 @@ public abstract class Driver
                 MacroOperation.DriveDistance,
                 new MacroOperationDescription(
                     UserInputDevice.Driver,
-                    JoystickButtonConstants.JOYSTICK_BASE_BOTTOM_RIGHT_BUTTON,
-                    () -> ((IControlTask)new DriveTimedTask(20.0, 0.5, 0.5)),
+                    UserInputDeviceButton.JOYSTICK_BASE_BOTTOM_RIGHT_BUTTON,
+                    () -> ((IControlTask)new DriveTimedTask(20.0, 0.05, 0.05)),
                     new Operation[]
                         { Operation.DriveTrainMoveForward, Operation.DriveTrainTurn, Operation.DriveTrainUsePositionalMode }));
         }

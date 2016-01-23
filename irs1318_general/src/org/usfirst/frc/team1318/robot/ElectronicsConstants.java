@@ -19,6 +19,9 @@ public class ElectronicsConstants
     public static final int PCM_A_MODULE = 1;
     public static final int PCM_B_MODULE = 0;
 
+    public static final int JOYSTICK_DRIVER_PORT = 0;
+    public static final int JOYSTICK_CO_DRIVER_PORT = 1;
+
     //================================================== DriveTrain ==============================================================
 
     public static final int DRIVETRAIN_LEFT_TALON_CHANNEL = 2;

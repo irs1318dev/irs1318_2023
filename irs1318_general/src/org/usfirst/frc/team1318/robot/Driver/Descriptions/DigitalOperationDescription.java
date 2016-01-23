@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1318.robot.Driver.Descriptions;
 
+import org.usfirst.frc.team1318.robot.Driver.UserInputDeviceButton;
 import org.usfirst.frc.team1318.robot.Driver.Buttons.ButtonType;
 
 /**
@@ -8,32 +9,51 @@ import org.usfirst.frc.team1318.robot.Driver.Buttons.ButtonType;
  */
 public class DigitalOperationDescription extends OperationDescription
 {
-    private final int userInputDeviceButton;
+    private final UserInputDeviceButton userInputDeviceButton;
     private final int userInputDevicePovValue;
     private final ButtonType buttonType;
+    private final DigitalSensor sensor;
 
     public DigitalOperationDescription(
         UserInputDevice userInputDevice,
-        int userInputDeviceButton,
         int povValue,
+        ButtonType buttonType)
+    {
+        this(userInputDevice, UserInputDeviceButton.JOYSTICK_POV, povValue, DigitalSensor.None, buttonType);
+    }
+
+    public DigitalOperationDescription(
+        UserInputDevice userInputDevice,
+        UserInputDeviceButton userInputDeviceButton,
+        ButtonType buttonType)
+    {
+        this(userInputDevice, userInputDeviceButton, 0, DigitalSensor.None, buttonType);
+    }
+
+    public DigitalOperationDescription(
+        UserInputDevice userInputDevice,
+        DigitalSensor sensor,
+        ButtonType buttonType)
+    {
+        this(userInputDevice, UserInputDeviceButton.NONE, 0, sensor, buttonType);
+    }
+
+    private DigitalOperationDescription(
+        UserInputDevice userInputDevice,
+        UserInputDeviceButton userInputDeviceButton,
+        int povValue,
+        DigitalSensor sensor,
         ButtonType buttonType)
     {
         super(OperationType.Digital, userInputDevice);
 
         this.userInputDeviceButton = userInputDeviceButton;
         this.userInputDevicePovValue = povValue;
+        this.sensor = sensor;
         this.buttonType = buttonType;
     }
 
-    public DigitalOperationDescription(
-        UserInputDevice userInputDevice,
-        int userInputDeviceButton,
-        ButtonType buttonType)
-    {
-        this(userInputDevice, userInputDeviceButton, 0, buttonType);
-    }
-
-    public int getUserInputDeviceButton()
+    public UserInputDeviceButton getUserInputDeviceButton()
     {
         return this.userInputDeviceButton;
     }
@@ -43,13 +63,13 @@ public class DigitalOperationDescription extends OperationDescription
         return this.userInputDevicePovValue;
     }
 
+    public DigitalSensor getSensor()
+    {
+        return this.sensor;
+    }
+
     public ButtonType getButtonType()
     {
         return this.buttonType;
-    }
-
-    public boolean getDefaultValue()
-    {
-        return false;
     }
 }

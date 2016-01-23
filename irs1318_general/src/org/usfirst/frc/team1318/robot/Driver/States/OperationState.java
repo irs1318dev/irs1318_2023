@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1318.robot.Driver.States;
 
+import org.usfirst.frc.team1318.robot.ComponentManager;
 import org.usfirst.frc.team1318.robot.Driver.Descriptions.AnalogOperationDescription;
 import org.usfirst.frc.team1318.robot.Driver.Descriptions.DigitalOperationDescription;
 import org.usfirst.frc.team1318.robot.Driver.Descriptions.OperationDescription;
@@ -37,12 +38,13 @@ public abstract class OperationState
     public abstract boolean getIsInterrupted();
 
     /**
-     * Checks whether the operation state should change based on the driver and co-driver joysticks. 
+     * Checks whether the operation state should change based on the driver and co-driver joysticks and component sensors. 
      * @param driver joystick to update from
      * @param coDriver joystick to update from
+     * @param components to update from
      * @return true if there was any active user input that triggered a state change
      */
-    public abstract boolean checkUserInput(Joystick driver, Joystick coDriver);
+    public abstract boolean checkInput(Joystick driver, Joystick coDriver, ComponentManager components);
 
     /**
      * Create the state corresponding to the description
