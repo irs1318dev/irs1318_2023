@@ -146,7 +146,7 @@ public class MacroOperationState extends OperationState
             if (this.task == null)
             {
                 // start task
-                this.task = ((MacroOperationDescription)this.getDescription()).getTask();
+                this.task = ((MacroOperationDescription)this.getDescription()).constructTask();
                 this.task.initialize(this.operationStateMap, this.components);
                 this.task.begin();
             }

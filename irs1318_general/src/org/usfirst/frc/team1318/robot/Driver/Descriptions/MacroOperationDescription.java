@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1318.robot.Driver.Descriptions;
 
+import java.util.function.Supplier;
+
 import org.usfirst.frc.team1318.robot.Driver.IControlTask;
 import org.usfirst.frc.team1318.robot.Driver.Operation;
 import org.usfirst.frc.team1318.robot.Driver.UserInputDeviceButton;
@@ -10,32 +12,32 @@ public class MacroOperationDescription extends OperationDescription
     private final int userInputDevicePovValue;
     private final DigitalSensor sensor;
     private final Operation[] affectedOperations;
-    private final IControlTask task;
+    private final Supplier<IControlTask> taskSupplier;
 
     public MacroOperationDescription(
         UserInputDevice userInputDevice,
         int povValue,
-        IControlTask task,
+        Supplier<IControlTask> taskSupplier,
         Operation... affectedOperations)
     {
-        this(userInputDevice, UserInputDeviceButton.JOYSTICK_POV, povValue, DigitalSensor.None, task, affectedOperations);
+        this(userInputDevice, UserInputDeviceButton.JOYSTICK_POV, povValue, DigitalSensor.None, taskSupplier, affectedOperations);
     }
 
     public MacroOperationDescription(
         UserInputDevice userInputDevice,
         UserInputDeviceButton userInputDeviceButton,
-        IControlTask task,
+        Supplier<IControlTask> taskSupplier,
         Operation... affectedOperations)
     {
-        this(userInputDevice, userInputDeviceButton, 0, DigitalSensor.None, task, affectedOperations);
+        this(userInputDevice, userInputDeviceButton, 0, DigitalSensor.None, taskSupplier, affectedOperations);
     }
 
     public MacroOperationDescription(
         DigitalSensor sensor,
-        IControlTask task,
+        Supplier<IControlTask> taskSupplier,
         Operation... affectedOperations)
     {
-        this(UserInputDevice.Sensor, UserInputDeviceButton.NONE, 0, sensor, task, affectedOperations);
+        this(UserInputDevice.Sensor, UserInputDeviceButton.NONE, 0, sensor, taskSupplier, affectedOperations);
     }
 
     private MacroOperationDescription(
@@ -43,7 +45,7 @@ public class MacroOperationDescription extends OperationDescription
         UserInputDeviceButton userInputDeviceButton,
         int povValue,
         DigitalSensor sensor,
-        IControlTask task,
+        Supplier<IControlTask> taskSupplier,
         Operation... affectedOperations)
     {
         super(OperationType.None, userInputDevice);
@@ -52,7 +54,7 @@ public class MacroOperationDescription extends OperationDescription
         this.userInputDevicePovValue = povValue;
         this.sensor = sensor;
         this.affectedOperations = affectedOperations;
-        this.task = task;
+        this.taskSupplier = taskSupplier;
     }
 
     public UserInputDeviceButton getUserInputDeviceButton()
@@ -70,9 +72,9 @@ public class MacroOperationDescription extends OperationDescription
         return this.sensor;
     }
 
-    public IControlTask getTask()
+    public IControlTask constructTask()
     {
-        return this.task;
+        return this.taskSupplier.get();
     }
 
     public Operation[] getAffectedOperations()

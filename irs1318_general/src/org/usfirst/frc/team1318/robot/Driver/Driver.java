@@ -81,9 +81,9 @@ public abstract class Driver
                 new MacroOperationDescription(
                     UserInputDevice.Driver,
                     UserInputDeviceButton.JOYSTICK_BASE_BOTTOM_RIGHT_BUTTON,
-                    new DriveTimedTask(20.0, 0.05, 0.05),
+                    () -> ((IControlTask)new DriveTimedTask(20.0, 0.05, 0.05)),
                     new Operation[]
-            { Operation.DriveTrainMoveForward, Operation.DriveTrainTurn, Operation.DriveTrainUsePositionalMode }));
+                        { Operation.DriveTrainMoveForward, Operation.DriveTrainTurn, Operation.DriveTrainUsePositionalMode }));
         }
     };
 
