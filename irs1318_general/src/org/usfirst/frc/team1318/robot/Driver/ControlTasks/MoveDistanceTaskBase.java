@@ -1,8 +1,8 @@
 package org.usfirst.frc.team1318.robot.Driver.ControlTasks;
 
+import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.Driver.IControlTask;
 import org.usfirst.frc.team1318.robot.Driver.Operation;
-import org.usfirst.frc.team1318.robot.Driver.Autonomous.AutonomousConstants;
 
 /**
  * Abstract class defining a task that moves the robot a certain distance using Positional PID.
@@ -10,6 +10,8 @@ import org.usfirst.frc.team1318.robot.Driver.Autonomous.AutonomousConstants;
  */
 public abstract class MoveDistanceTaskBase extends ControlTaskBase implements IControlTask
 {
+    private final boolean resetPositionalOnEnd;
+
     protected double startLeftEncoderDistance;
     protected double startRightEncoderDistance;
 
@@ -18,9 +20,11 @@ public abstract class MoveDistanceTaskBase extends ControlTaskBase implements IC
 
     /**
      * Initializes a new MoveDistanceTaskBase
+     * @param resetPositionalOnEnd
      */
-    protected MoveDistanceTaskBase()
+    protected MoveDistanceTaskBase(boolean resetPositionalOnEnd)
     {
+        this.resetPositionalOnEnd = resetPositionalOnEnd;
     }
 
     /**
@@ -70,6 +74,12 @@ public abstract class MoveDistanceTaskBase extends ControlTaskBase implements IC
     @Override
     public void end()
     {
+        if (this.resetPositionalOnEnd)
+        {
+            this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
+            this.setAnalogOperationState(Operation.DriveTrainLeftPosition, 0.0);
+            this.setAnalogOperationState(Operation.DriveTrainRightPosition, 0.0);
+        }
     }
 
     /**
@@ -88,7 +98,7 @@ public abstract class MoveDistanceTaskBase extends ControlTaskBase implements IC
 
         // return that we have completed this task if are within an acceptable distance
         // from the desired end location for both left and right. 
-        return leftDelta < AutonomousConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA &&
-            rightDelta < AutonomousConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA;
+        return leftDelta < TuningConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA &&
+            rightDelta < TuningConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA;
     }
 }

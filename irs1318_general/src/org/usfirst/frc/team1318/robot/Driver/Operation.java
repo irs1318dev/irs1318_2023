@@ -5,10 +5,13 @@ public enum Operation
     // DriveTrain operations:
     DriveTrainMoveForward,
     DriveTrainTurn,
-    DriveTrainShiftGearUp,
-    DriveTrainShiftGearDown,
     DriveTrainSimpleMode,
     DriveTrainUsePositionalMode,
     DriveTrainLeftPosition,
-    DriveTrainRightPosition;
+    DriveTrainRightPosition,
+    DriveTrainSwapFrontOrientation,
+
+    // Other general operations:
+    EnablePID,
+    DisablePID,
 }

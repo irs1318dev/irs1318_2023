@@ -3,11 +3,14 @@ package org.usfirst.frc.team1318.robot.Driver.States;
 import java.util.Map;
 
 import org.usfirst.frc.team1318.robot.ComponentManager;
+import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.Driver.IControlTask;
 import org.usfirst.frc.team1318.robot.Driver.Operation;
 import org.usfirst.frc.team1318.robot.Driver.UserInputDeviceButton;
 import org.usfirst.frc.team1318.robot.Driver.Buttons.ClickButton;
 import org.usfirst.frc.team1318.robot.Driver.Buttons.IButton;
+import org.usfirst.frc.team1318.robot.Driver.Buttons.SimpleButton;
+import org.usfirst.frc.team1318.robot.Driver.Buttons.ToggleButton;
 import org.usfirst.frc.team1318.robot.Driver.Descriptions.MacroOperationDescription;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -23,7 +26,6 @@ public class MacroOperationState extends OperationState
     private final ComponentManager components;
 
     private IControlTask task;
-    private boolean isActive;
 
     public MacroOperationState(
         MacroOperationDescription description,
@@ -35,9 +37,32 @@ public class MacroOperationState extends OperationState
         this.operationStateMap = operationStateMap;
         this.components = components;
 
-        this.button = new ClickButton();
+        switch (description.getButtonType())
+        {
+            case Simple:
+                this.button = new SimpleButton();
+                break;
+
+            case Click:
+                this.button = new ClickButton();
+                break;
+
+            case Toggle:
+                this.button = new ToggleButton();
+                break;
+
+            default:
+                if (TuningConstants.THROW_EXCEPTIONS)
+                {
+                    throw new RuntimeException("unexpected button type " + description.getButtonType().toString());
+                }
+
+                this.button = null;
+                break;
+        }
+
         this.task = null;
-        this.isActive = false;
+        this.button.clearState();
     }
 
     /**
@@ -49,7 +74,7 @@ public class MacroOperationState extends OperationState
     {
         if (enable)
         {
-            this.isActive = false;
+            this.button.clearState();
         }
     }
 
@@ -94,7 +119,12 @@ public class MacroOperationState extends OperationState
                 relevantJoystick = null;
 
             default:
-                throw new RuntimeException("unexpected user input device " + description.getUserInputDevice().toString());
+                if (TuningConstants.THROW_EXCEPTIONS)
+                {
+                    throw new RuntimeException("unexpected user input device " + description.getUserInputDevice().toString());
+                }
+
+                return false;
         }
 
         boolean buttonPressed;
@@ -107,9 +137,13 @@ public class MacroOperationState extends OperationState
             {
                 buttonPressed = relevantJoystick.getPOV() == description.getUserInputDevicePovValue();
             }
-            else
+            else if (relevantButton != UserInputDeviceButton.NONE)
             {
                 buttonPressed = relevantJoystick.getRawButton(relevantButton.Value);
+            }
+            else
+            {
+                buttonPressed = false;
             }
         }
         else
@@ -121,11 +155,6 @@ public class MacroOperationState extends OperationState
 
         this.button.updateState(buttonPressed);
 
-        if (this.button.isActivated())
-        {
-            this.isActive = !this.isActive;
-        }
-
         return buttonPressed;
     }
 
@@ -136,15 +165,20 @@ public class MacroOperationState extends OperationState
 
     public boolean getIsActive()
     {
-        return this.isActive;
+        return this.button.isActivated();
     }
 
     public void run()
     {
-        if (this.isActive)
+        if (this.button.isActivated())
         {
             if (this.task == null)
             {
+                for (Operation operation : this.getAffectedOperations())
+                {
+                    this.operationStateMap.get(operation).setIsInterrupted(true);
+                }
+
                 // start task
                 this.task = ((MacroOperationDescription)this.getDescription()).constructTask();
                 this.task.initialize(this.operationStateMap, this.components);
@@ -156,7 +190,16 @@ public class MacroOperationState extends OperationState
                 {
                     this.task.end();
                     this.task = null;
-                    this.isActive = false;
+                    this.button.clearState();
+
+                    MacroOperationDescription description = (MacroOperationDescription)this.getDescription();
+                    if (description.shouldClearInterrupt())
+                    {
+                        for (Operation operation : this.getAffectedOperations())
+                        {
+                            this.operationStateMap.get(operation).setIsInterrupted(false);
+                        }
+                    }
                 }
                 else
                 {
@@ -169,6 +212,11 @@ public class MacroOperationState extends OperationState
             // cancel task:
             this.task.stop();
             this.task = null;
+
+            for (Operation operation : this.getAffectedOperations())
+            {
+                this.operationStateMap.get(operation).setIsInterrupted(false);
+            }
         }
     }
 }

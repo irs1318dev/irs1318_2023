@@ -58,4 +58,8 @@ public class SimpleButton implements IButton
     {
         return this.activated;
     }
+
+    public void clearState()
+    {
+    }
 }

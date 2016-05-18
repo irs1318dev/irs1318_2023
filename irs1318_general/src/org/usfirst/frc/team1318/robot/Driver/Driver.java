@@ -3,9 +3,10 @@ package org.usfirst.frc.team1318.robot.Driver;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.Driver.Buttons.AnalogAxis;
 import org.usfirst.frc.team1318.robot.Driver.Buttons.ButtonType;
-import org.usfirst.frc.team1318.robot.Driver.ControlTasks.DriveTimedTask;
+import org.usfirst.frc.team1318.robot.Driver.ControlTasks.PIDBrakeTask;
 import org.usfirst.frc.team1318.robot.Driver.Descriptions.AnalogOperationDescription;
 import org.usfirst.frc.team1318.robot.Driver.Descriptions.DigitalOperationDescription;
 import org.usfirst.frc.team1318.robot.Driver.Descriptions.MacroOperationDescription;
@@ -25,6 +26,7 @@ public abstract class Driver
     protected Map<Operation, OperationDescription> operationSchema = new HashMap<Operation, OperationDescription>()
     {
         {
+            // Operations for the drive train
             put(
                 Operation.DriveTrainMoveForward,
                 new AnalogOperationDescription(
@@ -36,22 +38,10 @@ public abstract class Driver
                     UserInputDevice.Driver,
                     AnalogAxis.X));
             put(
-                Operation.DriveTrainShiftGearUp,
-                new DigitalOperationDescription(
-                    UserInputDevice.Driver,
-                    UserInputDeviceButton.JOYSTICK_STICK_TOP_LEFT_BUTTON,
-                    ButtonType.Click));
-            put(
-                Operation.DriveTrainShiftGearDown,
-                new DigitalOperationDescription(
-                    UserInputDevice.Driver,
-                    UserInputDeviceButton.JOYSTICK_STICK_BOTTOM_LEFT_BUTTON,
-                    ButtonType.Click));
-            put(
                 Operation.DriveTrainSimpleMode,
                 new DigitalOperationDescription(
-                    UserInputDevice.Driver,
-                    UserInputDeviceButton.JOYSTICK_STICK_THUMB_BUTTON,
+                    UserInputDevice.None,
+                    UserInputDeviceButton.NONE,
                     ButtonType.Toggle));
             put(
                 Operation.DriveTrainUsePositionalMode,
@@ -69,6 +59,26 @@ public abstract class Driver
                 new AnalogOperationDescription(
                     UserInputDevice.None,
                     AnalogAxis.None));
+            put(
+                Operation.DriveTrainSwapFrontOrientation,
+                new DigitalOperationDescription(
+                    UserInputDevice.None,
+                    UserInputDeviceButton.NONE,
+                    ButtonType.Toggle));
+
+            // Operations for general stuff
+            put(
+                Operation.DisablePID,
+                new DigitalOperationDescription(
+                    UserInputDevice.CoDriver,
+                    UserInputDeviceButton.BUTTON_PAD_BUTTON_11,
+                    ButtonType.Click));
+            put(
+                Operation.EnablePID,
+                new DigitalOperationDescription(
+                    UserInputDevice.CoDriver,
+                    UserInputDeviceButton.BUTTON_PAD_BUTTON_12,
+                    ButtonType.Click));
         }
     };
 
@@ -76,14 +86,20 @@ public abstract class Driver
     protected Map<MacroOperation, MacroOperationDescription> macroSchema = new HashMap<MacroOperation, MacroOperationDescription>()
     {
         {
+            // Break mode macro
             put(
-                MacroOperation.DriveDistance,
+                MacroOperation.PIDBrake,
                 new MacroOperationDescription(
                     UserInputDevice.Driver,
-                    UserInputDeviceButton.JOYSTICK_BASE_BOTTOM_RIGHT_BUTTON,
-                    () -> new DriveTimedTask(20.0, 0.05, 0.05),
+                    UserInputDeviceButton.JOYSTICK_STICK_THUMB_BUTTON,
+                    ButtonType.Simple,
+                    () -> new PIDBrakeTask(),
                     new Operation[]
-                        { Operation.DriveTrainMoveForward, Operation.DriveTrainTurn, Operation.DriveTrainUsePositionalMode }));
+                    {
+                        Operation.DriveTrainUsePositionalMode,
+                        Operation.DriveTrainLeftPosition,
+                        Operation.DriveTrainRightPosition,
+                    }));
         }
     };
 
@@ -121,7 +137,12 @@ public abstract class Driver
         OperationState state = this.operationStateMap.get(digitalOperation);
         if (!(state instanceof DigitalOperationState))
         {
-            throw new RuntimeException("not a digital operation!");
+            if (TuningConstants.THROW_EXCEPTIONS)
+            {
+                throw new RuntimeException("not a digital operation!");
+            }
+
+            return false;
         }
 
         DigitalOperationState digitalState = (DigitalOperationState)state;
@@ -138,7 +159,12 @@ public abstract class Driver
         OperationState state = this.operationStateMap.get(analogOperation);
         if (!(state instanceof AnalogOperationState))
         {
-            throw new RuntimeException("not an analog operation!");
+            if (TuningConstants.THROW_EXCEPTIONS)
+            {
+                throw new RuntimeException("not an analog operation!");
+            }
+
+            return 0.0;
         }
 
         AnalogOperationState analogState = (AnalogOperationState)state;

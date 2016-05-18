@@ -58,6 +58,26 @@ public abstract class TimedTask extends ControlTaskBase implements IControlTask
     }
 
     /**
+     * Gets the ratio of the total duration that has elapsed
+     * @return value between approximately 0.0 and 1.0
+     */
+    protected double getRatioComplete()
+    {
+        double ratioComplete = (this.timer.get() - this.startTime) / this.duration;
+
+        if (ratioComplete < 0.0)
+        {
+            return 0.0;
+        }
+        else if (ratioComplete > 1.0)
+        {
+            return 1.0;
+        }
+
+        return ratioComplete;
+    }
+
+    /**
      * Checks whether this task has completed, or whether it should continue being processed
      * @return true if we should continue onto the next task, otherwise false (to keep processing this task)
      */

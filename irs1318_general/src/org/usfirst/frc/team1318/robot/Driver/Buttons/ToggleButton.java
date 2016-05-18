@@ -72,4 +72,10 @@ public class ToggleButton implements IButton
     {
         return this.currentState;
     }
+
+    public void clearState()
+    {
+        this.currentState = false;
+        this.prevButtonState = false;
+    }
 }

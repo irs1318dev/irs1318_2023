@@ -1,20 +1,17 @@
 package org.usfirst.frc.team1318.robot;
 
-import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
-import org.usfirst.frc.team1318.robot.Compressor.CompressorController;
-import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainController;
-import org.usfirst.frc.team1318.robot.DriveTrain.PositionManager;
+import org.usfirst.frc.team1318.robot.Common.DashboardLogger;
 import org.usfirst.frc.team1318.robot.Driver.Driver;
 import org.usfirst.frc.team1318.robot.Driver.IControlTask;
 import org.usfirst.frc.team1318.robot.Driver.Autonomous.AutonomousDriver;
 import org.usfirst.frc.team1318.robot.Driver.ControlTasks.WaitTask;
 import org.usfirst.frc.team1318.robot.Driver.User.UserDriver;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 /**
- * Main class for the FRC 201? Robot for IRS1318 - RobotName
+ * Main class for the FRC 201? [competition name] Competition
+ * Robot for IRS1318 - [robot name]
  * 
  * 
  * The VM is configured to automatically run this class, and to call the
@@ -36,8 +33,8 @@ public class Robot extends IterativeRobot
     // smartdash logging constants
     private static final String ROBOT_STATE_LOG_KEY = "r.s";
 
-    // smartdash other constants 
-    private static final String AUTONOMOUS_ROUTINE_PREFERENCE_KEY = "a.routine";
+    // smartdash other constants
+    private static final String AUTONOMOUS_ROUTINE_PREFERENCE_KEY = "a.routine value";
 
     // Driver.  This could either be the UserDriver (joystick) or the AutonomousDriver
     private Driver driver;
@@ -46,15 +43,7 @@ public class Robot extends IterativeRobot
     private ComponentManager components;
 
     // Controllers
-    private CompressorController compressorController;
-    private DriveTrainController driveTrainController;
-
-    // DipSwitches for selecting autonomous mode
-    private DigitalInput dipSwitchA;
-    private DigitalInput dipSwitchB;
-
-    // Position manager - holds position information relative to our starting point
-    private PositionManager position;
+    private ControllerManager controllers;
 
     /**
      * Robot-wide initialization code should go here.
@@ -63,22 +52,11 @@ public class Robot extends IterativeRobot
      */
     public void robotInit()
     {
-        // create mechanism components
+        // create mechanism components and controllers
         this.components = new ComponentManager();
+        this.controllers = new ControllerManager(this.components);
 
-        // create controllers for each mechanism
-        this.compressorController = new CompressorController(this.components.getCompressor());
-        this.driveTrainController = new DriveTrainController(
-            this.components.getDriveTrain(),
-            TuningConstants.DRIVETRAIN_USE_PID_DEFAULT);
-
-        // create position manager
-        this.position = new PositionManager(this.components.getDriveTrain());
-
-        SmartDashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Init");
-
-        this.dipSwitchA = new DigitalInput(ElectronicsConstants.AUTONOMOUS_DIP_SWITCH_A);
-        this.dipSwitchB = new DigitalInput(ElectronicsConstants.AUTONOMOUS_DIP_SWITCH_B);
+        DashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Init");
     }
 
     /**
@@ -92,17 +70,12 @@ public class Robot extends IterativeRobot
             this.driver.stop();
         }
 
-        if (this.compressorController != null)
+        if (this.controllers != null)
         {
-            this.compressorController.stop();
+            this.controllers.stop();
         }
 
-        if (this.driveTrainController != null)
-        {
-            this.driveTrainController.stop();
-        }
-
-        SmartDashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Disabled");
+        DashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Disabled");
     }
 
     /**
@@ -111,44 +84,21 @@ public class Robot extends IterativeRobot
      */
     public void autonomousInit()
     {
-        // reset the drivetrain component and position manager so that we consider ourself at the origin (0,0) and facing the 0 direction.
-        this.components.getDriveTrain().reset();
-        this.position.reset();
+        // reset the position manager so that we consider ourself at the origin (0,0) and facing the 0 direction.
+        this.components.getPositionManager().reset();
 
         // Find desired autonomous routine.
         IControlTask autonomousRoutine = Robot.GetFillerRoutine();
 
-        int routineSelection = 0;
-        if (this.dipSwitchA.get())
-        {
-            routineSelection += 1;
-        }
+        DashboardLogger.putInteger(Robot.AUTONOMOUS_ROUTINE_PREFERENCE_KEY, 0);
 
-        if (this.dipSwitchB.get())
-        {
-            routineSelection += 2;
-        }
-
-        //select autonomous routine based on the dipswitch positions
-        switch (routineSelection)
-        {
-            case 0://neither flipped
-            case 1://switch A flipped
-            case 2://switch B flipped
-            default://both flipped or can't read 
-                autonomousRoutine = Robot.GetFillerRoutine();
-                break;
-        }
-
-        SmartDashboardLogger.putNumber(Robot.AUTONOMOUS_ROUTINE_PREFERENCE_KEY, routineSelection);
-
-        // create autonomous driver based on our desired routine
+        // Create autonomous driver based on our desired routine
         this.driver = new AutonomousDriver(autonomousRoutine, this.components);
 
         this.generalInit();
 
         // log that we are in autonomous mode
-        SmartDashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Autonomous");
+        DashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Autonomous");
     }
 
     /**
@@ -163,7 +113,7 @@ public class Robot extends IterativeRobot
         this.generalInit();
 
         // log that we are in teleop mode
-        SmartDashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Teleop");
+        DashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Teleop");
     }
 
     /**
@@ -172,13 +122,7 @@ public class Robot extends IterativeRobot
     public void generalInit()
     {
         // apply the driver to the controllers
-        this.driveTrainController.setDriver(this.driver);
-
-        // we will run the compressor controller here because we should start it in advance...
-        this.compressorController.update();
-
-        // by default we want to be in Velocity PID mode whenever we start (or switch between) a periodic mode
-        this.driveTrainController.setVelocityPIDMode();
+        this.controllers.setDriver(this.driver);
     }
 
     /**
@@ -212,20 +156,16 @@ public class Robot extends IterativeRobot
      */
     public void generalPeriodic()
     {
-        // update our position
-        this.position.update();
-
         this.driver.update();
 
         // run each controller
-        this.compressorController.update();
-        this.driveTrainController.update();
+        this.controllers.update();
     }
 
     /**
      * Gets an autonomous routine that does nothing
      * 
-     * @return list of autonomous tasks
+     * @return very long WaitTask
      */
     private static IControlTask GetFillerRoutine()
     {

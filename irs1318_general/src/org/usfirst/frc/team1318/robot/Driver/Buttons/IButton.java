@@ -17,4 +17,9 @@ public interface IButton
      * @return true for active, otherwise false 
      */
     public boolean isActivated();
+
+    /**
+     * clear the button value
+     */
+    public void clearState();
 }

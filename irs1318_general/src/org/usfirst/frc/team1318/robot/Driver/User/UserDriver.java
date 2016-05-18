@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1318.robot.Driver.User;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -94,15 +93,10 @@ public class UserDriver extends Driver
         // also keep track of modified and active macro operations, and how macro operations and operations link together
         Set<MacroOperation> activeMacroOperations = new HashSet<MacroOperation>();
         Map<Operation, Set<MacroOperation>> activeMacroOperationMap = new HashMap<Operation, Set<MacroOperation>>();
-        Set<MacroOperation> modifiedMacroOperations = new HashSet<MacroOperation>();
         for (MacroOperation macroOperation : this.macroStateMap.keySet())
         {
             MacroOperationState macroState = this.macroStateMap.get(macroOperation);
-            boolean modifiedMacro = macroState.checkInput(this.joystickDriver, this.joystickCoDriver, this.components);
-            if (modifiedMacro)
-            {
-                modifiedMacroOperations.add(macroOperation);
-            }
+            macroState.checkInput(this.joystickDriver, this.joystickCoDriver, this.components);
 
             if (macroState.getIsActive())
             {
@@ -159,31 +153,19 @@ public class UserDriver extends Driver
         for (MacroOperation macroOperationToCancel : macroOperationsToCancel)
         {
             this.macroStateMap.get(macroOperationToCancel).setIsInterrupted(true);
+            activeMacroOperations.remove(macroOperationToCancel);
         }
 
-        // determine which operations should actually be interrupted by our new macro:
-        Set<Operation> desiredInterruptedOperations = new HashSet<Operation>();
-        for (MacroOperation macroOperationToKeep : SetHelper.<MacroOperation> RelativeComplement(macroOperationsToCancel,
-            activeMacroOperations))
+        // first, run all of the inactive macros (to clear any old interrupts)...
+        Set<MacroOperation> inactiveMacroOperations = SetHelper.<MacroOperation> RelativeComplement(activeMacroOperations,
+            this.macroStateMap.keySet());
+        for (MacroOperation macroOperation : inactiveMacroOperations)
         {
-            desiredInterruptedOperations.addAll(Arrays.asList(this.macroSchema.get(macroOperationToKeep).getAffectedOperations()));
+            this.macroStateMap.get(macroOperation).run();
         }
 
-        // interrupt operations that are not interrupted that should be:
-        for (Operation operationToInterrupt : SetHelper.<Operation> RelativeComplement(interruptedOperations, desiredInterruptedOperations))
-        {
-            this.operationStateMap.get(operationToInterrupt).setIsInterrupted(true);
-        }
-
-        // clear interruption for operations that are interrupted that should not be:
-        for (Operation operationToUnInterrupt : SetHelper.<Operation> RelativeComplement(desiredInterruptedOperations,
-            interruptedOperations))
-        {
-            this.operationStateMap.get(operationToUnInterrupt).setIsInterrupted(false);
-        }
-
-        // run all of the macros:
-        for (MacroOperation macroOperation : this.macroStateMap.keySet())
+        // second, run all of the active macros (which could add interrupts that were cleared in the previous phase)...
+        for (MacroOperation macroOperation : activeMacroOperations)
         {
             this.macroStateMap.get(macroOperation).run();
         }

@@ -2,6 +2,7 @@ package org.usfirst.frc.team1318.robot.DriveTrain;
 
 import org.usfirst.frc.team1318.robot.ElectronicsConstants;
 import org.usfirst.frc.team1318.robot.HardwareConstants;
+import org.usfirst.frc.team1318.robot.Common.DashboardLogger;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Victor;
@@ -49,6 +50,9 @@ public class DriveTrainComponent
      */
     public void setDriveTrainPower(double leftPower, double rightPower)
     {
+        DashboardLogger.putDouble("leftPower", leftPower);
+        DashboardLogger.putDouble("rightPower", rightPower);
+
         double outLeftPower = leftPower;
         double outRightPower = -rightPower;// note: right motors are oriented facing "backwards"
 
@@ -63,6 +67,7 @@ public class DriveTrainComponent
     public double getLeftEncoderVelocity()
     {
         double leftVelocity = -this.leftEncoder.getRate();
+        DashboardLogger.putDouble("leftVelocity", leftVelocity);
         return leftVelocity;
     }
 
@@ -73,6 +78,7 @@ public class DriveTrainComponent
     public double getRightEncoderVelocity()
     {
         double rightVelocity = this.rightEncoder.getRate();
+        DashboardLogger.putDouble("rightVelocity", rightVelocity);
         return rightVelocity;
     }
 
@@ -83,6 +89,7 @@ public class DriveTrainComponent
     public double getLeftEncoderDistance()
     {
         double leftDistance = -this.leftEncoder.getDistance();
+        DashboardLogger.putDouble("leftDistance", leftDistance);
         return leftDistance;
     }
 
@@ -93,6 +100,7 @@ public class DriveTrainComponent
     public double getRightEncoderDistance()
     {
         double rightDistance = this.rightEncoder.getDistance();
+        DashboardLogger.putDouble("rightDistance", rightDistance);
         return rightDistance;
     }
 
@@ -103,6 +111,7 @@ public class DriveTrainComponent
     public int getLeftEncoderTicks()
     {
         int leftTicks = -this.leftEncoder.get();
+        DashboardLogger.putDouble("leftTicks", leftTicks);
         return leftTicks;
     }
 
@@ -113,6 +122,7 @@ public class DriveTrainComponent
     public int getRightEncoderTicks()
     {
         int rightTicks = this.rightEncoder.get();
+        DashboardLogger.putDouble("rightTicks", rightTicks);
         return rightTicks;
     }
 

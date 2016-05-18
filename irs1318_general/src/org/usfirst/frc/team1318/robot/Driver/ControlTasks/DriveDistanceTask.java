@@ -16,6 +16,18 @@ public class DriveDistanceTask extends MoveDistanceTaskBase implements IControlT
      */
     public DriveDistanceTask(double distance)
     {
+        this(distance, true);
+    }
+
+    /**
+     * Initializes a new DriveDistanceTask
+     * @param distance from the current location to move (positive means move forward, negative means move backwards) in centimeters
+     * @param resetPositionalOnEnd
+     */
+    public DriveDistanceTask(double distance, boolean resetPositionalOnEnd)
+    {
+        super(resetPositionalOnEnd);
+
         this.distance = distance;
     }
 

@@ -75,4 +75,10 @@ public class ClickButton implements IButton
     {
         return this.isActivated;
     }
+
+    public void clearState()
+    {
+        this.isActivated = false;
+        this.prevButtonState = false;
+    }
 }

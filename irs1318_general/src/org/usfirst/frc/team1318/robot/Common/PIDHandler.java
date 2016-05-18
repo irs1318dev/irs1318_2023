@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.Timer;
 public class PIDHandler
 {
     // constants
-    private static final double MinTimeStep = 0; //0.01;
+    private static final double MinTimeStep = 0.01;
     private final Double minOutput;
     private final Double maxOutput;
 
@@ -29,8 +29,8 @@ public class PIDHandler
     private final double kf;        // proportion for feed-forward
     private final double ks;        // multiplicand for adjusting scale of setpoint to match scale of measured value
 
-    private final double kO;        // proportion for slowing ramp-up, applied to previous value
-    private final double kN;        // proportion for slowing ramp-up, applied to new value
+    private final ComplementaryFilter errorFilter;
+    private final ComplementaryFilter outputFilter;
 
     // instance variables
     private double setpoint = 0.0;          // the input, desired value for
@@ -48,14 +48,9 @@ public class PIDHandler
     // other vars
     private final Timer timer;
 
-    private String prefix;
-
-    private double prevDeltaX = 0.0;
-
     /**
      * This constructor initializes the object and sets constants to affect gain
      * 
-     * @param prefix to use for smartdashboard logging
      * @param kp scalar for proportional component
      * @param ki scalar for integral component
      * @param kd scalar for derivative component
@@ -63,16 +58,15 @@ public class PIDHandler
      * @param minOutput indicates the minimum output value acceptable, or null
      * @param maxOutput indicates the maximum output value acceptable, or null
      */
-    public PIDHandler(String prefix, double kp, double ki, double kd, double kf, Double minOutput, Double maxOutput)
+    public PIDHandler(double kp, double ki, double kd, double kf, Double minOutput, Double maxOutput)
     {
-        this(prefix, kp, ki, kd, kf, 1.0, 0.0, 1.0, minOutput, maxOutput);
+        this(kp, ki, kd, kf, 1.0, 0.0, 1.0, minOutput, maxOutput);
     }
 
     /**
      * This constructor initializes the object and sets constants to affect gain.
      * This defaults to not utilizing a complementary filter to slow ramp-up/ramp-down.
      * 
-     * @param prefix to use for smartdashboard logging
      * @param kp scalar for proportional component
      * @param ki scalar for integral component
      * @param kd scalar for derivative component
@@ -81,16 +75,15 @@ public class PIDHandler
      * @param minOutput indicates the minimum output value acceptable, or null
      * @param maxOutput indicates the maximum output value acceptable, or null
      */
-    public PIDHandler(String prefix, double kp, double ki, double kd, double kf, double ks, Double minOutput, Double maxOutput)
+    public PIDHandler(double kp, double ki, double kd, double kf, double ks, Double minOutput, Double maxOutput)
     {
-        this(prefix, kp, ki, kd, kf, ks, 0.0, 1.0, minOutput, maxOutput);
+        this(kp, ki, kd, kf, ks, 0.0, 1.0, minOutput, maxOutput);
     }
 
     /**
      * This constructor initializes the object and sets constants to affect gain.
      * This defaults to not utilizing a complementary filter to slow ramp-up/ramp-down.
      * 
-     * @param prefix to use for smartdashboard logging
      * @param kp scalar for proportional component
      * @param ki scalar for integral component
      * @param kd scalar for derivative component
@@ -100,16 +93,15 @@ public class PIDHandler
      * @param minOutput indicates the minimum output value acceptable, or null
      * @param maxOutput indicates the maximum output value acceptable, or null
      */
-    public PIDHandler(String prefix, double kp, double ki, double kd, double kf, double kO, double kN, Double minOutput, Double maxOutput)
+    public PIDHandler(double kp, double ki, double kd, double kf, double kO, double kN, Double minOutput, Double maxOutput)
     {
-        this(prefix, kp, ki, kd, kf, 1.0, kO, kN, minOutput, maxOutput);
+        this(kp, ki, kd, kf, 1.0, kO, kN, minOutput, maxOutput);
     }
 
     /**
      * This constructor initializes the object and sets constants to affect gain.
      * This utilizes a complementary filter to slow ramp-up/ramp-down.
      * 
-     * @param prefix to use for smartdashboard logging
      * @param kp scalar for proportional component
      * @param ki scalar for integral component
      * @param kd scalar for derivative component
@@ -120,19 +112,39 @@ public class PIDHandler
      * @param minOutput indicates the minimum output value acceptable, or null
      * @param maxOutput indicates the maximum output value acceptable, or null
      */
-    public PIDHandler(
-        String prefix, double kp, double ki, double kd, double kf, double ks, double kO, double kN, Double minOutput, Double maxOutput)
+    public PIDHandler(double kp, double ki, double kd, double kf, double ks, double kO, double kN, Double minOutput, Double maxOutput)
     {
-        this.prefix = prefix;
+        this(kp, ki, kd, kf, ks, kO, kN, 0.0, 1.0, minOutput, maxOutput);
+    }
 
+    /**
+     * This constructor initializes the object and sets constants to affect gain.
+     * This utilizes a complementary filter to slow ramp-up/ramp-down.
+     * 
+     * @param kp scalar for proportional component
+     * @param ki scalar for integral component
+     * @param kd scalar for derivative component
+     * @param kf scalar for feed-forward control
+     * @param ks scalar for adjusting scale difference between measured value and setpoint value
+     * @param kO scalar for output complementary filter multiplier
+     * @param kN scalar for output complementary filter multiplier
+     * @param kEO scalar for error complementary filter multiplier
+     * @param kEN scalar for error complementary filter multiplier
+     * @param minOutput indicates the minimum output value acceptable, or null
+     * @param maxOutput indicates the maximum output value acceptable, or null
+     */
+    public PIDHandler(
+        double kp, double ki, double kd, double kf, double ks, double kO, double kN, double kEO, double kEN, Double minOutput,
+        Double maxOutput)
+    {
         this.ki = ki;
         this.kd = kd;
         this.kp = kp;
         this.kf = kf;
         this.ks = ks;
 
-        this.kO = kO;
-        this.kN = kN;
+        this.errorFilter = new ComplementaryFilter(kEO, kEN);
+        this.outputFilter = new ComplementaryFilter(kO, kN);
 
         this.minOutput = minOutput;
         this.maxOutput = maxOutput;
@@ -140,7 +152,6 @@ public class PIDHandler
         this.timer = new Timer();
         this.timer.start();
         this.prevTime = this.timer.get();
-
     }
 
     /**
@@ -168,7 +179,8 @@ public class PIDHandler
             this.prevTime = this.curTime;
 
             // calculate error
-            this.error = this.setpoint - this.measuredValue;
+            this.errorFilter.update(this.setpoint - this.measuredValue);
+            this.error = this.errorFilter.getValue();
 
             // calculate integral, limiting it based on MaxOutput/MinOutput
             double potentialI = this.ki * (this.integral + this.error * this.dt);
@@ -182,20 +194,19 @@ public class PIDHandler
             }
             else
             {
-                this.integral += this.error; // * this.dt;
+                this.integral += this.error;// * this.dt;
             }
 
             // calculate derivative
-            this.derivative = (this.error - this.prevError); // / this.dt;
+            this.derivative = (this.error - this.prevError);// / this.dt;
 
             // store error
             this.prevError = this.error;
 
-            double result =
-                this.kp * this.error +      // proportional
+            double result = this.kp * this.error +      // proportional
                 this.ki * this.integral +   // integral
-                    this.kd * this.derivative + // derivative
-                    this.kf * this.setpoint;    // feed-forward
+                this.kd * this.derivative + // derivative
+                this.kf * this.setpoint;    // feed-forward
 
             if (this.maxOutput != null && result > this.maxOutput)
             {
@@ -207,7 +218,8 @@ public class PIDHandler
             }
 
             // apply complementary filter to slow ramp-up/ramp-down
-            this.output = this.kO * this.output + this.kN * result;
+            this.outputFilter.update(result);
+            this.output = this.outputFilter.getValue();
             this.prevMeasuredValue = this.measuredValue;
         }
 
@@ -219,8 +231,8 @@ public class PIDHandler
      * measuredValue should be in the same unit as the setpoint, basically a positive or negative percentage 
      * between -1 and 1.  This method should be called in a loop and fed feedback data and setpoint changes
      * 
-     * @param setpoint describes the goal value
-     * @param measuredValue describes the measured value
+     * @param setpoint describes the goal velocity value
+     * @param measuredValue describes the measured value, where the measured value is the ticks on the encoder
      * 
      * @return output value to be used
      */
@@ -232,31 +244,18 @@ public class PIDHandler
         // update dt
         this.curTime = this.timer.get();
         this.dt = this.curTime - this.prevTime;
-        SmartDashboardLogger.putNumber(this.prefix + "DT", this.dt);
 
-        // To prevent division by zero and over-aggressive measurement, output updates at a max of 1kHz
+        // To prevent division by zero and over-aggressive measurement, output updates at a max of 100 Hz
         if (this.dt >= PIDHandler.MinTimeStep)
         {
             this.prevTime = this.curTime;
 
-            // calculate error
+            // calculate change in ticks since our last measurement
             double deltaX = this.measuredValue - this.prevMeasuredValue;
-            //            this.prevDeltaX = deltaX;
+            double timeRatio = 0.02 / this.dt;
 
-            if (this.dt > 0.002)
-            {
-                double timeRatio = 0.02 / this.dt;
-                this.error = this.ks * this.setpoint - deltaX * timeRatio;
-                this.prevDeltaX = deltaX * timeRatio;
-            }
-            else
-            {
-                this.error = this.ks * this.setpoint - prevDeltaX;
-            }
-
-            //            this.error = this.ks * this.setpoint - deltaX;
-
-            SmartDashboardLogger.putNumber(this.prefix + "DeltaX: ", deltaX);
+            this.errorFilter.update(this.ks * this.setpoint - deltaX * timeRatio);
+            this.error = this.errorFilter.getValue();
 
             // calculate integral, limiting it based on MaxOutput/MinOutput
             double potentialI = this.ki * (this.integral + this.error * this.dt);
@@ -279,11 +278,10 @@ public class PIDHandler
             // store error
             this.prevError = this.error;
 
-            double result =
-                this.kp * this.error +      // proportional
+            double result = this.kp * this.error +      // proportional
                 this.ki * this.integral +   // integral
-                    this.kd * this.derivative + // derivative
-                    this.kf * this.setpoint;    // feed-forward
+                this.kd * this.derivative + // derivative
+                this.kf * this.setpoint;    // feed-forward
 
             if (this.maxOutput != null && result > this.maxOutput)
             {
@@ -295,7 +293,8 @@ public class PIDHandler
             }
 
             // apply complementary filter to slow ramp-up/ramp-down
-            this.output = this.kO * this.output + this.kN * result;
+            this.outputFilter.update(result);
+            this.output = this.outputFilter.getValue();
             this.prevMeasuredValue = this.measuredValue;
         }
 

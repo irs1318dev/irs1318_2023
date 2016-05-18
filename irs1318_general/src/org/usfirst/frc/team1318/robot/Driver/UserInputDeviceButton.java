@@ -18,6 +18,7 @@ package org.usfirst.frc.team1318.robot.Driver;
  * 10 - base middle right
  * 11 - base bottom left
  * 12 - base bottom right
+ * POV (hat): -1 when not pressed, 0-360.  0 is forward/up, 90 is right, 180 is back/down, 270 is left.
  * -----------------------
  * 
  */
@@ -53,7 +54,11 @@ public enum UserInputDeviceButton
     BUTTON_PAD_BUTTON_9(9),
     BUTTON_PAD_BUTTON_10(10),
     BUTTON_PAD_BUTTON_11(11),
-    BUTTON_PAD_BUTTON_12(12);
+    BUTTON_PAD_BUTTON_12(12),
+    BUTTON_PAD_BUTTON_13(13),
+    BUTTON_PAD_BUTTON_14(14),
+    BUTTON_PAD_BUTTON_15(15),
+    BUTTON_PAD_BUTTON_16(16);
 
     public final int Value;
     private UserInputDeviceButton(int value)

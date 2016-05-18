@@ -3,6 +3,7 @@ package org.usfirst.frc.team1318.robot.Driver.Autonomous;
 import org.usfirst.frc.team1318.robot.ComponentManager;
 import org.usfirst.frc.team1318.robot.Driver.Driver;
 import org.usfirst.frc.team1318.robot.Driver.IControlTask;
+import org.usfirst.frc.team1318.robot.Driver.States.OperationState;
 
 /**
  * Driver for autonomous mode.  Autonomous driver acts as the operator of the robot,
@@ -33,6 +34,11 @@ public class AutonomousDriver extends Driver
         this.hasEnded = false;
 
         this.autonomousTask.initialize(this.operationStateMap, components);
+
+        for (OperationState state : this.operationStateMap.values())
+        {
+            state.setIsInterrupted(true);
+        }
     }
 
     /**

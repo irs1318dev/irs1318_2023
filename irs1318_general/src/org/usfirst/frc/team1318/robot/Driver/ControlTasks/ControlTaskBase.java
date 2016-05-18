@@ -75,6 +75,28 @@ public abstract class ControlTaskBase implements IControlTask
     }
 
     /**
+     * Gets the current state of the operation state for a given analog operation
+     * @param operation to set the interrupt state for
+     * @return value to set for the operation
+     */
+    protected double getAnalogOperationState(Operation operation)
+    {
+        OperationState operationState = this.operationStateMap.get(operation);
+        return ((AnalogOperationState)operationState).getState();
+    }
+
+    /**
+     * Gets the current state of the operation state for a given digital operation
+     * @param operation to set the interrupt state for
+     * @return value to set for the operation
+     */
+    protected boolean getDigitalOperationState(Operation operation)
+    {
+        OperationState operationState = this.operationStateMap.get(operation);
+        return ((DigitalOperationState)operationState).getState();
+    }
+
+    /**
      * Gets the component manager for the robot
      * @return the set of robot components
      */

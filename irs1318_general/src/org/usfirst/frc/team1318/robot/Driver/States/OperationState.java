@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1318.robot.Driver.States;
 
 import org.usfirst.frc.team1318.robot.ComponentManager;
+import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.Driver.Descriptions.AnalogOperationDescription;
 import org.usfirst.frc.team1318.robot.Driver.Descriptions.DigitalOperationDescription;
 import org.usfirst.frc.team1318.robot.Driver.Descriptions.OperationDescription;
@@ -62,6 +63,11 @@ public abstract class OperationState
             return new DigitalOperationState((DigitalOperationDescription)description);
         }
 
-        throw new RuntimeException("unknown type of description " + description.getClass().getName());
+        if (TuningConstants.THROW_EXCEPTIONS)
+        {
+            throw new RuntimeException("unknown type of description " + description.getClass().getName());
+        }
+
+        return null;
     }
 }
