@@ -83,6 +83,16 @@ public abstract class MoveDistanceTaskBase extends ControlTaskBase implements IC
     }
 
     /**
+     * Checks whether this task should be stopped, or whether it should continue being processed.
+     * @return true if we should cancel this task (and stop performing any subsequent tasks), otherwise false (to keep processing this task)
+     */
+    @Override
+    public boolean shouldCancel()
+    {
+        return false;
+    }
+
+    /**
      * Checks whether this task has completed, or whether it should continue being processed
      * @return true if we should continue onto the next task, otherwise false (to keep processing this task)
      */

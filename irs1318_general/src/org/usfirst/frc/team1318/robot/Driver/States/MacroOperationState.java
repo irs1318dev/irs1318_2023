@@ -186,9 +186,19 @@ public class MacroOperationState extends OperationState
             }
             else
             {
-                if (this.task.hasCompleted())
+                boolean shouldEnd = this.task.hasCompleted();
+                boolean shouldCancel = this.task.shouldCancel();
+                if (shouldEnd || shouldCancel)
                 {
-                    this.task.end();
+                    if (shouldEnd)
+                    {
+                        this.task.end();
+                    }
+                    else
+                    {
+                        this.task.stop();
+                    }
+
                     this.task = null;
                     this.button.clearState();
 

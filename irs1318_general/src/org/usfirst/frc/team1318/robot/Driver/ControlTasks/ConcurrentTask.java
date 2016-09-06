@@ -20,6 +20,7 @@ public class ConcurrentTask extends ControlTaskBase implements IControlTask
     private final boolean anyTask;
     private final IControlTask[] tasks;
     private final boolean[] completedTasks;
+    private boolean shouldCancelTasks;
 
     /**
      * Initializes a new ConcurrentTask
@@ -35,6 +36,8 @@ public class ConcurrentTask extends ControlTaskBase implements IControlTask
         {
             this.completedTasks[i] = false;
         }
+
+        this.shouldCancelTasks = false;
     }
 
     /**
@@ -102,6 +105,11 @@ public class ConcurrentTask extends ControlTaskBase implements IControlTask
                 else
                 {
                     this.tasks[i].update();
+
+                    if (this.tasks[i].shouldCancel())
+                    {
+                        this.shouldCancelTasks = true;
+                    }
                 }
             }
         }
@@ -132,6 +140,16 @@ public class ConcurrentTask extends ControlTaskBase implements IControlTask
                 this.tasks[i].end();
             }
         }
+    }
+
+    /**
+     * Checks whether this task should be stopped, or whether it should continue being processed.
+     * @return true if we should cancel this task (and stop performing any subsequent tasks), otherwise false (to keep processing this task)
+     */
+    @Override
+    public boolean shouldCancel()
+    {
+        return this.shouldCancelTasks;
     }
 
     /**

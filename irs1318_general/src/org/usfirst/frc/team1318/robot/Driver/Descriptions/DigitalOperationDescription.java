@@ -14,14 +14,12 @@ public class DigitalOperationDescription extends OperationDescription
     private final ButtonType buttonType;
     private final DigitalSensor sensor;
 
-    public DigitalOperationDescription(
-        UserInputDevice userInputDevice,
-        int povValue,
-        ButtonType buttonType)
-    {
-        this(userInputDevice, UserInputDeviceButton.JOYSTICK_POV, povValue, DigitalSensor.None, buttonType);
-    }
-
+    /**
+     * Initializes a new DigitalOperationDescription based on a user interaction
+     * @param userInputDevice which device will perform the operation (driver or codriver joystick) 
+     * @param userInputDeviceButton the button on the device that performs the operation
+     * @param buttonType the behavior type to use for the operation
+     */
     public DigitalOperationDescription(
         UserInputDevice userInputDevice,
         UserInputDeviceButton userInputDeviceButton,
@@ -30,12 +28,30 @@ public class DigitalOperationDescription extends OperationDescription
         this(userInputDevice, userInputDeviceButton, 0, DigitalSensor.None, buttonType);
     }
 
+    /**
+     * Initializes a new DigitalOperationDescription based on a user interaction on the POV
+     * @param userInputDevice which device will indicate the operation (driver or codriver joystick) 
+     * @param povValue the value of the POV (hat) used to perform the operation
+     * @param buttonType the behavior type to use for the operation
+     */
     public DigitalOperationDescription(
         UserInputDevice userInputDevice,
+        int povValue,
+        ButtonType buttonType)
+    {
+        this(userInputDevice, UserInputDeviceButton.JOYSTICK_POV, povValue, DigitalSensor.None, buttonType);
+    }
+
+    /**
+     * Initializes a new DigitalOperationDescription based on a sensor
+     * @param sensor the sensor that triggers the operation
+     * @param buttonType the behavior type to use for the operation
+     */
+    public DigitalOperationDescription(
         DigitalSensor sensor,
         ButtonType buttonType)
     {
-        this(userInputDevice, UserInputDeviceButton.NONE, 0, sensor, buttonType);
+        this(UserInputDevice.Sensor, UserInputDeviceButton.NONE, 0, sensor, buttonType);
     }
 
     private DigitalOperationDescription(

@@ -62,6 +62,11 @@ public class AutonomousDriver extends Driver
                 this.autonomousTask.end();
                 this.hasEnded = true;
             }
+            else if (this.autonomousTask.shouldCancel())
+            {
+                this.autonomousTask.stop();
+                this.hasEnded = true;
+            }
             else
             {
                 // run the current task and apply the result to the state

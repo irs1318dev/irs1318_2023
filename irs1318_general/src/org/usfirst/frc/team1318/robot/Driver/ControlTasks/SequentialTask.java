@@ -18,6 +18,7 @@ public class SequentialTask extends ControlTaskBase implements IControlTask
 {
     private final Queue<IControlTask> orderedTasks;
     private IControlTask currentTask;
+    private boolean shouldCancelTask;
 
     /**
      * Initializes a new SequentialTask
@@ -27,6 +28,7 @@ public class SequentialTask extends ControlTaskBase implements IControlTask
     {
         this.orderedTasks = new LinkedList<IControlTask>(Arrays.asList(tasks));
         this.currentTask = null;
+        this.shouldCancelTask = false;
     }
 
     /**
@@ -94,6 +96,7 @@ public class SequentialTask extends ControlTaskBase implements IControlTask
 
         // run the current task and apply the result to the control data
         this.currentTask.update();
+        this.shouldCancelTask = this.currentTask.shouldCancel();
     }
 
     /**
@@ -118,6 +121,16 @@ public class SequentialTask extends ControlTaskBase implements IControlTask
         {
             this.currentTask.end();
         }
+    }
+
+    /**
+     * Checks whether this task should be stopped, or whether it should continue being processed.
+     * @return true if we should cancel this task (and stop performing any subsequent tasks), otherwise false (to keep processing this task)
+     */
+    @Override
+    public boolean shouldCancel()
+    {
+        return this.shouldCancelTask;
     }
 
     /**

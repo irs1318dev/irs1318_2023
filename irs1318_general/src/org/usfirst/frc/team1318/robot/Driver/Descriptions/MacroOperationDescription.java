@@ -17,27 +17,14 @@ public class MacroOperationDescription extends OperationDescription
     private final Supplier<IControlTask> taskSupplier;
     private final ButtonType buttonType;
 
-    public MacroOperationDescription(
-        UserInputDevice userInputDevice,
-        int povValue,
-        ButtonType buttonType,
-        Supplier<IControlTask> taskSupplier,
-        Operation... affectedOperations)
-    {
-        this(true, userInputDevice, UserInputDeviceButton.JOYSTICK_POV, povValue, DigitalSensor.None, buttonType, taskSupplier, affectedOperations);
-    }
-
-    public MacroOperationDescription(
-        boolean clearInterrupt,
-        UserInputDevice userInputDevice,
-        int povValue,
-        ButtonType buttonType,
-        Supplier<IControlTask> taskSupplier,
-        Operation... affectedOperations)
-    {
-        this(clearInterrupt, userInputDevice, UserInputDeviceButton.JOYSTICK_POV, povValue, DigitalSensor.None, buttonType, taskSupplier, affectedOperations);
-    }
-
+    /**
+     * Initializes a new MacroOperationDescription based on a user interaction
+     * @param userInputDevice which device will perform the macro operation (driver or codriver joystick)
+     * @param userInputDeviceButton the button on the device that performs the macro operation
+     * @param buttonType the behavior type to use for the macro operation
+     * @param taskSupplier the function that creates the tasks that should be performed by the macro
+     * @param affectedOperations the list of operations that will be utilized by this macro
+     */
     public MacroOperationDescription(
         UserInputDevice userInputDevice,
         UserInputDeviceButton userInputDeviceButton,
@@ -48,6 +35,15 @@ public class MacroOperationDescription extends OperationDescription
         this(true, userInputDevice, userInputDeviceButton, 0, DigitalSensor.None, buttonType, taskSupplier, affectedOperations);
     }
 
+    /**
+     * Initializes a new MacroOperationDescription based on a user interaction
+     * @param clearInterrupt whether to clear the interruption of the operations when the macro completes
+     * @param userInputDevice which device will perform the macro operation (driver or codriver joystick)
+     * @param userInputDeviceButton the button on the device that performs the macro operation
+     * @param buttonType the behavior type to use for the macro operation
+     * @param taskSupplier the function that creates the tasks that should be performed by the macro
+     * @param affectedOperations the list of operations that will be utilized by this macro
+     */
     public MacroOperationDescription(
         boolean clearInterrupt,
         UserInputDevice userInputDevice,
@@ -59,6 +55,53 @@ public class MacroOperationDescription extends OperationDescription
         this(clearInterrupt, userInputDevice, userInputDeviceButton, 0, DigitalSensor.None, buttonType, taskSupplier, affectedOperations);
     }
 
+    /**
+     * Initializes a new MacroOperationDescription based on a user interaction on the POV
+     * @param userInputDevice which device will perform the macro operation (driver or codriver joystick)
+     * @param povValue the value of the POV (hat) used to perform the macro operation
+     * @param buttonType the behavior type to use for the macro operation
+     * @param taskSupplier the function that creates the tasks that should be performed by the macro
+     * @param affectedOperations the list of operations that will be utilized by this macro
+     */
+    public MacroOperationDescription(
+        UserInputDevice userInputDevice,
+        int povValue,
+        ButtonType buttonType,
+        Supplier<IControlTask> taskSupplier,
+        Operation... affectedOperations)
+    {
+        this(true, userInputDevice, UserInputDeviceButton.JOYSTICK_POV, povValue, DigitalSensor.None, buttonType, taskSupplier,
+            affectedOperations);
+    }
+
+    /**
+     * Initializes a new MacroOperationDescription based on a user interaction on the POV
+     * @param clearInterrupt whether to clear the interruption of the operations when the macro completes
+     * @param userInputDevice which device will perform the macro operation (driver or codriver joystick)
+     * @param povValue the value of the POV (hat) used to perform the macro operation
+     * @param buttonType the behavior type to use for the macro operation
+     * @param taskSupplier the function that creates the tasks that should be performed by the macro
+     * @param affectedOperations the list of operations that will be utilized by this macro
+     */
+    public MacroOperationDescription(
+        boolean clearInterrupt,
+        UserInputDevice userInputDevice,
+        int povValue,
+        ButtonType buttonType,
+        Supplier<IControlTask> taskSupplier,
+        Operation... affectedOperations)
+    {
+        this(clearInterrupt, userInputDevice, UserInputDeviceButton.JOYSTICK_POV, povValue, DigitalSensor.None, buttonType, taskSupplier,
+            affectedOperations);
+    }
+
+    /**
+     * Initializes a new MacroOperationDescription based on a sensor
+     * @param sensor the sensor that triggers the macro operation
+     * @param buttonType the behavior type to use for the macro operation
+     * @param taskSupplier the function that creates the tasks that should be performed by the macro
+     * @param affectedOperations the list of operations that will be utilized by this macro
+     */
     public MacroOperationDescription(
         DigitalSensor sensor,
         ButtonType buttonType,
@@ -68,6 +111,14 @@ public class MacroOperationDescription extends OperationDescription
         this(true, UserInputDevice.Sensor, UserInputDeviceButton.NONE, 0, sensor, buttonType, taskSupplier, affectedOperations);
     }
 
+    /**
+     * Initializes a new MacroOperationDescription based on a sensor
+     * @param clearInterrupt whether to clear the interruption of the operations when the macro completes
+     * @param sensor the sensor that triggers the macro operation
+     * @param buttonType the behavior type to use for the macro operation
+     * @param taskSupplier the function that creates the tasks that should be performed by the macro
+     * @param affectedOperations the list of operations that will be utilized by this macro
+     */
     public MacroOperationDescription(
         boolean clearInterrupt,
         DigitalSensor sensor,

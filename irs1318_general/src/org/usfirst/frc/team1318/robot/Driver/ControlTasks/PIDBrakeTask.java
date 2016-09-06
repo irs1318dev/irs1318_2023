@@ -21,7 +21,7 @@ public class PIDBrakeTask extends ControlTaskBase implements IControlTask
 
     @Override
     public void update()
-    { 
+    {
     }
 
     @Override
@@ -38,6 +38,12 @@ public class PIDBrakeTask extends ControlTaskBase implements IControlTask
         this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
         this.setAnalogOperationState(Operation.DriveTrainLeftPosition, 0.0);
         this.setAnalogOperationState(Operation.DriveTrainRightPosition, 0.0);
+    }
+
+    @Override
+    public boolean shouldCancel()
+    {
+        return false;
     }
 
     @Override
