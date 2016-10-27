@@ -13,7 +13,7 @@ import org.usfirst.frc.team1318.robot.Driver.States.OperationState;
  */
 public class AutonomousDriver extends Driver
 {
-    // logging constants
+    private final AutonomousRoutineSelector routineSelector;
     private final IControlTask autonomousTask;
 
     private boolean hasBegun;
@@ -21,14 +21,14 @@ public class AutonomousDriver extends Driver
 
     /**
      * Initializes a new AutonomousDriver
-     * @param autonomousTask to execute as a part of this driver
      * @param components to utilize for making any decisions
      */
-    public AutonomousDriver(IControlTask autonomousTask, ComponentManager components)
+    public AutonomousDriver(ComponentManager components)
     {
         super();
 
-        this.autonomousTask = autonomousTask;
+        this.routineSelector = new AutonomousRoutineSelector();
+        this.autonomousTask = this.routineSelector.selectRoutine();
 
         this.hasBegun = false;
         this.hasEnded = false;
