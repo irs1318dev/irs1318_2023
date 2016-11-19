@@ -78,7 +78,7 @@ public class ButtonMap
     public static Map<MacroOperation, MacroOperationDescription> MacroSchema = new HashMap<MacroOperation, MacroOperationDescription>()
     {
         {
-            // Break mode macro
+            // Brake mode macro
             put(
                 MacroOperation.PIDBrake,
                 new MacroOperationDescription(
