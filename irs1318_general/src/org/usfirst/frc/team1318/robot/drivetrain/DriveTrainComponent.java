@@ -1,46 +1,43 @@
 package org.usfirst.frc.team1318.robot.drivetrain;
 
-import org.usfirst.frc.team1318.robot.ElectronicsConstants;
-import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.common.DashboardLogger;
+import org.usfirst.frc.team1318.robot.common.wpilibmocks.IEncoder;
+import org.usfirst.frc.team1318.robot.common.wpilibmocks.IMotor;
 
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Victor;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 
 /**
  * The drivetrain component class describes the electronics of the drivetrain and defines the abstract way to control it.
- * The drivetrain electronics include two talons (left and right), and two encoders (left and right). 
+ * The drivetrain electronics include two motors (left and right), and two encoders (left and right). 
  * 
  */
+@Singleton
 public class DriveTrainComponent
 {
-    private final Victor leftTalon;
-    private final Victor rightTalon;
+    private final static String LogName = "dt";
 
-    private final Encoder leftEncoder;
-    private final Encoder rightEncoder;
+    private final IMotor leftMotor;
+    private final IMotor rightMotor;
+
+    private final IEncoder leftEncoder;
+    private final IEncoder rightEncoder;
 
     /**
      * Initializes a new DriveTrainComponent
      */
-    public DriveTrainComponent()
+    @Inject
+    public DriveTrainComponent(
+        @Named("DRIVETRAIN_LEFTMOTOR") IMotor leftMotor,
+        @Named("DRIVETRAIN_RIGHTMOTOR") IMotor rightMotor,
+        @Named("DRIVETRAIN_LEFTENCODER") IEncoder leftEncoder,
+        @Named("DRIVETRAIN_RIGHTENCODER") IEncoder rightEncoder)
     {
-        this.leftTalon = new Victor(
-            ElectronicsConstants.DRIVETRAIN_LEFT_TALON_CHANNEL);
-
-        this.rightTalon = new Victor(
-            ElectronicsConstants.DRIVETRAIN_RIGHT_TALON_CHANNEL);
-
-        this.leftEncoder = new Encoder(
-            ElectronicsConstants.DRIVETRAIN_LEFT_ENCODER_CHANNEL_A,
-            ElectronicsConstants.DRIVETRAIN_LEFT_ENCODER_CHANNEL_B);
-
-        this.rightEncoder = new Encoder(
-            ElectronicsConstants.DRIVETRAIN_RIGHT_ENCODER_CHANNEL_A,
-            ElectronicsConstants.DRIVETRAIN_RIGHT_ENCODER_CHANNEL_B);
-
-        this.leftEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_LEFT_PULSE_DISTANCE);
-        this.rightEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_RIGHT_PULSE_DISTANCE);
+        this.leftMotor = leftMotor;
+        this.rightMotor = rightMotor;
+        this.leftEncoder = leftEncoder;
+        this.rightEncoder = rightEncoder;
     }
 
     /**
@@ -50,14 +47,14 @@ public class DriveTrainComponent
      */
     public void setDriveTrainPower(double leftPower, double rightPower)
     {
-        DashboardLogger.putDouble("leftPower", leftPower);
-        DashboardLogger.putDouble("rightPower", rightPower);
+        DashboardLogger.logNumber(DriveTrainComponent.LogName, "leftPower", leftPower);
+        DashboardLogger.logNumber(DriveTrainComponent.LogName, "rightPower", rightPower);
 
         double outLeftPower = leftPower;
         double outRightPower = -rightPower;// note: right motors are oriented facing "backwards"
 
-        this.leftTalon.set(outLeftPower);
-        this.rightTalon.set(outRightPower);
+        this.leftMotor.set(outLeftPower);
+        this.rightMotor.set(outRightPower);
     }
 
     /**
@@ -67,7 +64,7 @@ public class DriveTrainComponent
     public double getLeftEncoderVelocity()
     {
         double leftVelocity = -this.leftEncoder.getRate();
-        DashboardLogger.putDouble("leftVelocity", leftVelocity);
+        DashboardLogger.logNumber(DriveTrainComponent.LogName, "leftVelocity", leftVelocity);
         return leftVelocity;
     }
 
@@ -78,7 +75,7 @@ public class DriveTrainComponent
     public double getRightEncoderVelocity()
     {
         double rightVelocity = this.rightEncoder.getRate();
-        DashboardLogger.putDouble("rightVelocity", rightVelocity);
+        DashboardLogger.logNumber(DriveTrainComponent.LogName, "rightVelocity", rightVelocity);
         return rightVelocity;
     }
 
@@ -89,7 +86,7 @@ public class DriveTrainComponent
     public double getLeftEncoderDistance()
     {
         double leftDistance = -this.leftEncoder.getDistance();
-        DashboardLogger.putDouble("leftDistance", leftDistance);
+        DashboardLogger.logNumber(DriveTrainComponent.LogName, "leftDistance", leftDistance);
         return leftDistance;
     }
 
@@ -100,7 +97,7 @@ public class DriveTrainComponent
     public double getRightEncoderDistance()
     {
         double rightDistance = this.rightEncoder.getDistance();
-        DashboardLogger.putDouble("rightDistance", rightDistance);
+        DashboardLogger.logNumber(DriveTrainComponent.LogName, "rightDistance", rightDistance);
         return rightDistance;
     }
 
@@ -111,7 +108,7 @@ public class DriveTrainComponent
     public int getLeftEncoderTicks()
     {
         int leftTicks = -this.leftEncoder.get();
-        DashboardLogger.putDouble("leftTicks", leftTicks);
+        DashboardLogger.logNumber(DriveTrainComponent.LogName, "leftTicks", leftTicks);
         return leftTicks;
     }
 
@@ -122,7 +119,7 @@ public class DriveTrainComponent
     public int getRightEncoderTicks()
     {
         int rightTicks = this.rightEncoder.get();
-        DashboardLogger.putDouble("rightTicks", rightTicks);
+        DashboardLogger.logNumber(DriveTrainComponent.LogName, "rightTicks", rightTicks);
         return rightTicks;
     }
 

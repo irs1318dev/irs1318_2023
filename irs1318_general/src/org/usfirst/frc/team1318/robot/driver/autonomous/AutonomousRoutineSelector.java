@@ -6,8 +6,7 @@ import org.usfirst.frc.team1318.robot.driver.controltasks.WaitTask;
 
 public class AutonomousRoutineSelector
 {
-    // smartdash other constants
-    private static final String AUTONOMOUS_ROUTINE_PREFERENCE_KEY = "a.routine value";
+    private static final String LogName = "auto";
 
     /**
      * Initializes a new AutonomousDriver
@@ -28,11 +27,14 @@ public class AutonomousRoutineSelector
         // add next base2 number (1, 2, 4, 8, 16, etc.) here based on number of dipswitches and which is on...
 
         // print routine selection to the smartdash
-        DashboardLogger.putInteger(AutonomousRoutineSelector.AUTONOMOUS_ROUTINE_PREFERENCE_KEY, routineSelection);
+        DashboardLogger.logInteger(AutonomousRoutineSelector.LogName, "routine", routineSelection);
 
         switch (routineSelection)
         {
-            default:
+            case 0: // No switches flipped
+                return AutonomousRoutineSelector.GetFillerRoutine();
+
+            default: // CANNOT READ
                 return AutonomousRoutineSelector.GetFillerRoutine();
         }
     }

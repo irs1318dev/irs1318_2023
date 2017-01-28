@@ -3,6 +3,7 @@ package org.usfirst.frc.team1318.robot.driver.controltasks;
 import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.driver.IControlTask;
 import org.usfirst.frc.team1318.robot.driver.Operation;
+import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainComponent;
 
 /**
  * Abstract class defining a task that moves the robot a certain distance using Positional PID.
@@ -11,6 +12,8 @@ import org.usfirst.frc.team1318.robot.driver.Operation;
 public abstract class MoveDistanceTaskBase extends ControlTaskBase implements IControlTask
 {
     private final boolean resetPositionalOnEnd;
+
+    private DriveTrainComponent driveTrain;
 
     protected double startLeftEncoderDistance;
     protected double startRightEncoderDistance;
@@ -33,9 +36,11 @@ public abstract class MoveDistanceTaskBase extends ControlTaskBase implements IC
     @Override
     public void begin()
     {
+        this.driveTrain = this.getInjector().getInstance(DriveTrainComponent.class);
+
         // get the start location
-        this.startLeftEncoderDistance = this.getComponents().getDriveTrain().getLeftEncoderDistance();
-        this.startRightEncoderDistance = this.getComponents().getDriveTrain().getRightEncoderDistance();
+        this.startLeftEncoderDistance = this.driveTrain.getLeftEncoderDistance();
+        this.startRightEncoderDistance = this.driveTrain.getRightEncoderDistance();
 
         // calculate the desired end location
         this.determineFinalEncoderDistance();
@@ -99,8 +104,8 @@ public abstract class MoveDistanceTaskBase extends ControlTaskBase implements IC
     @Override
     public boolean hasCompleted()
     {
-        double leftEncoderDistance = this.getComponents().getDriveTrain().getLeftEncoderDistance();
-        double rightEncoderDistance = this.getComponents().getDriveTrain().getRightEncoderDistance();
+        double leftEncoderDistance = this.driveTrain.getLeftEncoderDistance();
+        double rightEncoderDistance = this.driveTrain.getRightEncoderDistance();
 
         // check how far away we are from the desired end location
         double leftDelta = Math.abs(this.desiredFinalLeftEncoderDistance - leftEncoderDistance);

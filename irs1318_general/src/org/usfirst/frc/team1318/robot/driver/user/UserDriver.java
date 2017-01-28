@@ -5,16 +5,17 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.usfirst.frc.team1318.robot.ComponentManager;
-import org.usfirst.frc.team1318.robot.ElectronicsConstants;
 import org.usfirst.frc.team1318.robot.common.SetHelper;
+import org.usfirst.frc.team1318.robot.common.wpilibmocks.IJoystick;
 import org.usfirst.frc.team1318.robot.driver.ButtonMap;
 import org.usfirst.frc.team1318.robot.driver.Driver;
 import org.usfirst.frc.team1318.robot.driver.MacroOperation;
 import org.usfirst.frc.team1318.robot.driver.Operation;
 import org.usfirst.frc.team1318.robot.driver.states.MacroOperationState;
 
-import edu.wpi.first.wpilibj.Joystick;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.name.Named;
 
 /**
  * Driver for teleop mode.  User driver translates current state and joystick state information into
@@ -23,25 +24,27 @@ import edu.wpi.first.wpilibj.Joystick;
  */
 public class UserDriver extends Driver
 {
-    private final Joystick joystickDriver;
-    private final Joystick joystickCoDriver;
+    private final IJoystick joystickDriver;
+    private final IJoystick joystickCoDriver;
 
     private final Map<MacroOperation, MacroOperationState> macroStateMap;
-    private final ComponentManager components;
 
     /**
      * Initializes a new UserDriver
-     * @param components to utilize within the robot
+     * @param injector used to retrieve the components to utilize within the robot
      */
-    public UserDriver(ComponentManager components)
+    @Inject
+    public UserDriver(
+        Injector injector,
+        @Named("USER_DRIVER_JOYSTICK") IJoystick joystickDriver,
+        @Named("USER_CODRIVER_JOYSTICK") IJoystick joystickCoDriver)
     {
-        super();
+        super(injector);
 
-        this.joystickDriver = new Joystick(ElectronicsConstants.JOYSTICK_DRIVER_PORT);
-        this.joystickCoDriver = new Joystick(ElectronicsConstants.JOYSTICK_CO_DRIVER_PORT);
+        this.joystickDriver = joystickDriver;
+        this.joystickCoDriver = joystickCoDriver;
 
         this.macroStateMap = new HashMap<MacroOperation, MacroOperationState>();
-        this.components = components;
 
         for (MacroOperation macroOperation : ButtonMap.MacroSchema.keySet())
         {
@@ -50,7 +53,7 @@ public class UserDriver extends Driver
                 new MacroOperationState(
                     ButtonMap.MacroSchema.get(macroOperation),
                     this.operationStateMap,
-                    this.components));
+                    this.injector));
         }
     }
 
@@ -77,7 +80,7 @@ public class UserDriver extends Driver
         Set<Operation> interruptedOperations = new HashSet<Operation>();
         for (Operation operation : this.operationStateMap.keySet())
         {
-            boolean receivedInput = this.operationStateMap.get(operation).checkInput(this.joystickDriver, this.joystickCoDriver, this.components);
+            boolean receivedInput = this.operationStateMap.get(operation).checkInput(this.joystickDriver, this.joystickCoDriver);
             if (receivedInput)
             {
                 modifiedOperations.add(operation);
@@ -96,7 +99,7 @@ public class UserDriver extends Driver
         for (MacroOperation macroOperation : this.macroStateMap.keySet())
         {
             MacroOperationState macroState = this.macroStateMap.get(macroOperation);
-            macroState.checkInput(this.joystickDriver, this.joystickCoDriver, this.components);
+            macroState.checkInput(this.joystickDriver, this.joystickCoDriver);
 
             if (macroState.getIsActive())
             {

@@ -1,25 +1,17 @@
 package org.usfirst.frc.team1318.robot;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.usfirst.frc.team1318.robot.common.IController;
-import org.usfirst.frc.team1318.robot.compressor.CompressorController;
 import org.usfirst.frc.team1318.robot.driver.Driver;
-import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainController;
 
 public class ControllerManager implements IController
 {
-    public final ComponentManager components;
-    public final ArrayList<IController> controllerList;
+    public final List<IController> controllerList;
 
-    public ControllerManager(ComponentManager components)
+    public ControllerManager(List<IController> controllerList)
     {
-        this.components = components;
-        this.controllerList = new ArrayList<IController>();
-        this.controllerList.add(this.components.getPowerManager());
-        this.controllerList.add(this.components.getPositionManager());
-        this.controllerList.add(new CompressorController(this.components.getCompressor()));
-        this.controllerList.add(new DriveTrainController(this.components.getDriveTrain(), TuningConstants.DRIVETRAIN_USE_PID_DEFAULT));
+        this.controllerList = controllerList;
     }
 
     @Override
@@ -27,7 +19,17 @@ public class ControllerManager implements IController
     {
         for (IController controller : this.controllerList)
         {
-            controller.update();
+            try
+            {
+                controller.update();
+            }
+            catch (Exception ex)
+            {
+                if (TuningConstants.THROW_EXCEPTIONS)
+                {
+                    throw ex;
+                }
+            }
         }
     }
 
@@ -36,7 +38,17 @@ public class ControllerManager implements IController
     {
         for (IController controller : this.controllerList)
         {
-            controller.stop();
+            try
+            {
+                controller.stop();
+            }
+            catch (Exception ex)
+            {
+                if (TuningConstants.THROW_EXCEPTIONS)
+                {
+                    throw ex;
+                }
+            }
         }
     }
 

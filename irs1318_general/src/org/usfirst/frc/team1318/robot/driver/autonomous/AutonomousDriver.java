@@ -1,9 +1,11 @@
 package org.usfirst.frc.team1318.robot.driver.autonomous;
 
-import org.usfirst.frc.team1318.robot.ComponentManager;
 import org.usfirst.frc.team1318.robot.driver.Driver;
 import org.usfirst.frc.team1318.robot.driver.IControlTask;
 import org.usfirst.frc.team1318.robot.driver.states.OperationState;
+
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 
 /**
  * Driver for autonomous mode.  Autonomous driver acts as the operator of the robot,
@@ -13,6 +15,7 @@ import org.usfirst.frc.team1318.robot.driver.states.OperationState;
  */
 public class AutonomousDriver extends Driver
 {
+
     private final AutonomousRoutineSelector routineSelector;
     private final IControlTask autonomousTask;
 
@@ -23,9 +26,10 @@ public class AutonomousDriver extends Driver
      * Initializes a new AutonomousDriver
      * @param components to utilize for making any decisions
      */
-    public AutonomousDriver(ComponentManager components)
+    @Inject
+    public AutonomousDriver(Injector injector)
     {
-        super();
+        super(injector);
 
         this.routineSelector = new AutonomousRoutineSelector();
         this.autonomousTask = this.routineSelector.selectRoutine();
@@ -33,7 +37,7 @@ public class AutonomousDriver extends Driver
         this.hasBegun = false;
         this.hasEnded = false;
 
-        this.autonomousTask.initialize(this.operationStateMap, components);
+        this.autonomousTask.initialize(this.operationStateMap, injector);
 
         for (OperationState state : this.operationStateMap.values())
         {

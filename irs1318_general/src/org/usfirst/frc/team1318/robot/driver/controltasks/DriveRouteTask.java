@@ -42,7 +42,7 @@ public class DriveRouteTask extends TimedTask implements IControlTask
     {
         super.begin();
 
-        this.driveTrain = this.getComponents().getDriveTrain();
+        this.driveTrain = this.getInjector().getInstance(DriveTrainComponent.class);
         this.startLeftDistance = this.driveTrain.getLeftEncoderDistance();
         this.startRightDistance = this.driveTrain.getRightEncoderDistance();
 
@@ -106,8 +106,8 @@ public class DriveRouteTask extends TimedTask implements IControlTask
     @Override
     public boolean hasCompleted()
     {
-        double leftEncoderDistance = this.getComponents().getDriveTrain().getLeftEncoderDistance();
-        double rightEncoderDistance = this.getComponents().getDriveTrain().getRightEncoderDistance();
+        double leftEncoderDistance = this.driveTrain.getLeftEncoderDistance();
+        double rightEncoderDistance = this.driveTrain.getRightEncoderDistance();
 
         // check how far away we are from the desired end location
         double leftDelta = Math.abs(this.endLeftDistance - leftEncoderDistance);
@@ -115,6 +115,8 @@ public class DriveRouteTask extends TimedTask implements IControlTask
 
         // return that we have completed this task if are within an acceptable distance
         // from the desired end location for both left and right. 
-        return super.hasCompleted() || (leftDelta < TuningConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA && rightDelta < TuningConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA);
+        return super.hasCompleted()
+            || (leftDelta < TuningConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA
+                && rightDelta < TuningConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA);
     }
 }

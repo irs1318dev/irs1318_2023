@@ -1,10 +1,14 @@
 package org.usfirst.frc.team1318.robot.general;
 
 import org.usfirst.frc.team1318.robot.HardwareConstants;
+import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.common.DashboardLogger;
 import org.usfirst.frc.team1318.robot.common.IController;
 import org.usfirst.frc.team1318.robot.driver.Driver;
 import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainComponent;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 /**
  * Position manager
@@ -13,11 +17,10 @@ import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainComponent;
  * This uses Jim's differential odometry algorithm. In the future we can consider adding other sensors to help correct for error.
  * 
  */
+@Singleton
 public class PositionManager implements IController
 {
-    // logging constants
-    public static final String X_POSITION_LOG_KEY = "pos.x";
-    public static final String Y_POSITION_LOG_KEY = "pos.y";
+    private final static String LogName = "pos";
 
     // drivetrain component
     private final DriveTrainComponent driveTrainComponent;
@@ -38,8 +41,12 @@ public class PositionManager implements IController
      * Initializes a new PositionManager
      * @param driveTrainComponent to use to determine position changes
      */
+    @Inject
     public PositionManager(DriveTrainComponent driveTrainComponent)
     {
+        this.driveTrainComponent = driveTrainComponent;
+        //this.navx = new AHRS(SPI.Port.kMXP);
+
         this.x = 0.0;
         this.y = 0.0;
 
@@ -47,9 +54,6 @@ public class PositionManager implements IController
 
         this.prevLeftDistance = 0.0;
         this.prevRightDistance = 0.0;
-
-        this.driveTrainComponent = driveTrainComponent;
-        //this.navx = new AHRS(SPI.Port.kMXP);
     }
 
     /**
@@ -81,8 +85,8 @@ public class PositionManager implements IController
         // calculate the angle (in radians) based on the total distance traveled
         double angleR = ((leftDistance - rightDistance) / HardwareConstants.DRIVETRAIN_WHEEL_SEPARATION_DISTANCE);
 
-        // correct for weirdness (7 degree offset in the angle)
-        angleR *= 0.979858464888405;
+        // correct for odometry angle inconsistencies
+        angleR *= TuningConstants.DRIVETRAIN_ENCODER_ODOMETRY_ANGLE_CORRECTION;
 
         // calculate the average distance traveled
         double averagePositionChange = ((leftDistance - this.prevLeftDistance) + (rightDistance - this.prevRightDistance)) / 2;
@@ -98,12 +102,12 @@ public class PositionManager implements IController
         this.prevRightDistance = rightDistance;
 
         // log the current position and orientation
-        DashboardLogger.putDouble("pos.odom_angle", this.getOdometryAngle());
-        DashboardLogger.putDouble("pos.odom_x", this.getOdometryX());
-        DashboardLogger.putDouble("pos.odom_y", this.getOdometryY());
-        DashboardLogger.putDouble("pos.navx_angle", this.getNavxAngle());
-        DashboardLogger.putDouble("pos.navx_x", this.getNavxX());
-        DashboardLogger.putDouble("pos.navx_y", this.getNavxY());
+        DashboardLogger.logNumber(PositionManager.LogName, "odom_angle", this.getOdometryAngle());
+        DashboardLogger.logNumber(PositionManager.LogName, "odom_x", this.getOdometryX());
+        DashboardLogger.logNumber(PositionManager.LogName, "odom_y", this.getOdometryY());
+        DashboardLogger.logNumber(PositionManager.LogName, "navx_angle", this.getNavxAngle());
+        DashboardLogger.logNumber(PositionManager.LogName, "navx_x", this.getNavxX());
+        DashboardLogger.logNumber(PositionManager.LogName, "navx_y", this.getNavxY());
     }
 
     /**

@@ -2,9 +2,12 @@ package org.usfirst.frc.team1318.robot.general;
 
 import org.usfirst.frc.team1318.robot.common.ComplementaryFilter;
 import org.usfirst.frc.team1318.robot.common.IController;
+import org.usfirst.frc.team1318.robot.common.wpilibmocks.IPowerDistributionPanel;
 import org.usfirst.frc.team1318.robot.driver.Driver;
 
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 
 /**
  * Power manager.
@@ -12,17 +15,19 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
  * @author Will
  *
  */
+@Singleton
 public class PowerManager implements IController
 {
-    private final PowerDistributionPanel pdp;
+    private final IPowerDistributionPanel pdp;
     private ComplementaryFilter filter;
 
     /**
      * Initializes a new PowerComponent
      */
-    public PowerManager()
+    @Inject
+    public PowerManager(@Named("POWERMANAGER_PDP") IPowerDistributionPanel pdp)
     {
-        this.pdp = new PowerDistributionPanel();
+        this.pdp = pdp;
         this.filter = new ComplementaryFilter(0.4, 0.6, this.pdp.getVoltage());
     }
 

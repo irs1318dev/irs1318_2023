@@ -13,7 +13,8 @@ public class PIDBrakeTask extends ControlTaskBase implements IControlTask
     @Override
     public void begin()
     {
-        DriveTrainComponent driveTrain = this.getComponents().getDriveTrain();
+        DriveTrainComponent driveTrain = this.getInjector().getInstance(DriveTrainComponent.class);
+
         this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, true);
         this.setAnalogOperationState(Operation.DriveTrainLeftPosition, driveTrain.getLeftEncoderDistance());
         this.setAnalogOperationState(Operation.DriveTrainRightPosition, driveTrain.getRightEncoderDistance());

@@ -1,8 +1,10 @@
 package org.usfirst.frc.team1318.robot.compressor;
 
-import org.usfirst.frc.team1318.robot.ElectronicsConstants;
+import org.usfirst.frc.team1318.robot.common.wpilibmocks.ICompressor;
 
-import edu.wpi.first.wpilibj.Compressor;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 
 /**
  * The compressor component class describes the electronics of the compressor and defines the abstract way to control it.
@@ -11,16 +13,18 @@ import edu.wpi.first.wpilibj.Compressor;
  * @author Will
  *
  */
+@Singleton
 public class CompressorComponent
 {
-    private final Compressor compressor;
+    private final ICompressor compressor;
 
     /**
      * Initializes a new CompressorComponent
      */
-    public CompressorComponent()
+    @Inject
+    public CompressorComponent(@Named("COMPRESSOR") ICompressor compressor)
     {
-        this.compressor = new Compressor(ElectronicsConstants.PCM_B_MODULE);
+        this.compressor = compressor;
     }
 
     /**

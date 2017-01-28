@@ -8,6 +8,8 @@ import org.usfirst.frc.team1318.robot.common.PIDHandler;
 import org.usfirst.frc.team1318.robot.driver.Driver;
 import org.usfirst.frc.team1318.robot.driver.Operation;
 
+import com.google.inject.Inject;
+
 /**
  * Drivetrain controller.
  * The controller defines the logic that controls a mechanism given inputs (component) and operator-requested actions, and 
@@ -16,6 +18,8 @@ import org.usfirst.frc.team1318.robot.driver.Operation;
  */
 public class DriveTrainController implements IController
 {
+    private final static String LogName = "dtc";
+
     private static final double POWERLEVEL_MIN = -1.0;
     private static final double POWERLEVEL_MAX = 1.0;
 
@@ -32,10 +36,11 @@ public class DriveTrainController implements IController
      * @param component to control
      * @param usePID indicates whether we should use PID control
      */
-    public DriveTrainController(DriveTrainComponent component, boolean usePID)
+    @Inject
+    public DriveTrainController(DriveTrainComponent component)
     {
         this.component = component;
-        this.usePID = usePID;
+        this.usePID = TuningConstants.DRIVETRAIN_USE_PID_DEFAULT;
         this.usePositionalMode = false;
 
         this.createPIDHandler();
@@ -245,8 +250,8 @@ public class DriveTrainController implements IController
         leftVelocityGoal = leftVelocityGoal * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL;
         rightVelocityGoal = rightVelocityGoal * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL;
 
-        DashboardLogger.putDouble("drivetrain.leftVelocityGoal", leftVelocityGoal);
-        DashboardLogger.putDouble("drivetrain.rightVelocityGoal", rightVelocityGoal);
+        DashboardLogger.logNumber(DriveTrainController.LogName, "leftVelocityGoal", leftVelocityGoal);
+        DashboardLogger.logNumber(DriveTrainController.LogName, "rightVelocityGoal", rightVelocityGoal);
 
         // convert velocity goal to power level...
         double leftPower;
@@ -293,8 +298,8 @@ public class DriveTrainController implements IController
         this.component.getLeftEncoderVelocity();
         this.component.getRightEncoderVelocity();
 
-        DashboardLogger.putDouble("drivetrain.leftPositionGoal", leftPosition);
-        DashboardLogger.putDouble("drivetrain.rightPositionGoal", rightPosition);
+        DashboardLogger.logNumber(DriveTrainController.LogName, "leftPositionGoal", leftPosition);
+        DashboardLogger.logNumber(DriveTrainController.LogName, "rightPositionGoal", rightPosition);
 
         double leftPower;
         double rightPower;

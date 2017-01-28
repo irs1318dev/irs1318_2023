@@ -1,12 +1,11 @@
 package org.usfirst.frc.team1318.robot.driver.states;
 
-import org.usfirst.frc.team1318.robot.ComponentManager;
 import org.usfirst.frc.team1318.robot.ElectronicsConstants;
 import org.usfirst.frc.team1318.robot.TuningConstants;
+import org.usfirst.frc.team1318.robot.common.wpilibmocks.IJoystick;
 import org.usfirst.frc.team1318.robot.driver.buttons.AnalogAxis;
 import org.usfirst.frc.team1318.robot.driver.descriptions.AnalogOperationDescription;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.AxisType;
 
 /**
@@ -56,16 +55,14 @@ public class AnalogOperationState extends OperationState
      * Checks whether the operation state should change based on the driver and co-driver joysticks and component sensors. 
      * @param driver joystick to update from
      * @param coDriver joystick to update from
-     * @param components to update from
      * @return true if there was any active user input that triggered a state change
      */
-    @SuppressWarnings("unused")
     @Override
-    public boolean checkInput(Joystick driver, Joystick coDriver, ComponentManager components)
+    public boolean checkInput(IJoystick driver, IJoystick coDriver)
     {
         AnalogOperationDescription description = (AnalogOperationDescription)this.getDescription();
 
-        Joystick relevantJoystick;
+        IJoystick relevantJoystick;
         AxisType relevantAxis;
         switch (description.getUserInputDevice())
         {
