@@ -4,7 +4,6 @@ import org.usfirst.frc.team1318.robot.common.DashboardLogger;
 import org.usfirst.frc.team1318.robot.driver.Driver;
 import org.usfirst.frc.team1318.robot.driver.autonomous.AutonomousDriver;
 import org.usfirst.frc.team1318.robot.driver.user.UserDriver;
-import org.usfirst.frc.team1318.robot.general.PositionManager;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -38,9 +37,8 @@ public class Robot extends IterativeRobot
     // Driver.  This could either be the UserDriver (joystick) or the AutonomousDriver
     private Driver driver;
 
-    // Controllers
+    // Controllers and injector
     private ControllerManager controllers;
-
     private Injector injector;
 
     /**
@@ -53,16 +51,6 @@ public class Robot extends IterativeRobot
         // create mechanism components and controllers
         this.controllers = this.getInjector().getInstance(ControllerManager.class);
         DashboardLogger.logString(Robot.LogName, "state", "Init");
-    }
-
-    Injector getInjector()
-    {
-        if (this.injector == null)
-        {
-            this.injector = Guice.createInjector(new RobotModule());
-        }
-
-        return this.injector;
     }
 
     /**
@@ -90,9 +78,6 @@ public class Robot extends IterativeRobot
      */
     public void autonomousInit()
     {
-        // reset the position manager so that we consider ourself at the origin (0,0) and facing the 0 direction.
-        this.getInjector().getInstance(PositionManager.class).reset();
-
         // Create an autonomous driver
         this.driver = this.getInjector().getInstance(AutonomousDriver.class);
 
@@ -161,5 +146,19 @@ public class Robot extends IterativeRobot
 
         // run each controller
         this.controllers.update();
+    }
+
+    /**
+     * Lazily initializes and retrieves the injector.
+     * @return the injector to use for this robot
+     */
+    Injector getInjector()
+    {
+        if (this.injector == null)
+        {
+            this.injector = Guice.createInjector(new RobotModule());
+        }
+
+        return this.injector;
     }
 }

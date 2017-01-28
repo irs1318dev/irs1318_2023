@@ -5,6 +5,7 @@ import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.common.DashboardLogger;
 import org.usfirst.frc.team1318.robot.common.IController;
 import org.usfirst.frc.team1318.robot.driver.Driver;
+import org.usfirst.frc.team1318.robot.driver.autonomous.AutonomousDriver;
 import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainComponent;
 
 import com.google.inject.Inject;
@@ -63,7 +64,11 @@ public class PositionManager implements IController
     @Override
     public void setDriver(Driver driver)
     {
-        // not needed for this controller 
+        // At the beginning of autonomous, reset the position manager so that we consider ourself at the origin (0,0) and facing the 0 direction.
+        if (driver instanceof AutonomousDriver)
+        {
+            this.reset();
+        }
     }
 
     /**
