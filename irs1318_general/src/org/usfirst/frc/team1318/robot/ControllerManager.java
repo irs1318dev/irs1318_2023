@@ -2,10 +2,10 @@ package org.usfirst.frc.team1318.robot;
 
 import java.util.ArrayList;
 
-import org.usfirst.frc.team1318.robot.Common.IController;
-import org.usfirst.frc.team1318.robot.Compressor.CompressorController;
-import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainController;
-import org.usfirst.frc.team1318.robot.Driver.Driver;
+import org.usfirst.frc.team1318.robot.common.IController;
+import org.usfirst.frc.team1318.robot.compressor.CompressorController;
+import org.usfirst.frc.team1318.robot.driver.Driver;
+import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainController;
 
 public class ControllerManager implements IController
 {

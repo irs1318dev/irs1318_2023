@@ -1,9 +1,9 @@
 package org.usfirst.frc.team1318.robot;
 
-import org.usfirst.frc.team1318.robot.Compressor.CompressorComponent;
-import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainComponent;
-import org.usfirst.frc.team1318.robot.General.PositionManager;
-import org.usfirst.frc.team1318.robot.General.PowerManager;
+import org.usfirst.frc.team1318.robot.compressor.CompressorComponent;
+import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainComponent;
+import org.usfirst.frc.team1318.robot.general.PositionManager;
+import org.usfirst.frc.team1318.robot.general.PowerManager;
 
 public class ComponentManager
 {
