@@ -71,5 +71,5 @@ public class TuningConstants
     public static final double DRIVETRAIN_AUTONOMOUS_FAST_VELOCITY = .45;
 
     // Acceptable vision centering range values in degrees
-    public static final double MAX_VISION_CENTERING_RANGE_DEGREES = 2.0;
+    public static final double MAX_VISION_CENTERING_RANGE_DEGREES = 1.0;
 }

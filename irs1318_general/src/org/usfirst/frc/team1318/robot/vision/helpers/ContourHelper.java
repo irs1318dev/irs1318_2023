@@ -19,6 +19,17 @@ public class ContourHelper
      */
     public static MatOfPoint findLargestContour(Mat frame)
     {
+        return ContourHelper.findLargestContour(frame, 0.0);
+    }
+
+    /**
+     * Find the largest contour in the frame
+     * @param frame in which to look for contours
+     * @param minContourArea is the minimum contour area allowable
+     * @return largest contour
+     */
+    public static MatOfPoint findLargestContour(Mat frame, double minContourArea)
+    {
         // find the contours using OpenCV API...
         Mat unused = new Mat();
         List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
@@ -31,7 +42,7 @@ public class ContourHelper
         for (MatOfPoint contour : contours)
         {
             double area = Imgproc.contourArea(contour);
-            if (area > largestContourArea)
+            if (area >= minContourArea && area > largestContourArea)
             {
                 if (largestContour != null)
                 {
@@ -57,6 +68,17 @@ public class ContourHelper
      */
     public static MatOfPoint[] findTwoLargestContours(Mat frame)
     {
+        return ContourHelper.findTwoLargestContours(frame, 0.0);
+    }
+
+    /**
+     * Find the two largest contours in the frame
+     * @param frame in which to look for contours
+     * @param minContourArea is the minimum contour area allowable
+     * @return two largest contours, largest then second largest
+     */
+    public static MatOfPoint[] findTwoLargestContours(Mat frame, double minContourArea)
+    {
         // find the contours using OpenCV API...
         Mat unused = new Mat();
         List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
@@ -73,7 +95,7 @@ public class ContourHelper
         for (MatOfPoint contour : contours)
         {
             double area = Imgproc.contourArea(contour);
-            if (area > largestContourArea)
+            if (area >= minContourArea && area > largestContourArea)
             {
                 if (largestContour != null)
                 {
@@ -89,7 +111,7 @@ public class ContourHelper
                 largestContour = contour;
                 largestContourArea = area;
             }
-            else if (area > secondLargestContourArea)
+            else if (area >= minContourArea && area > secondLargestContourArea)
             {
                 if (secondLargestContour != null)
                 {
@@ -114,6 +136,17 @@ public class ContourHelper
      * @return sorted largest contour
      */
     public static MatOfPoint[] findSortedLargestContours(Mat frame)
+    {
+        return ContourHelper.findSortedLargestContours(frame, 0.0);
+    }
+
+    /**
+     * Find the contours in the frame, sorted from smallest to largest
+     * @param frame in which to look for contours
+     * @param minContourArea is the minimum contour area allowable
+     * @return sorted largest contour
+     */
+    public static MatOfPoint[] findSortedLargestContours(Mat frame, double minContourArea)
     {
         // find the contours using OpenCV API...
         Mat unused = new Mat();

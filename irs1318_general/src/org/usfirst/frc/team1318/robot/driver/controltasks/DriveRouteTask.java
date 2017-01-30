@@ -11,8 +11,7 @@ public class DriveRouteTask extends TimedTask implements IControlTask
 {
     private final Function<Double, Double> leftPositionPerTime;
     private final Function<Double, Double> rightPositionPerTime;
-
-    private DriveTrainComponent driveTrain;
+    private final DriveTrainComponent driveTrain;
 
     private double startLeftDistance;
     private double startRightDistance;
@@ -32,6 +31,8 @@ public class DriveRouteTask extends TimedTask implements IControlTask
 
         this.leftPositionPerTime = left;
         this.rightPositionPerTime = right;
+
+        this.driveTrain = this.getInjector().getInstance(DriveTrainComponent.class);
     }
 
     /**
@@ -42,7 +43,6 @@ public class DriveRouteTask extends TimedTask implements IControlTask
     {
         super.begin();
 
-        this.driveTrain = this.getInjector().getInstance(DriveTrainComponent.class);
         this.startLeftDistance = this.driveTrain.getLeftEncoderDistance();
         this.startRightDistance = this.driveTrain.getRightEncoderDistance();
 

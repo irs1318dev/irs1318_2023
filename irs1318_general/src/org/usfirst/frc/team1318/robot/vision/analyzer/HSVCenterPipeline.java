@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj.vision.VisionPipeline;
 
 public class HSVCenterPipeline implements VisionPipeline
 {
+    private final boolean shouldUndistort;
+
     private final ImageUndistorter undistorter;
     private final HSVFilter hsvFilter;
 
@@ -29,12 +31,14 @@ public class HSVCenterPipeline implements VisionPipeline
 
     /**
      * Initializes a new instance of the HSVCenterAnalyzer class.
-     * @param output point writer
+     * @param shouldUndistort whether to undistort the image or not
      */
-    public HSVCenterPipeline()
+    public HSVCenterPipeline(boolean shouldUndistort)
     {
+        this.shouldUndistort = shouldUndistort;
+
         this.undistorter = new ImageUndistorter();
-        this.hsvFilter = new HSVFilter(VisionConstants.HSV_FILTER_LOW, VisionConstants.HSV_FILTER_HIGH);
+        this.hsvFilter = new HSVFilter(VisionConstants.AXIS_HSV_FILTER_LOW, VisionConstants.AXIS_HSV_FILTER_HIGH);
 
         this.center1 = null;
         this.analyzedFrameCount = 0;
@@ -60,7 +64,12 @@ public class HSVCenterPipeline implements VisionPipeline
         }
 
         // first, undistort the image.
-        image = this.undistorter.undistortFrame(image);
+        Mat undistortedImage;
+        if (this.shouldUndistort)
+        {
+            image = this.undistorter.undistortFrame(image);
+        }
+
         if (VisionConstants.DEBUG
             && VisionConstants.DEBUG_FRAME_OUTPUT && this.analyzedFrameCount % VisionConstants.DEBUG_FRAME_OUTPUT_GAP == 0)
         {
@@ -69,7 +78,14 @@ public class HSVCenterPipeline implements VisionPipeline
         }
 
         // save the undistorted image for possible output later...
-        Mat undistortedImage = image.clone();
+        if (this.shouldUndistort)
+        {
+            undistortedImage = image.clone();
+        }
+        else
+        {
+            undistortedImage = image;
+        }
 
         // second, filter HSV
         image = this.hsvFilter.filterHSV(image);
@@ -81,7 +97,7 @@ public class HSVCenterPipeline implements VisionPipeline
         }
 
         // third, find the largest contour.
-        MatOfPoint[] largestContours = ContourHelper.findTwoLargestContours(image);
+        MatOfPoint[] largestContours = ContourHelper.findTwoLargestContours(image, VisionConstants.CONTOUR_MIN_AREA);
         MatOfPoint largestContour = largestContours[0];
         MatOfPoint secondLargestContour = largestContours[1];
         if (largestContour == null)
