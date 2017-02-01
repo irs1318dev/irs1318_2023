@@ -3,6 +3,8 @@ package org.usfirst.frc.team1318.robot.driver;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.usfirst.frc.team1318.robot.ElectronicsConstants;
+import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.driver.buttons.AnalogAxis;
 import org.usfirst.frc.team1318.robot.driver.buttons.ButtonType;
 import org.usfirst.frc.team1318.robot.driver.controltasks.PIDBrakeTask;
@@ -24,12 +26,16 @@ public class ButtonMap
                 Operation.DriveTrainMoveForward,
                 new AnalogOperationDescription(
                     UserInputDevice.Driver,
-                    AnalogAxis.Y));
+                    AnalogAxis.Y,
+                    ElectronicsConstants.INVERT_Y_AXIS,
+                    TuningConstants.DRIVETRAIN_Y_DEAD_ZONE));
             put(
                 Operation.DriveTrainTurn,
                 new AnalogOperationDescription(
                     UserInputDevice.Driver,
-                    AnalogAxis.X));
+                    AnalogAxis.X,
+                    ElectronicsConstants.INVERT_X_AXIS,
+                    TuningConstants.DRIVETRAIN_X_DEAD_ZONE));
             put(
                 Operation.DriveTrainSimpleMode,
                 new DigitalOperationDescription(
@@ -46,12 +52,16 @@ public class ButtonMap
                 Operation.DriveTrainLeftPosition,
                 new AnalogOperationDescription(
                     UserInputDevice.None,
-                    AnalogAxis.None));
+                    AnalogAxis.None,
+                    false,
+                    0.0));
             put(
                 Operation.DriveTrainRightPosition,
                 new AnalogOperationDescription(
                     UserInputDevice.None,
-                    AnalogAxis.None));
+                    AnalogAxis.None,
+                    false,
+                    0.0));
             put(
                 Operation.DriveTrainSwapFrontOrientation,
                 new DigitalOperationDescription(
