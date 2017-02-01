@@ -14,7 +14,8 @@ public class TurnAbsoluteTask extends TimedTask
     private final double xVelocity;
     private final double absoluteDegrees;
     private final double acceptableError;
-    private final PositionManager position;
+
+    private PositionManager position;
 
     /**
      * Initializes a new TurnAbsoluteTask
@@ -24,14 +25,23 @@ public class TurnAbsoluteTask extends TimedTask
      * @param acceptableError indicates how far off we find acceptable
      * @param position manager that can be used to calculate the current direction we are facing
      */
-    public TurnAbsoluteTask(double maxDuration, double xVelocity, double absoluteDegrees, double acceptableError, PositionManager position)
+    public TurnAbsoluteTask(double maxDuration, double xVelocity, double absoluteDegrees, double acceptableError)
     {
         super(maxDuration);
 
         this.xVelocity = xVelocity;
         this.absoluteDegrees = absoluteDegrees;
         this.acceptableError = acceptableError;
-        this.position = position;
+    }
+
+    /**
+     * Begin the current task
+     */
+    @Override
+    public void begin()
+    {
+        super.begin();
+        this.position = this.getInjector().getInstance(PositionManager.class);
     }
 
     /**

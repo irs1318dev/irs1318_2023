@@ -100,13 +100,14 @@ public class ButtonMap
                 new MacroOperationDescription(
                     UserInputDevice.Driver,
                     UserInputDeviceButton.JOYSTICK_STICK_THUMB_BUTTON,
-                    ButtonType.Simple,
+                    ButtonType.Toggle,
                     () -> new VisionCenteringTask(),
                     new Operation[]
                     {
                         Operation.DriveTrainUsePositionalMode,
                         Operation.DriveTrainLeftPosition,
                         Operation.DriveTrainRightPosition,
+                        Operation.DriveTrainTurn,
                     }));
         }
     };

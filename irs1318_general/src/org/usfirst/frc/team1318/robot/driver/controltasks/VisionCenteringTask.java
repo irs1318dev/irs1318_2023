@@ -19,9 +19,9 @@ public class VisionCenteringTask extends MoveDistanceTaskBase implements IContro
         Single, Continual, PID;
     }
 
-    private final VisionManager visionManager;
     private final CenteringMode mode;
 
+    private VisionManager visionManager;
     private PIDHandler pidHandler;
 
     /**
@@ -29,7 +29,7 @@ public class VisionCenteringTask extends MoveDistanceTaskBase implements IContro
     */
     public VisionCenteringTask()
     {
-        this(CenteringMode.Single);
+        this(CenteringMode.PID);
     }
 
     /**
@@ -40,13 +40,22 @@ public class VisionCenteringTask extends MoveDistanceTaskBase implements IContro
     {
         super(true);
 
-        this.visionManager = this.getInjector().getInstance(VisionManager.class);
         this.mode = mode;
 
         if (this.mode == CenteringMode.PID)
         {
-            this.pidHandler = new PIDHandler(0.02, 0.0, 0.0, 0.0, -0.2, 0.2);
+            this.pidHandler = new PIDHandler(0.15, 0.0, 0.0, 0.0, -0.3, 0.3);
         }
+    }
+
+    /**
+     * Begin the current task
+     */
+    @Override
+    public void begin()
+    {
+        this.visionManager = this.getInjector().getInstance(VisionManager.class);
+        super.begin();
     }
 
     /**
@@ -55,7 +64,6 @@ public class VisionCenteringTask extends MoveDistanceTaskBase implements IContro
     @Override
     public void update()
     {
-        System.out.println(String.format("%f centerAngle", this.visionManager.getCenter1Angle()));
         if (this.mode == CenteringMode.Single)
         {
             super.update();
@@ -72,9 +80,13 @@ public class VisionCenteringTask extends MoveDistanceTaskBase implements IContro
         {
             this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
 
-            this.setAnalogOperationState(
-                Operation.DriveTrainTurn,
-                this.pidHandler.calculatePosition(0.0, this.visionManager.getCenter1Angle()));
+            Double currentAngle = this.visionManager.getCenter1Angle();
+            if (currentAngle != null)
+            {
+                this.setAnalogOperationState(
+                    Operation.DriveTrainTurn,
+                    -this.pidHandler.calculatePosition(0.0, currentAngle));
+            }
         }
     }
 
@@ -128,7 +140,15 @@ public class VisionCenteringTask extends MoveDistanceTaskBase implements IContro
         }
         else
         {
-            return Math.abs(this.visionManager.getCenter1Angle()) < TuningConstants.MAX_VISION_CENTERING_RANGE_DEGREES;
+            Double centerAngle = this.visionManager.getCenter1Angle();
+            if (centerAngle == null)
+            {
+                return true;
+            }
+
+            double output = this.pidHandler.getCurrentOutput();
+            return Math.abs(centerAngle) < TuningConstants.MAX_VISION_CENTERING_RANGE_DEGREES &&
+                Math.abs(output) < TuningConstants.MAX_VISION_CENTERING_OUTPUT;
         }
     }
 

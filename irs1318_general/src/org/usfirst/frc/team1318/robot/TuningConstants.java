@@ -64,11 +64,19 @@ public class TuningConstants
 
     //================================================== Autonomous ==============================================================
 
+    public static final double MACRO_CANCEL_DEAD_ZONE = 0.1;
+
     public static final double DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA = 1.0;
 
     // Drivetrain autonomous velocity values
     public static final double DRIVETRAIN_AUTONOMOUS_SLOW_VELOCITY = .3;
     public static final double DRIVETRAIN_AUTONOMOUS_FAST_VELOCITY = .45;
+
+    public static final double AUTONOMOUS_TIME_SLOW = 4.0;
+    public static final double AUTONOMOUS_TIME_FAST = 3.0;
+
+    // Acceptable vision centering range values in degrees
+    public static final double MAX_VISION_CENTERING_OUTPUT = 0.08;
 
     // Acceptable vision centering range values in degrees
     public static final double MAX_VISION_CENTERING_RANGE_DEGREES = 1.0;

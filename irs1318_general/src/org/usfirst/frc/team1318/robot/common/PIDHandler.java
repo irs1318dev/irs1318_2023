@@ -300,4 +300,9 @@ public class PIDHandler
 
         return this.output;
     }
+
+    public double getCurrentOutput()
+    {
+        return this.output;
+    }
 }

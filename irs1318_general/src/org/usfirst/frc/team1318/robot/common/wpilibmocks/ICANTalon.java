@@ -8,4 +8,5 @@ public interface ICANTalon
     void setPIDF(double p, double i, double d, double f, int izone, double closeLoopRampRate, int profile);
     void reverseOutput(boolean flip);
     void reverseSensor(boolean flip);
+    void enableBrakeMode(boolean brake);
 }

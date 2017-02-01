@@ -70,4 +70,9 @@ public class CANTalonWrapper implements ICANTalon
     {
         this.wrappedObject.reverseSensor(flip);
     }
+
+    public void enableBrakeMode(boolean brake)
+    {
+        this.wrappedObject.enableBrakeMode(brake);
+    }
 }

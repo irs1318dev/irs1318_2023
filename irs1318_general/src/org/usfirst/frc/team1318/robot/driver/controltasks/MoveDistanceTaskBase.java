@@ -12,7 +12,7 @@ import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainComponent;
 public abstract class MoveDistanceTaskBase extends ControlTaskBase implements IControlTask
 {
     private final boolean resetPositionalOnEnd;
-    private final DriveTrainComponent driveTrain;
+    private DriveTrainComponent driveTrain;
 
     protected double startLeftEncoderDistance;
     protected double startRightEncoderDistance;
@@ -27,7 +27,6 @@ public abstract class MoveDistanceTaskBase extends ControlTaskBase implements IC
     protected MoveDistanceTaskBase(boolean resetPositionalOnEnd)
     {
         this.resetPositionalOnEnd = resetPositionalOnEnd;
-        this.driveTrain = this.getInjector().getInstance(DriveTrainComponent.class);
     }
 
     /**
@@ -36,6 +35,8 @@ public abstract class MoveDistanceTaskBase extends ControlTaskBase implements IC
     @Override
     public void begin()
     {
+        this.driveTrain = this.getInjector().getInstance(DriveTrainComponent.class);
+
         // set the start location
         this.setStartEncoderDistance();
 
