@@ -1,9 +1,12 @@
 package org.usfirst.frc.team1318.robot;
 
-import org.usfirst.frc.team1318.robot.Common.DashboardLogger;
-import org.usfirst.frc.team1318.robot.Driver.Driver;
-import org.usfirst.frc.team1318.robot.Driver.Autonomous.AutonomousDriver;
-import org.usfirst.frc.team1318.robot.Driver.User.UserDriver;
+import org.usfirst.frc.team1318.robot.common.DashboardLogger;
+import org.usfirst.frc.team1318.robot.driver.Driver;
+import org.usfirst.frc.team1318.robot.driver.autonomous.AutonomousDriver;
+import org.usfirst.frc.team1318.robot.driver.user.UserDriver;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 
@@ -29,16 +32,14 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 public class Robot extends IterativeRobot
 {
     // smartdash logging constants
-    private static final String ROBOT_STATE_LOG_KEY = "r.s";
+    private static final String LogName = "r";
 
     // Driver.  This could either be the UserDriver (joystick) or the AutonomousDriver
     private Driver driver;
 
-    // Components
-    private ComponentManager components;
-
-    // Controllers
+    // Controllers and injector
     private ControllerManager controllers;
+    private Injector injector;
 
     /**
      * Robot-wide initialization code should go here.
@@ -48,10 +49,8 @@ public class Robot extends IterativeRobot
     public void robotInit()
     {
         // create mechanism components and controllers
-        this.components = new ComponentManager();
-        this.controllers = new ControllerManager(this.components);
-
-        DashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Init");
+        this.controllers = this.getInjector().getInstance(ControllerManager.class);
+        DashboardLogger.logString(Robot.LogName, "state", "Init");
     }
 
     /**
@@ -70,7 +69,7 @@ public class Robot extends IterativeRobot
             this.controllers.stop();
         }
 
-        DashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Disabled");
+        DashboardLogger.logString(Robot.LogName, "state", "Disabled");
     }
 
     /**
@@ -79,16 +78,13 @@ public class Robot extends IterativeRobot
      */
     public void autonomousInit()
     {
-        // reset the position manager so that we consider ourself at the origin (0,0) and facing the 0 direction.
-        this.components.getPositionManager().reset();
-
         // Create an autonomous driver
-        this.driver = new AutonomousDriver(this.components);
+        this.driver = this.getInjector().getInstance(AutonomousDriver.class);
 
         this.generalInit();
 
         // log that we are in autonomous mode
-        DashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Autonomous");
+        DashboardLogger.logString(Robot.LogName, "state", "Autonomous");
     }
 
     /**
@@ -98,12 +94,12 @@ public class Robot extends IterativeRobot
     public void teleopInit()
     {
         // create driver for user's joystick
-        this.driver = new UserDriver(this.components);
+        this.driver = this.getInjector().getInstance(UserDriver.class);
 
         this.generalInit();
 
         // log that we are in teleop mode
-        DashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Teleop");
+        DashboardLogger.logString(Robot.LogName, "state", "Teleop");
     }
 
     /**
@@ -150,5 +146,19 @@ public class Robot extends IterativeRobot
 
         // run each controller
         this.controllers.update();
+    }
+
+    /**
+     * Lazily initializes and retrieves the injector.
+     * @return the injector to use for this robot
+     */
+    Injector getInjector()
+    {
+        if (this.injector == null)
+        {
+            this.injector = Guice.createInjector(new RobotModule());
+        }
+
+        return this.injector;
     }
 }
