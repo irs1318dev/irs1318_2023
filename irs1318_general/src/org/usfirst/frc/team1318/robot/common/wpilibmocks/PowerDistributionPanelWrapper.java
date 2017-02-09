@@ -16,8 +16,13 @@ public class PowerDistributionPanelWrapper implements IPowerDistributionPanel
         this.wrappedObject = new PowerDistributionPanel(module);
     }
 
-    public double getVoltage()
+    public double getBatteryVoltage()
     {
         return this.wrappedObject.getVoltage();
+    }
+
+    public double getCurrent(int pdpChannel)
+    {
+        return this.wrappedObject.getCurrent(pdpChannel);
     }
 }

@@ -19,7 +19,7 @@ import com.google.inject.name.Named;
 public class PowerManager implements IController
 {
     private final IPowerDistributionPanel pdp;
-    private ComplementaryFilter filter;
+    private ComplementaryFilter batteryVoltageFilter;
 
     /**
      * Initializes a new PowerComponent
@@ -28,18 +28,23 @@ public class PowerManager implements IController
     public PowerManager(@Named("POWERMANAGER_PDP") IPowerDistributionPanel pdp)
     {
         this.pdp = pdp;
-        this.filter = new ComplementaryFilter(0.4, 0.6, this.pdp.getVoltage());
+        this.batteryVoltageFilter = new ComplementaryFilter(0.4, 0.6, this.pdp.getBatteryVoltage());
     }
 
-    public double getVoltage()
+    public double getCurrent(int pdpChannel)
     {
-        return this.filter.getValue();
+        return this.pdp.getCurrent(pdpChannel);
+    }
+
+    public double getBatteryVoltage()
+    {
+        return this.batteryVoltageFilter.getValue();
     }
 
     @Override
     public void update()
     {
-        this.filter.update(this.pdp.getVoltage());
+        this.batteryVoltageFilter.update(this.pdp.getBatteryVoltage());
     }
 
     @Override
