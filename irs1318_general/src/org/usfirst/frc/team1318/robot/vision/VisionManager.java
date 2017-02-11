@@ -1,10 +1,10 @@
 package org.usfirst.frc.team1318.robot.vision;
 
 import org.opencv.core.Point;
-import org.usfirst.frc.team1318.robot.common.DashboardLogger;
 import org.usfirst.frc.team1318.robot.common.IController;
+import org.usfirst.frc.team1318.robot.common.IDashboardLogger;
 import org.usfirst.frc.team1318.robot.driver.Driver;
-import org.usfirst.frc.team1318.robot.vision.analyzer.HSVCenterPipeline;
+import org.usfirst.frc.team1318.robot.vision.analyzer.HSVGearCenterPipeline;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -20,23 +20,31 @@ import edu.wpi.first.wpilibj.vision.VisionThread;
  *
  */
 @Singleton
-public class VisionManager implements IController, VisionRunner.Listener<HSVCenterPipeline>
+public class VisionManager implements IController, VisionRunner.Listener<HSVGearCenterPipeline>
 {
     private final static String LogName = "vision";
+
+    private final IDashboardLogger logger;
 
     private final Object visionLock;
     private final VisionThread visionThread;
 
-    private Point center1;
-    private Point center2;
+    private Point center;
+
+    private Double thetaXOffsetDesired;
+    private Double thetaXOffsetMeasured;
+    private Double distanceFromRobot;
+
     private double lastMeasuredFps;
 
     /**
      * Initializes a new VisionManager
      */
     @Inject
-    public VisionManager()
+    public VisionManager(IDashboardLogger logger)
     {
+        this.logger = logger;
+
         this.visionLock = new Object();
 
         UsbCamera camera = new UsbCamera("usb0", 0);
@@ -45,44 +53,49 @@ public class VisionManager implements IController, VisionRunner.Listener<HSVCent
         camera.setBrightness(VisionConstants.LIFECAM_CAMERA_BRIGHTNESS);
         camera.setFPS(VisionConstants.LIFECAM_CAMERA_FPS);
 
-        // CameraServer.getInstance().addCamera(camera);
+        //CameraServer.getInstance().addCamera(camera);
 
-        //        AxisCamera camera = CameraServer.getInstance().addAxisCamera(VisionConstants.AXIS_CAMERA_IP_ADDRESS);
-        this.visionThread = new VisionThread(camera, new HSVCenterPipeline(VisionConstants.SHOULD_UNDISTORT), this);
+        //AxisCamera camera = CameraServer.getInstance().addAxisCamera(VisionConstants.AXIS_CAMERA_IP_ADDRESS);
+        this.visionThread = new VisionThread(camera, new HSVGearCenterPipeline(VisionConstants.SHOULD_UNDISTORT), this);
         this.visionThread.start();
 
-        this.center1 = null;
-        this.center2 = null;
+        this.center = null;
+        this.thetaXOffsetDesired = null;
+        this.thetaXOffsetMeasured = null;
+        this.distanceFromRobot = null;
+
         this.lastMeasuredFps = 0.0;
     }
 
-    public Point getCenter1()
+    public Point getCenter()
     {
         synchronized (this.visionLock)
         {
-            return this.center1;
+            return this.center;
         }
     }
 
-    public Double getCenter1Angle()
-    {
-        Point center1 = this.getCenter1();
-        if (center1 != null)
-        {
-            // note: positive angle means it is to the right
-            double centerX = center1.x;
-            centerX = centerX - VisionConstants.AXIS_CAMERA_CENTER_WIDTH;
-            return (centerX * VisionConstants.AXIS_CAMERA_CENTER_VIEW_ANGLE) / (double)VisionConstants.AXIS_CAMERA_CENTER_WIDTH;
-        }
-
-        return null;
-    }
-
-    public Point getCenter2()
+    public Double getMeasuredAngle()
     {
         synchronized (this.visionLock)
         {
-            return this.center2;
+            return this.thetaXOffsetMeasured;
+        }
+    }
+
+    public Double getDesiredAngle()
+    {
+        synchronized (this.visionLock)
+        {
+            return this.thetaXOffsetDesired;
+        }
+    }
+
+    public Double getMeasuredDistance()
+    {
+        synchronized (this.visionLock)
+        {
+            return this.distanceFromRobot;
         }
     }
 
@@ -97,35 +110,17 @@ public class VisionManager implements IController, VisionRunner.Listener<HSVCent
     @Override
     public void update()
     {
-        String center1String = "n/a";
-        Point center1 = this.getCenter1();
-        if (center1 != null)
+        String centerString = "n/a";
+        Point center = this.getCenter();
+        if (center != null)
         {
-            center1String = String.format("%f,%f", center1.x, center1.y);
+            centerString = String.format("%f,%f", center.x, center.y);
         }
 
-        DashboardLogger.logString(VisionManager.LogName, "center1", center1String);
-
-        String center1AngleString = "n/a";
-        Double centerAngle = this.getCenter1Angle();
-        if (centerAngle != null)
-        {
-            center1AngleString = String.format("%f", centerAngle);
-        }
-
-        DashboardLogger.logString(VisionManager.LogName, "center1Angle", center1AngleString);
-
-        String center2String = "n/a";
-        Point center2 = this.getCenter2();
-        if (center2 != null)
-        {
-            center2String = String.format("%f,%f", center2.x, center2.y);
-        }
-
-        DashboardLogger.logString(VisionManager.LogName, "center2", center2String);
+        this.logger.logString(VisionManager.LogName, "center", centerString);
 
         double fps = this.getLastMeasuredFps();
-        DashboardLogger.logNumber(VisionManager.LogName, "fps", fps);
+        this.logger.logNumber(VisionManager.LogName, "fps", fps);
     }
 
     @Override
@@ -140,12 +135,16 @@ public class VisionManager implements IController, VisionRunner.Listener<HSVCent
     }
 
     @Override
-    public void copyPipelineOutputs(HSVCenterPipeline pipeline)
+    public void copyPipelineOutputs(HSVGearCenterPipeline pipeline)
     {
         synchronized (this.visionLock)
         {
-            this.center1 = pipeline.getCenter1();
-            this.center2 = pipeline.getCenter2();
+            this.center = pipeline.getCenter();
+
+            this.thetaXOffsetDesired = pipeline.getThetaXOffsetDesired();
+            this.thetaXOffsetMeasured = pipeline.getThetaXOffsetMeasured();
+            this.distanceFromRobot = pipeline.getDistanceFromRobot();
+
             this.lastMeasuredFps = pipeline.getFps();
         }
     }

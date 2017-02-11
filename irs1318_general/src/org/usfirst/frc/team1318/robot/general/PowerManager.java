@@ -7,7 +7,6 @@ import org.usfirst.frc.team1318.robot.driver.Driver;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.google.inject.name.Named;
 
 /**
  * Power manager.
@@ -25,7 +24,7 @@ public class PowerManager implements IController
      * Initializes a new PowerComponent
      */
     @Inject
-    public PowerManager(@Named("POWERMANAGER_PDP") IPowerDistributionPanel pdp)
+    public PowerManager(IPowerDistributionPanel pdp)
     {
         this.pdp = pdp;
         this.batteryVoltageFilter = new ComplementaryFilter(0.4, 0.6, this.pdp.getBatteryVoltage());

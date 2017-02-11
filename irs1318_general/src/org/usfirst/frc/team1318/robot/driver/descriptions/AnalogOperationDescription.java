@@ -21,8 +21,7 @@ public class AnalogOperationDescription extends OperationDescription
      * @param shouldInvert whether we should invert the axis so that -1 and 1 are on the opposite ends as where they are designed to be in hardware
      * @param deadZone the amount in the center of the axis (around 0) that should be ignored to account for joystick sensors imprecision
      */
-    public AnalogOperationDescription(
-        UserInputDevice userInputDevice, AnalogAxis userInputDeviceAxis, boolean shouldInvert, double deadZone)
+    public AnalogOperationDescription(UserInputDevice userInputDevice, AnalogAxis userInputDeviceAxis, boolean shouldInvert, double deadZone)
     {
         super(OperationType.Analog, userInputDevice);
 

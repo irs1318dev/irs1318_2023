@@ -1,9 +1,9 @@
 package org.usfirst.frc.team1318.robot.drivetrain;
 
 import org.usfirst.frc.team1318.robot.TuningConstants;
-import org.usfirst.frc.team1318.robot.common.DashboardLogger;
 import org.usfirst.frc.team1318.robot.common.Helpers;
 import org.usfirst.frc.team1318.robot.common.IController;
+import org.usfirst.frc.team1318.robot.common.IDashboardLogger;
 import org.usfirst.frc.team1318.robot.common.PIDHandler;
 import org.usfirst.frc.team1318.robot.driver.Driver;
 import org.usfirst.frc.team1318.robot.driver.Operation;
@@ -23,8 +23,10 @@ public class DriveTrainController implements IController
     private static final double POWERLEVEL_MIN = -1.0;
     private static final double POWERLEVEL_MAX = 1.0;
 
+    private final IDashboardLogger logger;
+    private final DriveTrainComponent component;
+
     private Driver driver;
-    private DriveTrainComponent component;
 
     private boolean usePID;
     private boolean usePositionalMode;
@@ -37,9 +39,13 @@ public class DriveTrainController implements IController
      * @param usePID indicates whether we should use PID control
      */
     @Inject
-    public DriveTrainController(DriveTrainComponent component)
+    public DriveTrainController(
+        IDashboardLogger logger,
+        DriveTrainComponent component)
     {
+        this.logger = logger;
         this.component = component;
+
         this.usePID = TuningConstants.DRIVETRAIN_USE_PID_DEFAULT;
         this.usePositionalMode = false;
 
@@ -246,8 +252,8 @@ public class DriveTrainController implements IController
         leftVelocityGoal = leftVelocityGoal * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL;
         rightVelocityGoal = rightVelocityGoal * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL;
 
-        DashboardLogger.logNumber(DriveTrainController.LogName, "leftVelocityGoal", leftVelocityGoal);
-        DashboardLogger.logNumber(DriveTrainController.LogName, "rightVelocityGoal", rightVelocityGoal);
+        this.logger.logNumber(DriveTrainController.LogName, "leftVelocityGoal", leftVelocityGoal);
+        this.logger.logNumber(DriveTrainController.LogName, "rightVelocityGoal", rightVelocityGoal);
 
         // convert velocity goal to power level...
         double leftPower;
@@ -294,8 +300,8 @@ public class DriveTrainController implements IController
         this.component.getLeftEncoderVelocity();
         this.component.getRightEncoderVelocity();
 
-        DashboardLogger.logNumber(DriveTrainController.LogName, "leftPositionGoal", leftPosition);
-        DashboardLogger.logNumber(DriveTrainController.LogName, "rightPositionGoal", rightPosition);
+        this.logger.logNumber(DriveTrainController.LogName, "leftPositionGoal", leftPosition);
+        this.logger.logNumber(DriveTrainController.LogName, "rightPositionGoal", rightPosition);
 
         double leftPower;
         double rightPower;

@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1318.robot;
 
-import org.usfirst.frc.team1318.robot.common.DashboardLogger;
+import org.usfirst.frc.team1318.robot.common.IDashboardLogger;
 import org.usfirst.frc.team1318.robot.driver.Driver;
 import org.usfirst.frc.team1318.robot.driver.autonomous.AutonomousDriver;
 import org.usfirst.frc.team1318.robot.driver.user.UserDriver;
@@ -39,6 +39,7 @@ public class Robot extends IterativeRobot
 
     // Controllers and injector
     private ControllerManager controllers;
+    private IDashboardLogger logger;
     private Injector injector;
 
     /**
@@ -50,7 +51,8 @@ public class Robot extends IterativeRobot
     {
         // create mechanism components and controllers
         this.controllers = this.getInjector().getInstance(ControllerManager.class);
-        DashboardLogger.logString(Robot.LogName, "state", "Init");
+        this.logger = this.getInjector().getInstance(IDashboardLogger.class);
+        this.logger.logString(Robot.LogName, "state", "Init");
     }
 
     /**
@@ -69,7 +71,7 @@ public class Robot extends IterativeRobot
             this.controllers.stop();
         }
 
-        DashboardLogger.logString(Robot.LogName, "state", "Disabled");
+        this.logger.logString(Robot.LogName, "state", "Disabled");
     }
 
     /**
@@ -84,7 +86,7 @@ public class Robot extends IterativeRobot
         this.generalInit();
 
         // log that we are in autonomous mode
-        DashboardLogger.logString(Robot.LogName, "state", "Autonomous");
+        this.logger.logString(Robot.LogName, "state", "Autonomous");
     }
 
     /**
@@ -99,7 +101,7 @@ public class Robot extends IterativeRobot
         this.generalInit();
 
         // log that we are in teleop mode
-        DashboardLogger.logString(Robot.LogName, "state", "Teleop");
+        this.logger.logString(Robot.LogName, "state", "Teleop");
     }
 
     /**

@@ -4,7 +4,6 @@ import org.usfirst.frc.team1318.robot.common.wpilibmocks.ICompressor;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.google.inject.name.Named;
 
 /**
  * The compressor component class describes the electronics of the compressor and defines the abstract way to control it.
@@ -22,7 +21,7 @@ public class CompressorComponent
      * Initializes a new CompressorComponent
      */
     @Inject
-    public CompressorComponent(@Named("COMPRESSOR") ICompressor compressor)
+    public CompressorComponent(ICompressor compressor)
     {
         this.compressor = compressor;
     }

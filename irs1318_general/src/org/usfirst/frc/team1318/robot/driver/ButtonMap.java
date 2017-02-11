@@ -21,6 +21,20 @@ public class ButtonMap
     public static Map<Operation, OperationDescription> OperationSchema = new HashMap<Operation, OperationDescription>()
     {
         {
+            // Operations for general stuff
+            put(
+                Operation.DisablePID,
+                new DigitalOperationDescription(
+                    UserInputDevice.None,
+                    UserInputDeviceButton.BUTTON_PAD_BUTTON_11,
+                    ButtonType.Click));
+            put(
+                Operation.EnablePID,
+                new DigitalOperationDescription(
+                    UserInputDevice.None,
+                    UserInputDeviceButton.BUTTON_PAD_BUTTON_12,
+                    ButtonType.Click));
+
             // Operations for the drive train
             put(
                 Operation.DriveTrainMoveForward,
@@ -68,20 +82,6 @@ public class ButtonMap
                     UserInputDevice.None,
                     UserInputDeviceButton.NONE,
                     ButtonType.Toggle));
-
-            // Operations for general stuff
-            put(
-                Operation.DisablePID,
-                new DigitalOperationDescription(
-                    UserInputDevice.None,
-                    UserInputDeviceButton.BUTTON_PAD_BUTTON_11,
-                    ButtonType.Click));
-            put(
-                Operation.EnablePID,
-                new DigitalOperationDescription(
-                    UserInputDevice.None,
-                    UserInputDeviceButton.BUTTON_PAD_BUTTON_12,
-                    ButtonType.Click));
         }
     };
 
@@ -94,7 +94,7 @@ public class ButtonMap
                 MacroOperation.PIDBrake,
                 new MacroOperationDescription(
                     UserInputDevice.Driver,
-                    UserInputDeviceButton.NONE,
+                    UserInputDeviceButton.JOYSTICK_STICK_THUMB_BUTTON,
                     ButtonType.Simple,
                     () -> new PIDBrakeTask(),
                     new Operation[]
@@ -109,7 +109,7 @@ public class ButtonMap
                 MacroOperation.Center,
                 new MacroOperationDescription(
                     UserInputDevice.Driver,
-                    UserInputDeviceButton.JOYSTICK_STICK_THUMB_BUTTON,
+                    UserInputDeviceButton.JOYSTICK_BASE_TOP_LEFT_BUTTON,
                     ButtonType.Toggle,
                     () -> new VisionCenteringTask(),
                     new Operation[]

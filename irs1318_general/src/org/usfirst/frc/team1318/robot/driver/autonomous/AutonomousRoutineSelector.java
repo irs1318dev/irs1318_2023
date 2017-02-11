@@ -1,19 +1,27 @@
 package org.usfirst.frc.team1318.robot.driver.autonomous;
 
-import org.usfirst.frc.team1318.robot.common.DashboardLogger;
+import org.usfirst.frc.team1318.robot.common.IDashboardLogger;
 import org.usfirst.frc.team1318.robot.driver.IControlTask;
 import org.usfirst.frc.team1318.robot.driver.controltasks.WaitTask;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+
+@Singleton
 public class AutonomousRoutineSelector
 {
     private static final String LogName = "auto";
+    private final IDashboardLogger logger;
 
     /**
      * Initializes a new AutonomousDriver
      */
-    public AutonomousRoutineSelector()
+    @Inject
+    public AutonomousRoutineSelector(
+        IDashboardLogger logger)
     {
         // initialize robot parts that are used to select autonomous routine (e.g. dipswitches) here...
+        this.logger = logger;
     }
 
     /**
@@ -27,7 +35,7 @@ public class AutonomousRoutineSelector
         // add next base2 number (1, 2, 4, 8, 16, etc.) here based on number of dipswitches and which is on...
 
         // print routine selection to the smartdash
-        DashboardLogger.logInteger(AutonomousRoutineSelector.LogName, "routine", routineSelection);
+        this.logger.logInteger(AutonomousRoutineSelector.LogName, "routine", routineSelection);
 
         switch (routineSelection)
         {

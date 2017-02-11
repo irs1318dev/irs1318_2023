@@ -15,7 +15,6 @@ import com.google.inject.Injector;
  */
 public class AutonomousDriver extends Driver
 {
-
     private final AutonomousRoutineSelector routineSelector;
     private final IControlTask autonomousTask;
 
@@ -31,7 +30,7 @@ public class AutonomousDriver extends Driver
     {
         super(injector);
 
-        this.routineSelector = new AutonomousRoutineSelector();
+        this.routineSelector = injector.getInstance(AutonomousRoutineSelector.class);
         this.autonomousTask = this.routineSelector.selectRoutine();
 
         this.hasBegun = false;

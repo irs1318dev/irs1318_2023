@@ -2,8 +2,8 @@ package org.usfirst.frc.team1318.robot.general;
 
 import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.TuningConstants;
-import org.usfirst.frc.team1318.robot.common.DashboardLogger;
 import org.usfirst.frc.team1318.robot.common.IController;
+import org.usfirst.frc.team1318.robot.common.IDashboardLogger;
 import org.usfirst.frc.team1318.robot.driver.Driver;
 import org.usfirst.frc.team1318.robot.driver.autonomous.AutonomousDriver;
 import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainComponent;
@@ -23,7 +23,7 @@ public class PositionManager implements IController
 {
     private final static String LogName = "pos";
 
-    // drivetrain component
+    private final IDashboardLogger logger;
     private final DriveTrainComponent driveTrainComponent;
     //private final AHRS navx;
 
@@ -43,8 +43,11 @@ public class PositionManager implements IController
      * @param driveTrainComponent to use to determine position changes
      */
     @Inject
-    public PositionManager(DriveTrainComponent driveTrainComponent)
+    public PositionManager(
+        IDashboardLogger logger,
+        DriveTrainComponent driveTrainComponent)
     {
+        this.logger = logger;
         this.driveTrainComponent = driveTrainComponent;
         //this.navx = new AHRS(SPI.Port.kMXP);
 
@@ -107,12 +110,12 @@ public class PositionManager implements IController
         this.prevRightDistance = rightDistance;
 
         // log the current position and orientation
-        DashboardLogger.logNumber(PositionManager.LogName, "odom_angle", this.getOdometryAngle());
-        DashboardLogger.logNumber(PositionManager.LogName, "odom_x", this.getOdometryX());
-        DashboardLogger.logNumber(PositionManager.LogName, "odom_y", this.getOdometryY());
-        DashboardLogger.logNumber(PositionManager.LogName, "navx_angle", this.getNavxAngle());
-        DashboardLogger.logNumber(PositionManager.LogName, "navx_x", this.getNavxX());
-        DashboardLogger.logNumber(PositionManager.LogName, "navx_y", this.getNavxY());
+        this.logger.logNumber(PositionManager.LogName, "odom_angle", this.getOdometryAngle());
+        this.logger.logNumber(PositionManager.LogName, "odom_x", this.getOdometryX());
+        this.logger.logNumber(PositionManager.LogName, "odom_y", this.getOdometryY());
+        this.logger.logNumber(PositionManager.LogName, "navx_angle", this.getNavxAngle());
+        this.logger.logNumber(PositionManager.LogName, "navx_x", this.getNavxX());
+        this.logger.logNumber(PositionManager.LogName, "navx_y", this.getNavxY());
     }
 
     /**

@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1318.robot.drivetrain;
 
-import org.usfirst.frc.team1318.robot.common.DashboardLogger;
+import org.usfirst.frc.team1318.robot.common.IDashboardLogger;
 import org.usfirst.frc.team1318.robot.common.wpilibmocks.IEncoder;
 import org.usfirst.frc.team1318.robot.common.wpilibmocks.IMotor;
 
@@ -17,6 +17,7 @@ import com.google.inject.name.Named;
 public class DriveTrainComponent
 {
     private final static String LogName = "dt";
+    private final IDashboardLogger logger;
 
     private final IMotor leftMotor;
     private final IMotor rightMotor;
@@ -29,11 +30,14 @@ public class DriveTrainComponent
      */
     @Inject
     public DriveTrainComponent(
+        IDashboardLogger logger,
         @Named("DRIVETRAIN_LEFTMOTOR") IMotor leftMotor,
         @Named("DRIVETRAIN_RIGHTMOTOR") IMotor rightMotor,
         @Named("DRIVETRAIN_LEFTENCODER") IEncoder leftEncoder,
         @Named("DRIVETRAIN_RIGHTENCODER") IEncoder rightEncoder)
     {
+        this.logger = logger;
+
         this.leftMotor = leftMotor;
         this.rightMotor = rightMotor;
         this.leftEncoder = leftEncoder;
@@ -47,8 +51,8 @@ public class DriveTrainComponent
      */
     public void setDriveTrainPower(double leftPower, double rightPower)
     {
-        DashboardLogger.logNumber(DriveTrainComponent.LogName, "leftPower", leftPower);
-        DashboardLogger.logNumber(DriveTrainComponent.LogName, "rightPower", rightPower);
+        this.logger.logNumber(DriveTrainComponent.LogName, "leftPower", leftPower);
+        this.logger.logNumber(DriveTrainComponent.LogName, "rightPower", rightPower);
 
         double outLeftPower = leftPower;
         double outRightPower = -rightPower;// note: right motors are oriented facing "backwards"
@@ -64,7 +68,7 @@ public class DriveTrainComponent
     public double getLeftEncoderVelocity()
     {
         double leftVelocity = -this.leftEncoder.getRate();
-        DashboardLogger.logNumber(DriveTrainComponent.LogName, "leftVelocity", leftVelocity);
+        this.logger.logNumber(DriveTrainComponent.LogName, "leftVelocity", leftVelocity);
         return leftVelocity;
     }
 
@@ -75,7 +79,7 @@ public class DriveTrainComponent
     public double getRightEncoderVelocity()
     {
         double rightVelocity = this.rightEncoder.getRate();
-        DashboardLogger.logNumber(DriveTrainComponent.LogName, "rightVelocity", rightVelocity);
+        this.logger.logNumber(DriveTrainComponent.LogName, "rightVelocity", rightVelocity);
         return rightVelocity;
     }
 
@@ -86,7 +90,7 @@ public class DriveTrainComponent
     public double getLeftEncoderDistance()
     {
         double leftDistance = -this.leftEncoder.getDistance();
-        DashboardLogger.logNumber(DriveTrainComponent.LogName, "leftDistance", leftDistance);
+        this.logger.logNumber(DriveTrainComponent.LogName, "leftDistance", leftDistance);
         return leftDistance;
     }
 
@@ -97,7 +101,7 @@ public class DriveTrainComponent
     public double getRightEncoderDistance()
     {
         double rightDistance = this.rightEncoder.getDistance();
-        DashboardLogger.logNumber(DriveTrainComponent.LogName, "rightDistance", rightDistance);
+        this.logger.logNumber(DriveTrainComponent.LogName, "rightDistance", rightDistance);
         return rightDistance;
     }
 
@@ -108,7 +112,7 @@ public class DriveTrainComponent
     public int getLeftEncoderTicks()
     {
         int leftTicks = -this.leftEncoder.get();
-        DashboardLogger.logNumber(DriveTrainComponent.LogName, "leftTicks", leftTicks);
+        this.logger.logNumber(DriveTrainComponent.LogName, "leftTicks", leftTicks);
         return leftTicks;
     }
 
@@ -119,7 +123,7 @@ public class DriveTrainComponent
     public int getRightEncoderTicks()
     {
         int rightTicks = this.rightEncoder.get();
-        DashboardLogger.logNumber(DriveTrainComponent.LogName, "rightTicks", rightTicks);
+        this.logger.logNumber(DriveTrainComponent.LogName, "rightTicks", rightTicks);
         return rightTicks;
     }
 

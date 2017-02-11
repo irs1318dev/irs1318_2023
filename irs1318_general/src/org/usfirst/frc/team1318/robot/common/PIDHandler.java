@@ -22,15 +22,15 @@ public class PIDHandler
     private final Double minOutput;
     private final Double maxOutput;
 
-    // instance constants
-    private final double kp;        // proportion for proportional
-    private final double ki;        // proportion for integral
-    private final double kd;        // proportion for derivative
-    private final double kf;        // proportion for feed-forward
-    private final double ks;        // multiplicand for adjusting scale of setpoint to match scale of measured value
-
     private final ComplementaryFilter errorFilter;
     private final ComplementaryFilter outputFilter;
+
+    // instance PIDFS constants
+    private double kp;        // proportion for proportional
+    private double ki;        // proportion for integral
+    private double kd;        // proportion for derivative
+    private double kf;        // proportion for feed-forward
+    private double ks;        // multiplicand for adjusting scale of setpoint to match scale of measured value
 
     // instance variables
     private double setpoint = 0.0;          // the input, desired value for
@@ -304,5 +304,25 @@ public class PIDHandler
     public double getCurrentOutput()
     {
         return this.output;
+    }
+
+    public void setKp(double kp)
+    {
+        this.kp = kp;
+    }
+
+    public void setKi(double ki)
+    {
+        this.ki = ki;
+    }
+
+    public void setKd(double kd)
+    {
+        this.kd = kd;
+    }
+
+    public void setKf(double kf)
+    {
+        this.kf = kf;
     }
 }
