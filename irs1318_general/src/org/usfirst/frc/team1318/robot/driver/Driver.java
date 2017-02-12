@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.usfirst.frc.team1318.robot.TuningConstants;
+import org.usfirst.frc.team1318.robot.driver.descriptions.OperationDescription;
 import org.usfirst.frc.team1318.robot.driver.states.AnalogOperationState;
 import org.usfirst.frc.team1318.robot.driver.states.DigitalOperationState;
 import org.usfirst.frc.team1318.robot.driver.states.OperationState;
@@ -22,13 +23,15 @@ public abstract class Driver
     /**
      * Initializes a new Driver
      */
-    protected Driver(Injector injector)
+    protected Driver(Injector injector, IButtonMap buttonMap)
     {
         this.injector = injector;
-        this.operationStateMap = new HashMap<Operation, OperationState>(ButtonMap.OperationSchema.size());
-        for (Operation operation : ButtonMap.OperationSchema.keySet())
+
+        Map<Operation, OperationDescription> operationSchema = buttonMap.getOperationSchema();
+        this.operationStateMap = new HashMap<Operation, OperationState>(operationSchema.size());
+        for (Operation operation : operationSchema.keySet())
         {
-            this.operationStateMap.put(operation, OperationState.createFromDescription(ButtonMap.OperationSchema.get(operation)));
+            this.operationStateMap.put(operation, OperationState.createFromDescription(operationSchema.get(operation)));
         }
     }
 

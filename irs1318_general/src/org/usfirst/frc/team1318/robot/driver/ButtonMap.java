@@ -9,14 +9,13 @@ import org.usfirst.frc.team1318.robot.driver.buttons.AnalogAxis;
 import org.usfirst.frc.team1318.robot.driver.buttons.ButtonType;
 import org.usfirst.frc.team1318.robot.driver.controltasks.PIDBrakeTask;
 import org.usfirst.frc.team1318.robot.driver.controltasks.VisionCenteringTask;
-import org.usfirst.frc.team1318.robot.driver.controltasks.VisionForwardAndCenterTask;
 import org.usfirst.frc.team1318.robot.driver.descriptions.AnalogOperationDescription;
 import org.usfirst.frc.team1318.robot.driver.descriptions.DigitalOperationDescription;
 import org.usfirst.frc.team1318.robot.driver.descriptions.MacroOperationDescription;
 import org.usfirst.frc.team1318.robot.driver.descriptions.OperationDescription;
 import org.usfirst.frc.team1318.robot.driver.descriptions.UserInputDevice;
 
-public class ButtonMap
+public class ButtonMap implements IButtonMap
 {
     @SuppressWarnings("serial")
     public static Map<Operation, OperationDescription> OperationSchema = new HashMap<Operation, OperationDescription>()
@@ -123,4 +122,16 @@ public class ButtonMap
                     }));
         }
     };
+
+    @Override
+    public Map<Operation, OperationDescription> getOperationSchema()
+    {
+        return ButtonMap.OperationSchema;
+    }
+
+    @Override
+    public Map<MacroOperation, MacroOperationDescription> getMacroOperationSchema()
+    {
+        return ButtonMap.MacroSchema;
+    }
 }

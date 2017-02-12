@@ -7,10 +7,11 @@ import java.util.Set;
 
 import org.usfirst.frc.team1318.robot.common.SetHelper;
 import org.usfirst.frc.team1318.robot.common.wpilibmocks.IJoystick;
-import org.usfirst.frc.team1318.robot.driver.ButtonMap;
 import org.usfirst.frc.team1318.robot.driver.Driver;
+import org.usfirst.frc.team1318.robot.driver.IButtonMap;
 import org.usfirst.frc.team1318.robot.driver.MacroOperation;
 import org.usfirst.frc.team1318.robot.driver.Operation;
+import org.usfirst.frc.team1318.robot.driver.descriptions.MacroOperationDescription;
 import org.usfirst.frc.team1318.robot.driver.states.MacroOperationState;
 
 import com.google.inject.Inject;
@@ -36,22 +37,23 @@ public class UserDriver extends Driver
     @Inject
     public UserDriver(
         Injector injector,
+        IButtonMap buttonMap,
         @Named("USER_DRIVER_JOYSTICK") IJoystick joystickDriver,
         @Named("USER_CODRIVER_JOYSTICK") IJoystick joystickCoDriver)
     {
-        super(injector);
+        super(injector, buttonMap);
 
         this.joystickDriver = joystickDriver;
         this.joystickCoDriver = joystickCoDriver;
 
         this.macroStateMap = new HashMap<MacroOperation, MacroOperationState>();
-
-        for (MacroOperation macroOperation : ButtonMap.MacroSchema.keySet())
+        Map<MacroOperation, MacroOperationDescription> macroSchema = buttonMap.getMacroOperationSchema();
+        for (MacroOperation macroOperation : macroSchema.keySet())
         {
             this.macroStateMap.put(
                 macroOperation,
                 new MacroOperationState(
-                    ButtonMap.MacroSchema.get(macroOperation),
+                    macroSchema.get(macroOperation),
                     this.operationStateMap,
                     this.injector));
         }
@@ -135,7 +137,8 @@ public class UserDriver extends Driver
             }
             else if (relevantMacroOperations.size() > 1)
             {
-                Set<MacroOperation> newRelevantMacroOperations = SetHelper.<MacroOperation> RelativeComplement(previouslyActiveMacroOperations, relevantMacroOperations);
+                Set<MacroOperation> newRelevantMacroOperations = SetHelper.<MacroOperation> RelativeComplement(
+                    previouslyActiveMacroOperations, relevantMacroOperations);
                 if (newRelevantMacroOperations.size() > 1)
                 {
                     // disobeys rule #3:
@@ -145,7 +148,8 @@ public class UserDriver extends Driver
                 else
                 {
                     // some disobey rule #2 (remove only those that were previously active, and not the 1 that is newly active...)
-                    macroOperationsToCancel.addAll(SetHelper.<MacroOperation> RelativeComplement(newRelevantMacroOperations, relevantMacroOperations));
+                    macroOperationsToCancel.addAll(SetHelper.<MacroOperation> RelativeComplement(newRelevantMacroOperations,
+                        relevantMacroOperations));
                 }
             }
         }
@@ -158,7 +162,8 @@ public class UserDriver extends Driver
         }
 
         // first, run all of the inactive macros (to clear any old interrupts)...
-        Set<MacroOperation> inactiveMacroOperations = SetHelper.<MacroOperation> RelativeComplement(activeMacroOperations, this.macroStateMap.keySet());
+        Set<MacroOperation> inactiveMacroOperations = SetHelper.<MacroOperation> RelativeComplement(activeMacroOperations,
+            this.macroStateMap.keySet());
         for (MacroOperation macroOperation : inactiveMacroOperations)
         {
             this.macroStateMap.get(macroOperation).run();

@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1318.robot.driver.autonomous;
 
 import org.usfirst.frc.team1318.robot.driver.Driver;
+import org.usfirst.frc.team1318.robot.driver.IButtonMap;
 import org.usfirst.frc.team1318.robot.driver.IControlTask;
 import org.usfirst.frc.team1318.robot.driver.states.OperationState;
 
@@ -26,9 +27,9 @@ public class AutonomousDriver extends Driver
      * @param components to utilize for making any decisions
      */
     @Inject
-    public AutonomousDriver(Injector injector)
+    public AutonomousDriver(Injector injector, IButtonMap buttonMap)
     {
-        super(injector);
+        super(injector, buttonMap);
 
         this.routineSelector = injector.getInstance(AutonomousRoutineSelector.class);
         this.autonomousTask = this.routineSelector.selectRoutine();
