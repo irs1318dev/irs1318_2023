@@ -55,7 +55,7 @@ public class DriveTrainComponent
         this.logger.logNumber(DriveTrainComponent.LogName, "rightPower", rightPower);
 
         double outLeftPower = leftPower;
-        double outRightPower = -rightPower;// note: right motors are oriented facing "backwards"
+        double outRightPower = -rightPower; // note: right motors are oriented facing "backwards"
 
         this.leftMotor.set(outLeftPower);
         this.rightMotor.set(outRightPower);

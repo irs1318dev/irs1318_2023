@@ -35,8 +35,8 @@ public class DriveTrainController implements IController
 
     /**
      * Initializes a new DriveTrainController
+     * @param logger to use
      * @param component to control
-     * @param usePID indicates whether we should use PID control
      */
     @Inject
     public DriveTrainController(
