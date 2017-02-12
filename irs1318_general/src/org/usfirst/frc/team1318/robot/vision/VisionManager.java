@@ -119,8 +119,17 @@ public class VisionManager implements IController, VisionRunner.Listener<HSVGear
 
         this.logger.logString(VisionManager.LogName, "center", centerString);
 
-        double fps = this.getLastMeasuredFps();
+        Double fps = this.getLastMeasuredFps();
         this.logger.logNumber(VisionManager.LogName, "fps", fps);
+
+        Double dist = this.getMeasuredDistance();
+        this.logger.logNumber(VisionManager.LogName, "dist", dist);
+
+        Double dAngle = this.getDesiredAngle();
+        this.logger.logNumber(VisionManager.LogName, "dAngle", dAngle);
+
+        Double mAngle = this.getMeasuredAngle();
+        this.logger.logNumber(VisionManager.LogName, "mAngle", mAngle);
     }
 
     @Override

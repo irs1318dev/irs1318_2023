@@ -11,7 +11,7 @@ public class VisionForwardAndCenterTask extends VisionCenteringTask implements I
 
     public VisionForwardAndCenterTask()
     {
-        this.forwardPIDHandler = new PIDHandler(0.15, 0.0, 0.0, 0.0, -0.3, 0.3);
+        this.forwardPIDHandler = new PIDHandler(0.005, 0.0, 0.0, 0.0, -0.3, 0.3);
     }
 
     @Override
@@ -21,7 +21,7 @@ public class VisionForwardAndCenterTask extends VisionCenteringTask implements I
         Double currentDistance = this.visionManager.getMeasuredDistance();
         if (currentDistance != null)
         {
-            this.setAnalogOperationState(Operation.DriveTrainMoveForward, forwardPIDHandler.calculatePosition(0.0, currentDistance));
+            this.setAnalogOperationState(Operation.DriveTrainMoveForward, this.forwardPIDHandler.calculatePosition(0.0, -currentDistance));
         }
     }
 

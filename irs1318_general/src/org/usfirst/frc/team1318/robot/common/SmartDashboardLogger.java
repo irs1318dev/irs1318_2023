@@ -39,6 +39,24 @@ public class SmartDashboardLogger implements IDashboardLogger
     }
 
     /**
+     * Write a number (double) to the smart dashboard
+     * @param component to log for
+     * @param key to write to
+     * @param value to write
+     */
+    public void logNumber(String component, String key, Double value)
+    {
+        String logKey = String.format("%s.%s", component, key);
+        String valueString = "N/A";
+        if (value != null)
+        {
+            valueString = "" + value;
+        }
+
+        SmartDashboard.putString(logKey, valueString);
+    }
+
+    /**
      * Write a number (integer) to the smart dashboard
      * @param component to log for
      * @param key to write to

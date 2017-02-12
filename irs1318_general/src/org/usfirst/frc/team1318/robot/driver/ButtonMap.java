@@ -9,6 +9,7 @@ import org.usfirst.frc.team1318.robot.driver.buttons.AnalogAxis;
 import org.usfirst.frc.team1318.robot.driver.buttons.ButtonType;
 import org.usfirst.frc.team1318.robot.driver.controltasks.PIDBrakeTask;
 import org.usfirst.frc.team1318.robot.driver.controltasks.VisionCenteringTask;
+import org.usfirst.frc.team1318.robot.driver.controltasks.VisionForwardAndCenterTask;
 import org.usfirst.frc.team1318.robot.driver.descriptions.AnalogOperationDescription;
 import org.usfirst.frc.team1318.robot.driver.descriptions.DigitalOperationDescription;
 import org.usfirst.frc.team1318.robot.driver.descriptions.MacroOperationDescription;
@@ -118,6 +119,7 @@ public class ButtonMap
                         Operation.DriveTrainLeftPosition,
                         Operation.DriveTrainRightPosition,
                         Operation.DriveTrainTurn,
+                        Operation.DriveTrainMoveForward,
                     }));
         }
     };

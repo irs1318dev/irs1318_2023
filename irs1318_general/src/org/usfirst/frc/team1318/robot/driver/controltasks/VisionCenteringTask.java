@@ -6,6 +6,8 @@ import org.usfirst.frc.team1318.robot.driver.IControlTask;
 import org.usfirst.frc.team1318.robot.driver.Operation;
 import org.usfirst.frc.team1318.robot.vision.VisionManager;
 
+import edu.wpi.first.wpilibj.Timer;
+
 /**
  * Task that turns the robot a certain amount clockwise or counterclockwise in-place based on vision center
  * 
@@ -14,14 +16,17 @@ import org.usfirst.frc.team1318.robot.vision.VisionManager;
 public class VisionCenteringTask extends ControlTaskBase implements IControlTask
 {
     private final PIDHandler turnPidHandler;
+
     protected VisionManager visionManager;
+    private Timer centeredTimer;
 
     /**
     * Initializes a new VisionCenteringTask
     */
     public VisionCenteringTask()
     {
-        this.turnPidHandler = new PIDHandler(0.15, 0.0, 0.0, 0.0, -0.3, 0.3);
+        this.turnPidHandler = new PIDHandler(0.065, 0.0, 0.0, 0.0, -0.3, 0.3);
+        this.centeredTimer = null;
     }
 
     /**
@@ -86,9 +91,27 @@ public class VisionCenteringTask extends ControlTaskBase implements IControlTask
         }
 
         double centerAngleDifference = Math.abs(currentMeasuredAngle - currentDesiredAngle);
-        double output = this.turnPidHandler.getCurrentOutput();
-        return centerAngleDifference < TuningConstants.MAX_VISION_CENTERING_RANGE_DEGREES &&
-            Math.abs(output) < TuningConstants.MAX_VISION_CENTERING_OUTPUT;
+
+        if (centerAngleDifference > TuningConstants.MAX_VISION_CENTERING_RANGE_DEGREES)
+        {
+            return false;
+        }
+
+        if (this.centeredTimer == null)
+        {
+            this.centeredTimer = new Timer();
+            this.centeredTimer.start();
+            return false;
+        }
+        else if (this.centeredTimer.get() < 1.0)
+        {
+            return false;
+        }
+        else
+        {
+            this.centeredTimer.stop();
+            return true;
+        }
     }
 
     @Override

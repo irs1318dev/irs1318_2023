@@ -19,6 +19,14 @@ public interface IDashboardLogger
     void logNumber(String component, String key, double value);
 
     /**
+     * Write a number (double) to the smart dashboard
+     * @param component to log for
+     * @param key to write to
+     * @param value to write
+     */
+    void logNumber(String component, String key, Double value);
+
+    /**
      * Write a number (integer) to the smart dashboard
      * @param component to log for
      * @param key to write to

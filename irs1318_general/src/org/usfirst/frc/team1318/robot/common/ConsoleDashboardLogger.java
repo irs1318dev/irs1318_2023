@@ -1,10 +1,12 @@
 package org.usfirst.frc.team1318.robot.common;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /**
  * Logger that logs current values to a dashboard.
  *
  */
-public class ConsoleDashboardLogger
+public class ConsoleDashboardLogger implements IDashboardLogger
 {
     /**
      * Write a boolean to the smart dashboard
@@ -28,6 +30,24 @@ public class ConsoleDashboardLogger
     {
         String logKey = String.format("%s.%s", component, key);
         System.out.println(logKey + ": " + value);
+    }
+
+    /**
+     * Write a number (double) to the smart dashboard
+     * @param component to log for
+     * @param key to write to
+     * @param value to write
+     */
+    public void logNumber(String component, String key, Double value)
+    {
+        String logKey = String.format("%s.%s", component, key);
+        String valueString = "N/A";
+        if (value != null)
+        {
+            valueString = "" + value;
+        }
+
+        SmartDashboard.putString(logKey, valueString);
     }
 
     /**

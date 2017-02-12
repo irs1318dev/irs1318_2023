@@ -3,6 +3,7 @@ package org.usfirst.frc.team1318.robot.vision.analyzer;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
@@ -20,6 +21,8 @@ public class HSVGearCenterPipeline implements VisionPipeline
 
     private final ImageUndistorter undistorter;
     private final HSVFilter hsvFilter;
+
+    private final Timer timer;
 
     // measured values
     private Point largestCenter;
@@ -45,7 +48,7 @@ public class HSVGearCenterPipeline implements VisionPipeline
         this.shouldUndistort = shouldUndistort;
 
         this.undistorter = new ImageUndistorter();
-        this.hsvFilter = new HSVFilter(VisionConstants.AXIS_HSV_FILTER_LOW, VisionConstants.AXIS_HSV_FILTER_HIGH);
+        this.hsvFilter = new HSVFilter(VisionConstants.LIFECAM_HSV_FILTER_LOW, VisionConstants.LIFECAM_HSV_FILTER_HIGH);
 
         this.largestCenter = null;
         this.secondLargestCenter = null;
@@ -57,7 +60,9 @@ public class HSVGearCenterPipeline implements VisionPipeline
         this.distanceFromRobot = null;
 
         this.analyzedFrameCount = 0;
-        this.lastMeasuredTime = Timer.getFPGATimestamp();
+        this.timer = new Timer();
+        this.timer.start();
+        this.lastMeasuredTime = this.timer.get();
     }
 
     /**
@@ -71,11 +76,12 @@ public class HSVGearCenterPipeline implements VisionPipeline
         if (VisionConstants.DEBUG
             && VisionConstants.DEBUG_PRINT_OUTPUT && this.analyzedFrameCount % VisionConstants.DEBUG_FPS_AVERAGING_INTERVAL == 0)
         {
-            double now = Timer.getFPGATimestamp();
+            double now = this.timer.get();
             double elapsedTime = now - this.lastMeasuredTime;
 
             this.lastFpsMeasurement = ((double)VisionConstants.DEBUG_FPS_AVERAGING_INTERVAL) / elapsedTime;
-            this.lastMeasuredTime = now;
+            this.timer.reset();
+            this.lastMeasuredTime = this.timer.get();
         }
 
         // first, undistort the image.
@@ -88,7 +94,8 @@ public class HSVGearCenterPipeline implements VisionPipeline
         if (VisionConstants.DEBUG
             && VisionConstants.DEBUG_FRAME_OUTPUT && this.analyzedFrameCount % VisionConstants.DEBUG_FRAME_OUTPUT_GAP == 0)
         {
-            Imgcodecs.imwrite(String.format("%simage%d-1.undistorted.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER, this.analyzedFrameCount), image);
+            Imgcodecs.imwrite(String.format("%simage%d-1.undistorted.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER, this.analyzedFrameCount),
+                image);
         }
 
         // save the undistorted image for possible output later...
@@ -106,7 +113,8 @@ public class HSVGearCenterPipeline implements VisionPipeline
         if (VisionConstants.DEBUG
             && VisionConstants.DEBUG_FRAME_OUTPUT && this.analyzedFrameCount % VisionConstants.DEBUG_FRAME_OUTPUT_GAP == 0)
         {
-            Imgcodecs.imwrite(String.format("%simage%d-2.hsvfiltered.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER, this.analyzedFrameCount), image);
+            Imgcodecs.imwrite(String.format("%simage%d-2.hsvfiltered.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER, this.analyzedFrameCount),
+                image);
         }
 
         // third, find the largest contour.
@@ -125,15 +133,19 @@ public class HSVGearCenterPipeline implements VisionPipeline
         // fourth, find the center of mass for the largest two contours
         Point largestCenterOfMass = null;
         Point secondLargestCenterOfMass = null;
+        Rect largestBoundingRect = null;
+        Rect secondLargestBoundingRect = null;
         if (largestContour != null)
         {
             largestCenterOfMass = ContourHelper.findCenterOfMass(largestContour);
+            largestBoundingRect = Imgproc.boundingRect(largestContour);
             largestContour.release();
         }
 
         if (secondLargestContour != null)
         {
             secondLargestCenterOfMass = ContourHelper.findCenterOfMass(secondLargestContour);
+            secondLargestBoundingRect = Imgproc.boundingRect(secondLargestContour);
             secondLargestContour.release();
         }
 
@@ -169,7 +181,8 @@ public class HSVGearCenterPipeline implements VisionPipeline
                     Imgproc.circle(undistortedImage, secondLargestCenterOfMass, 2, new Scalar(0, 0, 128), -1);
                 }
 
-                Imgcodecs.imwrite(String.format("%simage%d-3.redrawn.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER, this.analyzedFrameCount), undistortedImage);
+                Imgcodecs.imwrite(String.format("%simage%d-3.redrawn.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER, this.analyzedFrameCount),
+                    undistortedImage);
             }
         }
 
@@ -177,8 +190,9 @@ public class HSVGearCenterPipeline implements VisionPipeline
         this.largestCenter = largestCenterOfMass;
         this.secondLargestCenter = secondLargestCenterOfMass;
 
-        // GEAR CALCULATIONS
+        undistortedImage.release();
 
+        // GEAR CALCULATIONS
         if (this.largestCenter == null && this.secondLargestCenter == null)
         {
             this.thetaXOffsetDesired = null;
@@ -191,27 +205,33 @@ public class HSVGearCenterPipeline implements VisionPipeline
         }
 
         Point gearMarkerCenter;
-        double gearMarkerHeight;
-        if (this.largestCenter != null && this.secondLargestCenter != null && this.largestCenter.x > this.secondLargestCenter.x)
+        Rect boundingRect;
+        if (this.largestCenter != null && this.secondLargestCenter != null && this.largestCenter.x < this.secondLargestCenter.x)
         {
             gearMarkerCenter = this.secondLargestCenter;
-            gearMarkerHeight = Imgproc.boundingRect(secondLargestContour).height;
+            boundingRect = secondLargestBoundingRect;
         }
         else
         {
             gearMarkerCenter = this.largestCenter;
-            gearMarkerHeight = Imgproc.boundingRect(largestContour).height;
+            boundingRect = largestBoundingRect;
+        }
+
+        int gearMarkerHeight = boundingRect.height;
+        if (gearMarkerHeight == 0)
+        {
+            return;
         }
 
         // Find desired data
         double xOffsetMeasured = gearMarkerCenter.x - VisionConstants.LIFECAM_CAMERA_CENTER_WIDTH;
-        this.thetaXOffsetMeasured = xOffsetMeasured / (VisionConstants.LIFECAM_CAMERA_FIELD_OF_VIEW_X_RADIANS / 2.0);
+        this.thetaXOffsetMeasured = xOffsetMeasured * VisionConstants.LIFECAM_CAMERA_FIELD_OF_VIEW_X / (double)VisionConstants.LIFECAM_CAMERA_RESOLUTION_X;
 
-        this.distanceFromCam = ((VisionConstants.REAL_GEAR_RETROREFLECTIVE_TAPE_HEIGHT) / (Math.tan(VisionConstants.LIFECAM_CAMERA_FIELD_OF_VIEW_Y_RADIANS))) * (VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y / gearMarkerHeight);
-        this.distanceFromRobot = this.distanceFromCam * Math.cos(this.thetaXOffsetMeasured);
-        this.thetaXOffsetDesired = Math.asin(VisionConstants.GEAR_CAMERA_OFFSET_FROM_CENTER / this.distanceFromCam);
-
-        undistortedImage.release();
+        this.distanceFromCam = ((VisionConstants.REAL_GEAR_RETROREFLECTIVE_TAPE_HEIGHT)
+            / (Math.tan(VisionConstants.LIFECAM_CAMERA_FIELD_OF_VIEW_Y_RADIANS)))
+            * ((double)VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y / (double)gearMarkerHeight);
+        this.distanceFromRobot = this.distanceFromCam * Math.cos(this.thetaXOffsetMeasured * VisionConstants.ANGLE_TO_RADIANS);
+        this.thetaXOffsetDesired = Math.asin(VisionConstants.GEAR_CAMERA_OFFSET_FROM_CENTER / this.distanceFromCam) * VisionConstants.RADIANS_TO_ANGLE;
     }
 
     public Point getCenter()

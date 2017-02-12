@@ -38,7 +38,7 @@ public class HSVCenterPipeline implements VisionPipeline
         this.shouldUndistort = shouldUndistort;
 
         this.undistorter = new ImageUndistorter();
-        this.hsvFilter = new HSVFilter(VisionConstants.AXIS_HSV_FILTER_LOW, VisionConstants.AXIS_HSV_FILTER_HIGH);
+        this.hsvFilter = new HSVFilter(VisionConstants.LIFECAM_HSV_FILTER_LOW, VisionConstants.LIFECAM_HSV_FILTER_HIGH);
 
         this.center1 = null;
         this.analyzedFrameCount = 0;
