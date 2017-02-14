@@ -3,7 +3,6 @@ package org.usfirst.frc.team1318.robot.vision.analyzer;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
-import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
@@ -58,9 +57,12 @@ public class HSVCenterPipeline implements VisionPipeline
 
         if (VisionConstants.DEBUG && VisionConstants.DEBUG_OUTPUT_FRAMES)
         {
-            this.frameInput = CameraServer.getInstance().putVideo("input", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X, VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
-            this.hsvOutput = CameraServer.getInstance().putVideo("hsv", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X, VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
-            this.finalOutput = CameraServer.getInstance().putVideo("final", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X, VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
+            this.frameInput = CameraServer.getInstance().putVideo("input", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X,
+                VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
+            this.hsvOutput = CameraServer.getInstance().putVideo("hsv", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X,
+                VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
+            this.finalOutput = CameraServer.getInstance().putVideo("final", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X,
+                VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
         }
         else
         {
@@ -78,7 +80,8 @@ public class HSVCenterPipeline implements VisionPipeline
     public void process(Mat image)
     {
         this.analyzedFrameCount++;
-        if (VisionConstants.DEBUG && VisionConstants.DEBUG_PRINT_OUTPUT && this.analyzedFrameCount % VisionConstants.DEBUG_FPS_AVERAGING_INTERVAL == 0)
+        if (VisionConstants.DEBUG
+            && VisionConstants.DEBUG_PRINT_OUTPUT && this.analyzedFrameCount % VisionConstants.DEBUG_FPS_AVERAGING_INTERVAL == 0)
         {
             double now = this.timer.get();
             double elapsedTime = now - this.lastMeasuredTime;
@@ -99,7 +102,8 @@ public class HSVCenterPipeline implements VisionPipeline
         {
             if (VisionConstants.DEBUG_SAVE_FRAMES && this.analyzedFrameCount % VisionConstants.DEBUG_FRAME_OUTPUT_GAP == 0)
             {
-                Imgcodecs.imwrite(String.format("%simage%d-1.undistorted.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER, this.analyzedFrameCount), image);
+                Imgcodecs.imwrite(String.format("%simage%d-1.undistorted.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER,
+                    this.analyzedFrameCount), image);
             }
 
             if (VisionConstants.DEBUG_OUTPUT_FRAMES)
@@ -124,7 +128,8 @@ public class HSVCenterPipeline implements VisionPipeline
         {
             if (VisionConstants.DEBUG_SAVE_FRAMES && this.analyzedFrameCount % VisionConstants.DEBUG_FRAME_OUTPUT_GAP == 0)
             {
-                Imgcodecs.imwrite(String.format("%simage%d-2.hsvfiltered.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER, this.analyzedFrameCount), image);
+                Imgcodecs.imwrite(String.format("%simage%d-2.hsvfiltered.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER,
+                    this.analyzedFrameCount), image);
             }
 
             if (VisionConstants.DEBUG_OUTPUT_FRAMES)
@@ -149,19 +154,15 @@ public class HSVCenterPipeline implements VisionPipeline
         // fourth, find the center of mass for the largest two contours
         Point largestCenterOfMass = null;
         Point secondLargestCenterOfMass = null;
-        Rect largestBoundingRect = null;
-        Rect secondLargestBoundingRect = null;
         if (largestContour != null)
         {
             largestCenterOfMass = ContourHelper.findCenterOfMass(largestContour);
-            largestBoundingRect = Imgproc.boundingRect(largestContour);
             largestContour.release();
         }
 
         if (secondLargestContour != null)
         {
             secondLargestCenterOfMass = ContourHelper.findCenterOfMass(secondLargestContour);
-            secondLargestBoundingRect = Imgproc.boundingRect(secondLargestContour);
             secondLargestContour.release();
         }
 
@@ -189,7 +190,8 @@ public class HSVCenterPipeline implements VisionPipeline
             }
 
             if (largestCenterOfMass != null &&
-                ((this.analyzedFrameCount % VisionConstants.DEBUG_FRAME_OUTPUT_GAP == 0 && VisionConstants.DEBUG_SAVE_FRAMES) || VisionConstants.DEBUG_OUTPUT_FRAMES))
+                ((this.analyzedFrameCount % VisionConstants.DEBUG_FRAME_OUTPUT_GAP == 0 && VisionConstants.DEBUG_SAVE_FRAMES)
+                    || VisionConstants.DEBUG_OUTPUT_FRAMES))
             {
                 Imgproc.circle(undistortedImage, largestCenterOfMass, 2, new Scalar(0, 0, 255), -1);
                 if (secondLargestCenterOfMass != null)
@@ -199,7 +201,8 @@ public class HSVCenterPipeline implements VisionPipeline
 
                 if (this.analyzedFrameCount % VisionConstants.DEBUG_FRAME_OUTPUT_GAP == 0 && VisionConstants.DEBUG_SAVE_FRAMES)
                 {
-                    Imgcodecs.imwrite(String.format("%simage%d-3.redrawn.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER, this.analyzedFrameCount), undistortedImage);
+                    Imgcodecs.imwrite(String.format("%simage%d-3.redrawn.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER,
+                        this.analyzedFrameCount), undistortedImage);
                 }
 
                 if (VisionConstants.DEBUG_OUTPUT_FRAMES)
