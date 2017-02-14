@@ -5,14 +5,14 @@ import org.opencv.core.Scalar;
 public class VisionConstants
 {
     // Debug output settings:
-    public static final boolean DEBUG = true;
-    public static final boolean DEBUG_PRINT_OUTPUT = true;
+    public static final boolean DEBUG = false;
+    public static final boolean DEBUG_PRINT_OUTPUT = false;
     public static final boolean DEBUG_PRINT_ANALYZER_DATA = false;
     public static final int DEBUG_FPS_AVERAGING_INTERVAL = 25;
     public static final boolean DEBUG_SAVE_FRAMES = false;
     public static final boolean DEBUG_OUTPUT_FRAMES = false;
     public static final int DEBUG_FRAME_OUTPUT_GAP = 25; // the number of frames to wait between saving debug image output
-    public static final String DEBUG_OUTPUT_FOLDER = "/home/lvuser/vision/";
+    public static final String DEBUG_OUTPUT_FOLDER = "/C/vision/";
 
     // Conversion constants...
     public static final double ANGLE_TO_RADIANS = (Math.PI / 180.0f);

@@ -4,7 +4,7 @@ import org.opencv.core.Point;
 import org.usfirst.frc.team1318.robot.common.IController;
 import org.usfirst.frc.team1318.robot.common.IDashboardLogger;
 import org.usfirst.frc.team1318.robot.driver.Driver;
-import org.usfirst.frc.team1318.robot.vision.analyzer.HSVGearCenterPipeline;
+import org.usfirst.frc.team1318.robot.vision.pipelines.HSVGearCenterPipeline;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -27,7 +27,8 @@ public class VisionManager implements IController, VisionRunner.Listener<HSVGear
     private final IDashboardLogger logger;
 
     private final Object visionLock;
-    private final VisionThread visionThread;
+    private final VisionThread gearVisionThread;
+    private final HSVGearCenterPipeline gearVisionPipeline;
 
     private Point center;
 
@@ -47,17 +48,18 @@ public class VisionManager implements IController, VisionRunner.Listener<HSVGear
 
         this.visionLock = new Object();
 
-        UsbCamera camera = new UsbCamera("usb0", 0);
-        camera.setResolution(VisionConstants.LIFECAM_CAMERA_RESOLUTION_X, VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
-        camera.setExposureManual(VisionConstants.LIFECAM_CAMERA_EXPOSURE);
-        camera.setBrightness(VisionConstants.LIFECAM_CAMERA_BRIGHTNESS);
-        camera.setFPS(VisionConstants.LIFECAM_CAMERA_FPS);
+        UsbCamera gearCamera = new UsbCamera("usb0", 0);
+        gearCamera.setResolution(VisionConstants.LIFECAM_CAMERA_RESOLUTION_X, VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
+        gearCamera.setExposureManual(VisionConstants.LIFECAM_CAMERA_EXPOSURE);
+        gearCamera.setBrightness(VisionConstants.LIFECAM_CAMERA_BRIGHTNESS);
+        gearCamera.setFPS(VisionConstants.LIFECAM_CAMERA_FPS);
 
         //CameraServer.getInstance().addCamera(camera);
 
         //AxisCamera camera = CameraServer.getInstance().addAxisCamera(VisionConstants.AXIS_CAMERA_IP_ADDRESS);
-        this.visionThread = new VisionThread(camera, new HSVGearCenterPipeline(VisionConstants.SHOULD_UNDISTORT), this);
-        this.visionThread.start();
+        this.gearVisionPipeline = new HSVGearCenterPipeline(VisionConstants.SHOULD_UNDISTORT);
+        this.gearVisionThread = new VisionThread(gearCamera, this.gearVisionPipeline, this);
+        this.gearVisionThread.start();
 
         this.center = null;
         this.thetaXOffsetDesired = null;
