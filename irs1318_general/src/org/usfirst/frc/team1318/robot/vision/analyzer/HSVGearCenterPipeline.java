@@ -12,17 +12,21 @@ import org.usfirst.frc.team1318.robot.vision.helpers.ContourHelper;
 import org.usfirst.frc.team1318.robot.vision.helpers.HSVFilter;
 import org.usfirst.frc.team1318.robot.vision.helpers.ImageUndistorter;
 
+import edu.wpi.cscore.CvSource;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.vision.VisionPipeline;
 
 public class HSVGearCenterPipeline implements VisionPipeline
 {
     private final boolean shouldUndistort;
-
     private final ImageUndistorter undistorter;
     private final HSVFilter hsvFilter;
-
     private final Timer timer;
+
+    private final CvSource frameInput;
+    private final CvSource hsvOutput;
+    private final CvSource finalOutput;
 
     // measured values
     private Point largestCenter;
@@ -40,7 +44,7 @@ public class HSVGearCenterPipeline implements VisionPipeline
     private double lastFpsMeasurement;
 
     /**
-     * Initializes a new instance of the HSVCenterAnalyzer class.
+     * Initializes a new instance of the HSVGearCenterPipeline class.
      * @param shouldUndistort whether to undistort the image or not
      */
     public HSVGearCenterPipeline(boolean shouldUndistort)
@@ -63,6 +67,19 @@ public class HSVGearCenterPipeline implements VisionPipeline
         this.timer = new Timer();
         this.timer.start();
         this.lastMeasuredTime = this.timer.get();
+
+        if (VisionConstants.DEBUG && VisionConstants.DEBUG_OUTPUT_FRAMES)
+        {
+            this.frameInput = CameraServer.getInstance().putVideo("input", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X, VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
+            this.hsvOutput = CameraServer.getInstance().putVideo("hsv", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X, VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
+            this.finalOutput = CameraServer.getInstance().putVideo("final", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X, VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
+        }
+        else
+        {
+            this.frameInput = null;
+            this.hsvOutput = null;
+            this.finalOutput = null;
+        }
     }
 
     /**
@@ -73,8 +90,7 @@ public class HSVGearCenterPipeline implements VisionPipeline
     public void process(Mat image)
     {
         this.analyzedFrameCount++;
-        if (VisionConstants.DEBUG
-            && VisionConstants.DEBUG_PRINT_OUTPUT && this.analyzedFrameCount % VisionConstants.DEBUG_FPS_AVERAGING_INTERVAL == 0)
+        if (VisionConstants.DEBUG && VisionConstants.DEBUG_PRINT_OUTPUT && this.analyzedFrameCount % VisionConstants.DEBUG_FPS_AVERAGING_INTERVAL == 0)
         {
             double now = this.timer.get();
             double elapsedTime = now - this.lastMeasuredTime;
@@ -91,11 +107,17 @@ public class HSVGearCenterPipeline implements VisionPipeline
             image = this.undistorter.undistortFrame(image);
         }
 
-        if (VisionConstants.DEBUG
-            && VisionConstants.DEBUG_FRAME_OUTPUT && this.analyzedFrameCount % VisionConstants.DEBUG_FRAME_OUTPUT_GAP == 0)
+        if (VisionConstants.DEBUG)
         {
-            Imgcodecs.imwrite(String.format("%simage%d-1.undistorted.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER, this.analyzedFrameCount),
-                image);
+            if (VisionConstants.DEBUG_SAVE_FRAMES && this.analyzedFrameCount % VisionConstants.DEBUG_FRAME_OUTPUT_GAP == 0)
+            {
+                Imgcodecs.imwrite(String.format("%simage%d-1.undistorted.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER, this.analyzedFrameCount), image);
+            }
+
+            if (VisionConstants.DEBUG_OUTPUT_FRAMES)
+            {
+                this.frameInput.putFrame(image);
+            }
         }
 
         // save the undistorted image for possible output later...
@@ -110,11 +132,17 @@ public class HSVGearCenterPipeline implements VisionPipeline
 
         // second, filter HSV
         image = this.hsvFilter.filterHSV(image);
-        if (VisionConstants.DEBUG
-            && VisionConstants.DEBUG_FRAME_OUTPUT && this.analyzedFrameCount % VisionConstants.DEBUG_FRAME_OUTPUT_GAP == 0)
+        if (VisionConstants.DEBUG)
         {
-            Imgcodecs.imwrite(String.format("%simage%d-2.hsvfiltered.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER, this.analyzedFrameCount),
-                image);
+            if (VisionConstants.DEBUG_SAVE_FRAMES && this.analyzedFrameCount % VisionConstants.DEBUG_FRAME_OUTPUT_GAP == 0)
+            {
+                Imgcodecs.imwrite(String.format("%simage%d-2.hsvfiltered.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER, this.analyzedFrameCount), image);
+            }
+
+            if (VisionConstants.DEBUG_OUTPUT_FRAMES)
+            {
+                this.hsvOutput.putFrame(image);
+            }
         }
 
         // third, find the largest contour.
@@ -172,8 +200,8 @@ public class HSVGearCenterPipeline implements VisionPipeline
                 }
             }
 
-            if (largestCenterOfMass != null
-                && VisionConstants.DEBUG_FRAME_OUTPUT && this.analyzedFrameCount % VisionConstants.DEBUG_FRAME_OUTPUT_GAP == 0)
+            if (largestCenterOfMass != null &&
+                ((this.analyzedFrameCount % VisionConstants.DEBUG_FRAME_OUTPUT_GAP == 0 && VisionConstants.DEBUG_SAVE_FRAMES) || VisionConstants.DEBUG_OUTPUT_FRAMES))
             {
                 Imgproc.circle(undistortedImage, largestCenterOfMass, 2, new Scalar(0, 0, 255), -1);
                 if (secondLargestCenterOfMass != null)
@@ -181,8 +209,15 @@ public class HSVGearCenterPipeline implements VisionPipeline
                     Imgproc.circle(undistortedImage, secondLargestCenterOfMass, 2, new Scalar(0, 0, 128), -1);
                 }
 
-                Imgcodecs.imwrite(String.format("%simage%d-3.redrawn.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER, this.analyzedFrameCount),
-                    undistortedImage);
+                if (this.analyzedFrameCount % VisionConstants.DEBUG_FRAME_OUTPUT_GAP == 0 && VisionConstants.DEBUG_SAVE_FRAMES)
+                {
+                    Imgcodecs.imwrite(String.format("%simage%d-3.redrawn.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER, this.analyzedFrameCount), undistortedImage);
+                }
+
+                if (VisionConstants.DEBUG_OUTPUT_FRAMES)
+                {
+                    this.finalOutput.putFrame(image);
+                }
             }
         }
 
@@ -227,8 +262,7 @@ public class HSVGearCenterPipeline implements VisionPipeline
         double xOffsetMeasured = gearMarkerCenter.x - VisionConstants.LIFECAM_CAMERA_CENTER_WIDTH;
         this.thetaXOffsetMeasured = xOffsetMeasured * VisionConstants.LIFECAM_CAMERA_FIELD_OF_VIEW_X / (double)VisionConstants.LIFECAM_CAMERA_RESOLUTION_X;
 
-        this.distanceFromCam = ((VisionConstants.REAL_GEAR_RETROREFLECTIVE_TAPE_HEIGHT)
-            / (Math.tan(VisionConstants.LIFECAM_CAMERA_FIELD_OF_VIEW_Y_RADIANS)))
+        this.distanceFromCam = ((VisionConstants.REAL_GEAR_RETROREFLECTIVE_TAPE_HEIGHT) / (Math.tan(VisionConstants.LIFECAM_CAMERA_FIELD_OF_VIEW_Y_RADIANS)))
             * ((double)VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y / (double)gearMarkerHeight);
         this.distanceFromRobot = this.distanceFromCam * Math.cos(this.thetaXOffsetMeasured * VisionConstants.ANGLE_TO_RADIANS);
         this.thetaXOffsetDesired = Math.asin(VisionConstants.GEAR_CAMERA_OFFSET_FROM_CENTER / this.distanceFromCam) * VisionConstants.RADIANS_TO_ANGLE;
