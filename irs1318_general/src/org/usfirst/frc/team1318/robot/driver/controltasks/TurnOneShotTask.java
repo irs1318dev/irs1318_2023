@@ -7,7 +7,7 @@ import org.usfirst.frc.team1318.robot.driver.IControlTask;
  * Task that turns the robot a certain amount clockwise or counterclockwise in-place using Positional PID.
  * 
  */
-public class TurnTask extends MoveDistanceTaskBase implements IControlTask
+public class TurnOneShotTask extends MoveDistanceOneShotTaskBase implements IControlTask
 {
     private final double degrees;
 
@@ -15,7 +15,7 @@ public class TurnTask extends MoveDistanceTaskBase implements IControlTask
      * Initializes a new TurnTask
      * @param degrees from the current orientation to rotate (positive means turn right/clockwise, negative means turn left/counter-clockwise)
      */
-    public TurnTask(double degrees)
+    public TurnOneShotTask(double degrees)
     {
         this(degrees, true);
     }
@@ -24,7 +24,7 @@ public class TurnTask extends MoveDistanceTaskBase implements IControlTask
      * Initializes a new TurnTask
      * @param degrees from the current orientation to rotate (positive means turn right/clockwise, negative means turn left/counter-clockwise)
      */
-    public TurnTask(double degrees, boolean resetPositionOnEnd)
+    public TurnOneShotTask(double degrees, boolean resetPositionOnEnd)
     {
         super(resetPositionOnEnd);
 
@@ -38,7 +38,7 @@ public class TurnTask extends MoveDistanceTaskBase implements IControlTask
     protected void determineFinalEncoderDistance()
     {
         double arcLength = Math.PI * HardwareConstants.DRIVETRAIN_WHEEL_SEPARATION_DISTANCE * (this.degrees / 360.0);
-        this.desiredFinalLeftEncoderDistance = this.startLeftEncoderDistance + arcLength;
-        this.desiredFinalRightEncoderDistance = this.startRightEncoderDistance - arcLength;
+        this.desiredFinalLeftEncoderDistance = this.startLeftEncoderDistance + arcLength / 2.0;
+        this.desiredFinalRightEncoderDistance = this.startRightEncoderDistance - arcLength / 2.0;
     }
 }

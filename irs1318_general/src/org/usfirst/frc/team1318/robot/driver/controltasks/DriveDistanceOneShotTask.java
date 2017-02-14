@@ -6,7 +6,7 @@ import org.usfirst.frc.team1318.robot.driver.IControlTask;
  * Task that drives the robot a certain distance directly forward or backward using Positional PID.
  * 
  */
-public class DriveDistanceTask extends MoveDistanceTaskBase implements IControlTask
+public class DriveDistanceOneShotTask extends MoveDistanceOneShotTaskBase implements IControlTask
 {
     private final double distance;
 
@@ -14,7 +14,7 @@ public class DriveDistanceTask extends MoveDistanceTaskBase implements IControlT
      * Initializes a new DriveDistanceTask
      * @param distance from the current location to move (positive means move forward, negative means move backwards) in centimeters
      */
-    public DriveDistanceTask(double distance)
+    public DriveDistanceOneShotTask(double distance)
     {
         this(distance, true);
     }
@@ -24,7 +24,7 @@ public class DriveDistanceTask extends MoveDistanceTaskBase implements IControlT
      * @param distance from the current location to move (positive means move forward, negative means move backwards) in centimeters
      * @param resetPositionalOnEnd
      */
-    public DriveDistanceTask(double distance, boolean resetPositionalOnEnd)
+    public DriveDistanceOneShotTask(double distance, boolean resetPositionalOnEnd)
     {
         super(resetPositionalOnEnd);
 

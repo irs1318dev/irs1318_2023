@@ -9,7 +9,7 @@ import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainComponent;
  * Abstract class defining a task that moves the robot a certain distance using Positional PID.
  * 
  */
-public abstract class MoveDistanceTaskBase extends ControlTaskBase implements IControlTask
+public abstract class MoveDistanceOneShotTaskBase extends ControlTaskBase implements IControlTask
 {
     private final boolean resetPositionalOnEnd;
     private DriveTrainComponent driveTrain;
@@ -24,7 +24,7 @@ public abstract class MoveDistanceTaskBase extends ControlTaskBase implements IC
      * Initializes a new MoveDistanceTaskBase
      * @param resetPositionalOnEnd
      */
-    protected MoveDistanceTaskBase(boolean resetPositionalOnEnd)
+    protected MoveDistanceOneShotTaskBase(boolean resetPositionalOnEnd)
     {
         this.resetPositionalOnEnd = resetPositionalOnEnd;
     }

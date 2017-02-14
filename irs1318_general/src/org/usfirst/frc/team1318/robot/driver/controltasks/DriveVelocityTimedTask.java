@@ -6,7 +6,7 @@ import org.usfirst.frc.team1318.robot.driver.Operation;
  * Task that drives at a certain velocity for a certain duration.
  * 
  */
-public class DriveTimedTask extends TimedTask
+public class DriveVelocityTimedTask extends TimedTask
 {
     private final double xVelocity;
     private final double yVelocity;
@@ -17,7 +17,7 @@ public class DriveTimedTask extends TimedTask
      * @param xVelocity to apply to the driveTrain
      * @param yVelocity to apply to the driveTrain
      */
-    public DriveTimedTask(double duration, double xVelocity, double yVelocity)
+    public DriveVelocityTimedTask(double duration, double xVelocity, double yVelocity)
     {
         super(duration);
 

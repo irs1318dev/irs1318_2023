@@ -2,7 +2,7 @@ package org.usfirst.frc.team1318.robot.driver.controltasks;
 
 import org.usfirst.frc.team1318.robot.driver.IControlTask;
 
-public class PIDBrakeTask extends MoveDistanceTaskBase implements IControlTask
+public class PIDBrakeTask extends MoveDistanceOneShotTaskBase implements IControlTask
 {
     /**
      * Initializes a new PIDBrakeTask
