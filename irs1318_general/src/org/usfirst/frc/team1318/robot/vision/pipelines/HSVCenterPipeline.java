@@ -15,7 +15,7 @@ import edu.wpi.cscore.CvSource;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Timer;
 
-public class HSVCenterPipeline implements IVisionPipeline
+public class HSVCenterPipeline implements ICentroidVisionPipeline
 {
     private final boolean shouldUndistort;
     private final ImageUndistorter undistorter;
@@ -29,6 +29,7 @@ public class HSVCenterPipeline implements IVisionPipeline
     // measured values
     private Point largestCenter;
     private Point secondLargestCenter;
+    private Double measuredAngleX;
 
     // FPS Measurement
     private long analyzedFrameCount;
@@ -51,6 +52,7 @@ public class HSVCenterPipeline implements IVisionPipeline
 
         this.largestCenter = null;
         this.secondLargestCenter = null;
+        this.measuredAngleX = null;
 
         this.analyzedFrameCount = 0;
         this.timer = new Timer();
@@ -218,6 +220,16 @@ public class HSVCenterPipeline implements IVisionPipeline
         this.secondLargestCenter = secondLargestCenterOfMass;
 
         undistortedImage.release();
+
+        if (this.largestCenter != null)
+        {
+            double xOffsetMeasured = this.largestCenter.x - VisionConstants.LIFECAM_CAMERA_CENTER_WIDTH;
+            this.measuredAngleX = Math.atan(xOffsetMeasured / VisionConstants.LIFECAM_CAMERA_FOCAL_LENGTH_X) * VisionConstants.RADIANS_TO_ANGLE;
+        }
+        else
+        {
+            this.measuredAngleX = null;
+        }
     }
 
     public void setActivation(boolean isActive)
@@ -225,9 +237,24 @@ public class HSVCenterPipeline implements IVisionPipeline
         this.isActive = isActive;
     }
 
-    public Point getLargestCenter()
+    public Point getCenter()
     {
         return this.largestCenter;
+    }
+
+    public Double getDesiredAngleX()
+    {
+        return 0.0;
+    }
+
+    public Double getMeasuredAngleX()
+    {
+        return this.measuredAngleX;
+    }
+
+    public Double getRobotDistance()
+    {
+        return null;
     }
 
     public Point getSecondLargestCenter()

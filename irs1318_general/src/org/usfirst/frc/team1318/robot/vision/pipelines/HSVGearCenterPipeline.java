@@ -15,9 +15,8 @@ import org.usfirst.frc.team1318.robot.vision.helpers.ImageUndistorter;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.vision.VisionPipeline;
 
-public class HSVGearCenterPipeline implements VisionPipeline
+public class HSVGearCenterPipeline implements ICentroidVisionPipeline
 {
     private final boolean shouldUndistort;
     private final ImageUndistorter undistorter;
@@ -32,9 +31,9 @@ public class HSVGearCenterPipeline implements VisionPipeline
     private Point largestCenter;
     private Point secondLargestCenter;
 
-    private Double thetaXOffsetMeasured;
+    private Double measuredAngleX;
 
-    private Double thetaXOffsetDesired;
+    private Double desiredAngleX;
     private Double distanceFromCam;
     private Double distanceFromRobot;
 
@@ -60,9 +59,9 @@ public class HSVGearCenterPipeline implements VisionPipeline
         this.largestCenter = null;
         this.secondLargestCenter = null;
 
-        this.thetaXOffsetMeasured = null;
+        this.measuredAngleX = null;
 
-        this.thetaXOffsetDesired = null;
+        this.desiredAngleX = null;
         this.distanceFromCam = null;
         this.distanceFromRobot = null;
 
@@ -240,11 +239,11 @@ public class HSVGearCenterPipeline implements VisionPipeline
         // GEAR CALCULATIONS
         if (this.largestCenter == null && this.secondLargestCenter == null)
         {
-            this.thetaXOffsetDesired = null;
+            this.desiredAngleX = null;
             this.distanceFromCam = null;
             this.distanceFromRobot = null;
 
-            this.thetaXOffsetMeasured = null;
+            this.measuredAngleX = null;
 
             return;
         }
@@ -270,12 +269,13 @@ public class HSVGearCenterPipeline implements VisionPipeline
 
         // Find desired data
         double xOffsetMeasured = gearMarkerCenter.x - VisionConstants.LIFECAM_CAMERA_CENTER_WIDTH;
-        this.thetaXOffsetMeasured = xOffsetMeasured * VisionConstants.LIFECAM_CAMERA_FIELD_OF_VIEW_X / (double)VisionConstants.LIFECAM_CAMERA_RESOLUTION_X;
+        this.measuredAngleX = Math.atan(xOffsetMeasured / VisionConstants.LIFECAM_CAMERA_FOCAL_LENGTH_X) * VisionConstants.RADIANS_TO_ANGLE;
+        // this.thetaXOffsetMeasured = xOffsetMeasured * VisionConstants.LIFECAM_CAMERA_FIELD_OF_VIEW_X / (double)VisionConstants.LIFECAM_CAMERA_RESOLUTION_X;
 
         this.distanceFromCam = ((VisionConstants.REAL_GEAR_RETROREFLECTIVE_TAPE_HEIGHT) / (Math.tan(VisionConstants.LIFECAM_CAMERA_FIELD_OF_VIEW_Y_RADIANS)))
             * ((double)VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y / (double)gearMarkerHeight);
-        this.distanceFromRobot = this.distanceFromCam * Math.cos(this.thetaXOffsetMeasured * VisionConstants.ANGLE_TO_RADIANS);
-        this.thetaXOffsetDesired = Math.asin(VisionConstants.GEAR_CAMERA_OFFSET_FROM_CENTER / this.distanceFromCam) * VisionConstants.RADIANS_TO_ANGLE;
+        this.distanceFromRobot = this.distanceFromCam * Math.cos(this.measuredAngleX * VisionConstants.ANGLE_TO_RADIANS);
+        this.desiredAngleX = Math.asin(VisionConstants.GEAR_CAMERA_OFFSET_FROM_CENTER / this.distanceFromCam) * VisionConstants.RADIANS_TO_ANGLE;
     }
 
     public void setActivation(boolean isActive)
@@ -288,22 +288,22 @@ public class HSVGearCenterPipeline implements VisionPipeline
         return this.largestCenter;
     }
 
-    public Double getThetaXOffsetDesired()
+    public Double getDesiredAngleX()
     {
-        return this.thetaXOffsetDesired;
+        return this.desiredAngleX;
     }
 
-    public Double getThetaXOffsetMeasured()
+    public Double getMeasuredAngleX()
     {
-        return this.thetaXOffsetMeasured;
+        return this.measuredAngleX;
     }
 
-    public Double getDistanceFromCam()
+    public Double getCameraDistance()
     {
         return this.distanceFromCam;
     }
 
-    public Double getDistanceFromRobot()
+    public Double getRobotDistance()
     {
         return this.distanceFromRobot;
     }

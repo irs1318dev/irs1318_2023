@@ -5,6 +5,7 @@ import org.usfirst.frc.team1318.robot.common.IController;
 import org.usfirst.frc.team1318.robot.common.IDashboardLogger;
 import org.usfirst.frc.team1318.robot.driver.Driver;
 import org.usfirst.frc.team1318.robot.vision.pipelines.HSVGearCenterPipeline;
+import org.usfirst.frc.team1318.robot.vision.pipelines.ICentroidVisionPipeline;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -20,7 +21,7 @@ import edu.wpi.first.wpilibj.vision.VisionThread;
  *
  */
 @Singleton
-public class VisionManager implements IController, VisionRunner.Listener<HSVGearCenterPipeline>
+public class VisionManager implements IController, VisionRunner.Listener<ICentroidVisionPipeline>
 {
     private final static String LogName = "vision";
 
@@ -32,8 +33,8 @@ public class VisionManager implements IController, VisionRunner.Listener<HSVGear
 
     private Point center;
 
-    private Double thetaXOffsetDesired;
-    private Double thetaXOffsetMeasured;
+    private Double desiredAngleX;
+    private Double measuredAngleX;
     private Double distanceFromRobot;
 
     private double lastMeasuredFps;
@@ -62,8 +63,8 @@ public class VisionManager implements IController, VisionRunner.Listener<HSVGear
         this.gearVisionThread.start();
 
         this.center = null;
-        this.thetaXOffsetDesired = null;
-        this.thetaXOffsetMeasured = null;
+        this.desiredAngleX = null;
+        this.measuredAngleX = null;
         this.distanceFromRobot = null;
 
         this.lastMeasuredFps = 0.0;
@@ -81,7 +82,7 @@ public class VisionManager implements IController, VisionRunner.Listener<HSVGear
     {
         synchronized (this.visionLock)
         {
-            return this.thetaXOffsetMeasured;
+            return this.measuredAngleX;
         }
     }
 
@@ -89,7 +90,7 @@ public class VisionManager implements IController, VisionRunner.Listener<HSVGear
     {
         synchronized (this.visionLock)
         {
-            return this.thetaXOffsetDesired;
+            return this.desiredAngleX;
         }
     }
 
@@ -146,15 +147,15 @@ public class VisionManager implements IController, VisionRunner.Listener<HSVGear
     }
 
     @Override
-    public void copyPipelineOutputs(HSVGearCenterPipeline pipeline)
+    public void copyPipelineOutputs(ICentroidVisionPipeline pipeline)
     {
         synchronized (this.visionLock)
         {
             this.center = pipeline.getCenter();
 
-            this.thetaXOffsetDesired = pipeline.getThetaXOffsetDesired();
-            this.thetaXOffsetMeasured = pipeline.getThetaXOffsetMeasured();
-            this.distanceFromRobot = pipeline.getDistanceFromRobot();
+            this.desiredAngleX = pipeline.getDesiredAngleX();
+            this.measuredAngleX = pipeline.getMeasuredAngleX();
+            this.distanceFromRobot = pipeline.getRobotDistance();
 
             this.lastMeasuredFps = pipeline.getFps();
         }
