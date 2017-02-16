@@ -28,7 +28,7 @@ public class TuningConstants
     //================================================== DriveTrain ==============================================================
 
     // Drivetrain PID keys/default values:
-    public static final boolean DRIVETRAIN_USE_PID_DEFAULT = true;
+    public static final boolean DRIVETRAIN_USE_PID = true;
 
     // Velocity PID (right)
     public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KP_DEFAULT = 0.0275;

@@ -46,7 +46,7 @@ public class DriveTrainController implements IController
         this.logger = logger;
         this.component = component;
 
-        this.usePID = TuningConstants.DRIVETRAIN_USE_PID_DEFAULT;
+        this.usePID = TuningConstants.DRIVETRAIN_USE_PID;
         this.usePositionalMode = false;
 
         this.createPIDHandler();
@@ -61,10 +61,10 @@ public class DriveTrainController implements IController
     {
         this.driver = driver;
 
-        // switch to velocity PID mode whenever we switch controller (defense-in-depth)
+        // switch to default velocity PID mode whenever we switch controller (defense-in-depth)
         if (!this.usePID || this.usePositionalMode)
         {
-            this.usePID = true;
+            this.usePID = TuningConstants.DRIVETRAIN_USE_PID;
             this.usePositionalMode = false;
 
             this.createPIDHandler();
