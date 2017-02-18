@@ -148,6 +148,8 @@ public class Robot extends IterativeRobot
 
         // run each controller
         this.controllers.update();
+
+        this.logger.flush();
     }
 
     /**

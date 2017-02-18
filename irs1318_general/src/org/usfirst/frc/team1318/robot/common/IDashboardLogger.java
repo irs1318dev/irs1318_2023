@@ -50,4 +50,9 @@ public interface IDashboardLogger
      * @param value to write
      */
     void logString(String component, String key, String value);
+
+    /**
+     * Flush the output stream, if appropriate..
+     */
+    void flush();
 }

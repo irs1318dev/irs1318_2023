@@ -1,25 +1,30 @@
 package org.usfirst.frc.team1318.robot.common;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-/**
- * Logger that logs current values to a dashboard.
- *
- */
-public class SmartDashboardLogger implements IDashboardLogger
+public class MultiLogger implements IDashboardLogger
 {
+    private final IDashboardLogger[] loggers;
+
+    /**
+     * Initializes a new instance of the MultiLogger class
+     * @param loggers to log to
+     */
+    public MultiLogger(IDashboardLogger... loggers)
+    {
+        this.loggers = loggers;
+    }
+
     /**
      * Write a boolean to the smart dashboard
      * @param component to log for
      * @param key to write to
      * @param value to write
      */
+    @Override
     public void logBoolean(String component, String key, boolean value)
     {
-        String logKey = String.format("%s.%s", component, key);
-        if (SmartDashboard.getBoolean(logKey, !value) != value)
+        for (IDashboardLogger logger : this.loggers)
         {
-            SmartDashboard.putBoolean(logKey, value);
+            logger.logBoolean(component, key, value);
         }
     }
 
@@ -29,31 +34,28 @@ public class SmartDashboardLogger implements IDashboardLogger
      * @param key to write to
      * @param value to write
      */
+    @Override
     public void logNumber(String component, String key, double value)
     {
-        String logKey = String.format("%s.%s", component, key);
-        if (SmartDashboard.getNumber(logKey, value + 0.5) != value)
+        for (IDashboardLogger logger : this.loggers)
         {
-            SmartDashboard.putNumber(logKey, value);
+            logger.logNumber(component, key, value);
         }
     }
 
     /**
-     * Write a number (double) to the smart dashboard
+     * Write a number (Double) to the smart dashboard
      * @param component to log for
      * @param key to write to
      * @param value to write
      */
+    @Override
     public void logNumber(String component, String key, Double value)
     {
-        String logKey = String.format("%s.%s", component, key);
-        String valueString = "N/A";
-        if (value != null)
+        for (IDashboardLogger logger : this.loggers)
         {
-            valueString = "" + value;
+            logger.logNumber(component, key, value);
         }
-
-        SmartDashboard.putString(logKey, valueString);
     }
 
     /**
@@ -62,9 +64,13 @@ public class SmartDashboardLogger implements IDashboardLogger
      * @param key to write to
      * @param value to write
      */
+    @Override
     public void logInteger(String component, String key, int value)
     {
-        this.logInteger(component, key, value, null);
+        for (IDashboardLogger logger : this.loggers)
+        {
+            logger.logInteger(component, key, value);
+        }
     }
 
     /**
@@ -74,12 +80,12 @@ public class SmartDashboardLogger implements IDashboardLogger
      * @param value to write
      * @param formatString to use
      */
+    @Override
     public void logInteger(String component, String key, int value, String formatString)
     {
-        String logKey = String.format("%s.%s", component, key);
-        if (SmartDashboard.getNumber(logKey, value + 0.5) != value)
+        for (IDashboardLogger logger : this.loggers)
         {
-            SmartDashboard.putNumber(logKey, value);
+            logger.logInteger(component, key, value, formatString);
         }
     }
 
@@ -89,12 +95,12 @@ public class SmartDashboardLogger implements IDashboardLogger
      * @param key to write to
      * @param value to write
      */
+    @Override
     public void logString(String component, String key, String value)
     {
-        String logKey = String.format("%s.%s", component, key);
-        if (SmartDashboard.getString(logKey, null) != value)
+        for (IDashboardLogger logger : this.loggers)
         {
-            SmartDashboard.putString(logKey, value);
+            logger.logString(component, key, value);
         }
     }
 
@@ -104,5 +110,9 @@ public class SmartDashboardLogger implements IDashboardLogger
     @Override
     public void flush()
     {
+        for (IDashboardLogger logger : this.loggers)
+        {
+            logger.flush();
+        }
     }
 }
