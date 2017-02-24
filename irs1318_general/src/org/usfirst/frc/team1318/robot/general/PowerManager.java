@@ -49,6 +49,7 @@ public class PowerManager implements IController
     @Override
     public void stop()
     {
+        this.batteryVoltageFilter.reset();
     }
 
     @Override

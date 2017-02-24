@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1318.robot;
 
 import org.usfirst.frc.team1318.robot.common.IDashboardLogger;
+import org.usfirst.frc.team1318.robot.common.wpilibmocks.ITimer;
 import org.usfirst.frc.team1318.robot.driver.Driver;
 import org.usfirst.frc.team1318.robot.driver.autonomous.AutonomousDriver;
 import org.usfirst.frc.team1318.robot.driver.user.UserDriver;
@@ -42,6 +43,8 @@ public class Robot extends IterativeRobot
     private IDashboardLogger logger;
     private Injector injector;
 
+    private ITimer timer;
+
     /**
      * Robot-wide initialization code should go here.
      * This default Robot-wide initialization code will be called when 
@@ -53,6 +56,9 @@ public class Robot extends IterativeRobot
         this.controllers = this.getInjector().getInstance(ControllerManager.class);
         this.logger = this.getInjector().getInstance(IDashboardLogger.class);
         this.logger.logString(Robot.LogName, "state", "Init");
+
+        this.timer = this.getInjector().getInstance(ITimer.class);
+        this.logger.logNumber(Robot.LogName, "time", this.timer.get());
     }
 
     /**
@@ -71,6 +77,7 @@ public class Robot extends IterativeRobot
             this.controllers.stop();
         }
 
+        this.timer.stop();
         this.logger.logString(Robot.LogName, "state", "Disabled");
     }
 
@@ -111,6 +118,8 @@ public class Robot extends IterativeRobot
     {
         // apply the driver to the controllers
         this.controllers.setDriver(this.driver);
+
+        this.timer.start();
     }
 
     /**
@@ -149,6 +158,7 @@ public class Robot extends IterativeRobot
         // run each controller
         this.controllers.update();
 
+        this.logger.logNumber(Robot.LogName, "time", this.timer.get());
         this.logger.flush();
     }
 

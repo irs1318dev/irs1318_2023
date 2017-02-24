@@ -21,4 +21,14 @@ public class PIDBrakeTask extends MoveDistanceOneShotTaskBase implements IContro
         this.desiredFinalLeftEncoderDistance = this.startLeftEncoderDistance;
         this.desiredFinalRightEncoderDistance = this.startRightEncoderDistance;
     }
+
+    /**
+     * Checks whether this task has completed, or whether it should continue being processed
+     * @return true if we should continue onto the next task, otherwise false (to keep processing this task)
+     */
+    @Override
+    public boolean hasCompleted()
+    {
+        return false;
+    }
 }

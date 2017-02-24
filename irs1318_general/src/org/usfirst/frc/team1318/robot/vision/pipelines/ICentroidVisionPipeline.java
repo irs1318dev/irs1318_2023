@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.vision.VisionPipeline;
 public interface ICentroidVisionPipeline extends VisionPipeline
 {
     void setActivation(boolean active);
+    boolean isActive();
     Point getCenter();
     Double getDesiredAngleX();
     Double getMeasuredAngleX();

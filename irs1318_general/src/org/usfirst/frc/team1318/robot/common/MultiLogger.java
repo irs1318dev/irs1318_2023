@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1318.robot.common;
 
+import org.opencv.core.Point;
+
 public class MultiLogger implements IDashboardLogger
 {
     private final IDashboardLogger[] loggers;
@@ -86,6 +88,21 @@ public class MultiLogger implements IDashboardLogger
         for (IDashboardLogger logger : this.loggers)
         {
             logger.logInteger(component, key, value, formatString);
+        }
+    }
+
+    /**
+     * Write a point (x,y or N/A) to the smart dashboard
+     * @param component to log for
+     * @param key to write to
+     * @param value to write
+     */
+    @Override
+    public void logPoint(String component, String key, Point value)
+    {
+        for (IDashboardLogger logger : this.loggers)
+        {
+            logger.logPoint(component, key, value);
         }
     }
 

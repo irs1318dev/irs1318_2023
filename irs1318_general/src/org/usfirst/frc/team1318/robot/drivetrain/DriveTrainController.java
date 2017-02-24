@@ -5,6 +5,7 @@ import org.usfirst.frc.team1318.robot.common.Helpers;
 import org.usfirst.frc.team1318.robot.common.IController;
 import org.usfirst.frc.team1318.robot.common.IDashboardLogger;
 import org.usfirst.frc.team1318.robot.common.PIDHandler;
+import org.usfirst.frc.team1318.robot.common.wpilibmocks.ITimer;
 import org.usfirst.frc.team1318.robot.driver.Driver;
 import org.usfirst.frc.team1318.robot.driver.Operation;
 
@@ -24,6 +25,7 @@ public class DriveTrainController implements IController
     private static final double POWERLEVEL_MAX = 1.0;
 
     private final IDashboardLogger logger;
+    private final ITimer timer;
     private final DriveTrainComponent component;
 
     private Driver driver;
@@ -35,15 +37,17 @@ public class DriveTrainController implements IController
 
     /**
      * Initializes a new DriveTrainController
-     * @param logger to use
      * @param component to control
+     * @param usePID indicates whether we should use PID control
      */
     @Inject
     public DriveTrainController(
         IDashboardLogger logger,
+        ITimer timer,
         DriveTrainComponent component)
     {
         this.logger = logger;
+        this.timer = timer;
         this.component = component;
 
         this.usePID = TuningConstants.DRIVETRAIN_USE_PID;
@@ -77,12 +81,12 @@ public class DriveTrainController implements IController
     @Override
     public void update()
     {
-        if (this.driver.getDigital(Operation.EnablePID))
+        if (this.driver.getDigital(Operation.DriveTrainEnablePID))
         {
             this.usePID = true;
             this.createPIDHandler();
         }
-        else if (this.driver.getDigital(Operation.DisablePID))
+        else if (this.driver.getDigital(Operation.DriveTrainDisablePID))
         {
             this.usePID = false;
             this.createPIDHandler();
@@ -136,6 +140,16 @@ public class DriveTrainController implements IController
     public void stop()
     {
         this.component.setDriveTrainPower(0.0, 0.0);
+        this.component.reset();
+        if (this.leftPID != null)
+        {
+            this.leftPID.reset();
+        }
+
+        if (this.rightPID != null)
+        {
+            this.rightPID.reset();
+        }
     }
 
     /**
@@ -153,40 +167,50 @@ public class DriveTrainController implements IController
             if (this.usePositionalMode)
             {
                 this.leftPID = new PIDHandler(
-                    TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KP_DEFAULT,
-                    TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KI_DEFAULT,
-                    TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KD_DEFAULT,
-                    TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KF_DEFAULT,
+                    TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KP,
+                    TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KI,
+                    TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KD,
+                    TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KF,
+                    1.0,
                     -TuningConstants.DRIVETRAIN_POSITIONAL_MAX_POWER_LEVEL,
-                    TuningConstants.DRIVETRAIN_POSITIONAL_MAX_POWER_LEVEL);
+                    TuningConstants.DRIVETRAIN_POSITIONAL_MAX_POWER_LEVEL,
+                    this.timer);
 
                 this.rightPID = new PIDHandler(
-                    TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KP_DEFAULT,
-                    TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KI_DEFAULT,
-                    TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KD_DEFAULT,
-                    TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KF_DEFAULT,
+                    TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KP,
+                    TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KI,
+                    TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KD,
+                    TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KF,
+                    1.0,
                     -TuningConstants.DRIVETRAIN_POSITIONAL_MAX_POWER_LEVEL,
-                    TuningConstants.DRIVETRAIN_POSITIONAL_MAX_POWER_LEVEL);
+                    TuningConstants.DRIVETRAIN_POSITIONAL_MAX_POWER_LEVEL,
+                    this.timer);
             }
             else
             {
                 this.leftPID = new PIDHandler(
-                    TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KP_DEFAULT,
-                    TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KI_DEFAULT,
-                    TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KD_DEFAULT,
-                    TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KF_DEFAULT,
-                    TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KS_DEFAULT,
+                    TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KP,
+                    TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KI,
+                    TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KD,
+                    TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KF,
+                    TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KS,
                     -TuningConstants.DRIVETRAIN_VELOCITY_MAX_POWER_LEVEL,
-                    TuningConstants.DRIVETRAIN_VELOCITY_MAX_POWER_LEVEL);
+                    TuningConstants.DRIVETRAIN_VELOCITY_MAX_POWER_LEVEL,
+                    "leftDT",
+                    this.logger,
+                    this.timer);
 
                 this.rightPID = new PIDHandler(
-                    TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KP_DEFAULT,
-                    TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KI_DEFAULT,
-                    TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KD_DEFAULT,
-                    TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF_DEFAULT,
-                    TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KS_DEFAULT,
+                    TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KP,
+                    TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KI,
+                    TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KD,
+                    TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF,
+                    TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KS,
                     -TuningConstants.DRIVETRAIN_VELOCITY_MAX_POWER_LEVEL,
-                    TuningConstants.DRIVETRAIN_VELOCITY_MAX_POWER_LEVEL);
+                    TuningConstants.DRIVETRAIN_VELOCITY_MAX_POWER_LEVEL,
+                    "rightDT",
+                    this.logger,
+                    this.timer);
                 ;
             }
         }

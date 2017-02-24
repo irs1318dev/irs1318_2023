@@ -2,16 +2,41 @@ package org.usfirst.frc.team1318.robot.driver.controltasks;
 
 import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.common.PIDHandler;
+import org.usfirst.frc.team1318.robot.common.wpilibmocks.ITimer;
 import org.usfirst.frc.team1318.robot.driver.IControlTask;
 import org.usfirst.frc.team1318.robot.driver.Operation;
 
-public class VisionForwardAndCenterTask extends VisionCenteringTask implements IControlTask
+public class VisionAdvanceAndCenterTask extends VisionCenteringTask implements IControlTask
 {
-    private final PIDHandler forwardPIDHandler;
+    private PIDHandler forwardPIDHandler;
 
-    public VisionForwardAndCenterTask()
+    /**
+    * Initializes a new VisionForwardAndCenterTask
+    */
+    public VisionAdvanceAndCenterTask()
     {
-        this.forwardPIDHandler = new PIDHandler(0.005, 0.0, 0.0, 0.0, -0.3, 0.3);
+        super();
+
+        this.forwardPIDHandler = null;
+    }
+
+    /**
+     * Begin the current task
+     */
+    @Override
+    public void begin()
+    {
+        super.begin();
+        this.forwardPIDHandler = new PIDHandler(
+            TuningConstants.VISION_ADVANCING_PID_KP,
+            TuningConstants.VISION_ADVANCING_PID_KI,
+            TuningConstants.VISION_ADVANCING_PID_KD,
+            TuningConstants.VISION_ADVANCING_PID_KF,
+            TuningConstants.VISION_ADVANCING_PID_KS,
+            TuningConstants.VISION_ADVANCING_PID_MIN,
+            TuningConstants.VISION_ADVANCING_PID_MAX,
+            this.getInjector().getInstance(ITimer.class));
+
     }
 
     @Override

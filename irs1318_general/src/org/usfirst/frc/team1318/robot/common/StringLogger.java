@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1318.robot.common;
 
+import org.opencv.core.Point;
+
 public abstract class StringLogger implements IDashboardLogger
 {
     /**
@@ -69,6 +71,24 @@ public abstract class StringLogger implements IDashboardLogger
     public void logInteger(String component, String key, int value, String formatString)
     {
         this.logString(component, key, String.format(formatString, value));
+    }
+
+    /**
+     * Write a point (x,y or N/A) to the smart dashboard
+     * @param component to log for
+     * @param key to write to
+     * @param value to write
+     */
+    @Override
+    public void logPoint(String component, String key, Point value)
+    {
+        String valueString = "N/A";
+        if (value != null)
+        {
+            valueString = String.format("", value.x, value.y);
+        }
+
+        this.logString(component, key, valueString);
     }
 
     /**

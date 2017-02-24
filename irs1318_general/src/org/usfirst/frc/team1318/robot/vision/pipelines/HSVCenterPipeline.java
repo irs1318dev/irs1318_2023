@@ -3,9 +3,8 @@ package org.usfirst.frc.team1318.robot.vision.pipelines;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
-import org.opencv.core.Scalar;
 import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgproc.Imgproc;
+import org.usfirst.frc.team1318.robot.common.wpilibmocks.ITimer;
 import org.usfirst.frc.team1318.robot.vision.VisionConstants;
 import org.usfirst.frc.team1318.robot.vision.helpers.ContourHelper;
 import org.usfirst.frc.team1318.robot.vision.helpers.HSVFilter;
@@ -13,18 +12,16 @@ import org.usfirst.frc.team1318.robot.vision.helpers.ImageUndistorter;
 
 import edu.wpi.cscore.CvSource;
 import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.Timer;
 
 public class HSVCenterPipeline implements ICentroidVisionPipeline
 {
+    private final ITimer timer;
     private final boolean shouldUndistort;
     private final ImageUndistorter undistorter;
     private final HSVFilter hsvFilter;
-    private final Timer timer;
 
     private final CvSource frameInput;
     private final CvSource hsvOutput;
-    private final CvSource finalOutput;
 
     // measured values
     private Point largestCenter;
@@ -37,13 +34,16 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
     private double lastFpsMeasurement;
 
     // active status
-    private boolean isActive;
+    private volatile boolean isActive;
 
     /**
      * Initializes a new instance of the HSVCenterPipeline class.
+     * @param timer to use for any timing purposes
      * @param shouldUndistort whether to undistort the image or not
      */
-    public HSVCenterPipeline(boolean shouldUndistort)
+    public HSVCenterPipeline(
+        ITimer timer,
+        boolean shouldUndistort)
     {
         this.shouldUndistort = shouldUndistort;
 
@@ -55,23 +55,20 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
         this.measuredAngleX = null;
 
         this.analyzedFrameCount = 0;
-        this.timer = new Timer();
-        this.timer.start();
+        this.timer = timer;
         this.lastMeasuredTime = this.timer.get();
 
         this.isActive = true;
 
         if (VisionConstants.DEBUG && VisionConstants.DEBUG_OUTPUT_FRAMES)
         {
-            this.frameInput = CameraServer.getInstance().putVideo("input", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X, VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
-            this.hsvOutput = CameraServer.getInstance().putVideo("hsv", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X, VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
-            this.finalOutput = CameraServer.getInstance().putVideo("final", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X, VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
+            this.frameInput = CameraServer.getInstance().putVideo("center.input", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X, VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
+            this.hsvOutput = CameraServer.getInstance().putVideo("center.hsv", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X, VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
         }
         else
         {
             this.frameInput = null;
             this.hsvOutput = null;
-            this.finalOutput = null;
         }
     }
 
@@ -94,7 +91,6 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
             double elapsedTime = now - this.lastMeasuredTime;
 
             this.lastFpsMeasurement = ((double)VisionConstants.DEBUG_FPS_AVERAGING_INTERVAL) / elapsedTime;
-            this.timer.reset();
             this.lastMeasuredTime = this.timer.get();
         }
 
@@ -193,26 +189,6 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
                     System.out.println(String.format("Center of mass: %f, %f", secondLargestCenterOfMass.x, secondLargestCenterOfMass.y));
                 }
             }
-
-            if (largestCenterOfMass != null &&
-                ((this.analyzedFrameCount % VisionConstants.DEBUG_FRAME_OUTPUT_GAP == 0 && VisionConstants.DEBUG_SAVE_FRAMES) || VisionConstants.DEBUG_OUTPUT_FRAMES))
-            {
-                Imgproc.circle(undistortedImage, largestCenterOfMass, 2, new Scalar(0, 0, 255), -1);
-                if (secondLargestCenterOfMass != null)
-                {
-                    Imgproc.circle(undistortedImage, secondLargestCenterOfMass, 2, new Scalar(0, 0, 128), -1);
-                }
-
-                if (this.analyzedFrameCount % VisionConstants.DEBUG_FRAME_OUTPUT_GAP == 0 && VisionConstants.DEBUG_SAVE_FRAMES)
-                {
-                    Imgcodecs.imwrite(String.format("%simage%d-3.redrawn.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER, this.analyzedFrameCount), undistortedImage);
-                }
-
-                if (VisionConstants.DEBUG_OUTPUT_FRAMES)
-                {
-                    this.finalOutput.putFrame(image);
-                }
-            }
         }
 
         // finally, record the centers of mass
@@ -235,6 +211,11 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
     public void setActivation(boolean isActive)
     {
         this.isActive = isActive;
+    }
+
+    public boolean isActive()
+    {
+        return this.isActive;
     }
 
     public Point getCenter()

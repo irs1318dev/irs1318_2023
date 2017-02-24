@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1318.robot.common;
 
+import org.opencv.core.Point;
+
 public interface IDashboardLogger
 {
     /**
@@ -42,6 +44,14 @@ public interface IDashboardLogger
      * @param formatString to use
      */
     void logInteger(String component, String key, int value, String formatString);
+
+    /**
+     * Write a point (x,y or N/A) to the smart dashboard
+     * @param component to log for
+     * @param key to write to
+     * @param value to write
+     */
+    void logPoint(String component, String key, Point value);
 
     /**
      * Write a string to the smart dashboard

@@ -29,4 +29,9 @@ public class ComplementaryFilter
     {
         this.currentValue = this.currentValue * this.kO + value * this.kN;
     }
+
+    public void reset()
+    {
+        this.currentValue = 0.0;
+    }
 }

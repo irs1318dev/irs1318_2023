@@ -16,8 +16,10 @@ import org.usfirst.frc.team1318.robot.common.wpilibmocks.IEncoder;
 import org.usfirst.frc.team1318.robot.common.wpilibmocks.IJoystick;
 import org.usfirst.frc.team1318.robot.common.wpilibmocks.IMotor;
 import org.usfirst.frc.team1318.robot.common.wpilibmocks.IPowerDistributionPanel;
+import org.usfirst.frc.team1318.robot.common.wpilibmocks.ITimer;
 import org.usfirst.frc.team1318.robot.common.wpilibmocks.JoystickWrapper;
 import org.usfirst.frc.team1318.robot.common.wpilibmocks.PowerDistributionPanelWrapper;
+import org.usfirst.frc.team1318.robot.common.wpilibmocks.TimerWrapper;
 import org.usfirst.frc.team1318.robot.common.wpilibmocks.VictorWrapper;
 import org.usfirst.frc.team1318.robot.driver.ButtonMap;
 import org.usfirst.frc.team1318.robot.driver.IButtonMap;
@@ -38,7 +40,19 @@ public class RobotModule extends AbstractModule
     @Provides
     public IDashboardLogger getLogger()
     {
-        return new SmartDashboardLogger();
+        IDashboardLogger logger = new SmartDashboardLogger();
+        //        try
+        //        {
+        //            String fileName = String.format("/home/lvuser/%1$d.csv", Calendar.getInstance().getTime().getTime());
+        //            IDashboardLogger csvLogger = new CSVLogger(fileName, new String[] { "r.time", "shooter.speed", "shooter.shooterSpeedGoal" });
+        //            logger = new MultiLogger(logger, csvLogger);
+        //        }
+        //        catch (IOException e)
+        //        {
+        //            e.printStackTrace();
+        //        }
+
+        return logger;
     }
 
     @Singleton
@@ -46,6 +60,13 @@ public class RobotModule extends AbstractModule
     public IButtonMap getButtonMap()
     {
         return new ButtonMap();
+    }
+
+    @Singleton
+    @Provides
+    public ITimer getTimer()
+    {
+        return new TimerWrapper();
     }
 
     @Singleton

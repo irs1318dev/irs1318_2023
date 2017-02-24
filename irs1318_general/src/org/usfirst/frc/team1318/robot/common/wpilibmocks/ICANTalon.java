@@ -8,6 +8,7 @@ public interface ICANTalon extends IMotor
     void reverseOutput(boolean flip);
     void reverseSensor(boolean flip);
     void enableBrakeMode(boolean brake);
+    int getTicks();
     double getSpeed();
     double getError();
 }

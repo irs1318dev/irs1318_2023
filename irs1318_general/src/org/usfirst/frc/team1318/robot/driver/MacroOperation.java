@@ -5,4 +5,5 @@ public enum MacroOperation
     // DriveTrain operations:
     PIDBrake,
     Center,
+    CenterAndAdvance,
 }

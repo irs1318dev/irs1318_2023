@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1318.robot.common;
 
+import org.opencv.core.Point;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -14,6 +16,7 @@ public class SmartDashboardLogger implements IDashboardLogger
      * @param key to write to
      * @param value to write
      */
+    @Override
     public void logBoolean(String component, String key, boolean value)
     {
         String logKey = String.format("%s.%s", component, key);
@@ -29,6 +32,7 @@ public class SmartDashboardLogger implements IDashboardLogger
      * @param key to write to
      * @param value to write
      */
+    @Override
     public void logNumber(String component, String key, double value)
     {
         String logKey = String.format("%s.%s", component, key);
@@ -44,6 +48,7 @@ public class SmartDashboardLogger implements IDashboardLogger
      * @param key to write to
      * @param value to write
      */
+    @Override
     public void logNumber(String component, String key, Double value)
     {
         String logKey = String.format("%s.%s", component, key);
@@ -62,6 +67,7 @@ public class SmartDashboardLogger implements IDashboardLogger
      * @param key to write to
      * @param value to write
      */
+    @Override
     public void logInteger(String component, String key, int value)
     {
         this.logInteger(component, key, value, null);
@@ -74,6 +80,7 @@ public class SmartDashboardLogger implements IDashboardLogger
      * @param value to write
      * @param formatString to use
      */
+    @Override
     public void logInteger(String component, String key, int value, String formatString)
     {
         String logKey = String.format("%s.%s", component, key);
@@ -84,11 +91,30 @@ public class SmartDashboardLogger implements IDashboardLogger
     }
 
     /**
+     * Write a point (x,y or N/A) to the smart dashboard
+     * @param component to log for
+     * @param key to write to
+     * @param value to write
+     */
+    @Override
+    public void logPoint(String component, String key, Point value)
+    {
+        String valueString = "N/A";
+        if (value != null)
+        {
+            valueString = String.format("", value.x, value.y);
+        }
+
+        this.logString(component, key, valueString);
+    }
+
+    /**
      * Write a string to the smart dashboard
      * @param component to log for
      * @param key to write to
      * @param value to write
      */
+    @Override
     public void logString(String component, String key, String value)
     {
         String logKey = String.format("%s.%s", component, key);

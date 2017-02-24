@@ -14,16 +14,29 @@ public class TuningConstants
 
     public static final double DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA = 1.0;
 
-    // Drivetrain autonomous velocity values
-    public static final double DRIVETRAIN_AUTONOMOUS_SLOW_VELOCITY = .3;
-    public static final double DRIVETRAIN_AUTONOMOUS_FAST_VELOCITY = .45;
-
-    public static final double AUTONOMOUS_TIME_SLOW = 4.0;
-    public static final double AUTONOMOUS_TIME_FAST = 3.0;
+    // Acceptable vision centering range values in degrees
     public static final double MAX_VISION_CENTERING_RANGE_DEGREES = 0.5;
 
-    // Acceptable vision distance from tape
+    // Acceptable vision distance from tape in inches
     public static final double MAX_VISION_ACCEPTABLE_FORWARD_DISTANCE = 18.0;
+
+    // PID settings for Centering the robot on a vision target
+    public static final double VISION_CENTERING_PID_KP = 0.065;
+    public static final double VISION_CENTERING_PID_KI = 0.0;
+    public static final double VISION_CENTERING_PID_KD = 0.0;
+    public static final double VISION_CENTERING_PID_KF = 0.0;
+    public static final double VISION_CENTERING_PID_KS = 1.0;
+    public static final double VISION_CENTERING_PID_MIN = -0.3;
+    public static final double VISION_CENTERING_PID_MAX = 0.3;
+
+    // PID settings for Advancing the robot towards a vision target
+    public static final double VISION_ADVANCING_PID_KP = 0.005;
+    public static final double VISION_ADVANCING_PID_KI = 0.0;
+    public static final double VISION_ADVANCING_PID_KD = 0.0;
+    public static final double VISION_ADVANCING_PID_KF = 0.0;
+    public static final double VISION_ADVANCING_PID_KS = 1.0;
+    public static final double VISION_ADVANCING_PID_MIN = -0.3;
+    public static final double VISION_ADVANCING_PID_MAX = 0.3;
 
     //================================================== DriveTrain ==============================================================
 
@@ -31,30 +44,30 @@ public class TuningConstants
     public static final boolean DRIVETRAIN_USE_PID = true;
 
     // Velocity PID (right)
-    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KP_DEFAULT = 0.0275;
-    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KI_DEFAULT = 0.0;
-    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KD_DEFAULT = 0.0;
-    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KF_DEFAULT = 0.4;
-    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KS_DEFAULT = 100.0;
+    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KP = 0.02;
+    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KI = 0.0;
+    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KD = 0.0;
+    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KF = 0.4;
+    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KS = 100.0;
 
     // Velocity PID (left)
-    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KP_DEFAULT = 0.0275;
-    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KI_DEFAULT = 0.0;
-    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KD_DEFAULT = 0.0;
-    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KF_DEFAULT = 0.4;
-    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KS_DEFAULT = 100.0;
+    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KP = 0.02;
+    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KI = 0.0;
+    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KD = 0.0;
+    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KF = 0.4;
+    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KS = 100.0;
 
     // Position PID (right)
-    public static final double DRIVETRAIN_POSITION_PID_RIGHT_KP_DEFAULT = 0.15;
-    public static final double DRIVETRAIN_POSITION_PID_RIGHT_KI_DEFAULT = 0.0;
-    public static final double DRIVETRAIN_POSITION_PID_RIGHT_KD_DEFAULT = 0.0;
-    public static final double DRIVETRAIN_POSITION_PID_RIGHT_KF_DEFAULT = 0.0;
+    public static final double DRIVETRAIN_POSITION_PID_RIGHT_KP = 0.35;
+    public static final double DRIVETRAIN_POSITION_PID_RIGHT_KI = 0.0;
+    public static final double DRIVETRAIN_POSITION_PID_RIGHT_KD = 0.0;
+    public static final double DRIVETRAIN_POSITION_PID_RIGHT_KF = 0.0;
 
     // Position PID (left)
-    public static final double DRIVETRAIN_POSITION_PID_LEFT_KP_DEFAULT = 0.15;
-    public static final double DRIVETRAIN_POSITION_PID_LEFT_KI_DEFAULT = 0.0;
-    public static final double DRIVETRAIN_POSITION_PID_LEFT_KD_DEFAULT = 0.0;
-    public static final double DRIVETRAIN_POSITION_PID_LEFT_KF_DEFAULT = 0.0;
+    public static final double DRIVETRAIN_POSITION_PID_LEFT_KP = 0.35;
+    public static final double DRIVETRAIN_POSITION_PID_LEFT_KI = 0.0;
+    public static final double DRIVETRAIN_POSITION_PID_LEFT_KD = 0.0;
+    public static final double DRIVETRAIN_POSITION_PID_LEFT_KF = 0.0;
 
     // Drivetrain choices for one-stick drive
     public static final double DRIVETRAIN_K1 = 1.4;
