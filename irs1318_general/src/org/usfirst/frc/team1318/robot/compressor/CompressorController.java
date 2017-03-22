@@ -15,8 +15,9 @@ import com.google.inject.Inject;
  */
 public class CompressorController implements IController
 {
-    private boolean isStarted;
     private final CompressorComponent component;
+
+    private boolean isStarted;
 
     /**
      * Initializes a new CompressorController

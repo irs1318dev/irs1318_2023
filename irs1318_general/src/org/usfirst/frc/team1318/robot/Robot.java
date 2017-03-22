@@ -12,7 +12,7 @@ import com.google.inject.Injector;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 /**
- * Main class for the FRC 201? [competition name] Competition
+ * Main class for the FRC ? [competition name] Competition
  * Robot for IRS1318 - [robot name]
  * 
  * 
@@ -67,6 +67,9 @@ public class Robot extends IterativeRobot
      */
     public void disabledInit()
     {
+        this.timer.stop();
+        this.timer.reset();
+
         if (this.driver != null)
         {
             this.driver.stop();
@@ -77,7 +80,6 @@ public class Robot extends IterativeRobot
             this.controllers.stop();
         }
 
-        this.timer.stop();
         this.logger.logString(Robot.LogName, "state", "Disabled");
     }
 

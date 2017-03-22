@@ -16,14 +16,20 @@ import org.usfirst.frc.team1318.robot.common.wpilibmocks.IEncoder;
 import org.usfirst.frc.team1318.robot.common.wpilibmocks.IJoystick;
 import org.usfirst.frc.team1318.robot.common.wpilibmocks.IMotor;
 import org.usfirst.frc.team1318.robot.common.wpilibmocks.IPowerDistributionPanel;
+import org.usfirst.frc.team1318.robot.common.wpilibmocks.ISolenoid;
 import org.usfirst.frc.team1318.robot.common.wpilibmocks.ITimer;
 import org.usfirst.frc.team1318.robot.common.wpilibmocks.JoystickWrapper;
 import org.usfirst.frc.team1318.robot.common.wpilibmocks.PowerDistributionPanelWrapper;
+import org.usfirst.frc.team1318.robot.common.wpilibmocks.SolenoidWrapper;
 import org.usfirst.frc.team1318.robot.common.wpilibmocks.TimerWrapper;
 import org.usfirst.frc.team1318.robot.common.wpilibmocks.VictorWrapper;
+import org.usfirst.frc.team1318.robot.compressor.CompressorController;
 import org.usfirst.frc.team1318.robot.driver.ButtonMap;
 import org.usfirst.frc.team1318.robot.driver.IButtonMap;
+import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainController;
+import org.usfirst.frc.team1318.robot.general.PositionManager;
 import org.usfirst.frc.team1318.robot.general.PowerManager;
+import org.usfirst.frc.team1318.robot.vision.VisionManager;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
@@ -75,10 +81,10 @@ public class RobotModule extends AbstractModule
     {
         List<IController> controllerList = new ArrayList<>();
         controllerList.add(injector.getInstance(PowerManager.class));
-        //controllerList.add(injector.getInstance(PositionManager.class));
-        //controllerList.add(injector.getInstance(VisionManager.class));
-        //controllerList.add(injector.getInstance(CompressorController.class));
-        //controllerList.add(injector.getInstance(DriveTrainController.class));
+        controllerList.add(injector.getInstance(PositionManager.class));
+        controllerList.add(injector.getInstance(VisionManager.class));
+        controllerList.add(injector.getInstance(CompressorController.class));
+        controllerList.add(injector.getInstance(DriveTrainController.class));
         return new ControllerManager(controllerList);
     }
 
@@ -110,6 +116,18 @@ public class RobotModule extends AbstractModule
     public IPowerDistributionPanel getPowerManagerPdp()
     {
         return new PowerDistributionPanelWrapper();
+    }
+
+    @Singleton
+    @Provides
+    @Named("VISION_LIGHT")
+    public ISolenoid getVisionRingLight()
+    {
+        SolenoidWrapper ringLight = new SolenoidWrapper(
+            ElectronicsConstants.PCM_B_MODULE,
+            ElectronicsConstants.VISION_RING_LIGHT_CHANNEL);
+
+        return ringLight;
     }
 
     @Singleton

@@ -5,13 +5,15 @@ import org.opencv.core.Scalar;
 public class VisionConstants
 {
     // Debug output settings:
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
     public static final boolean DEBUG_PRINT_OUTPUT = false;
     public static final boolean DEBUG_PRINT_ANALYZER_DATA = false;
     public static final int DEBUG_FPS_AVERAGING_INTERVAL = 25;
-    public static final boolean DEBUG_SAVE_FRAMES = false;
     public static final boolean DEBUG_OUTPUT_FRAMES = false;
-    public static final int DEBUG_FRAME_OUTPUT_GAP = 25; // the number of frames to wait between saving debug image output
+    public static final boolean DEBUG_OUTPUT_GEAR_FRAMES = false;
+    public static final boolean DEBUG_OUTPUT_SHOOTER_FRAMES = false;
+    public static final boolean DEBUG_SAVE_FRAMES = false;
+    public static final int DEBUG_FRAME_OUTPUT_GAP = 50; // the number of frames to wait between saving debug image output
     public static final String DEBUG_OUTPUT_FOLDER = "/home/lvuser/vision/";
 
     // Conversion constants...
@@ -44,7 +46,7 @@ public class VisionConstants
     public static final double LIFECAM_CAMERA_FOCAL_LENGTH_Y = 366.058; // focal_length = res_* / (2.0 * tan (FOV_* / 2.0)
     public static final int LIFECAM_CAMERA_EXPOSURE = 1;
     public static final int LIFECAM_CAMERA_BRIGHTNESS = 1;
-    public static final int LIFECAM_CAMERA_FPS = 25; // Max supported value is 30
+    public static final int LIFECAM_CAMERA_FPS = 20; // Max supported value is 30
 
     // Undistort constants
     public static final boolean SHOULD_UNDISTORT = false;
@@ -57,4 +59,8 @@ public class VisionConstants
 
     // Contour filtering constants
     public static final double CONTOUR_MIN_AREA = 25.0;
+
+    // Real Measurements
+    public static final double CAMERA_HORIZONTAL_MOUNTING_OFFSET = 0.0; // camera is ? inches to the left from center line of the vision target
+    public static final double CAMERA_HORIZONTAL_MOUNTING_ANGLE = 0.0; // practice robot camera is pointed ? degrees off from center
 }

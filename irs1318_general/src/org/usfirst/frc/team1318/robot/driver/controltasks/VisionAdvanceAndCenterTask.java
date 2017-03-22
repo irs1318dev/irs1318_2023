@@ -36,7 +36,6 @@ public class VisionAdvanceAndCenterTask extends VisionCenteringTask implements I
             TuningConstants.VISION_ADVANCING_PID_MIN,
             TuningConstants.VISION_ADVANCING_PID_MAX,
             this.getInjector().getInstance(ITimer.class));
-
     }
 
     @Override
@@ -74,5 +73,19 @@ public class VisionAdvanceAndCenterTask extends VisionCenteringTask implements I
         }
 
         return super.hasCompleted() && currentDistance <= TuningConstants.MAX_VISION_ACCEPTABLE_FORWARD_DISTANCE;
+    }
+
+    @Override
+    protected PIDHandler createTurnHandler()
+    {
+        return new PIDHandler(
+            TuningConstants.VISION_MOVING_CENTERING_PID_KP,
+            TuningConstants.VISION_MOVING_CENTERING_PID_KI,
+            TuningConstants.VISION_MOVING_CENTERING_PID_KD,
+            TuningConstants.VISION_MOVING_CENTERING_PID_KF,
+            TuningConstants.VISION_MOVING_CENTERING_PID_KS,
+            TuningConstants.VISION_MOVING_CENTERING_PID_MIN,
+            TuningConstants.VISION_MOVING_CENTERING_PID_MAX,
+            this.getInjector().getInstance(ITimer.class));
     }
 }

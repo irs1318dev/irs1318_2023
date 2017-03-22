@@ -3,6 +3,7 @@ package org.usfirst.frc.team1318.robot.vision;
 import org.opencv.core.Point;
 import org.usfirst.frc.team1318.robot.common.IController;
 import org.usfirst.frc.team1318.robot.common.IDashboardLogger;
+import org.usfirst.frc.team1318.robot.common.wpilibmocks.ISolenoid;
 import org.usfirst.frc.team1318.robot.common.wpilibmocks.ITimer;
 import org.usfirst.frc.team1318.robot.driver.Driver;
 import org.usfirst.frc.team1318.robot.driver.Operation;
@@ -11,6 +12,7 @@ import org.usfirst.frc.team1318.robot.vision.pipelines.ICentroidVisionPipeline;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.vision.VisionRunner;
@@ -29,6 +31,7 @@ public class VisionManager implements IController, VisionRunner.Listener<ICentro
 
     private final IDashboardLogger logger;
     private final ITimer timer;
+    private final ISolenoid ringLight;
 
     private final Object visionLock;
 
@@ -51,16 +54,18 @@ public class VisionManager implements IController, VisionRunner.Listener<ICentro
     @Inject
     public VisionManager(
         IDashboardLogger logger,
-        ITimer timer)
+        ITimer timer,
+        @Named("VISION_LIGHT") ISolenoid ringLight)
     {
         this.logger = logger;
         this.timer = timer;
+        this.ringLight = ringLight;
 
         this.driver = null;
 
         this.visionLock = new Object();
 
-        UsbCamera camera = new UsbCamera("usb0", 0);
+        UsbCamera camera = new UsbCamera("usb1", 0);
         camera.setResolution(VisionConstants.LIFECAM_CAMERA_RESOLUTION_X, VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
         camera.setExposureManual(VisionConstants.LIFECAM_CAMERA_EXPOSURE);
         camera.setBrightness(VisionConstants.LIFECAM_CAMERA_BRIGHTNESS);
@@ -121,17 +126,18 @@ public class VisionManager implements IController, VisionRunner.Listener<ICentro
     @Override
     public void update()
     {
-        boolean active;
+        boolean cameraActive;
         if (this.driver.getDigital(Operation.EnableVision))
         {
-            active = true;
+            cameraActive = true;
         }
         else
         {
-            active = false;
+            cameraActive = false;
         }
 
-        this.visionPipeline.setActivation(active);
+        this.ringLight.set(cameraActive);
+        this.visionPipeline.setActivation(cameraActive);
 
         Point center = this.getCenter();
         this.logger.logPoint(VisionManager.LogName, "center", center);
@@ -152,6 +158,7 @@ public class VisionManager implements IController, VisionRunner.Listener<ICentro
     @Override
     public void stop()
     {
+        this.ringLight.set(false);
         this.visionPipeline.setActivation(false);
 
         this.center = null;

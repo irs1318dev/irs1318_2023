@@ -18,6 +18,7 @@ import com.google.inject.Singleton;
 public class PowerManager implements IController
 {
     private final IPowerDistributionPanel pdp;
+
     private ComplementaryFilter batteryVoltageFilter;
 
     /**

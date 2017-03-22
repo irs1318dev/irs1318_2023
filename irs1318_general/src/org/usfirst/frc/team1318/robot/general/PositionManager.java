@@ -124,6 +124,7 @@ public class PositionManager implements IController
     @Override
     public void stop()
     {
+        this.reset();
     }
 
     /**

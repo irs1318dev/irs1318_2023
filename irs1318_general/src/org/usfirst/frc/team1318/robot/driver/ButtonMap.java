@@ -28,21 +28,21 @@ public class ButtonMap implements IButtonMap
             put(
                 Operation.EnableVision,
                 new DigitalOperationDescription(
-                    UserInputDevice.CoDriver,
-                    UserInputDeviceButton.BUTTON_PAD_BUTTON_11,
-                    ButtonType.Simple));
+                    UserInputDevice.None,
+                    UserInputDeviceButton.JOYSTICK_STICK_TOP_RIGHT_BUTTON,
+                    ButtonType.Toggle));
 
             // Operations for the drive train
             put(
                 Operation.DriveTrainDisablePID,
                 new DigitalOperationDescription(
-                    UserInputDevice.CoDriver,
+                    UserInputDevice.None,
                     UserInputDeviceButton.BUTTON_PAD_BUTTON_11,
                     ButtonType.Click));
             put(
                 Operation.DriveTrainEnablePID,
                 new DigitalOperationDescription(
-                    UserInputDevice.CoDriver,
+                    UserInputDevice.None,
                     UserInputDeviceButton.BUTTON_PAD_BUTTON_12,
                     ButtonType.Click));
             put(
@@ -118,7 +118,7 @@ public class ButtonMap implements IButtonMap
                 MacroOperation.Center,
                 new MacroOperationDescription(
                     UserInputDevice.Driver,
-                    UserInputDeviceButton.JOYSTICK_BASE_TOP_LEFT_BUTTON,
+                    UserInputDeviceButton.JOYSTICK_BASE_MIDDLE_LEFT_BUTTON,
                     ButtonType.Toggle,
                     () -> new VisionCenteringTask(),
                     new Operation[]
@@ -138,7 +138,7 @@ public class ButtonMap implements IButtonMap
                     ButtonType.Toggle,
                     () -> SequentialTask.Sequence(
                         new VisionAdvanceAndCenterTask(),
-                        new DriveDistanceTimedTask(12.0, 1.5)),
+                        new DriveDistanceTimedTask(24.0, 1.5)),
                     new Operation[]
                     {
                         Operation.EnableVision,

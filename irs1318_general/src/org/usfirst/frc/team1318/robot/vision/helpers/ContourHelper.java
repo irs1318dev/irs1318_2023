@@ -7,6 +7,7 @@ import java.util.List;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
+import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
 
@@ -125,6 +126,93 @@ public class ContourHelper
             {
                 contour.release();
             }
+        }
+
+        return new MatOfPoint[] { largestContour, secondLargestContour };
+    }
+
+    /**
+     * Find the two largest contours in the frame
+     * @param frame in which to look for contours
+     * @param minContourArea is the minimum contour area allowable
+     * @param desiredContourHxWRatio is the desired height-to-width ratio for the contours (0.0 or below means ignore this)
+     * @param allowableContourHxWRatioRange is the allowable range for the height-to-width ratio for the contours
+     * @param allowableContourAreaRatio indicates the max allowable ratio between the area of the contours (0.0 or below means ignore this)
+     * @return two largest contours, largest then second largest
+     */
+    public static MatOfPoint[] findTwoLargestContours(Mat frame, double minContourArea, double desiredContourHxWRatio, double allowableContourHxWRatioRange, double allowableContourAreaRatio)
+    {
+        // find the contours using OpenCV API...
+        Mat unused = new Mat();
+        List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
+        Imgproc.findContours(frame, contours, unused, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_TC89_KCOS);
+        unused.release();
+
+        double largestContourArea = 0.0;
+        MatOfPoint largestContour = null;
+
+        double secondLargestContourArea = 0.0;
+        MatOfPoint secondLargestContour = null;
+
+        // find the two largest contours...
+        for (MatOfPoint contour : contours)
+        {
+            boolean release = true;
+            double area = Imgproc.contourArea(contour);
+            if (area >= minContourArea)
+            {
+                Rect boundingRect = null;
+                if (desiredContourHxWRatio >= 0.0)
+                {
+                    boundingRect = Imgproc.boundingRect(contour);
+                }
+
+                if (boundingRect == null || Math.abs(((double)boundingRect.height / (double)boundingRect.width) - desiredContourHxWRatio) < allowableContourHxWRatioRange)
+                {
+                    if (area > largestContourArea)
+                    {
+                        if (largestContour != null)
+                        {
+                            if (secondLargestContour != null)
+                            {
+                                secondLargestContour.release();
+                            }
+
+                            secondLargestContour = largestContour;
+                            secondLargestContourArea = largestContourArea;
+                        }
+
+                        largestContour = contour;
+                        largestContourArea = area;
+                        release = false;
+                    }
+                    else if (area >= minContourArea && area > secondLargestContourArea)
+                    {
+                        if (secondLargestContour != null)
+                        {
+                            secondLargestContour.release();
+                        }
+
+                        secondLargestContour = contour;
+                        secondLargestContourArea = area;
+                        release = false;
+                    }
+                }
+            }
+
+            if (release)
+            {
+                contour.release();
+            }
+        }
+
+        if (allowableContourAreaRatio >= 0.0 &&
+            largestContourArea > 0.0 &&
+            secondLargestContourArea > 0.0 &&
+            secondLargestContourArea / largestContourArea < allowableContourAreaRatio)
+        {
+            secondLargestContour = null;
+            secondLargestContourArea = 0.0;
         }
 
         return new MatOfPoint[] { largestContour, secondLargestContour };

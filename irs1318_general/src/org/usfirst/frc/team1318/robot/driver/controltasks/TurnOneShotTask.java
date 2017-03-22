@@ -38,7 +38,7 @@ public class TurnOneShotTask extends MoveDistanceOneShotTaskBase implements ICon
     protected void determineFinalEncoderDistance()
     {
         double arcLength = Math.PI * HardwareConstants.DRIVETRAIN_WHEEL_SEPARATION_DISTANCE * (this.degrees / 360.0);
-        this.desiredFinalLeftEncoderDistance = this.startLeftEncoderDistance + arcLength / 2.0;
-        this.desiredFinalRightEncoderDistance = this.startRightEncoderDistance - arcLength / 2.0;
+        this.desiredFinalLeftEncoderDistance = this.startLeftEncoderDistance + arcLength;
+        this.desiredFinalRightEncoderDistance = this.startRightEncoderDistance - arcLength;
     }
 }

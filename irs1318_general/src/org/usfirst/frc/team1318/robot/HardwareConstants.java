@@ -20,5 +20,6 @@ public class HardwareConstants
     public static final double DRIVETRAIN_RIGHT_PULSE_DISTANCE = Math.PI
         * HardwareConstants.DRIVETRAIN_RIGHT_WHEEL_DIAMETER / HardwareConstants.DRIVETRAIN_RIGHT_ENCODER_PULSES_PER_REVOLUTION;
 
-    public static final double DRIVETRAIN_WHEEL_SEPARATION_DISTANCE = 24.0;// (in inches)
+    // measure from outside of wheel:
+    public static final double DRIVETRAIN_WHEEL_SEPARATION_DISTANCE = TuningConstants.COMPETITION_ROBOT ? 25.0 : 24.0; // (in inches)
 }

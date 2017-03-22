@@ -40,9 +40,13 @@ public class CANTalonWrapper implements ICANTalon
         {
             controlMode = TalonControlMode.Speed;
         }
-        else // if (mode == CANTalonControlMode.Voltage)
+        else if (mode == CANTalonControlMode.Voltage)
         {
             controlMode = TalonControlMode.Voltage;
+        }
+        else // if (mode == CANTalonControlMode.PercentVbus)
+        {
+            controlMode = TalonControlMode.PercentVbus;
         }
 
         this.wrappedObject.changeControlMode(controlMode);
@@ -74,6 +78,11 @@ public class CANTalonWrapper implements ICANTalon
     public void enableBrakeMode(boolean brake)
     {
         this.wrappedObject.enableBrakeMode(brake);
+    }
+
+    public void reset()
+    {
+        this.wrappedObject.reset();
     }
 
     public int getTicks()

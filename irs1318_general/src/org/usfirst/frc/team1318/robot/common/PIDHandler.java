@@ -326,7 +326,7 @@ public class PIDHandler
     {
         this.prevError = 0.0;
         this.prevMeasuredValue = 0.0;
-        this.prevTime = 0.0;
+        this.prevTime = this.timer.get();
         this.integral = 0.0;
 
         this.output = 0.0;
