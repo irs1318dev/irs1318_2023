@@ -7,9 +7,7 @@ import org.usfirst.frc.team1318.robot.ElectronicsConstants;
 import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.driver.buttons.AnalogAxis;
 import org.usfirst.frc.team1318.robot.driver.buttons.ButtonType;
-import org.usfirst.frc.team1318.robot.driver.controltasks.DriveDistanceTimedTask;
 import org.usfirst.frc.team1318.robot.driver.controltasks.PIDBrakeTask;
-import org.usfirst.frc.team1318.robot.driver.controltasks.SequentialTask;
 import org.usfirst.frc.team1318.robot.driver.controltasks.VisionAdvanceAndCenterTask;
 import org.usfirst.frc.team1318.robot.driver.controltasks.VisionCenteringTask;
 import org.usfirst.frc.team1318.robot.driver.descriptions.AnalogOperationDescription;
@@ -115,7 +113,7 @@ public class ButtonMap implements IButtonMap
 
             // Centering macro
             put(
-                MacroOperation.Center,
+                MacroOperation.VisionCenter,
                 new MacroOperationDescription(
                     UserInputDevice.Driver,
                     UserInputDeviceButton.JOYSTICK_BASE_MIDDLE_LEFT_BUTTON,
@@ -131,14 +129,12 @@ public class ButtonMap implements IButtonMap
                         Operation.DriveTrainMoveForward,
                     }));
             put(
-                MacroOperation.CenterAndAdvance,
+                MacroOperation.VisionCenterAndAdvance,
                 new MacroOperationDescription(
                     UserInputDevice.Driver,
                     UserInputDeviceButton.JOYSTICK_STICK_TOP_RIGHT_BUTTON,
                     ButtonType.Toggle,
-                    () -> SequentialTask.Sequence(
-                        new VisionAdvanceAndCenterTask(),
-                        new DriveDistanceTimedTask(24.0, 1.5)),
+                    () -> new VisionAdvanceAndCenterTask(),
                     new Operation[]
                     {
                         Operation.EnableVision,

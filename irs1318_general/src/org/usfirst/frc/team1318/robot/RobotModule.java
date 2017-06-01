@@ -10,8 +10,10 @@ import org.usfirst.frc.team1318.robot.common.IController;
 import org.usfirst.frc.team1318.robot.common.IDashboardLogger;
 import org.usfirst.frc.team1318.robot.common.SmartDashboardLogger;
 import org.usfirst.frc.team1318.robot.common.wpilibmocks.CompressorWrapper;
+import org.usfirst.frc.team1318.robot.common.wpilibmocks.DigitalInputWrapper;
 import org.usfirst.frc.team1318.robot.common.wpilibmocks.EncoderWrapper;
 import org.usfirst.frc.team1318.robot.common.wpilibmocks.ICompressor;
+import org.usfirst.frc.team1318.robot.common.wpilibmocks.IDigitalInput;
 import org.usfirst.frc.team1318.robot.common.wpilibmocks.IEncoder;
 import org.usfirst.frc.team1318.robot.common.wpilibmocks.IJoystick;
 import org.usfirst.frc.team1318.robot.common.wpilibmocks.IMotor;
@@ -50,7 +52,7 @@ public class RobotModule extends AbstractModule
         //        try
         //        {
         //            String fileName = String.format("/home/lvuser/%1$d.csv", Calendar.getInstance().getTime().getTime());
-        //            IDashboardLogger csvLogger = new CSVLogger(fileName, new String[] { "r.time", "shooter.speed", "shooter.shooterSpeedGoal" });
+        //            IDashboardLogger csvLogger = new CSVLogger(fileName, new String[] { "r.time", "vision.mAngle", "vision.dist" });
         //            logger = new MultiLogger(logger, csvLogger);
         //        }
         //        catch (IOException e)
@@ -120,7 +122,7 @@ public class RobotModule extends AbstractModule
 
     @Singleton
     @Provides
-    @Named("VISION_LIGHT")
+    @Named("VISION_RING_LIGHT")
     public ISolenoid getVisionRingLight()
     {
         SolenoidWrapper ringLight = new SolenoidWrapper(
@@ -172,5 +174,13 @@ public class RobotModule extends AbstractModule
         encoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_RIGHT_PULSE_DISTANCE);
 
         return encoder;
+    }
+
+    @Singleton
+    @Provides
+    @Named("AUTO_DIP_SWITCH_A")
+    public IDigitalInput getAutoDipSwitchA()
+    {
+        return new DigitalInputWrapper(ElectronicsConstants.AUTO_DIP_SWITCH_A_CHANNEL);
     }
 }

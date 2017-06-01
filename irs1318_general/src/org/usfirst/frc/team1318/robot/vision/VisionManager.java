@@ -35,10 +35,12 @@ public class VisionManager implements IController, VisionRunner.Listener<ICentro
 
     private final Object visionLock;
 
+    private final UsbCamera camera;
     private final VisionThread visionThread;
     private final HSVCenterPipeline visionPipeline;
 
     private Driver driver;
+    private VisionProcessingState currentState;
 
     private Point center;
 
@@ -55,25 +57,27 @@ public class VisionManager implements IController, VisionRunner.Listener<ICentro
     public VisionManager(
         IDashboardLogger logger,
         ITimer timer,
-        @Named("VISION_LIGHT") ISolenoid ringLight)
+        @Named("VISION_RING_LIGHT") ISolenoid ringLight)
     {
         this.logger = logger;
         this.timer = timer;
         this.ringLight = ringLight;
 
-        this.driver = null;
-
         this.visionLock = new Object();
 
-        UsbCamera camera = new UsbCamera("usb1", 0);
-        camera.setResolution(VisionConstants.LIFECAM_CAMERA_RESOLUTION_X, VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
-        camera.setExposureManual(VisionConstants.LIFECAM_CAMERA_EXPOSURE);
-        camera.setBrightness(VisionConstants.LIFECAM_CAMERA_BRIGHTNESS);
-        camera.setFPS(VisionConstants.LIFECAM_CAMERA_FPS);
+        this.camera = new UsbCamera("usb0", 0);
+        this.camera.setResolution(VisionConstants.LIFECAM_CAMERA_RESOLUTION_X, VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
+        ;
+        this.camera.setExposureAuto();
+        this.camera.setBrightness(VisionConstants.LIFECAM_CAMERA_OPERATOR_BRIGHTNESS);
+        this.camera.setFPS(VisionConstants.LIFECAM_CAMERA_FPS);
 
         this.visionPipeline = new HSVCenterPipeline(this.timer, VisionConstants.SHOULD_UNDISTORT);
-        this.visionThread = new VisionThread(camera, this.visionPipeline, this);
+        this.visionThread = new VisionThread(this.camera, this.visionPipeline, this);
         this.visionThread.start();
+
+        this.driver = null;
+        this.currentState = VisionProcessingState.None;
 
         this.center = null;
         this.desiredAngleX = null;
@@ -126,18 +130,32 @@ public class VisionManager implements IController, VisionRunner.Listener<ICentro
     @Override
     public void update()
     {
-        boolean cameraActive;
+        VisionProcessingState desiredState = VisionProcessingState.None;
         if (this.driver.getDigital(Operation.EnableVision))
         {
-            cameraActive = true;
-        }
-        else
-        {
-            cameraActive = false;
+            desiredState = VisionProcessingState.Active;
         }
 
-        this.ringLight.set(cameraActive);
-        this.visionPipeline.setActivation(cameraActive);
+        if (this.currentState != desiredState)
+        {
+            if (desiredState == VisionProcessingState.Active)
+            {
+                this.camera.setExposureManual(VisionConstants.LIFECAM_CAMERA_VISION_EXPOSURE);
+                this.camera.setBrightness(VisionConstants.LIFECAM_CAMERA_VISION_BRIGHTNESS);
+                this.camera.setFPS(VisionConstants.LIFECAM_CAMERA_FPS);
+            }
+            else
+            {
+                this.camera.setExposureAuto();
+                this.camera.setBrightness(VisionConstants.LIFECAM_CAMERA_OPERATOR_BRIGHTNESS);
+                this.camera.setFPS(VisionConstants.LIFECAM_CAMERA_FPS);
+            }
+
+            this.ringLight.set(desiredState == VisionProcessingState.Active);
+            this.visionPipeline.setActivation(desiredState == VisionProcessingState.Active);
+
+            this.currentState = desiredState;
+        }
 
         Point center = this.getCenter();
         this.logger.logPoint(VisionManager.LogName, "center", center);

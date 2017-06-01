@@ -14,7 +14,7 @@ public class DriveDistanceTimedTask extends DriveRouteTask
             {
                 if (percentage <= 0.9)
                 {
-                    return percentage * distance / 0.9;
+                    return distance * (percentage / 0.9);
                 }
 
                 return distance;
@@ -23,7 +23,7 @@ public class DriveDistanceTimedTask extends DriveRouteTask
             {
                 if (percentage <= 0.9)
                 {
-                    return percentage * distance / 0.9;
+                    return distance * (percentage / 0.9);
                 }
 
                 return distance;

@@ -15,7 +15,7 @@ public class VisionAdvanceAndCenterTask extends VisionCenteringTask implements I
     */
     public VisionAdvanceAndCenterTask()
     {
-        super();
+        super(false);
 
         this.forwardPIDHandler = null;
     }
@@ -72,7 +72,7 @@ public class VisionAdvanceAndCenterTask extends VisionCenteringTask implements I
             return false;
         }
 
-        return super.hasCompleted() && currentDistance <= TuningConstants.MAX_VISION_ACCEPTABLE_FORWARD_DISTANCE;
+        return currentDistance <= TuningConstants.MAX_VISION_ACCEPTABLE_FORWARD_DISTANCE;
     }
 
     @Override

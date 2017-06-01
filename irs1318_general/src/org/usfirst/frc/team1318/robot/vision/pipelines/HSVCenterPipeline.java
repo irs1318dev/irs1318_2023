@@ -62,8 +62,10 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
 
         if (VisionConstants.DEBUG && VisionConstants.DEBUG_OUTPUT_FRAMES)
         {
-            this.frameInput = CameraServer.getInstance().putVideo("center.input", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X, VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
-            this.hsvOutput = CameraServer.getInstance().putVideo("center.hsv", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X, VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
+            this.frameInput = CameraServer.getInstance().putVideo("center.input", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X,
+                VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
+            this.hsvOutput = CameraServer.getInstance().putVideo("center.hsv", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X,
+                VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
         }
         else
         {
@@ -79,13 +81,27 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
     @Override
     public void process(Mat image)
     {
+        if (VisionConstants.DEBUG)
+        {
+            if (VisionConstants.DEBUG_SAVE_FRAMES && this.analyzedFrameCount % VisionConstants.DEBUG_FRAME_OUTPUT_GAP == 0)
+            {
+                Imgcodecs.imwrite(String.format("%simage%d-1.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER, this.analyzedFrameCount), image);
+            }
+
+            if (VisionConstants.DEBUG_OUTPUT_FRAMES)
+            {
+                this.frameInput.putFrame(image);
+            }
+        }
+
         if (!this.isActive)
         {
             return;
         }
 
         this.analyzedFrameCount++;
-        if (VisionConstants.DEBUG && VisionConstants.DEBUG_PRINT_OUTPUT && this.analyzedFrameCount % VisionConstants.DEBUG_FPS_AVERAGING_INTERVAL == 0)
+        if (VisionConstants.DEBUG
+            && VisionConstants.DEBUG_PRINT_OUTPUT && this.analyzedFrameCount % VisionConstants.DEBUG_FPS_AVERAGING_INTERVAL == 0)
         {
             double now = this.timer.get();
             double elapsedTime = now - this.lastMeasuredTime;
@@ -99,19 +115,6 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
         if (this.shouldUndistort)
         {
             image = this.undistorter.undistortFrame(image);
-        }
-
-        if (VisionConstants.DEBUG)
-        {
-            if (VisionConstants.DEBUG_SAVE_FRAMES && this.analyzedFrameCount % VisionConstants.DEBUG_FRAME_OUTPUT_GAP == 0)
-            {
-                Imgcodecs.imwrite(String.format("%simage%d-1.undistorted.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER, this.analyzedFrameCount), image);
-            }
-
-            if (VisionConstants.DEBUG_OUTPUT_FRAMES)
-            {
-                this.frameInput.putFrame(image);
-            }
         }
 
         // save the undistorted image for possible output later...
@@ -130,7 +133,8 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
         {
             if (VisionConstants.DEBUG_SAVE_FRAMES && this.analyzedFrameCount % VisionConstants.DEBUG_FRAME_OUTPUT_GAP == 0)
             {
-                Imgcodecs.imwrite(String.format("%simage%d-2.hsvfiltered.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER, this.analyzedFrameCount), image);
+                Imgcodecs.imwrite(String.format("%simage%d-2.hsvfiltered.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER,
+                    this.analyzedFrameCount), image);
             }
 
             if (VisionConstants.DEBUG_OUTPUT_FRAMES)
@@ -200,7 +204,8 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
         if (this.largestCenter != null)
         {
             double xOffsetMeasured = this.largestCenter.x - VisionConstants.LIFECAM_CAMERA_CENTER_WIDTH;
-            this.measuredAngleX = Math.atan(xOffsetMeasured / VisionConstants.LIFECAM_CAMERA_FOCAL_LENGTH_X) * VisionConstants.RADIANS_TO_ANGLE;
+            this.measuredAngleX = Math.atan(xOffsetMeasured / VisionConstants.LIFECAM_CAMERA_FOCAL_LENGTH_X)
+                * VisionConstants.RADIANS_TO_ANGLE;
         }
         else
         {

@@ -9,12 +9,12 @@ import org.usfirst.frc.team1318.robot.vision.VisionManager;
 
 /**
  * Task that turns the robot a certain amount clockwise or counterclockwise in-place based on vision center
- * 
- * @author William
  */
 public class VisionCenteringTask extends ControlTaskBase implements IControlTask
 {
-    private static final int NO_CENTER_THRESHOLD = 10;
+    private static final int NO_CENTER_THRESHOLD = 20;
+
+    private final boolean useTime;
 
     private PIDHandler turnPidHandler;
     private Double centeredTime;
@@ -27,6 +27,17 @@ public class VisionCenteringTask extends ControlTaskBase implements IControlTask
     */
     public VisionCenteringTask()
     {
+        this(true);
+    }
+
+    /**
+    * Initializes a new VisionCenteringTask
+    * @param useTime whether to make sure we are centered for a second or not
+    */
+    public VisionCenteringTask(boolean useTime)
+    {
+        this.useTime = useTime;
+
         this.turnPidHandler = null;
         this.centeredTime = null;
 
@@ -106,19 +117,26 @@ public class VisionCenteringTask extends ControlTaskBase implements IControlTask
             return false;
         }
 
-        ITimer timer = this.getInjector().getInstance(ITimer.class);
-        if (this.centeredTime == null)
+        if (!this.useTime)
         {
-            this.centeredTime = timer.get();
-            return false;
-        }
-        else if (timer.get() - this.centeredTime < 1.0)
-        {
-            return false;
+            return true;
         }
         else
         {
-            return true;
+            ITimer timer = this.getInjector().getInstance(ITimer.class);
+            if (this.centeredTime == null)
+            {
+                this.centeredTime = timer.get();
+                return false;
+            }
+            else if (timer.get() - this.centeredTime < 0.75)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 

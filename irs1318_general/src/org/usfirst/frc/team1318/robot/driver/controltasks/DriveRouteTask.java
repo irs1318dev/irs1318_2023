@@ -59,11 +59,11 @@ public class DriveRouteTask extends TimedTask implements IControlTask
     public void update()
     {
         double t = this.getRatioComplete();
-        if (t > 1.0)
+        if (t >= 1.0)
         {
             t = 1.0;
         }
-        else if (t < 0.0)
+        else if (t <= 0.0)
         {
             t = 0.0;
         }

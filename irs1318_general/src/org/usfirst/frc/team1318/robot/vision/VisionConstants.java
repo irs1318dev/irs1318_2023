@@ -5,7 +5,7 @@ import org.opencv.core.Scalar;
 public class VisionConstants
 {
     // Debug output settings:
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
     public static final boolean DEBUG_PRINT_OUTPUT = false;
     public static final boolean DEBUG_PRINT_ANALYZER_DATA = false;
     public static final int DEBUG_FPS_AVERAGING_INTERVAL = 25;
@@ -13,7 +13,7 @@ public class VisionConstants
     public static final boolean DEBUG_OUTPUT_GEAR_FRAMES = false;
     public static final boolean DEBUG_OUTPUT_SHOOTER_FRAMES = false;
     public static final boolean DEBUG_SAVE_FRAMES = false;
-    public static final int DEBUG_FRAME_OUTPUT_GAP = 50; // the number of frames to wait between saving debug image output
+    public static final int DEBUG_FRAME_OUTPUT_GAP = 20; // the number of frames to wait between saving debug image output
     public static final String DEBUG_OUTPUT_FOLDER = "/home/lvuser/vision/";
 
     // Conversion constants...
@@ -44,8 +44,9 @@ public class VisionConstants
     public static final double LIFECAM_CAMERA_CENTER_VIEW_ANGLE = VisionConstants.LIFECAM_CAMERA_FIELD_OF_VIEW_X / 2.0;
     public static final double LIFECAM_CAMERA_FOCAL_LENGTH_X = 356.016; // focal_length = res_* / (2.0 * tan (FOV_* / 2.0)
     public static final double LIFECAM_CAMERA_FOCAL_LENGTH_Y = 366.058; // focal_length = res_* / (2.0 * tan (FOV_* / 2.0)
-    public static final int LIFECAM_CAMERA_EXPOSURE = 1;
-    public static final int LIFECAM_CAMERA_BRIGHTNESS = 1;
+    public static final int LIFECAM_CAMERA_VISION_EXPOSURE = 1;
+    public static final int LIFECAM_CAMERA_VISION_BRIGHTNESS = 1;
+    public static final int LIFECAM_CAMERA_OPERATOR_BRIGHTNESS = 35;
     public static final int LIFECAM_CAMERA_FPS = 20; // Max supported value is 30
 
     // Undistort constants
@@ -55,12 +56,8 @@ public class VisionConstants
     public static final Scalar AXIS_HSV_FILTER_LOW = new Scalar(85, 65, 65);
     public static final Scalar AXIS_HSV_FILTER_HIGH = new Scalar(90, 255, 255);
     public static final Scalar LIFECAM_HSV_FILTER_LOW = new Scalar(52, 150, 100);
-    public static final Scalar LIFECAM_HSV_FILTER_HIGH = new Scalar(80, 255, 255);
+    public static final Scalar LIFECAM_HSV_FILTER_HIGH = new Scalar(95, 255, 255);
 
     // Contour filtering constants
     public static final double CONTOUR_MIN_AREA = 25.0;
-
-    // Real Measurements
-    public static final double CAMERA_HORIZONTAL_MOUNTING_OFFSET = 0.0; // camera is ? inches to the left from center line of the vision target
-    public static final double CAMERA_HORIZONTAL_MOUNTING_ANGLE = 0.0; // practice robot camera is pointed ? degrees off from center
 }

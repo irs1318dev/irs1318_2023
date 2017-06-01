@@ -8,7 +8,7 @@ package org.usfirst.frc.team1318.robot;
  */
 public class TuningConstants
 {
-    public static final boolean COMPETITION_ROBOT = true;
+    public static final boolean COMPETITION_ROBOT = false;
     public static final boolean THROW_EXCEPTIONS = !TuningConstants.COMPETITION_ROBOT;
 
     //================================================== Autonomous ==============================================================
@@ -22,9 +22,9 @@ public class TuningConstants
     public static final double MAX_VISION_ACCEPTABLE_FORWARD_DISTANCE = 30.0;
 
     // PID settings for Centering the robot on a vision target from one stationary place
-    public static final double VISION_STATIONARY_CENTERING_PID_KP = 0.05;
+    public static final double VISION_STATIONARY_CENTERING_PID_KP = 0.08;
     public static final double VISION_STATIONARY_CENTERING_PID_KI = 0.0;
-    public static final double VISION_STATIONARY_CENTERING_PID_KD = 0.1;
+    public static final double VISION_STATIONARY_CENTERING_PID_KD = 0.08;
     public static final double VISION_STATIONARY_CENTERING_PID_KF = 0.0;
     public static final double VISION_STATIONARY_CENTERING_PID_KS = 1.0;
     public static final double VISION_STATIONARY_CENTERING_PID_MIN = -0.3;
