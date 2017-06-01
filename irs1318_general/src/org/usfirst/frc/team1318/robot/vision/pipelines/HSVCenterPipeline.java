@@ -25,7 +25,6 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
 
     // measured values
     private Point largestCenter;
-    private Point secondLargestCenter;
     private Double measuredAngleX;
 
     // FPS Measurement
@@ -51,7 +50,6 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
         this.hsvFilter = new HSVFilter(VisionConstants.LIFECAM_HSV_FILTER_LOW, VisionConstants.LIFECAM_HSV_FILTER_HIGH);
 
         this.largestCenter = null;
-        this.secondLargestCenter = null;
         this.measuredAngleX = null;
 
         this.analyzedFrameCount = 0;
@@ -60,12 +58,11 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
 
         this.isActive = true;
 
-        if (VisionConstants.DEBUG && VisionConstants.DEBUG_OUTPUT_FRAMES)
+        if (VisionConstants.DEBUG &&
+            VisionConstants.DEBUG_OUTPUT_FRAMES)
         {
-            this.frameInput = CameraServer.getInstance().putVideo("center.input", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X,
-                VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
-            this.hsvOutput = CameraServer.getInstance().putVideo("center.hsv", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X,
-                VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
+            this.frameInput = CameraServer.getInstance().putVideo("center.input", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X, VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
+            this.hsvOutput = CameraServer.getInstance().putVideo("center.hsv", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X, VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
         }
         else
         {
@@ -83,9 +80,12 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
     {
         if (VisionConstants.DEBUG)
         {
-            if (VisionConstants.DEBUG_SAVE_FRAMES && this.analyzedFrameCount % VisionConstants.DEBUG_FRAME_OUTPUT_GAP == 0)
+            if (VisionConstants.DEBUG_SAVE_FRAMES &&
+                this.analyzedFrameCount % VisionConstants.DEBUG_FRAME_OUTPUT_GAP == 0)
             {
-                Imgcodecs.imwrite(String.format("%simage%d-1.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER, this.analyzedFrameCount), image);
+                Imgcodecs.imwrite(
+                    String.format("%simage%d-1.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER, this.analyzedFrameCount),
+                    image);
             }
 
             if (VisionConstants.DEBUG_OUTPUT_FRAMES)
@@ -100,8 +100,9 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
         }
 
         this.analyzedFrameCount++;
-        if (VisionConstants.DEBUG
-            && VisionConstants.DEBUG_PRINT_OUTPUT && this.analyzedFrameCount % VisionConstants.DEBUG_FPS_AVERAGING_INTERVAL == 0)
+        if (VisionConstants.DEBUG &&
+            VisionConstants.DEBUG_PRINT_OUTPUT &&
+            this.analyzedFrameCount % VisionConstants.DEBUG_FPS_AVERAGING_INTERVAL == 0)
         {
             double now = this.timer.get();
             double elapsedTime = now - this.lastMeasuredTime;
@@ -131,10 +132,12 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
         image = this.hsvFilter.filterHSV(image);
         if (VisionConstants.DEBUG)
         {
-            if (VisionConstants.DEBUG_SAVE_FRAMES && this.analyzedFrameCount % VisionConstants.DEBUG_FRAME_OUTPUT_GAP == 0)
+            if (VisionConstants.DEBUG_SAVE_FRAMES &&
+                this.analyzedFrameCount % VisionConstants.DEBUG_FRAME_OUTPUT_GAP == 0)
             {
-                Imgcodecs.imwrite(String.format("%simage%d-2.hsvfiltered.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER,
-                    this.analyzedFrameCount), image);
+                Imgcodecs.imwrite(
+                    String.format("%simage%d-2.hsvfiltered.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER, this.analyzedFrameCount),
+                    image);
             }
 
             if (VisionConstants.DEBUG_OUTPUT_FRAMES)
@@ -144,13 +147,13 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
         }
 
         // third, find the largest contour.
-        MatOfPoint[] largestContours = ContourHelper.findTwoLargestContours(image, VisionConstants.CONTOUR_MIN_AREA);
-        MatOfPoint largestContour = largestContours[0];
-        MatOfPoint secondLargestContour = largestContours[1];
+        MatOfPoint largestContour = ContourHelper.findLargestContour(image, VisionConstants.CONTOUR_MIN_AREA);
 
         if (largestContour == null)
         {
-            if (VisionConstants.DEBUG && VisionConstants.DEBUG_PRINT_OUTPUT && VisionConstants.DEBUG_PRINT_ANALYZER_DATA)
+            if (VisionConstants.DEBUG &&
+                VisionConstants.DEBUG_PRINT_OUTPUT &&
+                VisionConstants.DEBUG_PRINT_ANALYZER_DATA)
             {
                 System.out.println("could not find any contour");
             }
@@ -158,22 +161,16 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
 
         // fourth, find the center of mass for the largest two contours
         Point largestCenterOfMass = null;
-        Point secondLargestCenterOfMass = null;
         if (largestContour != null)
         {
             largestCenterOfMass = ContourHelper.findCenterOfMass(largestContour);
             largestContour.release();
         }
 
-        if (secondLargestContour != null)
-        {
-            secondLargestCenterOfMass = ContourHelper.findCenterOfMass(secondLargestContour);
-            secondLargestContour.release();
-        }
-
         if (VisionConstants.DEBUG)
         {
-            if (VisionConstants.DEBUG_PRINT_OUTPUT && VisionConstants.DEBUG_PRINT_ANALYZER_DATA)
+            if (VisionConstants.DEBUG_PRINT_OUTPUT &&
+                VisionConstants.DEBUG_PRINT_ANALYZER_DATA)
             {
                 if (largestCenterOfMass == null)
                 {
@@ -183,29 +180,18 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
                 {
                     System.out.println(String.format("Center of mass: %f, %f", largestCenterOfMass.x, largestCenterOfMass.y));
                 }
-
-                if (secondLargestCenterOfMass == null)
-                {
-                    System.out.println("couldn't find the center of mass!");
-                }
-                else
-                {
-                    System.out.println(String.format("Center of mass: %f, %f", secondLargestCenterOfMass.x, secondLargestCenterOfMass.y));
-                }
             }
         }
 
         // finally, record the centers of mass
         this.largestCenter = largestCenterOfMass;
-        this.secondLargestCenter = secondLargestCenterOfMass;
 
         undistortedImage.release();
 
         if (this.largestCenter != null)
         {
             double xOffsetMeasured = this.largestCenter.x - VisionConstants.LIFECAM_CAMERA_CENTER_WIDTH;
-            this.measuredAngleX = Math.atan(xOffsetMeasured / VisionConstants.LIFECAM_CAMERA_FOCAL_LENGTH_X)
-                * VisionConstants.RADIANS_TO_ANGLE;
+            this.measuredAngleX = Math.atan(xOffsetMeasured / VisionConstants.LIFECAM_CAMERA_FOCAL_LENGTH_X) * VisionConstants.RADIANS_TO_ANGLE;
         }
         else
         {
@@ -241,11 +227,6 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
     public Double getRobotDistance()
     {
         return null;
-    }
-
-    public Point getSecondLargestCenter()
-    {
-        return this.secondLargestCenter;
     }
 
     public double getFps()
