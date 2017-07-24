@@ -1,14 +1,14 @@
 package org.usfirst.frc.team1318.robot.driver.controltasks;
 
 import org.usfirst.frc.team1318.robot.driver.Operation;
-import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainComponent;
+import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainMechanism;
 
 public class DriveDistancePositionTimedTask extends TimedTask
 {
     private final double distance;
     private final double velocity;
 
-    private DriveTrainComponent driveTrain;
+    private DriveTrainMechanism driveTrain;
 
     private double startLeftDistance;
     private double startRightDistance;
@@ -28,7 +28,7 @@ public class DriveDistancePositionTimedTask extends TimedTask
     {
         super.begin();
 
-        this.driveTrain = this.getInjector().getInstance(DriveTrainComponent.class);
+        this.driveTrain = this.getInjector().getInstance(DriveTrainMechanism.class);
 
         this.startLeftDistance = this.driveTrain.getLeftEncoderDistance();
         this.startRightDistance = this.driveTrain.getRightEncoderDistance();
@@ -82,12 +82,14 @@ public class DriveDistancePositionTimedTask extends TimedTask
 
         if (this.distance >= 0.0)
         {
-            return leftEncoderDistance >= this.endLeftDistance ||
+            return leftEncoderDistance >= this.endLeftDistance
+                ||
                 rightEncoderDistance >= this.endRightDistance;
         }
         else
         {
-            return leftEncoderDistance <= this.endLeftDistance ||
+            return leftEncoderDistance <= this.endLeftDistance
+                ||
                 rightEncoderDistance <= this.endRightDistance;
         }
     }

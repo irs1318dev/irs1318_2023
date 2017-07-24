@@ -2,11 +2,11 @@ package org.usfirst.frc.team1318.robot.general;
 
 import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.TuningConstants;
-import org.usfirst.frc.team1318.robot.common.IController;
 import org.usfirst.frc.team1318.robot.common.IDashboardLogger;
+import org.usfirst.frc.team1318.robot.common.IMechanism;
 import org.usfirst.frc.team1318.robot.driver.Driver;
 import org.usfirst.frc.team1318.robot.driver.autonomous.AutonomousDriver;
-import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainComponent;
+import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainMechanism;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -19,12 +19,12 @@ import com.google.inject.Singleton;
  * 
  */
 @Singleton
-public class PositionManager implements IController
+public class PositionManager implements IMechanism
 {
     private final static String LogName = "pos";
 
     private final IDashboardLogger logger;
-    private final DriveTrainComponent driveTrainComponent;
+    private final DriveTrainMechanism driveTrainMechanism;
     //private final AHRS navx;
 
     // Position coordinates
@@ -40,15 +40,16 @@ public class PositionManager implements IController
 
     /**
      * Initializes a new PositionManager
-     * @param driveTrainComponent to use to determine position changes
+     * @param logger to use
+     * @param provider for obtaining electronics objects
      */
     @Inject
     public PositionManager(
         IDashboardLogger logger,
-        DriveTrainComponent driveTrainComponent)
+        DriveTrainMechanism driveTrainMechanism)
     {
         this.logger = logger;
-        this.driveTrainComponent = driveTrainComponent;
+        this.driveTrainMechanism = driveTrainMechanism;
         //this.navx = new AHRS(SPI.Port.kMXP);
 
         this.x = 0.0;
@@ -61,7 +62,7 @@ public class PositionManager implements IController
     }
 
     /**
-     * set the driver that the controller should use
+     * set the driver that the mechanism should use
      * @param driver to use
      */
     @Override
@@ -75,7 +76,7 @@ public class PositionManager implements IController
     }
 
     /**
-     * calculate the various outputs to use based on the inputs and apply them to the outputs for the relevant component
+     * calculate the various outputs to use based on the inputs and apply them to the outputs for the relevant mechanism
      */
     @Override
     public void update()
@@ -84,10 +85,10 @@ public class PositionManager implements IController
         double leftDistance = 0.0;
         double rightDistance = 0.0;
 
-        if (this.driveTrainComponent != null)
+        if (this.driveTrainMechanism != null)
         {
-            leftDistance = this.driveTrainComponent.getLeftEncoderDistance();
-            rightDistance = this.driveTrainComponent.getRightEncoderDistance();
+            leftDistance = this.driveTrainMechanism.getLeftEncoderDistance();
+            rightDistance = this.driveTrainMechanism.getRightEncoderDistance();
         }
 
         // calculate the angle (in radians) based on the total distance traveled

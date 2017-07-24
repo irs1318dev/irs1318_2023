@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.usfirst.frc.team1318.robot.common.SetHelper;
-import org.usfirst.frc.team1318.robot.common.wpilibmocks.IJoystick;
+import org.usfirst.frc.team1318.robot.common.wpilib.IJoystick;
 import org.usfirst.frc.team1318.robot.driver.Driver;
 import org.usfirst.frc.team1318.robot.driver.IButtonMap;
 import org.usfirst.frc.team1318.robot.driver.MacroOperation;

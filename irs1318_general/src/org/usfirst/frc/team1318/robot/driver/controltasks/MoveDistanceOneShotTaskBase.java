@@ -3,7 +3,7 @@ package org.usfirst.frc.team1318.robot.driver.controltasks;
 import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.driver.IControlTask;
 import org.usfirst.frc.team1318.robot.driver.Operation;
-import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainComponent;
+import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainMechanism;
 
 /**
  * Abstract class defining a task that moves the robot a certain distance using Positional PID.
@@ -12,7 +12,7 @@ import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainComponent;
 public abstract class MoveDistanceOneShotTaskBase extends ControlTaskBase implements IControlTask
 {
     private final boolean resetPositionalOnEnd;
-    private DriveTrainComponent driveTrain;
+    private DriveTrainMechanism driveTrain;
 
     protected double startLeftEncoderDistance;
     protected double startRightEncoderDistance;
@@ -35,7 +35,7 @@ public abstract class MoveDistanceOneShotTaskBase extends ControlTaskBase implem
     @Override
     public void begin()
     {
-        this.driveTrain = this.getInjector().getInstance(DriveTrainComponent.class);
+        this.driveTrain = this.getInjector().getInstance(DriveTrainMechanism.class);
 
         // set the start location
         this.setStartEncoderDistance();
@@ -120,7 +120,8 @@ public abstract class MoveDistanceOneShotTaskBase extends ControlTaskBase implem
 
         // return that we have completed this task if are within an acceptable distance
         // from the desired end location for both left and right. 
-        return leftDelta < TuningConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA &&
+        return leftDelta < TuningConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA
+            &&
             rightDelta < TuningConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA;
     }
 }

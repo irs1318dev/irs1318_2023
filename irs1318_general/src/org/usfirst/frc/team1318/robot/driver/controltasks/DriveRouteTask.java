@@ -5,13 +5,13 @@ import java.util.function.Function;
 import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.driver.IControlTask;
 import org.usfirst.frc.team1318.robot.driver.Operation;
-import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainComponent;
+import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainMechanism;
 
 public class DriveRouteTask extends TimedTask implements IControlTask
 {
     private final Function<Double, Double> leftPositionPerTime;
     private final Function<Double, Double> rightPositionPerTime;
-    private DriveTrainComponent driveTrain;
+    private DriveTrainMechanism driveTrain;
 
     private double startLeftDistance;
     private double startRightDistance;
@@ -41,7 +41,7 @@ public class DriveRouteTask extends TimedTask implements IControlTask
     {
         super.begin();
 
-        this.driveTrain = this.getInjector().getInstance(DriveTrainComponent.class);
+        this.driveTrain = this.getInjector().getInstance(DriveTrainMechanism.class);
 
         this.startLeftDistance = this.driveTrain.getLeftEncoderDistance();
         this.startRightDistance = this.driveTrain.getRightEncoderDistance();

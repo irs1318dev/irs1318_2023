@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1318.robot;
 
 import org.usfirst.frc.team1318.robot.common.IDashboardLogger;
-import org.usfirst.frc.team1318.robot.common.wpilibmocks.ITimer;
+import org.usfirst.frc.team1318.robot.common.wpilib.ITimer;
 import org.usfirst.frc.team1318.robot.driver.Driver;
 import org.usfirst.frc.team1318.robot.driver.autonomous.AutonomousDriver;
 import org.usfirst.frc.team1318.robot.driver.user.UserDriver;
@@ -23,10 +23,10 @@ import edu.wpi.first.wpilibj.IterativeRobot;
  * 
  * 
  * General design comments:
- * We have three types of objects:
+ * We have the following primary types of objects dealt with here:
  * - Driver - describes the driver/operator of the robot ("autonomous" or "user")
- * - Components - describe the electronics of an mechanism and defines the abstract way to control those electronics.
- * - Controllers - define the logic that controls a mechanism given inputs/outputs.
+ * - Mechanisms - define the logic that controls a mechanism given inputs/outputs.
+ * - Logger - defines what should be logged and to where (dashboard, etc.).
  * 
  * @author Will
  */
@@ -38,8 +38,8 @@ public class Robot extends IterativeRobot
     // Driver.  This could either be the UserDriver (joystick) or the AutonomousDriver
     private Driver driver;
 
-    // Controllers and injector
-    private ControllerManager controllers;
+    // Mechanisms and injector
+    private MechanismManager mechanisms;
     private IDashboardLogger logger;
     private Injector injector;
 
@@ -52,8 +52,8 @@ public class Robot extends IterativeRobot
      */
     public void robotInit()
     {
-        // create mechanism components and controllers
-        this.controllers = this.getInjector().getInstance(ControllerManager.class);
+        // create mechanisms
+        this.mechanisms = this.getInjector().getInstance(MechanismManager.class);
         this.logger = this.getInjector().getInstance(IDashboardLogger.class);
         this.logger.logString(Robot.LogName, "state", "Init");
 
@@ -75,9 +75,9 @@ public class Robot extends IterativeRobot
             this.driver.stop();
         }
 
-        if (this.controllers != null)
+        if (this.mechanisms != null)
         {
-            this.controllers.stop();
+            this.mechanisms.stop();
         }
 
         this.logger.logString(Robot.LogName, "state", "Disabled");
@@ -118,8 +118,8 @@ public class Robot extends IterativeRobot
      */
     public void generalInit()
     {
-        // apply the driver to the controllers
-        this.controllers.setDriver(this.driver);
+        // apply the driver to the mechanisms
+        this.mechanisms.setDriver(this.driver);
 
         this.timer.start();
     }
@@ -157,8 +157,8 @@ public class Robot extends IterativeRobot
     {
         this.driver.update();
 
-        // run each controller
-        this.controllers.update();
+        // run each mechanism
+        this.mechanisms.update();
 
         this.logger.logNumber(Robot.LogName, "time", this.timer.get());
         this.logger.flush();

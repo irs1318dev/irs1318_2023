@@ -2,7 +2,7 @@ package org.usfirst.frc.team1318.robot.driver.controltasks;
 
 import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.common.PIDHandler;
-import org.usfirst.frc.team1318.robot.common.wpilibmocks.ITimer;
+import org.usfirst.frc.team1318.robot.common.wpilib.ITimer;
 import org.usfirst.frc.team1318.robot.driver.IControlTask;
 import org.usfirst.frc.team1318.robot.driver.Operation;
 import org.usfirst.frc.team1318.robot.vision.VisionManager;

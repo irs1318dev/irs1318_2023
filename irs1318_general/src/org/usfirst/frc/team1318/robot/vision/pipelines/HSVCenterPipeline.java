@@ -4,7 +4,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.imgcodecs.Imgcodecs;
-import org.usfirst.frc.team1318.robot.common.wpilibmocks.ITimer;
+import org.usfirst.frc.team1318.robot.common.wpilib.ITimer;
 import org.usfirst.frc.team1318.robot.vision.VisionConstants;
 import org.usfirst.frc.team1318.robot.vision.helpers.ContourHelper;
 import org.usfirst.frc.team1318.robot.vision.helpers.HSVFilter;
