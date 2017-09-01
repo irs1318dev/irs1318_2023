@@ -12,8 +12,8 @@ import org.usfirst.frc.team1318.robot.common.wpilib.IEncoder;
 import org.usfirst.frc.team1318.robot.common.wpilib.IMotor;
 import org.usfirst.frc.team1318.robot.common.wpilib.ITimer;
 import org.usfirst.frc.team1318.robot.common.wpilib.IWpilibProvider;
-import org.usfirst.frc.team1318.robot.driver.Driver;
 import org.usfirst.frc.team1318.robot.driver.Operation;
+import org.usfirst.frc.team1318.robot.driver.common.Driver;
 
 import com.google.inject.Inject;
 
@@ -64,8 +64,10 @@ public class DriveTrainMechanism implements IMechanism
 
         this.leftMotor = provider.getTalon(ElectronicsConstants.DRIVETRAIN_LEFT_TALON_CHANNEL);
         this.rightMotor = provider.getTalon(ElectronicsConstants.DRIVETRAIN_RIGHT_TALON_CHANNEL);
-        this.leftEncoder = provider.getEncoder(ElectronicsConstants.DRIVETRAIN_LEFT_ENCODER_CHANNEL_A, ElectronicsConstants.DRIVETRAIN_LEFT_ENCODER_CHANNEL_B);
-        this.rightEncoder = provider.getEncoder(ElectronicsConstants.DRIVETRAIN_RIGHT_ENCODER_CHANNEL_A, ElectronicsConstants.DRIVETRAIN_RIGHT_ENCODER_CHANNEL_B);
+        this.leftEncoder = provider.getEncoder(ElectronicsConstants.DRIVETRAIN_LEFT_ENCODER_CHANNEL_A,
+            ElectronicsConstants.DRIVETRAIN_LEFT_ENCODER_CHANNEL_B);
+        this.rightEncoder = provider.getEncoder(ElectronicsConstants.DRIVETRAIN_RIGHT_ENCODER_CHANNEL_A,
+            ElectronicsConstants.DRIVETRAIN_RIGHT_ENCODER_CHANNEL_B);
 
         this.usePID = TuningConstants.DRIVETRAIN_USE_PID;
         this.usePositionalMode = false;

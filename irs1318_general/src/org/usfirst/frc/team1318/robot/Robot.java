@@ -1,10 +1,11 @@
 package org.usfirst.frc.team1318.robot;
 
 import org.usfirst.frc.team1318.robot.common.IDashboardLogger;
+import org.usfirst.frc.team1318.robot.common.MechanismManager;
 import org.usfirst.frc.team1318.robot.common.wpilib.ITimer;
-import org.usfirst.frc.team1318.robot.driver.Driver;
-import org.usfirst.frc.team1318.robot.driver.autonomous.AutonomousDriver;
-import org.usfirst.frc.team1318.robot.driver.user.UserDriver;
+import org.usfirst.frc.team1318.robot.driver.common.Driver;
+import org.usfirst.frc.team1318.robot.driver.common.autonomous.AutonomousDriver;
+import org.usfirst.frc.team1318.robot.driver.common.user.UserDriver;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;

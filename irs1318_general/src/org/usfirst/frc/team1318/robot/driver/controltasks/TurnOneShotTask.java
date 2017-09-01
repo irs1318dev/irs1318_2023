@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1318.robot.driver.controltasks;
 
 import org.usfirst.frc.team1318.robot.HardwareConstants;
-import org.usfirst.frc.team1318.robot.driver.IControlTask;
+import org.usfirst.frc.team1318.robot.driver.common.IControlTask;
 
 /**
  * Task that turns the robot a certain amount clockwise or counterclockwise in-place using Positional PID.

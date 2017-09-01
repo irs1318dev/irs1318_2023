@@ -3,8 +3,8 @@ package org.usfirst.frc.team1318.robot.driver.controltasks;
 import java.util.function.Function;
 
 import org.usfirst.frc.team1318.robot.TuningConstants;
-import org.usfirst.frc.team1318.robot.driver.IControlTask;
 import org.usfirst.frc.team1318.robot.driver.Operation;
+import org.usfirst.frc.team1318.robot.driver.common.IControlTask;
 import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainMechanism;
 
 public class DriveRouteTask extends TimedTask implements IControlTask

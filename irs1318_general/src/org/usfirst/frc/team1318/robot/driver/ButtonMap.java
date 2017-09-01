@@ -5,16 +5,18 @@ import java.util.Map;
 
 import org.usfirst.frc.team1318.robot.ElectronicsConstants;
 import org.usfirst.frc.team1318.robot.TuningConstants;
-import org.usfirst.frc.team1318.robot.driver.buttons.AnalogAxis;
-import org.usfirst.frc.team1318.robot.driver.buttons.ButtonType;
+import org.usfirst.frc.team1318.robot.driver.common.IButtonMap;
+import org.usfirst.frc.team1318.robot.driver.common.UserInputDeviceButton;
+import org.usfirst.frc.team1318.robot.driver.common.buttons.AnalogAxis;
+import org.usfirst.frc.team1318.robot.driver.common.buttons.ButtonType;
+import org.usfirst.frc.team1318.robot.driver.common.descriptions.AnalogOperationDescription;
+import org.usfirst.frc.team1318.robot.driver.common.descriptions.DigitalOperationDescription;
+import org.usfirst.frc.team1318.robot.driver.common.descriptions.MacroOperationDescription;
+import org.usfirst.frc.team1318.robot.driver.common.descriptions.OperationDescription;
+import org.usfirst.frc.team1318.robot.driver.common.descriptions.UserInputDevice;
 import org.usfirst.frc.team1318.robot.driver.controltasks.PIDBrakeTask;
 import org.usfirst.frc.team1318.robot.driver.controltasks.VisionAdvanceAndCenterTask;
 import org.usfirst.frc.team1318.robot.driver.controltasks.VisionCenteringTask;
-import org.usfirst.frc.team1318.robot.driver.descriptions.AnalogOperationDescription;
-import org.usfirst.frc.team1318.robot.driver.descriptions.DigitalOperationDescription;
-import org.usfirst.frc.team1318.robot.driver.descriptions.MacroOperationDescription;
-import org.usfirst.frc.team1318.robot.driver.descriptions.OperationDescription;
-import org.usfirst.frc.team1318.robot.driver.descriptions.UserInputDevice;
 
 public class ButtonMap implements IButtonMap
 {

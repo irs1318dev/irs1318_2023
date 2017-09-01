@@ -4,7 +4,7 @@ import org.usfirst.frc.team1318.robot.common.ComplementaryFilter;
 import org.usfirst.frc.team1318.robot.common.IMechanism;
 import org.usfirst.frc.team1318.robot.common.wpilib.IPowerDistributionPanel;
 import org.usfirst.frc.team1318.robot.common.wpilib.IWpilibProvider;
-import org.usfirst.frc.team1318.robot.driver.Driver;
+import org.usfirst.frc.team1318.robot.driver.common.Driver;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;

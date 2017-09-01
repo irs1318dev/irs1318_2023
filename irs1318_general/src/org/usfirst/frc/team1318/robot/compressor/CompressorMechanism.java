@@ -3,7 +3,7 @@ package org.usfirst.frc.team1318.robot.compressor;
 import org.usfirst.frc.team1318.robot.common.IMechanism;
 import org.usfirst.frc.team1318.robot.common.wpilib.ICompressor;
 import org.usfirst.frc.team1318.robot.common.wpilib.IWpilibProvider;
-import org.usfirst.frc.team1318.robot.driver.Driver;
+import org.usfirst.frc.team1318.robot.driver.common.Driver;
 
 import com.google.inject.Inject;
 
