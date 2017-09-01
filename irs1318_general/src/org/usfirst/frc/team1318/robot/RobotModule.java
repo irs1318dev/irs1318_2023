@@ -9,8 +9,10 @@ import org.usfirst.frc.team1318.robot.common.IDashboardLogger;
 import org.usfirst.frc.team1318.robot.common.IMechanism;
 import org.usfirst.frc.team1318.robot.common.MechanismManager;
 import org.usfirst.frc.team1318.robot.common.SmartDashboardLogger;
+import org.usfirst.frc.team1318.robot.common.wpilib.IJoystick;
 import org.usfirst.frc.team1318.robot.common.wpilib.ITimer;
 import org.usfirst.frc.team1318.robot.common.wpilib.IWpilibProvider;
+import org.usfirst.frc.team1318.robot.common.wpilib.JoystickWrapper;
 import org.usfirst.frc.team1318.robot.common.wpilib.TimerWrapper;
 import org.usfirst.frc.team1318.robot.common.wpilib.WpilibProvider;
 import org.usfirst.frc.team1318.robot.compressor.CompressorMechanism;
@@ -24,6 +26,7 @@ import org.usfirst.frc.team1318.robot.vision.VisionManager;
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
+import com.google.inject.name.Named;
 
 public class RobotModule extends AbstractModule
 {
@@ -66,5 +69,21 @@ public class RobotModule extends AbstractModule
         //        }
 
         return logger;
+    }
+
+    @Singleton
+    @Provides
+    @Named("USER_DRIVER_JOYSTICK")
+    public IJoystick getJoystickDriver()
+    {
+        return new JoystickWrapper(ElectronicsConstants.JOYSTICK_DRIVER_PORT);
+    }
+
+    @Singleton
+    @Provides
+    @Named("USER_CODRIVER_JOYSTICK")
+    public IJoystick getJoystickCoDriver()
+    {
+        return new JoystickWrapper(ElectronicsConstants.JOYSTICK_DRIVER_PORT);
     }
 }
