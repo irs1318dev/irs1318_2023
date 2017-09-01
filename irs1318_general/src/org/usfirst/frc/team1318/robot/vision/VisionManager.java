@@ -9,7 +9,7 @@ import org.usfirst.frc.team1318.robot.common.wpilib.ITimer;
 import org.usfirst.frc.team1318.robot.common.wpilib.IWpilibProvider;
 import org.usfirst.frc.team1318.robot.driver.Operation;
 import org.usfirst.frc.team1318.robot.driver.common.Driver;
-import org.usfirst.frc.team1318.robot.vision.helpers.VisionProcessingState;
+import org.usfirst.frc.team1318.robot.vision.common.VisionProcessingState;
 import org.usfirst.frc.team1318.robot.vision.pipelines.HSVCenterPipeline;
 import org.usfirst.frc.team1318.robot.vision.pipelines.ICentroidVisionPipeline;
 

@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1318.robot.vision.helpers;
+package org.usfirst.frc.team1318.robot.vision.common;
 
 import java.util.ArrayList;
 import java.util.Comparator;

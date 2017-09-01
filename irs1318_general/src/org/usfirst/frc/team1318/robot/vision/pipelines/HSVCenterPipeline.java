@@ -6,9 +6,9 @@ import org.opencv.core.Point;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.usfirst.frc.team1318.robot.common.wpilib.ITimer;
 import org.usfirst.frc.team1318.robot.vision.VisionConstants;
-import org.usfirst.frc.team1318.robot.vision.helpers.ContourHelper;
-import org.usfirst.frc.team1318.robot.vision.helpers.HSVFilter;
-import org.usfirst.frc.team1318.robot.vision.helpers.ImageUndistorter;
+import org.usfirst.frc.team1318.robot.vision.common.ContourHelper;
+import org.usfirst.frc.team1318.robot.vision.common.HSVFilter;
+import org.usfirst.frc.team1318.robot.vision.common.ImageUndistorter;
 
 import edu.wpi.cscore.CvSource;
 import edu.wpi.first.wpilibj.CameraServer;

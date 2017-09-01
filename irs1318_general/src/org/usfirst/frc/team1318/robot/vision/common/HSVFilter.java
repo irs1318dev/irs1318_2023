@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1318.robot.vision.helpers;
+package org.usfirst.frc.team1318.robot.vision.common;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
