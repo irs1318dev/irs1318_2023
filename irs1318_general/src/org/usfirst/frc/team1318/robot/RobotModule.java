@@ -40,11 +40,11 @@ public class RobotModule extends AbstractModule
     public MechanismManager getMechanismManager(Injector injector)
     {
         List<IMechanism> mechanismList = new ArrayList<>();
-        mechanismList.add(injector.getInstance(PowerManager.class));
+        mechanismList.add(injector.getInstance(DriveTrainMechanism.class));
         mechanismList.add(injector.getInstance(PositionManager.class));
+        mechanismList.add(injector.getInstance(PowerManager.class));
         mechanismList.add(injector.getInstance(VisionManager.class));
         mechanismList.add(injector.getInstance(CompressorMechanism.class));
-        mechanismList.add(injector.getInstance(DriveTrainMechanism.class));
         //mechanismList.add(injector.getInstance(SomeMechanism.class));
         return new MechanismManager(mechanismList);
     }

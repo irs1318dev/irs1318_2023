@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1318.robot.compressor;
 
+import javax.inject.Singleton;
+
 import org.usfirst.frc.team1318.robot.common.IMechanism;
 import org.usfirst.frc.team1318.robot.common.wpilib.ICompressor;
 import org.usfirst.frc.team1318.robot.common.wpilib.IWpilibProvider;
@@ -15,6 +17,7 @@ import com.google.inject.Inject;
  * @author Will
  *
  */
+@Singleton
 public class CompressorMechanism implements IMechanism
 {
     private final ICompressor compressor;

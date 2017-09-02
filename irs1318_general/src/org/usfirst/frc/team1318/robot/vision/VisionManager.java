@@ -72,7 +72,7 @@ public class VisionManager implements IMechanism, VisionRunner.Listener<ICentroi
 
         this.camera = new UsbCamera("usb0", 0);
         this.camera.setResolution(VisionConstants.LIFECAM_CAMERA_RESOLUTION_X, VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
-        ;
+
         this.camera.setExposureAuto();
         this.camera.setBrightness(VisionConstants.LIFECAM_CAMERA_OPERATOR_BRIGHTNESS);
         this.camera.setFPS(VisionConstants.LIFECAM_CAMERA_FPS);
