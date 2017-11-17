@@ -64,10 +64,8 @@ public class DriveTrainMechanism implements IMechanism
 
         this.leftMotor = provider.getTalon(ElectronicsConstants.DRIVETRAIN_LEFT_TALON_CHANNEL);
         this.rightMotor = provider.getTalon(ElectronicsConstants.DRIVETRAIN_RIGHT_TALON_CHANNEL);
-        this.leftEncoder = provider.getEncoder(ElectronicsConstants.DRIVETRAIN_LEFT_ENCODER_CHANNEL_A,
-            ElectronicsConstants.DRIVETRAIN_LEFT_ENCODER_CHANNEL_B);
-        this.rightEncoder = provider.getEncoder(ElectronicsConstants.DRIVETRAIN_RIGHT_ENCODER_CHANNEL_A,
-            ElectronicsConstants.DRIVETRAIN_RIGHT_ENCODER_CHANNEL_B);
+        this.leftEncoder = provider.getEncoder(ElectronicsConstants.DRIVETRAIN_LEFT_ENCODER_CHANNEL_A, ElectronicsConstants.DRIVETRAIN_LEFT_ENCODER_CHANNEL_B);
+        this.rightEncoder = provider.getEncoder(ElectronicsConstants.DRIVETRAIN_RIGHT_ENCODER_CHANNEL_A, ElectronicsConstants.DRIVETRAIN_RIGHT_ENCODER_CHANNEL_B);
 
         this.usePID = TuningConstants.DRIVETRAIN_USE_PID;
         this.usePositionalMode = false;
@@ -216,7 +214,7 @@ public class DriveTrainMechanism implements IMechanism
 
         // apply the power settings to the motors
         this.leftMotor.set(leftPower);
-        this.rightMotor.set(rightPower);
+        this.rightMotor.set(-rightPower); // note: the right motor is oriented "backwards"
     }
 
     /**
