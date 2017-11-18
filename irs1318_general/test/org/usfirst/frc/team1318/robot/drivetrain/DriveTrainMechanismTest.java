@@ -58,7 +58,7 @@ public class DriveTrainMechanismTest
         driveTrainMechanism.update();
 
         verify(leftMotor).set(eq(0.0));
-        verify(rightMotor).set(eq(0.0));
+        verify(rightMotor).set(eq(-0.0));
         verify(leftEncoder).getDistance();
         verify(leftEncoder).getRate();
         verify(leftEncoder).get();
