@@ -3,6 +3,7 @@ package org.usfirst.frc.team1318.robot.drivetrain;
 import javax.inject.Singleton;
 
 import org.usfirst.frc.team1318.robot.ElectronicsConstants;
+import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.common.Helpers;
 import org.usfirst.frc.team1318.robot.common.IDashboardLogger;
@@ -47,6 +48,13 @@ public class DriveTrainMechanism implements IMechanism
     private PIDHandler leftPID;
     private PIDHandler rightPID;
 
+    private double leftVelocity;
+    private double leftDistance;
+    private int leftTicks;
+    private double rightVelocity;
+    private double rightDistance;
+    private int rightTicks;
+
     /**
      * Initializes a new DriveTrainMechanism
      * @param logger to use
@@ -67,10 +75,20 @@ public class DriveTrainMechanism implements IMechanism
         this.leftEncoder = provider.getEncoder(ElectronicsConstants.DRIVETRAIN_LEFT_ENCODER_CHANNEL_A, ElectronicsConstants.DRIVETRAIN_LEFT_ENCODER_CHANNEL_B);
         this.rightEncoder = provider.getEncoder(ElectronicsConstants.DRIVETRAIN_RIGHT_ENCODER_CHANNEL_A, ElectronicsConstants.DRIVETRAIN_RIGHT_ENCODER_CHANNEL_B);
 
+        this.leftEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_LEFT_PULSE_DISTANCE);
+        this.rightEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_RIGHT_PULSE_DISTANCE);
+
         this.usePID = TuningConstants.DRIVETRAIN_USE_PID;
         this.usePositionalMode = false;
 
         this.createPIDHandler();
+
+        this.leftVelocity = 0.0;
+        this.leftDistance = 0.0;
+        this.leftTicks = 0;
+        this.rightVelocity = 0.0;
+        this.rightDistance = 0.0;
+        this.rightTicks = 0;
     }
 
     /**
@@ -79,9 +97,7 @@ public class DriveTrainMechanism implements IMechanism
      */
     public double getLeftEncoderVelocity()
     {
-        double leftVelocity = -this.leftEncoder.getRate();
-        this.logger.logNumber(DriveTrainMechanism.LogName, "leftVelocity", leftVelocity);
-        return leftVelocity;
+        return this.leftVelocity;
     }
 
     /**
@@ -90,9 +106,7 @@ public class DriveTrainMechanism implements IMechanism
      */
     public double getRightEncoderVelocity()
     {
-        double rightVelocity = this.rightEncoder.getRate();
-        this.logger.logNumber(DriveTrainMechanism.LogName, "rightVelocity", rightVelocity);
-        return rightVelocity;
+        return this.rightVelocity;
     }
 
     /**
@@ -101,9 +115,7 @@ public class DriveTrainMechanism implements IMechanism
      */
     public double getLeftEncoderDistance()
     {
-        double leftDistance = -this.leftEncoder.getDistance();
-        this.logger.logNumber(DriveTrainMechanism.LogName, "leftDistance", leftDistance);
-        return leftDistance;
+        return this.leftDistance;
     }
 
     /**
@@ -112,9 +124,7 @@ public class DriveTrainMechanism implements IMechanism
      */
     public double getRightEncoderDistance()
     {
-        double rightDistance = this.rightEncoder.getDistance();
-        this.logger.logNumber(DriveTrainMechanism.LogName, "rightDistance", rightDistance);
-        return rightDistance;
+        return this.rightDistance;
     }
 
     /**
@@ -123,9 +133,7 @@ public class DriveTrainMechanism implements IMechanism
      */
     public int getLeftEncoderTicks()
     {
-        int leftTicks = -this.leftEncoder.get();
-        this.logger.logNumber(DriveTrainMechanism.LogName, "leftTicks", leftTicks);
-        return leftTicks;
+        return this.leftTicks;
     }
 
     /**
@@ -134,9 +142,7 @@ public class DriveTrainMechanism implements IMechanism
      */
     public int getRightEncoderTicks()
     {
-        int rightTicks = this.rightEncoder.get();
-        this.logger.logNumber(DriveTrainMechanism.LogName, "rightTicks", rightTicks);
-        return rightTicks;
+        return this.rightTicks;
     }
 
     /**
@@ -164,6 +170,20 @@ public class DriveTrainMechanism implements IMechanism
     @Override
     public void update()
     {
+        this.leftVelocity = -this.leftEncoder.getRate();
+        this.leftDistance = -this.leftEncoder.getDistance();
+        this.leftTicks = -this.leftEncoder.get();
+        this.rightVelocity = this.rightEncoder.getRate();
+        this.rightDistance = this.rightEncoder.getDistance();
+        this.rightTicks = this.rightEncoder.get();
+
+        this.logger.logNumber(DriveTrainMechanism.LogName, "leftVelocity", this.leftVelocity);
+        this.logger.logNumber(DriveTrainMechanism.LogName, "leftDistance", this.leftDistance);
+        this.logger.logNumber(DriveTrainMechanism.LogName, "leftTicks", this.leftTicks);
+        this.logger.logNumber(DriveTrainMechanism.LogName, "rightVelocity", this.rightVelocity);
+        this.logger.logNumber(DriveTrainMechanism.LogName, "rightDistance", this.rightDistance);
+        this.logger.logNumber(DriveTrainMechanism.LogName, "rightTicks", this.rightTicks);
+
         if (this.driver.getDigital(Operation.DriveTrainEnablePID))
         {
             this.usePID = true;
@@ -237,6 +257,13 @@ public class DriveTrainMechanism implements IMechanism
         {
             this.rightPID.reset();
         }
+
+        this.leftVelocity = 0.0;
+        this.leftDistance = 0.0;
+        this.leftTicks = 0;
+        this.rightVelocity = 0.0;
+        this.rightDistance = 0.0;
+        this.rightTicks = 0;
     }
 
     /**
@@ -313,15 +340,6 @@ public class DriveTrainMechanism implements IMechanism
         double leftVelocityGoal = 0.0;
         double rightVelocityGoal = 0.0;
 
-        // read the encoder distance just in case we want it output in smart dashboard
-        this.getLeftEncoderDistance();
-        this.getRightEncoderDistance();
-        this.getLeftEncoderVelocity();
-        this.getRightEncoderVelocity();
-
-        int currentLeftTicks = this.getLeftEncoderTicks();
-        int currentRightTicks = this.getRightEncoderTicks();
-
         // get a value indicating that we should be in simple mode...
         boolean simpleDriveModeEnabled = this.driver.getDigital(Operation.DriveTrainSimpleMode);
 
@@ -373,11 +391,11 @@ public class DriveTrainMechanism implements IMechanism
         {
             leftPower = this.leftPID.calculateVelocity(
                 leftVelocityGoal,
-                currentLeftTicks);
+                this.leftTicks);
 
             rightPower = this.rightPID.calculateVelocity(
                 rightVelocityGoal,
-                currentRightTicks);
+                this.rightTicks);
         }
         else
         {
@@ -400,33 +418,25 @@ public class DriveTrainMechanism implements IMechanism
     private PowerSetting calculatePositionModePowerSetting()
     {
         // get the desired left and right values from the driver.
-        double leftPosition = this.driver.getAnalog(Operation.DriveTrainLeftPosition);
-        double rightPosition = this.driver.getAnalog(Operation.DriveTrainRightPosition);
+        double leftPositionGoal = this.driver.getAnalog(Operation.DriveTrainLeftPosition);
+        double rightPositionGoal = this.driver.getAnalog(Operation.DriveTrainRightPosition);
 
-        // get the current distance from the encoders.
-        double leftDistance = this.getLeftEncoderDistance();
-        double rightDistance = this.getRightEncoderDistance();
-
-        // read the encoder velocity just in case we want it output in smart dashboard
-        this.getLeftEncoderVelocity();
-        this.getRightEncoderVelocity();
-
-        this.logger.logNumber(DriveTrainMechanism.LogName, "leftPositionGoal", leftPosition);
-        this.logger.logNumber(DriveTrainMechanism.LogName, "rightPositionGoal", rightPosition);
+        this.logger.logNumber(DriveTrainMechanism.LogName, "leftPositionGoal", leftPositionGoal);
+        this.logger.logNumber(DriveTrainMechanism.LogName, "rightPositionGoal", rightPositionGoal);
 
         double leftPower;
         double rightPower;
         if (this.usePID)
         {
             // use positional PID to get the relevant value
-            leftPower = this.leftPID.calculatePosition(leftPosition, leftDistance);
-            rightPower = this.rightPID.calculatePosition(rightPosition, rightDistance);
+            leftPower = this.leftPID.calculatePosition(leftPositionGoal, this.leftDistance);
+            rightPower = this.rightPID.calculatePosition(rightPositionGoal, this.rightDistance);
         }
         else
         {
             // calculate a desired power level
-            leftPower = leftPosition - leftDistance;
-            rightPower = rightPosition - rightDistance;
+            leftPower = leftPositionGoal - this.leftDistance;
+            rightPower = rightPositionGoal - this.rightDistance;
             if (Math.abs(leftPower) < 0.1)
             {
                 leftPower = 0.0;
