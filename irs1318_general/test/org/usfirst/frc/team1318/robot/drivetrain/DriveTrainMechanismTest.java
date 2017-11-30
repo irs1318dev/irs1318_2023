@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import org.junit.Test;
 import org.usfirst.frc.team1318.robot.ElectronicsConstants;
+import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.TestWpilibProvider;
 import org.usfirst.frc.team1318.robot.common.IDashboardLogger;
 import org.usfirst.frc.team1318.robot.common.wpilib.IEncoder;
@@ -65,6 +66,8 @@ public class DriveTrainMechanismTest
         verify(rightEncoder).getDistance();
         verify(rightEncoder).getRate();
         verify(rightEncoder).get();
+        verify(leftEncoder).setDistancePerPulse(eq(HardwareConstants.DRIVETRAIN_LEFT_PULSE_DISTANCE));
+        verify(rightEncoder).setDistancePerPulse(eq(HardwareConstants.DRIVETRAIN_RIGHT_PULSE_DISTANCE));
         verifyNoMoreInteractions(leftMotor);
         verifyNoMoreInteractions(rightMotor);
         verifyNoMoreInteractions(leftEncoder);
@@ -96,6 +99,8 @@ public class DriveTrainMechanismTest
         verify(rightMotor).set(eq(0.0));
         verify(leftEncoder).reset();
         verify(rightEncoder).reset();
+        verify(leftEncoder).setDistancePerPulse(eq(HardwareConstants.DRIVETRAIN_LEFT_PULSE_DISTANCE));
+        verify(rightEncoder).setDistancePerPulse(eq(HardwareConstants.DRIVETRAIN_RIGHT_PULSE_DISTANCE));
         verifyNoMoreInteractions(leftMotor);
         verifyNoMoreInteractions(rightMotor);
         verifyNoMoreInteractions(leftEncoder);
