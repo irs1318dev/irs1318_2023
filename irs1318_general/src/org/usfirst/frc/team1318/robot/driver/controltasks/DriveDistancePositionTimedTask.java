@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1318.robot.driver.controltasks;
 
+import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.driver.Operation;
 import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainMechanism;
 
@@ -10,10 +11,10 @@ public class DriveDistancePositionTimedTask extends TimedTask
 
     private DriveTrainMechanism driveTrain;
 
-    private double startLeftDistance;
-    private double startRightDistance;
-    private double endLeftDistance;
-    private double endRightDistance;
+    private double startLeftTicks;
+    private double startRightTicks;
+    private double endLeftTicks;
+    private double endRightTicks;
 
     public DriveDistancePositionTimedTask(double speed, double distance, double duration)
     {
@@ -30,11 +31,11 @@ public class DriveDistancePositionTimedTask extends TimedTask
 
         this.driveTrain = this.getInjector().getInstance(DriveTrainMechanism.class);
 
-        this.startLeftDistance = this.driveTrain.getLeftEncoderDistance();
-        this.startRightDistance = this.driveTrain.getRightEncoderDistance();
+        this.startLeftTicks = this.driveTrain.getLeftTicks();
+        this.startRightTicks = this.driveTrain.getRightTicks();
 
-        this.endLeftDistance = this.startLeftDistance + this.distance;
-        this.endRightDistance = this.startRightDistance + this.distance;
+        this.endLeftTicks = this.startLeftTicks + this.distance / HardwareConstants.DRIVETRAIN_LEFT_PULSE_DISTANCE;
+        this.endRightTicks = this.startRightTicks + this.distance / HardwareConstants.DRIVETRAIN_RIGHT_PULSE_DISTANCE;
 
         this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
         this.setAnalogOperationState(Operation.DriveTrainTurn, 0.0);
@@ -77,20 +78,18 @@ public class DriveDistancePositionTimedTask extends TimedTask
             return true;
         }
 
-        double leftEncoderDistance = this.driveTrain.getLeftEncoderDistance();
-        double rightEncoderDistance = this.driveTrain.getRightEncoderDistance();
+        double leftTicks = this.driveTrain.getLeftTicks();
+        double rightTicks = this.driveTrain.getRightTicks();
 
         if (this.distance >= 0.0)
         {
-            return leftEncoderDistance >= this.endLeftDistance
-                ||
-                rightEncoderDistance >= this.endRightDistance;
+            return leftTicks >= this.endLeftTicks ||
+                rightTicks >= this.endRightTicks;
         }
         else
         {
-            return leftEncoderDistance <= this.endLeftDistance
-                ||
-                rightEncoderDistance <= this.endRightDistance;
+            return leftTicks <= this.endLeftTicks ||
+                rightTicks <= this.endRightTicks;
         }
     }
 

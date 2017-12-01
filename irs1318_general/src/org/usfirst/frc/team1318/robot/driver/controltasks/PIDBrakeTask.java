@@ -18,8 +18,8 @@ public class PIDBrakeTask extends MoveDistanceOneShotTaskBase implements IContro
     @Override
     protected void determineFinalEncoderDistance()
     {
-        this.desiredFinalLeftEncoderDistance = this.startLeftEncoderDistance;
-        this.desiredFinalRightEncoderDistance = this.startRightEncoderDistance;
+        this.desiredFinalLeftTicks = this.startLeftTicks;
+        this.desiredFinalRightTicks = this.startRightTicks;
     }
 
     /**

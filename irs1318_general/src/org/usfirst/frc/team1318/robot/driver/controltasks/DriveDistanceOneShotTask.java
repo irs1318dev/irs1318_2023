@@ -37,7 +37,7 @@ public class DriveDistanceOneShotTask extends MoveDistanceOneShotTaskBase implem
     @Override
     protected void determineFinalEncoderDistance()
     {
-        this.desiredFinalLeftEncoderDistance = this.startLeftEncoderDistance + this.distance;
-        this.desiredFinalRightEncoderDistance = this.startRightEncoderDistance + this.distance;
+        this.desiredFinalLeftTicks = this.startLeftTicks + this.distance;
+        this.desiredFinalRightTicks = this.startRightTicks + this.distance;
     }
 }

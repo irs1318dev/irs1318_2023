@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1318.robot.driver.controltasks;
 
+import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.driver.Operation;
 import org.usfirst.frc.team1318.robot.driver.common.IControlTask;
@@ -14,11 +15,11 @@ public abstract class MoveDistanceOneShotTaskBase extends ControlTaskBase implem
     private final boolean resetPositionalOnEnd;
     private DriveTrainMechanism driveTrain;
 
-    protected double startLeftEncoderDistance;
-    protected double startRightEncoderDistance;
+    protected double startLeftTicks;
+    protected double startRightTicks;
 
-    protected double desiredFinalLeftEncoderDistance;
-    protected double desiredFinalRightEncoderDistance;
+    protected double desiredFinalLeftTicks;
+    protected double desiredFinalRightTicks;
 
     /**
      * Initializes a new MoveDistanceTaskBase
@@ -49,8 +50,8 @@ public abstract class MoveDistanceOneShotTaskBase extends ControlTaskBase implem
      */
     protected void setStartEncoderDistance()
     {
-        this.startLeftEncoderDistance = this.driveTrain.getLeftEncoderDistance();
-        this.startRightEncoderDistance = this.driveTrain.getRightEncoderDistance();
+        this.startLeftTicks = this.driveTrain.getLeftTicks();
+        this.startRightTicks = this.driveTrain.getRightTicks();
     }
 
     /**
@@ -65,8 +66,8 @@ public abstract class MoveDistanceOneShotTaskBase extends ControlTaskBase implem
     public void update()
     {
         this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, true);
-        this.setAnalogOperationState(Operation.DriveTrainLeftPosition, this.desiredFinalLeftEncoderDistance);
-        this.setAnalogOperationState(Operation.DriveTrainRightPosition, this.desiredFinalRightEncoderDistance);
+        this.setAnalogOperationState(Operation.DriveTrainLeftPosition, this.desiredFinalLeftTicks);
+        this.setAnalogOperationState(Operation.DriveTrainRightPosition, this.desiredFinalRightTicks);
     }
 
     /**
@@ -111,17 +112,16 @@ public abstract class MoveDistanceOneShotTaskBase extends ControlTaskBase implem
     @Override
     public boolean hasCompleted()
     {
-        double leftEncoderDistance = this.driveTrain.getLeftEncoderDistance();
-        double rightEncoderDistance = this.driveTrain.getRightEncoderDistance();
+        double leftTicks = this.driveTrain.getLeftTicks();
+        double rightTicks = this.driveTrain.getRightTicks();
 
         // check how far away we are from the desired end location
-        double leftDelta = Math.abs(this.desiredFinalLeftEncoderDistance - leftEncoderDistance);
-        double rightDelta = Math.abs(this.desiredFinalRightEncoderDistance - rightEncoderDistance);
+        double leftDelta = Math.abs(this.desiredFinalLeftTicks - leftTicks);
+        double rightDelta = Math.abs(this.desiredFinalRightTicks - rightTicks);
 
         // return that we have completed this task if are within an acceptable distance
         // from the desired end location for both left and right. 
-        return leftDelta < TuningConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA
-            &&
+        return leftDelta < TuningConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA &&
             rightDelta < TuningConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA;
     }
 }

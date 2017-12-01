@@ -13,16 +13,16 @@ public class DriveRouteTask extends TimedTask implements IControlTask
     private final Function<Double, Double> rightPositionPerTime;
     private DriveTrainMechanism driveTrain;
 
-    private double startLeftDistance;
-    private double startRightDistance;
+    private double startLeftTicks;
+    private double startRightTicks;
 
-    private double endLeftDistance;
-    private double endRightDistance;
+    private double endLeftTicks;
+    private double endRightTicks;
 
     /**
      * Initializes a new DriveRouteTask
-     * @param left function that calculates the desired left position per ratio of time that has elapsed
-     * @param right function that calculates the desired right position per ratio of time that has elapsed
+     * @param left function that calculates the desired left tick position per ratio of time that has elapsed
+     * @param right function that calculates the desired right tick position per ratio of time that has elapsed
      * @param duration to take to drive the route
      */
     public DriveRouteTask(Function<Double, Double> left, Function<Double, Double> right, double duration)
@@ -43,11 +43,11 @@ public class DriveRouteTask extends TimedTask implements IControlTask
 
         this.driveTrain = this.getInjector().getInstance(DriveTrainMechanism.class);
 
-        this.startLeftDistance = this.driveTrain.getLeftEncoderDistance();
-        this.startRightDistance = this.driveTrain.getRightEncoderDistance();
+        this.startLeftTicks = this.driveTrain.getLeftTicks();
+        this.startRightTicks = this.driveTrain.getRightTicks();
 
-        this.endLeftDistance = this.startLeftDistance + this.leftPositionPerTime.apply(1.0);
-        this.endRightDistance = this.startRightDistance + this.rightPositionPerTime.apply(1.0);
+        this.endLeftTicks = this.startLeftTicks + this.leftPositionPerTime.apply(1.0);
+        this.endRightTicks = this.startRightTicks + this.rightPositionPerTime.apply(1.0);
 
         this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, true);
     }
@@ -68,8 +68,8 @@ public class DriveRouteTask extends TimedTask implements IControlTask
             t = 0.0;
         }
 
-        this.setAnalogOperationState(Operation.DriveTrainLeftPosition, this.startLeftDistance + this.leftPositionPerTime.apply(t));
-        this.setAnalogOperationState(Operation.DriveTrainRightPosition, this.startRightDistance + this.rightPositionPerTime.apply(t));
+        this.setAnalogOperationState(Operation.DriveTrainLeftPosition, this.startLeftTicks + this.leftPositionPerTime.apply(t));
+        this.setAnalogOperationState(Operation.DriveTrainRightPosition, this.startRightTicks + this.rightPositionPerTime.apply(t));
     }
 
     /**
@@ -93,8 +93,8 @@ public class DriveRouteTask extends TimedTask implements IControlTask
     {
         super.end();
 
-        this.setAnalogOperationState(Operation.DriveTrainLeftPosition, this.endLeftDistance);
-        this.setAnalogOperationState(Operation.DriveTrainRightPosition, this.endRightDistance);
+        this.setAnalogOperationState(Operation.DriveTrainLeftPosition, this.endLeftTicks);
+        this.setAnalogOperationState(Operation.DriveTrainRightPosition, this.endRightTicks);
 
         this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
     }
@@ -106,12 +106,12 @@ public class DriveRouteTask extends TimedTask implements IControlTask
     @Override
     public boolean hasCompleted()
     {
-        double leftEncoderDistance = this.driveTrain.getLeftEncoderDistance();
-        double rightEncoderDistance = this.driveTrain.getRightEncoderDistance();
+        double leftEncoderTicks = this.driveTrain.getLeftTicks();
+        double rightEncoderTicks = this.driveTrain.getRightTicks();
 
         // check how far away we are from the desired end location
-        double leftDelta = Math.abs(this.endLeftDistance - leftEncoderDistance);
-        double rightDelta = Math.abs(this.endRightDistance - rightEncoderDistance);
+        double leftDelta = Math.abs(this.endLeftTicks - leftEncoderTicks);
+        double rightDelta = Math.abs(this.endRightTicks - rightEncoderTicks);
 
         // return that we have completed this task if are within an acceptable distance
         // from the desired end location for both left and right. 

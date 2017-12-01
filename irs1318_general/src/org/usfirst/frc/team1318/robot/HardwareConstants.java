@@ -9,6 +9,7 @@ package org.usfirst.frc.team1318.robot;
 public class HardwareConstants
 {
     //================================================== DriveTrain ==============================================================
+    // Note: Pulse Distance is the distance moved per tick
 
     public static final double DRIVETRAIN_LEFT_ENCODER_PULSES_PER_REVOLUTION = 360.0;
     public static final double DRIVETRAIN_LEFT_WHEEL_DIAMETER = 4.0; // (in inches)
