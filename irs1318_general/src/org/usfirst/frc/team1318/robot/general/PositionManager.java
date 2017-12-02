@@ -76,6 +76,15 @@ public class PositionManager implements IMechanism
     }
 
     /**
+     * read all of the sensors for the mechanism that we will use in macros/autonomous mode and record their values
+     */
+    @Override
+    public void readSensors()
+    {
+        // no sensors to read for this mechanism
+    }
+
+    /**
      * calculate the various outputs to use based on the inputs and apply them to the outputs for the relevant mechanism
      */
     @Override

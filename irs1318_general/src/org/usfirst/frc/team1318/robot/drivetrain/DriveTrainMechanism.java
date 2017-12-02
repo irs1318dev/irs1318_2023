@@ -90,8 +90,6 @@ public class DriveTrainMechanism implements IMechanism
         this.rightVelocity = 0.0;
         this.rightError = 0.0;
         this.rightTicks = 0;
-
-        this.setControlMode();
     }
 
     /**
@@ -168,10 +166,10 @@ public class DriveTrainMechanism implements IMechanism
     }
 
     /**
-     * calculate the various outputs to use based on the inputs and apply them to the outputs for the relevant mechanism
+     * read all of the sensors for the mechanism that we will use in macros/autonomous mode and record their values
      */
     @Override
-    public void update()
+    public void readSensors()
     {
         this.leftVelocity = this.leftMotor.getSpeed();
         this.leftError = this.leftMotor.getError();
@@ -186,7 +184,14 @@ public class DriveTrainMechanism implements IMechanism
         this.logger.logNumber(DriveTrainMechanism.LogName, "rightVelocity", this.rightVelocity);
         this.logger.logNumber(DriveTrainMechanism.LogName, "rightError", this.rightError);
         this.logger.logNumber(DriveTrainMechanism.LogName, "rightTicks", this.rightTicks);
+    }
 
+    /**
+     * calculate the various outputs to use based on the inputs and apply them to the outputs for the relevant mechanism
+     */
+    @Override
+    public void update()
+    {
         if (this.driver.getDigital(Operation.DriveTrainEnablePID))
         {
             this.usePID = true;

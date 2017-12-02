@@ -44,9 +44,15 @@ public class PowerManager implements IMechanism
     }
 
     @Override
-    public void update()
+    public void readSensors()
     {
         this.batteryVoltageFilter.update(this.pdp.getBatteryVoltage());
+    }
+
+    @Override
+    public void update()
+    {
+        // no outputs to monitor for this mechanism
     }
 
     @Override
