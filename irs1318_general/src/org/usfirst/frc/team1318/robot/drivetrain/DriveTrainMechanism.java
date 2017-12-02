@@ -72,8 +72,10 @@ public class DriveTrainMechanism implements IMechanism
 
         this.leftMotor = provider.getTalon(ElectronicsConstants.DRIVETRAIN_LEFT_TALON_CHANNEL);
         this.rightMotor = provider.getTalon(ElectronicsConstants.DRIVETRAIN_RIGHT_TALON_CHANNEL);
-        this.leftEncoder = provider.getEncoder(ElectronicsConstants.DRIVETRAIN_LEFT_ENCODER_CHANNEL_A, ElectronicsConstants.DRIVETRAIN_LEFT_ENCODER_CHANNEL_B);
-        this.rightEncoder = provider.getEncoder(ElectronicsConstants.DRIVETRAIN_RIGHT_ENCODER_CHANNEL_A, ElectronicsConstants.DRIVETRAIN_RIGHT_ENCODER_CHANNEL_B);
+        this.leftEncoder = provider.getEncoder(ElectronicsConstants.DRIVETRAIN_LEFT_ENCODER_CHANNEL_A,
+            ElectronicsConstants.DRIVETRAIN_LEFT_ENCODER_CHANNEL_B);
+        this.rightEncoder = provider.getEncoder(ElectronicsConstants.DRIVETRAIN_RIGHT_ENCODER_CHANNEL_A,
+            ElectronicsConstants.DRIVETRAIN_RIGHT_ENCODER_CHANNEL_B);
 
         this.leftEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_LEFT_PULSE_DISTANCE);
         this.rightEncoder.setDistancePerPulse(HardwareConstants.DRIVETRAIN_RIGHT_PULSE_DISTANCE);
@@ -165,10 +167,10 @@ public class DriveTrainMechanism implements IMechanism
     }
 
     /**
-     * calculate the various outputs to use based on the inputs and apply them to the outputs for the relevant mechanism
+     * read all of the sensors for the mechanism that we will use in macros/autonomous mode and record their values
      */
     @Override
-    public void update()
+    public void readSensors()
     {
         this.leftVelocity = -this.leftEncoder.getRate();
         this.leftDistance = -this.leftEncoder.getDistance();
@@ -183,7 +185,14 @@ public class DriveTrainMechanism implements IMechanism
         this.logger.logNumber(DriveTrainMechanism.LogName, "rightVelocity", this.rightVelocity);
         this.logger.logNumber(DriveTrainMechanism.LogName, "rightDistance", this.rightDistance);
         this.logger.logNumber(DriveTrainMechanism.LogName, "rightTicks", this.rightTicks);
+    }
 
+    /**
+     * calculate the various outputs to use based on the inputs and apply them to the outputs for the relevant mechanism
+     */
+    @Override
+    public void update()
+    {
         if (this.driver.getDigital(Operation.DriveTrainEnablePID))
         {
             this.usePID = true;

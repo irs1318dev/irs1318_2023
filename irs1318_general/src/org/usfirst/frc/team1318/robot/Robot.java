@@ -156,6 +156,8 @@ public class Robot extends IterativeRobot
      */
     public void generalPeriodic()
     {
+        this.mechanisms.readSensors();
+
         this.driver.update();
 
         // run each mechanism

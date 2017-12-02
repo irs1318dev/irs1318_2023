@@ -56,6 +56,7 @@ public class DriveTrainMechanismTest
         doReturn(0).when(leftEncoder).get();
         doReturn(0.0).when(timer).get();
 
+        driveTrainMechanism.readSensors();
         driveTrainMechanism.update();
 
         verify(leftMotor).set(eq(0.0));

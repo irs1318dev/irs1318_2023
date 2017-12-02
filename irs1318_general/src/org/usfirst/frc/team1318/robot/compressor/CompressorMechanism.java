@@ -42,7 +42,16 @@ public class CompressorMechanism implements IMechanism
     @Override
     public void setDriver(Driver driver)
     {
-        // not needed for this controller
+        // not needed for this mechanism
+    }
+
+    /**
+     * read all of the sensors for the mechanism that we will use in macros/autonomous mode and record their values
+     */
+    @Override
+    public void readSensors()
+    {
+        // no sensors to read for this mechanism
     }
 
     /**
