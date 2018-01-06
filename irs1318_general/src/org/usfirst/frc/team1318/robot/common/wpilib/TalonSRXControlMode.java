@@ -6,5 +6,5 @@ public enum TalonSRXControlMode
     Disabled,
     Follower,
     Position,
-    Speed;
+    Velocity;
 }

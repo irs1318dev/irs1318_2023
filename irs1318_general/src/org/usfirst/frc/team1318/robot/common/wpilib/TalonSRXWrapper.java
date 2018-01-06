@@ -43,7 +43,7 @@ public class TalonSRXWrapper implements ITalonSRX
         {
             controlMode = ControlMode.Position;
         }
-        else if (mode == TalonSRXControlMode.Speed)
+        else if (mode == TalonSRXControlMode.Velocity)
         {
             controlMode = ControlMode.Velocity;
         }
