@@ -44,7 +44,7 @@ public class TestWpilibProvider implements IWpilibProvider
     }
 
     @Override
-    public ITalonSRX getCANTalon(int deviceNumber)
+    public ITalonSRX getTalonSRX(int deviceNumber)
     {
         if (!this.canTalonMap.containsKey(deviceNumber))
         {

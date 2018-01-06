@@ -12,7 +12,7 @@ public class WpilibProvider implements IWpilibProvider
     }
 
     @Override
-    public ITalonSRX getCANTalon(int deviceNumber)
+    public ITalonSRX getTalonSRX(int deviceNumber)
     {
         return new TalonSRXWrapper(deviceNumber);
     }
