@@ -96,7 +96,7 @@ public class PositionManager implements IMechanism
 
         if (this.driveTrainMechanism != null)
         {
-            leftDistance = this.driveTrainMechanism.getLeftTicks() * HardwareConstants.DRIVETRAIN_LEFT_PULSE_DISTANCE;
+            leftDistance = this.driveTrainMechanism.getLeftPosition() * HardwareConstants.DRIVETRAIN_LEFT_PULSE_DISTANCE;
             rightDistance = this.driveTrainMechanism.getRightTicks() * HardwareConstants.DRIVETRAIN_RIGHT_PULSE_DISTANCE;
         }
 

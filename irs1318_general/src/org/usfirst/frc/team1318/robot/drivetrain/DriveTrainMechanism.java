@@ -7,9 +7,9 @@ import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.common.Helpers;
 import org.usfirst.frc.team1318.robot.common.IDashboardLogger;
 import org.usfirst.frc.team1318.robot.common.IMechanism;
-import org.usfirst.frc.team1318.robot.common.wpilib.CANTalonControlMode;
-import org.usfirst.frc.team1318.robot.common.wpilib.ICANTalon;
+import org.usfirst.frc.team1318.robot.common.wpilib.ITalonSRX;
 import org.usfirst.frc.team1318.robot.common.wpilib.IWpilibProvider;
+import org.usfirst.frc.team1318.robot.common.wpilib.TalonSRXControlMode;
 import org.usfirst.frc.team1318.robot.driver.Operation;
 import org.usfirst.frc.team1318.robot.driver.common.Driver;
 
@@ -31,8 +31,8 @@ public class DriveTrainMechanism implements IMechanism
 
     private final IDashboardLogger logger;
 
-    private final ICANTalon leftMotor;
-    private final ICANTalon rightMotor;
+    private final ITalonSRX leftMotor;
+    private final ITalonSRX rightMotor;
 
     private Driver driver;
 
@@ -41,10 +41,10 @@ public class DriveTrainMechanism implements IMechanism
 
     private double leftVelocity;
     private double leftError;
-    private int leftTicks;
+    private int leftPosition;
     private double rightVelocity;
     private double rightError;
-    private int rightTicks;
+    private int rightPosition;
 
     /**
      * Initializes a new DriveTrainMechanism
@@ -59,26 +59,26 @@ public class DriveTrainMechanism implements IMechanism
     {
         this.logger = logger;
 
-        this.leftMotor = provider.getCANTalon(ElectronicsConstants.DRIVETRAIN_LEFT_MOTOR_CHANNEL);
-        this.leftMotor.enableBrakeMode(false);
-        this.leftMotor.reverseOutput(false);
-        this.leftMotor.reverseSensor(true);
+        this.leftMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_MOTOR_CHANNEL);
+        this.leftMotor.setNeutralMode(false);
+        this.leftMotor.invertOutput(false);
+        this.leftMotor.invertSensor(true);
 
-        ICANTalon leftFollowerMotor = provider.getCANTalon(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER_CHANNEL);
-        leftFollowerMotor.enableBrakeMode(false);
-        leftFollowerMotor.reverseOutput(false);
-        leftFollowerMotor.changeControlMode(CANTalonControlMode.Follower);
+        ITalonSRX leftFollowerMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER_CHANNEL);
+        leftFollowerMotor.setNeutralMode(false);
+        leftFollowerMotor.invertOutput(false);
+        leftFollowerMotor.changeControlMode(TalonSRXControlMode.Follower);
         leftFollowerMotor.set(ElectronicsConstants.DRIVETRAIN_LEFT_MOTOR_CHANNEL);
 
-        this.rightMotor = provider.getCANTalon(ElectronicsConstants.DRIVETRAIN_RIGHT_MOTOR_CHANNEL);
-        this.rightMotor.enableBrakeMode(false);
-        this.rightMotor.reverseOutput(true);
-        this.rightMotor.reverseSensor(false);
+        this.rightMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_MOTOR_CHANNEL);
+        this.rightMotor.setNeutralMode(false);
+        this.rightMotor.invertOutput(true);
+        this.rightMotor.invertSensor(false);
 
-        ICANTalon rightFollowerMotor = provider.getCANTalon(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER_CHANNEL);
-        rightFollowerMotor.changeControlMode(CANTalonControlMode.Follower);
-        rightFollowerMotor.enableBrakeMode(false);
-        rightFollowerMotor.reverseOutput(true);
+        ITalonSRX rightFollowerMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER_CHANNEL);
+        rightFollowerMotor.changeControlMode(TalonSRXControlMode.Follower);
+        rightFollowerMotor.setNeutralMode(false);
+        rightFollowerMotor.invertOutput(true);
         rightFollowerMotor.set(ElectronicsConstants.DRIVETRAIN_RIGHT_MOTOR_CHANNEL);
 
         this.usePID = TuningConstants.DRIVETRAIN_USE_PID;
@@ -86,10 +86,10 @@ public class DriveTrainMechanism implements IMechanism
 
         this.leftVelocity = 0.0;
         this.leftError = 0.0;
-        this.leftTicks = 0;
+        this.leftPosition = 0;
         this.rightVelocity = 0.0;
         this.rightError = 0.0;
-        this.rightTicks = 0;
+        this.rightPosition = 0;
     }
 
     /**
@@ -132,9 +132,9 @@ public class DriveTrainMechanism implements IMechanism
      * get the ticks from the left encoder
      * @return a value indicating the number of ticks we are at
      */
-    public int getLeftTicks()
+    public int getLeftPosition()
     {
-        return this.leftTicks;
+        return this.leftPosition;
     }
 
     /**
@@ -143,7 +143,7 @@ public class DriveTrainMechanism implements IMechanism
      */
     public int getRightTicks()
     {
-        return this.rightTicks;
+        return this.rightPosition;
     }
 
     /**
@@ -171,19 +171,19 @@ public class DriveTrainMechanism implements IMechanism
     @Override
     public void readSensors()
     {
-        this.leftVelocity = this.leftMotor.getSpeed();
+        this.leftVelocity = this.leftMotor.getVelocity();
         this.leftError = this.leftMotor.getError();
-        this.leftTicks = this.leftMotor.getTicks();
-        this.rightVelocity = this.rightMotor.getSpeed();
+        this.leftPosition = this.leftMotor.getPosition();
+        this.rightVelocity = this.rightMotor.getVelocity();
         this.rightError = this.rightMotor.getError();
-        this.rightTicks = this.rightMotor.getTicks();
+        this.rightPosition = this.rightMotor.getPosition();
 
         this.logger.logNumber(DriveTrainMechanism.LogName, "leftVelocity", this.leftVelocity);
         this.logger.logNumber(DriveTrainMechanism.LogName, "leftError", this.leftError);
-        this.logger.logNumber(DriveTrainMechanism.LogName, "leftTicks", this.leftTicks);
+        this.logger.logNumber(DriveTrainMechanism.LogName, "leftTicks", this.leftPosition);
         this.logger.logNumber(DriveTrainMechanism.LogName, "rightVelocity", this.rightVelocity);
         this.logger.logNumber(DriveTrainMechanism.LogName, "rightError", this.rightError);
-        this.logger.logNumber(DriveTrainMechanism.LogName, "rightTicks", this.rightTicks);
+        this.logger.logNumber(DriveTrainMechanism.LogName, "rightTicks", this.rightPosition);
     }
 
     /**
@@ -238,8 +238,8 @@ public class DriveTrainMechanism implements IMechanism
     @Override
     public void stop()
     {
-        this.leftMotor.changeControlMode(CANTalonControlMode.PercentVbus);
-        this.rightMotor.changeControlMode(CANTalonControlMode.PercentVbus);
+        this.leftMotor.changeControlMode(TalonSRXControlMode.Current);
+        this.rightMotor.changeControlMode(TalonSRXControlMode.Current);
 
         this.leftMotor.set(0.0);
         this.rightMotor.set(0.0);
@@ -249,10 +249,10 @@ public class DriveTrainMechanism implements IMechanism
 
         this.leftVelocity = 0.0;
         this.leftError = 0.0;
-        this.leftTicks = 0;
+        this.leftPosition = 0;
         this.rightVelocity = 0.0;
         this.rightError = 0.0;
-        this.rightTicks = 0;
+        this.rightPosition = 0;
     }
 
     /**
@@ -260,7 +260,7 @@ public class DriveTrainMechanism implements IMechanism
      */
     private void setControlMode()
     {
-        CANTalonControlMode mode = CANTalonControlMode.PercentVbus;
+        TalonSRXControlMode mode = TalonSRXControlMode.Current;
         if (this.usePID)
         {
             double leftKp;
@@ -274,7 +274,7 @@ public class DriveTrainMechanism implements IMechanism
 
             if (this.usePositionalMode)
             {
-                mode = CANTalonControlMode.Position;
+                mode = TalonSRXControlMode.Position;
                 leftKp = TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KP;
                 leftKi = TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KI;
                 leftKd = TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KD;
@@ -286,7 +286,7 @@ public class DriveTrainMechanism implements IMechanism
             }
             else
             {
-                mode = CANTalonControlMode.Speed;
+                mode = TalonSRXControlMode.Velocity;
                 leftKp = TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KP;
                 leftKi = TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KI;
                 leftKd = TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KD;

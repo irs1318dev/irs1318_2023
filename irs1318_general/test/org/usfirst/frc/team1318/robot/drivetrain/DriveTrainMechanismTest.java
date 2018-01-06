@@ -11,8 +11,8 @@ import org.usfirst.frc.team1318.robot.ElectronicsConstants;
 import org.usfirst.frc.team1318.robot.TestWpilibProvider;
 import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.common.IDashboardLogger;
-import org.usfirst.frc.team1318.robot.common.wpilib.CANTalonControlMode;
-import org.usfirst.frc.team1318.robot.common.wpilib.ICANTalon;
+import org.usfirst.frc.team1318.robot.common.wpilib.ITalonSRX;
+import org.usfirst.frc.team1318.robot.common.wpilib.TalonSRXControlMode;
 import org.usfirst.frc.team1318.robot.driver.Operation;
 import org.usfirst.frc.team1318.robot.driver.common.Driver;
 
@@ -23,10 +23,10 @@ public class DriveTrainMechanismTest
     {
         IDashboardLogger logger = mock(IDashboardLogger.class);
         TestWpilibProvider testProvider = new TestWpilibProvider();
-        ICANTalon leftMotor = testProvider.getCANTalon(ElectronicsConstants.DRIVETRAIN_LEFT_MOTOR_CHANNEL);
-        ICANTalon rightMotor = testProvider.getCANTalon(ElectronicsConstants.DRIVETRAIN_RIGHT_MOTOR_CHANNEL);
-        ICANTalon leftFollowerMotor = testProvider.getCANTalon(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER_CHANNEL);
-        ICANTalon rightFollowerMotor = testProvider.getCANTalon(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER_CHANNEL);
+        ITalonSRX leftMotor = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_MOTOR_CHANNEL);
+        ITalonSRX rightMotor = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_MOTOR_CHANNEL);
+        ITalonSRX leftFollowerMotor = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER_CHANNEL);
+        ITalonSRX rightFollowerMotor = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER_CHANNEL);
 
         Driver driver = mock(Driver.class);
 
@@ -40,11 +40,11 @@ public class DriveTrainMechanismTest
         doReturn(0.0).when(driver).getAnalog(Operation.DriveTrainMoveForward);
         doReturn(0.0).when(driver).getAnalog(Operation.DriveTrainTurn);
         doReturn(0.0).when(leftMotor).getError();
-        doReturn(0.0).when(leftMotor).getSpeed();
-        doReturn(0).when(leftMotor).getTicks();
+        doReturn(0.0).when(leftMotor).getVelocity();
+        doReturn(0).when(leftMotor).getPosition();
         doReturn(0.0).when(rightMotor).getError();
-        doReturn(0.0).when(rightMotor).getSpeed();
-        doReturn(0).when(rightMotor).getTicks();
+        doReturn(0.0).when(rightMotor).getVelocity();
+        doReturn(0).when(rightMotor).getPosition();
 
         DriveTrainMechanism driveTrainMechanism = new DriveTrainMechanism(logger, testProvider);
         driveTrainMechanism.setDriver(driver);
@@ -52,19 +52,19 @@ public class DriveTrainMechanismTest
         driveTrainMechanism.update();
 
         // from constructor:
-        verify(leftMotor).enableBrakeMode(eq(false));
-        verify(leftMotor).reverseOutput(eq(false));
-        verify(leftMotor).reverseSensor(eq(true));
-        verify(leftFollowerMotor).enableBrakeMode(eq(false));
-        verify(leftFollowerMotor).reverseOutput(eq(false));
-        verify(leftFollowerMotor).changeControlMode(eq(CANTalonControlMode.Follower));
+        verify(leftMotor).setNeutralMode(eq(false));
+        verify(leftMotor).invertOutput(eq(false));
+        verify(leftMotor).invertSensor(eq(true));
+        verify(leftFollowerMotor).setNeutralMode(eq(false));
+        verify(leftFollowerMotor).invertOutput(eq(false));
+        verify(leftFollowerMotor).changeControlMode(eq(TalonSRXControlMode.Follower));
         verify(leftFollowerMotor).set(eq((double)ElectronicsConstants.DRIVETRAIN_LEFT_MOTOR_CHANNEL));
-        verify(rightMotor).enableBrakeMode(eq(false));
-        verify(rightMotor).reverseOutput(eq(true));
-        verify(rightMotor).reverseSensor(eq(false));
-        verify(rightFollowerMotor).changeControlMode(eq(CANTalonControlMode.Follower));
-        verify(rightFollowerMotor).enableBrakeMode(eq(false));
-        verify(rightFollowerMotor).reverseOutput(eq(true));
+        verify(rightMotor).setNeutralMode(eq(false));
+        verify(rightMotor).invertOutput(eq(true));
+        verify(rightMotor).invertSensor(eq(false));
+        verify(rightFollowerMotor).changeControlMode(eq(TalonSRXControlMode.Follower));
+        verify(rightFollowerMotor).setNeutralMode(eq(false));
+        verify(rightFollowerMotor).invertOutput(eq(true));
         verify(rightFollowerMotor).set(eq((double)ElectronicsConstants.DRIVETRAIN_RIGHT_MOTOR_CHANNEL));
 
         // from setDriver:
@@ -78,16 +78,16 @@ public class DriveTrainMechanismTest
             eq(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KI),
             eq(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KD),
             eq(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF));
-        verify(leftMotor).changeControlMode(eq(CANTalonControlMode.Speed));
-        verify(rightMotor).changeControlMode(eq(CANTalonControlMode.Speed));
+        verify(leftMotor).changeControlMode(eq(TalonSRXControlMode.Velocity));
+        verify(rightMotor).changeControlMode(eq(TalonSRXControlMode.Velocity));
 
         // from readSensors:
         verify(leftMotor).getError();
-        verify(leftMotor).getSpeed();
-        verify(leftMotor).getTicks();
+        verify(leftMotor).getVelocity();
+        verify(leftMotor).getPosition();
         verify(rightMotor).getError();
-        verify(rightMotor).getSpeed();
-        verify(rightMotor).getTicks();
+        verify(rightMotor).getVelocity();
+        verify(rightMotor).getPosition();
 
         // from update:
         verify(leftMotor).set(eq(0.0));
@@ -104,10 +104,10 @@ public class DriveTrainMechanismTest
     {
         IDashboardLogger logger = mock(IDashboardLogger.class);
         TestWpilibProvider testProvider = new TestWpilibProvider();
-        ICANTalon leftMotor = testProvider.getCANTalon(ElectronicsConstants.DRIVETRAIN_LEFT_MOTOR_CHANNEL);
-        ICANTalon rightMotor = testProvider.getCANTalon(ElectronicsConstants.DRIVETRAIN_RIGHT_MOTOR_CHANNEL);
-        ICANTalon leftFollowerMotor = testProvider.getCANTalon(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER_CHANNEL);
-        ICANTalon rightFollowerMotor = testProvider.getCANTalon(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER_CHANNEL);
+        ITalonSRX leftMotor = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_MOTOR_CHANNEL);
+        ITalonSRX rightMotor = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_MOTOR_CHANNEL);
+        ITalonSRX leftFollowerMotor = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER_CHANNEL);
+        ITalonSRX rightFollowerMotor = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER_CHANNEL);
 
         Driver driver = mock(Driver.class);
 
@@ -121,30 +121,30 @@ public class DriveTrainMechanismTest
         doReturn(0.0).when(driver).getAnalog(Operation.DriveTrainMoveForward);
         doReturn(0.0).when(driver).getAnalog(Operation.DriveTrainTurn);
         doReturn(0.0).when(leftMotor).getError();
-        doReturn(0.0).when(leftMotor).getSpeed();
-        doReturn(0).when(leftMotor).getTicks();
+        doReturn(0.0).when(leftMotor).getVelocity();
+        doReturn(0).when(leftMotor).getPosition();
         doReturn(0.0).when(rightMotor).getError();
-        doReturn(0.0).when(rightMotor).getSpeed();
-        doReturn(0).when(rightMotor).getTicks();
+        doReturn(0.0).when(rightMotor).getVelocity();
+        doReturn(0).when(rightMotor).getPosition();
 
         DriveTrainMechanism driveTrainMechanism = new DriveTrainMechanism(logger, testProvider);
         driveTrainMechanism.setDriver(driver);
         driveTrainMechanism.stop();
 
         // from constructor:
-        verify(leftMotor).enableBrakeMode(eq(false));
-        verify(leftMotor).reverseOutput(eq(false));
-        verify(leftMotor).reverseSensor(eq(true));
-        verify(leftFollowerMotor).enableBrakeMode(eq(false));
-        verify(leftFollowerMotor).reverseOutput(eq(false));
-        verify(leftFollowerMotor).changeControlMode(eq(CANTalonControlMode.Follower));
+        verify(leftMotor).setNeutralMode(eq(false));
+        verify(leftMotor).invertOutput(eq(false));
+        verify(leftMotor).invertSensor(eq(true));
+        verify(leftFollowerMotor).setNeutralMode(eq(false));
+        verify(leftFollowerMotor).invertOutput(eq(false));
+        verify(leftFollowerMotor).changeControlMode(eq(TalonSRXControlMode.Follower));
         verify(leftFollowerMotor).set(eq((double)ElectronicsConstants.DRIVETRAIN_LEFT_MOTOR_CHANNEL));
-        verify(rightMotor).enableBrakeMode(eq(false));
-        verify(rightMotor).reverseOutput(eq(true));
-        verify(rightMotor).reverseSensor(eq(false));
-        verify(rightFollowerMotor).changeControlMode(eq(CANTalonControlMode.Follower));
-        verify(rightFollowerMotor).enableBrakeMode(eq(false));
-        verify(rightFollowerMotor).reverseOutput(eq(true));
+        verify(rightMotor).setNeutralMode(eq(false));
+        verify(rightMotor).invertOutput(eq(true));
+        verify(rightMotor).invertSensor(eq(false));
+        verify(rightFollowerMotor).changeControlMode(eq(TalonSRXControlMode.Follower));
+        verify(rightFollowerMotor).setNeutralMode(eq(false));
+        verify(rightFollowerMotor).invertOutput(eq(true));
         verify(rightFollowerMotor).set(eq((double)ElectronicsConstants.DRIVETRAIN_RIGHT_MOTOR_CHANNEL));
 
         // from setDriver:
@@ -158,12 +158,12 @@ public class DriveTrainMechanismTest
             eq(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KI),
             eq(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KD),
             eq(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF));
-        verify(leftMotor).changeControlMode(eq(CANTalonControlMode.Speed));
-        verify(rightMotor).changeControlMode(eq(CANTalonControlMode.Speed));
+        verify(leftMotor).changeControlMode(eq(TalonSRXControlMode.Velocity));
+        verify(rightMotor).changeControlMode(eq(TalonSRXControlMode.Velocity));
 
         // from stop:
-        verify(leftMotor).changeControlMode(eq(CANTalonControlMode.PercentVbus));
-        verify(rightMotor).changeControlMode(eq(CANTalonControlMode.PercentVbus));
+        verify(leftMotor).changeControlMode(eq(TalonSRXControlMode.Current));
+        verify(rightMotor).changeControlMode(eq(TalonSRXControlMode.Current));
         verify(leftMotor).set(eq(0.0));
         verify(rightMotor).set(eq(0.0));
         verify(leftMotor).reset();

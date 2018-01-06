@@ -43,7 +43,7 @@ public class DriveRouteTask extends TimedTask implements IControlTask
 
         this.driveTrain = this.getInjector().getInstance(DriveTrainMechanism.class);
 
-        this.startLeftTicks = this.driveTrain.getLeftTicks();
+        this.startLeftTicks = this.driveTrain.getLeftPosition();
         this.startRightTicks = this.driveTrain.getRightTicks();
 
         this.endLeftTicks = this.startLeftTicks + this.leftPositionPerTime.apply(1.0);
@@ -106,7 +106,7 @@ public class DriveRouteTask extends TimedTask implements IControlTask
     @Override
     public boolean hasCompleted()
     {
-        double leftEncoderTicks = this.driveTrain.getLeftTicks();
+        double leftEncoderTicks = this.driveTrain.getLeftPosition();
         double rightEncoderTicks = this.driveTrain.getRightTicks();
 
         // check how far away we are from the desired end location
