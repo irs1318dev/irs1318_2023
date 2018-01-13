@@ -25,7 +25,10 @@ import com.google.inject.Inject;
 @Singleton
 public class DriveTrainMechanism implements IMechanism
 {
-    private final static String LogName = "dt";
+    private static final String LogName = "dt";
+
+    private static final int velocitySlotId = 0;
+    private static final int positionSlotId = 1;
 
     private static final double POWERLEVEL_MIN = -1.0;
     private static final double POWERLEVEL_MAX = 1.0;
@@ -239,8 +242,8 @@ public class DriveTrainMechanism implements IMechanism
     @Override
     public void stop()
     {
-        this.leftMotor.changeControlMode(TalonSRXControlMode.Current);
-        this.rightMotor.changeControlMode(TalonSRXControlMode.Current);
+        this.leftMotor.changeControlMode(TalonSRXControlMode.PercentOutput);
+        this.rightMotor.changeControlMode(TalonSRXControlMode.PercentOutput);
 
         this.leftMotor.set(0.0);
         this.rightMotor.set(0.0);
@@ -261,9 +264,10 @@ public class DriveTrainMechanism implements IMechanism
      */
     private void setControlMode()
     {
-        TalonSRXControlMode mode = TalonSRXControlMode.Current;
+        TalonSRXControlMode mode = TalonSRXControlMode.PercentOutput;
         if (this.usePID)
         {
+            int slotId;
             double leftKp;
             double leftKi;
             double leftKd;
@@ -276,6 +280,7 @@ public class DriveTrainMechanism implements IMechanism
             if (this.usePositionalMode)
             {
                 mode = TalonSRXControlMode.Position;
+                slotId = DriveTrainMechanism.positionSlotId;
                 leftKp = TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KP;
                 leftKi = TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KI;
                 leftKd = TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KD;
@@ -288,6 +293,7 @@ public class DriveTrainMechanism implements IMechanism
             else
             {
                 mode = TalonSRXControlMode.Velocity;
+                slotId = DriveTrainMechanism.velocitySlotId;
                 leftKp = TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KP;
                 leftKi = TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KI;
                 leftKd = TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KD;
@@ -298,8 +304,8 @@ public class DriveTrainMechanism implements IMechanism
                 rightKf = TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF;
             }
 
-            this.leftMotor.setPIDF(leftKp, leftKi, leftKd, leftKf);
-            this.rightMotor.setPIDF(rightKp, rightKi, rightKd, rightKf);
+            this.leftMotor.setPIDF(leftKp, leftKi, leftKd, leftKf, slotId);
+            this.rightMotor.setPIDF(rightKp, rightKi, rightKd, rightKf, slotId);
         }
 
         this.leftMotor.changeControlMode(mode);
