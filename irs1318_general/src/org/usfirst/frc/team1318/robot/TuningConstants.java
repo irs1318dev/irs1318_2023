@@ -83,9 +83,6 @@ public class TuningConstants
     public static final double DRIVETRAIN_K1 = 1.4;
     public static final double DRIVETRAIN_K2 = 0.5;
 
-    public static final double DRIVETRAIN_A = 0.4;// "a" coefficient (advancing turn)
-    public static final double DRIVETRAIN_B = 0.4;// "b" coefficient (in-place turn)
-
     // Drivetrain deadzone/max power levels
     public static final double DRIVETRAIN_X_DEAD_ZONE = .05;
     public static final double DRIVETRAIN_Y_DEAD_ZONE = .1;
@@ -94,9 +91,6 @@ public class TuningConstants
 
     public static final double DRIVETRAIN_POSITIONAL_MAX_POWER_LEVEL = 0.6;
     public static final double DRIVETRAIN_VELOCITY_MAX_POWER_LEVEL = 1.0;
-
-    public static final double DRIVETRAIN_REVERSE_RIGHT_SCALE_FACTOR = 1.05;
-    public static final double DRIVETRAIN_REVERSE_LEFT_SCALE_FACTOR = 1.05;
 
     public static final double DRIVETRAIN_ENCODER_ODOMETRY_ANGLE_CORRECTION = 1.0; // account for turning weirdness (any degree offset in the angle)
 }

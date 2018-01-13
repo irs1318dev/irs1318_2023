@@ -3,6 +3,7 @@ package org.usfirst.frc.team1318.robot.drivetrain;
 import javax.inject.Singleton;
 
 import org.usfirst.frc.team1318.robot.ElectronicsConstants;
+import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.common.Helpers;
 import org.usfirst.frc.team1318.robot.common.IDashboardLogger;
@@ -10,6 +11,7 @@ import org.usfirst.frc.team1318.robot.common.IMechanism;
 import org.usfirst.frc.team1318.robot.common.wpilib.ITalonSRX;
 import org.usfirst.frc.team1318.robot.common.wpilib.IWpilibProvider;
 import org.usfirst.frc.team1318.robot.common.wpilib.TalonSRXControlMode;
+import org.usfirst.frc.team1318.robot.common.wpilib.TalonSRXFeedbackDevice;
 import org.usfirst.frc.team1318.robot.common.wpilib.TalonSRXNeutralMode;
 import org.usfirst.frc.team1318.robot.driver.Operation;
 import org.usfirst.frc.team1318.robot.driver.common.Driver;
@@ -65,8 +67,9 @@ public class DriveTrainMechanism implements IMechanism
 
         this.leftMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_MOTOR_CHANNEL);
         this.leftMotor.setNeutralMode(TalonSRXNeutralMode.Coast);
-        this.leftMotor.invertOutput(false);
-        this.leftMotor.invertSensor(true);
+        this.leftMotor.invertOutput(HardwareConstants.DRIVETRAIN_LEFT_INVERT_OUTPUT);
+        this.leftMotor.invertSensor(HardwareConstants.DRIVETRAIN_LEFT_INVERT_SENSOR);
+        this.leftMotor.setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
 
         ITalonSRX leftFollowerMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER_CHANNEL);
         leftFollowerMotor.setNeutralMode(TalonSRXNeutralMode.Coast);
@@ -76,8 +79,9 @@ public class DriveTrainMechanism implements IMechanism
 
         this.rightMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_MOTOR_CHANNEL);
         this.rightMotor.setNeutralMode(TalonSRXNeutralMode.Coast);
-        this.rightMotor.invertOutput(true);
-        this.rightMotor.invertSensor(false);
+        this.rightMotor.invertOutput(HardwareConstants.DRIVETRAIN_RIGHT_INVERT_OUTPUT);
+        this.rightMotor.invertSensor(HardwareConstants.DRIVETRAIN_RIGHT_INVERT_SENSOR);
+        this.rightMotor.setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
 
         ITalonSRX rightFollowerMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER_CHANNEL);
         rightFollowerMotor.changeControlMode(TalonSRXControlMode.Follower);
