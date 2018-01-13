@@ -73,12 +73,14 @@ public class DriveTrainMechanismTest
             eq(TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KP),
             eq(TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KI),
             eq(TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KD),
-            eq(TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KF));
+            eq(TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KF),
+            eq(0));
         verify(rightMotor).setPIDF(
             eq(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KP),
             eq(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KI),
             eq(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KD),
-            eq(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF));
+            eq(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF),
+            eq(0));
         verify(leftMotor).changeControlMode(eq(TalonSRXControlMode.Velocity));
         verify(rightMotor).changeControlMode(eq(TalonSRXControlMode.Velocity));
 
@@ -153,18 +155,20 @@ public class DriveTrainMechanismTest
             eq(TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KP),
             eq(TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KI),
             eq(TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KD),
-            eq(TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KF));
+            eq(TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KF),
+            eq(0));
         verify(rightMotor).setPIDF(
             eq(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KP),
             eq(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KI),
             eq(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KD),
-            eq(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF));
+            eq(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF),
+            eq(0));
         verify(leftMotor).changeControlMode(eq(TalonSRXControlMode.Velocity));
         verify(rightMotor).changeControlMode(eq(TalonSRXControlMode.Velocity));
 
         // from stop:
-        verify(leftMotor).changeControlMode(eq(TalonSRXControlMode.Current));
-        verify(rightMotor).changeControlMode(eq(TalonSRXControlMode.Current));
+        verify(leftMotor).changeControlMode(eq(TalonSRXControlMode.PercentOutput));
+        verify(rightMotor).changeControlMode(eq(TalonSRXControlMode.PercentOutput));
         verify(leftMotor).set(eq(0.0));
         verify(rightMotor).set(eq(0.0));
         verify(leftMotor).reset();
