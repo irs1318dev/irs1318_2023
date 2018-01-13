@@ -31,8 +31,7 @@ public class ElectronicsConstants
     //================================================== DriveTrain ==============================================================
 
     public static final int DRIVETRAIN_LEFT_MOTOR_CHANNEL = 1;
-    public static final int DRIVETRAIN_RIGHT_MOTOR_CHANNEL = 2;
-
-    public static final int DRIVETRAIN_LEFT_FOLLOWER_CHANNEL = 3;
+    public static final int DRIVETRAIN_LEFT_FOLLOWER_CHANNEL = 2;
+    public static final int DRIVETRAIN_RIGHT_MOTOR_CHANNEL = 3;
     public static final int DRIVETRAIN_RIGHT_FOLLOWER_CHANNEL = 4;
 }

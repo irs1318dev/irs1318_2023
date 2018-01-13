@@ -51,7 +51,7 @@ public class TuningConstants
     //================================================== DriveTrain ==============================================================
 
     // Drivetrain PID keys/default values:
-    public static final boolean DRIVETRAIN_USE_PID = true;
+    public static final boolean DRIVETRAIN_USE_PID = false;
 
     // Velocity PID (right)
     public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KP = 0.02; // TuningConstants.COMPETITION_ROBOT ? 0.015 : 0.02;
@@ -89,7 +89,7 @@ public class TuningConstants
     // Drivetrain deadzone/max power levels
     public static final double DRIVETRAIN_X_DEAD_ZONE = .05;
     public static final double DRIVETRAIN_Y_DEAD_ZONE = .1;
-    public static final double DRIVETRAIN_MAX_POWER_LEVEL = 0.775;// max power level (velocity)
+    public static final double DRIVETRAIN_MAX_POWER_LEVEL = 1.0;// max power level (velocity)
     public static final double DRIVETRAIN_MAX_POWER_POSITIONAL_NON_PID = 0.2;// max power level (positional, non-PID)
 
     public static final double DRIVETRAIN_POSITIONAL_MAX_POWER_LEVEL = 0.6;
