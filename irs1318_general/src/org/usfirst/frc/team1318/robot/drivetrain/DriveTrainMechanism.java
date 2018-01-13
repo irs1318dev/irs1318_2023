@@ -10,6 +10,7 @@ import org.usfirst.frc.team1318.robot.common.IMechanism;
 import org.usfirst.frc.team1318.robot.common.wpilib.ITalonSRX;
 import org.usfirst.frc.team1318.robot.common.wpilib.IWpilibProvider;
 import org.usfirst.frc.team1318.robot.common.wpilib.TalonSRXControlMode;
+import org.usfirst.frc.team1318.robot.common.wpilib.TalonSRXNeutralMode;
 import org.usfirst.frc.team1318.robot.driver.Operation;
 import org.usfirst.frc.team1318.robot.driver.common.Driver;
 
@@ -60,24 +61,24 @@ public class DriveTrainMechanism implements IMechanism
         this.logger = logger;
 
         this.leftMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_MOTOR_CHANNEL);
-        this.leftMotor.setNeutralMode(false);
+        this.leftMotor.setNeutralMode(TalonSRXNeutralMode.Coast);
         this.leftMotor.invertOutput(false);
         this.leftMotor.invertSensor(true);
 
         ITalonSRX leftFollowerMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER_CHANNEL);
-        leftFollowerMotor.setNeutralMode(false);
+        leftFollowerMotor.setNeutralMode(TalonSRXNeutralMode.Coast);
         leftFollowerMotor.invertOutput(false);
         leftFollowerMotor.changeControlMode(TalonSRXControlMode.Follower);
         leftFollowerMotor.set(ElectronicsConstants.DRIVETRAIN_LEFT_MOTOR_CHANNEL);
 
         this.rightMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_MOTOR_CHANNEL);
-        this.rightMotor.setNeutralMode(false);
+        this.rightMotor.setNeutralMode(TalonSRXNeutralMode.Coast);
         this.rightMotor.invertOutput(true);
         this.rightMotor.invertSensor(false);
 
         ITalonSRX rightFollowerMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER_CHANNEL);
         rightFollowerMotor.changeControlMode(TalonSRXControlMode.Follower);
-        rightFollowerMotor.setNeutralMode(false);
+        rightFollowerMotor.setNeutralMode(TalonSRXNeutralMode.Coast);
         rightFollowerMotor.invertOutput(true);
         rightFollowerMotor.set(ElectronicsConstants.DRIVETRAIN_RIGHT_MOTOR_CHANNEL);
 
