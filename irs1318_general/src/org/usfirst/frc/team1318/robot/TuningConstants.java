@@ -51,21 +51,19 @@ public class TuningConstants
     //================================================== DriveTrain ==============================================================
 
     // Drivetrain PID keys/default values:
-    public static final boolean DRIVETRAIN_USE_PID = false;
+    public static final boolean DRIVETRAIN_USE_PID = true;
 
     // Velocity PID (right)
-    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KP = 0.02; // TuningConstants.COMPETITION_ROBOT ? 0.015 : 0.02;
+    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KP = 0.55;
     public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KI = 0.0;
     public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KD = 0.0;
-    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KF = 0.4;
-    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KS = 100.0;
+    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KF = 0.1;
 
     // Velocity PID (left)
-    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KP = 0.02; // TuningConstants.COMPETITION_ROBOT ? 0.015 : 0.02;
+    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KP = 0.55;
     public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KI = 0.0;
     public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KD = 0.0;
-    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KF = 0.4;
-    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KS = 100.0;
+    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KF = 0.1;
 
     // Position PID (right)
     public static final double DRIVETRAIN_POSITION_PID_RIGHT_KP = 0.35;

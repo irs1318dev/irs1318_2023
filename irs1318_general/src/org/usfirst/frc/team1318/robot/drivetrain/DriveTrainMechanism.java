@@ -377,7 +377,7 @@ public class DriveTrainMechanism implements IMechanism
         this.assertPowerLevelRange(left, "left");
         this.assertPowerLevelRange(right, "right");
 
-        return new Setpoint(left, right);
+        return new Setpoint(left * 5600, right * 5600);
     }
 
     /**
