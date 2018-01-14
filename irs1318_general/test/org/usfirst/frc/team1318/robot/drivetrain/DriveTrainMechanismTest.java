@@ -12,6 +12,7 @@ import org.usfirst.frc.team1318.robot.TestWpilibProvider;
 import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.common.IDashboardLogger;
 import org.usfirst.frc.team1318.robot.common.wpilib.ITalonSRX;
+import org.usfirst.frc.team1318.robot.common.wpilib.ITimer;
 import org.usfirst.frc.team1318.robot.common.wpilib.TalonSRXControlMode;
 import org.usfirst.frc.team1318.robot.common.wpilib.TalonSRXNeutralMode;
 import org.usfirst.frc.team1318.robot.driver.Operation;
@@ -23,6 +24,7 @@ public class DriveTrainMechanismTest
     public void testSetPower_Zero()
     {
         IDashboardLogger logger = mock(IDashboardLogger.class);
+        ITimer timer = mock(ITimer.class);
         TestWpilibProvider testProvider = new TestWpilibProvider();
         ITalonSRX leftMotor = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_MOTOR_CHANNEL);
         ITalonSRX rightMotor = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_MOTOR_CHANNEL);
@@ -47,7 +49,7 @@ public class DriveTrainMechanismTest
         doReturn(0.0).when(rightMotor).getVelocity();
         doReturn(0).when(rightMotor).getPosition();
 
-        DriveTrainMechanism driveTrainMechanism = new DriveTrainMechanism(logger, testProvider);
+        DriveTrainMechanism driveTrainMechanism = new DriveTrainMechanism(logger, testProvider, timer);
         driveTrainMechanism.setDriver(driver);
         driveTrainMechanism.readSensors();
         driveTrainMechanism.update();
@@ -106,6 +108,7 @@ public class DriveTrainMechanismTest
     public void testStop()
     {
         IDashboardLogger logger = mock(IDashboardLogger.class);
+        ITimer timer = mock(ITimer.class);
         TestWpilibProvider testProvider = new TestWpilibProvider();
         ITalonSRX leftMotor = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_MOTOR_CHANNEL);
         ITalonSRX rightMotor = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_MOTOR_CHANNEL);
@@ -130,7 +133,7 @@ public class DriveTrainMechanismTest
         doReturn(0.0).when(rightMotor).getVelocity();
         doReturn(0).when(rightMotor).getPosition();
 
-        DriveTrainMechanism driveTrainMechanism = new DriveTrainMechanism(logger, testProvider);
+        DriveTrainMechanism driveTrainMechanism = new DriveTrainMechanism(logger, testProvider, timer);
         driveTrainMechanism.setDriver(driver);
         driveTrainMechanism.stop();
 

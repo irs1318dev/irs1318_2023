@@ -58,12 +58,14 @@ public class TuningConstants
     public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KI = 0.0;
     public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KD = 0.0;
     public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KF = 0.1;
+    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KS = 5600.0;
 
     // Velocity PID (left)
     public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KP = 0.55;
     public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KI = 0.0;
     public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KD = 0.0;
     public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KF = 0.1;
+    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KS = 5600.0;
 
     // Position PID (right)
     public static final double DRIVETRAIN_POSITION_PID_RIGHT_KP = 0.35;
@@ -85,6 +87,8 @@ public class TuningConstants
     public static final double DRIVETRAIN_X_DEAD_ZONE = .05;
     public static final double DRIVETRAIN_Y_DEAD_ZONE = .1;
     public static final double DRIVETRAIN_MAX_POWER_LEVEL = 1.0;// max power level (velocity)
+    public static final double DRIVETRAIN_LEFT_POSITIONAL_NON_PID_MULTIPLICAND = HardwareConstants.DRIVETRAIN_LEFT_PULSE_DISTANCE / 60.0;
+    public static final double DRIVETRAIN_RIGHT_POSITIONAL_NON_PID_MULTIPLICAND = HardwareConstants.DRIVETRAIN_RIGHT_PULSE_DISTANCE / 60.0;
     public static final double DRIVETRAIN_MAX_POWER_POSITIONAL_NON_PID = 0.2;// max power level (positional, non-PID)
 
     public static final double DRIVETRAIN_POSITIONAL_MAX_POWER_LEVEL = 0.6;
