@@ -64,6 +64,11 @@ public class TalonSRXWrapper implements ITalonSRX
         this.wrappedObject.configSelectedFeedbackSensor(device, TalonSRXWrapper.pidIdx, 0);
     }
 
+    public void selectSlot(int slotId)
+    {
+        this.wrappedObject.selectProfileSlot(slotId, TalonSRXWrapper.pidIdx);
+    }
+
     public void setPIDF(double p, double i, double d, double f, int slotId)
     {
         this.wrappedObject.config_kP(slotId, p, TalonSRXWrapper.timeoutMS);

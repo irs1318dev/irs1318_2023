@@ -4,6 +4,7 @@ public interface ITalonSRX extends IMotor
 {
     void changeControlMode(TalonSRXControlMode mode);
     void setSensorType(TalonSRXFeedbackDevice feedbackDevice);
+    void selectSlot(int slotId);
     void setPIDF(double p, double i, double d, double f, int slotId);
     void setPIDF(double p, double i, double d, double f, int izone, double closeLoopRampRate, int slotId);
     void invertOutput(boolean flip);
