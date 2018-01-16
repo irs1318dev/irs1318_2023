@@ -74,8 +74,8 @@ public class DriveTrainMechanism implements IMechanism
 
         this.leftMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_MOTOR_CHANNEL);
         this.leftMotor.setNeutralMode(TalonSRXNeutralMode.Coast);
-        this.leftMotor.invertOutput(HardwareConstants.DRIVETRAIN_LEFT_INVERT_OUTPUT);
-        this.leftMotor.invertSensor(HardwareConstants.DRIVETRAIN_LEFT_INVERT_SENSOR);
+        this.leftMotor.setInvertOutput(HardwareConstants.DRIVETRAIN_LEFT_INVERT_OUTPUT);
+        this.leftMotor.setInvertSensor(HardwareConstants.DRIVETRAIN_LEFT_INVERT_SENSOR);
         this.leftMotor.setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
         this.leftMotor.setPIDF(
             TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KP,
@@ -86,14 +86,14 @@ public class DriveTrainMechanism implements IMechanism
 
         ITalonSRX leftFollowerMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER_CHANNEL);
         leftFollowerMotor.setNeutralMode(TalonSRXNeutralMode.Coast);
-        leftFollowerMotor.invertOutput(HardwareConstants.DRIVETRAIN_LEFT_INVERT_OUTPUT);
-        leftFollowerMotor.changeControlMode(TalonSRXControlMode.Follower);
+        leftFollowerMotor.setInvertOutput(HardwareConstants.DRIVETRAIN_LEFT_INVERT_OUTPUT);
+        leftFollowerMotor.setControlMode(TalonSRXControlMode.Follower);
         leftFollowerMotor.set(ElectronicsConstants.DRIVETRAIN_LEFT_MOTOR_CHANNEL);
 
         this.rightMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_MOTOR_CHANNEL);
         this.rightMotor.setNeutralMode(TalonSRXNeutralMode.Coast);
-        this.rightMotor.invertOutput(HardwareConstants.DRIVETRAIN_RIGHT_INVERT_OUTPUT);
-        this.rightMotor.invertSensor(HardwareConstants.DRIVETRAIN_RIGHT_INVERT_SENSOR);
+        this.rightMotor.setInvertOutput(HardwareConstants.DRIVETRAIN_RIGHT_INVERT_OUTPUT);
+        this.rightMotor.setInvertSensor(HardwareConstants.DRIVETRAIN_RIGHT_INVERT_SENSOR);
         this.rightMotor.setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
         this.rightMotor.setPIDF(
             TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KP,
@@ -103,9 +103,9 @@ public class DriveTrainMechanism implements IMechanism
             DriveTrainMechanism.pidSlotId);
 
         ITalonSRX rightFollowerMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER_CHANNEL);
-        rightFollowerMotor.changeControlMode(TalonSRXControlMode.Follower);
+        rightFollowerMotor.setControlMode(TalonSRXControlMode.Follower);
         rightFollowerMotor.setNeutralMode(TalonSRXNeutralMode.Coast);
-        rightFollowerMotor.invertOutput(HardwareConstants.DRIVETRAIN_RIGHT_INVERT_OUTPUT);
+        rightFollowerMotor.setInvertOutput(HardwareConstants.DRIVETRAIN_RIGHT_INVERT_OUTPUT);
         rightFollowerMotor.set(ElectronicsConstants.DRIVETRAIN_RIGHT_MOTOR_CHANNEL);
 
         this.leftPID = null;
@@ -268,8 +268,8 @@ public class DriveTrainMechanism implements IMechanism
     @Override
     public void stop()
     {
-        this.leftMotor.changeControlMode(TalonSRXControlMode.PercentOutput);
-        this.rightMotor.changeControlMode(TalonSRXControlMode.PercentOutput);
+        this.leftMotor.setControlMode(TalonSRXControlMode.PercentOutput);
+        this.rightMotor.setControlMode(TalonSRXControlMode.PercentOutput);
 
         this.leftMotor.set(0.0);
         this.rightMotor.set(0.0);
@@ -331,12 +331,12 @@ public class DriveTrainMechanism implements IMechanism
             }
 
             mode = TalonSRXControlMode.Velocity;
-            this.leftMotor.selectSlot(DriveTrainMechanism.pidSlotId);
-            this.rightMotor.selectSlot(DriveTrainMechanism.pidSlotId);
+            this.leftMotor.setSelectedSlot(DriveTrainMechanism.pidSlotId);
+            this.rightMotor.setSelectedSlot(DriveTrainMechanism.pidSlotId);
         }
 
-        this.leftMotor.changeControlMode(mode);
-        this.rightMotor.changeControlMode(mode);
+        this.leftMotor.setControlMode(mode);
+        this.rightMotor.setControlMode(mode);
     }
 
     /**
