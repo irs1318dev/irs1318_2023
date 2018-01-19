@@ -155,9 +155,13 @@ public class TalonSRXWrapper implements ITalonSRX
         this.wrappedObject.setNeutralMode(mode);
     }
 
-    public void reset()
+    public void stop()
     {
         this.wrappedObject.set(ControlMode.Disabled, 0.0);
+    }
+
+    public void reset()
+    {
         this.wrappedObject.setSelectedSensorPosition(0, TalonSRXWrapper.pidIdx, TalonSRXWrapper.timeoutMS);
     }
 
