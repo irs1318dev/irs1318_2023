@@ -271,8 +271,8 @@ public class DriveTrainMechanism implements IMechanism
         this.leftMotor.setControlMode(TalonSRXControlMode.PercentOutput);
         this.rightMotor.setControlMode(TalonSRXControlMode.PercentOutput);
 
-        this.leftMotor.set(0.0);
-        this.rightMotor.set(0.0);
+        this.leftMotor.stop();
+        this.rightMotor.stop();
 
         this.leftMotor.reset();
         this.rightMotor.reset();
