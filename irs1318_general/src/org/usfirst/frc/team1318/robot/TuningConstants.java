@@ -68,13 +68,13 @@ public class TuningConstants
     public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KS = 5600.0;
 
     // Position PID (right)
-    public static final double DRIVETRAIN_POSITION_PID_RIGHT_KP = 0.35;
+    public static final double DRIVETRAIN_POSITION_PID_RIGHT_KP = 0.0008;
     public static final double DRIVETRAIN_POSITION_PID_RIGHT_KI = 0.0;
     public static final double DRIVETRAIN_POSITION_PID_RIGHT_KD = 0.0;
     public static final double DRIVETRAIN_POSITION_PID_RIGHT_KF = 0.0;
 
     // Position PID (left)
-    public static final double DRIVETRAIN_POSITION_PID_LEFT_KP = 0.35;
+    public static final double DRIVETRAIN_POSITION_PID_LEFT_KP = 0.0008;
     public static final double DRIVETRAIN_POSITION_PID_LEFT_KI = 0.0;
     public static final double DRIVETRAIN_POSITION_PID_LEFT_KD = 0.0;
     public static final double DRIVETRAIN_POSITION_PID_LEFT_KF = 0.0;

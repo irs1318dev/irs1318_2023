@@ -15,6 +15,7 @@ import org.usfirst.frc.team1318.robot.common.wpilib.TimerWrapper;
 import org.usfirst.frc.team1318.robot.common.wpilib.WpilibProvider;
 import org.usfirst.frc.team1318.robot.driver.ButtonMap;
 import org.usfirst.frc.team1318.robot.driver.common.IButtonMap;
+import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainMechanism;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
@@ -35,7 +36,7 @@ public class RobotModule extends AbstractModule
     public MechanismManager getMechanismManager(Injector injector)
     {
         List<IMechanism> mechanismList = new ArrayList<>();
-        //mechanismList.add(injector.getInstance(DriveTrainMechanism.class));
+        mechanismList.add(injector.getInstance(DriveTrainMechanism.class));
         //mechanismList.add(injector.getInstance(PositionManager.class));
         //mechanismList.add(injector.getInstance(PowerManager.class));
         //mechanismList.add(injector.getInstance(VisionManager.class));
