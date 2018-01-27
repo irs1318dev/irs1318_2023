@@ -56,22 +56,22 @@ public class DriveTrainMechanismTest
         driveTrainMechanism.update();
 
         // from constructor:
-        verify(leftMotor).setNeutralMode(eq(TalonSRXNeutralMode.Coast));
+        verify(leftMotor).setNeutralMode(eq(TalonSRXNeutralMode.Brake));
         verify(leftMotor).setInvertOutput(eq(false));
         verify(leftMotor).setInvertSensor(eq(true));
         verify(leftMotor).setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
         verify(leftMotor).setSelectedSlot(eq(0));
-        verify(leftFollowerMotor).setNeutralMode(eq(TalonSRXNeutralMode.Coast));
+        verify(leftFollowerMotor).setNeutralMode(eq(TalonSRXNeutralMode.Brake));
         verify(leftFollowerMotor).setInvertOutput(eq(false));
         verify(leftFollowerMotor).setControlMode(eq(TalonSRXControlMode.Follower));
         verify(leftFollowerMotor).set(eq((double)ElectronicsConstants.DRIVETRAIN_LEFT_MOTOR_CHANNEL));
-        verify(rightMotor).setNeutralMode(eq(TalonSRXNeutralMode.Coast));
+        verify(rightMotor).setNeutralMode(eq(TalonSRXNeutralMode.Brake));
         verify(rightMotor).setInvertOutput(eq(true));
         verify(rightMotor).setInvertSensor(eq(true));
         verify(rightMotor).setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
         verify(rightMotor).setSelectedSlot(eq(0));
         verify(rightFollowerMotor).setControlMode(eq(TalonSRXControlMode.Follower));
-        verify(rightFollowerMotor).setNeutralMode(eq(TalonSRXNeutralMode.Coast));
+        verify(rightFollowerMotor).setNeutralMode(eq(TalonSRXNeutralMode.Brake));
         verify(rightFollowerMotor).setInvertOutput(eq(true));
         verify(rightFollowerMotor).set(eq((double)ElectronicsConstants.DRIVETRAIN_RIGHT_MOTOR_CHANNEL));
 
@@ -143,22 +143,22 @@ public class DriveTrainMechanismTest
         driveTrainMechanism.stop();
 
         // from constructor:
-        verify(leftMotor).setNeutralMode(eq(TalonSRXNeutralMode.Coast));
+        verify(leftMotor).setNeutralMode(eq(TalonSRXNeutralMode.Brake));
         verify(leftMotor).setInvertOutput(eq(false));
         verify(leftMotor).setInvertSensor(eq(true));
         verify(leftMotor).setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
         verify(leftMotor).setSelectedSlot(eq(0));
-        verify(leftFollowerMotor).setNeutralMode(eq(TalonSRXNeutralMode.Coast));
+        verify(leftFollowerMotor).setNeutralMode(eq(TalonSRXNeutralMode.Brake));
         verify(leftFollowerMotor).setInvertOutput(eq(false));
         verify(leftFollowerMotor).setControlMode(eq(TalonSRXControlMode.Follower));
         verify(leftFollowerMotor).set(eq((double)ElectronicsConstants.DRIVETRAIN_LEFT_MOTOR_CHANNEL));
-        verify(rightMotor).setNeutralMode(eq(TalonSRXNeutralMode.Coast));
+        verify(rightMotor).setNeutralMode(eq(TalonSRXNeutralMode.Brake));
         verify(rightMotor).setInvertOutput(eq(true));
         verify(rightMotor).setInvertSensor(eq(true));
         verify(rightMotor).setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
         verify(rightMotor).setSelectedSlot(eq(0));
         verify(rightFollowerMotor).setControlMode(eq(TalonSRXControlMode.Follower));
-        verify(rightFollowerMotor).setNeutralMode(eq(TalonSRXNeutralMode.Coast));
+        verify(rightFollowerMotor).setNeutralMode(eq(TalonSRXNeutralMode.Brake));
         verify(rightFollowerMotor).setInvertOutput(eq(true));
         verify(rightFollowerMotor).set(eq((double)ElectronicsConstants.DRIVETRAIN_RIGHT_MOTOR_CHANNEL));
 
@@ -179,8 +179,6 @@ public class DriveTrainMechanismTest
         verify(rightMotor).setControlMode(eq(TalonSRXControlMode.Velocity));
 
         // from stop:
-        verify(leftMotor).setControlMode(eq(TalonSRXControlMode.PercentOutput));
-        verify(rightMotor).setControlMode(eq(TalonSRXControlMode.PercentOutput));
         verify(leftMotor).stop();
         verify(rightMotor).stop();
         verify(leftMotor).reset();

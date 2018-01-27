@@ -260,7 +260,7 @@ public class DriveTrainMechanism implements IMechanism
         this.logger.logNumber(DriveTrainMechanism.LogName, "leftVelocityGoal", leftSetpoint);
         this.logger.logNumber(DriveTrainMechanism.LogName, "rightVelocityGoal", rightSetpoint);
 
-        // apply the power settings to the motors
+        // apply the setpoints to the motors
         this.leftMotor.set(leftSetpoint);
         this.rightMotor.set(rightSetpoint);
     }
@@ -271,9 +271,6 @@ public class DriveTrainMechanism implements IMechanism
     @Override
     public void stop()
     {
-        this.leftMotor.setControlMode(TalonSRXControlMode.PercentOutput);
-        this.rightMotor.setControlMode(TalonSRXControlMode.PercentOutput);
-
         this.leftMotor.stop();
         this.rightMotor.stop();
 
