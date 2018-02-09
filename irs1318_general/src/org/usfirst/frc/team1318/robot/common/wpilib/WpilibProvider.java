@@ -72,6 +72,12 @@ public class WpilibProvider implements IWpilibProvider
     }
 
     @Override
+    public IServo getServo(int channel)
+    {
+        return new ServoWrapper(channel);
+    }
+
+    @Override
     public IPowerDistributionPanel getPDP()
     {
         return new PowerDistributionPanelWrapper();
