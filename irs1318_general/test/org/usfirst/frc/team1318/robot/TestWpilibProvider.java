@@ -1,9 +1,10 @@
 package org.usfirst.frc.team1318.robot;
 
+import static org.mockito.Mockito.mock;
+
 import java.util.HashMap;
 
 import org.usfirst.frc.team1318.robot.common.wpilib.IAnalogInput;
-import org.usfirst.frc.team1318.robot.common.wpilib.ITalonSRX;
 import org.usfirst.frc.team1318.robot.common.wpilib.ICompressor;
 import org.usfirst.frc.team1318.robot.common.wpilib.IDigitalInput;
 import org.usfirst.frc.team1318.robot.common.wpilib.IDoubleSolenoid;
@@ -12,11 +13,11 @@ import org.usfirst.frc.team1318.robot.common.wpilib.IJoystick;
 import org.usfirst.frc.team1318.robot.common.wpilib.IMotor;
 import org.usfirst.frc.team1318.robot.common.wpilib.IPowerDistributionPanel;
 import org.usfirst.frc.team1318.robot.common.wpilib.IRelay;
+import org.usfirst.frc.team1318.robot.common.wpilib.IServo;
 import org.usfirst.frc.team1318.robot.common.wpilib.ISolenoid;
+import org.usfirst.frc.team1318.robot.common.wpilib.ITalonSRX;
 import org.usfirst.frc.team1318.robot.common.wpilib.IWpilibProvider;
 import org.usfirst.frc.team1318.robot.common.wpilib.RelayDirection;
-
-import static org.mockito.Mockito.mock;
 
 public class TestWpilibProvider implements IWpilibProvider
 {
@@ -28,6 +29,7 @@ public class TestWpilibProvider implements IWpilibProvider
     private HashMap<Integer, IEncoder> encoderMap = new HashMap<Integer, IEncoder>();
     private HashMap<Integer, IJoystick> joystickMap = new HashMap<Integer, IJoystick>();
     private HashMap<Integer, IMotor> motorMap = new HashMap<Integer, IMotor>();
+    private HashMap<Integer, IServo> servoMap = new HashMap<Integer, IServo>();
     private HashMap<Integer, IPowerDistributionPanel> pdpMap = new HashMap<Integer, IPowerDistributionPanel>();
     private HashMap<Integer, IRelay> relayMap = new HashMap<Integer, IRelay>();
     private HashMap<Integer, HashMap<Integer, ISolenoid>> solenoidModuleMap = new HashMap<Integer, HashMap<Integer, ISolenoid>>();
@@ -142,6 +144,17 @@ public class TestWpilibProvider implements IWpilibProvider
         }
 
         return this.motorMap.get(channel);
+    }
+
+    @Override
+    public IServo getServo(int channel)
+    {
+        if (!this.servoMap.containsKey(channel))
+        {
+            this.servoMap.put(channel, mock(IServo.class));
+        }
+
+        return this.servoMap.get(channel);
     }
 
     @Override

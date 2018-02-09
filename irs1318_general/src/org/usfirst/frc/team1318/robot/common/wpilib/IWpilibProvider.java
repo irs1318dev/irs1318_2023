@@ -13,6 +13,7 @@ public interface IWpilibProvider
     public IJoystick getJoystick(int port);
     public IMotor getTalon(int channel);
     public IMotor getVictor(int channel);
+    public IServo getServo(int channel);
     public IPowerDistributionPanel getPDP();
     public IPowerDistributionPanel getPDP(int module);
     public IRelay getRelay(int channel);
