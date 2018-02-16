@@ -18,6 +18,12 @@ public class WpilibProvider implements IWpilibProvider
     }
 
     @Override
+    public IVictorSPX getVictorSPX(int deviceNumber)
+    {
+        return new VictorSPXWrapper(deviceNumber);
+    }
+
+    @Override
     public ICompressor getCompressor()
     {
         return new CompressorWrapper();
