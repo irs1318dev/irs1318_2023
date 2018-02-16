@@ -16,6 +16,7 @@ import org.usfirst.frc.team1318.robot.common.wpilib.IRelay;
 import org.usfirst.frc.team1318.robot.common.wpilib.IServo;
 import org.usfirst.frc.team1318.robot.common.wpilib.ISolenoid;
 import org.usfirst.frc.team1318.robot.common.wpilib.ITalonSRX;
+import org.usfirst.frc.team1318.robot.common.wpilib.IVictorSPX;
 import org.usfirst.frc.team1318.robot.common.wpilib.IWpilibProvider;
 import org.usfirst.frc.team1318.robot.common.wpilib.RelayDirection;
 
@@ -23,6 +24,7 @@ public class TestWpilibProvider implements IWpilibProvider
 {
     private HashMap<Integer, IAnalogInput> analogInputMap = new HashMap<Integer, IAnalogInput>();
     private HashMap<Integer, ITalonSRX> canTalonMap = new HashMap<Integer, ITalonSRX>();
+    private HashMap<Integer, IVictorSPX> canVictorMap = new HashMap<Integer, IVictorSPX>();
     private HashMap<Integer, ICompressor> compressorMap = new HashMap<Integer, ICompressor>();
     private HashMap<Integer, IDigitalInput> digitalInputMap = new HashMap<Integer, IDigitalInput>();
     private HashMap<Integer, HashMap<Integer, IDoubleSolenoid>> doubleSolenoidModuleMap = new HashMap<Integer, HashMap<Integer, IDoubleSolenoid>>();
@@ -54,6 +56,17 @@ public class TestWpilibProvider implements IWpilibProvider
         }
 
         return this.canTalonMap.get(deviceNumber);
+    }
+
+    @Override
+    public IVictorSPX getVictorSPX(int deviceNumber)
+    {
+        if (!this.canVictorMap.containsKey(deviceNumber))
+        {
+            this.canVictorMap.put(deviceNumber, mock(IVictorSPX.class));
+        }
+
+        return this.canVictorMap.get(deviceNumber);
     }
 
     @Override
