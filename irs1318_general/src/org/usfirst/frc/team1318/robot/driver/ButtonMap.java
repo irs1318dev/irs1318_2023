@@ -15,6 +15,7 @@ import org.usfirst.frc.team1318.robot.driver.common.descriptions.AnalogOperation
 import org.usfirst.frc.team1318.robot.driver.common.descriptions.DigitalOperationDescription;
 import org.usfirst.frc.team1318.robot.driver.common.descriptions.MacroOperationDescription;
 import org.usfirst.frc.team1318.robot.driver.common.descriptions.OperationDescription;
+import org.usfirst.frc.team1318.robot.driver.common.descriptions.ShiftDescription;
 import org.usfirst.frc.team1318.robot.driver.common.descriptions.UserInputDevice;
 import org.usfirst.frc.team1318.robot.driver.controltasks.PIDBrakeTask;
 import org.usfirst.frc.team1318.robot.driver.controltasks.VisionAdvanceAndCenterTask;
@@ -24,6 +25,18 @@ import org.usfirst.frc.team1318.robot.driver.controltasks.VisionCenteringTask;
 public class ButtonMap implements IButtonMap
 {
     @SuppressWarnings("serial")
+    private static Map<Shift, ShiftDescription> ShiftButtons = new HashMap<Shift, ShiftDescription>()
+    {
+        {
+            put(
+                Shift.Debug,
+                new ShiftDescription(
+                    UserInputDevice.Driver,
+                    UserInputDeviceButton.JOYSTICK_STICK_TRIGGER_BUTTON));
+        }
+    };
+
+    @SuppressWarnings("serial")
     public static Map<Operation, OperationDescription> OperationSchema = new HashMap<Operation, OperationDescription>()
     {
         {
@@ -32,7 +45,7 @@ public class ButtonMap implements IButtonMap
                 Operation.EnableVision,
                 new DigitalOperationDescription(
                     UserInputDevice.None,
-                    UserInputDeviceButton.JOYSTICK_STICK_TOP_RIGHT_BUTTON,
+                    90, // POV right
                     ButtonType.Toggle));
 
             // Operations for the drive train
@@ -75,6 +88,12 @@ public class ButtonMap implements IButtonMap
                     UserInputDeviceButton.NONE,
                     ButtonType.Toggle));
             put(
+                Operation.DriveTrainUseBrakeMode,
+                new DigitalOperationDescription(
+                    UserInputDevice.None,
+                    UserInputDeviceButton.NONE,
+                    ButtonType.Toggle));
+            put(
                 Operation.DriveTrainLeftPosition,
                 new AnalogOperationDescription(
                     UserInputDevice.None,
@@ -112,6 +131,7 @@ public class ButtonMap implements IButtonMap
                     new Operation[]
                     {
                         Operation.DriveTrainUsePositionalMode,
+                        Operation.DriveTrainUseBrakeMode,
                         Operation.DriveTrainLeftPosition,
                         Operation.DriveTrainRightPosition,
                     }));
@@ -120,8 +140,8 @@ public class ButtonMap implements IButtonMap
             put(
                 MacroOperation.VisionCenter,
                 new MacroOperationDescription(
-                    UserInputDevice.Driver,
-                    UserInputDeviceButton.JOYSTICK_BASE_MIDDLE_LEFT_BUTTON,
+                    UserInputDevice.None,
+                    UserInputDeviceButton.NONE,
                     ButtonType.Toggle,
                     () -> new VisionCenteringTask(),
                     new Operation[]
@@ -136,8 +156,8 @@ public class ButtonMap implements IButtonMap
             put(
                 MacroOperation.VisionCenterAndAdvance,
                 new MacroOperationDescription(
-                    UserInputDevice.Driver,
-                    UserInputDeviceButton.JOYSTICK_STICK_TOP_RIGHT_BUTTON,
+                    UserInputDevice.None,
+                    UserInputDeviceButton.NONE,
                     ButtonType.Toggle,
                     () -> new VisionAdvanceAndCenterTask(),
                     new Operation[]
@@ -151,6 +171,12 @@ public class ButtonMap implements IButtonMap
                     }));
         }
     };
+
+    @Override
+    public Map<Shift, ShiftDescription> getShiftMap()
+    {
+        return ButtonMap.ShiftButtons;
+    }
 
     @Override
     public Map<Operation, OperationDescription> getOperationSchema()

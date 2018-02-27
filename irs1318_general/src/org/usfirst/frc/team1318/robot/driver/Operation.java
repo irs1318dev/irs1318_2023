@@ -11,6 +11,7 @@ public enum Operation
     DriveTrainMoveForward,
     DriveTrainTurn,
     DriveTrainSimpleMode,
+    DriveTrainUseBrakeMode,
     DriveTrainUsePositionalMode,
     DriveTrainLeftPosition,
     DriveTrainRightPosition,

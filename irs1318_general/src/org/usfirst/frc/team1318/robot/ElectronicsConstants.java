@@ -25,16 +25,16 @@ public class ElectronicsConstants
 
     //================================================== Auto ==============================================================
 
-    public static final int AUTO_DIP_SWITCH_A_CHANNEL = -1;
+    public static final int AUTO_DIP_SWITCH_A_DIGITAL_CHANNEL = -1;
 
     //================================================== Vision ==============================================================
 
-    public static final int VISION_RING_LIGHT_CHANNEL = 2;
+    public static final int VISION_RING_LIGHT_PCM_CHANNEL = 2;
 
     //================================================== DriveTrain ==============================================================
 
-    public static final int DRIVETRAIN_LEFT_MOTOR_CHANNEL = 1;
-    public static final int DRIVETRAIN_LEFT_FOLLOWER_CHANNEL = 2;
-    public static final int DRIVETRAIN_RIGHT_MOTOR_CHANNEL = 3;
-    public static final int DRIVETRAIN_RIGHT_FOLLOWER_CHANNEL = 4;
+    public static final int DRIVETRAIN_LEFT_MOTOR_CAN_CHANNEL = 1;
+    public static final int DRIVETRAIN_LEFT_FOLLOWER_CAN_CHANNEL = 2;
+    public static final int DRIVETRAIN_RIGHT_MOTOR_CAN_CHANNEL = 3;
+    public static final int DRIVETRAIN_RIGHT_FOLLOWER_CAN_CHANNEL = 4;
 }

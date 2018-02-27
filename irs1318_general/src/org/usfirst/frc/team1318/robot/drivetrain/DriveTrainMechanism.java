@@ -72,7 +72,7 @@ public class DriveTrainMechanism implements IMechanism
         this.logger = logger;
         this.timer = timer;
 
-        this.leftMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_MOTOR_CHANNEL);
+        this.leftMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_MOTOR_CAN_CHANNEL);
         this.leftMotor.setNeutralMode(TalonSRXNeutralMode.Brake);
         this.leftMotor.setInvertOutput(HardwareConstants.DRIVETRAIN_LEFT_INVERT_OUTPUT);
         this.leftMotor.setInvertSensor(HardwareConstants.DRIVETRAIN_LEFT_INVERT_SENSOR);
@@ -84,13 +84,13 @@ public class DriveTrainMechanism implements IMechanism
             TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KF,
             DriveTrainMechanism.pidSlotId);
 
-        ITalonSRX leftFollowerMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER_CHANNEL);
+        ITalonSRX leftFollowerMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER_CAN_CHANNEL);
         leftFollowerMotor.setNeutralMode(TalonSRXNeutralMode.Brake);
         leftFollowerMotor.setInvertOutput(HardwareConstants.DRIVETRAIN_LEFT_INVERT_OUTPUT);
         leftFollowerMotor.setControlMode(TalonSRXControlMode.Follower);
-        leftFollowerMotor.set(ElectronicsConstants.DRIVETRAIN_LEFT_MOTOR_CHANNEL);
+        leftFollowerMotor.set(ElectronicsConstants.DRIVETRAIN_LEFT_MOTOR_CAN_CHANNEL);
 
-        this.rightMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_MOTOR_CHANNEL);
+        this.rightMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_MOTOR_CAN_CHANNEL);
         this.rightMotor.setNeutralMode(TalonSRXNeutralMode.Brake);
         this.rightMotor.setInvertOutput(HardwareConstants.DRIVETRAIN_RIGHT_INVERT_OUTPUT);
         this.rightMotor.setInvertSensor(HardwareConstants.DRIVETRAIN_RIGHT_INVERT_SENSOR);
@@ -102,11 +102,11 @@ public class DriveTrainMechanism implements IMechanism
             TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF,
             DriveTrainMechanism.pidSlotId);
 
-        ITalonSRX rightFollowerMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER_CHANNEL);
+        ITalonSRX rightFollowerMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER_CAN_CHANNEL);
         rightFollowerMotor.setControlMode(TalonSRXControlMode.Follower);
         rightFollowerMotor.setNeutralMode(TalonSRXNeutralMode.Brake);
         rightFollowerMotor.setInvertOutput(HardwareConstants.DRIVETRAIN_RIGHT_INVERT_OUTPUT);
-        rightFollowerMotor.set(ElectronicsConstants.DRIVETRAIN_RIGHT_MOTOR_CHANNEL);
+        rightFollowerMotor.set(ElectronicsConstants.DRIVETRAIN_RIGHT_MOTOR_CAN_CHANNEL);
 
         this.leftPID = null;
         this.rightPID = null;
