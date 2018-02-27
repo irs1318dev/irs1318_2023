@@ -25,14 +25,14 @@ public class DriveTrainMechanismTest
         IDashboardLogger logger = mock(IDashboardLogger.class);
         ITimer timer = mock(ITimer.class);
         TestWpilibProvider testProvider = new TestWpilibProvider();
-        IMotor leftMotor = testProvider.getTalon(ElectronicsConstants.DRIVETRAIN_LEFT_TALON_CHANNEL);
-        IMotor rightMotor = testProvider.getTalon(ElectronicsConstants.DRIVETRAIN_RIGHT_TALON_CHANNEL);
+        IMotor leftMotor = testProvider.getTalon(ElectronicsConstants.DRIVETRAIN_LEFT_TALON_PWM_CHANNEL);
+        IMotor rightMotor = testProvider.getTalon(ElectronicsConstants.DRIVETRAIN_RIGHT_TALON_PWM_CHANNEL);
         IEncoder leftEncoder = testProvider.getEncoder(
-            ElectronicsConstants.DRIVETRAIN_LEFT_ENCODER_CHANNEL_A,
-            ElectronicsConstants.DRIVETRAIN_LEFT_ENCODER_CHANNEL_B);
+            ElectronicsConstants.DRIVETRAIN_LEFT_ENCODER_DIGITAL_CHANNEL_A,
+            ElectronicsConstants.DRIVETRAIN_LEFT_ENCODER_DIGITAL_CHANNEL_B);
         IEncoder rightEncoder = testProvider.getEncoder(
-            ElectronicsConstants.DRIVETRAIN_RIGHT_ENCODER_CHANNEL_A,
-            ElectronicsConstants.DRIVETRAIN_RIGHT_ENCODER_CHANNEL_B);
+            ElectronicsConstants.DRIVETRAIN_RIGHT_ENCODER_DIGITAL_CHANNEL_A,
+            ElectronicsConstants.DRIVETRAIN_RIGHT_ENCODER_DIGITAL_CHANNEL_B);
 
         Driver driver = mock(Driver.class);
 
@@ -81,14 +81,14 @@ public class DriveTrainMechanismTest
         IDashboardLogger logger = mock(IDashboardLogger.class);
         ITimer timer = mock(ITimer.class);
         TestWpilibProvider testProvider = new TestWpilibProvider();
-        IMotor leftMotor = testProvider.getTalon(ElectronicsConstants.DRIVETRAIN_LEFT_TALON_CHANNEL);
-        IMotor rightMotor = testProvider.getTalon(ElectronicsConstants.DRIVETRAIN_RIGHT_TALON_CHANNEL);
+        IMotor leftMotor = testProvider.getTalon(ElectronicsConstants.DRIVETRAIN_LEFT_TALON_PWM_CHANNEL);
+        IMotor rightMotor = testProvider.getTalon(ElectronicsConstants.DRIVETRAIN_RIGHT_TALON_PWM_CHANNEL);
         IEncoder leftEncoder = testProvider.getEncoder(
-            ElectronicsConstants.DRIVETRAIN_LEFT_ENCODER_CHANNEL_A,
-            ElectronicsConstants.DRIVETRAIN_LEFT_ENCODER_CHANNEL_B);
+            ElectronicsConstants.DRIVETRAIN_LEFT_ENCODER_DIGITAL_CHANNEL_A,
+            ElectronicsConstants.DRIVETRAIN_LEFT_ENCODER_DIGITAL_CHANNEL_B);
         IEncoder rightEncoder = testProvider.getEncoder(
-            ElectronicsConstants.DRIVETRAIN_RIGHT_ENCODER_CHANNEL_A,
-            ElectronicsConstants.DRIVETRAIN_RIGHT_ENCODER_CHANNEL_B);
+            ElectronicsConstants.DRIVETRAIN_RIGHT_ENCODER_DIGITAL_CHANNEL_A,
+            ElectronicsConstants.DRIVETRAIN_RIGHT_ENCODER_DIGITAL_CHANNEL_B);
 
         Driver driver = mock(Driver.class);
 
