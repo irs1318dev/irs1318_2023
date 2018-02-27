@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1318.robot.driver.controltasks;
 
+import org.usfirst.frc.team1318.robot.driver.Operation;
 import org.usfirst.frc.team1318.robot.driver.common.IControlTask;
 
 public class PIDBrakeTask extends MoveDistanceOneShotTaskBase implements IControlTask
@@ -20,6 +21,30 @@ public class PIDBrakeTask extends MoveDistanceOneShotTaskBase implements IContro
     {
         this.desiredFinalLeftTicks = this.startLeftTicks;
         this.desiredFinalRightTicks = this.startRightTicks;
+    }
+
+    @Override
+    public void begin()
+    {
+        super.begin();
+
+        this.setDigitalOperationState(Operation.DriveTrainUseBrakeMode, true);
+    }
+
+    @Override
+    public void end()
+    {
+        super.end();
+
+        this.setDigitalOperationState(Operation.DriveTrainUseBrakeMode, false);
+    }
+
+    @Override
+    public void stop()
+    {
+        super.stop();
+
+        this.setDigitalOperationState(Operation.DriveTrainUseBrakeMode, false);
     }
 
     /**

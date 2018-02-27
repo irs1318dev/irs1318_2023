@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1318.robot.driver.controltasks;
 
+import org.usfirst.frc.team1318.robot.HardwareConstants;
+
 public class DriveDistanceTimedTask extends DriveRouteTask
 {
     /**
@@ -12,21 +14,23 @@ public class DriveDistanceTimedTask extends DriveRouteTask
         super(
             percentage ->
             {
+                double ticks = distance / HardwareConstants.DRIVETRAIN_LEFT_PULSE_DISTANCE;
                 if (percentage <= 0.9)
                 {
-                    return distance * (percentage / 0.9);
+                    return ticks * (percentage / 0.9);
                 }
 
-                return distance;
+                return ticks;
             },
             percentage ->
             {
+                double ticks = distance / HardwareConstants.DRIVETRAIN_RIGHT_PULSE_DISTANCE;
                 if (percentage <= 0.9)
                 {
-                    return distance * (percentage / 0.9);
+                    return ticks * (percentage / 0.9);
                 }
 
-                return distance;
+                return ticks;
             },
             duration);
     }

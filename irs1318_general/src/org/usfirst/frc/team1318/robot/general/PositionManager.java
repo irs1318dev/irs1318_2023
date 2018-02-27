@@ -10,6 +10,9 @@ import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainMechanism;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.wpilibj.SPI;
 
 /**
  * Position manager
@@ -25,14 +28,18 @@ public class PositionManager implements IMechanism
 
     private final IDashboardLogger logger;
     private final DriveTrainMechanism driveTrainMechanism;
-    //private final AHRS navx;
+    private final AHRS navx;
 
     // Position coordinates
-    private double x;
-    private double y;
+    private double odometryX;
+    private double odometryY;
+    private double navxX;
+    private double navxY;
+    private double navxZ;
 
     // Orientation
-    private double angle;
+    private double odometryAngle;
+    private double navxAngle;
 
     // previous data (from which we will calculate changes)
     private double prevLeftDistance;
@@ -50,12 +57,16 @@ public class PositionManager implements IMechanism
     {
         this.logger = logger;
         this.driveTrainMechanism = driveTrainMechanism;
-        //this.navx = new AHRS(SPI.Port.kMXP);
+        this.navx = new AHRS(SPI.Port.kMXP);
 
-        this.x = 0.0;
-        this.y = 0.0;
+        this.odometryX = 0.0;
+        this.odometryY = 0.0;
+        this.navxX = 0.0;
+        this.navxY = 0.0;
+        this.navxZ = 0.0;
 
-        this.angle = 0.0;
+        this.odometryAngle = 0.0;
+        this.navxAngle = 0.0;
 
         this.prevLeftDistance = 0.0;
         this.prevRightDistance = 0.0;
@@ -81,15 +92,6 @@ public class PositionManager implements IMechanism
     @Override
     public void readSensors()
     {
-        // no sensors to read for this mechanism
-    }
-
-    /**
-     * calculate the various outputs to use based on the inputs and apply them to the outputs for the relevant mechanism
-     */
-    @Override
-    public void update()
-    {
         // check the current distance recorded by the encoders
         double leftDistance = 0.0;
         double rightDistance = 0.0;
@@ -97,7 +99,7 @@ public class PositionManager implements IMechanism
         if (this.driveTrainMechanism != null)
         {
             leftDistance = this.driveTrainMechanism.getLeftPosition() * HardwareConstants.DRIVETRAIN_LEFT_PULSE_DISTANCE;
-            rightDistance = this.driveTrainMechanism.getRightTicks() * HardwareConstants.DRIVETRAIN_RIGHT_PULSE_DISTANCE;
+            rightDistance = this.driveTrainMechanism.getRightPosition() * HardwareConstants.DRIVETRAIN_RIGHT_PULSE_DISTANCE;
         }
 
         // calculate the angle (in radians) based on the total distance traveled
@@ -110,22 +112,36 @@ public class PositionManager implements IMechanism
         double averagePositionChange = ((leftDistance - this.prevLeftDistance) + (rightDistance - this.prevRightDistance)) / 2;
 
         // calculate the change since last time, and update our relative position
-        this.x += averagePositionChange * Math.cos(angleR);
-        this.y += averagePositionChange * Math.sin(angleR);
+        this.odometryX += averagePositionChange * Math.cos(angleR);
+        this.odometryY += averagePositionChange * Math.sin(angleR);
 
-        this.angle = (angleR * 360 / (2 * Math.PI)) % 360;
+        this.odometryAngle = (angleR * 360 / (2 * Math.PI)) % 360;
 
         // record distance for next time
         this.prevLeftDistance = leftDistance;
         this.prevRightDistance = rightDistance;
 
+        this.navxAngle = this.navx.getAngle();
+        this.navxX = this.navx.getDisplacementX() * 100.0;
+        this.navxY = this.navx.getDisplacementY() * 100.0;
+        this.navxZ = this.navx.getDisplacementZ() * 100.0;
+
         // log the current position and orientation
-        this.logger.logNumber(PositionManager.LogName, "odom_angle", this.getOdometryAngle());
-        this.logger.logNumber(PositionManager.LogName, "odom_x", this.getOdometryX());
-        this.logger.logNumber(PositionManager.LogName, "odom_y", this.getOdometryY());
-        this.logger.logNumber(PositionManager.LogName, "navx_angle", this.getNavxAngle());
-        this.logger.logNumber(PositionManager.LogName, "navx_x", this.getNavxX());
-        this.logger.logNumber(PositionManager.LogName, "navx_y", this.getNavxY());
+        this.logger.logNumber(PositionManager.LogName, "odom_angle", this.odometryAngle);
+        this.logger.logNumber(PositionManager.LogName, "odom_x", this.odometryX);
+        this.logger.logNumber(PositionManager.LogName, "odom_y", this.odometryY);
+        this.logger.logNumber(PositionManager.LogName, "navx_angle", this.navxAngle);
+        this.logger.logNumber(PositionManager.LogName, "navx_x", this.navxX);
+        this.logger.logNumber(PositionManager.LogName, "navx_y", this.navxY);
+        this.logger.logNumber(PositionManager.LogName, "navx_z", this.navxZ);
+    }
+
+    /**
+     * calculate the various outputs to use based on the inputs and apply them to the outputs for the relevant mechanism
+     */
+    @Override
+    public void update()
+    {
     }
 
     /**
@@ -143,7 +159,7 @@ public class PositionManager implements IMechanism
      */
     public double getOdometryAngle()
     {
-        return this.angle;
+        return this.odometryAngle;
     }
 
     /**
@@ -152,7 +168,7 @@ public class PositionManager implements IMechanism
      */
     public double getOdometryX()
     {
-        return this.x;
+        return this.odometryX;
     }
 
     /**
@@ -161,7 +177,7 @@ public class PositionManager implements IMechanism
      */
     public double getOdometryY()
     {
-        return this.y;
+        return this.odometryY;
     }
 
     /**
@@ -170,7 +186,7 @@ public class PositionManager implements IMechanism
      */
     public double getNavxAngle()
     {
-        return 0.0; //this.navx.getAngle();
+        return this.navxAngle;
     }
 
     /**
@@ -179,7 +195,7 @@ public class PositionManager implements IMechanism
      */
     public double getNavxX()
     {
-        return 0.0; //this.navx.getDisplacementX() * 100.0;
+        return this.navxX;
     }
 
     /**
@@ -188,7 +204,16 @@ public class PositionManager implements IMechanism
      */
     public double getNavxY()
     {
-        return 0.0; //this.navx.getDisplacementY() * 100.0;
+        return this.navxY;
+    }
+
+    /**
+     * Retrieve the current z position
+     * @return the current z position
+     */
+    public double getNavxZ()
+    {
+        return this.navxZ;
     }
 
     /**
@@ -196,12 +221,19 @@ public class PositionManager implements IMechanism
      */
     public void reset()
     {
-        this.x = 0.0;
-        this.y = 0.0;
+        this.odometryX = 0.0;
+        this.odometryY = 0.0;
+        this.navxX = 0.0;
+        this.navxY = 0.0;
+        this.navxZ = 0.0;
 
-        this.angle = 0.0;
+        this.odometryAngle = 0.0;
+        this.navxAngle = 0.0;
 
         this.prevLeftDistance = 0.0;
         this.prevRightDistance = 0.0;
+
+        this.navx.reset();
+        this.navx.resetDisplacement();
     }
 }

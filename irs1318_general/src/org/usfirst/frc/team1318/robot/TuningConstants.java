@@ -54,30 +54,42 @@ public class TuningConstants
     public static final boolean DRIVETRAIN_USE_PID = true;
 
     // Velocity PID (right)
-    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KP = 0.55;
+    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KP = 0.2; // 0.65
     public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KI = 0.0;
     public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KD = 0.0;
-    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KF = 0.1;
-    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KS = 5600.0;
+    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KF = 0.15;
+    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KS = 3800.0;
 
     // Velocity PID (left)
-    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KP = 0.55;
+    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KP = 0.2; // 0.65
     public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KI = 0.0;
     public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KD = 0.0;
-    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KF = 0.1;
-    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KS = 5600.0;
+    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KF = 0.15;
+    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KS = 3800.0;
 
     // Position PID (right)
-    public static final double DRIVETRAIN_POSITION_PID_RIGHT_KP = 0.0008;
+    public static final double DRIVETRAIN_POSITION_PID_RIGHT_KP = 0.0002;
     public static final double DRIVETRAIN_POSITION_PID_RIGHT_KI = 0.0;
     public static final double DRIVETRAIN_POSITION_PID_RIGHT_KD = 0.0;
     public static final double DRIVETRAIN_POSITION_PID_RIGHT_KF = 0.0;
 
     // Position PID (left)
-    public static final double DRIVETRAIN_POSITION_PID_LEFT_KP = 0.0008;
+    public static final double DRIVETRAIN_POSITION_PID_LEFT_KP = 0.0002;
     public static final double DRIVETRAIN_POSITION_PID_LEFT_KI = 0.0;
     public static final double DRIVETRAIN_POSITION_PID_LEFT_KD = 0.0;
     public static final double DRIVETRAIN_POSITION_PID_LEFT_KF = 0.0;
+
+    // Brake PID (right)
+    public static final double DRIVETRAIN_BRAKE_PID_RIGHT_KP = 0.0012;
+    public static final double DRIVETRAIN_BRAKE_PID_RIGHT_KI = 0.0;
+    public static final double DRIVETRAIN_BRAKE_PID_RIGHT_KD = 0.0;
+    public static final double DRIVETRAIN_BRAKE_PID_RIGHT_KF = 0.0;
+
+    // Brake PID (left)
+    public static final double DRIVETRAIN_BRAKE_PID_LEFT_KP = 0.0012;
+    public static final double DRIVETRAIN_BRAKE_PID_LEFT_KI = 0.0;
+    public static final double DRIVETRAIN_BRAKE_PID_LEFT_KD = 0.0;
+    public static final double DRIVETRAIN_BRAKE_PID_LEFT_KF = 0.0;
 
     // Drivetrain choices for one-stick drive
     public static final double DRIVETRAIN_K1 = 1.4;
@@ -92,6 +104,7 @@ public class TuningConstants
     public static final double DRIVETRAIN_MAX_POWER_POSITIONAL_NON_PID = 0.2;// max power level (positional, non-PID)
 
     public static final double DRIVETRAIN_POSITIONAL_MAX_POWER_LEVEL = 0.6;
+    public static final double DRIVETRAIN_BRAKE_MAX_POWER_LEVEL = 0.6;
     public static final double DRIVETRAIN_VELOCITY_MAX_POWER_LEVEL = 1.0;
 
     public static final double DRIVETRAIN_ENCODER_ODOMETRY_ANGLE_CORRECTION = 1.0; // account for turning weirdness (any degree offset in the angle)

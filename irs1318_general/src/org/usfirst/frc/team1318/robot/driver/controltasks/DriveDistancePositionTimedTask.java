@@ -32,7 +32,7 @@ public class DriveDistancePositionTimedTask extends TimedTask
         this.driveTrain = this.getInjector().getInstance(DriveTrainMechanism.class);
 
         this.startLeftTicks = this.driveTrain.getLeftPosition();
-        this.startRightTicks = this.driveTrain.getRightTicks();
+        this.startRightTicks = this.driveTrain.getRightPosition();
 
         this.endLeftTicks = this.startLeftTicks + this.distance / HardwareConstants.DRIVETRAIN_LEFT_PULSE_DISTANCE;
         this.endRightTicks = this.startRightTicks + this.distance / HardwareConstants.DRIVETRAIN_RIGHT_PULSE_DISTANCE;
@@ -79,16 +79,18 @@ public class DriveDistancePositionTimedTask extends TimedTask
         }
 
         double leftTicks = this.driveTrain.getLeftPosition();
-        double rightTicks = this.driveTrain.getRightTicks();
+        double rightTicks = this.driveTrain.getRightPosition();
 
         if (this.distance >= 0.0)
         {
-            return leftTicks >= this.endLeftTicks ||
+            return leftTicks >= this.endLeftTicks
+                ||
                 rightTicks >= this.endRightTicks;
         }
         else
         {
-            return leftTicks <= this.endLeftTicks ||
+            return leftTicks <= this.endLeftTicks
+                ||
                 rightTicks <= this.endRightTicks;
         }
     }

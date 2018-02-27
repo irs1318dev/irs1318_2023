@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1318.robot.driver.controltasks;
 
-import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.driver.Operation;
 import org.usfirst.frc.team1318.robot.driver.common.IControlTask;
@@ -51,7 +50,7 @@ public abstract class MoveDistanceOneShotTaskBase extends ControlTaskBase implem
     protected void setStartEncoderDistance()
     {
         this.startLeftTicks = this.driveTrain.getLeftPosition();
-        this.startRightTicks = this.driveTrain.getRightTicks();
+        this.startRightTicks = this.driveTrain.getRightPosition();
     }
 
     /**
@@ -113,7 +112,7 @@ public abstract class MoveDistanceOneShotTaskBase extends ControlTaskBase implem
     public boolean hasCompleted()
     {
         double leftTicks = this.driveTrain.getLeftPosition();
-        double rightTicks = this.driveTrain.getRightTicks();
+        double rightTicks = this.driveTrain.getRightPosition();
 
         // check how far away we are from the desired end location
         double leftDelta = Math.abs(this.desiredFinalLeftTicks - leftTicks);
@@ -121,7 +120,8 @@ public abstract class MoveDistanceOneShotTaskBase extends ControlTaskBase implem
 
         // return that we have completed this task if are within an acceptable distance
         // from the desired end location for both left and right. 
-        return leftDelta < TuningConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA &&
+        return leftDelta < TuningConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA
+            &&
             rightDelta < TuningConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA;
     }
 }

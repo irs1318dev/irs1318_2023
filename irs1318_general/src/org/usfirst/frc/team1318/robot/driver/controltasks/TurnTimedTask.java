@@ -15,24 +15,25 @@ public class TurnTimedTask extends DriveRouteTask
             percentage ->
             {
                 double arcLength = Math.PI * HardwareConstants.DRIVETRAIN_WHEEL_SEPARATION_DISTANCE * (degrees / 360.0);
-                double leftDistance = arcLength;
+                double leftTicks = arcLength / HardwareConstants.DRIVETRAIN_LEFT_PULSE_DISTANCE;
+
                 if (percentage <= 0.9)
                 {
-                    return percentage * leftDistance / 0.9;
+                    return percentage * leftTicks / 0.9;
                 }
 
-                return leftDistance;
+                return leftTicks;
             },
             percentage ->
             {
                 double arcLength = Math.PI * HardwareConstants.DRIVETRAIN_WHEEL_SEPARATION_DISTANCE * (degrees / 360.0);
-                double rightDistance = -arcLength;
+                double rightTicks = -arcLength / HardwareConstants.DRIVETRAIN_RIGHT_PULSE_DISTANCE;
                 if (percentage <= 0.9)
                 {
-                    return percentage * rightDistance / 0.9;
+                    return percentage * rightTicks / 0.9;
                 }
 
-                return rightDistance;
+                return rightTicks;
             },
             duration);
     }
