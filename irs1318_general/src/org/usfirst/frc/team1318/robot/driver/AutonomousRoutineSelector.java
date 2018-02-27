@@ -1,8 +1,6 @@
 package org.usfirst.frc.team1318.robot.driver;
 
-import org.usfirst.frc.team1318.robot.ElectronicsConstants;
 import org.usfirst.frc.team1318.robot.common.IDashboardLogger;
-import org.usfirst.frc.team1318.robot.common.wpilib.IDigitalInput;
 import org.usfirst.frc.team1318.robot.common.wpilib.IWpilibProvider;
 import org.usfirst.frc.team1318.robot.driver.common.IControlTask;
 import org.usfirst.frc.team1318.robot.driver.controltasks.WaitTask;
@@ -10,13 +8,15 @@ import org.usfirst.frc.team1318.robot.driver.controltasks.WaitTask;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import edu.wpi.first.wpilibj.DriverStation;
+
 @Singleton
 public class AutonomousRoutineSelector
 {
     private static final String LogName = "auto";
     private final IDashboardLogger logger;
 
-    private final IDigitalInput dipSwitchA;
+    //    private final IDigitalInput dipSwitchA;
 
     /**
      * Initializes a new AutonomousDriver
@@ -28,7 +28,8 @@ public class AutonomousRoutineSelector
     {
         // initialize robot parts that are used to select autonomous routine (e.g. dipswitches) here...
         this.logger = logger;
-        this.dipSwitchA = provider.getDigitalInput(ElectronicsConstants.AUTO_DIP_SWITCH_A_CHANNEL);
+
+        //        this.dipSwitchA = provider.getDigitalInput(ElectronicsConstants.AUTO_DIP_SWITCH_A_DIGITAL_CHANNEL);
     }
 
     /**
@@ -37,30 +38,21 @@ public class AutonomousRoutineSelector
      */
     public IControlTask selectRoutine()
     {
-        int routineSelection = 0;
+        //        boolean switchA = !this.dipSwitchA.get();
+
+        String gameData = DriverStation.getInstance().getGameSpecificMessage();
 
         // add next base2 number (1, 2, 4, 8, 16, etc.) here based on number of dipswitches and which is on...
-        if (this.dipSwitchA.get())
-        {
-            routineSelection += 1;
-        }
+        //        int selection = 0;
+        //        if (switchA)
+        //        {
+        //            selection += 1;
+        //        }
 
-        // print routine selection to the smartdash
-        this.logger.logInteger(
-            AutonomousRoutineSelector.LogName, "routine",
-            routineSelection);
+        // print routine parameters to the smartdash
+        this.logger.logString(AutonomousRoutineSelector.LogName, "gameData", gameData);
 
-        switch (routineSelection)
-        {
-            case 0: // No switches flipped
-                return AutonomousRoutineSelector.GetFillerRoutine();
-
-            case 1: // Just A flipped
-                return AutonomousRoutineSelector.GetFillerRoutine();
-
-            default: // CANNOT READ
-                return AutonomousRoutineSelector.GetFillerRoutine();
-        }
+        return AutonomousRoutineSelector.GetFillerRoutine();
     }
 
     /**

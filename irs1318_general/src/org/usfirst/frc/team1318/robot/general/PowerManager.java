@@ -52,7 +52,7 @@ public class PowerManager implements IMechanism
     @Override
     public void update()
     {
-        // no outputs to monitor for this mechanism
+        // no outputs to update for this mechanism
     }
 
     @Override
