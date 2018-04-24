@@ -205,11 +205,13 @@ public class DriveTrainMechanism implements IMechanism
     public void readSensors()
     {
         this.leftVelocity = this.leftMotor.getVelocity();
-        this.leftError = this.leftMotor.getError();
-        this.leftPosition = this.leftMotor.getPosition();
         this.rightVelocity = this.rightMotor.getVelocity();
-        this.rightError = this.rightMotor.getError();
+
+        this.leftPosition = this.leftMotor.getPosition();
         this.rightPosition = this.rightMotor.getPosition();
+
+        this.leftError = this.leftMotor.getError();
+        this.rightError = this.rightMotor.getError();
 
         this.logger.logNumber(DriveTrainMechanism.LogName, "leftVelocity", this.leftVelocity);
         this.logger.logNumber(DriveTrainMechanism.LogName, "leftError", this.leftError);
@@ -393,6 +395,28 @@ public class DriveTrainMechanism implements IMechanism
             forwardVelocity *= -1.0;
         }
 
+        if ((!simpleDriveModeEnabled && TuningConstants.DRIVETRAIN_REGULAR_MODE_SQUARING)
+            || (simpleDriveModeEnabled && TuningConstants.DRIVETRAIN_SIMPLE_MODE_SQUARING))
+        {
+            if (turnAmount >= 0)
+            {
+                turnAmount = turnAmount * turnAmount;
+            }
+            else
+            {
+                turnAmount = -1.0 * turnAmount * turnAmount;
+            }
+
+            if (forwardVelocity >= 0)
+            {
+                forwardVelocity = forwardVelocity * forwardVelocity;
+            }
+            else
+            {
+                forwardVelocity = -1.0 * forwardVelocity * forwardVelocity;
+            }
+        }
+
         // adjust the intensity of the input
         if (simpleDriveModeEnabled)
         {
@@ -449,47 +473,61 @@ public class DriveTrainMechanism implements IMechanism
         this.logger.logNumber(DriveTrainMechanism.LogName, "leftPositionGoal", leftPositionGoal);
         this.logger.logNumber(DriveTrainMechanism.LogName, "rightPositionGoal", rightPositionGoal);
 
-        double left;
-        double right;
+        double leftPower;
+        double rightPower;
         if (this.usePID)
         {
             // use positional PID to get the relevant value
-            left = this.leftPID.calculatePosition(leftPositionGoal, this.leftPosition);
-            right = this.rightPID.calculatePosition(rightPositionGoal, this.rightPosition);
+            leftPower = this.leftPID.calculatePosition(leftPositionGoal, this.leftPosition);
+            rightPower = this.rightPID.calculatePosition(rightPositionGoal, this.rightPosition);
+
+            // apply cross-coupling changes
+            double leftPositionError = this.leftPID.getError();
+            double rightPositionError = this.rightPID.getError();
+
+            double positionErrorMagnitudeDelta = leftPositionError - rightPositionError;
+            if (TuningConstants.DRIVETRAIN_USE_CROSS_COUPLING
+                && !Helpers.WithinDelta(positionErrorMagnitudeDelta, 0.0, TuningConstants.DRIVETRAIN_CROSS_COUPLING_ZERO_ERROR_RANGE))
+            {
+                // add the delta times the coupling factor to the left, and subtract from the right
+                // (if left error is greater than right error, left should be given some more power than right)
+                leftPower += TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KCC * positionErrorMagnitudeDelta;
+                rightPower -= TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KCC * positionErrorMagnitudeDelta;
+            }
         }
         else
         {
             // calculate a desired power level
-            left = leftPositionGoal - this.leftPosition;
-            right = rightPositionGoal - this.rightPosition;
-            if (Math.abs(left) < 0.1)
+            leftPower = leftPositionGoal - this.leftPosition;
+            rightPower = rightPositionGoal - this.rightPosition;
+            if (Math.abs(leftPower) < 0.1)
             {
-                left = 0.0;
+                leftPower = 0.0;
             }
 
-            if (Math.abs(right) < 0.1)
+            if (Math.abs(rightPower) < 0.1)
             {
-                right = 0.0;
+                rightPower = 0.0;
             }
 
-            left *= TuningConstants.DRIVETRAIN_LEFT_POSITIONAL_NON_PID_MULTIPLICAND;
-            right *= TuningConstants.DRIVETRAIN_RIGHT_POSITIONAL_NON_PID_MULTIPLICAND;
+            leftPower *= TuningConstants.DRIVETRAIN_LEFT_POSITIONAL_NON_PID_MULTIPLICAND;
+            rightPower *= TuningConstants.DRIVETRAIN_RIGHT_POSITIONAL_NON_PID_MULTIPLICAND;
 
             // ensure that we are within our power level range, and then scale it down
-            left = this.applyPowerLevelRange(left) * TuningConstants.DRIVETRAIN_MAX_POWER_POSITIONAL_NON_PID;
-            right = this.applyPowerLevelRange(right) * TuningConstants.DRIVETRAIN_MAX_POWER_POSITIONAL_NON_PID;
+            leftPower = this.applyPowerLevelRange(leftPower) * TuningConstants.DRIVETRAIN_MAX_POWER_POSITIONAL_NON_PID;
+            rightPower = this.applyPowerLevelRange(rightPower) * TuningConstants.DRIVETRAIN_MAX_POWER_POSITIONAL_NON_PID;
         }
 
-        this.assertPowerLevelRange(left, "left velocity (goal)");
-        this.assertPowerLevelRange(right, "right velocity (goal)");
+        this.assertPowerLevelRange(leftPower, "left velocity (goal)");
+        this.assertPowerLevelRange(rightPower, "right velocity (goal)");
 
         if (this.usePID)
         {
-            left *= TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KS;
-            right *= TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KS;
+            leftPower *= TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KS;
+            rightPower *= TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KS;
         }
 
-        return new Setpoint(left, right);
+        return new Setpoint(leftPower, rightPower);
     }
 
     /**

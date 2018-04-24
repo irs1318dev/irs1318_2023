@@ -30,6 +30,8 @@ public class PositionManager implements IMechanism
     private final DriveTrainMechanism driveTrainMechanism;
     private final AHRS navx;
 
+    private boolean navxIsConnected;
+
     // Position coordinates
     private double odometryX;
     private double odometryY;
@@ -58,6 +60,8 @@ public class PositionManager implements IMechanism
         this.logger = logger;
         this.driveTrainMechanism = driveTrainMechanism;
         this.navx = new AHRS(SPI.Port.kMXP);
+
+        this.navxIsConnected = false;
 
         this.odometryX = 0.0;
         this.odometryY = 0.0;
@@ -121,6 +125,8 @@ public class PositionManager implements IMechanism
         this.prevLeftDistance = leftDistance;
         this.prevRightDistance = rightDistance;
 
+        this.navxIsConnected = this.navx.isConnected();
+
         this.navxAngle = this.navx.getAngle();
         this.navxX = this.navx.getDisplacementX() * 100.0;
         this.navxY = this.navx.getDisplacementY() * 100.0;
@@ -130,6 +136,7 @@ public class PositionManager implements IMechanism
         this.logger.logNumber(PositionManager.LogName, "odom_angle", this.odometryAngle);
         this.logger.logNumber(PositionManager.LogName, "odom_x", this.odometryX);
         this.logger.logNumber(PositionManager.LogName, "odom_y", this.odometryY);
+        this.logger.logBoolean(PositionManager.LogName, "navx_connected", this.navxIsConnected);
         this.logger.logNumber(PositionManager.LogName, "navx_angle", this.navxAngle);
         this.logger.logNumber(PositionManager.LogName, "navx_x", this.navxX);
         this.logger.logNumber(PositionManager.LogName, "navx_y", this.navxY);
@@ -178,6 +185,15 @@ public class PositionManager implements IMechanism
     public double getOdometryY()
     {
         return this.odometryY;
+    }
+
+    /**
+     * Retrieve whether the navx is connected
+     * @return whether the navx is connected
+     */
+    public boolean getNavxIsConnected()
+    {
+        return this.navxIsConnected;
     }
 
     /**
