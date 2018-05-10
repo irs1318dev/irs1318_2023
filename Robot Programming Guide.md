@@ -1,54 +1,54 @@
 # Robot Programming Guide
 
 **Table of Contents**
-1. [Overview]
-2. [General Robot Design]
-   1. [RoboRIO]
-   2. [Actuators]
-      1. [Motors (Talons, Jaguars, Victors)]
-      2. [Pistons/Pneumatic Cylinders (DoubleSolenoids)]
-   3. [Sensors]
-      1. [Limit Switches]
-      2. [Encoders]
-      3. [Through-Beam Sensors]
-      4. [Distance Sensors]
-   4. [Other]
-      1. [Logger]
-      2. [LED Lights]
-   5. [User Input Devices]
-      1. [Joysticks]
-      2. [Button Pads]
-      3. [Dip Switches]
-   6. [Modes]
-3. [Robot Code Design]
-   1. [Robot.java]
-   2. [Mechanisms]
-   3. [ElectronicsConstants]
-   4. [Driver]
-      1. [Operation]
-         1. [Analog Operations]
-         2. [Digital Operations]
-      2. [UserDriver]
-         1. [Macros]
-         2. [Shifts]
-      3. [AutonomousDriver]
-         1. [Autonomous Routines]
-   5. [TuningConstants]
-   6. [HardwareConstants]
-4. [Instructions]
-   1. [Making Simple Operation changes]
-   2. [Writing a new Mechanism]
-   3. [Writing Macros and Autonomous Routines]
-      1. [Writing Tasks]
-      2. [Adding Macros]
-      3. [Composing Tasks into Routines]
-         1. [SequentialTask.Sequence()]
-         2. [ConcurrentTask.AnyTasks()]
-         3. [ConcurrentTask.AllTasks()]
-5. [Advanced Topics]
-   1. [PID Controllers]
-   2. [Motion Planning]
-   3. [Vision]
+1. [Overview](#Overview)
+2. [General Robot Design](#General%20Robot%20Design)
+   1. [RoboRIO](#RoboRIO)
+   2. [Actuators](#Actuators)
+      1. [Motors (Talons, Jaguars, Victors)](#Motors%20(Talons,%20Jaguars,&20Victors))
+      2. [Pistons/Pneumatic Cylinders (DoubleSolenoids)](#Pistons/Pneumatic%20Cylinders%20(DoubleSolenoids))
+   3. [Sensors](#Sensors)
+      1. [Limit Switches](#Limit%20Switches)
+      2. [Encoders](#Encoders)
+      3. [Through-Beam Sensors](#Through-Beam%20Sensors)
+      4. [Distance Sensors](#Distance%20Sensors)
+   4. [Other](#Other)
+      1. [Logger](#Logger)
+      2. [LED Lights](#LED%20Lights)
+   5. [User Input Devices](#User%20Input%20Devices)
+      1. [Joysticks](#Joysticks)
+      2. [Button Pads](#Button%20Pads)
+      3. [Dip Switches](#Dip%20Switches)
+   6. [Modes](#Modes)
+3. [Robot Code Design](#Robot%20Code%20Design)
+   1. [Robot.java](#Robot.java)
+   2. [Mechanisms](#Mechanisms)
+   3. [ElectronicsConstants](#ElectronicsConstants)
+   4. [Driver](#Driver)
+      1. [Operation](#Operation)
+         1. [Analog Operations](#Analog%20Operations)
+         2. [Digital Operations](#Digital%20Operations)
+      2. [UserDriver](#UserDriver)
+         1. [Macros](#Macros)
+         2. [Shifts](#Shifts)
+      3. [AutonomousDriver](#AutonomousDriver)
+         1. [Autonomous Routines](#Autonomous%20Routines)
+   5. [TuningConstants](#TuningConstants)
+   6. [HardwareConstants](#HardwareConstants)
+4. [Instructions](#Instructions)
+   1. [Making Simple Operation changes](#Making%20Simple%20Operation%20changes)
+   2. [Writing a new Mechanism](#Writing%20a%20new%20Mechanism)
+   3. [Writing Macros and Autonomous Routines](#Writing%20Macros%20and%20Autonomous%20Routines)
+      1. [Writing Tasks](#Writing%20Tasks)
+      2. [Adding Macros](#Adding%20Macros)
+      3. [Composing Tasks into Routines](#Composing%20Tasks%20into%20Routines)
+         1. [SequentialTask.Sequence()](#SequentialTask.Sequence())
+         2. [ConcurrentTask.AnyTasks()](#ConcurrentTask.AnyTasks())
+         3. [ConcurrentTask.AllTasks()](#ConcurrentTask.AllTasks())
+5. [Advanced Topics](#Advanced%20Topics)
+   1. [PID Controllers](#PID%20Controllers)
+   2. [Motion Planning](#Motion%20Planning)
+   3. [Vision](#Vision)
 
 ## Overview
 > "Everything should be made as simple as possible, but not simpler." - Albert Einstein
