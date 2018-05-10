@@ -1,62 +1,62 @@
 # Robot Programming Guide
 
 **Table of Contents**
-1. [Overview](#Overview)
-2. [General Robot Design](#General%20Robot%20Design)
-   1. [RoboRIO](#RoboRIO)
-   2. [Actuators](#Actuators)
-      1. [Motors (Talons, Jaguars, Victors)](#Motors%20(Talons,%20Jaguars,&20Victors))
-      2. [Pistons/Pneumatic Cylinders (DoubleSolenoids)](#Pistons/Pneumatic%20Cylinders%20(DoubleSolenoids))
-   3. [Sensors](#Sensors)
-      1. [Limit Switches](#Limit%20Switches)
-      2. [Encoders](#Encoders)
-      3. [Through-Beam Sensors](#Through-Beam%20Sensors)
-      4. [Distance Sensors](#Distance%20Sensors)
-   4. [Other](#Other)
-      1. [Logger](#Logger)
-      2. [LED Lights](#LED%20Lights)
-   5. [User Input Devices](#User%20Input%20Devices)
-      1. [Joysticks](#Joysticks)
-      2. [Button Pads](#Button%20Pads)
-      3. [Dip Switches](#Dip%20Switches)
-   6. [Modes](#Modes)
-3. [Robot Code Design](#Robot%20Code%20Design)
-   1. [Robot.java](#Robot.java)
-   2. [Mechanisms](#Mechanisms)
-   3. [ElectronicsConstants](#ElectronicsConstants)
-   4. [Driver](#Driver)
-      1. [Operation](#Operation)
-         1. [Analog Operations](#Analog%20Operations)
-         2. [Digital Operations](#Digital%20Operations)
-      2. [UserDriver](#UserDriver)
-         1. [Macros](#Macros)
-         2. [Shifts](#Shifts)
-      3. [AutonomousDriver](#AutonomousDriver)
-         1. [Autonomous Routines](#Autonomous%20Routines)
-   5. [TuningConstants](#TuningConstants)
-   6. [HardwareConstants](#HardwareConstants)
-4. [Instructions](#Instructions)
-   1. [Making Simple Operation changes](#Making%20Simple%20Operation%20changes)
-   2. [Writing a new Mechanism](#Writing%20a%20new%20Mechanism)
-   3. [Writing Macros and Autonomous Routines](#Writing%20Macros%20and%20Autonomous%20Routines)
-      1. [Writing Tasks](#Writing%20Tasks)
-      2. [Adding Macros](#Adding%20Macros)
-      3. [Composing Tasks into Routines](#Composing%20Tasks%20into%20Routines)
-         1. [SequentialTask.Sequence()](#SequentialTask.Sequence())
-         2. [ConcurrentTask.AnyTasks()](#ConcurrentTask.AnyTasks())
-         3. [ConcurrentTask.AllTasks()](#ConcurrentTask.AllTasks())
-5. [Advanced Topics](#Advanced%20Topics)
-   1. [PID Controllers](#PID%20Controllers)
-   2. [Motion Planning](#Motion%20Planning)
-   3. [Vision](#Vision)
+1. [Overview](#overview)
+2. [General Robot Design](#general-robot-design)
+   1. [RoboRIO](#roborio)
+   2. [Actuators](#actuators)
+      1. [Motors (Talons, Jaguars, Victors)](#motors-talons-jaguars-victors)
+      2. [Pistons/Pneumatic Cylinders (DoubleSolenoids)](#pistonspneumatic-cylinders-doublesolenoids)
+   3. [Sensors](#sensors)
+      1. [Limit Switches](#limit-switches)
+      2. [Encoders](#encoders)
+      3. [Through-Beam Sensors](#through-beam-sensors)
+      4. [Distance Sensors](#distance-sensors)
+   4. [Other](#other)
+      1. [Logger](#logger)
+      2. [LED Lights](#led-lights)
+   5. [User Input Devices](#user-input-devices)
+      1. [Joysticks](#joysticks)
+      2. [Button Pads](#button-pads)
+      3. [Dip Switches](#dip-switches)
+   6. [Modes](#modes)
+3. [Robot Code Design](#robot-code-design)
+   1. [Robot.java](#robotjava)
+   2. [Mechanisms](#mechanisms)
+   3. [ElectronicsConstants](#electronicsconstants)
+   4. [Driver](#driver)
+      1. [Operation](#operation)
+         1. [Analog Operations](#analog-operations)
+         2. [Digital Operations](#digital-operations)
+      2. [UserDriver](#userdriver)
+         1. [Macros](#macros)
+         2. [Shifts](#shifts)
+      3. [AutonomousDriver](#autonomousdriver)
+         1. [Autonomous Routines](#autonomous-routines)
+   5. [TuningConstants](#tuningconstants)
+   6. [HardwareConstants](#hardwareconstants)
+4. [Instructions](#instructions)
+   1. [Making Simple Operation changes](#making-simple-operation-changes)
+   2. [Writing a new Mechanism](#writing-a-new-mechanism)
+   3. [Writing Macros and Autonomous Routines](#writing-macros-and-autonomous-routines)
+      1. [Writing Tasks](#writing-tasks)
+      2. [Adding Macros](#adding-macros)
+      3. [Composing Tasks into Routines](#composing-tasks-into-routines)
+         1. [SequentialTask.Sequence()](#sequentialtasksequence)
+         2. [ConcurrentTask.AnyTasks()](#concurrenttaskanytasks)
+         3. [ConcurrentTask.AllTasks()](#concurrenttaskalltasks)
+5. [Advanced Topics](#advanced-topics)
+   1. [PID Controllers](#pid-controllers)
+   2. [Motion Planning](#motion-planning)
+   3. [Vision](#vision)
 
 ## Overview
 > "Everything should be made as simple as possible, but not simpler." - Albert Einstein
 
-The Issaquah Robotics Society’s Robot code is designed to be a good example of a moderately large software project that students of varying levels of experience with programming can contribute to.  It is aimed at making the programming of the robot easy, so that it can respond well to changes to the physical robot as well as changes in the way that we wish to control the robot.  It achieves this by encapsulating each part in a different area of the code, with the idea that there should be very little duplication of code to ease maintainability.
+The Issaquah Robotics Societyâ€™s Robot code is designed to be a good example of a moderately large software project that students of varying levels of experience with programming can contribute to.  It is aimed at making the programming of the robot easy, so that it can respond well to changes to the physical robot as well as changes in the way that we wish to control the robot.  It achieves this by encapsulating each part in a different area of the code, with the idea that there should be very little duplication of code to ease maintainability.
 
 ## General Robot Design
-Robots in FRC tend to have a small set of different pieces that we want to utilize, that can be arranged in a large number of ways to make complex mechanisms.  These mechanisms are designed before the code for them is written, so you should know what they are composed of by the time you are writing any code.  I’ll list out a few of these pieces here and explain what they do and how we typically use them.
+Robots in FRC tend to have a small set of different pieces that we want to utilize, that can be arranged in a large number of ways to make complex mechanisms.  These mechanisms are designed before the code for them is written, so you should know what they are composed of by the time you are writing any code.  Iâ€™ll list out a few of these pieces here and explain what they do and how we typically use them.
 
 ### RoboRIO
 RoboRIO is the name of the computing device that is used to control the robot.  It is produced by National Instruments and runs a customized version of Linux on an ARM processor.  We write code that uses a library called WPILib to handle interactions between the Robot, Driver Station, etc.
@@ -76,7 +76,7 @@ Limit switches are simple switches that are used to sense when two things are ph
 Encoders are used to measure the amount that an axle has rotated.  There are different types of encoders, but we typically use a quadrature encoder.  These encoders can detect the amount of rotation and the direction in which the axle has rotated.  Each encoder has a rating for how many "pulses" or ticks it receives in a complete rotation of the axle.  Using some simple math based on the sizes of the wheels (and gears), you can calculate how far something has travelled.  In WPILib, you would use an Encoder object, which returns the number of ticks/pulses, the distance (based on the distance per pulse), or the velocity (if you trust the timer on the robot).
 
 #### Through-Beam Sensors
-Through-Beam Sensors are simple infrared sensors and lights that are used to sense whether there is anything between the light and sensor.  They are often used in the real world at the bottom of a garage door to detect if anything is under the garage door so it doesn’t get crushed.  This can be used on a robot to sense whether something is in a given spot.  We used one on the 2015 robot to detect whether any tote was contained within the intake in a proper place to be picked up by the robot’s elevator.  In WPILib, you would use an AnalogInput, which returns a double value (rational number) which indicates how many volts were detected by the infrared sensor.  This value will differ based on the through-beam sensor, so you can tell through experimentation whether it is tripped or not.
+Through-Beam Sensors are simple infrared sensors and lights that are used to sense whether there is anything between the light and sensor.  They are often used in the real world at the bottom of a garage door to detect if anything is under the garage door so it doesnâ€™t get crushed.  This can be used on a robot to sense whether something is in a given spot.  We used one on the 2015 robot to detect whether any tote was contained within the intake in a proper place to be picked up by the robotâ€™s elevator.  In WPILib, you would use an AnalogInput, which returns a double value (rational number) which indicates how many volts were detected by the infrared sensor.  This value will differ based on the through-beam sensor, so you can tell through experimentation whether it is tripped or not.
 
 #### Distance Sensors
 There are various types of distance sensors, which can use either sound or light to sense how far away the robot is from something else.  In WPILib, you would use an AnalogInput, which would return a double value (rational number) which indicates how many volts were detected by the sensor.  This value will differ based on the sensor and its placement, so you can tell through experimentation what the values mean.
@@ -90,10 +90,10 @@ We also often use LED lights as an indicator of some kind, or in association wit
 
 ### User Input Devices
 #### Joysticks
-The joystick is a normal computer joystick, much like you’d find for playing a flight simulator game.  The ones that we have used for the past few years is the Logitech Xtreme 3D Pro, which has 12 buttons, the primary X and Y axis, a Throttle axis, and a directional hat.  Our team typically uses a joystick for the driver’s input method.
+The joystick is a normal computer joystick, much like youâ€™d find for playing a flight simulator game.  The ones that we have used for the past few years is the Logitech Xtreme 3D Pro, which has 12 buttons, the primary X and Y axis, a Throttle axis, and a directional hat.  Our team typically uses a joystick for the driverâ€™s input method.
 
 #### Button Pads
-The button pad is a normal computer button pad.  The ones that we use are a gaming button pad which has 12 buttons.  Our team often uses these for the co-driver’s input method.
+The button pad is a normal computer button pad.  The ones that we use are a gaming button pad which has 12 buttons.  Our team often uses these for the co-driverâ€™s input method.
 
 #### Dip Switches
 Dip Switches are simple toggle switches which are used to switch between different modes.  Our team typically uses them to allow us to select which of several different pre-programmed autonomous routines to use without having to change anything within the code or rely on the smart dashboard.
@@ -158,10 +158,10 @@ The AutonomousDriver runs the autonomous routine and translates that routine int
 Autonomous routines are designed very similarly to macros, except that they are triggered automatically by the autonomous driver instead of by buttons on the joystick.
 
 ### TuningConstants
-In order to simplify tuning the settings of the robot, we often store settings that we will likely want to change as constants in the TuningConstants class.  Settings that may need to be tuned include things like the speed at which to run an intake, or the speed at which to turn when the joystick is in a certain position.  These settings are usually things that are hard to know in advance, and the appropriate settings are discovered by testing the robot.  There are many things that aren’t known in advance by the software team, so putting all of these things in TuningConstants in an orderly fashion can help speed up the tuning process of the robot.
+In order to simplify tuning the settings of the robot, we often store settings that we will likely want to change as constants in the TuningConstants class.  Settings that may need to be tuned include things like the speed at which to run an intake, or the speed at which to turn when the joystick is in a certain position.  These settings are usually things that are hard to know in advance, and the appropriate settings are discovered by testing the robot.  There are many things that arenâ€™t known in advance by the software team, so putting all of these things in TuningConstants in an orderly fashion can help speed up the tuning process of the robot.
 
 ### HardwareConstants
-Similar to the ElectronicsConstants and TuningConstants, we also store some facts about the dimensions of the robot and the different parts of the robot as constants in the HardwareConstants class.  This tends to include things like the diameter of the wheels and the width of the robot, which may be useful for calculations that need to be made during autonomous mode or for differential odometry (which calculates the robot’s position and orientation on the field as compared to the starting position/orientation by using the encoders).
+Similar to the ElectronicsConstants and TuningConstants, we also store some facts about the dimensions of the robot and the different parts of the robot as constants in the HardwareConstants class.  This tends to include things like the diameter of the wheels and the width of the robot, which may be useful for calculations that need to be made during autonomous mode or for differential odometry (which calculates the robotâ€™s position and orientation on the field as compared to the starting position/orientation by using the encoders).
 
 ## Instructions
 ### Making Simple Operation changes
@@ -193,7 +193,7 @@ The Digital description takes arguments describing the User Input Device, the bu
 ### Writing a new Mechanism
 Mechanisms encapsulate the actuators (e.g. motors, pneumatic solenoids) and sensors (e.g. Encoders, Limit Switches) of each part of the robot.  A mechanism is a class that should be created within a package that you create.  It should be named based on the name of that portion of the robot (e.g. DriveTrain, Intake) like ThingMechanism.  The class should implement the IMechanism interface.
 
-At the top of the class, you should have a list of the definitions of your different actuators and sensors (see the "private final TypeOfActuator nameOfActuator;" and "private final TypeOfSensor nameOfSensor;").  These should be initialized in the constructor (a special function, like you see above) - named like "public ThingMechanism(IWpilibProvider provider)".  For the last 2 years we’ve made use of Google’s Guice to control dependency injection, which is the reason why the special @Inject markup is required.  After the set of actuators and sensors are defined, you will also need to define the driver ("private Driver driver;").  You will then set the value for each actuator and sensor you defined at the top in the constructor by calling the corresponding function on the IWpilibProvider that is passed into the constructor.  These functions will take some number of arguments based on how the actuators/sensors are physically plugged together in the robot.  These arguments should be placed as constants in the ElectronicsConstants file.  We don’t necessarily know in advance how the robot plugs together, so they can be initialized with a value of -1 until we do.
+At the top of the class, you should have a list of the definitions of your different actuators and sensors (see the "private final TypeOfActuator nameOfActuator;" and "private final TypeOfSensor nameOfSensor;").  These should be initialized in the constructor (a special function, like you see above) - named like "public ThingMechanism(IWpilibProvider provider)".  For the last 2 years weâ€™ve made use of Googleâ€™s Guice to control dependency injection, which is the reason why the special @Inject markup is required.  After the set of actuators and sensors are defined, you will also need to define the driver ("private Driver driver;").  You will then set the value for each actuator and sensor you defined at the top in the constructor by calling the corresponding function on the IWpilibProvider that is passed into the constructor.  These functions will take some number of arguments based on how the actuators/sensors are physically plugged together in the robot.  These arguments should be placed as constants in the ElectronicsConstants file.  We donâ€™t necessarily know in advance how the robot plugs together, so they can be initialized with a value of -1 until we do.
 
 As a part of implementing the IMechanism interface, you will need to have the following three functions in your class:
 * ```public void readSensors()```  
@@ -221,7 +221,7 @@ As a part of implementing the IControlTask interface, you will need to have impl
 * ```public void end()```  
   This function is called when the task has ended and should clear any state that needs to be cleared.
 * ```public boolean shouldCancel()```  
-  This function is called by the driver to check whether something has interrupted the current task such that it shouldn’t continue.  Typically this isn’t used unless there is some sensor being read by the task that would indicate that the task cannot continue.
+  This function is called by the driver to check whether something has interrupted the current task such that it shouldnâ€™t continue.  Typically this isnâ€™t used unless there is some sensor being read by the task that would indicate that the task cannot continue.
 * ```public boolean hasCompleted()```  
   This function is called by the driver to check whether the particular task should complete.  Often this is based on either the amount of time has elapsed since the task began, or it could be based on some sensor condition being met.
 
