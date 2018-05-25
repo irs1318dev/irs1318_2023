@@ -35,10 +35,18 @@
          1. [Autonomous Routines](#autonomous-routines)
    5. [TuningConstants](#tuningconstants)
    6. [HardwareConstants](#hardwareconstants)
+   7. [External Libraries](#external-libraries)
+      1. [Guice](#guice)
+      2. [OpenCV](#opencv)
+      3. [CTRE Phoenix](#ctre-phoenix)
+      4. [NavX MXP](#navx-mxp)
+      5. [JUnit](#junit)
+      6. [Mockito](#mockito)
 4. [Instructions](#instructions)
-   1. [Making Simple Operation changes](#making-simple-operation-changes)
-   2. [Writing a new Mechanism](#writing-a-new-mechanism)
-   3. [Writing Macros and Autonomous Routines](#writing-macros-and-autonomous-routines)
+   1. [Setting up your Environment](#setting-up-your-environment)
+   2. [Making Simple Operation changes](#making-simple-operation-changes)
+   3. [Writing a new Mechanism](#writing-a-new-mechanism)
+   4. [Writing Macros and Autonomous Routines](#writing-macros-and-autonomous-routines)
       1. [Writing Tasks](#writing-tasks)
       2. [Adding Macros](#adding-macros)
       3. [Composing Tasks into Routines](#composing-tasks-into-routines)
@@ -163,7 +171,39 @@ In order to simplify tuning the settings of the robot, we often store settings t
 ### HardwareConstants
 Similar to the ElectronicsConstants and TuningConstants, we also store some facts about the dimensions of the robot and the different parts of the robot as constants in the HardwareConstants class.  This tends to include things like the diameter of the wheels and the width of the robot, which may be useful for calculations that need to be made during autonomous mode or for differential odometry (which calculates the robot’s position and orientation on the field as compared to the starting position/orientation by using the encoders).
 
+### External Libraries
+The robot code makes use of a number of external libraries in order to make programming the robot more straightforward.
+
+#### Guice
+[Guice](https://github.com/google/guice) (pronounced "juice") is a dependency injection library, which is responsible for the various "@Inject" and "@Singleton" markup that is seen throughout the code.  The purpose of Guice is to make it easier to plug together the entire system in such a way that it is still unit-testable.
+
+#### OpenCV
+[OpenCV](https://opencv.org/) is a computer vision library that is used for fast and efficient processing of images.  We use OpenCV functions to capture images, manipulate them (undistort, HSV filtering), write them, and discover important parts of them (find contours).
+
+#### CTRE Phoenix
+[CTRE Phoenix](https://github.com/CrossTheRoadElec/Phoenix-Documentation) is a library that provides the ability to communicate with and control the Talon SRX and Victor SR over CAN.  We use CTRE Phoenix to control the majority of our Talon SRXs so that we can run PID on the Talon SRX itself for a faster update rate.
+
+#### NavX MXP
+The [NavX MXP](http://www.pdocs.kauailabs.com/navx-mxp/software/) has a library that is used to interact with the NavX MXP.  The NavX uses its Gyroscope and Accelerometers in order to provide orientation measurements for field positioning purposes.
+
+#### JUnit
+[JUnit](https://junit.org/junit4/) is a unit testing library for Java.  JUnit is fairly simple and provides some comparison functions and a framework for running unit tests.
+
+#### Mockito
+[Mockito](http://site.mockito.org/) is a library for mocking objects for unit testing.  Mockito provides a way to create fake versions of objects that have behaviors that you can describe in a very succinct way.
+
 ## Instructions
+### Setting up your Environment
+After following the steps for [Installing Eclipse](https://wpilib.screenstepslive.com/s/currentCS/m/java/l/599681-installing-eclipse-c-java), you will need to do the following:
+1. Create a new Robot project in Eclipse to set up environment variables (File --> New --> Project, select "Robot Java Project", select "Iterative Robot", and enter your team number).  Once you have created the project, right-click it and delete it.
+2. Copy all of the files from the [Robot Libraries](https://github.com/irs1318dev/RobotLibraries) repository into the corresponding library directory (on Windows, C:\Users\<username>\wpilib\user\java\lib).
+3. Get the code onto your local machine.
+   a. Copy the repository's URL.  In GitHub, click the "Clone or download" button and the copy the text (e.g. "https://github.com/irs1318dev/irs1318_general.git").
+   b. In Eclipse, go to the "Git" perspective (Window --> Perspective --> Open Perspective --> other..., Git).
+   c. Click the "Clone a git repository and add the clone to this view" button.  It should auto-fill the URL you copied above.
+   d. Follow through the wizard, being sure to enable the "Import all existing Eclipse projects after clone finishes".
+   e. Switch back to the Java perspective.  Your project should now appear.
+
 ### Making Simple Operation changes
 To add a new action that the robot can take with a mechanism, first open the Operation enum (Operation.java) and add a new value to the list in that file under the section for that Mechanism.  It should be named starting with the mechanism (e.g. "DriveTrain", "Intake", etc.), and then a description of the action (e.g. "Turn", "RaiseArm", etc.).  Remember that Operations are a single, simple thing that is done by the robot.  Any more complex action that we want the robot to take will be a Macro which composes these Operations together (which we will talk about later).
 
