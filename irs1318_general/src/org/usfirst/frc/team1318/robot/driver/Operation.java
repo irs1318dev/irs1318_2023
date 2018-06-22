@@ -18,6 +18,8 @@ public enum Operation
     DriveTrainRightPosition,
     DriveTrainLeftVelocity,
     DriveTrainRightVelocity,
+    DriveTrainLeftAcceleration,
+    DriveTrainRightAcceleration,
     DriveTrainOrientation,
     DriveTrainSwapFrontOrientation,
 }

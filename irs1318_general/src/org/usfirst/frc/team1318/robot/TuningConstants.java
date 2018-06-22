@@ -85,6 +85,18 @@ public class TuningConstants
     public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KF = 0.15;
     public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KS = 3800.0;
 
+    // Path PID (right)
+    public static final double DRIVETRAIN_PATH_PID_RIGHT_KP = 0.0002;
+    public static final double DRIVETRAIN_PATH_PID_RIGHT_KI = 0.0;
+    public static final double DRIVETRAIN_PATH_PID_RIGHT_KD = 0.0;
+    public static final double DRIVETRAIN_PATH_PID_RIGHT_KF = 0.0;
+
+    // Path PID (left)
+    public static final double DRIVETRAIN_PATH_PID_LEFT_KP = 0.0002;
+    public static final double DRIVETRAIN_PATH_PID_LEFT_KI = 0.0;
+    public static final double DRIVETRAIN_PATH_PID_LEFT_KD = 0.0;
+    public static final double DRIVETRAIN_PATH_PID_LEFT_KF = 0.0;
+
     // Position PID (right)
     public static final double DRIVETRAIN_POSITION_PID_RIGHT_KP = 0.0002;
     public static final double DRIVETRAIN_POSITION_PID_RIGHT_KI = 0.0;
@@ -124,6 +136,7 @@ public class TuningConstants
     public static final double DRIVETRAIN_MAX_POWER_POSITIONAL_NON_PID = 0.2;// max power level (positional, non-PID)
 
     public static final double DRIVETRAIN_CROSS_COUPLING_ZERO_ERROR_RANGE = 100.0; // (in ticks)
+    public static final double DRIVETRAIN_PATH_MAX_POWER_LEVEL = 1.0;
     public static final double DRIVETRAIN_POSITIONAL_MAX_POWER_LEVEL = 0.90; // 0.85
     public static final double DRIVETRAIN_BRAKE_MAX_POWER_LEVEL = 0.6;
     public static final double DRIVETRAIN_VELOCITY_MAX_POWER_LEVEL = 1.0;

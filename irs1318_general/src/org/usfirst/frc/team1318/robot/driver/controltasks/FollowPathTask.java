@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1318.robot.driver.controltasks;
 
-import org.usfirst.frc.team1318.robot.TuningConstants;
+import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.driver.Operation;
 import org.usfirst.frc.team1318.robot.driver.common.IControlTask;
 import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainMechanism;
@@ -8,7 +8,9 @@ import org.usfirst.frc.team1318.robot.general.PositionManager;
 
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
+import jaci.pathfinder.Trajectory.Segment;
 import jaci.pathfinder.Waypoint;
+import jaci.pathfinder.modifiers.TankModifier;
 
 public class FollowPathTask extends TimedTask implements IControlTask
 {
@@ -17,7 +19,9 @@ public class FollowPathTask extends TimedTask implements IControlTask
     private static final double MAX_ACCELERATION = 80.0;
     private static final double MAX_JERK = 2400.0;
 
-    private final Trajectory trajectory;
+    private final Trajectory leftTrajectory;
+    private final Trajectory rightTrajectory;
+    private final int trajectoryLength;
     private final double timestep;
 
     private DriveTrainMechanism driveTrain;
@@ -36,8 +40,13 @@ public class FollowPathTask extends TimedTask implements IControlTask
     {
         super(duration);
 
+        TankModifier tankModifier = new TankModifier(trajectory);
+        tankModifier.modify(HardwareConstants.DRIVETRAIN_WHEEL_SEPARATION_DISTANCE);
+
+        this.leftTrajectory = tankModifier.getLeftTrajectory();
+        this.rightTrajectory = tankModifier.getRightTrajectory();
+        this.trajectoryLength = trajectory.length();
         this.timestep = timestep;
-        this.trajectory = trajectory;
     }
 
     /**
@@ -68,7 +77,7 @@ public class FollowPathTask extends TimedTask implements IControlTask
 
         Trajectory trajectory = Pathfinder.generate(waypoints, config);
 
-        double duration = trajectory.segments.length * timestep;
+        double duration = trajectory.length() * timestep;
         return new FollowPathTask(trajectory, timestep, duration);
     }
 
@@ -93,6 +102,8 @@ public class FollowPathTask extends TimedTask implements IControlTask
         this.setAnalogOperationState(Operation.DriveTrainRightPosition, this.startRightPosition);
         this.setAnalogOperationState(Operation.DriveTrainLeftVelocity, 0.0);
         this.setAnalogOperationState(Operation.DriveTrainRightVelocity, 0.0);
+        this.setAnalogOperationState(Operation.DriveTrainLeftAcceleration, 0.0);
+        this.setAnalogOperationState(Operation.DriveTrainRightAcceleration, 0.0);
         this.setAnalogOperationState(Operation.DriveTrainOrientation, this.startAngle);
     }
 
@@ -103,12 +114,27 @@ public class FollowPathTask extends TimedTask implements IControlTask
     public void update()
     {
         double elapsedTime = this.timer.get() - this.startTime;
+        if (elapsedTime > this.duration)
+        {
+            elapsedTime = this.duration;
+        }
 
-        this.setAnalogOperationState(Operation.DriveTrainLeftPosition, this.startLeftPosition);
-        this.setAnalogOperationState(Operation.DriveTrainRightPosition, this.startRightPosition);
-        this.setAnalogOperationState(Operation.DriveTrainLeftVelocity, 0.0);
-        this.setAnalogOperationState(Operation.DriveTrainRightVelocity, 0.0);
-        this.setAnalogOperationState(Operation.DriveTrainOrientation, this.startAngle);
+        double currentSegmentIndex = Math.floor(elapsedTime / this.timestep);
+        if (currentSegmentIndex >= this.trajectoryLength)
+        {
+            currentSegmentIndex = this.trajectoryLength - 1;
+        }
+
+        Segment currentLeftSegment = this.leftTrajectory.get((int)currentSegmentIndex);
+        Segment currentRightSegment = this.rightTrajectory.get((int)currentSegmentIndex);
+
+        this.setAnalogOperationState(Operation.DriveTrainLeftPosition, this.startLeftPosition + currentLeftSegment.position);
+        this.setAnalogOperationState(Operation.DriveTrainRightPosition, this.startRightPosition + currentRightSegment.position);
+        this.setAnalogOperationState(Operation.DriveTrainLeftVelocity, currentLeftSegment.velocity);
+        this.setAnalogOperationState(Operation.DriveTrainRightVelocity, currentRightSegment.velocity);
+        this.setAnalogOperationState(Operation.DriveTrainLeftAcceleration, currentLeftSegment.acceleration);
+        this.setAnalogOperationState(Operation.DriveTrainRightAcceleration, currentRightSegment.acceleration);
+        this.setAnalogOperationState(Operation.DriveTrainOrientation, this.startAngle + currentLeftSegment.heading);
     }
 
     /**
@@ -124,6 +150,8 @@ public class FollowPathTask extends TimedTask implements IControlTask
         this.setAnalogOperationState(Operation.DriveTrainRightPosition, 0.0);
         this.setAnalogOperationState(Operation.DriveTrainLeftVelocity, 0.0);
         this.setAnalogOperationState(Operation.DriveTrainRightVelocity, 0.0);
+        this.setAnalogOperationState(Operation.DriveTrainLeftAcceleration, 0.0);
+        this.setAnalogOperationState(Operation.DriveTrainRightAcceleration, 0.0);
         this.setAnalogOperationState(Operation.DriveTrainOrientation, 0.0);
     }
 
@@ -139,28 +167,10 @@ public class FollowPathTask extends TimedTask implements IControlTask
         this.setAnalogOperationState(Operation.DriveTrainRightPosition, 0.0);
         this.setAnalogOperationState(Operation.DriveTrainLeftVelocity, 0.0);
         this.setAnalogOperationState(Operation.DriveTrainRightVelocity, 0.0);
+        this.setAnalogOperationState(Operation.DriveTrainLeftAcceleration, 0.0);
+        this.setAnalogOperationState(Operation.DriveTrainRightAcceleration, 0.0);
         this.setAnalogOperationState(Operation.DriveTrainOrientation, 0.0);
 
         this.setDigitalOperationState(Operation.DriveTrainUsePathMode, false);
-    }
-
-    /**
-     * Checks whether this task has completed, or whether it should continue being processed
-     * @return true if we should continue onto the next task, otherwise false (to keep processing this task)
-     */
-    @Override
-    public boolean hasCompleted()
-    {
-        double leftEncoderTicks = this.driveTrain.getLeftPosition();
-        double rightEncoderTicks = this.driveTrain.getRightPosition();
-
-        // check how far away we are from the desired end location
-        double leftDelta = Math.abs(0.0 - leftEncoderTicks);
-        double rightDelta = Math.abs(0.0 - rightEncoderTicks);
-
-        // return that we have completed this task if are within an acceptable distance
-        // from the desired end location for both left and right. 
-        return (leftDelta < TuningConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA
-            && rightDelta < TuningConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA);
     }
 }

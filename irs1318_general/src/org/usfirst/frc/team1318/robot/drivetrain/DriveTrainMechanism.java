@@ -48,6 +48,7 @@ public class DriveTrainMechanism implements IMechanism
     private PIDHandler rightPID;
 
     private boolean usePID;
+    private boolean usePathMode;
     private boolean usePositionalMode;
     private boolean useBrakeMode;
 
@@ -113,6 +114,7 @@ public class DriveTrainMechanism implements IMechanism
         this.rightPID = null;
 
         this.usePID = TuningConstants.DRIVETRAIN_USE_PID;
+        this.usePathMode = false;
         this.usePositionalMode = false;
         this.useBrakeMode = false;
 
@@ -188,9 +190,10 @@ public class DriveTrainMechanism implements IMechanism
         this.driver = driver;
 
         // switch to default velocity PID mode whenever we switch drivers (defense-in-depth)
-        if (!this.usePID || this.usePositionalMode || this.useBrakeMode)
+        if (!this.usePID || this.usePathMode || this.usePositionalMode || this.useBrakeMode)
         {
             this.usePID = TuningConstants.DRIVETRAIN_USE_PID;
+            this.usePathMode = false;
             this.usePositionalMode = false;
             this.useBrakeMode = false;
         }
@@ -239,10 +242,12 @@ public class DriveTrainMechanism implements IMechanism
         }
 
         // check our desired PID mode (needed for positional mode or break mode)
+        boolean newUsePathMode = this.driver.getDigital(Operation.DriveTrainUsePathMode);
         boolean newUsePositionalMode = this.driver.getDigital(Operation.DriveTrainUsePositionalMode);
         boolean newUseBrakeMode = this.driver.getDigital(Operation.DriveTrainUseBrakeMode);
-        if (newUsePositionalMode != this.usePositionalMode || newUseBrakeMode != this.useBrakeMode)
+        if (newUsePathMode != this.usePathMode || newUsePositionalMode != this.usePositionalMode || newUseBrakeMode != this.useBrakeMode)
         {
+            this.usePathMode = newUsePathMode;
             this.usePositionalMode = newUsePositionalMode;
             this.useBrakeMode = newUseBrakeMode;
 
@@ -250,8 +255,12 @@ public class DriveTrainMechanism implements IMechanism
             this.setControlMode();
         }
 
-        // calculate desired power setting for the current mode
+        // calculate desired setting for the current mode
         Setpoint setpoint;
+        if (this.usePathMode)
+        {
+            setpoint = this.calculatePathModeSetpoint();
+        }
         if (!this.usePositionalMode)
         {
             setpoint = this.calculateVelocityModeSetpoint();
@@ -310,7 +319,28 @@ public class DriveTrainMechanism implements IMechanism
         TalonSRXControlMode mode = TalonSRXControlMode.PercentOutput;
         if (this.usePID)
         {
-            if (this.usePositionalMode)
+            if (this.usePathMode)
+            {
+                this.leftPID = new PIDHandler(
+                    TuningConstants.DRIVETRAIN_PATH_PID_LEFT_KP,
+                    TuningConstants.DRIVETRAIN_PATH_PID_LEFT_KI,
+                    TuningConstants.DRIVETRAIN_PATH_PID_LEFT_KD,
+                    TuningConstants.DRIVETRAIN_PATH_PID_LEFT_KF,
+                    1.0,
+                    -TuningConstants.DRIVETRAIN_PATH_MAX_POWER_LEVEL,
+                    TuningConstants.DRIVETRAIN_PATH_MAX_POWER_LEVEL,
+                    this.timer);
+                this.rightPID = new PIDHandler(
+                    TuningConstants.DRIVETRAIN_PATH_PID_RIGHT_KP,
+                    TuningConstants.DRIVETRAIN_PATH_PID_RIGHT_KI,
+                    TuningConstants.DRIVETRAIN_PATH_PID_RIGHT_KD,
+                    TuningConstants.DRIVETRAIN_PATH_PID_RIGHT_KF,
+                    1.0,
+                    -TuningConstants.DRIVETRAIN_PATH_MAX_POWER_LEVEL,
+                    TuningConstants.DRIVETRAIN_PATH_MAX_POWER_LEVEL,
+                    this.timer);
+            }
+            else if (this.usePositionalMode)
             {
                 if (this.useBrakeMode)
                 {
@@ -371,8 +401,8 @@ public class DriveTrainMechanism implements IMechanism
     }
 
     /**
-     * Calculate the power setting to use based on the inputs when in velocity mode
-     * @return power settings for left and right motor
+     * Calculate the setting to use based on the inputs when in velocity mode
+     * @return settings for left and right motor
      */
     private Setpoint calculateVelocityModeSetpoint()
     {
@@ -461,8 +491,51 @@ public class DriveTrainMechanism implements IMechanism
     }
 
     /**
-     * Calculate the power setting to use based on the inputs when in position mode
-     * @return power settings for left and right motor
+     * Calculate the setting to use based on the inputs when in position mode
+     * @return settings for left and right motor
+     */
+    private Setpoint calculatePathModeSetpoint()
+    {
+        // get the desired left and right values from the driver.
+        double leftPositionGoal = this.driver.getAnalog(Operation.DriveTrainLeftPosition);
+        double rightPositionGoal = this.driver.getAnalog(Operation.DriveTrainRightPosition);
+
+        this.logger.logNumber(DriveTrainMechanism.LogName, "leftPositionGoal", leftPositionGoal);
+        this.logger.logNumber(DriveTrainMechanism.LogName, "rightPositionGoal", rightPositionGoal);
+
+        // use positional PID to get the relevant value
+        double leftPower = this.leftPID.calculatePosition(leftPositionGoal, this.leftPosition);
+        double rightPower = this.rightPID.calculatePosition(rightPositionGoal, this.rightPosition);
+
+        // apply cross-coupling changes
+        double leftPositionError = this.leftPID.getError();
+        double rightPositionError = this.rightPID.getError();
+
+        double positionErrorMagnitudeDelta = leftPositionError - rightPositionError;
+        if (TuningConstants.DRIVETRAIN_USE_CROSS_COUPLING
+            && !Helpers.WithinDelta(positionErrorMagnitudeDelta, 0.0, TuningConstants.DRIVETRAIN_CROSS_COUPLING_ZERO_ERROR_RANGE))
+        {
+            // add the delta times the coupling factor to the left, and subtract from the right
+            // (if left error is greater than right error, left should be given some more power than right)
+            leftPower += TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KCC * positionErrorMagnitudeDelta;
+            rightPower -= TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KCC * positionErrorMagnitudeDelta;
+        }
+
+        this.assertPowerLevelRange(leftPower, "left velocity (goal)");
+        this.assertPowerLevelRange(rightPower, "right velocity (goal)");
+
+        if (this.usePID)
+        {
+            leftPower *= TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KS;
+            rightPower *= TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KS;
+        }
+
+        return new Setpoint(leftPower, rightPower);
+    }
+
+    /**
+     * Calculate the setting to use based on the inputs when in position mode
+     * @return settings for left and right motor
      */
     private Setpoint calculatePositionModeSetpoint()
     {
