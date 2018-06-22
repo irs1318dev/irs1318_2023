@@ -13,7 +13,11 @@ public enum Operation
     DriveTrainSimpleMode,
     DriveTrainUseBrakeMode,
     DriveTrainUsePositionalMode,
+    DriveTrainUsePathMode,
     DriveTrainLeftPosition,
     DriveTrainRightPosition,
+    DriveTrainLeftVelocity,
+    DriveTrainRightVelocity,
+    DriveTrainOrientation,
     DriveTrainSwapFrontOrientation,
 }
