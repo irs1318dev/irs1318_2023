@@ -4,7 +4,6 @@ import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.driver.Operation;
 import org.usfirst.frc.team1318.robot.driver.common.IControlTask;
 import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainMechanism;
-import org.usfirst.frc.team1318.robot.general.PositionManager;
 
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
@@ -28,7 +27,7 @@ public class FollowPathTask extends TimedTask implements IControlTask
 
     private double startLeftPosition;
     private double startRightPosition;
-    private double startAngle;
+    //private double startAngle;
 
     /**
      * Initializes a new FollowPathTask
@@ -91,11 +90,11 @@ public class FollowPathTask extends TimedTask implements IControlTask
 
         this.driveTrain = this.getInjector().getInstance(DriveTrainMechanism.class);
 
-        PositionManager positionManager = this.getInjector().getInstance(PositionManager.class);
-
         this.startLeftPosition = this.driveTrain.getLeftPosition();
         this.startRightPosition = this.driveTrain.getRightPosition();
-        this.startAngle = positionManager.getNavxAngle();
+
+        //PositionManager positionManager = this.getInjector().getInstance(PositionManager.class);
+        //this.startAngle = positionManager.getNavxAngle();
 
         this.setDigitalOperationState(Operation.DriveTrainUsePathMode, true);
         this.setAnalogOperationState(Operation.DriveTrainLeftPosition, this.startLeftPosition);
@@ -104,7 +103,6 @@ public class FollowPathTask extends TimedTask implements IControlTask
         this.setAnalogOperationState(Operation.DriveTrainRightVelocity, 0.0);
         this.setAnalogOperationState(Operation.DriveTrainLeftAcceleration, 0.0);
         this.setAnalogOperationState(Operation.DriveTrainRightAcceleration, 0.0);
-        this.setAnalogOperationState(Operation.DriveTrainOrientation, this.startAngle);
     }
 
     /**
@@ -134,7 +132,6 @@ public class FollowPathTask extends TimedTask implements IControlTask
         this.setAnalogOperationState(Operation.DriveTrainRightVelocity, currentRightSegment.velocity);
         this.setAnalogOperationState(Operation.DriveTrainLeftAcceleration, currentLeftSegment.acceleration);
         this.setAnalogOperationState(Operation.DriveTrainRightAcceleration, currentRightSegment.acceleration);
-        this.setAnalogOperationState(Operation.DriveTrainOrientation, this.startAngle + currentLeftSegment.heading);
     }
 
     /**
@@ -152,7 +149,6 @@ public class FollowPathTask extends TimedTask implements IControlTask
         this.setAnalogOperationState(Operation.DriveTrainRightVelocity, 0.0);
         this.setAnalogOperationState(Operation.DriveTrainLeftAcceleration, 0.0);
         this.setAnalogOperationState(Operation.DriveTrainRightAcceleration, 0.0);
-        this.setAnalogOperationState(Operation.DriveTrainOrientation, 0.0);
     }
 
     /**
@@ -169,7 +165,6 @@ public class FollowPathTask extends TimedTask implements IControlTask
         this.setAnalogOperationState(Operation.DriveTrainRightVelocity, 0.0);
         this.setAnalogOperationState(Operation.DriveTrainLeftAcceleration, 0.0);
         this.setAnalogOperationState(Operation.DriveTrainRightAcceleration, 0.0);
-        this.setAnalogOperationState(Operation.DriveTrainOrientation, 0.0);
 
         this.setDigitalOperationState(Operation.DriveTrainUsePathMode, false);
     }

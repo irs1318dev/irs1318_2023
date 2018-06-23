@@ -4,6 +4,9 @@ public interface ITalonSRX extends IMotor
 {
     void setControlMode(TalonSRXControlMode mode);
     void setSensorType(TalonSRXFeedbackDevice feedbackDevice);
+    void setFeedbackFramePeriod(int periodMS);
+    void setPIDFFramePeriod(int periodMS);
+    void configureVelocityMeasurements();
     void setSelectedSlot(int slotId);
     void setPIDF(double p, double i, double d, double f, int slotId);
     void setMotionMagicPIDF(double p, double i, double d, double f, int velocity, int acceleration, int slotId);

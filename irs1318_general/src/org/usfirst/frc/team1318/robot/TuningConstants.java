@@ -90,12 +90,18 @@ public class TuningConstants
     public static final double DRIVETRAIN_PATH_PID_RIGHT_KI = 0.0;
     public static final double DRIVETRAIN_PATH_PID_RIGHT_KD = 0.0;
     public static final double DRIVETRAIN_PATH_PID_RIGHT_KF = 0.0;
+    public static final double DRIVETRAIN_PATH_PID_RIGHT_KV = 1.0;
+    public static final double DRIVETRAIN_PATH_PID_RIGHT_KA = 0.0;
+    public static final double DRIVETRAIN_PATH_PID_RIGHT_KCC = 0.0001;
 
     // Path PID (left)
     public static final double DRIVETRAIN_PATH_PID_LEFT_KP = 0.0002;
     public static final double DRIVETRAIN_PATH_PID_LEFT_KI = 0.0;
     public static final double DRIVETRAIN_PATH_PID_LEFT_KD = 0.0;
     public static final double DRIVETRAIN_PATH_PID_LEFT_KF = 0.0;
+    public static final double DRIVETRAIN_PATH_PID_LEFT_KV = 1.0;
+    public static final double DRIVETRAIN_PATH_PID_LEFT_KA = 0.0;
+    public static final double DRIVETRAIN_PATH_PID_LEFT_KCC = 0.0001;
 
     // Position PID (right)
     public static final double DRIVETRAIN_POSITION_PID_RIGHT_KP = 0.0002;

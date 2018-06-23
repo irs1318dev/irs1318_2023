@@ -6,6 +6,8 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SensorCollection;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 public class TalonSRXWrapper implements ITalonSRX
@@ -69,6 +71,22 @@ public class TalonSRXWrapper implements ITalonSRX
         }
 
         this.wrappedObject.configSelectedFeedbackSensor(device, TalonSRXWrapper.pidIdx, 0);
+    }
+
+    public void setPIDFFramePeriod(int periodMS)
+    {
+        this.wrappedObject.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, periodMS, TalonSRXWrapper.timeoutMS);
+    }
+
+    public void setFeedbackFramePeriod(int periodMS)
+    {
+        this.wrappedObject.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, periodMS, TalonSRXWrapper.timeoutMS);
+    }
+
+    public void configureVelocityMeasurements()
+    {
+        this.wrappedObject.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_10Ms, TalonSRXWrapper.timeoutMS);
+        this.wrappedObject.configVelocityMeasurementWindow(32, TalonSRXWrapper.timeoutMS);
     }
 
     public void setSelectedSlot(int slotId)

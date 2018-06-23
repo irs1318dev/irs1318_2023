@@ -32,6 +32,7 @@ public class DriveTrainMechanism implements IMechanism
     private static final String LogName = "dt";
 
     private static final int pidSlotId = 0;
+    private static final int FRAME_PERIOD_MS = 5;
 
     private static final double POWERLEVEL_MIN = -1.0;
     private static final double POWERLEVEL_MAX = 1.0;
@@ -79,6 +80,9 @@ public class DriveTrainMechanism implements IMechanism
         this.leftMotor.setInvertOutput(HardwareConstants.DRIVETRAIN_LEFT_INVERT_OUTPUT);
         this.leftMotor.setInvertSensor(HardwareConstants.DRIVETRAIN_LEFT_INVERT_SENSOR);
         this.leftMotor.setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
+        this.leftMotor.setFeedbackFramePeriod(DriveTrainMechanism.FRAME_PERIOD_MS);
+        this.leftMotor.setPIDFFramePeriod(DriveTrainMechanism.FRAME_PERIOD_MS);
+        this.leftMotor.configureVelocityMeasurements();
         this.leftMotor.setPIDF(
             TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KP,
             TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KI,
@@ -97,6 +101,9 @@ public class DriveTrainMechanism implements IMechanism
         this.rightMotor.setInvertOutput(HardwareConstants.DRIVETRAIN_RIGHT_INVERT_OUTPUT);
         this.rightMotor.setInvertSensor(HardwareConstants.DRIVETRAIN_RIGHT_INVERT_SENSOR);
         this.rightMotor.setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
+        this.rightMotor.setFeedbackFramePeriod(DriveTrainMechanism.FRAME_PERIOD_MS);
+        this.rightMotor.setPIDFFramePeriod(DriveTrainMechanism.FRAME_PERIOD_MS);
+        this.rightMotor.configureVelocityMeasurements();
         this.rightMotor.setPIDF(
             TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KP,
             TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KI,
@@ -261,13 +268,13 @@ public class DriveTrainMechanism implements IMechanism
         {
             setpoint = this.calculatePathModeSetpoint();
         }
-        if (!this.usePositionalMode)
+        else if (this.usePositionalMode)
         {
-            setpoint = this.calculateVelocityModeSetpoint();
+            setpoint = this.calculatePositionModeSetpoint();
         }
         else
         {
-            setpoint = this.calculatePositionModeSetpoint();
+            setpoint = this.calculateVelocityModeSetpoint();
         }
 
         double leftSetpoint = setpoint.getLeft();
@@ -499,13 +506,23 @@ public class DriveTrainMechanism implements IMechanism
         // get the desired left and right values from the driver.
         double leftPositionGoal = this.driver.getAnalog(Operation.DriveTrainLeftPosition);
         double rightPositionGoal = this.driver.getAnalog(Operation.DriveTrainRightPosition);
+        double leftVelocityGoal = this.driver.getAnalog(Operation.DriveTrainLeftVelocity);
+        double rightVelocityGoal = this.driver.getAnalog(Operation.DriveTrainRightVelocity);
+        double leftAccelerationGoal = this.driver.getAnalog(Operation.DriveTrainLeftAcceleration);
+        double rightAccelerationGoal = this.driver.getAnalog(Operation.DriveTrainRightAcceleration);
 
         this.logger.logNumber(DriveTrainMechanism.LogName, "leftPositionGoal", leftPositionGoal);
         this.logger.logNumber(DriveTrainMechanism.LogName, "rightPositionGoal", rightPositionGoal);
 
         // use positional PID to get the relevant value
-        double leftPower = this.leftPID.calculatePosition(leftPositionGoal, this.leftPosition);
-        double rightPower = this.rightPID.calculatePosition(rightPositionGoal, this.rightPosition);
+        double leftGoal = this.leftPID.calculatePosition(leftPositionGoal, this.leftPosition);
+        double rightGoal = this.rightPID.calculatePosition(rightPositionGoal, this.rightPosition);
+
+        // add in velocity and acceleration as a type of feed-forward
+        leftGoal += leftVelocityGoal * TuningConstants.DRIVETRAIN_PATH_PID_LEFT_KV
+            + leftAccelerationGoal * TuningConstants.DRIVETRAIN_PATH_PID_LEFT_KA;
+        rightGoal += rightVelocityGoal * TuningConstants.DRIVETRAIN_PATH_PID_RIGHT_KV
+            + rightAccelerationGoal * TuningConstants.DRIVETRAIN_PATH_PID_RIGHT_KA;
 
         // apply cross-coupling changes
         double leftPositionError = this.leftPID.getError();
@@ -517,20 +534,20 @@ public class DriveTrainMechanism implements IMechanism
         {
             // add the delta times the coupling factor to the left, and subtract from the right
             // (if left error is greater than right error, left should be given some more power than right)
-            leftPower += TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KCC * positionErrorMagnitudeDelta;
-            rightPower -= TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KCC * positionErrorMagnitudeDelta;
+            leftGoal += TuningConstants.DRIVETRAIN_PATH_PID_LEFT_KCC * positionErrorMagnitudeDelta;
+            rightGoal -= TuningConstants.DRIVETRAIN_PATH_PID_RIGHT_KCC * positionErrorMagnitudeDelta;
         }
 
-        this.assertPowerLevelRange(leftPower, "left velocity (goal)");
-        this.assertPowerLevelRange(rightPower, "right velocity (goal)");
+        this.assertPowerLevelRange(leftGoal, "left velocity (goal)");
+        this.assertPowerLevelRange(rightGoal, "right velocity (goal)");
 
         if (this.usePID)
         {
-            leftPower *= TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KS;
-            rightPower *= TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KS;
+            leftGoal *= TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KS;
+            rightGoal *= TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KS;
         }
 
-        return new Setpoint(leftPower, rightPower);
+        return new Setpoint(leftGoal, rightGoal);
     }
 
     /**
