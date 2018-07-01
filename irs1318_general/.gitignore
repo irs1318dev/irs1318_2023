@@ -2,3 +2,6 @@
 /sysProps.xml
 /build/
 /dist/
+/.project
+/.settings/
+/.gradle/
