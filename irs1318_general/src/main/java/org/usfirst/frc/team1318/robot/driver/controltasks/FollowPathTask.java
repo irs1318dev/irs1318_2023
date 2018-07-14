@@ -3,7 +3,7 @@ package org.usfirst.frc.team1318.robot.driver.controltasks;
 import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.driver.Operation;
 import org.usfirst.frc.team1318.robot.driver.common.IControlTask;
-import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainMechanism;
+import org.usfirst.frc.team1318.robot.mechanisms.DriveTrainMechanism;
 
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;

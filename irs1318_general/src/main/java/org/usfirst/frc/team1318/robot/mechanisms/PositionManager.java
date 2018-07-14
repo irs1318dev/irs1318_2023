@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1318.robot.general;
+package org.usfirst.frc.team1318.robot.mechanisms;
 
 import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.TuningConstants;
@@ -6,7 +6,6 @@ import org.usfirst.frc.team1318.robot.common.IDashboardLogger;
 import org.usfirst.frc.team1318.robot.common.IMechanism;
 import org.usfirst.frc.team1318.robot.driver.common.Driver;
 import org.usfirst.frc.team1318.robot.driver.common.autonomous.AutonomousDriver;
-import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainMechanism;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;

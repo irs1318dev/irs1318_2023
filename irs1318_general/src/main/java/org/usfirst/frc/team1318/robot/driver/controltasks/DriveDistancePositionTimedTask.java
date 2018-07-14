@@ -2,7 +2,7 @@ package org.usfirst.frc.team1318.robot.driver.controltasks;
 
 import org.usfirst.frc.team1318.robot.HardwareConstants;
 import org.usfirst.frc.team1318.robot.driver.Operation;
-import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainMechanism;
+import org.usfirst.frc.team1318.robot.mechanisms.DriveTrainMechanism;
 
 public class DriveDistancePositionTimedTask extends TimedTask
 {
@@ -36,10 +36,6 @@ public class DriveDistancePositionTimedTask extends TimedTask
 
         this.endLeftTicks = this.startLeftTicks + this.distance / HardwareConstants.DRIVETRAIN_LEFT_PULSE_DISTANCE;
         this.endRightTicks = this.startRightTicks + this.distance / HardwareConstants.DRIVETRAIN_RIGHT_PULSE_DISTANCE;
-
-        this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
-        this.setAnalogOperationState(Operation.DriveTrainTurn, 0.0);
-        this.setAnalogOperationState(Operation.DriveTrainMoveForward, this.velocity);
     }
 
     @Override
@@ -48,16 +44,6 @@ public class DriveDistancePositionTimedTask extends TimedTask
         this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
         this.setAnalogOperationState(Operation.DriveTrainTurn, 0.0);
         this.setAnalogOperationState(Operation.DriveTrainMoveForward, this.velocity);
-    }
-
-    @Override
-    public void stop()
-    {
-        super.stop();
-
-        this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
-        this.setAnalogOperationState(Operation.DriveTrainTurn, 0.0);
-        this.setAnalogOperationState(Operation.DriveTrainMoveForward, 0.0);
     }
 
     @Override
@@ -93,11 +79,5 @@ public class DriveDistancePositionTimedTask extends TimedTask
                 ||
                 rightTicks <= this.endRightTicks;
         }
-    }
-
-    @Override
-    public boolean shouldCancel()
-    {
-        return super.shouldCancel();
     }
 }
