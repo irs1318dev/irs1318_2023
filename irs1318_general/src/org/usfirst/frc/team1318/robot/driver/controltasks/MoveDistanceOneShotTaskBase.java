@@ -3,7 +3,7 @@ package org.usfirst.frc.team1318.robot.driver.controltasks;
 import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.driver.Operation;
 import org.usfirst.frc.team1318.robot.driver.common.IControlTask;
-import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainMechanism;
+import org.usfirst.frc.team1318.robot.mechanisms.DriveTrainMechanism;
 
 /**
  * Abstract class defining a task that moves the robot a certain distance using Positional PID.
@@ -70,17 +70,6 @@ public abstract class MoveDistanceOneShotTaskBase extends ControlTaskBase implem
     }
 
     /**
-     * Cancel the current task and clear control changes
-     */
-    @Override
-    public void stop()
-    {
-        this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
-        this.setAnalogOperationState(Operation.DriveTrainLeftPosition, 0.0);
-        this.setAnalogOperationState(Operation.DriveTrainRightPosition, 0.0);
-    }
-
-    /**
      * End the current task and reset control changes appropriately
      */
     @Override
@@ -92,16 +81,6 @@ public abstract class MoveDistanceOneShotTaskBase extends ControlTaskBase implem
             this.setAnalogOperationState(Operation.DriveTrainLeftPosition, 0.0);
             this.setAnalogOperationState(Operation.DriveTrainRightPosition, 0.0);
         }
-    }
-
-    /**
-     * Checks whether this task should be stopped, or whether it should continue being processed.
-     * @return true if we should cancel this task (and stop performing any subsequent tasks), otherwise false (to keep processing this task)
-     */
-    @Override
-    public boolean shouldCancel()
-    {
-        return false;
     }
 
     /**

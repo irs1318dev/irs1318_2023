@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1318.robot.driver.controltasks;
 
 import org.usfirst.frc.team1318.robot.driver.Operation;
-import org.usfirst.frc.team1318.robot.general.PositionManager;
+import org.usfirst.frc.team1318.robot.mechanisms.PositionManager;
 
 /**
  * Task that turns the robot a certain amount clockwise or counterclockwise in-place.
@@ -66,18 +66,6 @@ public class TurnAbsoluteTask extends TimedTask
         this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
         this.setAnalogOperationState(Operation.DriveTrainMoveForward, 0.0);
         this.setAnalogOperationState(Operation.DriveTrainTurn, xVelocity);
-    }
-
-    /**
-     * Cancel the current task and clear control changes
-     */
-    @Override
-    public void stop()
-    {
-        super.stop();
-
-        this.setAnalogOperationState(Operation.DriveTrainMoveForward, 0.0);
-        this.setAnalogOperationState(Operation.DriveTrainTurn, 0.0);
     }
 
     /**

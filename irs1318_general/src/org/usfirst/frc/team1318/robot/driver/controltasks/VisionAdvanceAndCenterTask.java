@@ -50,13 +50,6 @@ public class VisionAdvanceAndCenterTask extends VisionCenteringTask implements I
     }
 
     @Override
-    public void stop()
-    {
-        super.stop();
-        this.setAnalogOperationState(Operation.DriveTrainMoveForward, 0.0);
-    }
-
-    @Override
     public void end()
     {
         super.end();

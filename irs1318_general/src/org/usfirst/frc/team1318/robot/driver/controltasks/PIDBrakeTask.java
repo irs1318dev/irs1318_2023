@@ -24,25 +24,17 @@ public class PIDBrakeTask extends MoveDistanceOneShotTaskBase implements IContro
     }
 
     @Override
-    public void begin()
+    public void update()
     {
-        super.begin();
-
         this.setDigitalOperationState(Operation.DriveTrainUseBrakeMode, true);
+
+        super.update();
     }
 
     @Override
     public void end()
     {
         super.end();
-
-        this.setDigitalOperationState(Operation.DriveTrainUseBrakeMode, false);
-    }
-
-    @Override
-    public void stop()
-    {
-        super.stop();
 
         this.setDigitalOperationState(Operation.DriveTrainUseBrakeMode, false);
     }

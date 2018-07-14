@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1318.robot.compressor;
+package org.usfirst.frc.team1318.robot.mechanisms;
 
 import javax.inject.Singleton;
 

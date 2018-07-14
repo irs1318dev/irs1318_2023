@@ -6,8 +6,8 @@ import org.usfirst.frc.team1318.robot.common.PIDHandler;
 import org.usfirst.frc.team1318.robot.common.wpilib.ITimer;
 import org.usfirst.frc.team1318.robot.driver.Operation;
 import org.usfirst.frc.team1318.robot.driver.common.IControlTask;
-import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainMechanism;
-import org.usfirst.frc.team1318.robot.general.PositionManager;
+import org.usfirst.frc.team1318.robot.mechanisms.DriveTrainMechanism;
+import org.usfirst.frc.team1318.robot.mechanisms.PositionManager;
 
 /**
  * Task that turns the robot a certain amount clockwise or counterclockwise in-place based on vision center
@@ -120,17 +120,6 @@ public class NavxTurnTask extends ControlTaskBase implements IControlTask
     }
 
     /**
-     * Cancel the current task and clear control changes
-     */
-    @Override
-    public void stop()
-    {
-        this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
-        this.setAnalogOperationState(Operation.DriveTrainTurn, 0.0);
-
-    }
-
-    /**
      * End the current task and reset control changes appropriately
      */
     @Override
@@ -191,12 +180,6 @@ public class NavxTurnTask extends ControlTaskBase implements IControlTask
                 return true;
             }
         }
-    }
-
-    @Override
-    public boolean shouldCancel()
-    {
-        return false;
     }
 
     protected PIDHandler createTurnHandler()

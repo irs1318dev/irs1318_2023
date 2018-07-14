@@ -37,18 +37,6 @@ public class DriveVelocityTimedTask extends TimedTask
     }
 
     /**
-     * Cancel the current task and clear control changes
-     */
-    @Override
-    public void stop()
-    {
-        super.stop();
-
-        this.setAnalogOperationState(Operation.DriveTrainMoveForward, 0.0);
-        this.setAnalogOperationState(Operation.DriveTrainTurn, 0.0);
-    }
-
-    /**
      * End the current task and reset control changes appropriately
      */
     @Override

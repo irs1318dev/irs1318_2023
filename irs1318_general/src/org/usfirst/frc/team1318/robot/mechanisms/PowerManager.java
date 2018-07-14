@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1318.robot.general;
+package org.usfirst.frc.team1318.robot.mechanisms;
 
 import org.usfirst.frc.team1318.robot.common.ComplementaryFilter;
 import org.usfirst.frc.team1318.robot.common.IMechanism;
