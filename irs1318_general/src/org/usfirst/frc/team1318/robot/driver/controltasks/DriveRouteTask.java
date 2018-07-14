@@ -5,7 +5,7 @@ import java.util.function.Function;
 import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.driver.Operation;
 import org.usfirst.frc.team1318.robot.driver.common.IControlTask;
-import org.usfirst.frc.team1318.robot.drivetrain.DriveTrainMechanism;
+import org.usfirst.frc.team1318.robot.mechanisms.DriveTrainMechanism;
 
 public class DriveRouteTask extends TimedTask implements IControlTask
 {
@@ -48,8 +48,6 @@ public class DriveRouteTask extends TimedTask implements IControlTask
 
         this.endLeftTicks = this.startLeftTicks + this.leftPositionPerTime.apply(1.0);
         this.endRightTicks = this.startRightTicks + this.rightPositionPerTime.apply(1.0);
-
-        this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, true);
     }
 
     /**
@@ -68,21 +66,9 @@ public class DriveRouteTask extends TimedTask implements IControlTask
             t = 0.0;
         }
 
+        this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, true);
         this.setAnalogOperationState(Operation.DriveTrainLeftPosition, this.startLeftTicks + this.leftPositionPerTime.apply(t));
         this.setAnalogOperationState(Operation.DriveTrainRightPosition, this.startRightTicks + this.rightPositionPerTime.apply(t));
-    }
-
-    /**
-     * Cancel the current task and clear control changes
-     */
-    @Override
-    public void stop()
-    {
-        super.stop();
-
-        this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
-        this.setAnalogOperationState(Operation.DriveTrainLeftPosition, 0.0);
-        this.setAnalogOperationState(Operation.DriveTrainRightPosition, 0.0);
     }
 
     /**

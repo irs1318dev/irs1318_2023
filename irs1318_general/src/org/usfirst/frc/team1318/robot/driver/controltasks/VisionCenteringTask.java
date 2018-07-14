@@ -52,7 +52,6 @@ public class VisionCenteringTask extends ControlTaskBase implements IControlTask
     {
         this.visionManager = this.getInjector().getInstance(VisionManager.class);
         this.turnPidHandler = this.createTurnHandler();
-        this.setDigitalOperationState(Operation.EnableVision, true);
     }
 
     /**
@@ -62,6 +61,7 @@ public class VisionCenteringTask extends ControlTaskBase implements IControlTask
     public void update()
     {
         this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
+        this.setDigitalOperationState(Operation.EnableVision, true);
 
         Double currentMeasuredAngle = this.visionManager.getMeasuredAngle();
         Double currentDesiredAngle = this.visionManager.getDesiredAngle();
@@ -71,18 +71,6 @@ public class VisionCenteringTask extends ControlTaskBase implements IControlTask
                 Operation.DriveTrainTurn,
                 -this.turnPidHandler.calculatePosition(currentDesiredAngle, currentMeasuredAngle));
         }
-    }
-
-    /**
-     * Cancel the current task and clear control changes
-     */
-    @Override
-    public void stop()
-    {
-        this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
-        this.setAnalogOperationState(Operation.DriveTrainTurn, 0.0);
-
-        this.setDigitalOperationState(Operation.EnableVision, false);
     }
 
     /**
@@ -140,6 +128,10 @@ public class VisionCenteringTask extends ControlTaskBase implements IControlTask
         }
     }
 
+    /**
+     * Checks whether this task should be stopped, or whether it should continue being processed.
+     * @return true if we should cancel this task (and stop performing any subsequent tasks), otherwise false (to keep processing this task)
+     */
     @Override
     public boolean shouldCancel()
     {
