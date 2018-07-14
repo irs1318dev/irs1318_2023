@@ -61,6 +61,9 @@ public class DriveTrainMechanismTest
         verify(leftMotor).setInvertOutput(eq(false));
         verify(leftMotor).setInvertSensor(eq(true));
         verify(leftMotor).setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
+        verify(leftMotor).setFeedbackFramePeriod(5);
+        verify(leftMotor).setPIDFFramePeriod(5);
+        verify(leftMotor).configureVelocityMeasurements();
         verify(leftMotor).setSelectedSlot(eq(0));
         verify(leftFollowerMotor).setNeutralMode(eq(TalonSRXNeutralMode.Brake));
         verify(leftFollowerMotor).setInvertOutput(eq(false));
@@ -70,6 +73,9 @@ public class DriveTrainMechanismTest
         verify(rightMotor).setInvertOutput(eq(true));
         verify(rightMotor).setInvertSensor(eq(true));
         verify(rightMotor).setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
+        verify(rightMotor).setFeedbackFramePeriod(5);
+        verify(rightMotor).setPIDFFramePeriod(5);
+        verify(rightMotor).configureVelocityMeasurements();
         verify(rightMotor).setSelectedSlot(eq(0));
         verify(rightFollowerMotor).setControlMode(eq(TalonSRXControlMode.Follower));
         verify(rightFollowerMotor).setNeutralMode(eq(TalonSRXNeutralMode.Brake));
@@ -148,6 +154,9 @@ public class DriveTrainMechanismTest
         verify(leftMotor).setInvertOutput(eq(false));
         verify(leftMotor).setInvertSensor(eq(true));
         verify(leftMotor).setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
+        verify(leftMotor).setFeedbackFramePeriod(5);
+        verify(leftMotor).setPIDFFramePeriod(5);
+        verify(leftMotor).configureVelocityMeasurements();
         verify(leftMotor).setSelectedSlot(eq(0));
         verify(leftFollowerMotor).setNeutralMode(eq(TalonSRXNeutralMode.Brake));
         verify(leftFollowerMotor).setInvertOutput(eq(false));
@@ -157,6 +166,9 @@ public class DriveTrainMechanismTest
         verify(rightMotor).setInvertOutput(eq(true));
         verify(rightMotor).setInvertSensor(eq(true));
         verify(rightMotor).setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
+        verify(rightMotor).setFeedbackFramePeriod(5);
+        verify(rightMotor).setPIDFFramePeriod(5);
+        verify(rightMotor).configureVelocityMeasurements();
         verify(rightMotor).setSelectedSlot(eq(0));
         verify(rightFollowerMotor).setControlMode(eq(TalonSRXControlMode.Follower));
         verify(rightFollowerMotor).setNeutralMode(eq(TalonSRXNeutralMode.Brake));
