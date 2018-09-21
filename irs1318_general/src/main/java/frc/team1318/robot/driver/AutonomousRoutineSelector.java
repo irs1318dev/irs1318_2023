@@ -3,12 +3,14 @@ package frc.team1318.robot.driver;
 import frc.team1318.robot.common.IDashboardLogger;
 import frc.team1318.robot.common.wpilib.IWpilibProvider;
 import frc.team1318.robot.driver.common.IControlTask;
-import frc.team1318.robot.driver.controltasks.WaitTask;
+import frc.team1318.robot.driver.controltasks.*;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import edu.wpi.first.wpilibj.DriverStation;
+
+import jaci.pathfinder.Waypoint;
 
 @Singleton
 public class AutonomousRoutineSelector
@@ -52,7 +54,11 @@ public class AutonomousRoutineSelector
         // print routine parameters to the smartdash
         this.logger.logString(AutonomousRoutineSelector.LogName, "gameData", gameData);
 
-        return AutonomousRoutineSelector.GetFillerRoutine();
+        return FollowPathTask.Create(
+            0.05,
+            new Waypoint(0, 0, 0),
+            new Waypoint(0, 12, 0),
+            new Waypoint(12, 24, 90));
     }
 
     /**
