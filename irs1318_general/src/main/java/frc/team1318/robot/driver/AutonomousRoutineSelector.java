@@ -9,7 +9,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import edu.wpi.first.wpilibj.DriverStation;
-
+import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Waypoint;
 
 @Singleton
@@ -58,7 +58,7 @@ public class AutonomousRoutineSelector
             0.05,
             new Waypoint(0, 0, 0),
             new Waypoint(0, 12, 0),
-            new Waypoint(12, 24, 90));
+            new Waypoint(12, 24, Pathfinder.d2r(90)));
     }
 
     /**
