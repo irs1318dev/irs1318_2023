@@ -57,8 +57,8 @@ public class AutonomousRoutineSelector
         return FollowPathTask.Create(
             0.05,
             new Waypoint(0, 0, 0),
-            new Waypoint(0, 12, 0),
-            new Waypoint(12, 24, Pathfinder.d2r(90)));
+            new Waypoint(12, 0, 0),
+            new Waypoint(24, 12, Pathfinder.d2r(-90)));
     }
 
     /**
