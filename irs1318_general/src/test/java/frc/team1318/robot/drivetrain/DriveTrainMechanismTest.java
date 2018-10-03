@@ -6,7 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import frc.team1318.robot.ElectronicsConstants;
 import frc.team1318.robot.TestWpilibProvider;
 import frc.team1318.robot.TuningConstants;
