@@ -1,4 +1,7 @@
 /bin/
-/sysProps.xml
 /build/
-/dist/
+/.project/
+/.gradle/
+/.settings/
+/.vscode/
+!gradle/wrapper/gradle-wrapper.jar
