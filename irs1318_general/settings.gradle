@@ -4,3 +4,7 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
+include 'core'
+include 'robot'
+include 'fauxbot'
