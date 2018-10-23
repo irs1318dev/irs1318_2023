@@ -1,16 +1,11 @@
 package frc.team1318.robot.driver;
 
-import frc.team1318.robot.common.robotprovider.IDashboardLogger;
-import frc.team1318.robot.common.robotprovider.IDriverStation;
-import frc.team1318.robot.common.robotprovider.IRobotProvider;
+import frc.team1318.robot.common.robotprovider.*;
 import frc.team1318.robot.driver.common.IControlTask;
 import frc.team1318.robot.driver.controltasks.*;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
-// import jaci.pathfinder.Pathfinder;
-// import jaci.pathfinder.Waypoint;
 
 @Singleton
 public class AutonomousRoutineSelector
@@ -18,6 +13,7 @@ public class AutonomousRoutineSelector
     private static final String LogName = "auto";
     private final IDashboardLogger logger;
     private final IDriverStation driverStation;
+    private final ITrajectoryGenerator trajectoryGenerator;
 
     //    private final IDigitalInput dipSwitchA;
 
@@ -33,6 +29,7 @@ public class AutonomousRoutineSelector
         this.logger = logger;
 
         this.driverStation = provider.getDriverStation();
+        this.trajectoryGenerator = provider.getTrajectoryGenerator();
 
         //        this.dipSwitchA = provider.getDigitalInput(ElectronicsConstants.AUTO_DIP_SWITCH_A_DIGITAL_CHANNEL);
     }
@@ -57,12 +54,11 @@ public class AutonomousRoutineSelector
         // print routine parameters to the smartdash
         this.logger.logString(AutonomousRoutineSelector.LogName, "gameData", gameData);
 
-        return AutonomousRoutineSelector.GetFillerRoutine();
-        // return FollowPathTask.Create(
-        //     0.05,
-        //     new Waypoint(0, 0, 0),
-        //     new Waypoint(12, 0, 0),
-        //     new Waypoint(24, 12, Pathfinder.d2r(-90)));
+        return new FollowPathTask(
+            this.trajectoryGenerator.generate(
+                new TrajectoryWaypoint(0, 0, 0),
+                new TrajectoryWaypoint(12, 0, 0),
+                new TrajectoryWaypoint(24, 12, -90)));
     }
 
     /**

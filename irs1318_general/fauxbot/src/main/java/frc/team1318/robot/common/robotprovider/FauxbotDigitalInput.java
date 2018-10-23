@@ -10,7 +10,7 @@ public class FauxbotDigitalInput extends FauxbotSensorBase implements IDigitalIn
     public FauxbotDigitalInput(int port)
     {
         this.isSetProperty = new SimpleBooleanProperty();
-        FauxbotSensorManager.set(port, this);
+        FauxbotSensorManager.set(new FauxbotSensorConnection(FauxbotSensorConnection.SensorConnector.DigitalInput, port), this);
     }
 
     /**

@@ -18,15 +18,15 @@ import javafx.scene.paint.Color;
 @Singleton
 public class ElevatorSimulator implements IRealWorldSimulator
 {
-    private static final int EncoderAChannel = 0;
-    private static final int EncoderBChannel = 1;
-    private static final int MotorChannel = 0;
+    private static final FauxbotSensorConnection EncoderAChannel = new FauxbotSensorConnection(FauxbotSensorConnection.SensorConnector.DigitalInput, 0);
+    private static final FauxbotSensorConnection EncoderBChannel = new FauxbotSensorConnection(FauxbotSensorConnection.SensorConnector.DigitalInput, 1);
+    private static final FauxbotActuatorConnection MotorChannel = new FauxbotActuatorConnection(FauxbotActuatorConnection.ActuatorConnector.PWM, 0);
 
     private FileInputStream elevatorPersonInputStream;
     private Image ElevatorPerson;
 
     @SuppressWarnings("serial")
-    private final Map<Integer, String> sensorNameMap = new HashMap<Integer, String>()
+    private final Map<FauxbotSensorConnection, String> sensorNameMap = new HashMap<FauxbotSensorConnection, String>()
     {
         {
             this.put(ElevatorSimulator.EncoderAChannel, "Elevator encoder");
@@ -35,7 +35,7 @@ public class ElevatorSimulator implements IRealWorldSimulator
     };
 
     @SuppressWarnings("serial")
-    private final Map<Integer, String> motorNameMap = new HashMap<Integer, String>()
+    private final Map<FauxbotActuatorConnection, String> motorNameMap = new HashMap<FauxbotActuatorConnection, String>()
     {
         {
             this.put(ElevatorSimulator.MotorChannel, "Elevator motor");
@@ -68,34 +68,34 @@ public class ElevatorSimulator implements IRealWorldSimulator
         this.currentElevatorHeight = 0.0;
     }
 
-    public String getSensorName(int channel)
+    public String getSensorName(FauxbotSensorConnection connection)
     {
-        if (this.sensorNameMap.containsKey(channel))
+        if (this.sensorNameMap.containsKey(connection))
         {
-            return this.sensorNameMap.get(channel);
+            return this.sensorNameMap.get(connection);
         }
 
-        return "Sensor " + channel;
+        return "Sensor " + connection;
     }
 
-    public double getEncoderMin(int channel)
+    public double getEncoderMin(FauxbotSensorConnection connection)
     {
         return ElevatorSimulator.ElevatorMinHeight;
     }
 
-    public double getEncoderMax(int channel)
+    public double getEncoderMax(FauxbotSensorConnection connection)
     {
         return ElevatorSimulator.ElevatorMaxHeight;
     }
 
-    public String getActuatorName(int channel)
+    public String getActuatorName(FauxbotActuatorConnection connection)
     {
-        if (this.motorNameMap.containsKey(channel))
+        if (this.motorNameMap.containsKey(connection))
         {
-            return this.motorNameMap.get(channel);
+            return this.motorNameMap.get(connection);
         }
 
-        return "Motor " + channel;
+        return "Motor " + connection;
     }
 
     public void update()

@@ -5,30 +5,25 @@ import java.util.Map;
 
 public class FauxbotActuatorManager
 {
-    private static Map<Integer, FauxbotActuatorBase> actuatorMap = new HashMap<>();
-    private static int highestPort = 0;
+    public static final Map<FauxbotActuatorConnection, FauxbotActuatorBase> actuatorMap = new HashMap<>();
 
-    public static void set(int port, FauxbotActuatorBase sensor)
+    public static void set(FauxbotActuatorConnection connection, FauxbotActuatorBase sensor)
     {
-        FauxbotActuatorManager.actuatorMap.put(port, sensor);
-        if (FauxbotActuatorManager.highestPort < port)
+        if (FauxbotActuatorManager.actuatorMap.containsKey(connection))
         {
-            FauxbotActuatorManager.highestPort = port;
+            throw new RuntimeException("Don't expect connection " + connection.toString() + " to be specified multiple times!");
         }
+
+        FauxbotActuatorManager.actuatorMap.put(connection, sensor);
     }
 
-    public static FauxbotActuatorBase get(int port)
+    public static FauxbotActuatorBase get(FauxbotActuatorConnection connection)
     {
-        if (!FauxbotActuatorManager.actuatorMap.containsKey(port))
+        if (!FauxbotActuatorManager.actuatorMap.containsKey(connection))
         {
             return null;
         }
 
-        return FauxbotActuatorManager.actuatorMap.get(port);
-    }
-
-    public static int getHightestPort()
-    {
-        return FauxbotActuatorManager.highestPort;
+        return FauxbotActuatorManager.actuatorMap.get(connection);
     }
 }

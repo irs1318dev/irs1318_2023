@@ -1,5 +1,13 @@
 package frc.team1318.robot;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.inject.Injector;
+
+import frc.team1318.robot.common.IMechanism;
+import frc.team1318.robot.mechanisms.DriveTrainMechanism;
+
 /**
  * All constants related to tuning the operation of the robot.
  * 
@@ -10,6 +18,18 @@ public class TuningConstants
 {
     public static final boolean COMPETITION_ROBOT = false;
     public static final boolean THROW_EXCEPTIONS = !TuningConstants.COMPETITION_ROBOT;
+
+    public static List<IMechanism> GetActiveMechanisms(Injector injector)
+    {
+        List<IMechanism> mechanismList = new ArrayList<IMechanism>();
+        mechanismList.add(injector.getInstance(DriveTrainMechanism.class));
+        //mechanismList.add(injector.getInstance(PositionManager.class));
+        //mechanismList.add(injector.getInstance(PowerManager.class));
+        //mechanismList.add(injector.getInstance(VisionManager.class));
+        //mechanismList.add(injector.getInstance(CompressorMechanism.class));
+        //mechanismList.add(injector.getInstance(SomeMechanism.class));
+        return mechanismList;
+    }
 
     //================================================== Autonomous ==============================================================
 

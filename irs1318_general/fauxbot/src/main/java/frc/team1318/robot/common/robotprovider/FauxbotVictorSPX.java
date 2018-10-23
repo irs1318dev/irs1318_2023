@@ -1,8 +1,6 @@
 package frc.team1318.robot.common.robotprovider;
 
-import frc.team1318.robot.TuningConstants;
-
-public class FauxbotVictorSPX extends FauxbotMotorBase implements IVictorSPX
+public class FauxbotVictorSPX extends FauxbotAdvancedMotorBase implements IVictorSPX
 {
     public FauxbotVictorSPX(int deviceNumber)
     {

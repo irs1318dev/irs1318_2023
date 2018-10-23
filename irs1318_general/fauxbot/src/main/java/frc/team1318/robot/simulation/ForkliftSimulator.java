@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import frc.team1318.robot.ElectronicsConstants;
 import frc.team1318.robot.IRealWorldSimulator;
 import frc.team1318.robot.common.robotprovider.*;
 
@@ -19,17 +18,19 @@ import javafx.scene.paint.Color;
 @Singleton
 public class ForkliftSimulator implements IRealWorldSimulator
 {
-    private static final int LeftMotorChannel = 0;
-    private static final int RightMotorChannel = 1;
-    private static final int LifterForwardChannel = 2;
+    private static final FauxbotActuatorConnection LeftMotorConnection = new FauxbotActuatorConnection(FauxbotActuatorConnection.ActuatorConnector.PWM, 0);
+    private static final FauxbotActuatorConnection RightMotorConnection = new FauxbotActuatorConnection(FauxbotActuatorConnection.ActuatorConnector.PWM, 1);
+    private static final FauxbotActuatorConnection LifterForwardConnection = new FauxbotActuatorConnection(FauxbotActuatorConnection.ActuatorConnector.PCM0A, 0);
+    private static final FauxbotActuatorConnection LifterReverseConnection = new FauxbotActuatorConnection(FauxbotActuatorConnection.ActuatorConnector.PCM0B, 1);
 
     @SuppressWarnings("serial")
-    private final Map<Integer, String> actuatorNameMap = new HashMap<Integer, String>()
+    private final Map<FauxbotActuatorConnection, String> actuatorNameMap = new HashMap<FauxbotActuatorConnection, String>()
     {
         {
-            this.put(ForkliftSimulator.LeftMotorChannel, "F Left Drive Motor");
-            this.put(ForkliftSimulator.RightMotorChannel, "Right Drive Motor");
-            this.put(ForkliftSimulator.LifterForwardChannel, "Lifter solenoid");
+            this.put(ForkliftSimulator.LeftMotorConnection, "Left Drive Motor");
+            this.put(ForkliftSimulator.RightMotorConnection, "Right Drive Motor");
+            this.put(ForkliftSimulator.LifterForwardConnection, "Lifter solenoid");
+            this.put(ForkliftSimulator.LifterReverseConnection, "Lifter solenoid");
         }
     };
 
@@ -65,40 +66,40 @@ public class ForkliftSimulator implements IRealWorldSimulator
     }
 
     @Override
-    public String getSensorName(int channel)
+    public String getSensorName(FauxbotSensorConnection connection)
     {
-        return "Sensor " + channel;
+        return "Sensor " + connection;
     }
 
     @Override
-    public double getEncoderMin(int channel)
+    public double getEncoderMin(FauxbotSensorConnection connection)
     {
         return -1.0;
     }
 
     @Override
-    public double getEncoderMax(int channel)
+    public double getEncoderMax(FauxbotSensorConnection connection)
     {
         return 1.0;
     }
 
     @Override
-    public String getActuatorName(int channel)
+    public String getActuatorName(FauxbotActuatorConnection connection)
     {
-        if (this.actuatorNameMap.containsKey(channel))
+        if (this.actuatorNameMap.containsKey(connection))
         {
-            return this.actuatorNameMap.get(channel);
+            return this.actuatorNameMap.get(connection);
         }
 
-        return "Motor " + channel;
+        return "Motor " + connection;
     }
 
     @Override
     public void update()
     {
-        FauxbotActuatorBase leftDriveActuator = FauxbotActuatorManager.get(ForkliftSimulator.LeftMotorChannel);
-        FauxbotActuatorBase rightDriveActuator = FauxbotActuatorManager.get(ForkliftSimulator.RightMotorChannel);
-        FauxbotActuatorBase lifterActuator = FauxbotActuatorManager.get(ForkliftSimulator.LifterForwardChannel);
+        FauxbotActuatorBase leftDriveActuator = FauxbotActuatorManager.get(ForkliftSimulator.LeftMotorConnection);
+        FauxbotActuatorBase rightDriveActuator = FauxbotActuatorManager.get(ForkliftSimulator.RightMotorConnection);
+        FauxbotActuatorBase lifterActuator = FauxbotActuatorManager.get(ForkliftSimulator.LifterForwardConnection);
 
         if (leftDriveActuator != null && leftDriveActuator instanceof FauxbotMotorBase && rightDriveActuator != null && rightDriveActuator instanceof FauxbotMotorBase)
         {

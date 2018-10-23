@@ -1,15 +1,11 @@
 package frc.team1318.robot;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Singleton;
 
 import frc.team1318.robot.common.*;
 import frc.team1318.robot.common.robotprovider.*;
 import frc.team1318.robot.driver.ButtonMap;
 import frc.team1318.robot.driver.common.IButtonMap;
-import frc.team1318.robot.mechanisms.DriveTrainMechanism;
 import frc.team1318.robot.simulation.*;
 
 import com.google.inject.AbstractModule;
@@ -31,14 +27,7 @@ public class FauxbotModule extends AbstractModule
     @Provides
     public MechanismManager getMechanismManager(Injector injector)
     {
-        List<IMechanism> mechanismList = new ArrayList<>();
-        mechanismList.add(injector.getInstance(DriveTrainMechanism.class));
-        //mechanismList.add(injector.getInstance(PositionManager.class));
-        //mechanismList.add(injector.getInstance(PowerManager.class));
-        //mechanismList.add(injector.getInstance(VisionManager.class));
-        //mechanismList.add(injector.getInstance(CompressorMechanism.class));
-        //mechanismList.add(injector.getInstance(SomeMechanism.class));
-        return new MechanismManager(mechanismList);
+        return new MechanismManager(TuningConstants.GetActiveMechanisms(injector));
     }
 
     @Singleton

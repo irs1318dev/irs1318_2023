@@ -142,4 +142,10 @@ public class RobotProvider implements IRobotProvider
     {
         return new DriverStationWrapper();
     }
+
+    @Override
+    public ITrajectoryGenerator getTrajectoryGenerator()
+    {
+        return new TrajectoryGenerator();
+    }
 }

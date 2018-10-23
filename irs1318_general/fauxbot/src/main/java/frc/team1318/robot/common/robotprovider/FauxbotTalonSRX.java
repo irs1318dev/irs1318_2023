@@ -1,6 +1,6 @@
 package frc.team1318.robot.common.robotprovider;
 
-public class FauxbotTalonSRX extends FauxbotMotorBase implements ITalonSRX
+public class FauxbotTalonSRX extends FauxbotAdvancedMotorBase implements ITalonSRX
 {
     public FauxbotTalonSRX(int deviceNumber)
     {

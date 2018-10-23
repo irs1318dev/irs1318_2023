@@ -17,13 +17,9 @@ import frc.team1318.robot.driver.common.descriptions.MacroOperationDescription;
 import frc.team1318.robot.driver.common.descriptions.OperationDescription;
 import frc.team1318.robot.driver.common.descriptions.ShiftDescription;
 import frc.team1318.robot.driver.common.descriptions.UserInputDevice;
-//import frc.team1318.robot.driver.controltasks.FollowPathTask;
 import frc.team1318.robot.driver.controltasks.PIDBrakeTask;
 import frc.team1318.robot.driver.controltasks.VisionAdvanceAndCenterTask;
 import frc.team1318.robot.driver.controltasks.VisionCenteringTask;
-
-//import jaci.pathfinder.Pathfinder;
-//import jaci.pathfinder.Waypoint;
 
 @Singleton
 public class ButtonMap implements IButtonMap
@@ -207,29 +203,6 @@ public class ButtonMap implements IButtonMap
                         Operation.DriveTrainTurn,
                         Operation.DriveTrainMoveForward,
                     }));
-            // put(
-            //     MacroOperation.DriveForwardTurnRight,
-            //     new MacroOperationDescription(
-            //         UserInputDevice.Driver,
-            //         UserInputDeviceButton.JOYSTICK_STICK_TRIGGER_BUTTON,
-            //         ButtonType.Toggle,
-            //         () -> FollowPathTask.Create(
-            //             new Waypoint(0.0, 0.0, Pathfinder.d2r(90.0)),
-            //             new Waypoint(0.0, 24.0, Pathfinder.d2r(90.0)),
-            //             new Waypoint(24.0, 48.0, Pathfinder.d2r(0.0)),
-            //             new Waypoint(48.0, 48.0, Pathfinder.d2r(0.0))),
-            //         new Operation[]
-            //         {
-            //             Operation.DriveTrainUsePathMode,
-            //             Operation.DriveTrainLeftPosition,
-            //             Operation.DriveTrainRightPosition,
-            //             Operation.DriveTrainLeftVelocity,
-            //             Operation.DriveTrainRightVelocity,
-            //             Operation.DriveTrainLeftAcceleration,
-            //             Operation.DriveTrainRightAcceleration,
-            //             Operation.DriveTrainTurn,
-            //             Operation.DriveTrainMoveForward,
-            //         }));
         }
     };
 

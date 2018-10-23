@@ -142,4 +142,10 @@ public class FauxbotProvider implements IRobotProvider
     {
         return new FauxbotDriverStation();
     }
+
+    @Override
+    public ITrajectoryGenerator getTrajectoryGenerator()
+    {
+        return null;
+    }
 }

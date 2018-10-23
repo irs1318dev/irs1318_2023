@@ -5,31 +5,14 @@ import java.io.IOException;
 import frc.team1318.robot.ElectronicsConstants;
 import frc.team1318.robot.FauxbotModule;
 import frc.team1318.robot.common.MechanismManager;
-import frc.team1318.robot.common.robotprovider.ITimer;
+import frc.team1318.robot.common.robotprovider.*;
 import frc.team1318.robot.driver.MacroOperation;
 import frc.team1318.robot.driver.Operation;
 import frc.team1318.robot.driver.common.Driver;
 import frc.team1318.robot.driver.common.IButtonMap;
 import frc.team1318.robot.driver.common.buttons.ButtonType;
-import frc.team1318.robot.driver.common.descriptions.AnalogOperationDescription;
-import frc.team1318.robot.driver.common.descriptions.DigitalOperationDescription;
-import frc.team1318.robot.driver.common.descriptions.MacroOperationDescription;
-import frc.team1318.robot.driver.common.descriptions.OperationDescription;
-import frc.team1318.robot.driver.common.descriptions.OperationType;
-import frc.team1318.robot.driver.common.descriptions.UserInputDevice;
+import frc.team1318.robot.driver.common.descriptions.*;
 import frc.team1318.robot.driver.common.user.UserDriver;
-import frc.team1318.robot.common.robotprovider.FauxbotAnalogInput;
-import frc.team1318.robot.common.robotprovider.FauxbotDigitalInput;
-import frc.team1318.robot.common.robotprovider.FauxbotDoubleSolenoid;
-import frc.team1318.robot.common.robotprovider.FauxbotEncoder;
-import frc.team1318.robot.common.robotprovider.FauxbotJoystick;
-import frc.team1318.robot.common.robotprovider.FauxbotJoystickManager;
-import frc.team1318.robot.common.robotprovider.FauxbotMotorBase;
-import frc.team1318.robot.common.robotprovider.FauxbotActuatorBase;
-import frc.team1318.robot.common.robotprovider.FauxbotActuatorManager;
-import frc.team1318.robot.common.robotprovider.FauxbotSensorBase;
-import frc.team1318.robot.common.robotprovider.FauxbotSensorManager;
-import frc.team1318.robot.common.robotprovider.FauxbotSolenoid;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -257,12 +240,12 @@ public class FauxbotApplication extends Application
         sensorsTitle.setFont(Font.font(fontDefault, FontWeight.NORMAL, 20));
         grid.add(sensorsTitle, 0, rowCount++, 2, 1);
 
-        for (int i = 0; i <= FauxbotSensorManager.getHightestPort(); i++)
+        for (FauxbotSensorConnection connection : FauxbotSensorManager.sensorMap.keySet())
         {
-            FauxbotSensorBase sensor = FauxbotSensorManager.get(i);
+            FauxbotSensorBase sensor = FauxbotSensorManager.get(connection);
             if (sensor != null)
             {
-                String sensorName = this.simulator.getSensorName(i) + ":";
+                String sensorName = this.simulator.getSensorName(connection) + ":";
 
                 int thisRowIndex = rowCount;
                 rowCount++;
@@ -289,7 +272,7 @@ public class FauxbotApplication extends Application
                 }
                 else if (sensor instanceof FauxbotEncoder)
                 {
-                    double encoderMax = this.simulator.getEncoderMax(i);
+                    double encoderMax = this.simulator.getEncoderMax(connection);
                     Slider sensorSlider = new Slider();
                     sensorSlider.setMin(-encoderMax);
                     sensorSlider.setMax(encoderMax);
@@ -308,12 +291,12 @@ public class FauxbotApplication extends Application
         Text motorsTitle = new Text("Actuators");
         motorsTitle.setFont(Font.font(fontDefault, FontWeight.NORMAL, 20));
         grid.add(motorsTitle, 0, rowCount++, 2, 1);
-        for (int i = 0; i <= FauxbotActuatorManager.getHightestPort(); i++)
+        for (FauxbotActuatorConnection connection : FauxbotActuatorManager.actuatorMap.keySet())
         {
-            FauxbotActuatorBase actuator = FauxbotActuatorManager.get(i);
+            FauxbotActuatorBase actuator = FauxbotActuatorManager.get(connection);
             if (actuator != null)
             {
-                String motorName = this.simulator.getActuatorName(i) + ":";
+                String motorName = this.simulator.getActuatorName(connection) + ":";
 
                 int thisRowIndex = rowCount;
                 rowCount++;

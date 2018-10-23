@@ -4,25 +4,7 @@ import static org.mockito.Mockito.mock;
 
 import java.util.HashMap;
 
-import frc.team1318.robot.common.robotprovider.IAnalogInput;
-import frc.team1318.robot.common.robotprovider.ICompressor;
-import frc.team1318.robot.common.robotprovider.IDigitalInput;
-import frc.team1318.robot.common.robotprovider.IDoubleSolenoid;
-import frc.team1318.robot.common.robotprovider.IDriverStation;
-import frc.team1318.robot.common.robotprovider.IEncoder;
-import frc.team1318.robot.common.robotprovider.IJoystick;
-import frc.team1318.robot.common.robotprovider.IMotor;
-import frc.team1318.robot.common.robotprovider.INavx;
-import frc.team1318.robot.common.robotprovider.IPowerDistributionPanel;
-import frc.team1318.robot.common.robotprovider.IRelay;
-import frc.team1318.robot.common.robotprovider.IRobotProvider;
-import frc.team1318.robot.common.robotprovider.IServo;
-import frc.team1318.robot.common.robotprovider.ISolenoid;
-import frc.team1318.robot.common.robotprovider.ITalonSRX;
-import frc.team1318.robot.common.robotprovider.IUsbCamera;
-import frc.team1318.robot.common.robotprovider.IVictorSPX;
-import frc.team1318.robot.common.robotprovider.IVideoStream;
-import frc.team1318.robot.common.robotprovider.RelayDirection;
+import frc.team1318.robot.common.robotprovider.*;
 
 public class TestProvider implements IRobotProvider
 {
@@ -251,6 +233,12 @@ public class TestProvider implements IRobotProvider
 
     @Override
     public IDriverStation getDriverStation()
+    {
+        return null;
+    }
+
+    @Override
+    public ITrajectoryGenerator getTrajectoryGenerator()
     {
         return null;
     }

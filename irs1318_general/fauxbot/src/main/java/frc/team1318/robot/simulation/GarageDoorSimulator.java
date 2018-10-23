@@ -18,26 +18,26 @@ import javafx.scene.paint.Color;
 @Singleton
 public class GarageDoorSimulator implements IRealWorldSimulator
 {
-    private static final int ThroughBeamSensorChannel = 0;
-    private static final int OpenSensorChannel = 1;
-    private static final int ClosedSensorChannel = 2;
-    private static final int MotorChannel = 0;
+    private static final FauxbotSensorConnection ThroughBeamSensorConnection = new FauxbotSensorConnection(FauxbotSensorConnection.SensorConnector.DigitalInput, 0);
+    private static final FauxbotSensorConnection OpenSensorConnection = new FauxbotSensorConnection(FauxbotSensorConnection.SensorConnector.DigitalInput, 1);
+    private static final FauxbotSensorConnection ClosedSensorConnection = new FauxbotSensorConnection(FauxbotSensorConnection.SensorConnector.DigitalInput, 2);
+    private static final FauxbotActuatorConnection MotorConnection = new FauxbotActuatorConnection(FauxbotActuatorConnection.ActuatorConnector.PWM, 0);
 
     @SuppressWarnings("serial")
-    private final Map<Integer, String> sensorNameMap = new HashMap<Integer, String>()
+    private final Map<FauxbotSensorConnection, String> sensorNameMap = new HashMap<FauxbotSensorConnection, String>()
     {
         {
-            this.put(GarageDoorSimulator.ThroughBeamSensorChannel, "Through-Beam sensor");
-            this.put(GarageDoorSimulator.OpenSensorChannel, "Open sensor");
-            this.put(GarageDoorSimulator.ClosedSensorChannel, "Closed sensor");
+            this.put(GarageDoorSimulator.ThroughBeamSensorConnection, "Through-Beam sensor");
+            this.put(GarageDoorSimulator.OpenSensorConnection, "Open sensor");
+            this.put(GarageDoorSimulator.ClosedSensorConnection, "Closed sensor");
         }
     };
 
     @SuppressWarnings("serial")
-    private final Map<Integer, String> motorNameMap = new HashMap<Integer, String>()
+    private final Map<FauxbotActuatorConnection, String> motorNameMap = new HashMap<FauxbotActuatorConnection, String>()
     {
         {
-            this.put(GarageDoorSimulator.MotorChannel, "Door motor");
+            this.put(GarageDoorSimulator.MotorConnection, "Door motor");
         }
     };
 
@@ -66,39 +66,39 @@ public class GarageDoorSimulator implements IRealWorldSimulator
         this.loadRandomImage();
     }
 
-    public String getSensorName(int channel)
+    public String getSensorName(FauxbotSensorConnection connection)
     {
-        if (this.sensorNameMap.containsKey(channel))
+        if (this.sensorNameMap.containsKey(connection))
         {
-            return this.sensorNameMap.get(channel);
+            return this.sensorNameMap.get(connection);
         }
 
-        return "Sensor " + channel;
+        return "Sensor " + connection;
     }
 
-    public double getEncoderMin(int channel)
+    public double getEncoderMin(FauxbotSensorConnection connection)
     {
         return 0.0;
     }
 
-    public double getEncoderMax(int channel)
+    public double getEncoderMax(FauxbotSensorConnection connection)
     {
         return 1.0;
     }
 
-    public String getActuatorName(int channel)
+    public String getActuatorName(FauxbotActuatorConnection connection)
     {
-        if (this.motorNameMap.containsKey(channel))
+        if (this.motorNameMap.containsKey(connection))
         {
-            return this.motorNameMap.get(channel);
+            return this.motorNameMap.get(connection);
         }
 
-        return "Motor " + channel;
+        return "Motor " + connection;
     }
 
     public void update()
     {
-        FauxbotActuatorBase actuator = FauxbotActuatorManager.get(GarageDoorSimulator.MotorChannel);
+        FauxbotActuatorBase actuator = FauxbotActuatorManager.get(GarageDoorSimulator.MotorConnection);
         if (actuator != null && actuator instanceof FauxbotMotorBase)
         {
             FauxbotMotorBase motor = (FauxbotMotorBase)actuator;
@@ -128,7 +128,7 @@ public class GarageDoorSimulator implements IRealWorldSimulator
             this.amountOpened = 0.0;
         }
 
-        FauxbotSensorBase openSensor = FauxbotSensorManager.get(GarageDoorSimulator.OpenSensorChannel);
+        FauxbotSensorBase openSensor = FauxbotSensorManager.get(GarageDoorSimulator.OpenSensorConnection);
         if (openSensor != null && openSensor instanceof FauxbotDigitalInput)
         {
             FauxbotDigitalInput openSwitch = (FauxbotDigitalInput)openSensor;
@@ -142,7 +142,7 @@ public class GarageDoorSimulator implements IRealWorldSimulator
             }
         }
 
-        FauxbotSensorBase closedSensor = FauxbotSensorManager.get(GarageDoorSimulator.ClosedSensorChannel);
+        FauxbotSensorBase closedSensor = FauxbotSensorManager.get(GarageDoorSimulator.ClosedSensorConnection);
         if (closedSensor != null && closedSensor instanceof FauxbotDigitalInput)
         {
             FauxbotDigitalInput closedSwitch = (FauxbotDigitalInput)closedSensor;
@@ -156,7 +156,7 @@ public class GarageDoorSimulator implements IRealWorldSimulator
             }
         }
 
-        FauxbotSensorBase throughBeamSensor = FauxbotSensorManager.get(GarageDoorSimulator.ThroughBeamSensorChannel);
+        FauxbotSensorBase throughBeamSensor = FauxbotSensorManager.get(GarageDoorSimulator.ThroughBeamSensorConnection);
         if (throughBeamSensor != null && throughBeamSensor instanceof FauxbotDigitalInput)
         {
             FauxbotDigitalInput throughBeam = (FauxbotDigitalInput)throughBeamSensor;

@@ -11,7 +11,7 @@ public class FauxbotAnalogInput extends FauxbotSensorBase implements IAnalogInpu
     {
         this.valueProperty = new SimpleDoubleProperty(0.0);
 
-        FauxbotSensorManager.set(port, this);
+        FauxbotSensorManager.set(new FauxbotSensorConnection(FauxbotSensorConnection.SensorConnector.AnalogInput, port), this);
     }
 
     /**

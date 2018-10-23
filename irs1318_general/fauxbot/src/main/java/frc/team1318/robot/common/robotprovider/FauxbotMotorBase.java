@@ -7,10 +7,8 @@ public class FauxbotMotorBase extends FauxbotActuatorBase implements IMotor
 {
     private final DoubleProperty currentPowerProperty;
 
-    public FauxbotMotorBase(int port)
+    public FauxbotMotorBase()
     {
-        FauxbotActuatorManager.set(port, this);
-
         this.currentPowerProperty = new SimpleDoubleProperty();
         this.currentPowerProperty.set(0.0);
     }

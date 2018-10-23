@@ -14,8 +14,8 @@ public class FauxbotDoubleSolenoid extends FauxbotActuatorBase implements IDoubl
 
     public FauxbotDoubleSolenoid(int moduleNumber, int forwardPort, int reversePort)
     {
-        FauxbotActuatorManager.set(forwardPort, this);
-        FauxbotActuatorManager.set(reversePort, null);
+        FauxbotActuatorManager.set(new FauxbotActuatorConnection(this.getModule(moduleNumber, true), forwardPort), this);
+        FauxbotActuatorManager.set(new FauxbotActuatorConnection(this.getModule(moduleNumber, false), reversePort), null);
 
         this.currentValueProperty = new SimpleDoubleProperty();
         this.currentValueProperty.set(0.0);
@@ -55,5 +55,19 @@ public class FauxbotDoubleSolenoid extends FauxbotActuatorBase implements IDoubl
     public DoubleProperty getProperty()
     {
         return this.currentValueProperty;
+    }
+
+    private FauxbotActuatorConnection.ActuatorConnector getModule(int moduleNumber, boolean isA)
+    {
+        if (moduleNumber == 0)
+        {
+            return isA ? FauxbotActuatorConnection.ActuatorConnector.PCM0A : FauxbotActuatorConnection.ActuatorConnector.PCM0B;
+        }
+        else if (moduleNumber == 1)
+        {
+            return isA ? FauxbotActuatorConnection.ActuatorConnector.PCM1A : FauxbotActuatorConnection.ActuatorConnector.PCM1B;
+        }
+
+        throw new RuntimeException("unexpected module number: " + moduleNumber);
     }
 }
