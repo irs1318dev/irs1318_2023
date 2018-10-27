@@ -1,7 +1,5 @@
 package frc.team1318.robot.common.robotprovider;
 
-import org.opencv.core.Point;
-
 public class MultiLogger implements IDashboardLogger
 {
     private final IDashboardLogger[] loggers;
@@ -98,7 +96,7 @@ public class MultiLogger implements IDashboardLogger
      * @param value to write
      */
     @Override
-    public void logPoint(String component, String key, Point value)
+    public void logPoint(String component, String key, IPoint value)
     {
         for (IDashboardLogger logger : this.loggers)
         {

@@ -4,23 +4,21 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.Point;
-import org.opencv.core.Rect;
-import org.opencv.imgproc.Imgproc;
-import org.opencv.imgproc.Moments;
+import frc.team1318.robot.common.robotprovider.*;
 
 public class ContourHelper
 {
+    private static final int IMGPROC_RETR_EXTERNAL = 0;
+    private static final int IMGPROC_CHAIN_APPROX_TC89_KCOS = 4;
+
     /**
      * Find the largest contour in the frame
      * @param frame in which to look for contours
      * @return largest contour
      */
-    public static MatOfPoint findLargestContour(Mat frame)
+    public static IMatOfPoint findLargestContour(IOpenCVProvider provider, IMat frame)
     {
-        return ContourHelper.findLargestContour(frame, 0.0);
+        return ContourHelper.findLargestContour(provider, frame, 0.0);
     }
 
     /**
@@ -29,20 +27,20 @@ public class ContourHelper
      * @param minContourArea is the minimum contour area allowable
      * @return largest contour
      */
-    public static MatOfPoint findLargestContour(Mat frame, double minContourArea)
+    public static IMatOfPoint findLargestContour(IOpenCVProvider provider, IMat frame, double minContourArea)
     {
         // find the contours using OpenCV API...
-        Mat unused = new Mat();
-        List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
-        Imgproc.findContours(frame, contours, unused, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_TC89_KCOS);
+        IMat unused = provider.newMat();
+        List<IMatOfPoint> contours = new ArrayList<IMatOfPoint>();
+        provider.findContours(frame, contours, unused, ContourHelper.IMGPROC_RETR_EXTERNAL, ContourHelper.IMGPROC_CHAIN_APPROX_TC89_KCOS);
         unused.release();
 
         // find the largest contour...
         double largestContourArea = 0.0;
-        MatOfPoint largestContour = null;
-        for (MatOfPoint contour : contours)
+        IMatOfPoint largestContour = null;
+        for (IMatOfPoint contour : contours)
         {
-            double area = Imgproc.contourArea(contour);
+            double area = provider.contourArea(contour);
             if (area >= minContourArea && area > largestContourArea)
             {
                 if (largestContour != null)
@@ -67,9 +65,9 @@ public class ContourHelper
      * @param frame in which to look for contours
      * @return two largest contours, largest then second largest
      */
-    public static MatOfPoint[] findTwoLargestContours(Mat frame)
+    public static IMatOfPoint[] findTwoLargestContours(IOpenCVProvider provider, IMat frame)
     {
-        return ContourHelper.findTwoLargestContours(frame, 0.0);
+        return ContourHelper.findTwoLargestContours(provider, frame, 0.0);
     }
 
     /**
@@ -78,24 +76,24 @@ public class ContourHelper
      * @param minContourArea is the minimum contour area allowable
      * @return two largest contours, largest then second largest
      */
-    public static MatOfPoint[] findTwoLargestContours(Mat frame, double minContourArea)
+    public static IMatOfPoint[] findTwoLargestContours(IOpenCVProvider provider, IMat frame, double minContourArea)
     {
         // find the contours using OpenCV API...
-        Mat unused = new Mat();
-        List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
-        Imgproc.findContours(frame, contours, unused, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_TC89_KCOS);
+        IMat unused = provider.newMat();
+        List<IMatOfPoint> contours = new ArrayList<IMatOfPoint>();
+        provider.findContours(frame, contours, unused, ContourHelper.IMGPROC_RETR_EXTERNAL, ContourHelper.IMGPROC_CHAIN_APPROX_TC89_KCOS);
         unused.release();
 
         double largestContourArea = 0.0;
-        MatOfPoint largestContour = null;
+        IMatOfPoint largestContour = null;
 
         double secondLargestContourArea = 0.0;
-        MatOfPoint secondLargestContour = null;
+        IMatOfPoint secondLargestContour = null;
 
         // find the two largest contours...
-        for (MatOfPoint contour : contours)
+        for (IMatOfPoint contour : contours)
         {
-            double area = Imgproc.contourArea(contour);
+            double area = provider.contourArea(contour);
             if (area >= minContourArea && area > largestContourArea)
             {
                 if (largestContour != null)
@@ -128,7 +126,7 @@ public class ContourHelper
             }
         }
 
-        return new MatOfPoint[] { largestContour, secondLargestContour };
+        return new IMatOfPoint[] { largestContour, secondLargestContour };
     }
 
     /**
@@ -140,34 +138,34 @@ public class ContourHelper
      * @param allowableContourAreaRatio indicates the max allowable ratio between the area of the contours (0.0 or below means ignore this)
      * @return two largest contours, largest then second largest
      */
-    public static MatOfPoint[] findTwoLargestContours(Mat frame, double minContourArea, double desiredContourHxWRatio, double allowableContourHxWRatioRange, double allowableContourAreaRatio)
+    public static IMatOfPoint[] findTwoLargestContours(IOpenCVProvider provider, IMat frame, double minContourArea, double desiredContourHxWRatio, double allowableContourHxWRatioRange, double allowableContourAreaRatio)
     {
         // find the contours using OpenCV API...
-        Mat unused = new Mat();
-        List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
-        Imgproc.findContours(frame, contours, unused, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_TC89_KCOS);
+        IMat unused = provider.newMat();
+        List<IMatOfPoint> contours = new ArrayList<IMatOfPoint>();
+        provider.findContours(frame, contours, unused, ContourHelper.IMGPROC_RETR_EXTERNAL, ContourHelper.IMGPROC_CHAIN_APPROX_TC89_KCOS);
         unused.release();
 
         double largestContourArea = 0.0;
-        MatOfPoint largestContour = null;
+        IMatOfPoint largestContour = null;
 
         double secondLargestContourArea = 0.0;
-        MatOfPoint secondLargestContour = null;
+        IMatOfPoint secondLargestContour = null;
 
         // find the two largest contours...
-        for (MatOfPoint contour : contours)
+        for (IMatOfPoint contour : contours)
         {
             boolean release = true;
-            double area = Imgproc.contourArea(contour);
+            double area = provider.contourArea(contour);
             if (area >= minContourArea)
             {
-                Rect boundingRect = null;
+                IRect boundingRect = null;
                 if (desiredContourHxWRatio >= 0.0)
                 {
-                    boundingRect = Imgproc.boundingRect(contour);
+                    boundingRect = provider.boundingRect(contour);
                 }
 
-                if (boundingRect == null || Math.abs(((double)boundingRect.height / (double)boundingRect.width) - desiredContourHxWRatio) < allowableContourHxWRatioRange)
+                if (boundingRect == null || Math.abs(((double)boundingRect.getHeight() / (double)boundingRect.getWidth()) - desiredContourHxWRatio) < allowableContourHxWRatioRange)
                 {
                     if (area > largestContourArea)
                     {
@@ -215,7 +213,7 @@ public class ContourHelper
             secondLargestContourArea = 0.0;
         }
 
-        return new MatOfPoint[] { largestContour, secondLargestContour };
+        return new IMatOfPoint[] { largestContour, secondLargestContour };
     }
 
     /**
@@ -223,9 +221,9 @@ public class ContourHelper
      * @param frame in which to look for contours
      * @return sorted largest contour
      */
-    public static MatOfPoint[] findSortedLargestContours(Mat frame)
+    public static IMatOfPoint[] findSortedLargestContours(IOpenCVProvider provider, IMat frame)
     {
-        return ContourHelper.findSortedLargestContours(frame, 0.0);
+        return ContourHelper.findSortedLargestContours(provider, frame, 0.0);
     }
 
     /**
@@ -234,21 +232,21 @@ public class ContourHelper
      * @param minContourArea is the minimum contour area allowable
      * @return sorted largest contour
      */
-    public static MatOfPoint[] findSortedLargestContours(Mat frame, double minContourArea)
+    public static IMatOfPoint[] findSortedLargestContours(IOpenCVProvider provider, IMat frame, double minContourArea)
     {
         // find the contours using OpenCV API...
-        Mat unused = new Mat();
-        List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
-        Imgproc.findContours(frame, contours, unused, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_TC89_KCOS);
+        IMat unused = provider.newMat();
+        List<IMatOfPoint> contours = new ArrayList<IMatOfPoint>();
+        provider.findContours(frame, contours, unused, ContourHelper.IMGPROC_RETR_EXTERNAL, ContourHelper.IMGPROC_CHAIN_APPROX_TC89_KCOS);
         unused.release();
 
-        contours.sort(new Comparator<MatOfPoint>()
+        contours.sort(new Comparator<IMatOfPoint>()
         {
             @Override
-            public int compare(MatOfPoint o1, MatOfPoint o2)
+            public int compare(IMatOfPoint o1, IMatOfPoint o2)
             {
-                double area1 = Imgproc.contourArea(o1);
-                double area2 = Imgproc.contourArea(o2);
+                double area1 = provider.contourArea(o1);
+                double area2 = provider.contourArea(o2);
                 if (area1 > area2)
                 {
                     return 1;
@@ -264,7 +262,7 @@ public class ContourHelper
             }
         });
 
-        return (MatOfPoint[])contours.toArray();
+        return (IMatOfPoint[])contours.toArray();
     }
 
     /**
@@ -273,14 +271,14 @@ public class ContourHelper
      * @param contour to use
      * @return point representing the center of the contour
      */
-    public static Point findCenterOfMass(MatOfPoint contour)
+    public static IPoint findCenterOfMass(IOpenCVProvider provider, IMatOfPoint contour)
     {
-        Moments moments = Imgproc.moments(contour);
-        if (moments.m00 == 0.0)
+        IMoments moments = provider.moments(contour);
+        if (moments.get_m00() == 0.0)
         {
             return null;
         }
 
-        return new Point(moments.m10 / moments.m00, moments.m01 / moments.m00);
+        return provider.newPoint(moments.get_m10() / moments.get_m00(), moments.get_m01() / moments.get_m00());
     }
 }

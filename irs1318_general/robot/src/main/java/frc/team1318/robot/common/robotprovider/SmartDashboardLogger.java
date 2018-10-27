@@ -1,7 +1,5 @@
 package frc.team1318.robot.common.robotprovider;
 
-import org.opencv.core.Point;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -97,12 +95,12 @@ public class SmartDashboardLogger implements IDashboardLogger
      * @param value to write
      */
     @Override
-    public void logPoint(String component, String key, Point value)
+    public void logPoint(String component, String key, IPoint value)
     {
         String valueString = "N/A";
         if (value != null)
         {
-            valueString = String.format("", value.x, value.y);
+            valueString = String.format("", value.getX(), value.getY());
         }
 
         this.logString(component, key, valueString);

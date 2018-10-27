@@ -1,7 +1,5 @@
 package frc.team1318.robot.common.robotprovider;
 
-import org.opencv.core.Point;
-
 public interface IDashboardLogger
 {
     /**
@@ -51,7 +49,7 @@ public interface IDashboardLogger
      * @param key to write to
      * @param value to write
      */
-    void logPoint(String component, String key, Point value);
+    void logPoint(String component, String key, IPoint value);
 
     /**
      * Write a string to the smart dashboard

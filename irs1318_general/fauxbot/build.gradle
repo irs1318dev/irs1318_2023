@@ -21,6 +21,7 @@ if (currentOS.isWindows()) {
 dependencies {
     compile project(':core')
 
+    compile "org.openpnp:opencv:3.2.0-1"
     compile "javax.inject:javax.inject:1"
     compile "com.google.guava:guava:21.0"
     compile "com.google.inject:guice:4.1.0:no_aop"

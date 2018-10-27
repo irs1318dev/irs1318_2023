@@ -1,7 +1,5 @@
 package frc.team1318.robot.vision;
 
-import org.opencv.core.Scalar;
-
 public class VisionConstants
 {
     // Debug output settings:
@@ -51,8 +49,12 @@ public class VisionConstants
     public static final boolean SHOULD_UNDISTORT = false;
 
     // HSV Filtering constants
-    public static final Scalar LIFECAM_HSV_FILTER_LOW = new Scalar(52, 150, 100);
-    public static final Scalar LIFECAM_HSV_FILTER_HIGH = new Scalar(95, 255, 255);
+    public static final int LIFECAM_HSV_FILTER_LOW_V0 = 52;
+    public static final int LIFECAM_HSV_FILTER_LOW_V1 = 150;
+    public static final int LIFECAM_HSV_FILTER_LOW_V2 = 100;
+    public static final int LIFECAM_HSV_FILTER_HIGH_V0 = 95;
+    public static final int LIFECAM_HSV_FILTER_HIGH_V1 = 255;
+    public static final int LIFECAM_HSV_FILTER_HIGH_V2 = 255;
 
     // Contour filtering constants
     public static final double CONTOUR_MIN_AREA = 25.0;

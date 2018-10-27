@@ -26,4 +26,5 @@ public interface IRobotProvider
     public IUsbCamera getUsbCamera(String name, int dev);
     public IDriverStation getDriverStation();
 	public ITrajectoryGenerator getTrajectoryGenerator();
+	public IOpenCVProvider getOpenCVProvider();
 }

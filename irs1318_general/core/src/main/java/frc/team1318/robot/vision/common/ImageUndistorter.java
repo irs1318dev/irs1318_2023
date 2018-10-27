@@ -1,38 +1,42 @@
 package frc.team1318.robot.vision.common;
 
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
-import org.opencv.core.Scalar;
-import org.opencv.core.Size;
-import org.opencv.imgproc.Imgproc;
+import frc.team1318.robot.common.robotprovider.*;
 
 public class ImageUndistorter
 {
-    private Mat mapX;
-    private Mat mapY;
+    private static final int IMGPROC_INTER_LINEAR = 1;
+    private static final int IMGPROC_WARP_FILL_OUTLIERS = 8;
+    private static final int CVTYPE_CV_32FC1 = 1; // TODO: figure this out...
+
+    private final IOpenCVProvider provider;
+
+    private IMat mapX;
+    private IMat mapY;
 
     /**
      * Initializes a new instance of the ImageUndistorter class.
      * For background, see http://docs.opencv.org/3.1.0/d4/d94/tutorial_camera_calibration.html
      */
-    public ImageUndistorter()
+    public ImageUndistorter(IOpenCVProvider provider)
     {
-        Size size;
-        Mat intrinsicMatrix;
-        intrinsicMatrix = ImageUndistorter.build320x240Intrinsic();
-        size = new Size(320, 240);
+        this.provider = provider;
 
-        Mat distCoeffs = ImageUndistorter.buildDistortion();
+        ISize size;
+        IMat intrinsicMatrix;
+        intrinsicMatrix = ImageUndistorter.build320x240Intrinsic(provider);
+        size = provider.newSize(320, 240);
+
+        IMat distCoeffs = ImageUndistorter.buildDistortion(provider);
 
         // initialize mapX and mapY
-        Mat mapX = new Mat(size, CvType.CV_32FC1);
-        Mat mapY = new Mat(size, CvType.CV_32FC1);
+        IMat mapX = provider.newMat();
+        IMat mapY = provider.newMat();
 
         // unused:
-        Mat R = new Mat();
-        Mat newCameraMatrix = new Mat();
+        IMat R = provider.newMat();
+        IMat newCameraMatrix = provider.newMat();
 
-        Imgproc.initUndistortRectifyMap(intrinsicMatrix, distCoeffs, R, newCameraMatrix, size, CvType.CV_32FC1, mapX, mapY);
+        provider.initUndistortRectifyMap(intrinsicMatrix, distCoeffs, R, newCameraMatrix, size, ImageUndistorter.CVTYPE_CV_32FC1, mapX, mapY);
 
         this.mapX = mapX;
         this.mapY = mapY;
@@ -49,11 +53,11 @@ public class ImageUndistorter
      * @param frame to undirsort
      * @return an non-distorted version of the provided frame
      */
-    public Mat undistortFrame(Mat frame)
+    public IMat undistortFrame(IMat frame)
     {
-        Mat source = frame.clone();
+        IMat source = frame.clone();
 
-        Imgproc.remap(source, frame, this.mapX, this.mapY, Imgproc.INTER_LINEAR, Imgproc.WARP_FILL_OUTLIERS, new Scalar(0));
+        this.provider.remap(source, frame, this.mapX, this.mapY, ImageUndistorter.IMGPROC_INTER_LINEAR, ImageUndistorter.IMGPROC_WARP_FILL_OUTLIERS, provider.newScalar(0));
         source.release();
 
         return frame;
@@ -63,9 +67,9 @@ public class ImageUndistorter
      * Build an intrinsic matrix for the Axis M1011 camera at 320x240 resolution.
      * @return an intrinsic matrix
      */
-    private static Mat build320x240Intrinsic()
+    private static IMat build320x240Intrinsic(IOpenCVProvider provider)
     {
-        Mat intrinsicMatrix = new Mat(3, 3, CvType.CV_32FC1);
+        IMat intrinsicMatrix = provider.newMat(3, 3, ImageUndistorter.CVTYPE_CV_32FC1);
 
         intrinsicMatrix.put(0, 0, 160); // focal length x
         intrinsicMatrix.put(0, 1, 0.0);
@@ -87,9 +91,9 @@ public class ImageUndistorter
      * @return an intrinsic matrix
      */
     @SuppressWarnings("unused")
-    private static Mat build640x480Intrinsic()
+    private static IMat build640x480Intrinsic(IOpenCVProvider provider)
     {
-        Mat intrinsicMatrix = new Mat(3, 3, CvType.CV_32FC1);
+        IMat intrinsicMatrix = provider.newMat(3, 3, ImageUndistorter.CVTYPE_CV_32FC1);
 
         intrinsicMatrix.put(0, 0, 320); // focal length x
         intrinsicMatrix.put(0, 1, 0.0);
@@ -110,9 +114,9 @@ public class ImageUndistorter
      * Build an distortion coefficient matrix for the Axis M1011 camera.
      * @return an distortion matrix
      */
-    private static Mat buildDistortion()
+    private static IMat buildDistortion(IOpenCVProvider provider)
     {
-        Mat distortionCoeffs = new Mat(4, 1, CvType.CV_32FC1);
+        IMat distortionCoeffs = provider.newMat(4, 1, ImageUndistorter.CVTYPE_CV_32FC1);
 
         double p_factor = 0.00;
 

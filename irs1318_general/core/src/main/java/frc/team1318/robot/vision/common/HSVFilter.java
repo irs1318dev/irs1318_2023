@@ -1,22 +1,25 @@
 package frc.team1318.robot.vision.common;
 
-import org.opencv.core.Core;
-import org.opencv.core.Mat;
-import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
+import frc.team1318.robot.common.robotprovider.*;
 
 public class HSVFilter
 {
-    private final Scalar lowerBound;
-    private final Scalar upperBound;
+    private static final int IMGPROC_COLOR_BGR2HSV = 40;
+
+    private final IOpenCVProvider provider;
+
+    private final IScalar lowerBound;
+    private final IScalar upperBound;
 
     /**
      * Initializes a new instance of the HSVFilter class.
      * @param lowerBound of HSV to filter
      * @param upperBound of HSV to filter
      */
-    public HSVFilter(Scalar lowerBound, Scalar upperBound)
+    public HSVFilter(IOpenCVProvider provider, IScalar lowerBound, IScalar upperBound)
     {
+        this.provider = provider;
+
         this.lowerBound = lowerBound;
         this.upperBound = upperBound;
     }
@@ -26,14 +29,14 @@ public class HSVFilter
      * @param frame to filter
      * @return a matrix of 1s and 0s based on whether the pixel is within the provided HSV range or not, respectively.
      */
-    public Mat filterHSV(Mat frame)
+    public IMat filterHSV(IMat frame)
     {
-        Mat sourceBGR = frame.clone();
-        Imgproc.cvtColor(sourceBGR, frame, Imgproc.COLOR_BGR2HSV);
+        IMat sourceBGR = frame.clone();
+        provider.cvtColor(sourceBGR, frame, HSVFilter.IMGPROC_COLOR_BGR2HSV);
         sourceBGR.release();
 
-        Mat sourceHSV = frame.clone();
-        Core.inRange(sourceHSV, this.lowerBound, this.upperBound, frame);
+        IMat sourceHSV = frame.clone();
+        provider.inRange(sourceHSV, this.lowerBound, this.upperBound, frame);
         sourceHSV.release();
 
         return frame;

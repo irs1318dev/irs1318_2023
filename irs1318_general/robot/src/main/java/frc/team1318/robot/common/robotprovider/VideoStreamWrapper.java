@@ -1,7 +1,5 @@
 package frc.team1318.robot.common.robotprovider;
 
-import org.opencv.core.Mat;
-
 import edu.wpi.cscore.CvSource;
 import edu.wpi.first.wpilibj.CameraServer;
 
@@ -14,8 +12,8 @@ public class VideoStreamWrapper implements IVideoStream
         this.wrappedObject = CameraServer.getInstance().putVideo(name, width, height);
     }
 
-    public void putFrame(Mat image)
+    public void putFrame(IMat image)
     {
-        this.wrappedObject.putFrame(image);
+        this.wrappedObject.putFrame(OpenCVProvider.unwrap(image));
     }
 }

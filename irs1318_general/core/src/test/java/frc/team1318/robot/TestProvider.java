@@ -242,4 +242,10 @@ public class TestProvider implements IRobotProvider
     {
         return null;
     }
+
+    @Override
+    public IOpenCVProvider getOpenCVProvider()
+    {
+        return null;
+    }
 }

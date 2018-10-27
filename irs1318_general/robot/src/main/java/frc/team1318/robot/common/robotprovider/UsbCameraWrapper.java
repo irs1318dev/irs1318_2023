@@ -57,7 +57,7 @@ public class UsbCameraWrapper implements IUsbCamera
 
         public void process(Mat image)
         {
-            this.wrappedObject.process(image);
+            this.wrappedObject.process(new MatWrapper(image));
         }
     }
 

@@ -1,6 +1,5 @@
 package frc.team1318.robot.vision;
 
-import org.opencv.core.Point;
 import frc.team1318.robot.ElectronicsConstants;
 import frc.team1318.robot.common.*;
 import frc.team1318.robot.common.robotprovider.*;
@@ -36,7 +35,7 @@ public class VisionManager implements IMechanism, IVisionListener<ICentroidVisio
     private Driver driver;
     private VisionProcessingState currentState;
 
-    private Point center;
+    private IPoint center;
 
     private Double desiredAngleX;
     private Double measuredAngleX;
@@ -84,7 +83,7 @@ public class VisionManager implements IMechanism, IVisionListener<ICentroidVisio
         this.lastMeasuredFps = 0.0;
     }
 
-    public Point getCenter()
+    public IPoint getCenter()
     {
         synchronized (this.visionLock)
         {
@@ -130,7 +129,7 @@ public class VisionManager implements IMechanism, IVisionListener<ICentroidVisio
     @Override
     public void readSensors()
     {
-        Point center = this.getCenter();
+        IPoint center = this.getCenter();
         Double fps = this.getLastMeasuredFps();
         Double dist = this.getMeasuredDistance();
         Double dAngle = this.getDesiredAngle();

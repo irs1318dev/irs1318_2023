@@ -128,13 +128,13 @@ public class FauxbotProvider implements IRobotProvider
     @Override
     public IVideoStream getMJPEGStream(String name, int width, int height)
     {
-        return new FauxbotVideoStream();
+        return null;
     }
 
     @Override
     public IUsbCamera getUsbCamera(String name, int dev)
     {
-        return new FauxbotUsbCamera();
+        return null;
     }
 
     @Override
@@ -147,5 +147,11 @@ public class FauxbotProvider implements IRobotProvider
     public ITrajectoryGenerator getTrajectoryGenerator()
     {
         return null;
+    }
+
+    @Override
+    public IOpenCVProvider getOpenCVProvider()
+    {
+        return new OpenCVProvider();
     }
 }

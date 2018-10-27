@@ -1,9 +1,5 @@
 package frc.team1318.robot.vision.pipelines;
 
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.Point;
-import org.opencv.imgcodecs.Imgcodecs;
 import frc.team1318.robot.common.robotprovider.*;
 import frc.team1318.robot.vision.VisionConstants;
 import frc.team1318.robot.vision.common.ContourHelper;
@@ -13,6 +9,7 @@ import frc.team1318.robot.vision.common.ImageUndistorter;
 public class HSVCenterPipeline implements ICentroidVisionPipeline
 {
     private final ITimer timer;
+    private final IOpenCVProvider openCVProvider;
     private final boolean shouldUndistort;
     private final ImageUndistorter undistorter;
     private final HSVFilter hsvFilter;
@@ -21,7 +18,7 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
     private final IVideoStream hsvOutput;
 
     // measured values
-    private Point largestCenter;
+    private IPoint largestCenter;
     private Double measuredAngleX;
 
     // FPS Measurement
@@ -44,8 +41,11 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
     {
         this.shouldUndistort = shouldUndistort;
 
-        this.undistorter = new ImageUndistorter();
-        this.hsvFilter = new HSVFilter(VisionConstants.LIFECAM_HSV_FILTER_LOW, VisionConstants.LIFECAM_HSV_FILTER_HIGH);
+        this.openCVProvider = provider.getOpenCVProvider();
+        this.undistorter = new ImageUndistorter(this.openCVProvider);
+        IScalar lowFilter = this.openCVProvider.newScalar(VisionConstants.LIFECAM_HSV_FILTER_LOW_V0, VisionConstants.LIFECAM_HSV_FILTER_LOW_V1, VisionConstants.LIFECAM_HSV_FILTER_LOW_V2);
+        IScalar highFilter = this.openCVProvider.newScalar(VisionConstants.LIFECAM_HSV_FILTER_HIGH_V0, VisionConstants.LIFECAM_HSV_FILTER_HIGH_V1, VisionConstants.LIFECAM_HSV_FILTER_HIGH_V2);
+        this.hsvFilter = new HSVFilter(this.openCVProvider, lowFilter, highFilter);
 
         this.largestCenter = null;
         this.measuredAngleX = null;
@@ -74,14 +74,14 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
      * @param frame image to analyze
      */
     @Override
-    public void process(Mat image)
+    public void process(IMat image)
     {
         if (VisionConstants.DEBUG)
         {
             if (VisionConstants.DEBUG_SAVE_FRAMES &&
                 this.analyzedFrameCount % VisionConstants.DEBUG_FRAME_OUTPUT_GAP == 0)
             {
-                Imgcodecs.imwrite(
+                this.openCVProvider.imwrite(
                     String.format("%simage%d-1.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER, this.analyzedFrameCount),
                     image);
             }
@@ -110,7 +110,7 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
         }
 
         // first, undistort the image.
-        Mat undistortedImage;
+        IMat undistortedImage;
         if (this.shouldUndistort)
         {
             image = this.undistorter.undistortFrame(image);
@@ -133,7 +133,7 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
             if (VisionConstants.DEBUG_SAVE_FRAMES &&
                 this.analyzedFrameCount % VisionConstants.DEBUG_FRAME_OUTPUT_GAP == 0)
             {
-                Imgcodecs.imwrite(
+                this.openCVProvider.imwrite(
                     String.format("%simage%d-2.hsvfiltered.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER, this.analyzedFrameCount),
                     image);
             }
@@ -145,7 +145,7 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
         }
 
         // third, find the largest contour.
-        MatOfPoint largestContour = ContourHelper.findLargestContour(image, VisionConstants.CONTOUR_MIN_AREA);
+        IMatOfPoint largestContour = ContourHelper.findLargestContour(this.openCVProvider, image, VisionConstants.CONTOUR_MIN_AREA);
 
         if (largestContour == null)
         {
@@ -158,10 +158,10 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
         }
 
         // fourth, find the center of mass for the largest two contours
-        Point largestCenterOfMass = null;
+        IPoint largestCenterOfMass = null;
         if (largestContour != null)
         {
-            largestCenterOfMass = ContourHelper.findCenterOfMass(largestContour);
+            largestCenterOfMass = ContourHelper.findCenterOfMass(this.openCVProvider, largestContour);
             largestContour.release();
         }
 
@@ -176,7 +176,7 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
                 }
                 else
                 {
-                    System.out.println(String.format("Center of mass: %f, %f", largestCenterOfMass.x, largestCenterOfMass.y));
+                    System.out.println(String.format("Center of mass: %f, %f", largestCenterOfMass.getX(), largestCenterOfMass.getY()));
                 }
             }
         }
@@ -188,7 +188,7 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
 
         if (this.largestCenter != null)
         {
-            double xOffsetMeasured = this.largestCenter.x - VisionConstants.LIFECAM_CAMERA_CENTER_WIDTH;
+            double xOffsetMeasured = this.largestCenter.getX() - VisionConstants.LIFECAM_CAMERA_CENTER_WIDTH;
             this.measuredAngleX = Math.atan(xOffsetMeasured / VisionConstants.LIFECAM_CAMERA_FOCAL_LENGTH_X) * VisionConstants.RADIANS_TO_ANGLE;
         }
         else
@@ -207,7 +207,7 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
         return this.isActive;
     }
 
-    public Point getCenter()
+    public IPoint getCenter()
     {
         return this.largestCenter;
     }

@@ -148,4 +148,10 @@ public class RobotProvider implements IRobotProvider
     {
         return new TrajectoryGenerator();
     }
+
+    @Override
+    public IOpenCVProvider getOpenCVProvider()
+    {
+        return new OpenCVProvider();
+    }
 }
