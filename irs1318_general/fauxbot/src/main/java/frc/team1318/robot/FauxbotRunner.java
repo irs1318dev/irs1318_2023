@@ -1,5 +1,7 @@
 package frc.team1318.robot;
 
+import org.opencv.core.CvType;
+
 import frc.team1318.robot.common.MechanismManager;
 import frc.team1318.robot.driver.common.Driver;
 

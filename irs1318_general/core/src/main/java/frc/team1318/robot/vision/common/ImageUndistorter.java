@@ -6,7 +6,7 @@ public class ImageUndistorter
 {
     private static final int IMGPROC_INTER_LINEAR = 1;
     private static final int IMGPROC_WARP_FILL_OUTLIERS = 8;
-    private static final int CVTYPE_CV_32FC1 = 1; // TODO: figure this out...
+    private static final int CVTYPE_CV_32FC1 = 5;
 
     private final IOpenCVProvider provider;
 

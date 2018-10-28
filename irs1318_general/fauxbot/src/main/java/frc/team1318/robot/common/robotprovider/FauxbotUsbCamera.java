@@ -30,6 +30,6 @@ public class FauxbotUsbCamera implements IUsbCamera
 
     public <T extends IVisionPipeline> Thread createVisionThread(IVisionListener<T> listener, T pipeline)
     {
-        return null;
+        return new Thread();
     }
 }
