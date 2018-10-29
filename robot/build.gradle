@@ -54,6 +54,13 @@ test {
     useJUnitPlatform()
 }
 
+// Force Java 8 Compatibility mode for deployed code, in case the develoment
+// system is using Java 10.
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
 // in order to make them all available at runtime. Also adding the manifest so WPILib
 // knows where to look for our Robot Class.
