@@ -1,7 +1,0 @@
-/bin/
-/build/
-/.project/
-/.gradle/
-/.settings/
-/.vscode/
-!gradle/wrapper/gradle-wrapper.jar
