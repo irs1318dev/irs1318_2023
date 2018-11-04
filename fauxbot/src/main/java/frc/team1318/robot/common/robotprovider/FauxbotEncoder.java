@@ -17,6 +17,14 @@ public class FauxbotEncoder extends FauxbotSensorBase implements IEncoder
         FauxbotSensorManager.set(new FauxbotSensorConnection(FauxbotSensorConnection.SensorConnector.DigitalInput, channelB), null);
     }
 
+    FauxbotEncoder(FauxbotSensorConnection connection)
+    {
+        this.valueProperty = new SimpleDoubleProperty(0.0);
+        this.distancePerPulse = 1.0;
+
+        FauxbotSensorManager.set(connection, this);
+    }
+
     public double getRate()
     {
         return this.valueProperty.get();

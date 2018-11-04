@@ -22,11 +22,13 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -261,9 +263,11 @@ public class FauxbotApplication extends Application
                 }
                 else if (sensor instanceof FauxbotAnalogInput)
                 {
+                    double min = this.simulator.getSensorMin(connection);
+                    double max = this.simulator.getSensorMax(connection);
                     Slider sensorSlider = new Slider();
-                    sensorSlider.setMin(-1.0);
-                    sensorSlider.setMax(1.0);
+                    sensorSlider.setMin(min);
+                    sensorSlider.setMax(max);
                     sensorSlider.setBlockIncrement(0.1);
                     sensorSlider.setShowTickMarks(true);
 
@@ -272,10 +276,11 @@ public class FauxbotApplication extends Application
                 }
                 else if (sensor instanceof FauxbotEncoder)
                 {
-                    double encoderMax = this.simulator.getEncoderMax(connection);
+                    double min = this.simulator.getSensorMin(connection);
+                    double max = this.simulator.getSensorMax(connection);
                     Slider sensorSlider = new Slider();
-                    sensorSlider.setMin(-encoderMax);
-                    sensorSlider.setMax(encoderMax);
+                    sensorSlider.setMin(min);
+                    sensorSlider.setMax(max);
                     sensorSlider.setBlockIncrement(0.1);
                     sensorSlider.setShowTickMarks(true);
 
@@ -306,9 +311,11 @@ public class FauxbotApplication extends Application
 
                 if (actuator instanceof FauxbotMotorBase)
                 {
+                    double min = this.simulator.getMotorMin(connection);
+                    double max = this.simulator.getMotorMax(connection);
                     Slider motorSlider = new Slider();
-                    motorSlider.setMin(-1.0);
-                    motorSlider.setMax(1.0);
+                    motorSlider.setMin(min);
+                    motorSlider.setMax(max);
                     motorSlider.setBlockIncrement(0.25);
                     motorSlider.setShowTickLabels(true);
                     motorSlider.setShowTickMarks(true);
@@ -347,7 +354,24 @@ public class FauxbotApplication extends Application
         this.canvas = new Canvas(200, 200);
         grid.add(this.canvas, 2, 0, 2, rowCount);
 
-        Scene scene = new Scene(grid, 600, 400);
+        Parent root = grid;
+        int width = 605;
+        int height;
+        if (rowCount < 5)
+        {
+            height = 200;
+        }
+        else if (rowCount < 15)
+        {
+            height = 200 + (rowCount - 5) * 30;
+        }
+        else
+        {
+            root = new ScrollPane(grid);
+            height = 500;
+        }
+
+        Scene scene = new Scene(root, width, height);
 
         primaryStage.setScene(scene);
         primaryStage.show();

@@ -22,9 +22,6 @@ public class ElevatorSimulator implements IRealWorldSimulator
     private static final FauxbotSensorConnection EncoderBChannel = new FauxbotSensorConnection(FauxbotSensorConnection.SensorConnector.DigitalInput, 1);
     private static final FauxbotActuatorConnection MotorChannel = new FauxbotActuatorConnection(FauxbotActuatorConnection.ActuatorConnector.PWM, 0);
 
-    private FileInputStream elevatorPersonInputStream;
-    private Image ElevatorPerson;
-
     @SuppressWarnings("serial")
     private final Map<FauxbotSensorConnection, String> sensorNameMap = new HashMap<FauxbotSensorConnection, String>()
     {
@@ -50,6 +47,8 @@ public class ElevatorSimulator implements IRealWorldSimulator
     private static final double ElevatorCarWidth = 15.0;
     private static final double ElevatorCarHeight = 35.0;
 
+    private FileInputStream elevatorPersonInputStream;
+    private Image elevatorPerson;
     private double currentElevatorHeight;
 
     @Inject
@@ -57,14 +56,14 @@ public class ElevatorSimulator implements IRealWorldSimulator
     {
         try
         {
-            elevatorPersonInputStream = new FileInputStream(this.getClass().getResource("/images/stickFigure.png").getPath());
+            this.elevatorPersonInputStream = new FileInputStream(this.getClass().getResource("/images/stickFigure.png").getPath());
         }
         catch (Exception e)
         {
             System.out.println("ERROR: INVALID IMAGE");             
         }
         
-        ElevatorPerson = new Image(elevatorPersonInputStream);
+        this.elevatorPerson = new Image(this.elevatorPersonInputStream);
         this.currentElevatorHeight = 0.0;
     }
 
@@ -78,12 +77,12 @@ public class ElevatorSimulator implements IRealWorldSimulator
         return "Sensor " + connection;
     }
 
-    public double getEncoderMin(FauxbotSensorConnection connection)
+    public double getSensorMin(FauxbotSensorConnection connection)
     {
         return ElevatorSimulator.ElevatorMinHeight;
     }
 
-    public double getEncoderMax(FauxbotSensorConnection connection)
+    public double getSensorMax(FauxbotSensorConnection connection)
     {
         return ElevatorSimulator.ElevatorMaxHeight;
     }
@@ -96,6 +95,16 @@ public class ElevatorSimulator implements IRealWorldSimulator
         }
 
         return "Motor " + connection;
+    }
+
+    public double getMotorMin(FauxbotActuatorConnection connection)
+    {
+        return -1.0;
+    }
+
+    public double getMotorMax(FauxbotActuatorConnection connection)
+    {
+        return 1.0;
     }
 
     public void update()
@@ -129,7 +138,6 @@ public class ElevatorSimulator implements IRealWorldSimulator
      * Draw a frame of animation based on the current state of the simulation.
      * Remember that (0, 0) is at the top left!
      */
-    @Override
     public void draw(Canvas canvas)
     {
         double elevatorHeightRatio = this.currentElevatorHeight / (ElevatorSimulator.ElevatorMaxHeight - ElevatorSimulator.ElevatorMinHeight);
@@ -165,7 +173,7 @@ public class ElevatorSimulator implements IRealWorldSimulator
             ElevatorSimulator.ElevatorCarHeight);
 
         // draw the elevator rider:
-        gc.drawImage(ElevatorPerson, 0.0, (1.0 - elevatorHeightRatio) * canvasHeight - ElevatorSimulator.ElevatorCarHeight, 
+        gc.drawImage(elevatorPerson, 0.0, (1.0 - elevatorHeightRatio) * canvasHeight - ElevatorSimulator.ElevatorCarHeight, 
                         ElevatorSimulator.ElevatorCarWidth,  ElevatorSimulator.ElevatorCarHeight);
     }
 }

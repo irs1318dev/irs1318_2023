@@ -76,12 +76,12 @@ public class GarageDoorSimulator implements IRealWorldSimulator
         return "Sensor " + connection;
     }
 
-    public double getEncoderMin(FauxbotSensorConnection connection)
+    public double getSensorMin(FauxbotSensorConnection connection)
     {
         return 0.0;
     }
 
-    public double getEncoderMax(FauxbotSensorConnection connection)
+    public double getSensorMax(FauxbotSensorConnection connection)
     {
         return 1.0;
     }
@@ -94,6 +94,16 @@ public class GarageDoorSimulator implements IRealWorldSimulator
         }
 
         return "Motor " + connection;
+    }
+
+    public double getMotorMin(FauxbotActuatorConnection connection)
+    {
+        return -1.0;
+    }
+
+    public double getMotorMax(FauxbotActuatorConnection connection)
+    {
+        return 1.0;
     }
 
     public void update()
@@ -232,7 +242,6 @@ public class GarageDoorSimulator implements IRealWorldSimulator
      * Draw a frame of animation based on the current state of the simulation.
      * Remember that (0, 0) is at the top left!
      */
-    @Override
     public void draw(Canvas canvas)
     {
         double canvasHeight = canvas.getHeight();

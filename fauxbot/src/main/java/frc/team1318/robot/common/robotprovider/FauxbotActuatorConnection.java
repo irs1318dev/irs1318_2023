@@ -22,6 +22,16 @@ public class FauxbotActuatorConnection
         this.port = port;
     }
 
+    public int getPort()
+    {
+        return this.port;
+    }
+
+    public ActuatorConnector getConnector()
+    {
+        return this.connector;
+    }
+
     @Override
     public boolean equals(Object other)
     {

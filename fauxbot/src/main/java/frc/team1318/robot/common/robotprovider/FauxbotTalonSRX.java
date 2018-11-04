@@ -2,6 +2,8 @@ package frc.team1318.robot.common.robotprovider;
 
 public class FauxbotTalonSRX extends FauxbotAdvancedMotorBase implements ITalonSRX
 {
+    private FauxbotEncoder innerEncoder;
+
     public FauxbotTalonSRX(int deviceNumber)
     {
         super(deviceNumber);
@@ -13,6 +15,10 @@ public class FauxbotTalonSRX extends FauxbotAdvancedMotorBase implements ITalonS
 
     public void setSensorType(TalonSRXFeedbackDevice feedbackDevice)
     {
+        if (feedbackDevice == TalonSRXFeedbackDevice.QuadEncoder)
+        {
+            this.innerEncoder = new FauxbotEncoder(new FauxbotSensorConnection(FauxbotSensorConnection.SensorConnector.CAN, this.connection.getPort()));
+        }
     }
 
     public void setFeedbackFramePeriod(int periodMS)
@@ -81,7 +87,7 @@ public class FauxbotTalonSRX extends FauxbotAdvancedMotorBase implements ITalonS
 
     public int getPosition()
     {
-        return 0;
+        return (int)this.innerEncoder.getDistance();
     }
 
     public double getVelocity()

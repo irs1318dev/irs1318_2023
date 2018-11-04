@@ -6,8 +6,7 @@ public class FauxbotSensorConnection
     {
         DigitalInput,
         AnalogInput,
-        EncoderA,
-        EncoderB;
+        CAN;
     }
 
     private final SensorConnector connector;

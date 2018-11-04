@@ -17,7 +17,7 @@ public class FauxbotModule extends AbstractModule
     @Override
     protected void configure()
     {
-        this.bind(IRealWorldSimulator.class).to(ForkliftSimulator.class);
+        this.bind(IRealWorldSimulator.class).to(RobotSimulator.class);
         this.bind(IRobotProvider.class).to(FauxbotProvider.class);
         this.bind(ITimer.class).to(FauxbotTimer.class);
         this.bind(IButtonMap.class).to(ButtonMap.class);
