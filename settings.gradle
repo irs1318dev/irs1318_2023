@@ -1,0 +1,10 @@
+pluginManagement {
+    repositories {
+        mavenLocal()
+        gradlePluginPortal()
+    }
+}
+
+include 'core'
+include 'robot'
+include 'fauxbot'

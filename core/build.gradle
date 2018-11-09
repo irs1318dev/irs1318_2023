@@ -1,0 +1,31 @@
+// Defining my dependencies. In this case, WPILib (+ friends), CTRE Toolsuite (Talon SRX)
+// and NavX.
+dependencies {
+    compile "javax.inject:javax.inject:1"
+    compile "com.google.guava:guava:21.0"
+    compile "com.google.inject:guice:4.1.0:no_aop"
+
+    testCompile "org.mockito:mockito-all:1.10.19"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.1.0"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.1.0"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// Setting up my Jar File.
+version = '1.0'
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'core',
+                   'Implementation-Version': version
+    }
+}
+
+// Force Java 8 Compatibility mode for deployed code, in case the develoment
+// system is using Java 10.
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
