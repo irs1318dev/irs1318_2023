@@ -45,9 +45,11 @@
       6. [Mockito](#mockito)
 4. [Instructions](#instructions)
    1. [Setting up your Environment](#setting-up-your-environment)
-   2. [Simple CMD operations and Git usage](#simple-cmd-operations-and-git-usage)
-   3. [Making Simple Operation changes](#making-simple-operation-changes)
-   4. [Writing a new Mechanism](#writing-a-new-mechanism)
+   2. [Simple Command Line operations and Git usage](#simple-command-line-operations-and-git-usage)
+   3. [Your normal end-to-end git workflow](#your-normal-end-to-end-git-workflow)
+   4. [So you started coding before creating a topic branch](#so-you-started-coding-before-creating-a-topic-branch)
+   5. [Making Simple Operation changes](#making-simple-operation-changes)
+   6. [Writing a new Mechanism](#writing-a-new-mechanism)
       1. [Define mechanism class and member variables](#define-mechanism-class-and-member-variables)
       2. [Write mechanism constructor](#write-mechanism-constructor)
       3. [Write mechanism readSensors function](#write-mechanism-readsensors-function)
@@ -55,7 +57,7 @@
       5. [Write mechanism stop function](#write-mechanism-stop-function)
       6. [Write mechanism setDriver function](#write-mechanism-setdriver-function)
       7. [Write any getter functions](#write-any-getter-functions)
-   5. [Writing Macros and Autonomous Routines](#writing-macros-and-autonomous-routines)
+   7. [Writing Macros and Autonomous Routines](#writing-macros-and-autonomous-routines)
       1. [Writing Tasks](#writing-tasks)
          1. [Define task class, member variables, and constructor](#define-task-class-member-variables-and-constructor)
          2. [Define task begin function](#define-task-begin-function)
@@ -224,7 +226,12 @@ To prepare your computer for Robot programming with our team, you will need to f
    5. Install the WPILib Extension for Visual Studio Code.   Currently only an Alpha build is available.  To install, Download the latest alpha release from the [GitHub Releases](https://github.com/wpilibsuite/vscode-wpilib/releases) page for the extension.  Within VS Code, open the Extensions area, click the elipses ("..."), select "Install from VSIX", and select the vsix you downloaded earlier.  You will need to reload VS Code in order for the extension to be available.
    6. Install GitHub Desktop (optional).  Our team uses GitHub as the host for our source control system, so if you are more comfortable having a GUI for interacting with it, then GitHub Desktop will be the best supported.  Install the appropriate version of [GitHub Desktop](https://desktop.github.com/) for your operating system.
 2. Configuring things:
-   1. Git uses VIM as the default text editor for commit messages.  If you are not very familiar with VIM usage, it is recommended to change to a more normal windowed application as VIM can be very confusing for beginners.  I would recommend switching to use VS Code as your editor and default diff tool.
+   1. MAC ONLY: Add "code" to your path:
+      1. Open VS Code.
+      2. Open the Command Palette by pressing Command + P.
+      3. Type "```>```", and then enter the word "path".
+      4. Select the option that looks like "```Shell Command: Install 'code' command in PATH```".
+   2. Git uses VIM as the default text editor for commit messages.  If you are not very familiar with VIM usage, it is recommended to change to a more normal windowed application as VIM can be very confusing for beginners.  I would recommend switching to use VS Code as your editor and default diff tool.
       1. Use VS Code as your default text editor by running ```git config --global core.editor "code --wait"``` from a Command Prompt window.
       2. Modify your Global settings by running ```git config --global -e```, and then adding the following entries to the end of the file:
       ```
@@ -242,16 +249,21 @@ To prepare your computer for Robot programming with our team, you will need to f
       6. Click ok to close the Environment Variables and System Properties windows.
       7. Restart your computer.
 3. Get the code onto your local machine.
-   1. Copy the repository's URL.  In GitHub, find the repository you are interested in, click the "Clone or download" button, and then copy the text (e.g. "https://github.com/irs1318dev/Fauxbot.git").
+   1. Copy the repository's URL.  In GitHub, find the repository you are interested in, click the "Clone or download" button, and then copy the text (e.g. "https://github.com/irs1318dev/irs1318_general.git").
    2. Using commandline:
       1. Open a commandline window.  On Windows, search for "cmd" or "Command Prompt".  Navigate within your directory structure to a directory where you'd like to keep your source files (e.g. "```cd C:\Users\username\git\```").
-      2. Run the following git command to clone the repository to your local machine: "```git clone https://github.com/irs1318dev/Fauxbot.git```"
-      3. Once the repository has been cloned, navigate into the main directory (e.g. "```cd C:\Users\username\git\Fauxbot\Fauxbot```") and tell Gradle to build the code in the directory (type "```gradlew build```").  If gradle hasn't been installed yet, this should trigger it to be installed.
+      2. Run the following git command to clone the repository to your local machine: "```git clone https://github.com/irs1318dev/irs1318_general.git```"
+      3. Once the repository has been cloned, navigate into the main directory (e.g. "```cd C:\Users\username\git\irs1318_general```") and tell Gradle to build the code in the directory (type "```gradlew build```").  If gradle hasn't been installed yet, this should trigger it to be installed.
       4. Open VS Code for this project.  In the main directory, type "```code .```".  This will tell VS Code to open with a reference to the folder you are currently exploring within cmd.
     3. Using GitHub Desktop:
        1. Open GitHub Desktop.  For the best experience, you will need a GitHub user account that has been added to the irs1318dev group.  If you haven't done that, consider doing that first.
-       2. Go to File --> Clone Repository.  If you have been added to the irs1318dev group, you can select the repository you want (e.g. "irs1318dev/Fauxbot") from a list of repositories under the GitHub.com tab.  Otherwise, go to the the URL tab and enter the repository you want (e.g. "irs1318dev/Fauxbot") in the text box.  Then choose a local path where this repository will be cloned (e.g. "C:\Users\username\git\Fauxbot") and click the clone button.
-       3. Open VS Code for this project.  Open VS Code and open the folder where code is located by going to File --> Open Folder, and selecting the folder within the one where the repository was cloned (e.g. "C:\Users\username\git\Fauxbot\Fauxbot").
+       2. Go to File --> Clone Repository.  If you have been added to the irs1318dev group, you can select the repository you want (e.g. "irs1318dev/irs1318_general") from a list of repositories under the GitHub.com tab.  Otherwise, go to the the URL tab and enter the repository you want (e.g. "irs1318dev/irs1318_general") in the text box.  Then choose a local path where this repository will be cloned (e.g. "C:\Users\username\git\irs1318_general") and click the clone button.
+       3. Open VS Code for this project.  Open VS Code and open the folder where code is located by going to File --> Open Folder, and selecting the folder within the one where the repository was cloned (e.g. "C:\Users\username\git\irs1318_general").
+
+If you have issues building the code using gradle for the first time, it may be one of the following issues:
+1. Insufficient disk space.  If you get a message talking about not being able to copy a file or create a directory, it may be a disk space issue.  Please clear some space so you have enough to build.
+2. Insufficient permissions to run gradlew.  On Mac/Linux, gradlew is blocked from running by default.  To allow it, run "```chmod +x gradlew```" and then run "```chmod 755 gradlew```".
+3. Needing slashes/etc.  On Mac/Linux or in a Powershell window, you may need to run gradlew in a special way.  On Mac/Linux, you may need to run gradlew as "```./gradlew```".  In Powershell, you may need to run gradlew as "```.\gradlew```".
 
 ### Simple Command Line operations and Git usage
 Starting in the 2019 season, there's a stronger need to use the command-line than in previous years.  Command line interfaces are used often in real world Engineering and Software Development, so learning it is very useful.
@@ -271,11 +283,33 @@ You will need to navigate around in order to do anything useful.  To look at the
 7. "```git branch -c master branchname```" command will create a new topic branch off of the master branch.
 8. "```git pull```" command will update your local repository with changes that have been pushed to the remote repository.
 9. "```git checkout branchname```" command will switch your working directory to look at a different branch.
-10. "```git clone https://github.com/irs1318dev/Fauxbot.git```" command will clone the repository tracked at the provided url, creating a local copy that you can use to make changes.
+10. "```git clone https://github.com/irs1318dev/irs1318_general.git```" command will clone the repository tracked at the provided url, creating a local copy that you can use to make changes.
 
 For more information about Git in command prompt, look here:
 [GitHub's git cheat-sheet](https://services.github.com/on-demand/downloads/github-git-cheat-sheet/)
 [GitHub's Git Handbook](https://guides.github.com/introduction/git-handbook/)
+
+### Your normal end-to-end git workflow
+When working with branches, you will typically follow a workflow like below:
+
+1. Switch to master branch.  Run "```git checkout master```".  This will fail if you have pending changes.  If you don't have any pending changes that you care about, you can run "```git clean -d -f```".  If that doesn't solve the problem, run "```git stash```".  If you have changes that you cared about from a previous topic branch, see step 5 and come back here after step 7 or 8.  If you started making changes before following these steps, look at the [So you started coding before creating a topic branch](#so-you-started-coding-before-creating-a-topic-branch) section below.
+2. Get the latest changes that exist on the server onto your local machine.  Run "```git pull```".
+3. Create and switch to a topic branch for your change.  Your topic branch should have a name based on what you're trying to work on.  Run "```git checkout -b topicbranchname```" (don't forget to repalce "topicbranchname"!).
+4. Make changes to your code.
+5. Commit all of your changes to your local topic branch.  Run "```git commit -a -m "description of my change"```".
+6. Repeat steps 4 and 5 as necessary.
+7. Share your changes with the world. Run "```git push```".  You will probably get a message saying that your topic branch isn't being tracked upstream.  You can either copy and paste the message that it gives you, or run something like "```git push --set-upstream origin topicbranchname```" (don't forget to repalce "topicbranchname"!).
+8. Go to [https://www.github.com/irs1318dev] and create a Pull Request to merge your changes into master.  If you can't figure that out, ask Will.
+
+### So you started coding before creating a topic branch
+If you started coding in "the wrong branch", usually you can recover from it as long as you don't have changes from that topic branch mixed in.  You can do something like:
+
+1. Stash your changes.  Run "```git stash```".
+2. Switch to master branch.  Run "```git checkout master```".
+3. Get the latest changes that exist on the server onto your local machine.  Run "```git pull```".
+4. Create and switch to a topic branch for your change.  Your topic branch should have a name based on what you're trying to work on.  Run "```git checkout -b topicbranchname```" (don't forget to repalce "topicbranchname"!).
+5. Retrieve your changes from the stash.  Run "```git stash pop```".
+6. Continue making changes to your code.  Follow steps 5-8 in the section above ([Your normal end-to-end git workflow](#your-normal-end-to-end-git-workflow)).
 
 ### Making Simple Operation changes
 To add a new action that the robot can take with a mechanism, first open the Operation enum (Operation.java) and add a new value to the list in that file.  We try to keep the various operations organized, so we keep them listed in a different section for each Mechanism.  The operation should be named starting with the mechanism (e.g. "DriveTrain", "Intake", etc.), and then a description of the action (e.g. "Turn", "RaiseArm", etc.).  Remember that Operations are a single, simple thing that is done by the robot.  Any more complex action that we want the robot to take will be a Macro which composes these Operations together (which we will talk about later).
