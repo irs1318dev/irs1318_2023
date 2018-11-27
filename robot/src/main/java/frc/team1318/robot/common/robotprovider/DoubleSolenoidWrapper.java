@@ -20,11 +20,11 @@ public class DoubleSolenoidWrapper implements IDoubleSolenoid
     public void set(DoubleSolenoidValue value)
     {
         Value wpilibValue = Value.kOff;
-        if (value == DoubleSolenoidValue.kForward)
+        if (value == DoubleSolenoidValue.Forward)
         {
             wpilibValue = Value.kForward;
         }
-        else if (value == DoubleSolenoidValue.kReverse)
+        else if (value == DoubleSolenoidValue.Reverse)
         {
             wpilibValue = Value.kReverse;
         }
