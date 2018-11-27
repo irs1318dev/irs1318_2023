@@ -21,15 +21,15 @@ public class RelayWrapper implements IRelay
     public void set(RelayValue value)
     {
         Value wrappedValue;
-        if (value == RelayValue.kOn)
+        if (value == RelayValue.On)
         {
             wrappedValue = Value.kOn;
         }
-        else if (value == RelayValue.kForward)
+        else if (value == RelayValue.Forward)
         {
             wrappedValue = Value.kForward;
         }
-        else if (value == RelayValue.kReverse)
+        else if (value == RelayValue.Reverse)
         {
             wrappedValue = Value.kReverse;
         }
@@ -49,11 +49,11 @@ public class RelayWrapper implements IRelay
     private static Direction translateDirection(RelayDirection direction)
     {
         Direction wrappedDirection;
-        if (direction == RelayDirection.kForward)
+        if (direction == RelayDirection.Forward)
         {
             wrappedDirection = Direction.kForward;
         }
-        else if (direction == RelayDirection.kReverse)
+        else if (direction == RelayDirection.Reverse)
         {
             wrappedDirection = Direction.kReverse;
         }
