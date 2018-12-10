@@ -92,9 +92,11 @@ public class RobotSimulator implements IRealWorldSimulator
     public double getMotorMin(FauxbotActuatorConnection connection)
     {
         if (connection.equals(RobotSimulator.DriveLeftMasterChannel) ||
-            connection.equals(RobotSimulator.DriveRightMasterChannel))
+            connection.equals(RobotSimulator.DriveLeftFollowerChannel) ||
+            connection.equals(RobotSimulator.DriveRightMasterChannel) ||
+            connection.equals(RobotSimulator.DriveRightFollowerChannel))
         {
-            return -3800.0;
+            return -1600.0;
         }
 
         return -1.0;
@@ -103,9 +105,11 @@ public class RobotSimulator implements IRealWorldSimulator
     public double getMotorMax(FauxbotActuatorConnection connection)
     {
         if (connection.equals(RobotSimulator.DriveLeftMasterChannel) ||
-            connection.equals(RobotSimulator.DriveRightMasterChannel))
+            connection.equals(RobotSimulator.DriveLeftFollowerChannel) ||
+            connection.equals(RobotSimulator.DriveRightMasterChannel) ||
+            connection.equals(RobotSimulator.DriveRightFollowerChannel))
         {
-            return 3800.0;
+            return 1600.0;
         }
 
         return 1.0;
