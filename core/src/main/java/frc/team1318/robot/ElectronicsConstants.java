@@ -34,7 +34,9 @@ public class ElectronicsConstants
     //================================================== DriveTrain ==============================================================
 
     public static final int DRIVETRAIN_LEFT_MOTOR_CAN_ID = 1;
-    public static final int DRIVETRAIN_LEFT_FOLLOWER_CAN_ID = 2;
-    public static final int DRIVETRAIN_RIGHT_MOTOR_CAN_ID = 3;
-    public static final int DRIVETRAIN_RIGHT_FOLLOWER_CAN_ID = 4;
+    public static final int DRIVETRAIN_LEFT_FOLLOWER_CAN_ID_1 = 2;
+    public static final int DRIVETRAIN_LEFT_FOLLOWER_CAN_ID_2 = 3;
+    public static final int DRIVETRAIN_RIGHT_MOTOR_CAN_ID = 4;
+    public static final int DRIVETRAIN_RIGHT_FOLLOWER_CAN_ID_1 = 5;
+    public static final int DRIVETRAIN_RIGHT_FOLLOWER_CAN_ID_2 = 6;
 }

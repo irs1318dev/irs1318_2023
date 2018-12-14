@@ -93,17 +93,17 @@ public class TuningConstants
     public static final boolean DRIVETRAIN_USE_CROSS_COUPLING = true;
 
     // Velocity PID (right)
-    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KP = 0.2;
+    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KP = 0.05;
     public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KI = 0.0;
     public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KD = 0.0;
-    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KF = 0.15;
+    public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KF = 0.2;
     public static final double DRIVETRAIN_VELOCITY_PID_RIGHT_KS = 3800.0;
 
     // Velocity PID (left)
-    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KP = 0.2;
+    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KP = 0.05;
     public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KI = 0.0;
     public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KD = 0.0;
-    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KF = 0.15;
+    public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KF = 0.2;
     public static final double DRIVETRAIN_VELOCITY_PID_LEFT_KS = 3800.0;
 
     // Path PID (right)
