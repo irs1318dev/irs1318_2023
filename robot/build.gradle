@@ -1,31 +1,43 @@
 plugins
 {
     id "eclipse"
-    id "edu.wpi.first.GradleRIO" version "2019.0.0-alpha-3"
+    id "edu.wpi.first.GradleRIO" version "2019.1.1-rc-1"
 }
 
-def ROBOT_CLASS = "frc.team1318.robot.Robot"
+def ROBOT_CLASS = "frc.robot.Robot"
+def ROBOT_MAIN_CLASS = "frc.robot.Main"
 
 // Define my targets (RoboRIO) and artifacts (deployable files)
 // This is added by GradleRIO's backing project EmbeddedTools.
 deploy {
     targets {
-        target("roborio", edu.wpi.first.gradlerio.frc.RoboRIO) {
+        roboRIO("roborio") {
             // Team number is loaded either from the .wpilib/wpilib_preferences.json
             // or from command line. If not found an exception will be thrown.
             // You can use getTeamOrDefault(team) instead of getTeamNumber if you
             // want to store a team number in this file.
-            team = getTeamNumber()
+            team = frc.getTeamNumber()
         }
     }
     artifacts {
-        artifact('frcJava', edu.wpi.first.gradlerio.frc.FRCJavaArtifact) {
+        frcJavaArtifact('frcJava') {
             targets << "roborio"
             // Debug can be overridden by command line, for use with VSCode
-            debug = getDebugOrDefault(false)
+            debug = frc.getDebugOrDefault(false)
+        }
+        // Built in artifact to deploy arbitrary files to the roboRIO.
+        fileTreeArtifact('frcStaticFileDeploy') {
+            // The directory below is the local directory to deploy
+            files = fileTree(dir: 'src/main/deploy')
+            // Deploy to RoboRIO target, into /home/lvuser/deploy
+            targets << "roborio"
+            directory = '/home/lvuser/deploy'
         }
     }
 }
+
+// Set this to true to enable desktop support.
+def includeDesktopSupport = false
 
 repositories {
     mavenCentral()
@@ -36,11 +48,15 @@ repositories {
 dependencies {
     compile project(':core')
 
-    compile wpilib()
-    compile ctre()
-    compile navx()
+    compile wpi.deps.wpilib()
+    compile wpi.deps.vendor.java()
+    nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
+    nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
 
-    compile pathfinder()
+//    compile ctre()
+//    compile navx()
+//    compile pathfinder()
+
     compile group: 'javax.inject', name: 'javax.inject', version: '1'
     compile "com.google.guava:guava:21.0"
     compile "com.google.inject:guice:4.1.0:no_aop"
@@ -54,17 +70,10 @@ test {
     useJUnitPlatform()
 }
 
-// Force Java 8 Compatibility mode for deployed code, in case the develoment
-// system is using Java 10.
-compileJava {
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
-}
-
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
 // in order to make them all available at runtime. Also adding the manifest so WPILib
 // knows where to look for our Robot Class.
 jar {
-    from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-    manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_CLASS)
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
 }
