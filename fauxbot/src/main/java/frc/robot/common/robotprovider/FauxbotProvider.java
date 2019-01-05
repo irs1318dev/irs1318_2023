@@ -144,12 +144,6 @@ public class FauxbotProvider implements IRobotProvider
     }
 
     @Override
-    public ITrajectoryGenerator getTrajectoryGenerator()
-    {
-        return null;
-    }
-
-    @Override
     public IOpenCVProvider getOpenCVProvider()
     {
         return new OpenCVProvider();

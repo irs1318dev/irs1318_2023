@@ -7,8 +7,6 @@ import frc.robot.mechanisms.DriveTrainMechanism;
 
 public class FollowPathTask extends TimedTask implements IControlTask
 {
-    private final ITrajectory leftTrajectory;
-    private final ITrajectory rightTrajectory;
     private final int trajectoryLength;
     private final double timestep;
 
@@ -19,17 +17,13 @@ public class FollowPathTask extends TimedTask implements IControlTask
 
     /**
      * Initializes a new FollowPathTask
-     * @param pathPlan to follow
      */
-    public FollowPathTask(PathPlan pathPlan)
+    public FollowPathTask()
     {
-        super(pathPlan.getDuration());
+        super(0.0);
 
-        this.leftTrajectory = pathPlan.getLeft();
-        this.rightTrajectory = pathPlan.getRight();
-
-        this.trajectoryLength = leftTrajectory.length();
-        this.timestep = pathPlan.getTimestep();
+        this.trajectoryLength = 0; //leftTrajectory.length();
+        this.timestep = 0; // pathPlan.getTimestep();
     }
 
     /**
@@ -72,15 +66,15 @@ public class FollowPathTask extends TimedTask implements IControlTask
             currentSegmentIndex = this.trajectoryLength - 1;
         }
 
-        ISegment currentLeftSegment = this.leftTrajectory.get((int)currentSegmentIndex);
-        ISegment currentRightSegment = this.rightTrajectory.get((int)currentSegmentIndex);
+        // ISegment currentLeftSegment = this.leftTrajectory.get((int)currentSegmentIndex);
+        // ISegment currentRightSegment = this.rightTrajectory.get((int)currentSegmentIndex);
 
-        this.setAnalogOperationState(Operation.DriveTrainLeftPosition, this.startLeftPosition + currentLeftSegment.getPosition());
-        this.setAnalogOperationState(Operation.DriveTrainRightPosition, this.startRightPosition + currentRightSegment.getPosition());
-        this.setAnalogOperationState(Operation.DriveTrainLeftVelocity, currentLeftSegment.getVelocity());
-        this.setAnalogOperationState(Operation.DriveTrainRightVelocity, currentRightSegment.getVelocity());
-        this.setAnalogOperationState(Operation.DriveTrainLeftAcceleration, currentLeftSegment.getAcceleration());
-        this.setAnalogOperationState(Operation.DriveTrainRightAcceleration, currentRightSegment.getAcceleration());
+        // this.setAnalogOperationState(Operation.DriveTrainLeftPosition, this.startLeftPosition + currentLeftSegment.getPosition());
+        // this.setAnalogOperationState(Operation.DriveTrainRightPosition, this.startRightPosition + currentRightSegment.getPosition());
+        // this.setAnalogOperationState(Operation.DriveTrainLeftVelocity, currentLeftSegment.getVelocity());
+        // this.setAnalogOperationState(Operation.DriveTrainRightVelocity, currentRightSegment.getVelocity());
+        // this.setAnalogOperationState(Operation.DriveTrainLeftAcceleration, currentLeftSegment.getAcceleration());
+        // this.setAnalogOperationState(Operation.DriveTrainRightAcceleration, currentRightSegment.getAcceleration());
     }
 
     /**

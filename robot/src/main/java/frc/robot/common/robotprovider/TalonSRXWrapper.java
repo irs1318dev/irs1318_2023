@@ -67,7 +67,7 @@ public class TalonSRXWrapper implements ITalonSRX
         }
         else
         {
-            device = FeedbackDevice.None;
+            device = FeedbackDevice.Analog;
         }
 
         this.wrappedObject.configSelectedFeedbackSensor(device, TalonSRXWrapper.pidIdx, 0);

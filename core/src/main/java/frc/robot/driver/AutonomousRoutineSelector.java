@@ -13,7 +13,6 @@ public class AutonomousRoutineSelector
     private static final String LogName = "auto";
     private final IDashboardLogger logger;
     private final IDriverStation driverStation;
-    private final ITrajectoryGenerator trajectoryGenerator;
 
     //    private final IDigitalInput dipSwitchA;
 
@@ -29,7 +28,6 @@ public class AutonomousRoutineSelector
         this.logger = logger;
 
         this.driverStation = provider.getDriverStation();
-        this.trajectoryGenerator = provider.getTrajectoryGenerator();
 
         //        this.dipSwitchA = provider.getDigitalInput(ElectronicsConstants.AUTO_DIP_SWITCH_A_DIGITAL_CHANNEL);
     }
@@ -54,11 +52,7 @@ public class AutonomousRoutineSelector
         // print routine parameters to the smartdash
         this.logger.logString(AutonomousRoutineSelector.LogName, "gameData", gameData);
 
-        return new FollowPathTask(
-            this.trajectoryGenerator.generate(
-                new TrajectoryWaypoint(0, 0, 0),
-                new TrajectoryWaypoint(12, 0, 0),
-                new TrajectoryWaypoint(24, 12, -90)));
+        return AutonomousRoutineSelector.GetFillerRoutine();
     }
 
     /**

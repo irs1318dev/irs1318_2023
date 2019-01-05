@@ -238,12 +238,6 @@ public class TestProvider implements IRobotProvider
     }
 
     @Override
-    public ITrajectoryGenerator getTrajectoryGenerator()
-    {
-        return null;
-    }
-
-    @Override
     public IOpenCVProvider getOpenCVProvider()
     {
         return null;
