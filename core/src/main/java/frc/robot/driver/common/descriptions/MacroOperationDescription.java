@@ -14,9 +14,10 @@ public class MacroOperationDescription extends OperationDescription
     private final UserInputDeviceButton userInputDeviceButton;
     private final int userInputDevicePovValue;
     private final DigitalSensor sensor;
-    private final Operation[] affectedOperations;
-    private final Supplier<IControlTask> taskSupplier;
     private final ButtonType buttonType;
+    private final Supplier<IControlTask> taskSupplier;
+    private final Operation[] affectedOperations;
+    private final Operation[] macroCancelOperations;
 
     /**
      * Initializes a new MacroOperationDescription based on a user interaction
@@ -31,62 +32,39 @@ public class MacroOperationDescription extends OperationDescription
         UserInputDeviceButton userInputDeviceButton,
         ButtonType buttonType,
         Supplier<IControlTask> taskSupplier,
-        Operation... affectedOperations)
-    {
-        this(
-            userInputDevice,
-            userInputDeviceButton,
-            Shift.Any,
-            buttonType,
-            taskSupplier,
-            affectedOperations);
-    }
-
-    /**
-     * Initializes a new MacroOperationDescription based on a user interaction
-     * @param userInputDevice which device will perform the macro operation (driver or codriver joystick)
-     * @param userInputDeviceButton the button on the device that performs the macro operation
-     * @param requiredShift the shift button that must be applied to perform macro
-     * @param buttonType the behavior type to use for the macro operation
-     * @param taskSupplier the function that creates the tasks that should be performed by the macro
-     * @param affectedOperations the list of operations that will be utilized by this macro
-     */
-    public MacroOperationDescription(
-        UserInputDevice userInputDevice,
-        UserInputDeviceButton userInputDeviceButton,
-        Shift requiredShift,
-        ButtonType buttonType,
-        Supplier<IControlTask> taskSupplier,
-        Operation... affectedOperations)
+        Operation[] affectedOperations)
     {
         this(
             true,
             userInputDevice,
             userInputDeviceButton,
-            requiredShift,
+            0,
+            DigitalSensor.None,
+            Shift.Any,
             buttonType,
             taskSupplier,
-            affectedOperations);
+            affectedOperations,
+            null);
     }
 
     /**
      * Initializes a new MacroOperationDescription based on a user interaction
-     * @param clearInterrupt whether to clear the interruption of the operations when the macro completes
      * @param userInputDevice which device will perform the macro operation (driver or codriver joystick)
      * @param userInputDeviceButton the button on the device that performs the macro operation
      * @param requiredShift the shift button that must be applied to perform macro
      * @param buttonType the behavior type to use for the macro operation
      * @param taskSupplier the function that creates the tasks that should be performed by the macro
      * @param affectedOperations the list of operations that will be utilized by this macro
+     * @param macroCancelOperations the list of operations that can be used to cancel this macro
      */
     public MacroOperationDescription(
-        boolean clearInterrupt,
         UserInputDevice userInputDevice,
         UserInputDeviceButton userInputDeviceButton,
         Shift requiredShift,
         ButtonType buttonType,
         Supplier<IControlTask> taskSupplier,
-        Operation... affectedOperations)
+        Operation[] affectedOperations,
+        Operation[] macroCancelOperations)
     {
         this(
             true,
@@ -97,7 +75,8 @@ public class MacroOperationDescription extends OperationDescription
             requiredShift,
             buttonType,
             taskSupplier,
-            affectedOperations);
+            affectedOperations,
+            macroCancelOperations);
     }
 
     /**
@@ -113,39 +92,42 @@ public class MacroOperationDescription extends OperationDescription
         int povValue,
         ButtonType buttonType,
         Supplier<IControlTask> taskSupplier,
-        Operation... affectedOperations)
+        Operation[] affectedOperations)
     {
         this(
             true,
             userInputDevice,
+            UserInputDeviceButton.JOYSTICK_POV,
             povValue,
+            DigitalSensor.None,
             Shift.Any,
             buttonType,
             taskSupplier,
-            affectedOperations);
+            affectedOperations,
+            null);
     }
 
     /**
      * Initializes a new MacroOperationDescription based on a user interaction on the POV
-     * @param clearInterrupt whether to clear the interruption of the operations when the macro completes
      * @param userInputDevice which device will perform the macro operation (driver or codriver joystick)
      * @param povValue the value of the POV (hat) used to perform the macro operation
      * @param requiredShift the shift button that must be applied to perform macro
      * @param buttonType the behavior type to use for the macro operation
      * @param taskSupplier the function that creates the tasks that should be performed by the macro
      * @param affectedOperations the list of operations that will be utilized by this macro
+     * @param macroCancelOperations the list of operations that can be used to cancel this macro
      */
     public MacroOperationDescription(
-        boolean clearInterrupt,
         UserInputDevice userInputDevice,
         int povValue,
         Shift requiredShift,
         ButtonType buttonType,
         Supplier<IControlTask> taskSupplier,
-        Operation... affectedOperations)
+        Operation[] affectedOperations,
+        Operation[] macroCancelOperations)
     {
         this(
-            clearInterrupt,
+            true,
             userInputDevice,
             UserInputDeviceButton.JOYSTICK_POV,
             povValue,
@@ -153,26 +135,25 @@ public class MacroOperationDescription extends OperationDescription
             requiredShift,
             buttonType,
             taskSupplier,
-            affectedOperations);
+            affectedOperations,
+            macroCancelOperations);
     }
 
     /**
      * Initializes a new MacroOperationDescription based on a sensor
-     * @param clearInterrupt whether to clear the interruption of the operations when the macro completes
      * @param sensor the sensor that triggers the macro operation
      * @param buttonType the behavior type to use for the macro operation
      * @param taskSupplier the function that creates the tasks that should be performed by the macro
      * @param affectedOperations the list of operations that will be utilized by this macro
      */
     public MacroOperationDescription(
-        boolean clearInterrupt,
         DigitalSensor sensor,
         ButtonType buttonType,
         Supplier<IControlTask> taskSupplier,
-        Operation... affectedOperations)
+        Operation[] affectedOperations)
     {
         this(
-            clearInterrupt,
+            true,
             UserInputDevice.Sensor,
             UserInputDeviceButton.NONE,
             0,
@@ -180,9 +161,23 @@ public class MacroOperationDescription extends OperationDescription
             Shift.Any,
             buttonType,
             taskSupplier,
-            affectedOperations);
+            affectedOperations,
+            null);
     }
 
+    /**
+     * Initializes a new MacroOperationDescription based on a user interaction on the POV
+     * @param clearInterrupt whether to clear the interruption of the operations when the macro completes
+     * @param userInputDevice which device will perform the macro operation (driver or codriver joystick)
+     * @param userInputDeviceButton the button on the device that performs the macro operation
+     * @param povValue the value of the POV (hat) used to perform the macro operation
+     * @param sensor the sensor that triggers the macro operation
+     * @param requiredShift the shift button that must be applied to perform macro
+     * @param buttonType the behavior type to use for the macro operation
+     * @param taskSupplier the function that creates the tasks that should be performed by the macro
+     * @param affectedOperations the list of operations that will be utilized by this macro
+     * @param macroCancelOperations the list of operations that can be used to cancel this macro
+     */
     private MacroOperationDescription(
         boolean clearInterrupt,
         UserInputDevice userInputDevice,
@@ -192,7 +187,8 @@ public class MacroOperationDescription extends OperationDescription
         Shift requiredShift,
         ButtonType buttonType,
         Supplier<IControlTask> taskSupplier,
-        Operation... affectedOperations)
+        Operation[] affectedOperations,
+        Operation[] macroCancelOperations)
     {
         super(OperationType.None, userInputDevice, requiredShift);
 
@@ -200,9 +196,10 @@ public class MacroOperationDescription extends OperationDescription
         this.userInputDeviceButton = userInputDeviceButton;
         this.userInputDevicePovValue = povValue;
         this.sensor = sensor;
-        this.affectedOperations = affectedOperations;
-        this.taskSupplier = taskSupplier;
         this.buttonType = buttonType;
+        this.taskSupplier = taskSupplier;
+        this.affectedOperations = affectedOperations;
+        this.macroCancelOperations = macroCancelOperations;
     }
 
     public boolean shouldClearInterrupt()
@@ -233,6 +230,16 @@ public class MacroOperationDescription extends OperationDescription
     public IControlTask constructTask()
     {
         return this.taskSupplier.get();
+    }
+
+    public Operation[] getMacroCancelOperations()
+    {
+        if (this.macroCancelOperations != null)
+        {
+            return this.macroCancelOperations;
+        }
+
+        return this.affectedOperations;
     }
 
     public Operation[] getAffectedOperations()

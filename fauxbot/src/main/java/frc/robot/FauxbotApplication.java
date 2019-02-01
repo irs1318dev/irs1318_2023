@@ -4,22 +4,20 @@ import java.io.IOException;
 
 import frc.robot.ElectronicsConstants;
 import frc.robot.FauxbotModule;
-import frc.robot.common.MechanismManager;
+import frc.robot.FauxbotRunner.RobotMode;
 import frc.robot.common.robotprovider.*;
 import frc.robot.driver.MacroOperation;
 import frc.robot.driver.Operation;
-import frc.robot.driver.common.Driver;
 import frc.robot.driver.common.IButtonMap;
+import frc.robot.driver.common.UserInputDeviceButton;
 import frc.robot.driver.common.buttons.ButtonType;
 import frc.robot.driver.common.descriptions.*;
-import frc.robot.driver.common.user.UserDriver;
-
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -28,8 +26,11 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
@@ -44,12 +45,7 @@ public class FauxbotApplication extends Application
 
     private final IRealWorldSimulator simulator;
 
-    private MechanismManager mechanisms;
-    private ITimer timer;
-    private Driver driver;
-    private IButtonMap buttonMap;
-
-    private Injector injector;
+    private final CoreRobot<FauxbotModule> robot;
 
     private Canvas canvas;
 
@@ -57,22 +53,20 @@ public class FauxbotApplication extends Application
     {
         super();
 
-        this.mechanisms = this.getInjector().getInstance(MechanismManager.class);
-        this.timer = this.getInjector().getInstance(ITimer.class);
-        this.driver = this.getInjector().getInstance(UserDriver.class);
-        this.buttonMap = this.getInjector().getInstance(IButtonMap.class);
+        this.robot = new CoreRobot<FauxbotModule>(new FauxbotModule());
 
-        this.mechanisms.setDriver(this.driver);
-        this.timer.start();
-
-        this.simulator = this.getInjector().getInstance(IRealWorldSimulator.class);
-        this.runner = new FauxbotRunner(this.mechanisms, this.driver, this.simulator, this);
+        this.simulator = this.robot.getInjector().getInstance(IRealWorldSimulator.class);
+        this.runner = new FauxbotRunner(this.robot, this);
         this.runnerThread = new Thread(this.runner);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception
     {
+        this.robot.robotInit();
+
+        IButtonMap buttonMap = this.robot.getInjector().getInstance(IButtonMap.class);
+
         primaryStage.setTitle("Fauxbot");
 
         GridPane grid = new GridPane();
@@ -84,12 +78,44 @@ public class FauxbotApplication extends Application
         int rowCount = 0;
         String fontDefault = "Arial";
 
+        Text modeTitle = new Text("Mode");
+        modeTitle.setFont(Font.font(fontDefault, FontWeight.NORMAL, 20));
+        grid.add(modeTitle, 0, rowCount, 1, 1);
+
+        ToggleGroup modeGroup = new ToggleGroup();
+        RadioButton autonomousButton = new RadioButton("Autonomous");
+        autonomousButton.setUserData(FauxbotRunner.RobotMode.Autonomous);
+        autonomousButton.setToggleGroup(modeGroup);
+        grid.add(autonomousButton, 1, rowCount, 1, 1);
+
+        RadioButton disabledButton = new RadioButton("Disabled");
+        disabledButton.setUserData(FauxbotRunner.RobotMode.Disabled);
+        disabledButton.setToggleGroup(modeGroup);
+        disabledButton.setSelected(true);
+        grid.add(disabledButton, 2, rowCount, 1, 1);
+
+        RadioButton teleopButton = new RadioButton("Teleop");
+        teleopButton.setUserData(FauxbotRunner.RobotMode.Teleop);
+        teleopButton.setToggleGroup(modeGroup);
+        grid.add(teleopButton, 3, rowCount, 1, 1);
+
+        modeGroup.selectedToggleProperty().addListener(
+            new ChangeListener<Toggle>()
+            {
+                public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue)
+                {
+                    runner.setMode((RobotMode)newValue.getUserData());
+                } 
+            });
+
+        rowCount++;
+
         Text buttonsTitle = new Text("Buttons");
         buttonsTitle.setFont(Font.font(fontDefault, FontWeight.NORMAL, 20));
         grid.add(buttonsTitle, 0, rowCount++, 2, 1);
         for (Operation op : Operation.values())
         {
-            OperationDescription description = this.buttonMap.getOperationSchema().getOrDefault(op, null);
+            OperationDescription description = buttonMap.getOperationSchema().getOrDefault(op, null);
             if (description != null)
             {
                 int joystickPort = -1;
@@ -116,14 +142,14 @@ public class FauxbotApplication extends Application
                         if (description.getType() == OperationType.Digital)
                         {
                             DigitalOperationDescription digitalDescription = (DigitalOperationDescription)description;
-                            int buttonNumber = digitalDescription.getUserInputDeviceButton().Value;
+                            UserInputDeviceButton button = digitalDescription.getUserInputDeviceButton();
                             if (digitalDescription.getButtonType() == ButtonType.Click)
                             {
                                 Button operationButton = new Button("Click");
                                 operationButton.setOnMouseClicked(
                                     (MouseEvent event) ->
                                     {
-                                        joystick.getButtonProperty(buttonNumber).set(true);
+                                        joystick.getButtonProperty(button.Value).set(true);
                                     });
 
                                 grid.add(operationButton, 1, thisRowIndex);
@@ -132,18 +158,20 @@ public class FauxbotApplication extends Application
                             {
                                 CheckBox operationCheckBox = new CheckBox();
                                 grid.add(operationCheckBox, 1, thisRowIndex);
-                                Bindings.bindBidirectional(joystick.getButtonProperty(buttonNumber), operationCheckBox.selectedProperty());
+                                if (button != UserInputDeviceButton.JOYSTICK_POV)
+                                {
+                                    Bindings.bindBidirectional(joystick.getButtonProperty(button.Value), operationCheckBox.selectedProperty());
+                                }
+                                else
+                                {
+                                    operationCheckBox.selectedProperty();
+                                }
                             }
                             else if (digitalDescription.getButtonType() == ButtonType.Simple)
                             {
-                                Button operationButton = new Button("Simple");
-                                operationButton.setOnMouseClicked(
-                                    (MouseEvent event) ->
-                                    {
-                                        joystick.getButtonProperty(buttonNumber).set(true);
-                                    });
-
-                                grid.add(operationButton, 1, thisRowIndex);
+                                CheckBox operationCheckBox = new CheckBox();
+                                grid.add(operationCheckBox, 1, thisRowIndex);
+                                Bindings.bindBidirectional(joystick.getButtonProperty(button.Value), operationCheckBox.selectedProperty());
                             }
                         }
                         else if (description.getType() == OperationType.Analog)
@@ -174,7 +202,7 @@ public class FauxbotApplication extends Application
             grid.add(macrosTitle, 0, rowCount++, 2, 1);
             for (MacroOperation op : MacroOperation.values())
             {
-                MacroOperationDescription description = this.buttonMap.getMacroOperationSchema().getOrDefault(op, null);
+                MacroOperationDescription description = buttonMap.getMacroOperationSchema().getOrDefault(op, null);
                 if (description != null)
                 {
                     int joystickPort = -1;
@@ -352,7 +380,7 @@ public class FauxbotApplication extends Application
 
         // construct Canvas
         this.canvas = new Canvas(200, 200);
-        grid.add(this.canvas, 2, 0, 2, rowCount);
+        grid.add(this.canvas, 2, 2, 2, rowCount);
 
         Parent root = grid;
         int width = 605;
@@ -399,19 +427,5 @@ public class FauxbotApplication extends Application
     public static void main(String[] args) throws InterruptedException, IOException
     {
         Application.launch(args);
-    }
-
-    /**
-     * Lazily initializes and retrieves the injector.
-     * @return the injector to use for this robot
-     */
-    Injector getInjector()
-    {
-        if (this.injector == null)
-        {
-            this.injector = Guice.createInjector(new FauxbotModule());
-        }
-
-        return this.injector;
     }
 }

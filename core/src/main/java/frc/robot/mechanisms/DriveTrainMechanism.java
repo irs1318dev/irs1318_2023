@@ -75,9 +75,9 @@ public class DriveTrainMechanism implements IMechanism
         this.logger = logger;
         this.timer = timer;
 
-        this.leftMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_MOTOR_CAN_ID);
+        this.leftMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_MASTER_CAN_ID);
         this.leftMotor.setNeutralMode(TalonSRXNeutralMode.Brake);
-        this.leftMotor.setInvertOutput(HardwareConstants.DRIVETRAIN_LEFT_INVERT_OUTPUT);
+        this.leftMotor.setInvertOutput(HardwareConstants.DRIVETRAIN_LEFT_MASTER_INVERT_OUTPUT);
         this.leftMotor.setInvertSensor(HardwareConstants.DRIVETRAIN_LEFT_INVERT_SENSOR);
         this.leftMotor.setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
         this.leftMotor.setFeedbackFramePeriod(DriveTrainMechanism.FRAME_PERIOD_MS);
@@ -90,21 +90,21 @@ public class DriveTrainMechanism implements IMechanism
             TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KF,
             DriveTrainMechanism.pidSlotId);
 
-        ITalonSRX leftFollowerMotor1 = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER_CAN_ID_1);
+        ITalonSRX leftFollowerMotor1 = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER1_CAN_ID);
         leftFollowerMotor1.setNeutralMode(TalonSRXNeutralMode.Brake);
-        leftFollowerMotor1.setInvertOutput(HardwareConstants.DRIVETRAIN_LEFT_INVERT_OUTPUT);
+        leftFollowerMotor1.setInvertOutput(HardwareConstants.DRIVETRAIN_LEFT_FOLLOWER1_INVERT_OUTPUT);
         leftFollowerMotor1.setControlMode(TalonSRXControlMode.Follower);
-        leftFollowerMotor1.set(ElectronicsConstants.DRIVETRAIN_LEFT_MOTOR_CAN_ID);
+        leftFollowerMotor1.set(ElectronicsConstants.DRIVETRAIN_LEFT_MASTER_CAN_ID);
 
-        ITalonSRX leftFollowerMotor2 = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER_CAN_ID_2);
+        ITalonSRX leftFollowerMotor2 = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER2_CAN_ID);
         leftFollowerMotor2.setNeutralMode(TalonSRXNeutralMode.Brake);
-        leftFollowerMotor2.setInvertOutput(HardwareConstants.DRIVETRAIN_LEFT_INVERT_OUTPUT);
+        leftFollowerMotor2.setInvertOutput(HardwareConstants.DRIVETRAIN_LEFT_FOLLOWER2_INVERT_OUTPUT);
         leftFollowerMotor2.setControlMode(TalonSRXControlMode.Follower);
-        leftFollowerMotor2.set(ElectronicsConstants.DRIVETRAIN_LEFT_MOTOR_CAN_ID);
+        leftFollowerMotor2.set(ElectronicsConstants.DRIVETRAIN_LEFT_MASTER_CAN_ID);
 
-        this.rightMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_MOTOR_CAN_ID);
+        this.rightMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_MASTER_CAN_ID);
         this.rightMotor.setNeutralMode(TalonSRXNeutralMode.Brake);
-        this.rightMotor.setInvertOutput(HardwareConstants.DRIVETRAIN_RIGHT_INVERT_OUTPUT);
+        this.rightMotor.setInvertOutput(HardwareConstants.DRIVETRAIN_RIGHT_MASTER_INVERT_OUTPUT);
         this.rightMotor.setInvertSensor(HardwareConstants.DRIVETRAIN_RIGHT_INVERT_SENSOR);
         this.rightMotor.setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
         this.rightMotor.setFeedbackFramePeriod(DriveTrainMechanism.FRAME_PERIOD_MS);
@@ -117,17 +117,17 @@ public class DriveTrainMechanism implements IMechanism
             TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF,
             DriveTrainMechanism.pidSlotId);
 
-        ITalonSRX rightFollowerMotor1 = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER_CAN_ID_1);
+        ITalonSRX rightFollowerMotor1 = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER1_CAN_ID);
         rightFollowerMotor1.setControlMode(TalonSRXControlMode.Follower);
         rightFollowerMotor1.setNeutralMode(TalonSRXNeutralMode.Brake);
-        rightFollowerMotor1.setInvertOutput(HardwareConstants.DRIVETRAIN_RIGHT_INVERT_OUTPUT);
-        rightFollowerMotor1.set(ElectronicsConstants.DRIVETRAIN_RIGHT_MOTOR_CAN_ID);
+        rightFollowerMotor1.setInvertOutput(HardwareConstants.DRIVETRAIN_RIGHT_FOLLOWER1_INVERT_OUTPUT);
+        rightFollowerMotor1.set(ElectronicsConstants.DRIVETRAIN_RIGHT_MASTER_CAN_ID);
 
-        ITalonSRX rightFollowerMotor2 = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER_CAN_ID_2);
+        ITalonSRX rightFollowerMotor2 = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER2_CAN_ID);
         rightFollowerMotor2.setControlMode(TalonSRXControlMode.Follower);
         rightFollowerMotor2.setNeutralMode(TalonSRXNeutralMode.Brake);
-        rightFollowerMotor2.setInvertOutput(HardwareConstants.DRIVETRAIN_RIGHT_INVERT_OUTPUT);
-        rightFollowerMotor2.set(ElectronicsConstants.DRIVETRAIN_RIGHT_MOTOR_CAN_ID);
+        rightFollowerMotor2.setInvertOutput(HardwareConstants.DRIVETRAIN_RIGHT_FOLLOWER2_INVERT_OUTPUT);
+        rightFollowerMotor2.set(ElectronicsConstants.DRIVETRAIN_RIGHT_MASTER_CAN_ID);
 
         this.leftPID = null;
         this.rightPID = null;
@@ -516,39 +516,46 @@ public class DriveTrainMechanism implements IMechanism
     private Setpoint calculatePathModeSetpoint()
     {
         // get the desired left and right values from the driver.
+        // note that position goals are in inches and velocity goals are in inches/second
         double leftPositionGoal = this.driver.getAnalog(Operation.DriveTrainLeftPosition);
         double rightPositionGoal = this.driver.getAnalog(Operation.DriveTrainRightPosition);
         double leftVelocityGoal = this.driver.getAnalog(Operation.DriveTrainLeftVelocity);
         double rightVelocityGoal = this.driver.getAnalog(Operation.DriveTrainRightVelocity);
-        double leftAccelerationGoal = this.driver.getAnalog(Operation.DriveTrainLeftAcceleration);
-        double rightAccelerationGoal = this.driver.getAnalog(Operation.DriveTrainRightAcceleration);
+        double headingGoal = this.driver.getAnalog(Operation.DriveTrainHeading);
 
-        this.logger.logNumber(DriveTrainMechanism.LogName, "leftPositionGoal", leftPositionGoal);
-        this.logger.logNumber(DriveTrainMechanism.LogName, "rightPositionGoal", rightPositionGoal);
+        leftVelocityGoal /= TuningConstants.DRIVETRAIN_PATH_LEFT_MAX_VELOCITY_INCHES_PER_SECOND;
+        rightVelocityGoal /= TuningConstants.DRIVETRAIN_PATH_RIGHT_MAX_VELOCITY_INCHES_PER_SECOND;
+
+        this.logger.logNumber(DriveTrainMechanism.LogName, "leftPositionPathGoal", leftPositionGoal);
+        this.logger.logNumber(DriveTrainMechanism.LogName, "rightPositionPathGoal", rightPositionGoal);
+        this.logger.logNumber(DriveTrainMechanism.LogName, "leftVelocityPathGoal", leftVelocityGoal);
+        this.logger.logNumber(DriveTrainMechanism.LogName, "rightVelocityPathGoal", rightVelocityGoal);
 
         // use positional PID to get the relevant value
         double leftGoal = this.leftPID.calculatePosition(leftPositionGoal, this.leftPosition);
         double rightGoal = this.rightPID.calculatePosition(rightPositionGoal, this.rightPosition);
 
-        // add in velocity and acceleration as a type of feed-forward
-        leftGoal += leftVelocityGoal * TuningConstants.DRIVETRAIN_PATH_PID_LEFT_KV
-            + leftAccelerationGoal * TuningConstants.DRIVETRAIN_PATH_PID_LEFT_KA;
-        rightGoal += rightVelocityGoal * TuningConstants.DRIVETRAIN_PATH_PID_RIGHT_KV
-            + rightAccelerationGoal * TuningConstants.DRIVETRAIN_PATH_PID_RIGHT_KA;
+        // add in velocity as a type of feed-forward
+        leftGoal += leftVelocityGoal * TuningConstants.DRIVETRAIN_PATH_PID_LEFT_KV;
+        rightGoal += rightVelocityGoal * TuningConstants.DRIVETRAIN_PATH_PID_RIGHT_KV;
 
         // apply cross-coupling changes
-        double leftPositionError = this.leftPID.getError();
-        double rightPositionError = this.rightPID.getError();
+        //double leftPositionError = this.leftPID.getError();
+        //double rightPositionError = this.rightPID.getError();
 
-        double positionErrorMagnitudeDelta = leftPositionError - rightPositionError;
-        if (TuningConstants.DRIVETRAIN_USE_CROSS_COUPLING
-            && !Helpers.WithinDelta(positionErrorMagnitudeDelta, 0.0, TuningConstants.DRIVETRAIN_CROSS_COUPLING_ZERO_ERROR_RANGE))
-        {
-            // add the delta times the coupling factor to the left, and subtract from the right
-            // (if left error is greater than right error, left should be given some more power than right)
-            leftGoal += TuningConstants.DRIVETRAIN_PATH_PID_LEFT_KCC * positionErrorMagnitudeDelta;
-            rightGoal -= TuningConstants.DRIVETRAIN_PATH_PID_RIGHT_KCC * positionErrorMagnitudeDelta;
-        }
+        //double positionErrorMagnitudeDelta = leftPositionError - rightPositionError;
+        //if (TuningConstants.DRIVETRAIN_USE_CROSS_COUPLING
+        //    && !Helpers.WithinDelta(positionErrorMagnitudeDelta, 0.0, TuningConstants.DRIVETRAIN_CROSS_COUPLING_ZERO_ERROR_RANGE))
+        //{
+        //    // add the delta times the coupling factor to the left, and subtract from the right
+        //    // (if left error is greater than right error, left should be given some more power than right)
+        //    leftGoal += TuningConstants.DRIVETRAIN_PATH_PID_LEFT_KCC * positionErrorMagnitudeDelta;
+        //    rightGoal -= TuningConstants.DRIVETRAIN_PATH_PID_RIGHT_KCC * positionErrorMagnitudeDelta;
+        //}
+
+        // velocity plus position correction could put us over our max or under our min power levels
+        leftGoal = this.applyPowerLevelRange(leftGoal);
+        rightGoal = this.applyPowerLevelRange(rightGoal);
 
         this.assertPowerLevelRange(leftGoal, "left velocity (goal)");
         this.assertPowerLevelRange(rightGoal, "right velocity (goal)");
@@ -595,6 +602,10 @@ public class DriveTrainMechanism implements IMechanism
                 // (if left error is greater than right error, left should be given some more power than right)
                 leftPower += TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KCC * positionErrorMagnitudeDelta;
                 rightPower -= TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KCC * positionErrorMagnitudeDelta;
+
+                // cross-coupling could put us over our max or under our min power levels
+                leftPower = this.applyPowerLevelRange(leftPower);
+                rightPower = this.applyPowerLevelRange(rightPower);
             }
         }
         else

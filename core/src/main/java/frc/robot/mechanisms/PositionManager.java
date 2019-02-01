@@ -4,7 +4,6 @@ import frc.robot.*;
 import frc.robot.common.*;
 import frc.robot.common.robotprovider.*;
 import frc.robot.driver.common.Driver;
-import frc.robot.driver.common.autonomous.AutonomousDriver;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -81,7 +80,7 @@ public class PositionManager implements IMechanism
     public void setDriver(Driver driver)
     {
         // At the beginning of autonomous, reset the position manager so that we consider ourself at the origin (0,0) and facing the 0 direction.
-        if (driver instanceof AutonomousDriver)
+        if (driver.isAutonomous())
         {
             this.reset();
         }

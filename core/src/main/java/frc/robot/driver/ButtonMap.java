@@ -17,9 +17,7 @@ import frc.robot.driver.common.descriptions.MacroOperationDescription;
 import frc.robot.driver.common.descriptions.OperationDescription;
 import frc.robot.driver.common.descriptions.ShiftDescription;
 import frc.robot.driver.common.descriptions.UserInputDevice;
-import frc.robot.driver.controltasks.PIDBrakeTask;
-import frc.robot.driver.controltasks.VisionAdvanceAndCenterTask;
-import frc.robot.driver.controltasks.VisionCenteringTask;
+import frc.robot.driver.controltasks.*;
 
 @Singleton
 public class ButtonMap implements IButtonMap
@@ -31,8 +29,8 @@ public class ButtonMap implements IButtonMap
             put(
                 Shift.Debug,
                 new ShiftDescription(
-                    UserInputDevice.CoDriver,
-                    UserInputDeviceButton.BUTTON_PAD_BUTTON_1));
+                    UserInputDevice.None,
+                    UserInputDeviceButton.NONE));
         }
     };
 
@@ -122,14 +120,7 @@ public class ButtonMap implements IButtonMap
                     false,
                     0.0));
             put(
-                Operation.DriveTrainLeftAcceleration,
-                new AnalogOperationDescription(
-                    UserInputDevice.None,
-                    AnalogAxis.None,
-                    false,
-                    0.0));
-            put(
-                Operation.DriveTrainRightAcceleration,
+                Operation.DriveTrainHeading,
                 new AnalogOperationDescription(
                     UserInputDevice.None,
                     AnalogAxis.None,
@@ -146,7 +137,7 @@ public class ButtonMap implements IButtonMap
                 new DigitalOperationDescription(
                     UserInputDevice.None,
                     UserInputDeviceButton.NONE,
-                    ButtonType.Toggle));                    
+                    ButtonType.Toggle)); 
         }
     };
 
@@ -162,6 +153,89 @@ public class ButtonMap implements IButtonMap
                     UserInputDeviceButton.JOYSTICK_STICK_THUMB_BUTTON,
                     ButtonType.Simple,
                     () -> new PIDBrakeTask(),
+                    new Operation[]
+                    {
+                        Operation.DriveTrainUsePositionalMode,
+                        Operation.DriveTrainUseBrakeMode,
+                        Operation.DriveTrainLeftPosition,
+                        Operation.DriveTrainRightPosition,
+                    }));
+            
+            // turn in place macros
+            put(
+                MacroOperation.TurnInPlaceRight,
+                new MacroOperationDescription(
+                    UserInputDevice.Driver,
+                    90,
+                    Shift.Any,
+                    ButtonType.Toggle,
+                    () -> new NavxTurnTask(false, 180, true, true),
+                    new Operation[]
+                    {
+                        Operation.DriveTrainUsePositionalMode,
+                        Operation.DriveTrainUseBrakeMode,
+                        Operation.DriveTrainLeftPosition,
+                        Operation.DriveTrainRightPosition,
+                        Operation.DriveTrainLeftVelocity,
+                        Operation.DriveTrainRightVelocity,
+                        Operation.DriveTrainTurn,
+                        Operation.DriveTrainMoveForward,
+                        Operation.DriveTrainSimpleMode,
+                    },
+                    new Operation[]
+                    {
+                        Operation.DriveTrainUsePositionalMode,
+                        Operation.DriveTrainUseBrakeMode,
+                        Operation.DriveTrainLeftPosition,
+                        Operation.DriveTrainRightPosition,
+                    }));
+            put(
+                MacroOperation.TurnInPlaceLeft,
+                new MacroOperationDescription(
+                    UserInputDevice.Driver,
+                    270,
+                    Shift.Any,
+                    ButtonType.Toggle,
+                    () -> new NavxTurnTask(false, -180, true, true),
+                    new Operation[]
+                    {
+                        Operation.DriveTrainUsePositionalMode,
+                        Operation.DriveTrainUseBrakeMode,
+                        Operation.DriveTrainLeftPosition,
+                        Operation.DriveTrainRightPosition,
+                        Operation.DriveTrainTurn,
+                        Operation.DriveTrainMoveForward,
+                        Operation.DriveTrainSimpleMode,
+                    },
+                    new Operation[]
+                    {
+                        Operation.DriveTrainUsePositionalMode,
+                        Operation.DriveTrainUseBrakeMode,
+                        Operation.DriveTrainLeftPosition,
+                        Operation.DriveTrainRightPosition,
+                    }));
+            put(
+                MacroOperation.FollowSomePath,
+                new MacroOperationDescription(
+                    UserInputDevice.Driver,
+                    0,
+                    Shift.Any,
+                    ButtonType.Toggle,
+                    () -> new FollowPathTask(""),
+                    new Operation[]
+                    {
+                        Operation.DriveTrainUsePositionalMode,
+                        Operation.DriveTrainUseBrakeMode,
+                        Operation.DriveTrainLeftPosition,
+                        Operation.DriveTrainRightPosition,
+                        Operation.DriveTrainLeftVelocity,
+                        Operation.DriveTrainRightVelocity,
+                        Operation.DriveTrainHeading,
+                        Operation.DriveTrainUsePathMode,
+                        Operation.DriveTrainTurn,
+                        Operation.DriveTrainMoveForward,
+                        Operation.DriveTrainSimpleMode,
+                    },
                     new Operation[]
                     {
                         Operation.DriveTrainUsePositionalMode,

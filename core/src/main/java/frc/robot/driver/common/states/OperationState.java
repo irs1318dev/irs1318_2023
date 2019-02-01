@@ -13,7 +13,7 @@ import frc.robot.driver.common.descriptions.OperationDescription;
  * The state of a current operation.
  *
  */
-public abstract class OperationState
+public abstract class OperationState implements IOperationState
 {
     private final OperationDescription description;
 

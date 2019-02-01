@@ -17,7 +17,7 @@ public class AutonomousRoutineSelector
     //    private final IDigitalInput dipSwitchA;
 
     /**
-     * Initializes a new AutonomousDriver
+     * Initializes a new AutonomousRoutineSelector
      */
     @Inject
     public AutonomousRoutineSelector(
@@ -62,7 +62,7 @@ public class AutonomousRoutineSelector
      */
     private static IControlTask GetFillerRoutine()
     {
-        return new WaitTask(0);
+        return new DriveVelocityTimedTask(16.0, 1.0, 0.0);
     }
 }
 

@@ -1,10 +1,17 @@
 package frc.robot.common.robotprovider;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 public class FauxbotProvider implements IRobotProvider
 {
+    @Inject
+    public FauxbotProvider()
+    {
+        nu.pattern.OpenCV.loadShared();
+    }
+
     @Override
     public IAnalogInput getAnalogInput(int channel)
     {

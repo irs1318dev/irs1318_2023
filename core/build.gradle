@@ -1,9 +1,8 @@
-// Defining my dependencies. In this case, WPILib (+ friends), CTRE Toolsuite (Talon SRX)
-// and NavX.
 dependencies {
     compile "javax.inject:javax.inject:1"
     compile "com.google.guava:guava:21.0"
     compile "com.google.inject:guice:4.1.0:no_aop"
+    compile 'de.siegmar:fastcsv:1.0.3'
 
     testCompile "org.mockito:mockito-all:1.10.19"
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.1.0"

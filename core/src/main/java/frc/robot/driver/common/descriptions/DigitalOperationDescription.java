@@ -49,7 +49,7 @@ public class DigitalOperationDescription extends OperationDescription
         this(
             userInputDevice,
             userInputDeviceButton,
-            0,
+            -1,
             DigitalSensor.None,
             requiredShift,
             buttonType);
@@ -109,7 +109,7 @@ public class DigitalOperationDescription extends OperationDescription
         this(
             UserInputDevice.Sensor,
             UserInputDeviceButton.NONE,
-            0,
+            -1,
             sensor,
             Shift.Any,
             buttonType);

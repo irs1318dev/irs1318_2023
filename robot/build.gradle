@@ -53,10 +53,6 @@ dependencies {
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
 
-//    compile ctre()
-//    compile navx()
-//    compile pathfinder()
-
     compile group: 'javax.inject', name: 'javax.inject', version: '1'
     compile "com.google.guava:guava:21.0"
     compile "com.google.inject:guice:4.1.0:no_aop"

@@ -64,13 +64,8 @@ public class TalonSRXWrapper implements ITalonSRX
         if (feedbackDevice == TalonSRXFeedbackDevice.QuadEncoder)
         {
             device = FeedbackDevice.QuadEncoder;
+            this.wrappedObject.configSelectedFeedbackSensor(device, TalonSRXWrapper.pidIdx, 0);
         }
-        else
-        {
-            device = FeedbackDevice.Analog;
-        }
-
-        this.wrappedObject.configSelectedFeedbackSensor(device, TalonSRXWrapper.pidIdx, 0);
     }
 
     public void setPIDFFramePeriod(int periodMS)

@@ -3,7 +3,8 @@ package frc.robot.vision;
 public class VisionConstants
 {
     // Debug output settings:
-    public static final boolean DEBUG = true;
+    public static final boolean SHOW_INPUT_FRAMES = true;
+    public static final boolean DEBUG = false;
     public static final boolean DEBUG_PRINT_OUTPUT = false;
     public static final boolean DEBUG_PRINT_ANALYZER_DATA = false;
     public static final int DEBUG_FPS_AVERAGING_INTERVAL = 25;

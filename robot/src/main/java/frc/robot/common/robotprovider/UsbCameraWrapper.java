@@ -3,9 +3,9 @@ package frc.robot.common.robotprovider;
 import org.opencv.core.Mat;
 
 import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.vision.VisionPipeline;
-import edu.wpi.first.wpilibj.vision.VisionRunner;
-import edu.wpi.first.wpilibj.vision.VisionThread;
+import edu.wpi.first.vision.VisionPipeline;
+import edu.wpi.first.vision.VisionRunner;
+import edu.wpi.first.vision.VisionThread;
 
 public class UsbCameraWrapper implements IUsbCamera
 {
@@ -72,7 +72,7 @@ public class UsbCameraWrapper implements IUsbCamera
 
         public void copyPipelineOutputs(VisionPipeline pipeline)
         {
-            this.wrappedObject.copyPipelineOutputs((T)pipeline);
+            this.wrappedObject.copyPipelineOutputs(((VisionPipelineWrapper<T>)pipeline).wrappedObject);
         }
     }
 }

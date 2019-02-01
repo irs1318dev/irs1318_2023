@@ -21,13 +21,14 @@ if (currentOS.isWindows()) {
 dependencies {
     compile project(':core')
 
-    compile "org.openpnp:opencv:3.2.0-1"
     compile "javax.inject:javax.inject:1"
     compile "com.google.guava:guava:21.0"
     compile "com.google.inject:guice:4.1.0:no_aop"
     compile "org.openjfx:javafx-base:11:${platform}"
     compile "org.openjfx:javafx-graphics:11:${platform}"
     compile "org.openjfx:javafx-controls:11:${platform}"
+
+    implementation "org.openpnp:opencv:3.4.2-1"
 
     testCompile "org.mockito:mockito-all:1.10.19"
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.1.0"
@@ -47,4 +48,4 @@ jar {
         attributes 'Implementation-Title': 'Fauxbot',
                    'Implementation-Version': version
     }
-}
+} 

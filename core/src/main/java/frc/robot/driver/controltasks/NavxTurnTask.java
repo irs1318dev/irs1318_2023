@@ -15,71 +15,94 @@ import frc.robot.mechanisms.PositionManager;
 public class NavxTurnTask extends ControlTaskBase implements IControlTask
 {
     private final boolean useTime;
-    private final double desiredAngle;
-    private final double minRange;
-    private final double maxRange;
+    private final double turnAngle;
     private final double waitTime;
+    private final boolean relativeMode;
+    private final boolean fastMode;
+
+    private PIDHandler turnPidHandler;
+    private PositionManager pManager;
+    private DriveTrainMechanism dt;
+    private ITimer timer;
 
     private double desiredTurnVelocity;
-    private PIDHandler turnPidHandler;
     private Double completeTime;
-    protected PositionManager pManager;
-    protected DriveTrainMechanism dt;
+    private double startingAngle;
 
     /**
     * Initializes a new NavxTurnTask using time to make sure we completed turn
-    * @param desiredAngle the desired angle
+    * @param turnAngle the desired angle
     */
-    public NavxTurnTask(double desiredAngle)
+    public NavxTurnTask(double turnAngle)
     {
-        this(true, desiredAngle);
+        this(true, turnAngle);
     }
 
     /**
     * Initializes a new NavxTurnTask
     * @param useTime whether to make sure we completed turn for a second or not
-    * @param desiredAngle the desired angle
+    * @param turnAngle the desired angle
     */
-    public NavxTurnTask(boolean useTime, double desiredAngle)
+    public NavxTurnTask(boolean useTime, double turnAngle)
     {
         this(
             useTime,
-            desiredAngle,
-            TuningConstants.NAVX_TURN_MIN_ACCEPTABLE_ANGLE_VALUE,
-            TuningConstants.NAVX_TURN_MAX_ACCEPTABLE_ANGLE_VALUE,
-            TuningConstants.NAVX_TURN_COMPLETE_TIME);
+            turnAngle,
+            TuningConstants.NAVX_TURN_COMPLETE_TIME,
+            false,
+            false);
+    }
+
+    /**
+    * Initializes a new NavxTurnTask
+    * @param useTime whether to make sure we completed turn for a second or not
+    * @param turnAngle the desired angle
+    * @param relativeMode whether to use relative mode
+    * @param fastMode whether to use fast mode
+    */
+    public NavxTurnTask(boolean useTime, double turnAngle, boolean relativeMode, boolean fastMode)
+    {
+        this(
+            useTime,
+            turnAngle,
+            TuningConstants.NAVX_TURN_COMPLETE_TIME,
+            relativeMode,
+            fastMode);
     }
 
     /**
      * Initializes a new NavxTurnTask using a variable wait time after turn has reached the goal
-     * @param desiredAngle the desired angle
+     * @param turnAngle the desired angle
      * @param waitTime the desired wait time
      */
-    public NavxTurnTask(double desiredAngle, double waitTime)
+    public NavxTurnTask(double turnAngle, double waitTime)
     {
-        this(true,
-            desiredAngle,
-            TuningConstants.NAVX_TURN_MIN_ACCEPTABLE_ANGLE_VALUE,
-            TuningConstants.NAVX_TURN_MAX_ACCEPTABLE_ANGLE_VALUE,
-            waitTime);
+        this(
+            true,
+            turnAngle,
+            waitTime,
+            false,
+            false);
 
     }
 
     /**
     * Initializes a new NavxTurnTask
     * @param useTime whether to make sure we completed turn for a second or not
-    * @param desiredAngle the desired angle
-    * @param minRange the minimum of the measured angle range that we accept from the navx
-    * @param maxRange the maximum of the measured angle range that we accept from the navx
+    * @param turnAngle the desired angle
+    * @param waitTime the desired wait time
+    * @param relativeMode whether to use relative mode (turn relative to current angle), or absolute mode (turn relative to starting orientation)
+    * @param fastMode whether to use fast mode (or slow/consistent mode)
     */
-    public NavxTurnTask(boolean useTime, double desiredAngle, double minRange, double maxRange, double waitTime)
+    public NavxTurnTask(boolean useTime, double turnAngle, double waitTime, boolean relativeMode, boolean fastMode)
     {
         this.useTime = useTime;
-        this.desiredAngle = desiredAngle;
-        this.minRange = minRange;
-        this.maxRange = maxRange;
+        this.turnAngle = turnAngle;
         this.waitTime = waitTime;
+        this.relativeMode = relativeMode;
+        this.fastMode = fastMode;
 
+        this.startingAngle = 0;
         this.turnPidHandler = null;
         this.completeTime = null;
     }
@@ -92,7 +115,19 @@ public class NavxTurnTask extends ControlTaskBase implements IControlTask
     {
         this.pManager = this.getInjector().getInstance(PositionManager.class);
         this.dt = this.getInjector().getInstance(DriveTrainMechanism.class);
+        this.timer = this.getInjector().getInstance(ITimer.class);
+
         this.turnPidHandler = this.createTurnHandler();
+        if (this.relativeMode)
+        {
+            this.startingAngle = this.pManager.getNavxAngle();
+
+            // if the navx isn't working, let's fall back to using odometry
+            if (!this.pManager.getNavxIsConnected())
+            {
+                this.startingAngle = this.pManager.getOdometryAngle();
+            }
+        }
     }
 
     /**
@@ -102,21 +137,21 @@ public class NavxTurnTask extends ControlTaskBase implements IControlTask
     public void update()
     {
         this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
+        this.setDigitalOperationState(Operation.DriveTrainSimpleMode, this.fastMode);
 
         double currentMeasuredAngle = this.pManager.getNavxAngle();
+        double currentDesiredAngle = this.turnAngle + this.startingAngle;
 
-        // if we are not within the expected range, let's fall back to using odometry
-        if (!this.pManager.getNavxIsConnected()
-            || !Helpers.WithinRange(currentMeasuredAngle, this.minRange, this.maxRange))
+        // if the navx isn't connected, let's fall back to using odometry
+        if (!this.pManager.getNavxIsConnected())
         {
             currentMeasuredAngle = this.pManager.getOdometryAngle();
+            currentDesiredAngle = currentDesiredAngle % 360.0; // odometry measures angles from 0 to 30 only
         }
 
-        this.desiredTurnVelocity = this.turnPidHandler.calculatePosition(this.desiredAngle, currentMeasuredAngle);
+        this.desiredTurnVelocity = this.turnPidHandler.calculatePosition(currentDesiredAngle, currentMeasuredAngle);
 
-        this.setAnalogOperationState(
-            Operation.DriveTrainTurn,
-            this.desiredTurnVelocity);
+        this.setAnalogOperationState(Operation.DriveTrainTurn, this.desiredTurnVelocity);
     }
 
     /**
@@ -126,6 +161,7 @@ public class NavxTurnTask extends ControlTaskBase implements IControlTask
     public void end()
     {
         this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
+        this.setDigitalOperationState(Operation.DriveTrainSimpleMode, false);
         this.setAnalogOperationState(Operation.DriveTrainTurn, 0.0);
     }
 
@@ -138,16 +174,18 @@ public class NavxTurnTask extends ControlTaskBase implements IControlTask
     {
         double currentMeasuredAngle = this.pManager.getNavxAngle();
         double currentTurnVelocity = this.dt.getLeftVelocity();
+        double currentDesiredAngle = this.startingAngle + this.turnAngle;
 
-        // if we are not within the expected range, let's fall back to using odometry
-        if (!this.pManager.getNavxIsConnected()
-            || !Helpers.WithinRange(currentMeasuredAngle, this.minRange, this.maxRange))
+        // if the navx isn't connected, let's fall back to using odometry
+        if (!this.pManager.getNavxIsConnected())
         {
             currentMeasuredAngle = this.pManager.getOdometryAngle();
+            currentDesiredAngle = currentDesiredAngle % 360.0;
         }
 
-        double centerAngleDifference = Math.abs(currentMeasuredAngle - this.desiredAngle);
-        if (centerAngleDifference > TuningConstants.MAX_NAVX_TURN_RANGE_DEGREES)
+        double centerAngleDifference = Math.abs(currentMeasuredAngle - currentDesiredAngle);
+        if ((!this.fastMode && centerAngleDifference > TuningConstants.MAX_NAVX_TURN_RANGE_DEGREES) ||
+            (this.fastMode && centerAngleDifference > TuningConstants.MAX_NAVX_FAST_TURN_RANGE_DEGREES))
         {
             return false;
         }
@@ -165,7 +203,6 @@ public class NavxTurnTask extends ControlTaskBase implements IControlTask
                 return true;
             }
 
-            ITimer timer = this.getInjector().getInstance(ITimer.class);
             if (this.completeTime == null)
             {
                 this.completeTime = timer.get();
@@ -185,13 +222,13 @@ public class NavxTurnTask extends ControlTaskBase implements IControlTask
     protected PIDHandler createTurnHandler()
     {
         return new PIDHandler(
-            TuningConstants.NAVX_TURN_PID_KP,
-            TuningConstants.NAVX_TURN_PID_KI,
-            TuningConstants.NAVX_TURN_PID_KD,
-            TuningConstants.NAVX_TURN_PID_KF,
-            TuningConstants.NAVX_TURN_PID_KS,
-            TuningConstants.NAVX_TURN_PID_MIN,
-            TuningConstants.NAVX_TURN_PID_MAX,
+            this.fastMode ? TuningConstants.NAVX_FAST_TURN_PID_KP : TuningConstants.NAVX_TURN_PID_KP,
+            this.fastMode ? TuningConstants.NAVX_FAST_TURN_PID_KI : TuningConstants.NAVX_TURN_PID_KI,
+            this.fastMode ? TuningConstants.NAVX_FAST_TURN_PID_KD : TuningConstants.NAVX_TURN_PID_KD,
+            this.fastMode ? TuningConstants.NAVX_FAST_TURN_PID_KF : TuningConstants.NAVX_TURN_PID_KF,
+            this.fastMode ? TuningConstants.NAVX_FAST_TURN_PID_KS : TuningConstants.NAVX_TURN_PID_KS,
+            this.fastMode ? TuningConstants.NAVX_FAST_TURN_PID_MIN : TuningConstants.NAVX_TURN_PID_MIN,
+            this.fastMode ? TuningConstants.NAVX_FAST_TURN_PID_MAX : TuningConstants.NAVX_TURN_PID_MAX,
             this.getInjector().getInstance(ITimer.class));
     }
 }

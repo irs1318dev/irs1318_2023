@@ -8,9 +8,11 @@ public class FauxbotTimer implements ITimer
 {
     private boolean isRunning;
     private double startTime;
+    private double accumulatedTime;
 
     public FauxbotTimer()
     {
+        this.accumulatedTime = 0.0;
         this.isRunning = false;
     }
 
@@ -24,21 +26,22 @@ public class FauxbotTimer implements ITimer
     {
         if (!this.isRunning)
         {
-            return 0.0;
+            return this.accumulatedTime;
         }
 
         double currentTime = Calendar.getInstance().getTime().getTime() / 1000.0;
-        return currentTime - this.startTime;
+        return this.accumulatedTime + (currentTime - this.startTime);
     }
 
     public void stop()
     {
+        this.accumulatedTime = this.get();
         this.isRunning = false;
     }
 
     public void reset()
     {
-        this.isRunning = false;
-        this.startTime = 0.0;
+        this.accumulatedTime = 0.0;
+        this.startTime = Calendar.getInstance().getTime().getTime() / 1000.0;
     }
 }

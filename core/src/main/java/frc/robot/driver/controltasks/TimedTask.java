@@ -29,9 +29,8 @@ public abstract class TimedTask extends ControlTaskBase implements IControlTask
     @Override
     public void begin()
     {
-        this.getInjector().getInstance(ITimer.class);
+        this.timer = this.getInjector().getInstance(ITimer.class);
 
-        this.timer.start();
         this.startTime = this.timer.get();
     }
 

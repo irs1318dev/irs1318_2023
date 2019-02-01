@@ -24,7 +24,7 @@ public class VisionManager implements IMechanism, IVisionListener<ICentroidVisio
 
     private final IDashboardLogger logger;
     private final ITimer timer;
-    private final ISolenoid ringLight;
+    //private final ISolenoid ringLight;
 
     private final Object visionLock;
 
@@ -57,7 +57,7 @@ public class VisionManager implements IMechanism, IVisionListener<ICentroidVisio
     {
         this.logger = logger;
         this.timer = timer;
-        this.ringLight = provider.getSolenoid(ElectronicsConstants.PCM_A_MODULE, ElectronicsConstants.VISION_RING_LIGHT_PCM_CHANNEL);
+        //this.ringLight = provider.getSolenoid(ElectronicsConstants.PCM_A_MODULE, ElectronicsConstants.VISION_RING_LIGHT_PCM_CHANNEL);
 
         this.visionLock = new Object();
 
@@ -166,7 +166,7 @@ public class VisionManager implements IMechanism, IVisionListener<ICentroidVisio
                 this.camera.setFPS(VisionConstants.LIFECAM_CAMERA_FPS);
             }
 
-            this.ringLight.set(desiredState == VisionProcessingState.Active);
+            //this.ringLight.set(desiredState == VisionProcessingState.Active);
             this.visionPipeline.setActivation(desiredState == VisionProcessingState.Active);
 
             this.currentState = desiredState;
@@ -176,7 +176,7 @@ public class VisionManager implements IMechanism, IVisionListener<ICentroidVisio
     @Override
     public void stop()
     {
-        this.ringLight.set(false);
+        //this.ringLight.set(false);
         this.visionPipeline.setActivation(false);
 
         this.center = null;

@@ -56,15 +56,23 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
 
         this.isActive = true;
 
-        if (VisionConstants.DEBUG &&
-            VisionConstants.DEBUG_OUTPUT_FRAMES)
+        if (VisionConstants.SHOW_INPUT_FRAMES ||
+            (VisionConstants.DEBUG && VisionConstants.DEBUG_OUTPUT_FRAMES))
         {
             this.frameInput = provider.getMJPEGStream("center.input", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X, VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
-            this.hsvOutput =  provider.getMJPEGStream("center.hsv", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X, VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
         }
         else
         {
             this.frameInput = null;
+        }
+
+        if (VisionConstants.DEBUG &&
+            VisionConstants.DEBUG_OUTPUT_FRAMES)
+        {
+            this.hsvOutput =  provider.getMJPEGStream("center.hsv", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X, VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
+        }
+        else
+        {
             this.hsvOutput = null;
         }
     }
@@ -85,11 +93,12 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
                     String.format("%simage%d-1.jpg", VisionConstants.DEBUG_OUTPUT_FOLDER, this.analyzedFrameCount),
                     image);
             }
+        }
 
-            if (VisionConstants.DEBUG_OUTPUT_FRAMES)
-            {
-                this.frameInput.putFrame(image);
-            }
+        if (VisionConstants.SHOW_INPUT_FRAMES ||
+            (VisionConstants.DEBUG && VisionConstants.DEBUG_OUTPUT_FRAMES))
+        {
+            this.frameInput.putFrame(image);
         }
 
         if (!this.isActive)

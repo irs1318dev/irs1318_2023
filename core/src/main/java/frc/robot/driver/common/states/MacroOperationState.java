@@ -21,7 +21,7 @@ import com.google.inject.Injector;
  * The state of the current macro operation.
  *
  */
-public class MacroOperationState extends OperationState
+public class MacroOperationState extends OperationState implements IMacroOperationState
 {
     private final IButton button;
     private final Map<Operation, OperationState> operationStateMap;
@@ -166,6 +166,11 @@ public class MacroOperationState extends OperationState
         return buttonPressed;
     }
 
+    public Operation[] getMacroCancelOperations()
+    {
+        return ((MacroOperationDescription)this.getDescription()).getMacroCancelOperations();
+    }
+
     public Operation[] getAffectedOperations()
     {
         return ((MacroOperationDescription)this.getDescription()).getAffectedOperations();
@@ -234,5 +239,11 @@ public class MacroOperationState extends OperationState
                 this.operationStateMap.get(operation).setIsInterrupted(false);
             }
         }
+    }
+
+    public void cancel()
+    {
+        this.task = null;
+        this.button.clearState();
     }
 }

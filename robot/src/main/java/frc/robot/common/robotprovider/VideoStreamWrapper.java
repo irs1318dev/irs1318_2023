@@ -1,7 +1,7 @@
 package frc.robot.common.robotprovider;
 
 import edu.wpi.cscore.CvSource;
-import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.cameraserver.CameraServer;;
 
 public class VideoStreamWrapper implements IVideoStream
 {
