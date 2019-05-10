@@ -63,4 +63,9 @@ public interface IDashboardLogger
      * Flush the output stream, if appropriate..
      */
     void flush();
+
+    /**
+     * Add a sendable chooser to the smart dashboard
+     */
+	<V> void addChooser(String name, ISendableChooser<V> chooser);
 }

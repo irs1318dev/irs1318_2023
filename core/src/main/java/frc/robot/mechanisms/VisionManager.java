@@ -1,10 +1,12 @@
-package frc.robot.vision;
+package frc.robot.mechanisms;
 
 import frc.robot.ElectronicsConstants;
+import frc.robot.TuningConstants;
 import frc.robot.common.*;
 import frc.robot.common.robotprovider.*;
 import frc.robot.driver.Operation;
 import frc.robot.driver.common.*;
+import frc.robot.vision.*;
 import frc.robot.vision.common.*;
 import frc.robot.vision.pipelines.*;
 
@@ -24,13 +26,13 @@ public class VisionManager implements IMechanism, IVisionListener<ICentroidVisio
 
     private final IDashboardLogger logger;
     private final ITimer timer;
-    //private final ISolenoid ringLight;
+    private final IMotor ringLight;
 
     private final Object visionLock;
 
     private final IUsbCamera camera;
     private final Thread visionThread;
-    private final HSVCenterPipeline visionPipeline;
+    private final ICentroidVisionPipeline visionPipeline;
 
     private Driver driver;
     private VisionProcessingState currentState;
@@ -57,7 +59,7 @@ public class VisionManager implements IMechanism, IVisionListener<ICentroidVisio
     {
         this.logger = logger;
         this.timer = timer;
-        //this.ringLight = provider.getSolenoid(ElectronicsConstants.PCM_A_MODULE, ElectronicsConstants.VISION_RING_LIGHT_PCM_CHANNEL);
+        this.ringLight = provider.getTalon(ElectronicsConstants.VISION_RING_LIGHT_PWM_CHANNEL);
 
         this.visionLock = new Object();
 
@@ -68,12 +70,12 @@ public class VisionManager implements IMechanism, IVisionListener<ICentroidVisio
         this.camera.setBrightness(VisionConstants.LIFECAM_CAMERA_OPERATOR_BRIGHTNESS);
         this.camera.setFPS(VisionConstants.LIFECAM_CAMERA_FPS);
 
-        this.visionPipeline = new HSVCenterPipeline(this.timer, provider, VisionConstants.SHOULD_UNDISTORT);
+        this.visionPipeline = new HSVDockingCenterRectanglePipeline(this.timer, provider, VisionConstants.SHOULD_UNDISTORT);
         this.visionThread = this.camera.createVisionThread(this, this.visionPipeline);
         this.visionThread.start();
 
         this.driver = null;
-        this.currentState = VisionProcessingState.None;
+        this.currentState = VisionProcessingState.Disabled;
 
         this.center = null;
         this.desiredAngleX = null;
@@ -88,6 +90,14 @@ public class VisionManager implements IMechanism, IVisionListener<ICentroidVisio
         synchronized (this.visionLock)
         {
             return this.center;
+        }
+    }
+
+    public VisionProcessingState getState()
+    {
+        synchronized (this.visionLock)
+        {
+            return this.currentState;
         }
     }
 
@@ -145,39 +155,45 @@ public class VisionManager implements IMechanism, IVisionListener<ICentroidVisio
     @Override
     public void update()
     {
-        VisionProcessingState desiredState = VisionProcessingState.None;
-        if (this.driver.getDigital(Operation.EnableVision))
+        VisionProcessingState desiredState = this.currentState;
+        if (this.driver.getDigital(Operation.VisionEnable))
+        {
+            desiredState = VisionProcessingState.Active;
+        }
+        else if (this.driver.getDigital(Operation.VisionDisable))
+        {
+            desiredState = VisionProcessingState.Disabled;
+        }
+
+        if (this.driver.getDigital(Operation.VisionForceDisable))
+        {
+            desiredState = VisionProcessingState.Disabled;
+        }
+        else if (TuningConstants.VISION_ENABLE_DURING_TELEOP &&
+            !this.driver.isAutonomous() &&
+            desiredState == VisionProcessingState.Disabled)
         {
             desiredState = VisionProcessingState.Active;
         }
 
         if (this.currentState != desiredState)
         {
-            if (desiredState == VisionProcessingState.Active)
-            {
-                this.camera.setExposureManual(VisionConstants.LIFECAM_CAMERA_VISION_EXPOSURE);
-                this.camera.setBrightness(VisionConstants.LIFECAM_CAMERA_VISION_BRIGHTNESS);
-                this.camera.setFPS(VisionConstants.LIFECAM_CAMERA_FPS);
-            }
-            else
-            {
-                this.camera.setExposureAuto();
-                this.camera.setBrightness(VisionConstants.LIFECAM_CAMERA_OPERATOR_BRIGHTNESS);
-                this.camera.setFPS(VisionConstants.LIFECAM_CAMERA_FPS);
-            }
-
-            //this.ringLight.set(desiredState == VisionProcessingState.Active);
-            this.visionPipeline.setActivation(desiredState == VisionProcessingState.Active);
-
-            this.currentState = desiredState;
+            this.changeState(desiredState);
         }
+
+        // vision pipeline should only write frames to the stream when we are not having the offboard
+        // vision system do streaming
+        boolean enableOffboardStream = this.driver.getDigital(Operation.VisionEnableOffboardStream);
+        this.visionPipeline.setStreamMode(!enableOffboardStream);
     }
 
     @Override
     public void stop()
     {
-        //this.ringLight.set(false);
-        this.visionPipeline.setActivation(false);
+        this.ringLight.set(0.0);
+        this.visionPipeline.setMode(VisionProcessingState.Disabled);
+        this.visionPipeline.setStreamMode(true);
+        this.currentState = VisionProcessingState.Disabled;
 
         this.center = null;
 
@@ -192,6 +208,13 @@ public class VisionManager implements IMechanism, IVisionListener<ICentroidVisio
     public void setDriver(Driver driver)
     {
         this.driver = driver;
+
+        if (TuningConstants.VISION_ENABLE_DURING_TELEOP &&
+            !this.driver.isAutonomous() &&
+            this.currentState != VisionProcessingState.Active)
+        {
+            this.changeState(VisionProcessingState.Active);
+        }
     }
 
     @Override
@@ -209,6 +232,37 @@ public class VisionManager implements IMechanism, IVisionListener<ICentroidVisio
 
                 this.lastMeasuredFps = pipeline.getFps();
             }
+            else
+            {
+                this.center = null;
+                this.desiredAngleX = null;
+                this.measuredAngleX = null;
+                this.distanceFromRobot = null;
+                this.lastMeasuredFps = 0.0;
+            }
         }
+    }
+
+    private void changeState(VisionProcessingState desiredState)
+    {
+        boolean hsvMode = desiredState == VisionProcessingState.Active;
+
+        if (hsvMode)
+        {
+            this.camera.setExposureManual(VisionConstants.LIFECAM_CAMERA_VISION_EXPOSURE);
+            this.camera.setBrightness(VisionConstants.LIFECAM_CAMERA_VISION_BRIGHTNESS);
+            this.camera.setFPS(VisionConstants.LIFECAM_CAMERA_FPS);
+        }
+        else
+        {
+            this.camera.setExposureAuto();
+            this.camera.setBrightness(VisionConstants.LIFECAM_CAMERA_OPERATOR_BRIGHTNESS);
+            this.camera.setFPS(VisionConstants.LIFECAM_CAMERA_FPS);
+        }
+
+        this.ringLight.set(hsvMode ? VisionConstants.RING_LIGHT_ON : VisionConstants.RING_LIGHT_OFF);
+        this.visionPipeline.setMode(desiredState);
+
+        this.currentState = desiredState;
     }
 }

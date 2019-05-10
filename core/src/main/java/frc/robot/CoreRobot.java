@@ -183,5 +183,4 @@ public class CoreRobot<T extends AbstractModule>
         this.logger.logNumber(CoreRobot.LogName, "time", this.timer.get());
         this.logger.flush();
     }
-
 }

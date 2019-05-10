@@ -240,29 +240,55 @@ public class ContourHelper
         provider.findContours(frame, contours, unused, ContourHelper.IMGPROC_RETR_EXTERNAL, ContourHelper.IMGPROC_CHAIN_APPROX_TC89_KCOS);
         unused.release();
 
-        contours.sort(new Comparator<IMatOfPoint>()
-        {
-            @Override
-            public int compare(IMatOfPoint o1, IMatOfPoint o2)
+        contours.sort(
+            new Comparator<IMatOfPoint>()
             {
-                double area1 = provider.contourArea(o1);
-                double area2 = provider.contourArea(o2);
-                if (area1 > area2)
+                @Override
+                public int compare(IMatOfPoint o1, IMatOfPoint o2)
                 {
-                    return 1;
+                    double area1 = provider.contourArea(o1);
+                    double area2 = provider.contourArea(o2);
+                    if (area1 > area2)
+                    {
+                        return 1;
+                    }
+                    else if (area1 < area2)
+                    {
+                        return -1;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
                 }
-                else if (area1 < area2)
-                {
-                    return -1;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-        });
+            });
 
         return (IMatOfPoint[])contours.toArray();
+    }
+
+    public static List<IMatOfPoint> getAllContours(IOpenCVProvider provider, IMat frame, double minContourArea)
+    {
+        // find the contours using OpenCV API...
+        IMat unused = provider.newMat();
+        List<IMatOfPoint> contours = new ArrayList<IMatOfPoint>();
+        provider.findContours(frame, contours, unused, ContourHelper.IMGPROC_RETR_EXTERNAL, ContourHelper.IMGPROC_CHAIN_APPROX_TC89_KCOS);
+        unused.release();
+
+        List<IMatOfPoint> largeContours = new ArrayList<IMatOfPoint>(contours.size());
+        for (IMatOfPoint contour : contours)
+        {
+            double area = provider.contourArea(contour);
+            if (area >= minContourArea)
+            {
+                largeContours.add(contour);
+            }
+            else
+            {
+                contour.release();
+            }
+        }
+
+        return largeContours;
     }
 
     /**

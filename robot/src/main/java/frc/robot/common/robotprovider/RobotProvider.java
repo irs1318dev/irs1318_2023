@@ -2,6 +2,8 @@ package frc.robot.common.robotprovider;
 
 import javax.inject.Singleton;
 
+import frc.robot.vision.VisionCalculations;
+
 @Singleton
 public class RobotProvider implements IRobotProvider
 {
@@ -147,5 +149,22 @@ public class RobotProvider implements IRobotProvider
     public IOpenCVProvider getOpenCVProvider()
     {
         return new OpenCVProvider();
+    }
+
+    @Override
+    public INetworkTableProvider getNetworkTableProvider()
+    {
+        return new NetworkTableProvider();
+    }
+
+    @Override
+    public VisionCalculations getVisionCalculations()
+    {
+        return new VisionCalculations();
+    }
+    
+    public <V> ISendableChooser<V> getSendableChooser()
+    {
+        return new SendableChooserWrapper<V>();
     }
 }

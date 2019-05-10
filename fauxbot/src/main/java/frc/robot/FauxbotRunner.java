@@ -1,8 +1,5 @@
 package frc.robot;
 
-import frc.robot.common.MechanismManager;
-import frc.robot.driver.common.Driver;
-
 public class FauxbotRunner implements Runnable
 {
     private final Object locker;

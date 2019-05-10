@@ -8,22 +8,10 @@ import java.util.Set;
 import frc.robot.ElectronicsConstants;
 import frc.robot.TuningConstants;
 import frc.robot.common.SetHelper;
-import frc.robot.common.robotprovider.IJoystick;
-import frc.robot.common.robotprovider.IRobotProvider;
-import frc.robot.driver.AutonomousRoutineSelector;
-import frc.robot.driver.MacroOperation;
-import frc.robot.driver.Operation;
-import frc.robot.driver.PathManager;
-import frc.robot.driver.Shift;
-import frc.robot.driver.common.descriptions.MacroOperationDescription;
-import frc.robot.driver.common.descriptions.OperationDescription;
-import frc.robot.driver.common.descriptions.ShiftDescription;
-import frc.robot.driver.common.states.AnalogOperationState;
-import frc.robot.driver.common.states.AutonomousOperationState;
-import frc.robot.driver.common.states.DigitalOperationState;
-import frc.robot.driver.common.states.IMacroOperationState;
-import frc.robot.driver.common.states.MacroOperationState;
-import frc.robot.driver.common.states.OperationState;
+import frc.robot.common.robotprovider.*;
+import frc.robot.driver.*;
+import frc.robot.driver.common.descriptions.*;
+import frc.robot.driver.common.states.*;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -34,6 +22,8 @@ import com.google.inject.Injector;
  */
 public class Driver
 {
+    private final IDashboardLogger logger;
+
     protected final Injector injector;
     protected final Map<Operation, OperationState> operationStateMap;
     
@@ -56,10 +46,12 @@ public class Driver
      */
     @Inject
     public Driver(
+        IDashboardLogger logger,
         Injector injector,
         IButtonMap buttonMap,
         IRobotProvider provider)
     {
+        this.logger = logger;
         this.injector = injector;
 
         Map<Operation, OperationDescription> operationSchema = buttonMap.getOperationSchema();
@@ -108,6 +100,8 @@ public class Driver
      */
     public void update()
     {
+        this.logger.logBoolean("driver", "isAuto", this.isAutonomous);
+
         // keep track of macros that were running before we checked user input...
         Set<MacroOperation> previouslyActiveMacroOperations = new HashSet<MacroOperation>();
         for (MacroOperation macroOperation : this.macroStateMap.keySet())

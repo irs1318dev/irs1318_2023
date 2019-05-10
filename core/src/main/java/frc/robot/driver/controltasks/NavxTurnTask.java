@@ -54,23 +54,6 @@ public class NavxTurnTask extends ControlTaskBase implements IControlTask
     }
 
     /**
-    * Initializes a new NavxTurnTask
-    * @param useTime whether to make sure we completed turn for a second or not
-    * @param turnAngle the desired angle
-    * @param relativeMode whether to use relative mode
-    * @param fastMode whether to use fast mode
-    */
-    public NavxTurnTask(boolean useTime, double turnAngle, boolean relativeMode, boolean fastMode)
-    {
-        this(
-            useTime,
-            turnAngle,
-            TuningConstants.NAVX_TURN_COMPLETE_TIME,
-            relativeMode,
-            fastMode);
-    }
-
-    /**
      * Initializes a new NavxTurnTask using a variable wait time after turn has reached the goal
      * @param turnAngle the desired angle
      * @param waitTime the desired wait time
@@ -183,6 +166,19 @@ public class NavxTurnTask extends ControlTaskBase implements IControlTask
             currentDesiredAngle = currentDesiredAngle % 360.0;
         }
 
+        if (this.fastMode && this.useTime)
+        {
+            // check for timeout if we are in fast mode
+            if (this.completeTime == null)
+            {
+                this.completeTime = timer.get();
+            }
+            else if (this.timer.get() - this.completeTime >= this.waitTime)
+            {
+                return true;
+            }
+        }
+
         double centerAngleDifference = Math.abs(currentMeasuredAngle - currentDesiredAngle);
         if ((!this.fastMode && centerAngleDifference > TuningConstants.MAX_NAVX_TURN_RANGE_DEGREES) ||
             (this.fastMode && centerAngleDifference > TuningConstants.MAX_NAVX_FAST_TURN_RANGE_DEGREES))
@@ -190,7 +186,7 @@ public class NavxTurnTask extends ControlTaskBase implements IControlTask
             return false;
         }
 
-        if (!this.useTime)
+        if (!this.fastMode && !this.useTime)
         {
             return true;
         }
@@ -205,10 +201,10 @@ public class NavxTurnTask extends ControlTaskBase implements IControlTask
 
             if (this.completeTime == null)
             {
-                this.completeTime = timer.get();
+                this.completeTime = this.timer.get();
                 return false;
             }
-            else if (timer.get() - this.completeTime < this.waitTime)
+            else if (this.timer.get() - this.completeTime < this.waitTime)
             {
                 return false;
             }

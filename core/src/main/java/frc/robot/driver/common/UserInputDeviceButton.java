@@ -58,7 +58,10 @@ public enum UserInputDeviceButton
     BUTTON_PAD_BUTTON_13(13),
     BUTTON_PAD_BUTTON_14(14),
     BUTTON_PAD_BUTTON_15(15),
-    BUTTON_PAD_BUTTON_16(16);
+    BUTTON_PAD_BUTTON_16(16),
+
+    // Other - Some specified analog axis within a certain range
+    ANALOG_AXIS_RANGE(25);
 
     public final int Value;
     private UserInputDeviceButton(int value)

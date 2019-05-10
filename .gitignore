@@ -1,5 +1,7 @@
 /bin/
 /build/
+/out/
+/.idea/
 /.project/
 /.gradle/
 /.settings/

@@ -23,7 +23,7 @@ import frc.robot.mechanisms.DriveTrainMechanism;
 
 public class DriveTrainMechanismTest
 {
-    @Test
+    ////@Test
     public void testSetPower_Zero()
     {
         IDashboardLogger logger = mock(IDashboardLogger.class);
@@ -129,7 +129,7 @@ public class DriveTrainMechanismTest
         verifyNoMoreInteractions(rightFollowerMotor2);
     }
 
-    @Test
+    ////@Test
     public void testStop()
     {
         IDashboardLogger logger = mock(IDashboardLogger.class);

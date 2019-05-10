@@ -29,8 +29,13 @@ public class ButtonMap implements IButtonMap
             put(
                 Shift.Debug,
                 new ShiftDescription(
-                    UserInputDevice.None,
-                    UserInputDeviceButton.NONE));
+                    UserInputDevice.Driver,
+                    UserInputDeviceButton.JOYSTICK_STICK_TRIGGER_BUTTON));
+            put(
+                Shift.ButtonPadDebug,
+                new ShiftDescription(
+                    UserInputDevice.CoDriver,
+                    UserInputDeviceButton.BUTTON_PAD_BUTTON_16));
         }
     };
 
@@ -40,11 +45,49 @@ public class ButtonMap implements IButtonMap
         {
             // Operations for vision
             put(
-                Operation.EnableVision,
+                Operation.VisionDisable,
                 new DigitalOperationDescription(
                     UserInputDevice.None,
-                    90, // POV right
+                    UserInputDeviceButton.NONE,
+                    Shift.None,
+                    ButtonType.Click));
+            put(
+                Operation.VisionForceDisable,
+                new DigitalOperationDescription(
+                    UserInputDevice.None,
+                    UserInputDeviceButton.NONE,
+                    Shift.None,
+                    ButtonType.Click));
+            put(
+                Operation.VisionEnable,
+                new DigitalOperationDescription(
+                    UserInputDevice.None,
+                    UserInputDeviceButton.NONE,
+                    Shift.None,
+                    ButtonType.Click));
+            put(
+                Operation.VisionEnableOffboardStream,
+                new DigitalOperationDescription(
+                    UserInputDevice.None,
+                    UserInputDeviceButton.NONE,
+                    Shift.None,
                     ButtonType.Toggle));
+            put(
+                Operation.VisionEnableOffboardProcessing,
+                new DigitalOperationDescription(
+                    UserInputDevice.None,
+                    0,
+                    Shift.Debug,
+                    ButtonType.Toggle));
+
+            // Operations for the compressor
+            put(
+                Operation.CompressorForceDisable,
+                new DigitalOperationDescription(
+                    UserInputDevice.None,
+                    UserInputDeviceButton.BUTTON_PAD_BUTTON_13,
+                    Shift.None,
+                    ButtonType.Click));
 
             // Operations for the drive train
             put(
@@ -120,7 +163,7 @@ public class ButtonMap implements IButtonMap
                     false,
                     0.0));
             put(
-                Operation.DriveTrainHeading,
+                Operation.DriveTrainHeadingCorrection,
                 new AnalogOperationDescription(
                     UserInputDevice.None,
                     AnalogAxis.None,
@@ -133,11 +176,24 @@ public class ButtonMap implements IButtonMap
                     UserInputDeviceButton.NONE,
                     ButtonType.Toggle));
             put(
+                Operation.DriveTrainUseSimplePathMode,
+                new DigitalOperationDescription(
+                    UserInputDevice.None,
+                    UserInputDeviceButton.NONE,
+                    ButtonType.Toggle));
+            put(
                 Operation.DriveTrainUsePathMode,
                 new DigitalOperationDescription(
                     UserInputDevice.None,
                     UserInputDeviceButton.NONE,
-                    ButtonType.Toggle)); 
+                    ButtonType.Toggle));
+            put(
+                Operation.PositionStartingAngle,
+                new AnalogOperationDescription(
+                    UserInputDevice.None,
+                    AnalogAxis.None,
+                    false,
+                    0.0));
         }
     };
 
@@ -160,16 +216,16 @@ public class ButtonMap implements IButtonMap
                         Operation.DriveTrainLeftPosition,
                         Operation.DriveTrainRightPosition,
                     }));
-            
-            // turn in place macros
+
+            // Driving Macros
             put(
                 MacroOperation.TurnInPlaceRight,
                 new MacroOperationDescription(
                     UserInputDevice.Driver,
                     90,
-                    Shift.Any,
+                    Shift.Debug,
                     ButtonType.Toggle,
-                    () -> new NavxTurnTask(false, 180, true, true),
+                    () -> new NavxTurnTask(true, 180, 3.0, true, false),
                     new Operation[]
                     {
                         Operation.DriveTrainUsePositionalMode,
@@ -194,9 +250,9 @@ public class ButtonMap implements IButtonMap
                 new MacroOperationDescription(
                     UserInputDevice.Driver,
                     270,
-                    Shift.Any,
+                    Shift.Debug,
                     ButtonType.Toggle,
-                    () -> new NavxTurnTask(false, -180, true, true),
+                    () -> new NavxTurnTask(true, -180, TuningConstants.NAVX_FAST_TURN_TIMEOUT, true, true),
                     new Operation[]
                     {
                         Operation.DriveTrainUsePositionalMode,
@@ -217,11 +273,11 @@ public class ButtonMap implements IButtonMap
             put(
                 MacroOperation.FollowSomePath,
                 new MacroOperationDescription(
-                    UserInputDevice.Driver,
-                    0,
+                    UserInputDevice.None,
+                    UserInputDeviceButton.NONE,
                     Shift.Any,
                     ButtonType.Toggle,
-                    () -> new FollowPathTask(""),
+                    () -> new FollowPathTask("/Paths/Circle 40 inch radius.csv"),
                     new Operation[]
                     {
                         Operation.DriveTrainUsePositionalMode,
@@ -230,7 +286,7 @@ public class ButtonMap implements IButtonMap
                         Operation.DriveTrainRightPosition,
                         Operation.DriveTrainLeftVelocity,
                         Operation.DriveTrainRightVelocity,
-                        Operation.DriveTrainHeading,
+                        Operation.DriveTrainHeadingCorrection,
                         Operation.DriveTrainUsePathMode,
                         Operation.DriveTrainTurn,
                         Operation.DriveTrainMoveForward,
@@ -244,38 +300,42 @@ public class ButtonMap implements IButtonMap
                         Operation.DriveTrainRightPosition,
                     }));
 
-            // Centering macro
-            put(
-                MacroOperation.VisionCenter,
-                new MacroOperationDescription(
-                    UserInputDevice.None,
-                    UserInputDeviceButton.NONE,
-                    ButtonType.Toggle,
-                    () -> new VisionCenteringTask(),
-                    new Operation[]
-                    {
-                        Operation.EnableVision,
-                        Operation.DriveTrainUsePositionalMode,
-                        Operation.DriveTrainLeftPosition,
-                        Operation.DriveTrainRightPosition,
-                        Operation.DriveTrainTurn,
-                        Operation.DriveTrainMoveForward,
-                    }));
+            // Vision Macros
             put(
                 MacroOperation.VisionCenterAndAdvance,
                 new MacroOperationDescription(
-                    UserInputDevice.None,
-                    UserInputDeviceButton.NONE,
+                    UserInputDevice.Driver,
+                    180,
+                    Shift.Debug,
                     ButtonType.Toggle,
-                    () -> new VisionAdvanceAndCenterTask(),
+                    () -> new VisionAdvanceAndCenterTask(Operation.VisionEnable),
                     new Operation[]
                     {
-                        Operation.EnableVision,
+                        Operation.VisionDisable,
+                        Operation.VisionEnable,
                         Operation.DriveTrainUsePositionalMode,
                         Operation.DriveTrainLeftPosition,
                         Operation.DriveTrainRightPosition,
                         Operation.DriveTrainTurn,
-                        Operation.DriveTrainMoveForward,
+                        Operation.DriveTrainMoveForward
+                    }));
+            put(
+                MacroOperation.VisionFastCenterAndAdvance,
+                new MacroOperationDescription(
+                    UserInputDevice.CoDriver,
+                    UserInputDeviceButton.BUTTON_PAD_BUTTON_7,
+                    Shift.None,
+                    ButtonType.Toggle,
+                    () -> new VisionFastAdvanceAndCenterTask(Operation.VisionEnable),
+                    new Operation[]
+                    {
+                        Operation.VisionDisable,
+                        Operation.VisionEnable,
+                        Operation.DriveTrainUsePositionalMode,
+                        Operation.DriveTrainLeftPosition,
+                        Operation.DriveTrainRightPosition,
+                        Operation.DriveTrainTurn,
+                        Operation.DriveTrainMoveForward
                     }));
         }
     };

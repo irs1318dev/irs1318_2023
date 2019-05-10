@@ -14,7 +14,19 @@ public class AutonomousRoutineSelector
     private final IDashboardLogger logger;
     private final IDriverStation driverStation;
 
-    //    private final IDigitalInput dipSwitchA;
+    private final ISendableChooser<StartPosition> positionChooser;
+    private final ISendableChooser<AutoRoutine> routineChooser;
+
+    public enum StartPosition
+    {
+        Side,
+        Center
+    }
+
+    public enum AutoRoutine
+    {
+        None,
+    }
 
     /**
      * Initializes a new AutonomousRoutineSelector
@@ -27,9 +39,17 @@ public class AutonomousRoutineSelector
         // initialize robot parts that are used to select autonomous routine (e.g. dipswitches) here...
         this.logger = logger;
 
-        this.driverStation = provider.getDriverStation();
+        this.routineChooser = provider.getSendableChooser();
+        this.routineChooser.addDefault("None", AutoRoutine.None);
+        //this.routineChooser.addObject("Routine1", AutoRoutine.Routine1);
+        this.logger.addChooser("Auto Routine", this.routineChooser);
 
-        //        this.dipSwitchA = provider.getDigitalInput(ElectronicsConstants.AUTO_DIP_SWITCH_A_DIGITAL_CHANNEL);
+        this.positionChooser = provider.getSendableChooser();
+        this.positionChooser.addDefault("center", StartPosition.Center);
+        this.positionChooser.addObject("side", StartPosition.Side);
+        this.logger.addChooser("Start Position", this.positionChooser);
+
+        this.driverStation = provider.getDriverStation();
     }
 
     /**
@@ -38,19 +58,8 @@ public class AutonomousRoutineSelector
      */
     public IControlTask selectRoutine()
     {
-        //        boolean switchA = !this.dipSwitchA.get();
-
-        String gameData = this.driverStation.getGameSpecificMessage();
-
-        // add next base2 number (1, 2, 4, 8, 16, etc.) here based on number of dipswitches and which is on...
-        //        int selection = 0;
-        //        if (switchA)
-        //        {
-        //            selection += 1;
-        //        }
-
-        // print routine parameters to the smartdash
-        this.logger.logString(AutonomousRoutineSelector.LogName, "gameData", gameData);
+        StartPosition startPosition = this.positionChooser.getSelected();
+        AutoRoutine routine = this.routineChooser.getSelected();
 
         return AutonomousRoutineSelector.GetFillerRoutine();
     }
@@ -62,146 +71,146 @@ public class AutonomousRoutineSelector
      */
     private static IControlTask GetFillerRoutine()
     {
-        return new DriveVelocityTimedTask(16.0, 1.0, 0.0);
+        return new WaitTask(0);
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                                       .                                                             
                                     .;+;+                                                           
                                     .+;;'   `,+'.                                                   

@@ -130,4 +130,16 @@ public class MultiLogger implements IDashboardLogger
             logger.flush();
         }
     }
+
+    /**
+     * Add a sendable chooser to the smart dashboard
+     */
+    @Override
+    public <V> void addChooser(String name, ISendableChooser<V> chooser)
+    {
+        for (IDashboardLogger logger : this.loggers)
+        {
+            logger.addChooser(name, chooser);
+        }
+    }
 }

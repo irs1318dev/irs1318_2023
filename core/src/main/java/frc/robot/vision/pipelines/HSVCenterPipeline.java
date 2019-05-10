@@ -5,6 +5,7 @@ import frc.robot.vision.VisionConstants;
 import frc.robot.vision.common.ContourHelper;
 import frc.robot.vision.common.HSVFilter;
 import frc.robot.vision.common.ImageUndistorter;
+import frc.robot.vision.common.VisionProcessingState;
 
 public class HSVCenterPipeline implements ICentroidVisionPipeline
 {
@@ -27,7 +28,8 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
     private double lastFpsMeasurement;
 
     // active status
-    private volatile boolean isActive;
+    private volatile VisionProcessingState processingState;
+    private volatile boolean streamEnabled;
 
     /**
      * Initializes a new instance of the HSVCenterPipeline class.
@@ -54,17 +56,9 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
         this.timer = timer;
         this.lastMeasuredTime = this.timer.get();
 
-        this.isActive = true;
+        this.processingState = VisionProcessingState.Disabled;
 
-        if (VisionConstants.SHOW_INPUT_FRAMES ||
-            (VisionConstants.DEBUG && VisionConstants.DEBUG_OUTPUT_FRAMES))
-        {
-            this.frameInput = provider.getMJPEGStream("center.input", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X, VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
-        }
-        else
-        {
-            this.frameInput = null;
-        }
+        this.frameInput = provider.getMJPEGStream("center.input", VisionConstants.LIFECAM_CAMERA_RESOLUTION_X, VisionConstants.LIFECAM_CAMERA_RESOLUTION_Y);
 
         if (VisionConstants.DEBUG &&
             VisionConstants.DEBUG_OUTPUT_FRAMES)
@@ -95,13 +89,13 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
             }
         }
 
-        if (VisionConstants.SHOW_INPUT_FRAMES ||
+        if (this.getStreamMode() ||
             (VisionConstants.DEBUG && VisionConstants.DEBUG_OUTPUT_FRAMES))
         {
             this.frameInput.putFrame(image);
         }
 
-        if (!this.isActive)
+        if (this.getMode() == VisionProcessingState.Disabled)
         {
             return;
         }
@@ -206,14 +200,9 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
         }
     }
 
-    public void setActivation(boolean isActive)
-    {
-        this.isActive = isActive;
-    }
-
     public boolean isActive()
     {
-        return this.isActive;
+        return this.getMode() != VisionProcessingState.Disabled;
     }
 
     public IPoint getCenter()
@@ -239,5 +228,37 @@ public class HSVCenterPipeline implements ICentroidVisionPipeline
     public double getFps()
     {
         return this.lastFpsMeasurement;
+    }
+
+    public void setMode(VisionProcessingState state)
+    {
+        synchronized (this)
+        {
+            this.processingState = state;
+        }
+    }
+
+    public void setStreamMode(boolean isEnabled)
+    {
+        synchronized (this)
+        {
+            this.streamEnabled = isEnabled;
+        }
+    }
+
+    protected boolean getStreamMode()
+    {
+        synchronized (this)
+        {
+            return this.streamEnabled;
+        }
+    }
+
+    protected VisionProcessingState getMode()
+    {
+        synchronized (this)
+        {
+            return this.processingState;
+        }
     }
 }

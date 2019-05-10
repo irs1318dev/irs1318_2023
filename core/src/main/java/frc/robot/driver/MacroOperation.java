@@ -9,7 +9,8 @@ public enum MacroOperation
     TurnInPlaceRight,
     FollowSomePath,
 
-    VisionCenter,
+    // Vision operations:
     VisionCenterAndAdvance,
+    VisionFastCenterAndAdvance,
     DriveForwardTurnRight,
 }

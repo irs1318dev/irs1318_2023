@@ -119,4 +119,13 @@ public abstract class ControlTaskBase implements IControlTask
     {
         return this.injector;
     }
+
+    /**
+     * Gets the Operation State Map
+     * @return the operation state map
+     */
+    protected Map<Operation, OperationState> getOperationStateMap()
+    {
+        return this.operationStateMap;
+    }
 }

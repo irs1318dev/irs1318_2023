@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 import java.util.HashMap;
 
 import frc.robot.common.robotprovider.*;
+import frc.robot.vision.VisionCalculations;
 
 public class TestProvider implements IRobotProvider
 {
@@ -239,6 +240,24 @@ public class TestProvider implements IRobotProvider
 
     @Override
     public IOpenCVProvider getOpenCVProvider()
+    {
+        return null;
+    }
+
+    @Override
+    public INetworkTableProvider getNetworkTableProvider()
+    {
+        return null;
+    }
+
+    @Override
+    public VisionCalculations getVisionCalculations()
+    {
+        return null;
+    }
+
+    @Override
+    public <V> ISendableChooser<V> getSendableChooser()
     {
         return null;
     }

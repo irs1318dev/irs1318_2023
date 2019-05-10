@@ -1,5 +1,6 @@
 package frc.robot.common.robotprovider;
 
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -100,7 +101,7 @@ public class SmartDashboardLogger implements IDashboardLogger
         String valueString = "N/A";
         if (value != null)
         {
-            valueString = String.format("", value.getX(), value.getY());
+            valueString = String.format("(%f, %f)", value.getX(), value.getY());
         }
 
         this.logString(component, key, valueString);
@@ -128,5 +129,15 @@ public class SmartDashboardLogger implements IDashboardLogger
     @Override
     public void flush()
     {
+    }
+
+    /**
+     * Add a sendable chooser to the smart dashboard
+     */
+    @Override
+    public <V> void addChooser(String name, ISendableChooser<V> chooser)
+    {
+        SendableChooserWrapper<V> wrappedChooser = (SendableChooserWrapper<V>)chooser;
+        SmartDashboard.putData(name, wrappedChooser.wrappedObject);
     }
 }

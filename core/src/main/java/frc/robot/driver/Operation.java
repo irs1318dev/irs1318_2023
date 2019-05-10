@@ -3,7 +3,14 @@ package frc.robot.driver;
 public enum Operation
 {
     // Vision operations:
-    EnableVision,
+    VisionForceDisable,
+    VisionDisable,
+    VisionEnable,
+    VisionEnableOffboardStream,
+    VisionEnableOffboardProcessing,
+
+    // Compressor operations:
+    CompressorForceDisable,
 
     // DriveTrain operations:
     DriveTrainEnablePID,
@@ -13,11 +20,13 @@ public enum Operation
     DriveTrainSimpleMode,
     DriveTrainUseBrakeMode,
     DriveTrainUsePositionalMode,
+    DriveTrainUseSimplePathMode,
     DriveTrainUsePathMode,
     DriveTrainLeftPosition,
     DriveTrainRightPosition,
     DriveTrainLeftVelocity,
     DriveTrainRightVelocity,
-    DriveTrainHeading,
+    DriveTrainHeadingCorrection,
     DriveTrainSwapFrontOrientation,
+    PositionStartingAngle,
 }

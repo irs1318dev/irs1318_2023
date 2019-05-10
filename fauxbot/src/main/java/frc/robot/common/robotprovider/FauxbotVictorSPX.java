@@ -7,15 +7,23 @@ public class FauxbotVictorSPX extends FauxbotAdvancedMotorBase implements IVicto
         super(deviceNumber);
     }
 
+    public void follow(ITalonSRX talonSRX)
+    {
+    }
+
+    public void follow(IVictorSPX victorSPX)
+    {
+    }
+
     public void setControlMode(TalonSRXControlMode mode)
     {
     }
 
-    public void setInvertOutput(boolean invert)
+    public void setNeutralMode(TalonSRXNeutralMode neutralMode)
     {
     }
 
-    public void setInvertSensor(boolean invert)
+    public void setInvertOutput(boolean invert)
     {
     }
 }

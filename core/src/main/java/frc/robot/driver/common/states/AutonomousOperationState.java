@@ -19,6 +19,7 @@ public class AutonomousOperationState extends OperationState implements IMacroOp
     private IControlTask task;
 
     private boolean hasBegun;
+    private boolean shouldEnd;
     private boolean hasEnded;
     private boolean isInterrupted;
 
@@ -32,6 +33,7 @@ public class AutonomousOperationState extends OperationState implements IMacroOp
         this.task = task;
 
         this.hasBegun = false;
+        this.shouldEnd = false;
         this.hasEnded = false;
         this.isInterrupted = false;
     }
@@ -88,7 +90,17 @@ public class AutonomousOperationState extends OperationState implements IMacroOp
 
     public void run()
     {
-        if (!this.hasEnded)
+        if (this.shouldEnd)
+        {
+            for (Operation operation : this.getAffectedOperations())
+            {
+                this.operationStateMap.get(operation).setIsInterrupted(false);
+            }
+
+            this.shouldEnd = false;
+            this.hasEnded = true;
+        }
+        else if (!this.hasEnded)
         {
             if (this.isInterrupted)
             {
@@ -132,11 +144,7 @@ public class AutonomousOperationState extends OperationState implements IMacroOp
                     this.task.stop();
                 }
 
-                this.hasEnded = true;
-                for (Operation operation : this.getAffectedOperations())
-                {
-                    this.operationStateMap.get(operation).setIsInterrupted(false);
-                }
+                this.shouldEnd = true;
             }
             else
             {

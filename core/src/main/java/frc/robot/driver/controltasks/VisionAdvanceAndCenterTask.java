@@ -13,9 +13,9 @@ public class VisionAdvanceAndCenterTask extends VisionCenteringTask implements I
     /**
     * Initializes a new VisionForwardAndCenterTask
     */
-    public VisionAdvanceAndCenterTask()
+    public VisionAdvanceAndCenterTask(Operation toPerform)
     {
-        super(false);
+        super(false, toPerform);
 
         this.forwardPIDHandler = null;
     }

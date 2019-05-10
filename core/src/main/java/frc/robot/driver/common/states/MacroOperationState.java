@@ -146,6 +146,13 @@ public class MacroOperationState extends OperationState implements IMacroOperati
             {
                 buttonPressed = relevantJoystick.getPOV() == description.getUserInputDevicePovValue();
             }
+            else if (relevantButton == UserInputDeviceButton.ANALOG_AXIS_RANGE)
+            {
+                double value = relevantJoystick.getAxis(description.getUserInputDeviceAxis());
+                buttonPressed =
+                    value >= description.getUserInputDeviceRangeMin() &&
+                    value <= description.getUserInputDeviceRangeMax();
+            }
             else if (relevantButton != UserInputDeviceButton.NONE)
             {
                 buttonPressed = relevantJoystick.getRawButton(relevantButton.Value);

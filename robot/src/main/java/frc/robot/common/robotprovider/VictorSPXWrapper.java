@@ -3,11 +3,12 @@ package frc.robot.common.robotprovider;
 import frc.robot.TuningConstants;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 public class VictorSPXWrapper implements IVictorSPX
 {
-    private final VictorSPX wrappedObject;
+    final VictorSPX wrappedObject;
 
     private ControlMode controlMode;
 
@@ -20,6 +21,16 @@ public class VictorSPXWrapper implements IVictorSPX
     public void set(double value)
     {
         this.wrappedObject.set(this.controlMode, value);
+    }
+
+    public void follow(ITalonSRX talonSRX)
+    {
+        this.wrappedObject.follow(((TalonSRXWrapper)talonSRX).wrappedObject);
+    }
+
+    public void follow(IVictorSPX victorSPX)
+    {
+        this.wrappedObject.follow(((VictorSPXWrapper)victorSPX).wrappedObject);
     }
 
     public void setControlMode(TalonSRXControlMode mode)
@@ -47,8 +58,18 @@ public class VictorSPXWrapper implements IVictorSPX
         this.wrappedObject.setInverted(invert);
     }
 
-    public void setInvertSensor(boolean invert)
+    public void setNeutralMode(TalonSRXNeutralMode neutralMode)
     {
-        this.wrappedObject.setSensorPhase(invert);
+        NeutralMode mode;
+        if (neutralMode == TalonSRXNeutralMode.Brake)
+        {
+            mode = NeutralMode.Brake;
+        }
+        else
+        {
+            mode = NeutralMode.Coast;
+        }
+
+        this.wrappedObject.setNeutralMode(mode);
     }
 }

@@ -83,7 +83,7 @@ public abstract class StringLogger implements IDashboardLogger
         String valueString = "N/A";
         if (value != null)
         {
-            valueString = String.format("", value.getX(), value.getY());
+            valueString = String.format("(%f, %f)", value.getX(), value.getY());
         }
 
         this.logString(component, key, valueString);
@@ -94,6 +94,14 @@ public abstract class StringLogger implements IDashboardLogger
      */
     @Override
     public void flush()
+    {
+    }
+
+    /**
+     * Add a sendable chooser to the smart dashboard
+     */
+    @Override
+    public <V> void addChooser(String name, ISendableChooser<V> chooser)
     {
     }
 }

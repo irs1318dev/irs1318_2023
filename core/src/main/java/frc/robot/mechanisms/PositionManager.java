@@ -3,6 +3,7 @@ package frc.robot.mechanisms;
 import frc.robot.*;
 import frc.robot.common.*;
 import frc.robot.common.robotprovider.*;
+import frc.robot.driver.Operation;
 import frc.robot.driver.common.Driver;
 
 import com.google.inject.Inject;
@@ -24,6 +25,8 @@ public class PositionManager implements IMechanism
     private final DriveTrainMechanism driveTrainMechanism;
     private final INavx navx;
 
+    private Driver driver;
+
     private boolean navxIsConnected;
 
     // Position coordinates
@@ -36,6 +39,7 @@ public class PositionManager implements IMechanism
     // Orientation
     private double odometryAngle;
     private double navxAngle;
+    private double startAngle;
 
     // previous data (from which we will calculate changes)
     private double prevLeftDistance;
@@ -56,6 +60,7 @@ public class PositionManager implements IMechanism
         this.logger = logger;
         this.driveTrainMechanism = driveTrainMechanism;
         this.navx = provider.getNavx();
+        this.driver = null;
 
         this.navxIsConnected = false;
 
@@ -67,6 +72,7 @@ public class PositionManager implements IMechanism
 
         this.odometryAngle = 0.0;
         this.navxAngle = 0.0;
+        this.startAngle = 0.0;
 
         this.prevLeftDistance = 0.0;
         this.prevRightDistance = 0.0;
@@ -80,7 +86,8 @@ public class PositionManager implements IMechanism
     public void setDriver(Driver driver)
     {
         // At the beginning of autonomous, reset the position manager so that we consider ourself at the origin (0,0) and facing the 0 direction.
-        if (driver.isAutonomous())
+        this.driver = driver;
+        if (this.driver.isAutonomous())
         {
             this.reset();
         }
@@ -137,6 +144,7 @@ public class PositionManager implements IMechanism
         this.logger.logNumber(PositionManager.LogName, "navx_x", this.navxX);
         this.logger.logNumber(PositionManager.LogName, "navx_y", this.navxY);
         this.logger.logNumber(PositionManager.LogName, "navx_z", this.navxZ);
+        this.logger.logNumber(PositionManager.LogName, "start_angle", this.startAngle);
     }
 
     /**
@@ -145,6 +153,11 @@ public class PositionManager implements IMechanism
     @Override
     public void update()
     {
+        double angle = this.driver.getAnalog(Operation.PositionStartingAngle);
+        if (angle != 0.0)
+        {
+            this.startAngle = angle;
+        }
     }
 
     /**
@@ -162,7 +175,7 @@ public class PositionManager implements IMechanism
      */
     public double getOdometryAngle()
     {
-        return this.odometryAngle;
+        return (this.odometryAngle + this.startAngle) % 360.0;
     }
 
     /**
@@ -198,7 +211,7 @@ public class PositionManager implements IMechanism
      */
     public double getNavxAngle()
     {
-        return this.navxAngle;
+        return this.navxAngle + this.startAngle;
     }
 
     /**
@@ -241,6 +254,7 @@ public class PositionManager implements IMechanism
 
         this.odometryAngle = 0.0;
         this.navxAngle = 0.0;
+        this.startAngle = 0.0;
 
         this.prevLeftDistance = 0.0;
         this.prevRightDistance = 0.0;

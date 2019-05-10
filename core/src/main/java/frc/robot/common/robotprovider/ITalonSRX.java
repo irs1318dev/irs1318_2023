@@ -2,11 +2,14 @@ package frc.robot.common.robotprovider;
 
 public interface ITalonSRX extends IMotor
 {
+    void follow(ITalonSRX talonSRX);
+    void follow(IVictorSPX victorSPX);
     void setControlMode(TalonSRXControlMode mode);
     void setSensorType(TalonSRXFeedbackDevice feedbackDevice);
     void setFeedbackFramePeriod(int periodMS);
     void setPIDFFramePeriod(int periodMS);
     void configureVelocityMeasurements();
+    void configureAllowableClosedloopError(int slotId, int error);
     void setSelectedSlot(int slotId);
     void setPIDF(double p, double i, double d, double f, int slotId);
     void setMotionMagicPIDF(double p, double i, double d, double f, int velocity, int acceleration, int slotId);

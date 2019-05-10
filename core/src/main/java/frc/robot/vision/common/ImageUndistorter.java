@@ -50,7 +50,7 @@ public class ImageUndistorter
 
     /**
      * Undistort the frame so that straight lines appear straight in the image
-     * @param frame to undirsort
+     * @param frame to undistort
      * @return an non-distorted version of the provided frame
      */
     public IMat undistortFrame(IMat frame)
