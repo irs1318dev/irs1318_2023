@@ -1,15 +1,12 @@
 package frc.robot.vision;
 
 import frc.robot.common.robotprovider.*;
-import frc.robot.vision.common.VisionProcessingState;
 import frc.robot.vision.common.VisionResult;
 
 import java.util.*;
 
 public class VisionCalculations
 {
-    private static double EPS = 0.01;
-
     public VisionCalculations()
     {
     }
