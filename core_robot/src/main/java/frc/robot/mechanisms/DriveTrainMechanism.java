@@ -15,7 +15,7 @@ import frc.robot.common.robotprovider.ITimer;
 import frc.robot.common.robotprovider.IVictorSPX;
 import frc.robot.common.robotprovider.TalonSRXControlMode;
 import frc.robot.common.robotprovider.TalonSRXFeedbackDevice;
-import frc.robot.common.robotprovider.TalonSRXNeutralMode;
+import frc.robot.common.robotprovider.MotorNeutralMode;
 import frc.robot.driver.Operation;
 import frc.robot.driver.common.Driver;
 
@@ -78,7 +78,7 @@ public class DriveTrainMechanism implements IMechanism
         this.timer = timer;
 
         this.leftMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_MASTER_CAN_ID);
-        this.leftMotor.setNeutralMode(TalonSRXNeutralMode.Brake);
+        this.leftMotor.setNeutralMode(MotorNeutralMode.Brake);
         this.leftMotor.setInvertOutput(HardwareConstants.DRIVETRAIN_LEFT_MASTER_INVERT_OUTPUT);
         this.leftMotor.setInvertSensor(HardwareConstants.DRIVETRAIN_LEFT_INVERT_SENSOR);
         this.leftMotor.setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
@@ -93,17 +93,17 @@ public class DriveTrainMechanism implements IMechanism
             DriveTrainMechanism.pidSlotId);
 
         IVictorSPX leftFollowerMotor1 = provider.getVictorSPX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER1_CAN_ID);
-        leftFollowerMotor1.setNeutralMode(TalonSRXNeutralMode.Brake);
+        leftFollowerMotor1.setNeutralMode(MotorNeutralMode.Brake);
         leftFollowerMotor1.setInvertOutput(HardwareConstants.DRIVETRAIN_LEFT_FOLLOWER1_INVERT_OUTPUT);
         leftFollowerMotor1.follow(this.leftMotor);
 
         ITalonSRX leftFollowerMotor2 = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER2_CAN_ID);
-        leftFollowerMotor2.setNeutralMode(TalonSRXNeutralMode.Brake);
+        leftFollowerMotor2.setNeutralMode(MotorNeutralMode.Brake);
         leftFollowerMotor2.setInvertOutput(HardwareConstants.DRIVETRAIN_LEFT_FOLLOWER2_INVERT_OUTPUT);
         leftFollowerMotor2.follow(this.leftMotor);
 
         this.rightMotor = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_MASTER_CAN_ID);
-        this.rightMotor.setNeutralMode(TalonSRXNeutralMode.Brake);
+        this.rightMotor.setNeutralMode(MotorNeutralMode.Brake);
         this.rightMotor.setInvertOutput(HardwareConstants.DRIVETRAIN_RIGHT_MASTER_INVERT_OUTPUT);
         this.rightMotor.setInvertSensor(HardwareConstants.DRIVETRAIN_RIGHT_INVERT_SENSOR);
         this.rightMotor.setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
@@ -118,12 +118,12 @@ public class DriveTrainMechanism implements IMechanism
             DriveTrainMechanism.pidSlotId);
 
         IVictorSPX rightFollowerMotor1 = provider.getVictorSPX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER1_CAN_ID);
-        rightFollowerMotor1.setNeutralMode(TalonSRXNeutralMode.Brake);
+        rightFollowerMotor1.setNeutralMode(MotorNeutralMode.Brake);
         rightFollowerMotor1.setInvertOutput(HardwareConstants.DRIVETRAIN_RIGHT_FOLLOWER1_INVERT_OUTPUT);
         rightFollowerMotor1.follow(this.rightMotor);
 
         ITalonSRX rightFollowerMotor2 = provider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER2_CAN_ID);
-        rightFollowerMotor2.setNeutralMode(TalonSRXNeutralMode.Brake);
+        rightFollowerMotor2.setNeutralMode(MotorNeutralMode.Brake);
         rightFollowerMotor2.setInvertOutput(HardwareConstants.DRIVETRAIN_RIGHT_FOLLOWER2_INVERT_OUTPUT);
         rightFollowerMotor2.follow(this.rightMotor);
 

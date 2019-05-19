@@ -1,11 +1,9 @@
 package frc.robot.common.robotprovider;
 
-public enum TalonSRXControlMode
+public enum SparkMaxControlMode
 {
     PercentOutput,
-    Disabled,
-    Follower,
     Position,
-    MotionMagicPosition,
+    Voltage,
     Velocity;
 }

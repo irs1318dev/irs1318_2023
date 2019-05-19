@@ -1,6 +1,6 @@
 package frc.robot.common.robotprovider;
 
-public enum TalonSRXNeutralMode
+public enum MotorNeutralMode
 {
     Brake,
     Coast;

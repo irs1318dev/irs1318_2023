@@ -12,6 +12,7 @@ public class TestProvider implements IRobotProvider
     private HashMap<Integer, IAnalogInput> analogInputMap = new HashMap<Integer, IAnalogInput>();
     private HashMap<Integer, ITalonSRX> talonSrxMap = new HashMap<Integer, ITalonSRX>();
     private HashMap<Integer, IVictorSPX> victorSpxMap = new HashMap<Integer, IVictorSPX>();
+    private HashMap<Integer, ISparkMax> sparkMaxMap = new HashMap<Integer, ISparkMax>();
     private HashMap<Integer, ICompressor> compressorMap = new HashMap<Integer, ICompressor>();
     private HashMap<Integer, IDigitalInput> digitalInputMap = new HashMap<Integer, IDigitalInput>();
     private HashMap<Integer, HashMap<Integer, IDoubleSolenoid>> doubleSolenoidModuleMap = new HashMap<Integer, HashMap<Integer, IDoubleSolenoid>>();
@@ -54,6 +55,17 @@ public class TestProvider implements IRobotProvider
         }
 
         return this.victorSpxMap.get(deviceNumber);
+    }
+
+    @Override
+    public ISparkMax getSparkMax(int deviceID, SparkMaxMotorType motorType)
+    {
+        if (!this.sparkMaxMap.containsKey(deviceID))
+        {
+            this.sparkMaxMap.put(deviceID, mock(ISparkMax.class));
+        }
+
+        return this.sparkMaxMap.get(deviceID);
     }
 
     @Override
