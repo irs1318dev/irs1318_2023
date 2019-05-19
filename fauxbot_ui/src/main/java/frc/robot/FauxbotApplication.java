@@ -511,6 +511,7 @@ public class FauxbotApplication extends Application
 
     public void refresh()
     {
+        this.simulator.update();
         Platform.runLater(
             () ->
             {

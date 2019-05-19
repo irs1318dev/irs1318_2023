@@ -52,6 +52,7 @@ public class RobotSimulator implements IRealWorldSimulator
     {
     }
 
+    @Override
     public String getSensorName(FauxbotSensorConnection connection)
     {
         if (this.sensorNameMap.containsKey(connection))
@@ -62,6 +63,7 @@ public class RobotSimulator implements IRealWorldSimulator
         return "Sensor " + connection;
     }
 
+    @Override
     public double getSensorMin(FauxbotSensorConnection connection)
     {
         if (connection.equals(RobotSimulator.DriveLeftEncoderChannel) ||
@@ -73,6 +75,7 @@ public class RobotSimulator implements IRealWorldSimulator
         return 0;
     }
 
+    @Override
     public double getSensorMax(FauxbotSensorConnection connection)
     {
         if (connection.equals(RobotSimulator.DriveLeftEncoderChannel) ||
@@ -84,6 +87,7 @@ public class RobotSimulator implements IRealWorldSimulator
         return 0;
     }
 
+    @Override
     public String getActuatorName(FauxbotActuatorConnection connection)
     {
         if (this.motorNameMap.containsKey(connection))
@@ -94,6 +98,7 @@ public class RobotSimulator implements IRealWorldSimulator
         return "Motor " + connection;
     }
 
+    @Override
     public double getMotorMin(FauxbotActuatorConnection connection)
     {
         if (connection.equals(RobotSimulator.DriveLeftMasterChannel) ||
@@ -109,6 +114,7 @@ public class RobotSimulator implements IRealWorldSimulator
         return -1.0;
     }
 
+    @Override
     public double getMotorMax(FauxbotActuatorConnection connection)
     {
         if (connection.equals(RobotSimulator.DriveLeftMasterChannel) ||
@@ -124,10 +130,12 @@ public class RobotSimulator implements IRealWorldSimulator
         return 1.0;
     }
 
+    @Override
     public void update()
     {
     }
 
+    @Override
     public void draw(Canvas canvas)
     {
     }
