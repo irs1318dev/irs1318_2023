@@ -1,0 +1,31 @@
+{
+	"folders": [
+		{
+			"path": "core_robot"
+		},
+		{
+			"path": "fauxbot_ui"
+		},
+		{
+			"path": "robot_roborio"
+		}
+	],
+	"settings": {
+		"java.configuration.updateBuildConfiguration": "interactive"
+	},
+	"launch": {
+		"configurations": [
+			{
+				"type": "java",
+				"name": "Fauxbot Debug",
+				"request": "launch",
+				"cwd": "${workspaceFolder}",
+				"console": "internalConsole",
+				"stopOnEntry": false,
+				"mainClass": "Fauxbot",
+				"args": "",
+				"projectName": "fauxbot_ui"
+			}
+		]
+	}
+}
