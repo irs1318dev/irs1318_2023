@@ -7,16 +7,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import org.junit.jupiter.api.Test;
-import frc.robot.ElectronicsConstants;
-import frc.robot.HardwareConstants;
-import frc.robot.TestProvider;
-import frc.robot.TuningConstants;
-import frc.robot.common.robotprovider.IDashboardLogger;
-import frc.robot.common.robotprovider.ITalonSRX;
-import frc.robot.common.robotprovider.ITimer;
-import frc.robot.common.robotprovider.TalonSRXControlMode;
-import frc.robot.common.robotprovider.TalonSRXFeedbackDevice;
-import frc.robot.common.robotprovider.TalonSRXNeutralMode;
+import frc.robot.*;
+import frc.robot.common.robotprovider.*;
 import frc.robot.driver.Operation;
 import frc.robot.driver.common.Driver;
 import frc.robot.mechanisms.DriveTrainMechanism;
@@ -31,8 +23,8 @@ public class DriveTrainMechanismTest
         TestProvider testProvider = new TestProvider();
         ITalonSRX leftMotor = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_MASTER_CAN_ID);
         ITalonSRX rightMotor = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_MASTER_CAN_ID);
-        ITalonSRX leftFollowerMotor1 = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER1_CAN_ID);
-        ITalonSRX rightFollowerMotor1 = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER1_CAN_ID);
+        IVictorSPX leftFollowerMotor1 = testProvider.getVictorSPX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER1_CAN_ID);
+        IVictorSPX rightFollowerMotor1 = testProvider.getVictorSPX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER1_CAN_ID);
         ITalonSRX leftFollowerMotor2 = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER2_CAN_ID);
         ITalonSRX rightFollowerMotor2 = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER2_CAN_ID);
 
@@ -70,12 +62,10 @@ public class DriveTrainMechanismTest
         verify(leftMotor).setSelectedSlot(eq(0));
         verify(leftFollowerMotor1).setNeutralMode(eq(TalonSRXNeutralMode.Brake));
         verify(leftFollowerMotor1).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_LEFT_FOLLOWER1_INVERT_OUTPUT));
-        verify(leftFollowerMotor1).setControlMode(eq(TalonSRXControlMode.Follower));
-        verify(leftFollowerMotor1).set(eq((double)ElectronicsConstants.DRIVETRAIN_LEFT_MASTER_CAN_ID));
+        verify(leftFollowerMotor1).follow(eq(leftMotor));
         verify(leftFollowerMotor2).setNeutralMode(eq(TalonSRXNeutralMode.Brake));
         verify(leftFollowerMotor2).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_LEFT_FOLLOWER2_INVERT_OUTPUT));
-        verify(leftFollowerMotor2).setControlMode(eq(TalonSRXControlMode.Follower));
-        verify(leftFollowerMotor2).set(eq((double)ElectronicsConstants.DRIVETRAIN_LEFT_MASTER_CAN_ID));
+        verify(leftFollowerMotor2).follow(eq(leftMotor));
         verify(rightMotor).setNeutralMode(eq(TalonSRXNeutralMode.Brake));
         verify(rightMotor).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_RIGHT_MASTER_INVERT_OUTPUT));
         verify(rightMotor).setInvertSensor(eq(HardwareConstants.DRIVETRAIN_RIGHT_INVERT_SENSOR));
@@ -84,14 +74,12 @@ public class DriveTrainMechanismTest
         verify(rightMotor).setPIDFFramePeriod(5);
         verify(rightMotor).configureVelocityMeasurements();
         verify(rightMotor).setSelectedSlot(eq(0));
-        verify(rightFollowerMotor1).setControlMode(eq(TalonSRXControlMode.Follower));
         verify(rightFollowerMotor1).setNeutralMode(eq(TalonSRXNeutralMode.Brake));
         verify(rightFollowerMotor1).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_RIGHT_FOLLOWER1_INVERT_OUTPUT));
-        verify(rightFollowerMotor1).set(eq((double)ElectronicsConstants.DRIVETRAIN_RIGHT_MASTER_CAN_ID));
-        verify(rightFollowerMotor2).setControlMode(eq(TalonSRXControlMode.Follower));
+        verify(rightFollowerMotor1).follow(eq(rightMotor));
         verify(rightFollowerMotor2).setNeutralMode(eq(TalonSRXNeutralMode.Brake));
         verify(rightFollowerMotor2).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_RIGHT_FOLLOWER2_INVERT_OUTPUT));
-        verify(rightFollowerMotor2).set(eq((double)ElectronicsConstants.DRIVETRAIN_RIGHT_MASTER_CAN_ID));
+        verify(rightFollowerMotor2).follow(eq(rightMotor));
 
         // from setDriver:
         verify(leftMotor).setPIDF(
@@ -129,7 +117,7 @@ public class DriveTrainMechanismTest
         verifyNoMoreInteractions(rightFollowerMotor2);
     }
 
-    ////@Test
+    @Test
     public void testStop()
     {
         IDashboardLogger logger = mock(IDashboardLogger.class);
@@ -137,8 +125,8 @@ public class DriveTrainMechanismTest
         TestProvider testProvider = new TestProvider();
         ITalonSRX leftMotor = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_MASTER_CAN_ID);
         ITalonSRX rightMotor = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_MASTER_CAN_ID);
-        ITalonSRX leftFollowerMotor1 = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER1_CAN_ID);
-        ITalonSRX rightFollowerMotor1 = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER1_CAN_ID);
+        IVictorSPX leftFollowerMotor1 = testProvider.getVictorSPX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER1_CAN_ID);
+        IVictorSPX rightFollowerMotor1 = testProvider.getVictorSPX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER1_CAN_ID);
         ITalonSRX leftFollowerMotor2 = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER2_CAN_ID);
         ITalonSRX rightFollowerMotor2 = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER2_CAN_ID);
 
@@ -175,12 +163,10 @@ public class DriveTrainMechanismTest
         verify(leftMotor).setSelectedSlot(eq(0));
         verify(leftFollowerMotor1).setNeutralMode(eq(TalonSRXNeutralMode.Brake));
         verify(leftFollowerMotor1).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_LEFT_FOLLOWER1_INVERT_OUTPUT));
-        verify(leftFollowerMotor1).setControlMode(eq(TalonSRXControlMode.Follower));
-        verify(leftFollowerMotor1).set(eq((double)ElectronicsConstants.DRIVETRAIN_LEFT_MASTER_CAN_ID));
+        verify(leftFollowerMotor1).follow(eq(leftMotor));
         verify(leftFollowerMotor2).setNeutralMode(eq(TalonSRXNeutralMode.Brake));
         verify(leftFollowerMotor2).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_LEFT_FOLLOWER2_INVERT_OUTPUT));
-        verify(leftFollowerMotor2).setControlMode(eq(TalonSRXControlMode.Follower));
-        verify(leftFollowerMotor2).set(eq((double)ElectronicsConstants.DRIVETRAIN_LEFT_MASTER_CAN_ID));
+        verify(leftFollowerMotor2).follow(eq(leftMotor));
         verify(rightMotor).setNeutralMode(eq(TalonSRXNeutralMode.Brake));
         verify(rightMotor).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_RIGHT_MASTER_INVERT_OUTPUT));
         verify(rightMotor).setInvertSensor(eq(HardwareConstants.DRIVETRAIN_RIGHT_INVERT_SENSOR));
@@ -189,14 +175,12 @@ public class DriveTrainMechanismTest
         verify(rightMotor).setPIDFFramePeriod(5);
         verify(rightMotor).configureVelocityMeasurements();
         verify(rightMotor).setSelectedSlot(eq(0));
-        verify(rightFollowerMotor1).setControlMode(eq(TalonSRXControlMode.Follower));
         verify(rightFollowerMotor1).setNeutralMode(eq(TalonSRXNeutralMode.Brake));
         verify(rightFollowerMotor1).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_RIGHT_FOLLOWER1_INVERT_OUTPUT));
-        verify(rightFollowerMotor1).set(eq((double)ElectronicsConstants.DRIVETRAIN_RIGHT_MASTER_CAN_ID));
-        verify(rightFollowerMotor2).setControlMode(eq(TalonSRXControlMode.Follower));
+        verify(rightFollowerMotor1).follow(eq(rightMotor));
         verify(rightFollowerMotor2).setNeutralMode(eq(TalonSRXNeutralMode.Brake));
         verify(rightFollowerMotor2).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_RIGHT_FOLLOWER2_INVERT_OUTPUT));
-        verify(rightFollowerMotor2).set(eq((double)ElectronicsConstants.DRIVETRAIN_RIGHT_MASTER_CAN_ID));
+        verify(rightFollowerMotor2).follow(eq(rightMotor));
 
         // from setDriver:
         verify(leftMotor).setPIDF(
