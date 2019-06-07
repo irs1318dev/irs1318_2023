@@ -100,14 +100,14 @@ public class ButtonMap implements IButtonMap
                 Operation.DriveTrainMoveForward,
                 new AnalogOperationDescription(
                     UserInputDevice.Driver,
-                    AnalogAxis.Y,
+                    AnalogAxis.JOYSTICK_Y,
                     ElectronicsConstants.INVERT_Y_AXIS,
                     TuningConstants.DRIVETRAIN_Y_DEAD_ZONE));
             put(
                 Operation.DriveTrainTurn,
                 new AnalogOperationDescription(
                     UserInputDevice.Driver,
-                    AnalogAxis.X,
+                    AnalogAxis.JOYSTICK_X,
                     ElectronicsConstants.INVERT_X_AXIS,
                     TuningConstants.DRIVETRAIN_X_DEAD_ZONE));
             put(
@@ -132,35 +132,35 @@ public class ButtonMap implements IButtonMap
                 Operation.DriveTrainLeftPosition,
                 new AnalogOperationDescription(
                     UserInputDevice.None,
-                    AnalogAxis.None,
+                    AnalogAxis.NONE,
                     false,
                     0.0));
             put(
                 Operation.DriveTrainRightPosition,
                 new AnalogOperationDescription(
                     UserInputDevice.None,
-                    AnalogAxis.None,
+                    AnalogAxis.NONE,
                     false,
                     0.0));
             put(
                 Operation.DriveTrainLeftVelocity,
                 new AnalogOperationDescription(
                     UserInputDevice.None,
-                    AnalogAxis.None,
+                    AnalogAxis.NONE,
                     false,
                     0.0));
             put(
                 Operation.DriveTrainRightVelocity,
                 new AnalogOperationDescription(
                     UserInputDevice.None,
-                    AnalogAxis.None,
+                    AnalogAxis.NONE,
                     false,
                     0.0));
             put(
                 Operation.DriveTrainHeadingCorrection,
                 new AnalogOperationDescription(
                     UserInputDevice.None,
-                    AnalogAxis.None,
+                    AnalogAxis.NONE,
                     false,
                     0.0));
             put(
@@ -185,7 +185,7 @@ public class ButtonMap implements IButtonMap
                 Operation.PositionStartingAngle,
                 new AnalogOperationDescription(
                     UserInputDevice.None,
-                    AnalogAxis.None,
+                    AnalogAxis.NONE,
                     false,
                     0.0));
         }
