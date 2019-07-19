@@ -4,8 +4,7 @@ import java.util.List;
 
 import frc.robot.HardwareConstants;
 import frc.robot.common.robotprovider.*;
-import frc.robot.driver.Operation;
-import frc.robot.driver.PathManager;
+import frc.robot.driver.*;
 import frc.robot.driver.common.IControlTask;
 import frc.robot.driver.common.PathStep;
 import frc.robot.mechanisms.DriveTrainMechanism;
@@ -55,12 +54,12 @@ public class FollowPathTask extends ControlTaskBase implements IControlTask
         this.path = pathManager.getPath(this.pathName);
         this.duration = this.path.size() * FollowPathTask.Timestep;
 
-        this.setDigitalOperationState(Operation.DriveTrainUsePathMode, true);
-        this.setAnalogOperationState(Operation.DriveTrainLeftPosition, this.startLeftPosition);
-        this.setAnalogOperationState(Operation.DriveTrainRightPosition, this.startRightPosition);
-        this.setAnalogOperationState(Operation.DriveTrainLeftVelocity, 0.0);
-        this.setAnalogOperationState(Operation.DriveTrainRightVelocity, 0.0);
-        this.setAnalogOperationState(Operation.DriveTrainHeadingCorrection, 0.0);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainUsePathMode, true);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainLeftPosition, this.startLeftPosition);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainRightPosition, this.startRightPosition);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainLeftVelocity, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainRightVelocity, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainHeadingCorrection, 0.0);
     }
 
     /**
@@ -86,11 +85,11 @@ public class FollowPathTask extends ControlTaskBase implements IControlTask
         PathStep step = this.path.get((int)currentIndex);
         double leftGoalPosition = step.getLeftPosition() * HardwareConstants.DRIVETRAIN_LEFT_TICKS_PER_INCH;
         double rightGoalPosition = step.getRightPosition() * HardwareConstants.DRIVETRAIN_RIGHT_TICKS_PER_INCH;
-        this.setAnalogOperationState(Operation.DriveTrainLeftPosition, this.startLeftPosition + leftGoalPosition);
-        this.setAnalogOperationState(Operation.DriveTrainRightPosition, this.startRightPosition + rightGoalPosition);
-        this.setAnalogOperationState(Operation.DriveTrainLeftVelocity, step.getLeftVelocity());
-        this.setAnalogOperationState(Operation.DriveTrainRightVelocity, step.getRightVelocity());
-        this.setAnalogOperationState(Operation.DriveTrainHeadingCorrection, (this.startHeading + step.getHeading()) - currentHeading);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainLeftPosition, this.startLeftPosition + leftGoalPosition);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainRightPosition, this.startRightPosition + rightGoalPosition);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainLeftVelocity, step.getLeftVelocity());
+        this.setAnalogOperationState(AnalogOperation.DriveTrainRightVelocity, step.getRightVelocity());
+        this.setAnalogOperationState(AnalogOperation.DriveTrainHeadingCorrection, (this.startHeading + step.getHeading()) - currentHeading);
     }
 
     /**
@@ -101,12 +100,12 @@ public class FollowPathTask extends ControlTaskBase implements IControlTask
     {
         super.stop();
 
-        this.setDigitalOperationState(Operation.DriveTrainUsePathMode, false);
-        this.setAnalogOperationState(Operation.DriveTrainLeftPosition, 0.0);
-        this.setAnalogOperationState(Operation.DriveTrainRightPosition, 0.0);
-        this.setAnalogOperationState(Operation.DriveTrainLeftVelocity, 0.0);
-        this.setAnalogOperationState(Operation.DriveTrainRightVelocity, 0.0);
-        this.setAnalogOperationState(Operation.DriveTrainHeadingCorrection, 0.0);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainUsePathMode, false);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainLeftPosition, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainRightPosition, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainLeftVelocity, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainRightVelocity, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainHeadingCorrection, 0.0);
     }
 
     /**
@@ -115,12 +114,12 @@ public class FollowPathTask extends ControlTaskBase implements IControlTask
     @Override
     public void end()
     {
-        this.setDigitalOperationState(Operation.DriveTrainUsePathMode, false);
-        this.setAnalogOperationState(Operation.DriveTrainLeftPosition, 0.0);
-        this.setAnalogOperationState(Operation.DriveTrainRightPosition, 0.0);
-        this.setAnalogOperationState(Operation.DriveTrainLeftVelocity, 0.0);
-        this.setAnalogOperationState(Operation.DriveTrainRightVelocity, 0.0);
-        this.setAnalogOperationState(Operation.DriveTrainHeadingCorrection, 0.0);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainUsePathMode, false);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainLeftPosition, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainRightPosition, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainLeftVelocity, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainRightVelocity, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainHeadingCorrection, 0.0);
     }
 
     @Override

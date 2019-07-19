@@ -3,7 +3,7 @@ package frc.robot.driver.controltasks;
 import java.util.function.Function;
 
 import frc.robot.TuningConstants;
-import frc.robot.driver.Operation;
+import frc.robot.driver.*;
 import frc.robot.driver.common.IControlTask;
 import frc.robot.mechanisms.DriveTrainMechanism;
 
@@ -66,9 +66,9 @@ public class DriveRouteTask extends TimedTask implements IControlTask
             t = 0.0;
         }
 
-        this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, true);
-        this.setAnalogOperationState(Operation.DriveTrainLeftPosition, this.startLeftTicks + this.leftPositionPerTime.apply(t));
-        this.setAnalogOperationState(Operation.DriveTrainRightPosition, this.startRightTicks + this.rightPositionPerTime.apply(t));
+        this.setDigitalOperationState(DigitalOperation.DriveTrainUsePositionalMode, true);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainLeftPosition, this.startLeftTicks + this.leftPositionPerTime.apply(t));
+        this.setAnalogOperationState(AnalogOperation.DriveTrainRightPosition, this.startRightTicks + this.rightPositionPerTime.apply(t));
     }
 
     /**
@@ -79,10 +79,10 @@ public class DriveRouteTask extends TimedTask implements IControlTask
     {
         super.end();
 
-        this.setAnalogOperationState(Operation.DriveTrainLeftPosition, this.endLeftTicks);
-        this.setAnalogOperationState(Operation.DriveTrainRightPosition, this.endRightTicks);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainLeftPosition, this.endLeftTicks);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainRightPosition, this.endRightTicks);
 
-        this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainUsePositionalMode, false);
     }
 
     /**

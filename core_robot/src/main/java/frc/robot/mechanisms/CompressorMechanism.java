@@ -5,7 +5,7 @@ import javax.inject.Singleton;
 import frc.robot.common.IMechanism;
 import frc.robot.common.robotprovider.ICompressor;
 import frc.robot.common.robotprovider.IRobotProvider;
-import frc.robot.driver.Operation;
+import frc.robot.driver.DigitalOperation;
 import frc.robot.driver.common.Driver;
 
 import com.google.inject.Inject;
@@ -62,7 +62,7 @@ public class CompressorMechanism implements IMechanism
     @Override
     public void update()
     {
-        if (this.driver.getDigital(Operation.CompressorForceDisable))
+        if (this.driver.getDigital(DigitalOperation.CompressorForceDisable))
         {
             this.compressor.stop();
             this.isStarted = false;

@@ -1,7 +1,7 @@
 package frc.robot.driver.controltasks;
 
 import frc.robot.HardwareConstants;
-import frc.robot.driver.Operation;
+import frc.robot.driver.*;
 import frc.robot.mechanisms.DriveTrainMechanism;
 
 public class DriveDistancePositionTimedTask extends TimedTask
@@ -41,9 +41,9 @@ public class DriveDistancePositionTimedTask extends TimedTask
     @Override
     public void update()
     {
-        this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
-        this.setAnalogOperationState(Operation.DriveTrainTurn, 0.0);
-        this.setAnalogOperationState(Operation.DriveTrainMoveForward, this.velocity);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainUsePositionalMode, false);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainTurn, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, this.velocity);
     }
 
     @Override
@@ -51,9 +51,9 @@ public class DriveDistancePositionTimedTask extends TimedTask
     {
         super.end();
 
-        this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
-        this.setAnalogOperationState(Operation.DriveTrainTurn, 0.0);
-        this.setAnalogOperationState(Operation.DriveTrainMoveForward, 0.0);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainUsePositionalMode, false);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainTurn, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0);
     }
 
     @Override

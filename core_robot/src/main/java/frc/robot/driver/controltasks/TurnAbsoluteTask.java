@@ -1,6 +1,6 @@
 package frc.robot.driver.controltasks;
 
-import frc.robot.driver.Operation;
+import frc.robot.driver.*;
 import frc.robot.mechanisms.PositionManager;
 
 /**
@@ -63,9 +63,9 @@ public class TurnAbsoluteTask extends TimedTask
             xVelocity = this.xVelocity;
         }
 
-        this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
-        this.setAnalogOperationState(Operation.DriveTrainMoveForward, 0.0);
-        this.setAnalogOperationState(Operation.DriveTrainTurn, xVelocity);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainUsePositionalMode, false);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainTurn, xVelocity);
     }
 
     /**
@@ -76,8 +76,8 @@ public class TurnAbsoluteTask extends TimedTask
     {
         super.end();
 
-        this.setAnalogOperationState(Operation.DriveTrainMoveForward, 0.0);
-        this.setAnalogOperationState(Operation.DriveTrainTurn, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainTurn, 0.0);
     }
 
     /**

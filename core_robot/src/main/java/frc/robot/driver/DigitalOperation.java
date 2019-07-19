@@ -1,6 +1,6 @@
 package frc.robot.driver;
 
-public enum Operation
+public enum DigitalOperation implements IOperation
 {
     // Vision operations:
     VisionForceDisable,
@@ -15,18 +15,10 @@ public enum Operation
     // DriveTrain operations:
     DriveTrainEnablePID,
     DriveTrainDisablePID,
-    DriveTrainMoveForward,
-    DriveTrainTurn,
     DriveTrainSimpleMode,
     DriveTrainUseBrakeMode,
     DriveTrainUsePositionalMode,
     DriveTrainUseSimplePathMode,
     DriveTrainUsePathMode,
-    DriveTrainLeftPosition,
-    DriveTrainRightPosition,
-    DriveTrainLeftVelocity,
-    DriveTrainRightVelocity,
-    DriveTrainHeadingCorrection,
     DriveTrainSwapFrontOrientation,
-    PositionStartingAngle,
 }

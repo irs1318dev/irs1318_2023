@@ -16,7 +16,8 @@ import frc.robot.common.robotprovider.IVictorSPX;
 import frc.robot.common.robotprovider.TalonSRXControlMode;
 import frc.robot.common.robotprovider.TalonSRXFeedbackDevice;
 import frc.robot.common.robotprovider.MotorNeutralMode;
-import frc.robot.driver.Operation;
+import frc.robot.driver.AnalogOperation;
+import frc.robot.driver.DigitalOperation;
 import frc.robot.driver.common.Driver;
 
 import com.google.inject.Inject;
@@ -249,22 +250,22 @@ public class DriveTrainMechanism implements IMechanism
     @Override
     public void update()
     {
-        if (this.driver.getDigital(Operation.DriveTrainEnablePID))
+        if (this.driver.getDigital(DigitalOperation.DriveTrainEnablePID))
         {
             this.usePID = true;
             this.setControlMode();
         }
-        else if (this.driver.getDigital(Operation.DriveTrainDisablePID))
+        else if (this.driver.getDigital(DigitalOperation.DriveTrainDisablePID))
         {
             this.usePID = false;
             this.setControlMode();
         }
 
         // check our desired PID mode (needed for positional mode or break mode)
-        boolean newUseSimplePathMode = this.driver.getDigital(Operation.DriveTrainUseSimplePathMode);
-        boolean newUsePathMode = this.driver.getDigital(Operation.DriveTrainUsePathMode);
-        boolean newUsePositionalMode = this.driver.getDigital(Operation.DriveTrainUsePositionalMode);
-        boolean newUseBrakeMode = this.driver.getDigital(Operation.DriveTrainUseBrakeMode);
+        boolean newUseSimplePathMode = this.driver.getDigital(DigitalOperation.DriveTrainUseSimplePathMode);
+        boolean newUsePathMode = this.driver.getDigital(DigitalOperation.DriveTrainUsePathMode);
+        boolean newUsePositionalMode = this.driver.getDigital(DigitalOperation.DriveTrainUsePositionalMode);
+        boolean newUseBrakeMode = this.driver.getDigital(DigitalOperation.DriveTrainUseBrakeMode);
         if (newUseSimplePathMode != this.useSimplePathMode ||
             newUsePathMode != this.usePathMode ||
             newUsePositionalMode != this.usePositionalMode ||
@@ -439,15 +440,15 @@ public class DriveTrainMechanism implements IMechanism
         double rightVelocityGoal = 0.0;
 
         // get a value indicating that we should be in simple mode...
-        boolean simpleDriveModeEnabled = this.driver.getDigital(Operation.DriveTrainSimpleMode);
+        boolean simpleDriveModeEnabled = this.driver.getDigital(DigitalOperation.DriveTrainSimpleMode);
 
         // get the X and Y values from the operator.  We expect these to be between -1.0 and 1.0,
         // with this value representing the forward velocity percentage and right turn percentage (of max speed)
-        double turnAmount = this.driver.getAnalog(Operation.DriveTrainTurn);
-        double forwardVelocity = this.driver.getAnalog(Operation.DriveTrainMoveForward);
+        double turnAmount = this.driver.getAnalog(AnalogOperation.DriveTrainTurn);
+        double forwardVelocity = this.driver.getAnalog(AnalogOperation.DriveTrainMoveForward);
 
         // Negate the x and y if DriveTrainSwapFrontOrientation is true
-        if (this.driver.getDigital(Operation.DriveTrainSwapFrontOrientation))
+        if (this.driver.getDigital(DigitalOperation.DriveTrainSwapFrontOrientation))
         {
             turnAmount *= -1.0;
             forwardVelocity *= -1.0;
@@ -526,8 +527,8 @@ public class DriveTrainMechanism implements IMechanism
     {
         // get the desired left and right values from the driver.
         // note that position goals are in inches and velocity goals are in inches/second
-        double leftVelocityGoal = this.driver.getAnalog(Operation.DriveTrainLeftVelocity);
-        double rightVelocityGoal = this.driver.getAnalog(Operation.DriveTrainRightVelocity);
+        double leftVelocityGoal = this.driver.getAnalog(AnalogOperation.DriveTrainLeftVelocity);
+        double rightVelocityGoal = this.driver.getAnalog(AnalogOperation.DriveTrainRightVelocity);
 
         leftVelocityGoal /= TuningConstants.DRIVETRAIN_PATH_LEFT_MAX_VELOCITY_INCHES_PER_SECOND;
         rightVelocityGoal /= TuningConstants.DRIVETRAIN_PATH_RIGHT_MAX_VELOCITY_INCHES_PER_SECOND;
@@ -563,11 +564,11 @@ public class DriveTrainMechanism implements IMechanism
     {
         // get the desired left and right values from the driver.
         // note that position goals are in inches and velocity goals are in inches/second
-        double leftPositionGoal = this.driver.getAnalog(Operation.DriveTrainLeftPosition);
-        double rightPositionGoal = this.driver.getAnalog(Operation.DriveTrainRightPosition);
-        double leftVelocityGoal = this.driver.getAnalog(Operation.DriveTrainLeftVelocity);
-        double rightVelocityGoal = this.driver.getAnalog(Operation.DriveTrainRightVelocity);
-        double headingCorrection = this.driver.getAnalog(Operation.DriveTrainHeadingCorrection);
+        double leftPositionGoal = this.driver.getAnalog(AnalogOperation.DriveTrainLeftPosition);
+        double rightPositionGoal = this.driver.getAnalog(AnalogOperation.DriveTrainRightPosition);
+        double leftVelocityGoal = this.driver.getAnalog(AnalogOperation.DriveTrainLeftVelocity);
+        double rightVelocityGoal = this.driver.getAnalog(AnalogOperation.DriveTrainRightVelocity);
+        double headingCorrection = this.driver.getAnalog(AnalogOperation.DriveTrainHeadingCorrection);
 
         leftVelocityGoal /= TuningConstants.DRIVETRAIN_PATH_LEFT_MAX_VELOCITY_INCHES_PER_SECOND;
         rightVelocityGoal /= TuningConstants.DRIVETRAIN_PATH_RIGHT_MAX_VELOCITY_INCHES_PER_SECOND;
@@ -630,8 +631,8 @@ public class DriveTrainMechanism implements IMechanism
     private Setpoint calculatePositionModeSetpoint()
     {
         // get the desired left and right values from the driver.
-        double leftPositionGoal = this.driver.getAnalog(Operation.DriveTrainLeftPosition);
-        double rightPositionGoal = this.driver.getAnalog(Operation.DriveTrainRightPosition);
+        double leftPositionGoal = this.driver.getAnalog(AnalogOperation.DriveTrainLeftPosition);
+        double rightPositionGoal = this.driver.getAnalog(AnalogOperation.DriveTrainRightPosition);
 
         this.logger.logNumber(DriveTrainMechanism.LogName, "leftPositionGoal", leftPositionGoal);
         this.logger.logNumber(DriveTrainMechanism.LogName, "rightPositionGoal", rightPositionGoal);

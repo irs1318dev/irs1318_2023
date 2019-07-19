@@ -4,7 +4,7 @@ import frc.robot.TuningConstants;
 import frc.robot.common.Helpers;
 import frc.robot.common.PIDHandler;
 import frc.robot.common.robotprovider.ITimer;
-import frc.robot.driver.Operation;
+import frc.robot.driver.*;
 import frc.robot.driver.common.IControlTask;
 import frc.robot.mechanisms.DriveTrainMechanism;
 import frc.robot.mechanisms.PositionManager;
@@ -119,8 +119,8 @@ public class NavxTurnTask extends ControlTaskBase implements IControlTask
     @Override
     public void update()
     {
-        this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
-        this.setDigitalOperationState(Operation.DriveTrainSimpleMode, this.fastMode);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainUsePositionalMode, false);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainSimpleMode, this.fastMode);
 
         double currentMeasuredAngle = this.pManager.getNavxAngle();
         double currentDesiredAngle = this.turnAngle + this.startingAngle;
@@ -134,7 +134,7 @@ public class NavxTurnTask extends ControlTaskBase implements IControlTask
 
         this.desiredTurnVelocity = this.turnPidHandler.calculatePosition(currentDesiredAngle, currentMeasuredAngle);
 
-        this.setAnalogOperationState(Operation.DriveTrainTurn, this.desiredTurnVelocity);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainTurn, this.desiredTurnVelocity);
     }
 
     /**
@@ -143,9 +143,9 @@ public class NavxTurnTask extends ControlTaskBase implements IControlTask
     @Override
     public void end()
     {
-        this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
-        this.setDigitalOperationState(Operation.DriveTrainSimpleMode, false);
-        this.setAnalogOperationState(Operation.DriveTrainTurn, 0.0);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainUsePositionalMode, false);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainSimpleMode, false);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainTurn, 0.0);
     }
 
     /**

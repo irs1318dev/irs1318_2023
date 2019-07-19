@@ -3,7 +3,9 @@ package frc.robot.driver.controltasks;
 import frc.robot.TuningConstants;
 import frc.robot.common.PIDHandler;
 import frc.robot.common.robotprovider.ITimer;
-import frc.robot.driver.Operation;
+import frc.robot.driver.AnalogOperation;
+import frc.robot.driver.DigitalOperation;
+import frc.robot.driver.IOperation;
 import frc.robot.driver.common.IControlTask;
 import frc.robot.mechanisms.VisionManager;
 
@@ -15,7 +17,7 @@ public class VisionCenteringTask extends ControlTaskBase implements IControlTask
     private static final int NO_CENTER_THRESHOLD = 40;
 
     private final boolean useTime;
-    private final Operation toPerform;
+    private final DigitalOperation toPerform;
 
     private PIDHandler turnPidHandler;
     private Double centeredTime;
@@ -26,7 +28,7 @@ public class VisionCenteringTask extends ControlTaskBase implements IControlTask
     /**
     * Initializes a new VisionCenteringTask
     */
-    public VisionCenteringTask(Operation toPerform)
+    public VisionCenteringTask(DigitalOperation toPerform)
     {
         this(true, toPerform);
     }
@@ -35,7 +37,7 @@ public class VisionCenteringTask extends ControlTaskBase implements IControlTask
     * Initializes a new VisionCenteringTask
     * @param useTime whether to make sure we are centered for a second or not
     */
-    public VisionCenteringTask(boolean useTime, Operation toPerform)
+    public VisionCenteringTask(boolean useTime, DigitalOperation toPerform)
     {
         this.useTime = useTime;
         this.toPerform = toPerform;
@@ -62,7 +64,7 @@ public class VisionCenteringTask extends ControlTaskBase implements IControlTask
     @Override
     public void update()
     {
-        this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainUsePositionalMode, false);
         this.setDigitalOperationState(this.toPerform, true);
 
         Double currentMeasuredAngle = this.visionManager.getMeasuredAngle();
@@ -70,7 +72,7 @@ public class VisionCenteringTask extends ControlTaskBase implements IControlTask
         if (currentMeasuredAngle != null && currentDesiredAngle != null)
         {
             this.setAnalogOperationState(
-                Operation.DriveTrainTurn,
+                AnalogOperation.DriveTrainTurn,
                 -this.turnPidHandler.calculatePosition(currentDesiredAngle, currentMeasuredAngle));
         }
     }
@@ -81,11 +83,11 @@ public class VisionCenteringTask extends ControlTaskBase implements IControlTask
     @Override
     public void end()
     {
-        this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
-        this.setAnalogOperationState(Operation.DriveTrainTurn, 0.0);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainUsePositionalMode, false);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainTurn, 0.0);
 
         this.setDigitalOperationState(this.toPerform, false);
-        this.setDigitalOperationState(Operation.VisionDisable, true);
+        this.setDigitalOperationState(DigitalOperation.VisionDisable, true);
     }
 
     /**

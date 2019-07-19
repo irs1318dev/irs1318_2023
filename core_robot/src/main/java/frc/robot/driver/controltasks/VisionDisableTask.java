@@ -1,17 +1,17 @@
 package frc.robot.driver.controltasks;
 
-import frc.robot.driver.Operation;
+import frc.robot.driver.DigitalOperation;
 
 public class VisionDisableTask extends CompositeOperationTask
 {
-    private static final Operation[] possibleOperations =
+    private static final DigitalOperation[] possibleOperations =
         {
-            Operation.VisionForceDisable,
+            DigitalOperation.VisionForceDisable,
         };
  
     public VisionDisableTask()
     {
-        super(1.0, Operation.VisionForceDisable, VisionDisableTask.possibleOperations);
+        super(1.0, DigitalOperation.VisionForceDisable, VisionDisableTask.possibleOperations);
     }   
 
     @Override

@@ -4,7 +4,7 @@ import frc.robot.ElectronicsConstants;
 import frc.robot.TuningConstants;
 import frc.robot.common.*;
 import frc.robot.common.robotprovider.*;
-import frc.robot.driver.Operation;
+import frc.robot.driver.DigitalOperation;
 import frc.robot.driver.common.*;
 import frc.robot.vision.*;
 import frc.robot.vision.common.*;
@@ -156,16 +156,16 @@ public class VisionManager implements IMechanism, IVisionListener<ICentroidVisio
     public void update()
     {
         VisionProcessingState desiredState = this.currentState;
-        if (this.driver.getDigital(Operation.VisionEnable))
+        if (this.driver.getDigital(DigitalOperation.VisionEnable))
         {
             desiredState = VisionProcessingState.Active;
         }
-        else if (this.driver.getDigital(Operation.VisionDisable))
+        else if (this.driver.getDigital(DigitalOperation.VisionDisable))
         {
             desiredState = VisionProcessingState.Disabled;
         }
 
-        if (this.driver.getDigital(Operation.VisionForceDisable))
+        if (this.driver.getDigital(DigitalOperation.VisionForceDisable))
         {
             desiredState = VisionProcessingState.Disabled;
         }
@@ -183,7 +183,7 @@ public class VisionManager implements IMechanism, IVisionListener<ICentroidVisio
 
         // vision pipeline should only write frames to the stream when we are not having the offboard
         // vision system do streaming
-        boolean enableOffboardStream = this.driver.getDigital(Operation.VisionEnableOffboardStream);
+        boolean enableOffboardStream = this.driver.getDigital(DigitalOperation.VisionEnableOffboardStream);
         this.visionPipeline.setStreamMode(!enableOffboardStream);
     }
 

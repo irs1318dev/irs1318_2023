@@ -1,17 +1,17 @@
 package frc.robot.driver.controltasks;
 
-import frc.robot.driver.Operation;
+import frc.robot.driver.DigitalOperation;
 
 public class CompressorDisableTask extends CompositeOperationTask
 {
-    private static final Operation[] possibleOperations =
+    private static final DigitalOperation[] possibleOperations =
         {
-            Operation.CompressorForceDisable,
+            DigitalOperation.CompressorForceDisable,
         };
  
     public CompressorDisableTask()
     {
-        super(1.0, Operation.CompressorForceDisable, CompressorDisableTask.possibleOperations);
+        super(1.0, DigitalOperation.CompressorForceDisable, CompressorDisableTask.possibleOperations);
     }   
 
     @Override

@@ -1,6 +1,6 @@
 package frc.robot.driver.controltasks;
 
-import frc.robot.driver.Operation;
+import frc.robot.driver.*;
 import frc.robot.driver.common.IControlTask;
 
 /**
@@ -29,7 +29,7 @@ public class PositionStartingTask extends TimedTask implements IControlTask
     public void begin()
     {
         super.begin();
-        this.setAnalogOperationState(Operation.PositionStartingAngle, this.angle);
+        this.setAnalogOperationState(AnalogOperation.PositionStartingAngle, this.angle);
     }
 
     /**
@@ -38,7 +38,7 @@ public class PositionStartingTask extends TimedTask implements IControlTask
     @Override
     public void update()
     {
-        this.setAnalogOperationState(Operation.PositionStartingAngle, this.angle);
+        this.setAnalogOperationState(AnalogOperation.PositionStartingAngle, this.angle);
     }
 
     /**
@@ -48,6 +48,6 @@ public class PositionStartingTask extends TimedTask implements IControlTask
     public void end()
     {
         super.end();
-        this.setAnalogOperationState(Operation.PositionStartingAngle, 0.0);
+        this.setAnalogOperationState(AnalogOperation.PositionStartingAngle, 0.0);
     }
 }

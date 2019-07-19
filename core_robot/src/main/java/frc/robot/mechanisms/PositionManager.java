@@ -3,7 +3,7 @@ package frc.robot.mechanisms;
 import frc.robot.*;
 import frc.robot.common.*;
 import frc.robot.common.robotprovider.*;
-import frc.robot.driver.Operation;
+import frc.robot.driver.AnalogOperation;
 import frc.robot.driver.common.Driver;
 
 import com.google.inject.Inject;
@@ -153,7 +153,7 @@ public class PositionManager implements IMechanism
     @Override
     public void update()
     {
-        double angle = this.driver.getAnalog(Operation.PositionStartingAngle);
+        double angle = this.driver.getAnalog(AnalogOperation.PositionStartingAngle);
         if (angle != 0.0)
         {
             this.startAngle = angle;

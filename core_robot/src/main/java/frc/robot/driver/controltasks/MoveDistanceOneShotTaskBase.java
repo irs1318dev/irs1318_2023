@@ -1,7 +1,7 @@
 package frc.robot.driver.controltasks;
 
 import frc.robot.TuningConstants;
-import frc.robot.driver.Operation;
+import frc.robot.driver.*;
 import frc.robot.driver.common.IControlTask;
 import frc.robot.mechanisms.DriveTrainMechanism;
 
@@ -64,9 +64,9 @@ public abstract class MoveDistanceOneShotTaskBase extends ControlTaskBase implem
     @Override
     public void update()
     {
-        this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, true);
-        this.setAnalogOperationState(Operation.DriveTrainLeftPosition, this.desiredFinalLeftTicks);
-        this.setAnalogOperationState(Operation.DriveTrainRightPosition, this.desiredFinalRightTicks);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainUsePositionalMode, true);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainLeftPosition, this.desiredFinalLeftTicks);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainRightPosition, this.desiredFinalRightTicks);
     }
 
     /**
@@ -77,9 +77,9 @@ public abstract class MoveDistanceOneShotTaskBase extends ControlTaskBase implem
     {
         if (this.resetPositionalOnEnd)
         {
-            this.setDigitalOperationState(Operation.DriveTrainUsePositionalMode, false);
-            this.setAnalogOperationState(Operation.DriveTrainLeftPosition, 0.0);
-            this.setAnalogOperationState(Operation.DriveTrainRightPosition, 0.0);
+            this.setDigitalOperationState(DigitalOperation.DriveTrainUsePositionalMode, false);
+            this.setAnalogOperationState(AnalogOperation.DriveTrainLeftPosition, 0.0);
+            this.setAnalogOperationState(AnalogOperation.DriveTrainRightPosition, 0.0);
         }
     }
 

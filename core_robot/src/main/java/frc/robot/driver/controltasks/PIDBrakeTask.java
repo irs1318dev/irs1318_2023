@@ -1,6 +1,6 @@
 package frc.robot.driver.controltasks;
 
-import frc.robot.driver.Operation;
+import frc.robot.driver.*;
 import frc.robot.driver.common.IControlTask;
 
 public class PIDBrakeTask extends MoveDistanceOneShotTaskBase implements IControlTask
@@ -26,7 +26,7 @@ public class PIDBrakeTask extends MoveDistanceOneShotTaskBase implements IContro
     @Override
     public void update()
     {
-        this.setDigitalOperationState(Operation.DriveTrainUseBrakeMode, true);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainUseBrakeMode, true);
 
         super.update();
     }
@@ -36,7 +36,7 @@ public class PIDBrakeTask extends MoveDistanceOneShotTaskBase implements IContro
     {
         super.end();
 
-        this.setDigitalOperationState(Operation.DriveTrainUseBrakeMode, false);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainUseBrakeMode, false);
     }
 
     /**
