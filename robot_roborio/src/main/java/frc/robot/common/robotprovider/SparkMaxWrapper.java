@@ -117,6 +117,20 @@ public class SparkMaxWrapper implements ISparkMax
         this.pidController.setFF(f, slotId);
     }
 
+    public void setPIDF(double p, double i, double d, double f, double minOutput, double maxOutput, int slotId)
+    {
+        if (this.pidController == null)
+        {
+            this.pidController = this.wrappedObject.getPIDController();
+        }
+
+        this.pidController.setP(p, slotId);
+        this.pidController.setI(i, slotId);
+        this.pidController.setD(d, slotId);
+        this.pidController.setFF(f, slotId);
+        this.pidController.setOutputRange(minOutput, maxOutput);
+    }
+
     public void setPIDF(double p, double i, double d, double f, int izone, int slotId)
     {
         if (this.pidController == null)
@@ -131,7 +145,22 @@ public class SparkMaxWrapper implements ISparkMax
         this.pidController.setIZone(izone, slotId);
     }
 
-    public void setPIDFSmartMotion(double p, double i, double d, double f, int izone, int velocity, int acceleration,  int slotId)
+    public void setPIDF(double p, double i, double d, double f, int izone, double minOutput, double maxOutput, int slotId)
+    {
+        if (this.pidController == null)
+        {
+            this.pidController = this.wrappedObject.getPIDController();
+        }
+
+        this.pidController.setP(p, slotId);
+        this.pidController.setI(i, slotId);
+        this.pidController.setD(d, slotId);
+        this.pidController.setFF(f, slotId);
+        this.pidController.setIZone(izone, slotId);
+        this.pidController.setOutputRange(minOutput, maxOutput);
+    }
+
+    public void setPIDFSmartMotion(double p, double i, double d, double f, int izone, int velocity, int acceleration, int slotId)
     {
         if (this.pidController == null)
         {
@@ -145,6 +174,23 @@ public class SparkMaxWrapper implements ISparkMax
         this.pidController.setIZone(izone, slotId);
         this.pidController.setSmartMotionMaxVelocity(velocity, slotId);
         this.pidController.setSmartMotionMaxAccel(acceleration, slotId);
+    }
+
+    public void setPIDFSmartMotion(double p, double i, double d, double f, int izone, int velocity, int acceleration, double minOutput, double maxOutput, int slotId)
+    {
+        if (this.pidController == null)
+        {
+            this.pidController = this.wrappedObject.getPIDController();
+        }
+
+        this.pidController.setP(p, slotId);
+        this.pidController.setI(i, slotId);
+        this.pidController.setD(d, slotId);
+        this.pidController.setFF(f, slotId);
+        this.pidController.setIZone(izone, slotId);
+        this.pidController.setSmartMotionMaxVelocity(velocity, slotId);
+        this.pidController.setSmartMotionMaxAccel(acceleration, slotId);
+        this.pidController.setOutputRange(minOutput, maxOutput);
     }
 
     public void setForwardLimitSwitch(boolean enabled, boolean normallyOpen)

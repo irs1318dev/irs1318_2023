@@ -23,11 +23,11 @@ public class ButtonMap implements IButtonMap
                 new ShiftDescription(
                     UserInputDevice.Driver,
                     UserInputDeviceButton.JOYSTICK_STICK_TRIGGER_BUTTON));
-            put(
+/*            put(
                 Shift.ButtonPadDebug,
                 new ShiftDescription(
                     UserInputDevice.CoDriver,
-                    UserInputDeviceButton.BUTTON_PAD_BUTTON_16));
+                    UserInputDeviceButton.BUTTON_PAD_BUTTON_16));*/
         }
     };
 
@@ -182,7 +182,7 @@ public class ButtonMap implements IButtonMap
                         AnalogOperation.DriveTrainTurn,
                         AnalogOperation.DriveTrainMoveForward
                     }));
-            put(
+/*            put(
                 MacroOperation.VisionFastCenterAndAdvance,
                 new MacroOperationDescription(
                     UserInputDevice.CoDriver,
@@ -199,7 +199,7 @@ public class ButtonMap implements IButtonMap
                         AnalogOperation.DriveTrainRightPosition,
                         AnalogOperation.DriveTrainTurn,
                         AnalogOperation.DriveTrainMoveForward
-                    }));
+                    }));*/
         }
     };
 

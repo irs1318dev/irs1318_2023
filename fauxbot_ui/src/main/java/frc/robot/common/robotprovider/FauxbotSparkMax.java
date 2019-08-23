@@ -12,6 +12,8 @@ public class FauxbotSparkMax extends FauxbotAdvancedMotorBase implements ISparkM
     private double ki;
     private double kd;
     private double kf;
+    private double minOutput;
+    private double maxOutput;
     private SparkMaxMotorType motorType;
     private int currentSlot;
 
@@ -23,6 +25,8 @@ public class FauxbotSparkMax extends FauxbotAdvancedMotorBase implements ISparkM
         this.currentSlot = 0;
         this.motorType = motorType;
         this.innerEncoder = new FauxbotEncoder(new FauxbotSensorConnection(FauxbotSensorConnection.SensorConnector.CAN, this.connection.getPort()));
+        this.minOutput = -1.0;
+        this.maxOutput = 1.0;
     }
 
     public void setControlMode(SparkMaxControlMode mode)
@@ -48,12 +52,14 @@ public class FauxbotSparkMax extends FauxbotAdvancedMotorBase implements ISparkM
         this.resetPID();
     }
 
-    public void setPIDFSmartMotion(double p, double i, double d, double f, int izone, int velocity, int acceleration, int slotId)
+    public void setPIDF(double p, double i, double d, double f, double minOutput, double maxOutput, int slotId)
     {
         this.kp = p;
         this.ki = i;
         this.kd = d;
         this.kf = f;
+        this.minOutput = minOutput;
+        this.maxOutput = maxOutput;
         this.resetPID();
     }
 
@@ -63,6 +69,37 @@ public class FauxbotSparkMax extends FauxbotAdvancedMotorBase implements ISparkM
         this.ki = i;
         this.kd = d;
         this.kf = f;
+        this.resetPID();
+    }
+
+    public void setPIDF(double p, double i, double d, double f, int izone, double minOutput, double maxOutput, int slotId)
+    {
+        this.kp = p;
+        this.ki = i;
+        this.kd = d;
+        this.kf = f;
+        this.minOutput = minOutput;
+        this.maxOutput = maxOutput;
+        this.resetPID();
+    }
+
+    public void setPIDFSmartMotion(double p, double i, double d, double f, int izone, int velocity, int acceleration, int slotId)
+    {
+        this.kp = p;
+        this.ki = i;
+        this.kd = d;
+        this.kf = f;
+        this.resetPID();
+    }
+
+    public void setPIDFSmartMotion(double p, double i, double d, double f, int izone, int velocity, int acceleration, double minOutput, double maxOutput, int slotId)
+    {
+        this.kp = p;
+        this.ki = i;
+        this.kd = d;
+        this.kf = f;
+        this.minOutput = minOutput;
+        this.maxOutput = maxOutput;
         this.resetPID();
     }
 
