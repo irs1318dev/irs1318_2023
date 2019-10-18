@@ -15,6 +15,7 @@ public class ButtonMapVerifier
         ButtonMapVerifier.instance.VerifyInternal(buttonMap);
     }
 
+    @SuppressWarnings(value="")
     private void VerifyInternal(IButtonMap buttonMap)
     {
         if (TuningConstants.THROW_EXCEPTIONS)
@@ -202,6 +203,27 @@ public class ButtonMapVerifier
             this.button = button;
             this.pov = pov;
             this.axis = axis;
+        }
+
+        @Override
+        public int hashCode()
+        {
+            return this.device.hashCode() ^ this.button.hashCode() ^ this.pov ^ this.axis.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object obj)
+        {
+            if (!(obj instanceof ButtonCombination))
+            {
+                return false;
+            }
+
+            ButtonCombination other = (ButtonCombination)obj;
+            return this.device == other.device &&
+                this.button == other.button &&
+                this.pov == other.pov &&
+                this.axis == other.axis;
         }
     }
 }

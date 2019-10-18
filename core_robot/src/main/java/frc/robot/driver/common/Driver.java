@@ -108,7 +108,7 @@ public class Driver
         for (MacroOperationDescription description : macroSchema)
         {
             this.macroStateMap.put(
-                description.getOperation(),
+                (MacroOperation)description.getOperation(),
                 new MacroOperationState(
                     description,
                     this.operationStateMap,
