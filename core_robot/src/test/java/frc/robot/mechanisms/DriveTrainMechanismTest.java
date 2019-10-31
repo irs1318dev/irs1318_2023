@@ -59,7 +59,7 @@ public class DriveTrainMechanismTest
         verify(leftMotor).setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
         verify(leftMotor).setFeedbackFramePeriod(5);
         verify(leftMotor).setPIDFFramePeriod(5);
-        verify(leftMotor).configureVelocityMeasurements();
+        verify(leftMotor).configureVelocityMeasurements(eq(10), eq(32));
         verify(leftMotor).setSelectedSlot(eq(0));
         verify(leftFollowerMotor1).setNeutralMode(eq(MotorNeutralMode.Brake));
         verify(leftFollowerMotor1).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_LEFT_FOLLOWER1_INVERT_OUTPUT));
@@ -73,7 +73,7 @@ public class DriveTrainMechanismTest
         verify(rightMotor).setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
         verify(rightMotor).setFeedbackFramePeriod(5);
         verify(rightMotor).setPIDFFramePeriod(5);
-        verify(rightMotor).configureVelocityMeasurements();
+        verify(rightMotor).configureVelocityMeasurements(eq(10), eq(32));
         verify(rightMotor).setSelectedSlot(eq(0));
         verify(rightFollowerMotor1).setNeutralMode(eq(MotorNeutralMode.Brake));
         verify(rightFollowerMotor1).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_RIGHT_FOLLOWER1_INVERT_OUTPUT));
@@ -160,7 +160,7 @@ public class DriveTrainMechanismTest
         verify(leftMotor).setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
         verify(leftMotor).setFeedbackFramePeriod(5);
         verify(leftMotor).setPIDFFramePeriod(5);
-        verify(leftMotor).configureVelocityMeasurements();
+        verify(leftMotor).configureVelocityMeasurements(eq(10), eq(32));
         verify(leftMotor).setSelectedSlot(eq(0));
         verify(leftFollowerMotor1).setNeutralMode(eq(MotorNeutralMode.Brake));
         verify(leftFollowerMotor1).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_LEFT_FOLLOWER1_INVERT_OUTPUT));
@@ -174,7 +174,7 @@ public class DriveTrainMechanismTest
         verify(rightMotor).setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
         verify(rightMotor).setFeedbackFramePeriod(5);
         verify(rightMotor).setPIDFFramePeriod(5);
-        verify(rightMotor).configureVelocityMeasurements();
+        verify(rightMotor).configureVelocityMeasurements(eq(10), eq(32));
         verify(rightMotor).setSelectedSlot(eq(0));
         verify(rightFollowerMotor1).setNeutralMode(eq(MotorNeutralMode.Brake));
         verify(rightFollowerMotor1).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_RIGHT_FOLLOWER1_INVERT_OUTPUT));

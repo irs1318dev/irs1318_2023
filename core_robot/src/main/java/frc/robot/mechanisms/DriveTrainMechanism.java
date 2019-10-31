@@ -85,7 +85,7 @@ public class DriveTrainMechanism implements IMechanism
         this.leftMotor.setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
         this.leftMotor.setFeedbackFramePeriod(DriveTrainMechanism.FRAME_PERIOD_MS);
         this.leftMotor.setPIDFFramePeriod(DriveTrainMechanism.FRAME_PERIOD_MS);
-        this.leftMotor.configureVelocityMeasurements();
+        this.leftMotor.configureVelocityMeasurements(10, 32);
         this.leftMotor.setPIDF(
             TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KP,
             TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KI,
@@ -110,7 +110,7 @@ public class DriveTrainMechanism implements IMechanism
         this.rightMotor.setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
         this.rightMotor.setFeedbackFramePeriod(DriveTrainMechanism.FRAME_PERIOD_MS);
         this.rightMotor.setPIDFFramePeriod(DriveTrainMechanism.FRAME_PERIOD_MS);
-        this.rightMotor.configureVelocityMeasurements();
+        this.rightMotor.configureVelocityMeasurements(10, 32);
         this.rightMotor.setPIDF(
             TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KP,
             TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KI,

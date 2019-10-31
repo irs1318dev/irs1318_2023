@@ -50,7 +50,7 @@ public class FauxbotTalonSRX extends FauxbotAdvancedMotorBase implements ITalonS
     {
     }
 
-    public void configureVelocityMeasurements()
+    public void configureVelocityMeasurements(int periodMS, int windowSize)
     {
     }
 

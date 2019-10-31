@@ -16,7 +16,9 @@ public interface ISparkMax
     void setForwardLimitSwitch(boolean enabled, boolean normallyOpen);
     void setReverseLimitSwitch(boolean enabled, boolean normallyOpen);
     void setInvertOutput(boolean invert);
+    void setInvertSensor(boolean invert);
     void setNeutralMode(MotorNeutralMode neutralMode);
+    void setVelocityMeasurements(int periodMS, int windowSize);
     void stop();
     void setPosition(double position);
     void reset();

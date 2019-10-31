@@ -122,11 +122,19 @@ public class FauxbotSparkMax extends FauxbotAdvancedMotorBase implements ISparkM
     {
     }
 
+    public void setInvertSensor(boolean flip)
+    {
+    }
+
     public void setNeutralMode(MotorNeutralMode neutralMode)
     {
     }
 
     public void setVoltageCompensation(boolean enabled, double maxVoltage)
+    {
+    }
+
+    public void setVelocityMeasurements(int periodMS, int windowSize)
     {
     }
 

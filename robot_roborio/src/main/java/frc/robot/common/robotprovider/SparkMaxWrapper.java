@@ -104,6 +104,12 @@ public class SparkMaxWrapper implements ISparkMax
         this.wrappedObject.setPeriodicFramePeriod(type, periodMS);
     }
 
+    public void setVelocityMeasurements(int periodMS, int windowSize)
+    {
+        this.wrappedEncoder.setAverageDepth(windowSize);
+        this.wrappedEncoder.setMeasurementPeriod(periodMS);
+    }
+
     public void setPIDF(double p, double i, double d, double f, int slotId)
     {
         if (this.pidController == null)
@@ -220,6 +226,11 @@ public class SparkMaxWrapper implements ISparkMax
     public void setInvertOutput(boolean invert)
     {
         this.wrappedObject.setInverted(invert);
+    }
+
+    public void setInvertSensor(boolean invert)
+    {
+        this.wrappedEncoder.setInverted(invert);
     }
 
     public void setNeutralMode(MotorNeutralMode neutralMode)
