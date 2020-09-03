@@ -1,9 +1,8 @@
 package frc.robot.driver.controltasks;
 
 import frc.robot.driver.*;
-import frc.robot.driver.common.IControlTask;
 
-public class PIDBrakeTask extends MoveDistanceOneShotTaskBase implements IControlTask
+public class PIDBrakeTask extends MoveDistanceOneShotTaskBase
 {
     /**
      * Initializes a new PIDBrakeTask

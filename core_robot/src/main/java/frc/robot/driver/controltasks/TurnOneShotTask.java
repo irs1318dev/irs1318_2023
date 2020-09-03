@@ -1,13 +1,12 @@
 package frc.robot.driver.controltasks;
 
 import frc.robot.HardwareConstants;
-import frc.robot.driver.common.IControlTask;
 
 /**
  * Task that turns the robot a certain amount clockwise or counterclockwise in-place using Positional PID.
  * 
  */
-public class TurnOneShotTask extends MoveDistanceOneShotTaskBase implements IControlTask
+public class TurnOneShotTask extends MoveDistanceOneShotTaskBase
 {
     private final double degrees;
 

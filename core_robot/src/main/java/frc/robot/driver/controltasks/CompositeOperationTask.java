@@ -2,13 +2,12 @@ package frc.robot.driver.controltasks;
 
 import frc.robot.TuningConstants;
 import frc.robot.driver.DigitalOperation;
-import frc.robot.driver.common.IControlTask;
 
 /**
  * Task that applies a single operation from a group of related operations for a short period of time.
  * 
  */
-public abstract class CompositeOperationTask extends TimedTask implements IControlTask
+public abstract class CompositeOperationTask extends TimedTask
 {
     private final DigitalOperation toPerform;
     private final DigitalOperation[] possibleOperations;

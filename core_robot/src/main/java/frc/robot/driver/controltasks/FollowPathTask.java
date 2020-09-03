@@ -5,12 +5,11 @@ import java.util.List;
 import frc.robot.HardwareConstants;
 import frc.robot.common.robotprovider.*;
 import frc.robot.driver.*;
-import frc.robot.driver.common.IControlTask;
 import frc.robot.driver.common.PathStep;
 import frc.robot.mechanisms.DriveTrainMechanism;
 import frc.robot.mechanisms.PositionManager;
 
-public class FollowPathTask extends ControlTaskBase implements IControlTask
+public class FollowPathTask extends ControlTaskBase
 {
     private static final double Timestep = 0.01;
     private final String pathName;

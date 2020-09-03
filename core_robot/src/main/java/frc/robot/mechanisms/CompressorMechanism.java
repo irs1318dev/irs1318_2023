@@ -2,6 +2,7 @@ package frc.robot.mechanisms;
 
 import javax.inject.Singleton;
 
+import frc.robot.ElectronicsConstants;
 import frc.robot.common.IMechanism;
 import frc.robot.common.robotprovider.ICompressor;
 import frc.robot.common.robotprovider.IRobotProvider;
@@ -33,7 +34,7 @@ public class CompressorMechanism implements IMechanism
     @Inject
     public CompressorMechanism(IRobotProvider provider)
     {
-        this.compressor = provider.getCompressor();
+        this.compressor = provider.getCompressor(ElectronicsConstants.PCM_A_MODULE);
         this.isStarted = false;
     }
 

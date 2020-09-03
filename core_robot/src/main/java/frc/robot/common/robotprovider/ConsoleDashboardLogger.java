@@ -1,21 +1,20 @@
 package frc.robot.common.robotprovider;
 
+import frc.robot.LoggingKey;
+
 /**
  * Logger that logs current values to a dashboard.
- *
  */
-public class ConsoleDashboardLogger extends StringLogger implements IDashboardLogger
+public class ConsoleDashboardLogger extends StringLogger
 {
     /**
-     * Write a string to the smart dashboard
-     * @param component to log for
+     * Write a string to the log
      * @param key to write to
      * @param value to write
      */
     @Override
-    public void logString(String component, String key, String value)
+    public void logString(LoggingKey key, String value)
     {
-        String logKey = String.format("%s.%s", component, key);
-        System.out.println(logKey + ": " + value);
+        System.out.println(key.value + ": " + value);
     }
 }

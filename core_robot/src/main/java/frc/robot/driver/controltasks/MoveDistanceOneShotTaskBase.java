@@ -2,14 +2,13 @@ package frc.robot.driver.controltasks;
 
 import frc.robot.TuningConstants;
 import frc.robot.driver.*;
-import frc.robot.driver.common.IControlTask;
 import frc.robot.mechanisms.DriveTrainMechanism;
 
 /**
  * Abstract class defining a task that moves the robot a certain distance using Positional PID.
  * 
  */
-public abstract class MoveDistanceOneShotTaskBase extends ControlTaskBase implements IControlTask
+public abstract class MoveDistanceOneShotTaskBase extends ControlTaskBase
 {
     private final boolean resetPositionalOnEnd;
     private DriveTrainMechanism driveTrain;

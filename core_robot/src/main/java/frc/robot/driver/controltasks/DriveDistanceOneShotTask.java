@@ -1,12 +1,10 @@
 package frc.robot.driver.controltasks;
 
-import frc.robot.driver.common.IControlTask;
-
 /**
  * Task that drives the robot a certain distance directly forward or backward using Positional PID.
  * 
  */
-public class DriveDistanceOneShotTask extends MoveDistanceOneShotTaskBase implements IControlTask
+public class DriveDistanceOneShotTask extends MoveDistanceOneShotTaskBase
 {
     private final double distance;
 

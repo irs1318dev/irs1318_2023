@@ -1,13 +1,12 @@
 package frc.robot.driver.controltasks;
 
 import frc.robot.driver.*;
-import frc.robot.driver.common.IControlTask;
 
 /**
  * Task that applies the starting angle
  * 
  */
-public class PositionStartingTask extends TimedTask implements IControlTask
+public class PositionStartingTask extends TimedTask
 {
     private final double angle;
 

@@ -4,7 +4,6 @@ import frc.robot.*;
 import frc.robot.common.*;
 import frc.robot.common.robotprovider.*;
 import frc.robot.driver.common.Driver;
-import frc.robot.vision.common.VisionProcessingState;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -18,38 +17,28 @@ import com.google.inject.Singleton;
 @Singleton
 public class IndicatorLightManager implements IMechanism
 {
-    private static final double FlashingFrequency = 0.2;
+    private enum LightMode
+    {
+        Off,
+        Flashing,
+        On,
+    }
+
+    private static final double FlashingFrequency = 0.5;
     private static final double FlashingComparisonFrequency = IndicatorLightManager.FlashingFrequency / 2.0;
 
-    private final VisionManager visionManager;
     private final ITimer timer;
-    private final IDashboardLogger logger;
 
-    private final IRelay visionIndicator;
+    private final IDigitalOutput xIndicator;
 
-    private LightMode visionMode;
-
-    /**
-     * Initializes a new IndicatorLightManager
-     * @param provider for obtaining electronics objects
-     * @param timer to use
-     * @param grabberMechanism for grabber reference
-     * @param visionManager for vision reference
-     */
     @Inject
     public IndicatorLightManager(
         IRobotProvider provider,
-        IDashboardLogger logger,
-        ITimer timer,
-        VisionManager visionManager)
+        ITimer timer)
     {
-        this.visionManager = visionManager;
         this.timer = timer;
-        this.logger = logger;
 
-        this.visionIndicator = provider.getRelay(ElectronicsConstants.INDICATOR_VISION_RELAY_CHANNEL);
-
-        this.visionMode = LightMode.Off;
+        this.xIndicator = provider.getDigitalOutput(ElectronicsConstants.INDICATOR_LIGHT_X_DIO);
     }
 
     /**
@@ -66,75 +55,45 @@ public class IndicatorLightManager implements IMechanism
     {
     }
 
-    /**
-     * calculate the various outputs to use based on the inputs and apply them to the outputs for the relevant mechanism
-     */
     @Override
     public void update()
     {
-        if (this.visionManager != null &&
-            this.visionManager.getState() != VisionProcessingState.Disabled &&
-            this.visionManager.getCenter() != null)
+        LightMode spunUpMode = LightMode.Off;
+        if (true == false) // some condition
         {
-            if (this.visionManager.getMeasuredDistance() > TuningConstants.INDICATOR_LIGHT_VISION_CONSIDERATION_DISTANCE_RANGE)
-            {
-                this.visionMode = LightMode.Off;
-            }
-            else if (Math.abs(this.visionManager.getMeasuredAngle() - this.visionManager.getDesiredAngle()) < TuningConstants.INDICATOR_LIGHT_VISION_ACCEPTABLE_ANGLE_RANGE)
-            {
-                this.visionMode = LightMode.On;
-            }
-            else
-            {
-                this.visionMode = LightMode.Flashing;
-            }
-        }
-        else
-        {
-            this.visionMode = LightMode.Off;
+            spunUpMode = LightMode.On;
         }
 
-        this.logger.logBoolean("ind", "vision", this.visionMode != LightMode.Off);
-        this.controlLight(this.visionIndicator, this.visionMode);
+        this.controlLight(this.xIndicator, spunUpMode);
     }
 
-    /**
-     * stop the relevant component
-     */
     @Override
     public void stop()
     {
-        this.visionIndicator.set(RelayValue.Off);
+        this.xIndicator.set(false);
     }
 
-    private void controlLight(IRelay indicatorLight, LightMode mode)
+    private void controlLight(IDigitalOutput indicatorLight, LightMode mode)
     {
         if (mode == LightMode.On)
         {
-            indicatorLight.set(RelayValue.Forward);
+            indicatorLight.set(true);
         }
         else if (mode == LightMode.Off)
         {
-            indicatorLight.set(RelayValue.Off);
+            indicatorLight.set(false);
         }
         else
         {
             double currentTime = this.timer.get();
             if (currentTime % IndicatorLightManager.FlashingFrequency >= IndicatorLightManager.FlashingComparisonFrequency)
             {
-                indicatorLight.set(RelayValue.Forward);
+                indicatorLight.set(true);
             }
             else
             {
-                indicatorLight.set(RelayValue.Off);
+                indicatorLight.set(false);
             }
         }
-    }
-
-    private enum LightMode
-    {
-        Off,
-        Flashing,
-        On,
     }
 }

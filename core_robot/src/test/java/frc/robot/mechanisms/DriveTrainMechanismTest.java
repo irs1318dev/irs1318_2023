@@ -8,26 +8,24 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import org.junit.jupiter.api.Test;
 import frc.robot.*;
+import frc.robot.common.LoggingManager;
 import frc.robot.common.robotprovider.*;
 import frc.robot.driver.AnalogOperation;
 import frc.robot.driver.DigitalOperation;
 import frc.robot.driver.common.Driver;
-import frc.robot.mechanisms.DriveTrainMechanism;
 
 public class DriveTrainMechanismTest
 {
     @Test
     public void testSetPower_Zero()
     {
-        IDashboardLogger logger = mock(IDashboardLogger.class);
+        LoggingManager logger = mock(LoggingManager.class);
         ITimer timer = mock(ITimer.class);
         TestProvider testProvider = new TestProvider();
-        ITalonSRX leftMotor = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_MASTER_CAN_ID);
-        ITalonSRX rightMotor = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_MASTER_CAN_ID);
-        IVictorSPX leftFollowerMotor1 = testProvider.getVictorSPX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER1_CAN_ID);
-        IVictorSPX rightFollowerMotor1 = testProvider.getVictorSPX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER1_CAN_ID);
-        ITalonSRX leftFollowerMotor2 = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER2_CAN_ID);
-        ITalonSRX rightFollowerMotor2 = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER2_CAN_ID);
+        ITalonFX leftMotor = testProvider.getTalonFX(ElectronicsConstants.DRIVETRAIN_LEFT_MASTER_CAN_ID);
+        ITalonFX rightMotor = testProvider.getTalonFX(ElectronicsConstants.DRIVETRAIN_RIGHT_MASTER_CAN_ID);
+        ITalonFX leftFollowerMotor = testProvider.getTalonFX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER_CAN_ID);
+        ITalonFX rightFollowerMotor = testProvider.getTalonFX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER_CAN_ID);
 
         Driver driver = mock(Driver.class);
 
@@ -56,31 +54,33 @@ public class DriveTrainMechanismTest
         verify(leftMotor).setNeutralMode(eq(MotorNeutralMode.Brake));
         verify(leftMotor).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_LEFT_MASTER_INVERT_OUTPUT));
         verify(leftMotor).setInvertSensor(eq(HardwareConstants.DRIVETRAIN_LEFT_INVERT_SENSOR));
-        verify(leftMotor).setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
+        verify(leftMotor).setSensorType(TalonXFeedbackDevice.IntegratedSensor);
+        verify(leftMotor).setVoltageCompensation(TuningConstants.DRIVETRAIN_VOLTAGE_COMPENSATION_ENABLED, TuningConstants.DRIVETRAIN_VOLTAGE_COMPENSATION);
+        verify(leftMotor).setSupplyCurrentLimit(TuningConstants.DRIVETRAIN_SUPPLY_CURRENT_LIMITING_ENABLED, TuningConstants.DRIVETRAIN_SUPPLY_CURRENT_MAX, TuningConstants.DRIVETRAIN_SUPPLY_TRIGGER_CURRENT, TuningConstants.DRIVETRAIN_SUPPLY_TRIGGER_DURATION);
         verify(leftMotor).setFeedbackFramePeriod(5);
         verify(leftMotor).setPIDFFramePeriod(5);
         verify(leftMotor).configureVelocityMeasurements(eq(10), eq(32));
         verify(leftMotor).setSelectedSlot(eq(0));
-        verify(leftFollowerMotor1).setNeutralMode(eq(MotorNeutralMode.Brake));
-        verify(leftFollowerMotor1).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_LEFT_FOLLOWER1_INVERT_OUTPUT));
-        verify(leftFollowerMotor1).follow(eq(leftMotor));
-        verify(leftFollowerMotor2).setNeutralMode(eq(MotorNeutralMode.Brake));
-        verify(leftFollowerMotor2).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_LEFT_FOLLOWER2_INVERT_OUTPUT));
-        verify(leftFollowerMotor2).follow(eq(leftMotor));
+        verify(leftFollowerMotor).setNeutralMode(eq(MotorNeutralMode.Brake));
+        verify(leftFollowerMotor).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_LEFT_FOLLOWER1_INVERT_OUTPUT));
+        verify(leftFollowerMotor).follow(eq(leftMotor));
+        verify(leftFollowerMotor).setVoltageCompensation(TuningConstants.DRIVETRAIN_VOLTAGE_COMPENSATION_ENABLED, TuningConstants.DRIVETRAIN_VOLTAGE_COMPENSATION);
+        verify(leftFollowerMotor).setSupplyCurrentLimit(TuningConstants.DRIVETRAIN_SUPPLY_CURRENT_LIMITING_ENABLED, TuningConstants.DRIVETRAIN_SUPPLY_CURRENT_MAX, TuningConstants.DRIVETRAIN_SUPPLY_TRIGGER_CURRENT, TuningConstants.DRIVETRAIN_SUPPLY_TRIGGER_DURATION);
         verify(rightMotor).setNeutralMode(eq(MotorNeutralMode.Brake));
         verify(rightMotor).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_RIGHT_MASTER_INVERT_OUTPUT));
         verify(rightMotor).setInvertSensor(eq(HardwareConstants.DRIVETRAIN_RIGHT_INVERT_SENSOR));
-        verify(rightMotor).setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
+        verify(rightMotor).setSensorType(TalonXFeedbackDevice.IntegratedSensor);
+        verify(rightMotor).setVoltageCompensation(TuningConstants.DRIVETRAIN_VOLTAGE_COMPENSATION_ENABLED, TuningConstants.DRIVETRAIN_VOLTAGE_COMPENSATION);
+        verify(rightMotor).setSupplyCurrentLimit(TuningConstants.DRIVETRAIN_SUPPLY_CURRENT_LIMITING_ENABLED, TuningConstants.DRIVETRAIN_SUPPLY_CURRENT_MAX, TuningConstants.DRIVETRAIN_SUPPLY_TRIGGER_CURRENT, TuningConstants.DRIVETRAIN_SUPPLY_TRIGGER_DURATION);
         verify(rightMotor).setFeedbackFramePeriod(5);
         verify(rightMotor).setPIDFFramePeriod(5);
         verify(rightMotor).configureVelocityMeasurements(eq(10), eq(32));
         verify(rightMotor).setSelectedSlot(eq(0));
-        verify(rightFollowerMotor1).setNeutralMode(eq(MotorNeutralMode.Brake));
-        verify(rightFollowerMotor1).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_RIGHT_FOLLOWER1_INVERT_OUTPUT));
-        verify(rightFollowerMotor1).follow(eq(rightMotor));
-        verify(rightFollowerMotor2).setNeutralMode(eq(MotorNeutralMode.Brake));
-        verify(rightFollowerMotor2).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_RIGHT_FOLLOWER2_INVERT_OUTPUT));
-        verify(rightFollowerMotor2).follow(eq(rightMotor));
+        verify(rightFollowerMotor).setNeutralMode(eq(MotorNeutralMode.Brake));
+        verify(rightFollowerMotor).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_RIGHT_FOLLOWER1_INVERT_OUTPUT));
+        verify(rightFollowerMotor).follow(eq(rightMotor));
+        verify(rightFollowerMotor).setVoltageCompensation(TuningConstants.DRIVETRAIN_VOLTAGE_COMPENSATION_ENABLED, TuningConstants.DRIVETRAIN_VOLTAGE_COMPENSATION);
+        verify(rightFollowerMotor).setSupplyCurrentLimit(TuningConstants.DRIVETRAIN_SUPPLY_CURRENT_LIMITING_ENABLED, TuningConstants.DRIVETRAIN_SUPPLY_CURRENT_MAX, TuningConstants.DRIVETRAIN_SUPPLY_TRIGGER_CURRENT, TuningConstants.DRIVETRAIN_SUPPLY_TRIGGER_DURATION);
 
         // from setDriver:
         verify(leftMotor).setPIDF(
@@ -112,24 +112,20 @@ public class DriveTrainMechanismTest
 
         verifyNoMoreInteractions(leftMotor);
         verifyNoMoreInteractions(rightMotor);
-        verifyNoMoreInteractions(leftFollowerMotor1);
-        verifyNoMoreInteractions(rightFollowerMotor1);
-        verifyNoMoreInteractions(leftFollowerMotor2);
-        verifyNoMoreInteractions(rightFollowerMotor2);
+        verifyNoMoreInteractions(leftFollowerMotor);
+        verifyNoMoreInteractions(rightFollowerMotor);
     }
 
     @Test
     public void testStop()
     {
-        IDashboardLogger logger = mock(IDashboardLogger.class);
+        LoggingManager logger = mock(LoggingManager.class);
         ITimer timer = mock(ITimer.class);
         TestProvider testProvider = new TestProvider();
-        ITalonSRX leftMotor = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_MASTER_CAN_ID);
-        ITalonSRX rightMotor = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_MASTER_CAN_ID);
-        IVictorSPX leftFollowerMotor1 = testProvider.getVictorSPX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER1_CAN_ID);
-        IVictorSPX rightFollowerMotor1 = testProvider.getVictorSPX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER1_CAN_ID);
-        ITalonSRX leftFollowerMotor2 = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER2_CAN_ID);
-        ITalonSRX rightFollowerMotor2 = testProvider.getTalonSRX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER2_CAN_ID);
+        ITalonFX leftMotor = testProvider.getTalonFX(ElectronicsConstants.DRIVETRAIN_LEFT_MASTER_CAN_ID);
+        ITalonFX rightMotor = testProvider.getTalonFX(ElectronicsConstants.DRIVETRAIN_RIGHT_MASTER_CAN_ID);
+        ITalonFX leftFollowerMotor = testProvider.getTalonFX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER_CAN_ID);
+        ITalonFX rightFollowerMotor = testProvider.getTalonFX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER_CAN_ID);
 
         Driver driver = mock(Driver.class);
 
@@ -157,31 +153,33 @@ public class DriveTrainMechanismTest
         verify(leftMotor).setNeutralMode(eq(MotorNeutralMode.Brake));
         verify(leftMotor).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_LEFT_MASTER_INVERT_OUTPUT));
         verify(leftMotor).setInvertSensor(eq(HardwareConstants.DRIVETRAIN_LEFT_INVERT_SENSOR));
-        verify(leftMotor).setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
+        verify(leftMotor).setSensorType(TalonXFeedbackDevice.IntegratedSensor);
+        verify(leftMotor).setVoltageCompensation(TuningConstants.DRIVETRAIN_VOLTAGE_COMPENSATION_ENABLED, TuningConstants.DRIVETRAIN_VOLTAGE_COMPENSATION);
+        verify(leftMotor).setSupplyCurrentLimit(TuningConstants.DRIVETRAIN_SUPPLY_CURRENT_LIMITING_ENABLED, TuningConstants.DRIVETRAIN_SUPPLY_CURRENT_MAX, TuningConstants.DRIVETRAIN_SUPPLY_TRIGGER_CURRENT, TuningConstants.DRIVETRAIN_SUPPLY_TRIGGER_DURATION);
         verify(leftMotor).setFeedbackFramePeriod(5);
         verify(leftMotor).setPIDFFramePeriod(5);
         verify(leftMotor).configureVelocityMeasurements(eq(10), eq(32));
         verify(leftMotor).setSelectedSlot(eq(0));
-        verify(leftFollowerMotor1).setNeutralMode(eq(MotorNeutralMode.Brake));
-        verify(leftFollowerMotor1).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_LEFT_FOLLOWER1_INVERT_OUTPUT));
-        verify(leftFollowerMotor1).follow(eq(leftMotor));
-        verify(leftFollowerMotor2).setNeutralMode(eq(MotorNeutralMode.Brake));
-        verify(leftFollowerMotor2).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_LEFT_FOLLOWER2_INVERT_OUTPUT));
-        verify(leftFollowerMotor2).follow(eq(leftMotor));
+        verify(leftFollowerMotor).setNeutralMode(eq(MotorNeutralMode.Brake));
+        verify(leftFollowerMotor).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_LEFT_FOLLOWER1_INVERT_OUTPUT));
+        verify(leftFollowerMotor).follow(eq(leftMotor));
+        verify(leftFollowerMotor).setVoltageCompensation(TuningConstants.DRIVETRAIN_VOLTAGE_COMPENSATION_ENABLED, TuningConstants.DRIVETRAIN_VOLTAGE_COMPENSATION);
+        verify(leftFollowerMotor).setSupplyCurrentLimit(TuningConstants.DRIVETRAIN_SUPPLY_CURRENT_LIMITING_ENABLED, TuningConstants.DRIVETRAIN_SUPPLY_CURRENT_MAX, TuningConstants.DRIVETRAIN_SUPPLY_TRIGGER_CURRENT, TuningConstants.DRIVETRAIN_SUPPLY_TRIGGER_DURATION);
         verify(rightMotor).setNeutralMode(eq(MotorNeutralMode.Brake));
         verify(rightMotor).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_RIGHT_MASTER_INVERT_OUTPUT));
         verify(rightMotor).setInvertSensor(eq(HardwareConstants.DRIVETRAIN_RIGHT_INVERT_SENSOR));
-        verify(rightMotor).setSensorType(TalonSRXFeedbackDevice.QuadEncoder);
+        verify(rightMotor).setSensorType(TalonXFeedbackDevice.IntegratedSensor);
+        verify(rightMotor).setVoltageCompensation(TuningConstants.DRIVETRAIN_VOLTAGE_COMPENSATION_ENABLED, TuningConstants.DRIVETRAIN_VOLTAGE_COMPENSATION);
+        verify(rightMotor).setSupplyCurrentLimit(TuningConstants.DRIVETRAIN_SUPPLY_CURRENT_LIMITING_ENABLED, TuningConstants.DRIVETRAIN_SUPPLY_CURRENT_MAX, TuningConstants.DRIVETRAIN_SUPPLY_TRIGGER_CURRENT, TuningConstants.DRIVETRAIN_SUPPLY_TRIGGER_DURATION);
         verify(rightMotor).setFeedbackFramePeriod(5);
         verify(rightMotor).setPIDFFramePeriod(5);
         verify(rightMotor).configureVelocityMeasurements(eq(10), eq(32));
         verify(rightMotor).setSelectedSlot(eq(0));
-        verify(rightFollowerMotor1).setNeutralMode(eq(MotorNeutralMode.Brake));
-        verify(rightFollowerMotor1).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_RIGHT_FOLLOWER1_INVERT_OUTPUT));
-        verify(rightFollowerMotor1).follow(eq(rightMotor));
-        verify(rightFollowerMotor2).setNeutralMode(eq(MotorNeutralMode.Brake));
-        verify(rightFollowerMotor2).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_RIGHT_FOLLOWER2_INVERT_OUTPUT));
-        verify(rightFollowerMotor2).follow(eq(rightMotor));
+        verify(rightFollowerMotor).setNeutralMode(eq(MotorNeutralMode.Brake));
+        verify(rightFollowerMotor).setInvertOutput(eq(HardwareConstants.DRIVETRAIN_RIGHT_FOLLOWER1_INVERT_OUTPUT));
+        verify(rightFollowerMotor).follow(eq(rightMotor));
+        verify(rightFollowerMotor).setVoltageCompensation(TuningConstants.DRIVETRAIN_VOLTAGE_COMPENSATION_ENABLED, TuningConstants.DRIVETRAIN_VOLTAGE_COMPENSATION);
+        verify(rightFollowerMotor).setSupplyCurrentLimit(TuningConstants.DRIVETRAIN_SUPPLY_CURRENT_LIMITING_ENABLED, TuningConstants.DRIVETRAIN_SUPPLY_CURRENT_MAX, TuningConstants.DRIVETRAIN_SUPPLY_TRIGGER_CURRENT, TuningConstants.DRIVETRAIN_SUPPLY_TRIGGER_DURATION);
 
         // from setDriver:
         verify(leftMotor).setPIDF(
@@ -207,9 +205,7 @@ public class DriveTrainMechanismTest
 
         verifyNoMoreInteractions(leftMotor);
         verifyNoMoreInteractions(rightMotor);
-        verifyNoMoreInteractions(leftFollowerMotor1);
-        verifyNoMoreInteractions(rightFollowerMotor1);
-        verifyNoMoreInteractions(leftFollowerMotor2);
-        verifyNoMoreInteractions(rightFollowerMotor2);
+        verifyNoMoreInteractions(leftFollowerMotor);
+        verifyNoMoreInteractions(rightFollowerMotor);
     }
 }

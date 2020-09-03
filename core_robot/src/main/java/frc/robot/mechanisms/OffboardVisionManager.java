@@ -1,8 +1,9 @@
 package frc.robot.mechanisms;
 
+import frc.robot.*;
 import frc.robot.common.*;
 import frc.robot.common.robotprovider.*;
-import frc.robot.driver.DigitalOperation;
+import frc.robot.driver.*;
 import frc.robot.driver.common.*;
 
 import com.google.inject.Inject;
@@ -17,53 +18,34 @@ import com.google.inject.Singleton;
 @Singleton
 public class OffboardVisionManager implements IMechanism
 {
-    private static final String logName = "rpi";
-
     private final INetworkTableProvider networkTable;
-    private final IDashboardLogger logger;
+    private final ILogger logger;
+
+    private final IDigitalOutput ringLight;
 
     private Driver driver;
 
-    private double ballCenterX;
-    private double ballCenterY;
-    private double ballDistance;
-    private String ballDirection;
+    private double centerX;
+    private double centerY;
+
+    private Double distance;
+    private Double horizontalAngle;
 
     /**
      * Initializes a new OffboardVisionManager
-     * @param provider for obtaining electronics objects
      * @param logger for logging to smart dashboard
+     * @param provider for obtaining electronics objects
      */
     @Inject
-    public OffboardVisionManager(IRobotProvider provider, IDashboardLogger logger)
+    public OffboardVisionManager(LoggingManager logger, IRobotProvider provider)
     {
-        this.networkTable = provider.getNetworkTableProvider();
         this.logger = logger;
 
-        this.ballCenterX = 0.0;
-        this.ballCenterY = 0.0;
-        this.ballDistance = 0.0;
-        this.ballDirection = "";
-    }
+        this.networkTable = provider.getNetworkTableProvider();
+        this.ringLight = provider.getDigitalOutput(ElectronicsConstants.VISION_RING_LIGHT_DIO);
 
-    public double getBallCenterX()
-    {
-        return this.ballCenterX;
-    }
-
-    public double getBallCenterY()
-    {
-        return this.ballCenterY;
-    }
-
-    public double getBallDistance()
-    {
-        return this.ballDistance;
-    }
-
-    public String getBallDirection()
-    {
-        return this.ballDirection;
+        this.centerX = 0.0;
+        this.centerY = 0.0;
     }
 
     /**
@@ -72,31 +54,69 @@ public class OffboardVisionManager implements IMechanism
     @Override
     public void readSensors()
     {
-        this.ballCenterX = this.networkTable.getSmartDashboardNumber("rpi.BallcenterX");
-        this.ballCenterY = this.networkTable.getSmartDashboardNumber("rpi.BallcenterY");
-        this.ballDistance = this.networkTable.getSmartDashboardNumber("rpi.BallDistance");
-        this.ballDirection = this.networkTable.getSmartDashboardString("rpi.BallDirection");
+        this.centerX = this.networkTable.getSmartDashboardNumber("v.x");
+        this.centerY = this.networkTable.getSmartDashboardNumber("v.y");
+
+        this.logger.logNumber(LoggingKey.OffboardVisionX, this.centerX);
+        this.logger.logNumber(LoggingKey.OffboardVisionY, this.centerY);
+
+        // return if we couldn't find a vision target
+        if (this.centerX < 0.0 || this.centerY < 0)
+        {
+            this.distance = null;
+            this.horizontalAngle = null;
+
+            return;
+        }
+
+        double yOffset = VisionConstants.LIFECAM_CAMERA_CENTER_WIDTH - this.centerY;
+        double verticalAngle = Helpers.atand(yOffset / VisionConstants.LIFECAM_CAMERA_FOCAL_LENGTH_Y);
+
+        this.distance = (HardwareConstants.CAMERA_TO_TARGET_Z_OFFSET / Helpers.tand(verticalAngle + HardwareConstants.CAMERA_PITCH)) - HardwareConstants.CAMERA_X_OFFSET;
+
+        double xOffset = this.centerX - VisionConstants.LIFECAM_CAMERA_CENTER_WIDTH;
+        this.horizontalAngle = Helpers.atand(xOffset / VisionConstants.LIFECAM_CAMERA_FOCAL_LENGTH_X) + HardwareConstants.CAMERA_YAW;
+
+        this.logger.logNumber(LoggingKey.OffboardVisionDistance, this.distance);
+        this.logger.logNumber(LoggingKey.OffboardVisionHorizontalAngle, this.horizontalAngle);
     }
 
     @Override
     public void update()
     {
-        boolean enableVideoStream = this.driver.getDigital(DigitalOperation.VisionEnableOffboardStream);
-        boolean enableVideoProcessing = this.driver.getDigital(DigitalOperation.VisionEnableOffboardProcessing);
-        this.logger.logBoolean(OffboardVisionManager.logName, "enableStream", enableVideoStream);
-        this.logger.logBoolean(OffboardVisionManager.logName, "enableProcessing", enableVideoProcessing);
+        boolean enableVision = this.driver.getDigital(DigitalOperation.VisionEnable) && !this.driver.getDigital(DigitalOperation.VisionForceDisable);
+        boolean enableVideoStream = !this.driver.getDigital(DigitalOperation.VisionDisableOffboardStream);
+        boolean enableVideoProcessing = !this.driver.getDigital(DigitalOperation.VisionDisableOffboardProcessing);
+        this.logger.logBoolean(LoggingKey.OffboardVisionEnableVision, enableVision);
+        this.logger.logBoolean(LoggingKey.OffboardVisionEnableStream, enableVideoStream);
+        this.logger.logBoolean(LoggingKey.OffboardVisionEnableProcessing, enableVision && enableVideoProcessing);
+
+        this.ringLight.set(enableVision);
     }
 
     @Override
     public void stop()
     {
-        this.logger.logBoolean(OffboardVisionManager.logName, "enableStream", false);
-        this.logger.logBoolean(OffboardVisionManager.logName, "enableProcessing", false);
+        this.ringLight.set(false);
+
+        this.logger.logBoolean(LoggingKey.OffboardVisionEnableVision, false);
+        this.logger.logBoolean(LoggingKey.OffboardVisionEnableStream, false);
+        this.logger.logBoolean(LoggingKey.OffboardVisionEnableProcessing, false);
     }
 
     @Override
     public void setDriver(Driver driver)
     {
         this.driver = driver;
+    }
+
+    public Double getHorizontalAngle()
+    {
+        return this.horizontalAngle;
+    }
+
+    public Double getDistance()
+    {
+        return this.distance;
     }
 }

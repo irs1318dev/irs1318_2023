@@ -5,41 +5,40 @@ import frc.robot.common.PIDHandler;
 import frc.robot.common.robotprovider.ITimer;
 import frc.robot.driver.AnalogOperation;
 import frc.robot.driver.DigitalOperation;
-import frc.robot.driver.common.IControlTask;
-import frc.robot.mechanisms.VisionManager;
+import frc.robot.mechanisms.OffboardVisionManager;
 
 /**
  * Task that turns the robot a certain amount clockwise or counterclockwise in-place based on vision center
  */
-public class VisionCenteringTask extends ControlTaskBase implements IControlTask
+public class VisionCenteringTask extends ControlTaskBase
 {
     private static final int NO_CENTER_THRESHOLD = 40;
 
     private final boolean useTime;
-    private final DigitalOperation toPerform;
 
+    protected OffboardVisionManager visionManager;
+    private ITimer timer;
     private PIDHandler turnPidHandler;
+
     private Double centeredTime;
-    protected VisionManager visionManager;
 
     private int noCenterCount;
 
     /**
     * Initializes a new VisionCenteringTask
     */
-    public VisionCenteringTask(DigitalOperation toPerform)
+    public VisionCenteringTask()
     {
-        this(true, toPerform);
+        this(true);
     }
 
     /**
     * Initializes a new VisionCenteringTask
     * @param useTime whether to make sure we are centered for a second or not
     */
-    public VisionCenteringTask(boolean useTime, DigitalOperation toPerform)
+    public VisionCenteringTask(boolean useTime)
     {
         this.useTime = useTime;
-        this.toPerform = toPerform;
 
         this.turnPidHandler = null;
         this.centeredTime = null;
@@ -53,8 +52,15 @@ public class VisionCenteringTask extends ControlTaskBase implements IControlTask
     @Override
     public void begin()
     {
-        this.visionManager = this.getInjector().getInstance(VisionManager.class);
+        this.visionManager = this.getInjector().getInstance(OffboardVisionManager.class);
         this.turnPidHandler = this.createTurnHandler();
+
+        if (this.useTime)
+        {
+            this.timer = this.getInjector().getInstance(ITimer.class);
+        }
+
+        this.setDigitalOperationState(DigitalOperation.VisionEnable, true);
     }
 
     /**
@@ -64,15 +70,13 @@ public class VisionCenteringTask extends ControlTaskBase implements IControlTask
     public void update()
     {
         this.setDigitalOperationState(DigitalOperation.DriveTrainUsePositionalMode, false);
-        this.setDigitalOperationState(this.toPerform, true);
 
-        Double currentMeasuredAngle = this.visionManager.getMeasuredAngle();
-        Double currentDesiredAngle = this.visionManager.getDesiredAngle();
-        if (currentMeasuredAngle != null && currentDesiredAngle != null)
+        Double currentMeasuredAngle = this.visionManager.getHorizontalAngle();
+        if (currentMeasuredAngle != null)
         {
             this.setAnalogOperationState(
                 AnalogOperation.DriveTrainTurn,
-                -this.turnPidHandler.calculatePosition(currentDesiredAngle, currentMeasuredAngle));
+                -this.turnPidHandler.calculatePosition(0.0, currentMeasuredAngle));
         }
     }
 
@@ -85,8 +89,7 @@ public class VisionCenteringTask extends ControlTaskBase implements IControlTask
         this.setDigitalOperationState(DigitalOperation.DriveTrainUsePositionalMode, false);
         this.setAnalogOperationState(AnalogOperation.DriveTrainTurn, 0.0);
 
-        this.setDigitalOperationState(this.toPerform, false);
-        this.setDigitalOperationState(DigitalOperation.VisionDisable, true);
+        this.setDigitalOperationState(DigitalOperation.VisionEnable, false);
     }
 
     /**
@@ -96,14 +99,13 @@ public class VisionCenteringTask extends ControlTaskBase implements IControlTask
     @Override
     public boolean hasCompleted()
     {
-        Double currentMeasuredAngle = this.visionManager.getMeasuredAngle();
-        Double currentDesiredAngle = this.visionManager.getDesiredAngle();
-        if (currentMeasuredAngle == null || currentDesiredAngle == null)
+        Double currentMeasuredAngle = this.visionManager.getHorizontalAngle();
+        if (currentMeasuredAngle == null)
         {
             return false;
         }
 
-        double centerAngleDifference = Math.abs(currentMeasuredAngle - currentDesiredAngle);
+        double centerAngleDifference = Math.abs(currentMeasuredAngle);
         if (centerAngleDifference > TuningConstants.MAX_VISION_CENTERING_RANGE_DEGREES)
         {
             return false;
@@ -113,22 +115,20 @@ public class VisionCenteringTask extends ControlTaskBase implements IControlTask
         {
             return true;
         }
+
+        // otherwise, use time:
+        if (this.centeredTime == null)
+        {
+            this.centeredTime = this.timer.get();
+            return false;
+        }
+        else if (this.timer.get() - this.centeredTime < 0.75)
+        {
+            return false;
+        }
         else
         {
-            ITimer timer = this.getInjector().getInstance(ITimer.class);
-            if (this.centeredTime == null)
-            {
-                this.centeredTime = timer.get();
-                return false;
-            }
-            else if (timer.get() - this.centeredTime < 0.75)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return true;
         }
     }
 
@@ -139,7 +139,7 @@ public class VisionCenteringTask extends ControlTaskBase implements IControlTask
     @Override
     public boolean shouldCancel()
     {
-        if (this.visionManager.getCenter() == null)
+        if (this.visionManager.getDistance() == null)
         {
             this.noCenterCount++;
         }

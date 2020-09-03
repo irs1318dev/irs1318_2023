@@ -1,7 +1,5 @@
 package frc.robot.common.robotprovider;
 
-import frc.robot.vision.VisionCalculations;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -21,9 +19,33 @@ public class FauxbotProvider implements IRobotProvider
     }
 
     @Override
+    public IDigitalInput getDigitalInput(int channel)
+    {
+        return new FauxbotDigitalInput(channel);
+    }
+
+    @Override
+    public IDigitalOutput getDigitalOutput(int channel)
+    {
+        return new FauxbotDigitalOutput(channel);
+    }
+
+    @Override
+    public ICounter getCounter(int channel)
+    {
+        return new FauxbotCounter(channel);
+    }
+
+    @Override
     public ITalonSRX getTalonSRX(int deviceNumber)
     {
         return new FauxbotTalonSRX(deviceNumber);
+    }
+
+    @Override
+    public ITalonFX getTalonFX(int deviceNumber)
+    {
+        return new FauxbotTalonFX(deviceNumber);
     }
 
     @Override
@@ -48,12 +70,6 @@ public class FauxbotProvider implements IRobotProvider
     public ICompressor getCompressor(int module)
     {
         return new FauxbotCompressor(module);
-    }
-
-    @Override
-    public IDigitalInput getDigitalInput(int channel)
-    {
-        return new FauxbotDigitalInput(channel);
     }
 
     @Override
@@ -141,6 +157,18 @@ public class FauxbotProvider implements IRobotProvider
     }
 
     @Override
+    public IColorSensorV3 getColorSensor()
+    {
+        return null;
+    }
+
+    @Override
+    public IColorMatch getColorMatch()
+    {
+        return null;
+    }
+
+    @Override
     public IVideoStream getMJPEGStream(String name, int width, int height)
     {
         return new FauxbotVideoStream();
@@ -168,15 +196,5 @@ public class FauxbotProvider implements IRobotProvider
     public INetworkTableProvider getNetworkTableProvider()
     {
         return new FauxbotNetworkTableProvider();
-    }
-
-    @Override
-    public VisionCalculations getVisionCalculations() {
-        return new VisionCalculations();
-    }
-    
-    public <V> ISendableChooser<V> getSendableChooser()
-    {
-        return new FauxbotSendableChooser<V>();
     }
 }

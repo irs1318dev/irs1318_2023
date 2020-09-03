@@ -4,10 +4,9 @@ import java.util.function.Function;
 
 import frc.robot.TuningConstants;
 import frc.robot.driver.*;
-import frc.robot.driver.common.IControlTask;
 import frc.robot.mechanisms.DriveTrainMechanism;
 
-public class DriveRouteTask extends TimedTask implements IControlTask
+public class DriveRouteTask extends TimedTask
 {
     private final Function<Double, Double> leftPositionPerTime;
     private final Function<Double, Double> rightPositionPerTime;

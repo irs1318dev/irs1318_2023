@@ -2,9 +2,6 @@ package frc.robot;
 
 import java.io.IOException;
 
-import frc.robot.ElectronicsConstants;
-import frc.robot.FauxbotModule;
-import frc.robot.RobotMode;
 import frc.robot.common.robotprovider.*;
 import frc.robot.driver.common.*;
 import frc.robot.driver.common.buttons.ButtonType;
@@ -88,7 +85,7 @@ public class FauxbotApplication extends Application
         simulationGroup.selectedToggleProperty().addListener(
             (ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) ->
             {
-                this.desiredSimulation = (Simulation)newValue.getUserData(); 
+                this.desiredSimulation = (Simulation)newValue.getUserData();
             });
 
         Button startSimulationButton = new Button("Start Simulation");
@@ -177,7 +174,7 @@ public class FauxbotApplication extends Application
                 public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue)
                 {
                     runner.setMode((RobotMode)newValue.getUserData());
-                } 
+                }
             });
 
         rowCount++;
@@ -220,7 +217,7 @@ public class FauxbotApplication extends Application
                     {
                         joystickPort = ElectronicsConstants.JOYSTICK_DRIVER_PORT;
                     }
-                    else if (description.getUserInputDevice() == UserInputDevice.CoDriver)
+                    else if (description.getUserInputDevice() == UserInputDevice.Operator)
                     {
                         joystickPort = ElectronicsConstants.JOYSTICK_CO_DRIVER_PORT;
                     }
@@ -458,7 +455,7 @@ public class FauxbotApplication extends Application
         {
             joystickPort = ElectronicsConstants.JOYSTICK_DRIVER_PORT;
         }
-        else if (description.getUserInputDevice() == UserInputDevice.CoDriver)
+        else if (description.getUserInputDevice() == UserInputDevice.Operator)
         {
             joystickPort = ElectronicsConstants.JOYSTICK_CO_DRIVER_PORT;
         }

@@ -8,11 +8,11 @@ public class CompressorDisableTask extends CompositeOperationTask
         {
             DigitalOperation.CompressorForceDisable,
         };
- 
+
     public CompressorDisableTask()
     {
         super(1.0, DigitalOperation.CompressorForceDisable, CompressorDisableTask.possibleOperations);
-    }   
+    }
 
     @Override
     public boolean hasCompleted()

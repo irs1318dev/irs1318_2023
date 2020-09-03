@@ -5,14 +5,13 @@ import frc.robot.common.Helpers;
 import frc.robot.common.PIDHandler;
 import frc.robot.common.robotprovider.ITimer;
 import frc.robot.driver.*;
-import frc.robot.driver.common.IControlTask;
 import frc.robot.mechanisms.DriveTrainMechanism;
 import frc.robot.mechanisms.PositionManager;
 
 /**
  * Task that turns the robot a certain amount clockwise or counterclockwise in-place based on vision center
  */
-public class NavxTurnTask extends ControlTaskBase implements IControlTask
+public class NavxTurnTask extends ControlTaskBase
 {
     private final boolean useTime;
     private final double turnAngle;
@@ -66,7 +65,6 @@ public class NavxTurnTask extends ControlTaskBase implements IControlTask
             waitTime,
             false,
             false);
-
     }
 
     /**
@@ -132,7 +130,7 @@ public class NavxTurnTask extends ControlTaskBase implements IControlTask
             currentDesiredAngle = currentDesiredAngle % 360.0; // odometry measures angles from 0 to 30 only
         }
 
-        this.desiredTurnVelocity = this.turnPidHandler.calculatePosition(currentDesiredAngle, currentMeasuredAngle);
+        this.desiredTurnVelocity = -1.0 * this.turnPidHandler.calculatePosition(currentDesiredAngle, currentMeasuredAngle);
 
         this.setAnalogOperationState(AnalogOperation.DriveTrainTurn, this.desiredTurnVelocity);
     }

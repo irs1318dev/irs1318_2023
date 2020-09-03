@@ -9,8 +9,8 @@ public interface IRealWorldSimulator
     public double getSensorMin(FauxbotSensorConnection connection);
     public double getSensorMax(FauxbotSensorConnection connection);
     public String getActuatorName(FauxbotActuatorConnection connection);
-	public double getMotorMin(FauxbotActuatorConnection connection);
-	public double getMotorMax(FauxbotActuatorConnection connection);
+    public double getMotorMin(FauxbotActuatorConnection connection);
+    public double getMotorMax(FauxbotActuatorConnection connection);
     public void update();
     public void draw(Canvas canvas);
 }

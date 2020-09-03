@@ -8,11 +8,11 @@ public class VisionDisableTask extends CompositeOperationTask
         {
             DigitalOperation.VisionForceDisable,
         };
- 
+
     public VisionDisableTask()
     {
         super(1.0, DigitalOperation.VisionForceDisable, VisionDisableTask.possibleOperations);
-    }   
+    }
 
     @Override
     public boolean hasCompleted()
