@@ -63,9 +63,9 @@ public class DriveTrainMechanism implements IMechanism
         this.logger = logger;
         this.timer = timer;
 
-        this.leftMotor = provider.getTalonFX(ElectronicsConstants.DRIVETRAIN_LEFT_MASTER_CAN_ID);
+        this.leftMotor = provider.getTalonFX(ElectronicsConstants.DRIVETRAIN_LEFT_PRIMARY_CAN_ID);
         this.leftMotor.setNeutralMode(MotorNeutralMode.Brake);
-        this.leftMotor.setInvertOutput(HardwareConstants.DRIVETRAIN_LEFT_MASTER_INVERT_OUTPUT);
+        this.leftMotor.setInvertOutput(HardwareConstants.DRIVETRAIN_LEFT_PRIMARY_INVERT_OUTPUT);
         this.leftMotor.setInvertSensor(HardwareConstants.DRIVETRAIN_LEFT_INVERT_SENSOR);
         this.leftMotor.setSensorType(TalonXFeedbackDevice.IntegratedSensor);
         this.leftMotor.setFeedbackFramePeriod(DriveTrainMechanism.FRAME_PERIOD_MS);
@@ -99,9 +99,9 @@ public class DriveTrainMechanism implements IMechanism
             TuningConstants.DRIVETRAIN_SUPPLY_TRIGGER_CURRENT,
             TuningConstants.DRIVETRAIN_SUPPLY_TRIGGER_DURATION);
 
-        this.rightMotor = provider.getTalonFX(ElectronicsConstants.DRIVETRAIN_RIGHT_MASTER_CAN_ID);
+        this.rightMotor = provider.getTalonFX(ElectronicsConstants.DRIVETRAIN_RIGHT_PRIMARY_CAN_ID);
         this.rightMotor.setNeutralMode(MotorNeutralMode.Brake);
-        this.rightMotor.setInvertOutput(HardwareConstants.DRIVETRAIN_RIGHT_MASTER_INVERT_OUTPUT);
+        this.rightMotor.setInvertOutput(HardwareConstants.DRIVETRAIN_RIGHT_PRIMARY_INVERT_OUTPUT);
         this.rightMotor.setInvertSensor(HardwareConstants.DRIVETRAIN_RIGHT_INVERT_SENSOR);
         this.rightMotor.setSensorType(TalonXFeedbackDevice.IntegratedSensor);
         this.rightMotor.setFeedbackFramePeriod(DriveTrainMechanism.FRAME_PERIOD_MS);

@@ -39,10 +39,10 @@ public class HardwareConstants
     public static final double DRIVETRAIN_WHEEL_SEPARATION_DISTANCE = 24.75; // (in inches)
 
     // DriveTrain motor/sensor orientations
-    public static final boolean DRIVETRAIN_LEFT_MASTER_INVERT_OUTPUT = false;
+    public static final boolean DRIVETRAIN_LEFT_PRIMARY_INVERT_OUTPUT = false;
     public static final boolean DRIVETRAIN_LEFT_FOLLOWER1_INVERT_OUTPUT = false;
     public static final boolean DRIVETRAIN_LEFT_INVERT_SENSOR = true;
-    public static final boolean DRIVETRAIN_RIGHT_MASTER_INVERT_OUTPUT = true;
+    public static final boolean DRIVETRAIN_RIGHT_PRIMARY_INVERT_OUTPUT = true;
     public static final boolean DRIVETRAIN_RIGHT_FOLLOWER1_INVERT_OUTPUT = true;
     public static final boolean DRIVETRAIN_RIGHT_INVERT_SENSOR = true;
 }

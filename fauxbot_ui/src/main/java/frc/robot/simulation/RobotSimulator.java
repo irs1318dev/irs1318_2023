@@ -16,13 +16,13 @@ import javafx.scene.canvas.Canvas;
 @Singleton
 public class RobotSimulator implements IRealWorldSimulator
 {
-    private static final FauxbotActuatorConnection DriveLeftMasterChannel = new FauxbotActuatorConnection(FauxbotActuatorConnection.ActuatorConnector.CAN, ElectronicsConstants.DRIVETRAIN_LEFT_MASTER_CAN_ID);
+    private static final FauxbotActuatorConnection DriveLeftPrimaryChannel = new FauxbotActuatorConnection(FauxbotActuatorConnection.ActuatorConnector.CAN, ElectronicsConstants.DRIVETRAIN_LEFT_PRIMARY_CAN_ID);
     private static final FauxbotActuatorConnection DriveLeftFollowerChannel = new FauxbotActuatorConnection(FauxbotActuatorConnection.ActuatorConnector.CAN, ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER_CAN_ID);
-    private static final FauxbotActuatorConnection DriveRightMasterChannel = new FauxbotActuatorConnection(FauxbotActuatorConnection.ActuatorConnector.CAN, ElectronicsConstants.DRIVETRAIN_RIGHT_MASTER_CAN_ID);
+    private static final FauxbotActuatorConnection DriveRightPrimaryChannel = new FauxbotActuatorConnection(FauxbotActuatorConnection.ActuatorConnector.CAN, ElectronicsConstants.DRIVETRAIN_RIGHT_PRIMARY_CAN_ID);
     private static final FauxbotActuatorConnection DriveRightFollowerChannel = new FauxbotActuatorConnection(FauxbotActuatorConnection.ActuatorConnector.CAN, ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER_CAN_ID);
 
-    private static final FauxbotSensorConnection DriveLeftEncoderChannel = new FauxbotSensorConnection(FauxbotSensorConnection.SensorConnector.CAN, RobotSimulator.DriveLeftMasterChannel.getPort());
-    private static final FauxbotSensorConnection DriveRightEncoderChannel = new FauxbotSensorConnection(FauxbotSensorConnection.SensorConnector.CAN, RobotSimulator.DriveRightMasterChannel.getPort());
+    private static final FauxbotSensorConnection DriveLeftEncoderChannel = new FauxbotSensorConnection(FauxbotSensorConnection.SensorConnector.CAN, RobotSimulator.DriveLeftPrimaryChannel.getPort());
+    private static final FauxbotSensorConnection DriveRightEncoderChannel = new FauxbotSensorConnection(FauxbotSensorConnection.SensorConnector.CAN, RobotSimulator.DriveRightPrimaryChannel.getPort());
 
     private final FauxbotSensorConnection[] sensors =
         new FauxbotSensorConnection[]
@@ -34,9 +34,9 @@ public class RobotSimulator implements IRealWorldSimulator
     private final FauxbotActuatorConnection[] actuators =
         new FauxbotActuatorConnection[]
         {
-            RobotSimulator.DriveLeftMasterChannel,
+            RobotSimulator.DriveLeftPrimaryChannel,
             RobotSimulator.DriveLeftFollowerChannel,
-            RobotSimulator.DriveRightMasterChannel,
+            RobotSimulator.DriveRightPrimaryChannel,
             RobotSimulator.DriveRightFollowerChannel,
         };
 
@@ -53,9 +53,9 @@ public class RobotSimulator implements IRealWorldSimulator
     private final Map<FauxbotActuatorConnection, String> motorNameMap = new HashMap<FauxbotActuatorConnection, String>()
     {
         {
-            this.put(RobotSimulator.DriveLeftMasterChannel, "DriveTrain Left motor (master)");
+            this.put(RobotSimulator.DriveLeftPrimaryChannel, "DriveTrain Left motor (primary)");
             this.put(RobotSimulator.DriveLeftFollowerChannel, "DriveTrain Left motor (follower)");
-            this.put(RobotSimulator.DriveRightMasterChannel, "DriveTrain Right motor (master)");
+            this.put(RobotSimulator.DriveRightPrimaryChannel, "DriveTrain Right motor (primary)");
             this.put(RobotSimulator.DriveRightFollowerChannel, "DriveTrain Right motor (follower)");
         }
     };
@@ -132,9 +132,9 @@ public class RobotSimulator implements IRealWorldSimulator
     @Override
     public double getMotorMin(FauxbotActuatorConnection connection)
     {
-        if (connection.equals(RobotSimulator.DriveLeftMasterChannel) ||
+        if (connection.equals(RobotSimulator.DriveLeftPrimaryChannel) ||
             connection.equals(RobotSimulator.DriveLeftFollowerChannel) ||
-            connection.equals(RobotSimulator.DriveRightMasterChannel) ||
+            connection.equals(RobotSimulator.DriveRightPrimaryChannel) ||
             connection.equals(RobotSimulator.DriveRightFollowerChannel))
         {
             return -1600.0;
@@ -146,9 +146,9 @@ public class RobotSimulator implements IRealWorldSimulator
     @Override
     public double getMotorMax(FauxbotActuatorConnection connection)
     {
-        if (connection.equals(RobotSimulator.DriveLeftMasterChannel) ||
+        if (connection.equals(RobotSimulator.DriveLeftPrimaryChannel) ||
             connection.equals(RobotSimulator.DriveLeftFollowerChannel) ||
-            connection.equals(RobotSimulator.DriveRightMasterChannel) ||
+            connection.equals(RobotSimulator.DriveRightPrimaryChannel) ||
             connection.equals(RobotSimulator.DriveRightFollowerChannel))
         {
             return 1600.0;
