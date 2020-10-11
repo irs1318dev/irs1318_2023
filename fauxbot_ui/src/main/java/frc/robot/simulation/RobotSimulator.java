@@ -1,5 +1,6 @@
 package frc.robot.simulation;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +23,22 @@ public class RobotSimulator implements IRealWorldSimulator
 
     private static final FauxbotSensorConnection DriveLeftEncoderChannel = new FauxbotSensorConnection(FauxbotSensorConnection.SensorConnector.CAN, RobotSimulator.DriveLeftMasterChannel.getPort());
     private static final FauxbotSensorConnection DriveRightEncoderChannel = new FauxbotSensorConnection(FauxbotSensorConnection.SensorConnector.CAN, RobotSimulator.DriveRightMasterChannel.getPort());
+
+    private final FauxbotSensorConnection[] sensors =
+        new FauxbotSensorConnection[]
+        {
+            RobotSimulator.DriveLeftEncoderChannel,
+            RobotSimulator.DriveRightEncoderChannel,
+        };
+
+    private final FauxbotActuatorConnection[] actuators =
+        new FauxbotActuatorConnection[]
+        {
+            RobotSimulator.DriveLeftMasterChannel,
+            RobotSimulator.DriveLeftFollowerChannel,
+            RobotSimulator.DriveRightMasterChannel,
+            RobotSimulator.DriveRightFollowerChannel,
+        };
 
     @SuppressWarnings("serial")
     private final Map<FauxbotSensorConnection, String> sensorNameMap = new HashMap<FauxbotSensorConnection, String>()
@@ -46,6 +63,24 @@ public class RobotSimulator implements IRealWorldSimulator
     @Inject
     public RobotSimulator()
     {
+    }
+
+    @Override
+    public FauxbotSensorConnection[] getSensors()
+    {
+        return this.sensors;
+    }
+
+    @Override
+    public FauxbotActuatorConnection[] getActuators()
+    {
+        return this.actuators;
+    }
+
+    @Override
+    public boolean getSensorTextBox(FauxbotSensorConnection connection)
+    {
+        return false;
     }
 
     @Override
@@ -120,6 +155,12 @@ public class RobotSimulator implements IRealWorldSimulator
         }
 
         return 1.0;
+    }
+
+    @Override
+    public boolean shouldSimulatePID()
+    {
+        return false;
     }
 
     @Override

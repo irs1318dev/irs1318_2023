@@ -31,13 +31,13 @@ public class ButtonMap implements IButtonMap
             AnalogOperation.DriveTrainMoveForward,
             UserInputDevice.Driver,
             AnalogAxis.XBONE_LSY,
-            ElectronicsConstants.INVERT_Y_AXIS,
+            ElectronicsConstants.INVERT_XBONE_LEFT_Y_AXIS,
             TuningConstants.DRIVETRAIN_Y_DEAD_ZONE),
         new AnalogOperationDescription(
             AnalogOperation.DriveTrainTurn,
             UserInputDevice.Driver,
             AnalogAxis.XBONE_RSX,
-            ElectronicsConstants.INVERT_X_AXIS,
+            ElectronicsConstants.INVERT_XBONE_LEFT_X_AXIS,
             TuningConstants.DRIVETRAIN_X_DEAD_ZONE),
     };
 

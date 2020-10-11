@@ -102,12 +102,6 @@ public class NavxTurnTask extends ControlTaskBase
         if (this.relativeMode)
         {
             this.startingAngle = this.pManager.getNavxAngle();
-
-            // if the navx isn't working, let's fall back to using odometry
-            if (!this.pManager.getNavxIsConnected())
-            {
-                this.startingAngle = this.pManager.getOdometryAngle();
-            }
         }
     }
 
@@ -122,13 +116,6 @@ public class NavxTurnTask extends ControlTaskBase
 
         double currentMeasuredAngle = this.pManager.getNavxAngle();
         double currentDesiredAngle = this.turnAngle + this.startingAngle;
-
-        // if the navx isn't connected, let's fall back to using odometry
-        if (!this.pManager.getNavxIsConnected())
-        {
-            currentMeasuredAngle = this.pManager.getOdometryAngle();
-            currentDesiredAngle = currentDesiredAngle % 360.0; // odometry measures angles from 0 to 30 only
-        }
 
         this.desiredTurnVelocity = -1.0 * this.turnPidHandler.calculatePosition(currentDesiredAngle, currentMeasuredAngle);
 
@@ -156,13 +143,6 @@ public class NavxTurnTask extends ControlTaskBase
         double currentMeasuredAngle = this.pManager.getNavxAngle();
         double currentTurnVelocity = this.dt.getLeftVelocity();
         double currentDesiredAngle = this.startingAngle + this.turnAngle;
-
-        // if the navx isn't connected, let's fall back to using odometry
-        if (!this.pManager.getNavxIsConnected())
-        {
-            currentMeasuredAngle = this.pManager.getOdometryAngle();
-            currentDesiredAngle = currentDesiredAngle % 360.0;
-        }
 
         if (this.fastMode && this.useTime)
         {
@@ -211,6 +191,16 @@ public class NavxTurnTask extends ControlTaskBase
                 return true;
             }
         }
+    }
+
+    /**
+     * Checks whether this task should be stopped, or whether it should continue being processed.
+     * @return true if we should cancel this task (and stop performing any subsequent tasks), otherwise false (to keep processing this task)
+     */
+    @Override
+    public boolean shouldCancel()
+    {
+        return !this.pManager.getNavxIsConnected();
     }
 
     protected PIDHandler createTurnHandler()
