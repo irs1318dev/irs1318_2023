@@ -1,737 +1,599 @@
-package frc.robot.mechanisms;
+/**
+ * DriveTrainMechanism
+ * 
+ * authors: Will, Vanshika, Arushi
+ * 
+ * Started idk sometime in september
+ * 
+ * dO yOu ReMeMbEr
+ * tHe 21sT nIgHt oF sEpTeMbEr
+**/
 
-import javax.inject.Singleton;
+package frc.robot.mechanisms;
 
 import frc.robot.*;
 import frc.robot.common.*;
 import frc.robot.common.robotprovider.*;
 import frc.robot.driver.*;
-import frc.robot.driver.common.Driver;
+import frc.robot.driver.common.IDriver;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
-/**
- * Drivetrain mechanism.
- * The mechanism defines the logic that controls a mechanism given inputs and operator-requested actions, and 
- * translates those into the abstract functions that should be applied to the outputs.
- * 
- */
 @Singleton
 public class DriveTrainMechanism implements IMechanism
 {
+    private static final int NUM_MODULES = 4;
+
     private static final int pidSlotId = 0;
     private static final int FRAME_PERIOD_MS = 5;
 
-    private static final double POWERLEVEL_MIN = -1.0;
-    private static final double POWERLEVEL_MAX = 1.0;
+    private final LoggingKey[] ENCODER_ANGLE_LOGGING_KEYS = { LoggingKey.DriveTrainAbsoluteEncoderAngle1, LoggingKey.DriveTrainAbsoluteEncoderAngle2, LoggingKey.DriveTrainAbsoluteEncoderAngle3, LoggingKey.DriveTrainAbsoluteEncoderAngle4 };
+    private final LoggingKey[] DRIVE_VELOCITY_LOGGING_KEYS = { LoggingKey.DriveTrainDriveVelocity1, LoggingKey.DriveTrainDriveVelocity2, LoggingKey.DriveTrainDriveVelocity3, LoggingKey.DriveTrainDriveVelocity4 };
+    private final LoggingKey[] DRIVE_POSITION_LOGGING_KEYS = { LoggingKey.DriveTrainDrivePosition1, LoggingKey.DriveTrainDrivePosition2, LoggingKey.DriveTrainDrivePosition3, LoggingKey.DriveTrainDrivePosition4 };
+    private final LoggingKey[] DRIVE_ERROR_LOGGING_KEYS = { LoggingKey.DriveTrainDriveError1, LoggingKey.DriveTrainDriveError2, LoggingKey.DriveTrainDriveError3, LoggingKey.DriveTrainDriveError4 };
+    private final LoggingKey[] STEER_VELOCITY_LOGGING_KEYS = { LoggingKey.DriveTrainSteerVelocity1, LoggingKey.DriveTrainSteerVelocity2, LoggingKey.DriveTrainSteerVelocity3, LoggingKey.DriveTrainSteerVelocity4 };
+    private final LoggingKey[] STEER_POSITION_LOGGING_KEYS = { LoggingKey.DriveTrainSteerPosition1, LoggingKey.DriveTrainSteerPosition2, LoggingKey.DriveTrainSteerPosition3, LoggingKey.DriveTrainSteerPosition4 };
+    private final LoggingKey[] STEER_ANGLE_LOGGING_KEYS = { LoggingKey.DriveTrainSteerAngle1, LoggingKey.DriveTrainSteerAngle2, LoggingKey.DriveTrainSteerAngle3, LoggingKey.DriveTrainSteerAngle4 };
+    private final LoggingKey[] STEER_ERROR_LOGGING_KEYS = { LoggingKey.DriveTrainSteerError1, LoggingKey.DriveTrainSteerError2, LoggingKey.DriveTrainSteerError3, LoggingKey.DriveTrainSteerError4 };
+    private final LoggingKey[] DRIVE_GOAL_LOGGING_KEYS = { LoggingKey.DriveTrainDriveVelocityGoal1, LoggingKey.DriveTrainDriveVelocityGoal2, LoggingKey.DriveTrainDriveVelocityGoal3, LoggingKey.DriveTrainDriveVelocityGoal4 };
+    private final LoggingKey[] STEER_GOAL_LOGGING_KEYS = { LoggingKey.DriveTrainSteerPositionGoal1, LoggingKey.DriveTrainSteerPositionGoal2, LoggingKey.DriveTrainSteerPositionGoal3, LoggingKey.DriveTrainSteerPositionGoal4 };
 
+    // the x offsets of the swerve modules from the default center of rotation
+    public static final double[] MODULE_OFFSET_X =
+        new double[]
+        {
+            -HardwareConstants.DRIVETRAIN_HORIZONTAL_WHEEL_CENTER_DISTANCE, // module 1 (front-right)
+            HardwareConstants.DRIVETRAIN_HORIZONTAL_WHEEL_CENTER_DISTANCE, // module 2 (front-left)
+            HardwareConstants.DRIVETRAIN_HORIZONTAL_WHEEL_CENTER_DISTANCE, // module 3 (back-left)
+            -HardwareConstants.DRIVETRAIN_HORIZONTAL_WHEEL_CENTER_DISTANCE // module 4 (back-right)
+        };
+
+    // the y offsets of the swerve modules from the default center of rotation
+    public static final double[] MODULE_OFFSET_Y =
+        new double[]
+        {
+            -HardwareConstants.DRIVETRAIN_VERTICAL_WHEEL_CENTER_DISTANCE, // module 1 (front-right)
+            -HardwareConstants.DRIVETRAIN_VERTICAL_WHEEL_CENTER_DISTANCE, // module 2 (front-left)
+            HardwareConstants.DRIVETRAIN_VERTICAL_WHEEL_CENTER_DISTANCE, // module 3 (back-left)
+            HardwareConstants.DRIVETRAIN_VERTICAL_WHEEL_CENTER_DISTANCE // module 4 (back-right)
+        };
+
+    private final IDriver driver;
     private final ILogger logger;
     private final ITimer timer;
 
-    private final ITalonFX leftMotor;
-    private final ITalonFX rightMotor;
+    private final NavxManager navxManager;
 
-    private Driver driver;
+    private final ITalonFX[] steerMotors;
+    private final ITalonFX[] driveMotors;
+    private final IAnalogInput[] absoluteEncoders;
 
-    private PIDHandler leftPID;
-    private PIDHandler rightPID;
+    private final PIDHandler omegaPID;
+    private final boolean[] isDirectionSwapped;
+    private final PIDHandler pathOmegaPID;
+    private final PIDHandler pathXOffsetPID;
+    private final PIDHandler pathYOffsetPID;
 
-    private boolean usePID;
-    private boolean usePathMode;
-    private boolean usePositionalMode;
-    private boolean useBrakeMode;
+    private final double[] driveVelocities;
+    private final double[] drivePositions;
+    private final double[] driveErrors;
+    private final double[] steerVelocities;
+    private final double[] steerPositions;
+    private final double[] steerAngles;
+    private final double[] steerErrors;
+    private final double[] encoderVoltages;
+    private final double[] encoderAngles;
 
-    private double leftVelocity;
-    private double leftError;
-    private int leftPosition;
-    private double rightVelocity;
-    private double rightError;
-    private int rightPosition;
+    private final Setpoint[] result;
 
-    /**
-     * Initializes a new DriveTrainMechanism
-     * @param logger to use
-     * @param provider for obtaining electronics objects
-     * @param timer to use
-     */
+    private boolean firstRun;
+
+    private boolean fieldOriented;
+    private boolean maintainOrientation;
+    private boolean updatedOrientation;
+    private double desiredYaw;
+
+    private double time;
+    private double startTime;
+    private double angle;
+    private double xPosition;
+    private double yPosition;
+    private double deltaT;
+
+    private double robotYaw;
+
     @Inject
     public DriveTrainMechanism(
+        IDriver driver,
         LoggingManager logger,
         IRobotProvider provider,
+        NavxManager navxManager,
         ITimer timer)
     {
+        this.driver = driver;
         this.logger = logger;
         this.timer = timer;
 
-        this.leftMotor = provider.getTalonFX(ElectronicsConstants.DRIVETRAIN_LEFT_PRIMARY_CAN_ID);
-        this.leftMotor.setNeutralMode(MotorNeutralMode.Brake);
-        this.leftMotor.setInvertOutput(HardwareConstants.DRIVETRAIN_LEFT_PRIMARY_INVERT_OUTPUT);
-        this.leftMotor.setInvertSensor(HardwareConstants.DRIVETRAIN_LEFT_INVERT_SENSOR);
-        this.leftMotor.setSensorType(TalonXFeedbackDevice.IntegratedSensor);
-        this.leftMotor.setFeedbackFramePeriod(DriveTrainMechanism.FRAME_PERIOD_MS);
-        this.leftMotor.setPIDFFramePeriod(DriveTrainMechanism.FRAME_PERIOD_MS);
-        this.leftMotor.configureVelocityMeasurements(10, 32);
-        this.leftMotor.setPIDF(
-            TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KP,
-            TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KI,
-            TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KD,
-            TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KF,
-            DriveTrainMechanism.pidSlotId);
-        this.leftMotor.setVoltageCompensation(
-            TuningConstants.DRIVETRAIN_VOLTAGE_COMPENSATION_ENABLED,
-            TuningConstants.DRIVETRAIN_VOLTAGE_COMPENSATION);
-        this.leftMotor.setSupplyCurrentLimit(
-            TuningConstants.DRIVETRAIN_SUPPLY_CURRENT_LIMITING_ENABLED,
-            TuningConstants.DRIVETRAIN_SUPPLY_CURRENT_MAX,
-            TuningConstants.DRIVETRAIN_SUPPLY_TRIGGER_CURRENT,
-            TuningConstants.DRIVETRAIN_SUPPLY_TRIGGER_DURATION);
+        this.navxManager = navxManager;
 
-        ITalonFX leftFollowerMotor1 = provider.getTalonFX(ElectronicsConstants.DRIVETRAIN_LEFT_FOLLOWER_CAN_ID);
-        leftFollowerMotor1.setNeutralMode(MotorNeutralMode.Brake);
-        leftFollowerMotor1.setInvertOutput(HardwareConstants.DRIVETRAIN_LEFT_FOLLOWER1_INVERT_OUTPUT);
-        leftFollowerMotor1.follow(this.leftMotor);
-        leftFollowerMotor1.setVoltageCompensation(
-            TuningConstants.DRIVETRAIN_VOLTAGE_COMPENSATION_ENABLED,
-            TuningConstants.DRIVETRAIN_VOLTAGE_COMPENSATION);
-        leftFollowerMotor1.setSupplyCurrentLimit(
-            TuningConstants.DRIVETRAIN_SUPPLY_CURRENT_LIMITING_ENABLED,
-            TuningConstants.DRIVETRAIN_SUPPLY_CURRENT_MAX,
-            TuningConstants.DRIVETRAIN_SUPPLY_TRIGGER_CURRENT,
-            TuningConstants.DRIVETRAIN_SUPPLY_TRIGGER_DURATION);
-
-        this.rightMotor = provider.getTalonFX(ElectronicsConstants.DRIVETRAIN_RIGHT_PRIMARY_CAN_ID);
-        this.rightMotor.setNeutralMode(MotorNeutralMode.Brake);
-        this.rightMotor.setInvertOutput(HardwareConstants.DRIVETRAIN_RIGHT_PRIMARY_INVERT_OUTPUT);
-        this.rightMotor.setInvertSensor(HardwareConstants.DRIVETRAIN_RIGHT_INVERT_SENSOR);
-        this.rightMotor.setSensorType(TalonXFeedbackDevice.IntegratedSensor);
-        this.rightMotor.setFeedbackFramePeriod(DriveTrainMechanism.FRAME_PERIOD_MS);
-        this.rightMotor.setPIDFFramePeriod(DriveTrainMechanism.FRAME_PERIOD_MS);
-        this.rightMotor.configureVelocityMeasurements(10, 32);
-        this.rightMotor.setPIDF(
-            TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KP,
-            TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KI,
-            TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KD,
-            TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF,
-            DriveTrainMechanism.pidSlotId);
-        this.rightMotor.setVoltageCompensation(
-            TuningConstants.DRIVETRAIN_VOLTAGE_COMPENSATION_ENABLED,
-            TuningConstants.DRIVETRAIN_VOLTAGE_COMPENSATION);
-        this.rightMotor.setSupplyCurrentLimit(
-            TuningConstants.DRIVETRAIN_SUPPLY_CURRENT_LIMITING_ENABLED,
-            TuningConstants.DRIVETRAIN_SUPPLY_CURRENT_MAX,
-            TuningConstants.DRIVETRAIN_SUPPLY_TRIGGER_CURRENT,
-            TuningConstants.DRIVETRAIN_SUPPLY_TRIGGER_DURATION);
-
-        ITalonFX rightFollowerMotor1 = provider.getTalonFX(ElectronicsConstants.DRIVETRAIN_RIGHT_FOLLOWER_CAN_ID);
-        rightFollowerMotor1.setNeutralMode(MotorNeutralMode.Brake);
-        rightFollowerMotor1.setInvertOutput(HardwareConstants.DRIVETRAIN_RIGHT_FOLLOWER1_INVERT_OUTPUT);
-        rightFollowerMotor1.follow(this.rightMotor);
-        rightFollowerMotor1.setVoltageCompensation(
-            TuningConstants.DRIVETRAIN_VOLTAGE_COMPENSATION_ENABLED,
-            TuningConstants.DRIVETRAIN_VOLTAGE_COMPENSATION);
-        rightFollowerMotor1.setSupplyCurrentLimit(
-            TuningConstants.DRIVETRAIN_SUPPLY_CURRENT_LIMITING_ENABLED,
-            TuningConstants.DRIVETRAIN_SUPPLY_CURRENT_MAX,
-            TuningConstants.DRIVETRAIN_SUPPLY_TRIGGER_CURRENT,
-            TuningConstants.DRIVETRAIN_SUPPLY_TRIGGER_DURATION);
-
-        this.leftPID = null;
-        this.rightPID = null;
-
-        this.usePID = TuningConstants.DRIVETRAIN_USE_PID;
-        this.usePathMode = false;
-        this.usePositionalMode = false;
-        this.useBrakeMode = false;
-
-        this.leftVelocity = 0.0;
-        this.leftError = 0.0;
-        this.leftPosition = 0;
-        this.rightVelocity = 0.0;
-        this.rightError = 0.0;
-        this.rightPosition = 0;
-    }
-
-    /**
-     * get the velocity from the left encoder
-     * @return a value indicating the velocity
-     */
-    public double getLeftVelocity()
-    {
-        return this.leftVelocity;
-    }
-
-    /**
-     * get the velocity from the right encoder
-     * @return a value indicating the velocity
-     */
-    public double getRightVelocity()
-    {
-        return this.rightVelocity;
-    }
-
-    /**
-     * get the distance from the left encoder
-     * @return a value indicating the distance
-     */
-    public double getLeftError()
-    {
-        return this.leftError;
-    }
-
-    /**
-     * get the distance from the right encoder
-     * @return a value indicating the distance
-     */
-    public double getRightError()
-    {
-        return this.rightError;
-    }
-
-    /**
-     * get the ticks from the left encoder
-     * @return a value indicating the number of ticks we are at
-     */
-    public int getLeftPosition()
-    {
-        return this.leftPosition;
-    }
-
-    /**
-     * get the ticks from the right encoder
-     * @return a value indicating the number of ticks we are at
-     */
-    public int getRightPosition()
-    {
-        return this.rightPosition;
-    }
-
-    /**
-     * set the driver that the mechanism should use
-     * @param driver to use
-     */
-    @Override
-    public void setDriver(Driver driver)
-    {
-        this.driver = driver;
-
-        // switch to default velocity PID mode whenever we switch drivers (defense-in-depth)
-        if (!this.usePID || this.usePathMode || this.usePositionalMode || this.useBrakeMode)
+        this.steerMotors = new ITalonFX[DriveTrainMechanism.NUM_MODULES];
+        this.driveMotors = new ITalonFX[DriveTrainMechanism.NUM_MODULES];
+        this.absoluteEncoders = new IAnalogInput[DriveTrainMechanism.NUM_MODULES];
+        for (int i = 0; i < DriveTrainMechanism.NUM_MODULES; i++)
         {
-            this.usePID = TuningConstants.DRIVETRAIN_USE_PID;
-            this.usePathMode = false;
-            this.usePositionalMode = false;
-            this.useBrakeMode = false;
+            this.driveMotors[i] = provider.getTalonFX(ElectronicsConstants.DRIVETRAIN_DRIVE_MOTOR_CAN_ID[i]);
+            this.driveMotors[i].setNeutralMode(MotorNeutralMode.Brake); //
+            this.driveMotors[i].setSensorType(TalonXFeedbackDevice.IntegratedSensor); //
+            this.driveMotors[i].setFeedbackFramePeriod(DriveTrainMechanism.FRAME_PERIOD_MS); //
+            this.driveMotors[i].setPIDFFramePeriod(DriveTrainMechanism.FRAME_PERIOD_MS); //
+            this.driveMotors[i].setInvertOutput(HardwareConstants.DRIVETRAIN_DRIVE_MOTOR_INVERT_OUTPUT[i]);
+            this.driveMotors[i].setInvertSensor(HardwareConstants.DRIVETRAIN_DRIVE_MOTOR_INVERT_SENSOR[i]);
+            this.driveMotors[i].configureVelocityMeasurements(10, 32); //
+            this.driveMotors[i].setPIDF(
+                TuningConstants.DRIVETRAIN_DRIVE_MOTOR_VELOCITY_PID_KP[i],
+                TuningConstants.DRIVETRAIN_DRIVE_MOTOR_VELOCITY_PID_KI[i],
+                TuningConstants.DRIVETRAIN_DRIVE_MOTOR_VELOCITY_PID_KD[i],
+                TuningConstants.DRIVETRAIN_DRIVE_MOTOR_VELOCITY_PID_KF[i],
+                DriveTrainMechanism.pidSlotId);
+            this.driveMotors[i].setVoltageCompensation(
+                TuningConstants.DRIVETRAIN_DRIVE_VOLTAGE_COMPENSATION_ENABLED,
+                TuningConstants.DRIVETRAIN_DRIVE_VOLTAGE_COMPENSATION);
+            this.driveMotors[i].setSupplyCurrentLimit(
+                TuningConstants.DRIVETRAIN_DRIVE_SUPPLY_CURRENT_LIMITING_ENABLED,
+                TuningConstants.DRIVETRAIN_DRIVE_SUPPLY_CURRENT_MAX,
+                TuningConstants.DRIVETRAIN_DRIVE_SUPPLY_TRIGGER_CURRENT,
+                TuningConstants.DRIVETRAIN_DRIVE_SUPPLY_TRIGGER_DURATION);
+            this.driveMotors[i].setControlMode(TalonSRXControlMode.Velocity);
+
+            this.steerMotors[i] = provider.getTalonFX(ElectronicsConstants.DRIVETRAIN_STEER_MOTOR_CAN_ID[i]);
+            this.steerMotors[i].setInvertOutput(HardwareConstants.DRIVETRAIN_STEER_MOTOR_INVERT_OUTPUT[i]);
+            this.steerMotors[i].setInvertSensor(HardwareConstants.DRIVETRAIN_STEER_MOTOR_INVERT_SENSOR[i]);
+            this.steerMotors[i].setNeutralMode(MotorNeutralMode.Brake);
+            this.steerMotors[i].setSensorType(TalonXFeedbackDevice.IntegratedSensor);
+            this.steerMotors[i].setPIDF(
+                TuningConstants.DRIVETRAIN_STEER_MOTOR_POSITION_PID_KP[i],
+                TuningConstants.DRIVETRAIN_STEER_MOTOR_POSITION_PID_KI[i],
+                TuningConstants.DRIVETRAIN_STEER_MOTOR_POSITION_PID_KD[i],
+                TuningConstants.DRIVETRAIN_STEER_MOTOR_POSITION_PID_KF[i],
+                DriveTrainMechanism.pidSlotId);
+            this.steerMotors[i].setVoltageCompensation(
+                TuningConstants.DRIVETRAIN_STEER_VOLTAGE_COMPENSATION_ENABLED,
+                TuningConstants.DRIVETRAIN_STEER_VOLTAGE_COMPENSATION);
+            this.steerMotors[i].setSupplyCurrentLimit(
+                TuningConstants.DRIVETRAIN_STEER_SUPPLY_CURRENT_LIMITING_ENABLED,
+                TuningConstants.DRIVETRAIN_STEER_SUPPLY_CURRENT_MAX,
+                TuningConstants.DRIVETRAIN_STEER_SUPPLY_TRIGGER_CURRENT,
+                TuningConstants.DRIVETRAIN_STEER_SUPPLY_TRIGGER_DURATION);
+
+            this.steerMotors[i].setControlMode(TalonSRXControlMode.Position);
+
+            this.absoluteEncoders[i] = provider.getAnalogInput(ElectronicsConstants.DRIVETRAIN_ABSOLUTE_ENCODER_ANALOG_INPUT[i]);
         }
 
-        this.setControlMode();
+        this.driveVelocities = new double[DriveTrainMechanism.NUM_MODULES];
+        this.drivePositions = new double[DriveTrainMechanism.NUM_MODULES];
+        this.driveErrors = new double[DriveTrainMechanism.NUM_MODULES];
+        this.steerVelocities = new double[DriveTrainMechanism.NUM_MODULES];
+        this.steerPositions = new double[DriveTrainMechanism.NUM_MODULES];
+        this.steerAngles = new double[DriveTrainMechanism.NUM_MODULES];
+        this.steerErrors = new double[DriveTrainMechanism.NUM_MODULES];
+        this.encoderVoltages = new double[DriveTrainMechanism.NUM_MODULES];
+        this.encoderAngles = new double[DriveTrainMechanism.NUM_MODULES];
+
+        this.isDirectionSwapped = new boolean[DriveTrainMechanism.NUM_MODULES];
+
+        this.omegaPID = new PIDHandler(
+            TuningConstants.DRIVETRAIN_OMEGA_POSITION_PID_KP,
+            TuningConstants.DRIVETRAIN_OMEGA_POSITION_PID_KI,
+            TuningConstants.DRIVETRAIN_OMEGA_POSITION_PID_KD,
+            TuningConstants.DRIVETRAIN_OMEGA_POSITION_PID_KF,
+            TuningConstants.DRIVETRAIN_OMEGA_POSITION_PID_KS,
+            TuningConstants.DRIVETRAIN_OMEGA_MIN_OUTPUT,
+            TuningConstants.DRIVETRAIN_OMEGA_MAX_OUTPUT,
+            this.timer);
+
+        this.pathOmegaPID = new PIDHandler(
+            TuningConstants.DRIVETRAIN_PATH_OMEGA_POSITION_PID_KP,
+            TuningConstants.DRIVETRAIN_PATH_OMEGA_POSITION_PID_KI,
+            TuningConstants.DRIVETRAIN_PATH_OMEGA_POSITION_PID_KD,
+            TuningConstants.DRIVETRAIN_PATH_OMEGA_POSITION_PID_KF,
+            TuningConstants.DRIVETRAIN_PATH_OMEGA_POSITION_PID_KS,
+            TuningConstants.DRIVETRAIN_PATH_OMEGA_MIN_OUTPUT,
+            TuningConstants.DRIVETRAIN_PATH_OMEGA_MAX_OUTPUT,
+            this.timer);
+
+        this.pathXOffsetPID = new PIDHandler(
+            TuningConstants.DRIVETRAIN_PATH_X_POSITION_PID_KP,
+            TuningConstants.DRIVETRAIN_PATH_X_POSITION_PID_KI,
+            TuningConstants.DRIVETRAIN_PATH_X_POSITION_PID_KD,
+            TuningConstants.DRIVETRAIN_PATH_X_POSITION_PID_KF,
+            TuningConstants.DRIVETRAIN_PATH_X_POSITION_PID_KS,
+            TuningConstants.DRIVETRAIN_PATH_X_MIN_OUTPUT,
+            TuningConstants.DRIVETRAIN_PATH_X_MAX_OUTPUT,
+            this.timer);
+
+        this.pathYOffsetPID = new PIDHandler(
+            TuningConstants.DRIVETRAIN_PATH_Y_POSITION_PID_KP,
+            TuningConstants.DRIVETRAIN_PATH_Y_POSITION_PID_KI,
+            TuningConstants.DRIVETRAIN_PATH_Y_POSITION_PID_KD,
+            TuningConstants.DRIVETRAIN_PATH_Y_POSITION_PID_KF,
+            TuningConstants.DRIVETRAIN_PATH_Y_POSITION_PID_KS,
+            TuningConstants.DRIVETRAIN_PATH_Y_MIN_OUTPUT,
+            TuningConstants.DRIVETRAIN_PATH_Y_MAX_OUTPUT,
+            this.timer);
+
+        this.result = new Setpoint[DriveTrainMechanism.NUM_MODULES];
+        for (int i = 0; i < DriveTrainMechanism.NUM_MODULES; i++)
+        {
+            this.result[i] = new Setpoint();
+        }
+
+        this.time = 0.0;
+        this.angle = 0.0;
+        this.xPosition = 0.0;
+        this.yPosition = 0.0;
+        this.startTime = 0.0;
+
+        this.firstRun = TuningConstants.DRIVETRAIN_RESET_ON_ROBOT_START;
+        this.fieldOriented = false;
+        this.maintainOrientation = true;
+        this.updatedOrientation = false;
     }
 
-    /**
-     * read all of the sensors for the mechanism that we will use in macros/autonomous mode and record their values
-     */
     @Override
     public void readSensors()
     {
-        this.leftVelocity = this.leftMotor.getVelocity();
-        this.rightVelocity = this.rightMotor.getVelocity();
+        for (int i = 0; i < DriveTrainMechanism.NUM_MODULES; i++)
+        {
+            this.driveVelocities[i] = this.driveMotors[i].getVelocity();
+            this.drivePositions[i] = this.driveMotors[i].getPosition();
+            this.driveErrors[i] = this.driveMotors[i].getError();
+            this.steerVelocities[i] = this.steerMotors[i].getVelocity();
+            this.steerPositions[i] = this.steerMotors[i].getPosition();
+            this.steerAngles[i] = Helpers.updateAngleRange(this.steerPositions[i] * HardwareConstants.DRIVETRAIN_STEER_PULSE_DISTANCE);
+            this.steerErrors[i] = this.steerMotors[i].getError();
+            this.encoderVoltages[i] = this.absoluteEncoders[i].getVoltage();
+            this.encoderAngles[i] = Helpers.updateAngleRange(this.encoderVoltages[i] * HardwareConstants.DRIVETRAIN_ENCODER_DEGREES_PER_VOLT);
 
-        this.leftPosition = this.leftMotor.getPosition();
-        this.rightPosition = this.rightMotor.getPosition();
+            this.logger.logNumber(this.DRIVE_VELOCITY_LOGGING_KEYS[i], this.driveVelocities[i]);
+            this.logger.logNumber(this.DRIVE_POSITION_LOGGING_KEYS[i], this.drivePositions[i]);
+            this.logger.logNumber(this.DRIVE_ERROR_LOGGING_KEYS[i], this.driveErrors[i]);
+            this.logger.logNumber(this.STEER_VELOCITY_LOGGING_KEYS[i], this.steerVelocities[i]);
+            this.logger.logNumber(this.STEER_POSITION_LOGGING_KEYS[i], this.steerPositions[i]);
+            this.logger.logNumber(this.STEER_ANGLE_LOGGING_KEYS[i], this.steerAngles[i]);
+            this.logger.logNumber(this.STEER_ERROR_LOGGING_KEYS[i], this.steerErrors[i]);
+            this.logger.logNumber(this.ENCODER_ANGLE_LOGGING_KEYS[i], this.encoderAngles[i]);
+        }
 
-        this.leftError = this.leftMotor.getError();
-        this.rightError = this.rightMotor.getError();
+        double prevYaw = this.robotYaw;
+        double prevTime = this.time;
+        this.robotYaw = this.navxManager.getAngle();
+        this.time = this.timer.get();
 
-        this.logger.logNumber(LoggingKey.DriveTrainLeftVelocity, this.leftVelocity);
-        this.logger.logNumber(LoggingKey.DriveTrainLeftError, this.leftError);
-        this.logger.logNumber(LoggingKey.DriveTrainLeftTicks, this.leftPosition);
-        this.logger.logNumber(LoggingKey.DriveTrainRightVelocity, this.rightVelocity);
-        this.logger.logNumber(LoggingKey.DriveTrainRightError, this.rightError);
-        this.logger.logNumber(LoggingKey.DriveTrainRightTicks, this.rightPosition);
+        this.deltaT = this.time - prevTime;
+        if (TuningConstants.DRIVETRAIN_USE_ODOMETRY)
+        {
+            double deltaNavxYaw = (this.robotYaw - prevYaw) / this.deltaT;
+            this.calculateOdometry(deltaNavxYaw);
+            this.logger.logNumber(LoggingKey.DriveTrainXPosition, this.xPosition);
+            this.logger.logNumber(LoggingKey.DriveTrainYPosition, this.yPosition);
+            this.logger.logNumber(LoggingKey.DriveTrainAngle, this.angle);
+        }
     }
 
-    /**
-     * calculate the various outputs to use based on the inputs and apply them to the outputs for the relevant mechanism
-     */
     @Override
     public void update()
     {
-        if (this.driver.getDigital(DigitalOperation.DriveTrainEnablePID))
+        if (this.driver.getDigital(DigitalOperation.DriveTrainEnableFieldOrientation))
         {
-            this.usePID = true;
-            this.setControlMode();
-        }
-        else if (this.driver.getDigital(DigitalOperation.DriveTrainDisablePID))
-        {
-            this.usePID = false;
-            this.setControlMode();
+            this.fieldOriented = true;
+            this.desiredYaw = this.robotYaw;
         }
 
-        // check our desired PID mode (needed for positional mode or break mode)
-        boolean newUsePathMode = this.driver.getDigital(DigitalOperation.DriveTrainUsePathMode);
-        boolean newUsePositionalMode = this.driver.getDigital(DigitalOperation.DriveTrainUsePositionalMode);
-        boolean newUseBrakeMode = this.driver.getDigital(DigitalOperation.DriveTrainUseBrakeMode);
-        if (newUsePathMode != this.usePathMode ||
-            newUsePositionalMode != this.usePositionalMode ||
-            newUseBrakeMode != this.useBrakeMode)
+        if (this.driver.getDigital(DigitalOperation.DriveTrainDisableFieldOrientation) ||
+            !this.navxManager.getIsConnected())
         {
-            this.usePathMode = newUsePathMode;
-            this.usePositionalMode = newUsePositionalMode;
-            this.useBrakeMode = newUseBrakeMode;
-
-            // re-create PID handler
-            this.setControlMode();
+            this.fieldOriented = false;
         }
 
-        // calculate desired setting for the current mode
-        Setpoint setpoint;
-        if (this.usePathMode)
+        if (this.driver.getDigital(DigitalOperation.DriveTrainEnableMaintainDirectionMode))
         {
-            setpoint = this.calculatePathModeSetpoint();
-        }
-        else if (this.usePositionalMode)
-        {
-            setpoint = this.calculatePositionModeSetpoint();
-        }
-        else
-        {
-            setpoint = this.calculateVelocityModeSetpoint();
+            this.maintainOrientation = true;
         }
 
-        double leftSetpoint = setpoint.getLeft();
-        double rightSetpoint = setpoint.getRight();
+        if (this.driver.getDigital(DigitalOperation.DriveTrainEnableMaintainDirectionMode) ||
+            !this.navxManager.getIsConnected())
+        {
+            this.maintainOrientation = false;
+        }
 
-        this.logger.logNumber(LoggingKey.DriveTrainLeftVelocityGoal, leftSetpoint);
-        this.logger.logNumber(LoggingKey.DriveTrainRightVelocityGoal, rightSetpoint);
+        if (this.driver.getDigital(DigitalOperation.PositionResetFieldOrientation))
+        {
+            this.robotYaw = this.navxManager.getAngle();
+            this.desiredYaw = this.robotYaw;
+        }
 
-        // apply the setpoints to the motors
-        this.leftMotor.set(leftSetpoint);
-        this.rightMotor.set(rightSetpoint);
+        if (this.firstRun || this.driver.getDigital(DigitalOperation.DriveTrainReset))
+        {
+            for (int i = 0; i < DriveTrainMechanism.NUM_MODULES; i++)
+            {
+                this.driveMotors[i].setPosition(0);
+                double angleDifference = (this.encoderAngles[i] - HardwareConstants.DRIVETRAIN_STEER_MOTOR_ABSOLUTE_OFFSET[i]);
+                double tickDifference = angleDifference * HardwareConstants.DRIVETRAIN_STEER_TICKS_PER_DEGREE;
+                this.steerMotors[i].setPosition((int)tickDifference);
+    
+                this.drivePositions[i] = 0;
+                this.steerPositions[i] = (int)tickDifference;
+                this.steerAngles[i] = angleDifference % 360.0;
+            }
+
+            this.firstRun = false;
+        }
+
+        this.calculateSetpoints();
+        for (int i = 0; i < DriveTrainMechanism.NUM_MODULES; i++)
+        {
+            Setpoint current = this.result[i];
+            Double steerSetpoint = current.angle;
+            double driveSetpoint = current.drive;
+
+            this.logger.logNumber(this.DRIVE_GOAL_LOGGING_KEYS[i], driveSetpoint);
+            this.driveMotors[i].set(driveSetpoint);
+
+            if (steerSetpoint != null)
+            {
+                this.logger.logNumber(this.STEER_GOAL_LOGGING_KEYS[i], steerSetpoint);
+                this.steerMotors[i].set(steerSetpoint);
+            }
+        }
+
+        this.logger.logNumber(LoggingKey.RobotTimer, this.timer.get() - this.startTime);
     }
 
-    /**
-     * stop the relevant mechanism
-     */
     @Override
     public void stop()
     {
-        this.leftMotor.stop();
-        this.rightMotor.stop();
-
-        this.leftMotor.reset();
-        this.rightMotor.reset();
-
-        if (this.leftPID != null)
+        this.omegaPID.reset();
+        for (int i = 0; i < DriveTrainMechanism.NUM_MODULES; i++)
         {
-            this.leftPID.reset();
+            this.driveMotors[i].stop();
+            this.steerMotors[i].stop();
         }
-
-        if (this.rightPID != null)
-        {
-            this.rightPID.reset();
-        }
-
-        this.leftVelocity = 0.0;
-        this.leftError = 0.0;
-        this.leftPosition = 0;
-        this.rightVelocity = 0.0;
-        this.rightError = 0.0;
-        this.rightPosition = 0;
     }
 
-    /**
-     * create a PIDHandler based on our current settings
-     */
-    private void setControlMode()
+    public Pose2d getPose()
     {
-        TalonSRXControlMode mode = TalonSRXControlMode.PercentOutput;
-        if (this.usePID)
+        return new Pose2d(this.xPosition, this.yPosition, this.robotYaw);
+    }
+
+    private void calculateSetpoints()
+    {
+        // calculate center velocity and turn velocity based on our current control mode:
+        double rotationCenterA;
+        double rotationCenterB;
+
+        // robot center velocity, in inches/sec
+        double centerVelocityRight;
+        double centerVelocityForward;
+
+        // robot turn velocity, in rad/sec
+        double omega;
+        if (this.driver.getDigital(DigitalOperation.DriveTrainPathMode))
         {
-            if (this.usePathMode)
+            // path mode doesn't support rotation centers besides the robot center
+            rotationCenterA = 0.0;
+            rotationCenterB = 0.0;
+
+            double xGoal = this.driver.getAnalog(AnalogOperation.DriveTrainPathXGoal);
+            double yGoal = this.driver.getAnalog(AnalogOperation.DriveTrainPathYGoal);
+            double angleGoal = this.driver.getAnalog(AnalogOperation.DriveTrainTurnAngleGoal);
+            double angleReference = this.driver.getAnalog(AnalogOperation.DriveTrainTurnAngleReference);
+            double xVelocityGoal = this.driver.getAnalog(AnalogOperation.DriveTrainPathXVelocityGoal);
+            double yVelocityGoal = this.driver.getAnalog(AnalogOperation.DriveTrainPathYVelocityGoal);
+            double angleVelocityGoal = this.driver.getAnalog(AnalogOperation.DriveTrainPathAngleVelocityGoal);
+
+            omega = angleVelocityGoal * Helpers.DEGREES_TO_RADIANS;
+            if (this.fieldOriented)
             {
-                this.leftPID = new PIDHandler(
-                    TuningConstants.DRIVETRAIN_PATH_PID_LEFT_KP,
-                    TuningConstants.DRIVETRAIN_PATH_PID_LEFT_KI,
-                    TuningConstants.DRIVETRAIN_PATH_PID_LEFT_KD,
-                    TuningConstants.DRIVETRAIN_PATH_PID_LEFT_KF,
-                    1.0,
-                    -TuningConstants.DRIVETRAIN_PATH_MAX_POWER_LEVEL,
-                    TuningConstants.DRIVETRAIN_PATH_MAX_POWER_LEVEL,
-                    this.timer);
-                this.rightPID = new PIDHandler(
-                    TuningConstants.DRIVETRAIN_PATH_PID_RIGHT_KP,
-                    TuningConstants.DRIVETRAIN_PATH_PID_RIGHT_KI,
-                    TuningConstants.DRIVETRAIN_PATH_PID_RIGHT_KD,
-                    TuningConstants.DRIVETRAIN_PATH_PID_RIGHT_KF,
-                    1.0,
-                    -TuningConstants.DRIVETRAIN_PATH_MAX_POWER_LEVEL,
-                    TuningConstants.DRIVETRAIN_PATH_MAX_POWER_LEVEL,
-                    this.timer);
+                // add correction for x/y drift
+                xVelocityGoal += this.pathXOffsetPID.calculatePosition(xGoal, this.xPosition);
+                yVelocityGoal += this.pathYOffsetPID.calculatePosition(yGoal, this.yPosition);
+
+                // convert velocity to be robot-oriented
+                centerVelocityRight = Helpers.cosd(this.robotYaw) * xVelocityGoal + Helpers.sind(this.robotYaw) * yVelocityGoal;
+                centerVelocityForward = Helpers.cosd(this.robotYaw) * yVelocityGoal - Helpers.sind(this.robotYaw) * xVelocityGoal;
+
+                // add correction for angle drift
+                AnglePair anglePair = AnglePair.getClosestAngle(angleGoal + angleReference, this.robotYaw, false);
+                this.desiredYaw = anglePair.getAngle();
+
+                this.logger.logNumber(LoggingKey.DriveTrainDesiredAngle, this.desiredYaw);
+                omega += this.pathOmegaPID.calculatePosition(this.desiredYaw, this.robotYaw);
             }
-            else if (this.usePositionalMode)
+            else
             {
-                if (this.useBrakeMode)
+                centerVelocityRight = xVelocityGoal;
+                centerVelocityForward = yVelocityGoal;
+            }
+        }
+        else
+        {
+            // get the center of rotation modifying control values
+            rotationCenterA = this.driver.getAnalog(AnalogOperation.DriveTrainRotationA);
+            rotationCenterB = this.driver.getAnalog(AnalogOperation.DriveTrainRotationB);
+
+            // get the center velocity control values (could be field-oriented or robot-oriented center velocity)
+            double centerVelocityRightRaw = this.driver.getAnalog(AnalogOperation.DriveTrainMoveRight);
+            double centerVelocityForwardRaw = this.driver.getAnalog(AnalogOperation.DriveTrainMoveForward);
+
+            if (this.fieldOriented)
+            {
+                centerVelocityRight = Helpers.cosd(this.robotYaw) * centerVelocityRightRaw + Helpers.sind(this.robotYaw) * centerVelocityForwardRaw;
+                centerVelocityForward = Helpers.cosd(this.robotYaw) * centerVelocityForwardRaw - Helpers.sind(this.robotYaw) * centerVelocityRightRaw;
+
+                boolean hadUpdatedOrientation = this.updatedOrientation;
+                this.updatedOrientation = false;
+                double yawGoal = this.driver.getAnalog(AnalogOperation.DriveTrainTurnAngleGoal);
+                if (yawGoal != TuningConstants.MAGIC_NULL_VALUE)
                 {
-                    this.leftPID = new PIDHandler(
-                        TuningConstants.DRIVETRAIN_BRAKE_PID_LEFT_KP,
-                        TuningConstants.DRIVETRAIN_BRAKE_PID_LEFT_KI,
-                        TuningConstants.DRIVETRAIN_BRAKE_PID_LEFT_KD,
-                        TuningConstants.DRIVETRAIN_BRAKE_PID_LEFT_KF,
-                        1.0,
-                        -TuningConstants.DRIVETRAIN_BRAKE_MAX_POWER_LEVEL,
-                        TuningConstants.DRIVETRAIN_BRAKE_MAX_POWER_LEVEL,
-                        this.timer);
-                    this.rightPID = new PIDHandler(
-                        TuningConstants.DRIVETRAIN_BRAKE_PID_RIGHT_KP,
-                        TuningConstants.DRIVETRAIN_BRAKE_PID_RIGHT_KI,
-                        TuningConstants.DRIVETRAIN_BRAKE_PID_RIGHT_KD,
-                        TuningConstants.DRIVETRAIN_BRAKE_PID_RIGHT_KF,
-                        1.0,
-                        -TuningConstants.DRIVETRAIN_BRAKE_MAX_POWER_LEVEL,
-                        TuningConstants.DRIVETRAIN_BRAKE_MAX_POWER_LEVEL,
-                        this.timer);
+                    this.updatedOrientation = true;
+
+                    AnglePair anglePair = AnglePair.getClosestAngle(yawGoal, this.robotYaw, false);
+                    this.desiredYaw = anglePair.getAngle();
                 }
                 else
                 {
-                    this.leftPID = new PIDHandler(
-                        TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KP,
-                        TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KI,
-                        TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KD,
-                        TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KF,
-                        1.0,
-                        -TuningConstants.DRIVETRAIN_POSITIONAL_MAX_POWER_LEVEL,
-                        TuningConstants.DRIVETRAIN_POSITIONAL_MAX_POWER_LEVEL,
-                        this.timer);
-                    this.rightPID = new PIDHandler(
-                        TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KP,
-                        TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KI,
-                        TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KD,
-                        TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KF,
-                        1.0,
-                        -TuningConstants.DRIVETRAIN_POSITIONAL_MAX_POWER_LEVEL,
-                        TuningConstants.DRIVETRAIN_POSITIONAL_MAX_POWER_LEVEL,
-                        this.timer);
+                    double turnSpeed = this.driver.getAnalog(AnalogOperation.DriveTrainTurnSpeed);
+                    if (turnSpeed != 0.0)
+                    {
+                        this.updatedOrientation = true;
+                        if (!hadUpdatedOrientation)
+                        {
+                            this.desiredYaw = this.robotYaw;
+                        }
+
+                        this.desiredYaw += turnSpeed * TuningConstants.DRIVETRAIN_TURN_GOAL_VELOCITY;
+                    }
+                }
+
+                if (this.maintainOrientation || this.updatedOrientation)
+                {
+                    if (!this.updatedOrientation &&
+                        TuningConstants.DRIVETRAIN_TURN_APPROXIMATION != 0.0 &&
+                        Helpers.WithinDelta(this.desiredYaw, this.robotYaw, TuningConstants.DRIVETRAIN_TURN_APPROXIMATION))
+                    {
+                        // don't turn aggressively if we are within a very small delta from our goal angle
+                        omega = 0.0;
+                    }
+                    else
+                    {
+                        this.logger.logNumber(LoggingKey.DriveTrainDesiredAngle, this.desiredYaw);
+                        omega = this.omegaPID.calculatePosition(this.desiredYaw, this.robotYaw);
+                    }
+                }
+                else
+                {
+                    omega = 0.0;
                 }
             }
             else
             {
-                this.leftPID = null;
-                this.rightPID = null;
+                centerVelocityRight = centerVelocityRightRaw;
+                centerVelocityForward = centerVelocityForwardRaw;
+                omega = this.driver.getAnalog(AnalogOperation.DriveTrainTurnSpeed) * TuningConstants.DRIVETRAIN_TURN_SCALE;
             }
-
-            mode = TalonSRXControlMode.Velocity;
-            this.leftMotor.setSelectedSlot(DriveTrainMechanism.pidSlotId);
-            this.rightMotor.setSelectedSlot(DriveTrainMechanism.pidSlotId);
         }
 
-        this.leftMotor.setControlMode(mode);
-        this.rightMotor.setControlMode(mode);
-    }
-
-    /**
-     * Calculate the setting to use based on the inputs when in velocity mode
-     * @return settings for left and right motor
-     */
-    private Setpoint calculateVelocityModeSetpoint()
-    {
-        // velocity goals represent the desired percentage of the max velocity
-        double leftVelocityGoal = 0.0;
-        double rightVelocityGoal = 0.0;
-
-        // get a value indicating that we should be in simple mode...
-        boolean simpleDriveModeEnabled = this.driver.getDigital(DigitalOperation.DriveTrainSimpleMode);
-
-        // get the X and Y values from the operator.  We expect these to be between -1.0 and 1.0,
-        // with this value representing the forward velocity percentage and right turn percentage (of max speed)
-        double turnAmount = this.driver.getAnalog(AnalogOperation.DriveTrainTurn);
-        double forwardVelocity = this.driver.getAnalog(AnalogOperation.DriveTrainMoveForward);
-
-        // Negate the x and y if DriveTrainSwapFrontOrientation is true
-        if (this.driver.getDigital(DigitalOperation.DriveTrainSwapFrontOrientation))
+        double maxModuleDriveVelocityGoal = 0.0;
+        for (int i = 0; i < DriveTrainMechanism.NUM_MODULES; i++)
         {
-            turnAmount *= -1.0;
-            forwardVelocity *= -1.0;
-        }
+            double moduleVelocityRight = centerVelocityRight + omega * (DriveTrainMechanism.MODULE_OFFSET_Y[i] + rotationCenterB);
+            double moduleVelocityForward = centerVelocityForward - omega * (DriveTrainMechanism.MODULE_OFFSET_X[i] + rotationCenterA);
 
-        if ((!simpleDriveModeEnabled && TuningConstants.DRIVETRAIN_REGULAR_MODE_SQUARING)
-            || (simpleDriveModeEnabled && TuningConstants.DRIVETRAIN_SIMPLE_MODE_SQUARING))
-        {
-            if (turnAmount >= 0)
+            Double moduleSteerPositionGoal;
+            double moduleDriveVelocityGoal;
+            if (TuningConstants.DRIVETRAIN_SKIP_ANGLE_ON_ZERO_VELOCITY
+                    && Helpers.WithinDelta(moduleVelocityRight, 0.0, TuningConstants.DRIVETRAIN_SKIP_ANGLE_ON_ZERO_DELTA)
+                    && Helpers.WithinDelta(moduleVelocityForward, 0.0, TuningConstants.DRIVETRAIN_SKIP_ANGLE_ON_ZERO_DELTA))
             {
-                turnAmount = turnAmount * turnAmount;
+                moduleDriveVelocityGoal = 0.0;
+                moduleSteerPositionGoal = null;
             }
             else
             {
-                turnAmount = -1.0 * turnAmount * turnAmount;
+                moduleDriveVelocityGoal = Math.sqrt(moduleVelocityRight * moduleVelocityRight + moduleVelocityForward * moduleVelocityForward);
+
+                moduleSteerPositionGoal = Helpers.EnforceRange(Helpers.atan2d(-moduleVelocityRight, moduleVelocityForward), -180.0, 180.0);
+                double currentAngle = this.steerPositions[i] * HardwareConstants.DRIVETRAIN_STEER_PULSE_DISTANCE;
+                AnglePair anglePair = AnglePair.getClosestAngle(moduleSteerPositionGoal, currentAngle, true);
+                moduleSteerPositionGoal = anglePair.getAngle() * TuningConstants.DRIVETRAIN_STEER_MOTOR_POSITION_PID_KS;
+                this.isDirectionSwapped[i] = anglePair.getSwapDirection();
+
+                if (maxModuleDriveVelocityGoal < moduleDriveVelocityGoal)
+                {
+                    maxModuleDriveVelocityGoal = moduleDriveVelocityGoal;
+                }
+
+                moduleDriveVelocityGoal *= HardwareConstants.DRIVETRAIN_DRIVE_INCHES_PER_SECOND_TO_MOTOR_VELOCITY;
+                if (this.isDirectionSwapped[i])
+                {
+                    moduleDriveVelocityGoal *= -1.0;
+                }
             }
 
-            if (forwardVelocity >= 0)
-            {
-                forwardVelocity = forwardVelocity * forwardVelocity;
-            }
-            else
-            {
-                forwardVelocity = -1.0 * forwardVelocity * forwardVelocity;
-            }
+            this.result[i].drive = moduleDriveVelocityGoal;
+            this.result[i].angle = moduleSteerPositionGoal;
         }
 
-        // adjust the intensity of the input
-        if (simpleDriveModeEnabled)
+        // rescale velocities based on max velocity percentage, if max velocity is exceeded for any module
+        if (maxModuleDriveVelocityGoal > TuningConstants.DRIVETRAIN_MAX_VELOCITY)
         {
-            if (Math.abs(forwardVelocity) < Math.abs(turnAmount))
+            // divide by percentage is interchangeable with multiply by inverse-percentage
+            double invPercentage = TuningConstants.DRIVETRAIN_MAX_VELOCITY / maxModuleDriveVelocityGoal;
+            for (int i = 0; i < DriveTrainMechanism.NUM_MODULES; i++)
             {
-                // in-place turn
-                leftVelocityGoal = turnAmount;
-                rightVelocityGoal = -turnAmount;
-            }
-            else
-            {
-                // forward/backward
-                leftVelocityGoal = forwardVelocity;
-                rightVelocityGoal = forwardVelocity;
+                this.result[i].drive *= invPercentage;
             }
         }
-        else
-        {
-            leftVelocityGoal = (TuningConstants.DRIVETRAIN_K1 * forwardVelocity) + (TuningConstants.DRIVETRAIN_K2 * turnAmount);
-            rightVelocityGoal = (TuningConstants.DRIVETRAIN_K1 * forwardVelocity) + (-TuningConstants.DRIVETRAIN_K2 * turnAmount);
-        }
-
-        // decrease the desired velocity based on the configured max power level
-        leftVelocityGoal = leftVelocityGoal * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL;
-        rightVelocityGoal = rightVelocityGoal * TuningConstants.DRIVETRAIN_MAX_POWER_LEVEL;
-
-        // ensure that we don't give values outside the appropriate range
-        double left = this.applyPowerLevelRange(leftVelocityGoal);
-        double right = this.applyPowerLevelRange(rightVelocityGoal);
-
-        this.assertPowerLevelRange(left, "left");
-        this.assertPowerLevelRange(right, "right");
-
-        // if we are using PID, then we base the setpoint on the max velocity
-        if (this.usePID)
-        {
-            left *= TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KS;
-            right *= TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KS;
-        }
-
-        return new Setpoint(left, right);
     }
 
-    /**
-     * Calculate the setting to use based on the inputs when in path mode
-     * @return settings for left and right motor
-     */
-    private Setpoint calculatePathModeSetpoint()
+    private void calculateOdometry(double deltaNavxYaw)
     {
-        // get the desired left and right values from the driver.
-        // note that position goals are in inches and velocity goals are in inches/second
-        double leftPositionGoal = this.driver.getAnalog(AnalogOperation.DriveTrainLeftPosition);
-        double rightPositionGoal = this.driver.getAnalog(AnalogOperation.DriveTrainRightPosition);
-        double leftVelocityGoal = this.driver.getAnalog(AnalogOperation.DriveTrainLeftVelocity);
-        double rightVelocityGoal = this.driver.getAnalog(AnalogOperation.DriveTrainRightVelocity);
-        double headingCorrection = this.driver.getAnalog(AnalogOperation.DriveTrainHeadingCorrection);
+        double navxOmega = deltaNavxYaw / this.deltaT; // in degrees
 
-        leftVelocityGoal /= TuningConstants.DRIVETRAIN_PATH_LEFT_MAX_VELOCITY_INCHES_PER_SECOND;
-        rightVelocityGoal /= TuningConstants.DRIVETRAIN_PATH_RIGHT_MAX_VELOCITY_INCHES_PER_SECOND;
+        double rightRobotVelocity;
+        double forwardRobotVelocity;
 
-        this.logger.logNumber(LoggingKey.DriveTrainLeftPositionGoal, leftPositionGoal);
-        this.logger.logNumber(LoggingKey.DriveTrainRightPositionGoal, rightPositionGoal);
-        this.logger.logNumber(LoggingKey.DriveTrainLeftVelocityGoal, leftVelocityGoal);
-        this.logger.logNumber(LoggingKey.DriveTrainRightVelocityGoal, rightVelocityGoal);
+        // calculate our right and forward velocities using an average of our various velocities and the angle.
+        double rightRobotVelocity1 = -Helpers.sind(this.steerAngles[0]) * HardwareConstants.DRIVETRAIN_DRIVE_MOTOR_VELOCITY_TO_INCHES_PER_SECOND * this.driveVelocities[0];
+        double rightRobotVelocity2 = -Helpers.sind(this.steerAngles[1]) * HardwareConstants.DRIVETRAIN_DRIVE_MOTOR_VELOCITY_TO_INCHES_PER_SECOND * this.driveVelocities[1];
+        double rightRobotVelocity3 = -Helpers.sind(this.steerAngles[2]) * HardwareConstants.DRIVETRAIN_DRIVE_MOTOR_VELOCITY_TO_INCHES_PER_SECOND * this.driveVelocities[2];
+        double rightRobotVelocity4 = -Helpers.sind(this.steerAngles[3]) * HardwareConstants.DRIVETRAIN_DRIVE_MOTOR_VELOCITY_TO_INCHES_PER_SECOND * this.driveVelocities[3];
 
-        // use positional PID to get the relevant value
-        double leftGoal = this.leftPID.calculatePosition(leftPositionGoal, this.leftPosition);
-        double rightGoal = this.rightPID.calculatePosition(rightPositionGoal, this.rightPosition);
+        double forwardRobotVelocity1 = Helpers.cosd(this.steerAngles[0]) * HardwareConstants.DRIVETRAIN_DRIVE_MOTOR_VELOCITY_TO_INCHES_PER_SECOND * this.driveVelocities[0];
+        double forwardRobotVelocity2 = Helpers.cosd(this.steerAngles[1]) * HardwareConstants.DRIVETRAIN_DRIVE_MOTOR_VELOCITY_TO_INCHES_PER_SECOND * this.driveVelocities[1];
+        double forwardRobotVelocity3 = Helpers.cosd(this.steerAngles[2]) * HardwareConstants.DRIVETRAIN_DRIVE_MOTOR_VELOCITY_TO_INCHES_PER_SECOND * this.driveVelocities[2];
+        double forwardRobotVelocity4 = Helpers.cosd(this.steerAngles[3]) * HardwareConstants.DRIVETRAIN_DRIVE_MOTOR_VELOCITY_TO_INCHES_PER_SECOND * this.driveVelocities[3];
 
-        // add in velocity as a type of feed-forward
-        leftGoal += leftVelocityGoal * TuningConstants.DRIVETRAIN_PATH_PID_LEFT_KV;
-        rightGoal += rightVelocityGoal * TuningConstants.DRIVETRAIN_PATH_PID_RIGHT_KV;
+        // rightRobotVelocity = (rightRobotVelocity1 + rightRobotVelocity2 + rightRobotVelocity3 + rightRobotVelocity4) / 4.0;
+        // forwardRobotVelocity = (forwardRobotVelocity1 + forwardRobotVelocity2 + forwardRobotVelocity3 + forwardRobotVelocity4) / 4.0;
 
-        // apply cross-coupling changes
-        double leftPositionError = this.leftPID.getError();
-        double rightPositionError = this.rightPID.getError();
+        double a = 0.5 * (-rightRobotVelocity3 - rightRobotVelocity4);
+        double b = 0.5 * (-rightRobotVelocity1 - rightRobotVelocity2);
+        double c = 0.5 * (forwardRobotVelocity1 + forwardRobotVelocity4);
+        double d = 0.5 * (forwardRobotVelocity2 + forwardRobotVelocity3);
 
-        double positionErrorMagnitudeDelta = leftPositionError - rightPositionError;
-        if (TuningConstants.DRIVETRAIN_USE_CROSS_COUPLING
-            && !Helpers.WithinDelta(positionErrorMagnitudeDelta, 0.0, TuningConstants.DRIVETRAIN_CROSS_COUPLING_ZERO_ERROR_RANGE))
-        {
-            // add the delta times the coupling factor to the left, and subtract from the right
-            // (if left error is greater than right error, left should be given some more power than right)
-            leftGoal += TuningConstants.DRIVETRAIN_PATH_PID_LEFT_KCC * positionErrorMagnitudeDelta;
-            rightGoal -= TuningConstants.DRIVETRAIN_PATH_PID_RIGHT_KCC * positionErrorMagnitudeDelta;
-        }
+        double omegaRadians1 = (b - a) / HardwareConstants.DRIVETRAIN_VERTICAL_WHEEL_SEPERATION_DISTANCE;
+        double omegaRadians2 = (c - d) / HardwareConstants.DRIVETRAIN_HORIZONTAL_WHEEL_SEPERATION_DISTANCE;
+        double omegaRadians = (omegaRadians1 + omegaRadians2) / 2.0;
 
-        // apply heading correction
-        if (TuningConstants.DRIVETRAIN_USE_HEADING_CORRECTION
-            && headingCorrection != 0.0)
-        {
-            leftGoal += TuningConstants.DRIVETRAIN_PATH_LEFT_HEADING_CORRECTION * headingCorrection;
-            rightGoal -= TuningConstants.DRIVETRAIN_PATH_RIGHT_HEADING_CORRECTION * headingCorrection;
-        }
+        double rightRobotVelocityA = omegaRadians * HardwareConstants.DRIVETRAIN_HORIZONTAL_WHEEL_CENTER_DISTANCE + a;
+        double rightRobotVelocityB = -omegaRadians * HardwareConstants.DRIVETRAIN_HORIZONTAL_WHEEL_CENTER_DISTANCE + b;
+        rightRobotVelocity = -(rightRobotVelocityA + rightRobotVelocityB) / 2.0;
 
-        // velocity plus position correction could put us over our max or under our min power levels
-        leftGoal = this.applyPowerLevelRange(leftGoal);
-        rightGoal = this.applyPowerLevelRange(rightGoal);
+        double forwardRobotVelocityA = omegaRadians * HardwareConstants.DRIVETRAIN_VERTICAL_WHEEL_CENTER_DISTANCE + c;
+        double forwardRobotVelocityB = -omegaRadians * HardwareConstants.DRIVETRAIN_VERTICAL_WHEEL_CENTER_DISTANCE + d;
+        forwardRobotVelocity = (forwardRobotVelocityA + forwardRobotVelocityB) / 2.0;
 
-        this.assertPowerLevelRange(leftGoal, "left velocity (goal)");
-        this.assertPowerLevelRange(rightGoal, "right velocity (goal)");
+        this.angle += omegaRadians * Helpers.RADIANS_TO_DEGREES * this.deltaT;
 
-        if (this.usePID)
-        {
-            leftGoal *= TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KS;
-            rightGoal *= TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KS;
-        }
-
-        return new Setpoint(leftGoal, rightGoal);
+        double rightFieldVelocity = rightRobotVelocity * Helpers.cosd(this.robotYaw) - forwardRobotVelocity * Helpers.sind(this.robotYaw);
+        double forwardFieldVelocity = rightRobotVelocity * Helpers.sind(this.robotYaw) + forwardRobotVelocity * Helpers.cosd(this.robotYaw);
+        this.xPosition += rightFieldVelocity * this.deltaT;
+        this.yPosition += forwardFieldVelocity * this.deltaT;
     }
 
     /**
-     * Calculate the setting to use based on the inputs when in position mode
-     * @return settings for left and right motor
-     */
-    private Setpoint calculatePositionModeSetpoint()
-    {
-        // get the desired left and right values from the driver.
-        double leftPositionGoal = this.driver.getAnalog(AnalogOperation.DriveTrainLeftPosition);
-        double rightPositionGoal = this.driver.getAnalog(AnalogOperation.DriveTrainRightPosition);
-
-        this.logger.logNumber(LoggingKey.DriveTrainLeftPositionGoal, leftPositionGoal);
-        this.logger.logNumber(LoggingKey.DriveTrainRightPositionGoal, rightPositionGoal);
-
-        double leftPower;
-        double rightPower;
-        if (this.usePID)
-        {
-            // use positional PID to get the relevant value
-            leftPower = this.leftPID.calculatePosition(leftPositionGoal, this.leftPosition);
-            rightPower = this.rightPID.calculatePosition(rightPositionGoal, this.rightPosition);
-
-            // apply cross-coupling changes
-            double leftPositionError = this.leftPID.getError();
-            double rightPositionError = this.rightPID.getError();
-
-            double positionErrorMagnitudeDelta = leftPositionError - rightPositionError;
-            if (TuningConstants.DRIVETRAIN_USE_CROSS_COUPLING
-                && !Helpers.WithinDelta(positionErrorMagnitudeDelta, 0.0, TuningConstants.DRIVETRAIN_CROSS_COUPLING_ZERO_ERROR_RANGE))
-            {
-                // add the delta times the coupling factor to the left, and subtract from the right
-                // (if left error is greater than right error, left should be given some more power than right)
-                leftPower += TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KCC * positionErrorMagnitudeDelta;
-                rightPower -= TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KCC * positionErrorMagnitudeDelta;
-
-                // cross-coupling could put us over our max or under our min power levels
-                leftPower = this.applyPowerLevelRange(leftPower);
-                rightPower = this.applyPowerLevelRange(rightPower);
-            }
-        }
-        else
-        {
-            // calculate a desired power level
-            leftPower = leftPositionGoal - this.leftPosition;
-            rightPower = rightPositionGoal - this.rightPosition;
-            if (Math.abs(leftPower) < 0.1)
-            {
-                leftPower = 0.0;
-            }
-
-            if (Math.abs(rightPower) < 0.1)
-            {
-                rightPower = 0.0;
-            }
-
-            leftPower *= TuningConstants.DRIVETRAIN_LEFT_POSITIONAL_NON_PID_MULTIPLICAND;
-            rightPower *= TuningConstants.DRIVETRAIN_RIGHT_POSITIONAL_NON_PID_MULTIPLICAND;
-
-            // ensure that we are within our power level range, and then scale it down
-            leftPower = this.applyPowerLevelRange(leftPower) * TuningConstants.DRIVETRAIN_MAX_POWER_POSITIONAL_NON_PID;
-            rightPower = this.applyPowerLevelRange(rightPower) * TuningConstants.DRIVETRAIN_MAX_POWER_POSITIONAL_NON_PID;
-        }
-
-        this.assertPowerLevelRange(leftPower, "left velocity (goal)");
-        this.assertPowerLevelRange(rightPower, "right velocity (goal)");
-
-        if (this.usePID)
-        {
-            leftPower *= TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KS;
-            rightPower *= TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KS;
-        }
-
-        return new Setpoint(leftPower, rightPower);
-    }
-
-    /**
-     * Assert that the power level is within the required range
-     * @param powerLevel to verify
-     * @param side indicator for the exception message if incorrect
-     */
-    private void assertPowerLevelRange(double powerLevel, String side)
-    {
-        if (powerLevel < DriveTrainMechanism.POWERLEVEL_MIN)
-        {
-            if (TuningConstants.THROW_EXCEPTIONS)
-            {
-                throw new RuntimeException(side + " power level too low!");
-            }
-
-            return;
-        }
-
-        if (powerLevel > DriveTrainMechanism.POWERLEVEL_MAX)
-        {
-            if (TuningConstants.THROW_EXCEPTIONS)
-            {
-                throw new RuntimeException(side + " power level too high!");
-            }
-
-            return;
-        }
-    }
-
-    /**
-     * Reset the power level to be within the required range
-     * @param powerLevel to reset
-     * @return power level
-     */
-    private double applyPowerLevelRange(double powerLevel)
-    {
-        return Helpers.EnforceRange(powerLevel, DriveTrainMechanism.POWERLEVEL_MIN, DriveTrainMechanism.POWERLEVEL_MAX);
-    }
-
-    /**
-     * Simple holder of setpoint information for the left and right sides
+     * Basic structure to hold an angle/drive pair
      */
     private class Setpoint
     {
-        private double left;
-        private double right;
+        public Double angle;
+        public double drive;
 
-        /**
-         * Initializes a new Setpoint
-         * @param left value to apply
-         * @param right value to apply
-         */
-        public Setpoint(double left, double right)
+        public Setpoint()
         {
-            this.left = left;
-            this.right = right;
-        }
-
-        /**
-         * gets the left setpoint
-         * @return left setpoint value
-         */
-        public double getLeft()
-        {
-            return this.left;
-        }
-
-        /**
-         * gets the right setpoint
-         * @return right setpoint value
-         */
-        public double getRight()
-        {
-            return this.right;
         }
     }
 }

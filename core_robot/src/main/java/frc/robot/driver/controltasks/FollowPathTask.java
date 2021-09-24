@@ -1,36 +1,47 @@
 package frc.robot.driver.controltasks;
 
-import java.util.List;
-
-import frc.robot.HardwareConstants;
-import frc.robot.common.robotprovider.*;
-import frc.robot.driver.*;
-import frc.robot.driver.common.PathStep;
+import frc.robot.common.robotprovider.ITimer;
+import frc.robot.common.robotprovider.ITrajectory;
+import frc.robot.common.robotprovider.Pose2d;
+import frc.robot.common.robotprovider.TrajectoryState;
+import frc.robot.driver.AnalogOperation;
+import frc.robot.driver.DigitalOperation;
+import frc.robot.driver.PathManager;
 import frc.robot.mechanisms.DriveTrainMechanism;
-import frc.robot.mechanisms.PositionManager;
 
+/**
+ * Task that follows a path
+ * 
+ */
 public class FollowPathTask extends ControlTaskBase
 {
-    private static final double Timestep = 0.01;
     private final String pathName;
+    private final boolean fromCurrentPose;
+    private final boolean maintainInitialAngle;
 
-    protected ITimer timer;
+    private ITimer timer;
 
     private double startTime;
-    private double startLeftPosition;
-    private double startRightPosition;
-    private double startHeading;
-
-    private PositionManager positionManager;
-    private List<PathStep> path;
-    private double duration;
+    private double trajectoryDuration;
+    private ITrajectory trajectory;
+    private Pose2d initialPose;
 
     /**
      * Initializes a new FollowPathTask
      */
     public FollowPathTask(String pathName)
     {
+        this(pathName, true, true);
+    }
+
+    /**
+     * Initializes a new FollowPathTask
+     */
+    public FollowPathTask(String pathName, boolean fromCurrentPose, boolean maintainInitialAngle)
+    {
         this.pathName = pathName;
+        this.fromCurrentPose = fromCurrentPose;
+        this.maintainInitialAngle = maintainInitialAngle;
     }
 
     /**
@@ -39,26 +50,24 @@ public class FollowPathTask extends ControlTaskBase
     @Override
     public void begin()
     {
+        PathManager pathManager = this.getInjector().getInstance(PathManager.class);
+        this.trajectory = pathManager.getTrajectory(this.pathName);
+
         this.timer = this.getInjector().getInstance(ITimer.class);
         this.startTime = this.timer.get();
+        this.trajectoryDuration = this.trajectory.getDuration();
 
-        DriveTrainMechanism driveTrain = this.getInjector().getInstance(DriveTrainMechanism.class);
-        this.startLeftPosition = driveTrain.getLeftPosition();
-        this.startRightPosition = driveTrain.getRightPosition();
+        if (this.fromCurrentPose)
+        {
+            DriveTrainMechanism driveTrain = this.getInjector().getInstance(DriveTrainMechanism.class);
+            this.initialPose = driveTrain.getPose();
+        }
+        else
+        {
+            this.initialPose = new Pose2d(0.0, 0.0, 0.0);
+        }
 
-        this.positionManager = this.getInjector().getInstance(PositionManager.class);
-        this.startHeading = this.positionManager.getNavxAngle();
-
-        PathManager pathManager = this.getInjector().getInstance(PathManager.class);
-        this.path = pathManager.getPath(this.pathName);
-        this.duration = this.path.size() * FollowPathTask.Timestep;
-
-        this.setDigitalOperationState(DigitalOperation.DriveTrainUsePathMode, true);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainLeftPosition, this.startLeftPosition);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainRightPosition, this.startRightPosition);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainLeftVelocity, 0.0);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainRightVelocity, 0.0);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainHeadingCorrection, 0.0);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainPathMode, true);
     }
 
     /**
@@ -67,44 +76,17 @@ public class FollowPathTask extends ControlTaskBase
     @Override
     public void update()
     {
-        double elapsedTime = this.timer.get() - this.startTime;
-        if (elapsedTime > this.duration)
+        TrajectoryState state = this.trajectory.get(this.timer.get() - this.startTime);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainPathXGoal, state.xPosition + this.initialPose.x);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainPathYGoal, state.yPosition + this.initialPose.y);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleGoal, state.angle);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainPathXVelocityGoal, state.xVelocity);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainPathYVelocityGoal, state.yVelocity);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainPathAngleVelocityGoal, state.angleVelocity);
+        if (this.maintainInitialAngle)
         {
-            elapsedTime = this.duration;
+            this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleReference, this.initialPose.angle);
         }
-
-        double currentIndex = Math.floor(elapsedTime / FollowPathTask.Timestep);
-        if (currentIndex >= this.path.size())
-        {
-            currentIndex = this.path.size() - 1;
-        }
-
-        double currentHeading = this.positionManager.getNavxAngle();
-
-        PathStep step = this.path.get((int)currentIndex);
-        double leftGoalPosition = step.getLeftPosition() * HardwareConstants.DRIVETRAIN_LEFT_TICKS_PER_INCH;
-        double rightGoalPosition = step.getRightPosition() * HardwareConstants.DRIVETRAIN_RIGHT_TICKS_PER_INCH;
-        this.setAnalogOperationState(AnalogOperation.DriveTrainLeftPosition, this.startLeftPosition + leftGoalPosition);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainRightPosition, this.startRightPosition + rightGoalPosition);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainLeftVelocity, step.getLeftVelocity());
-        this.setAnalogOperationState(AnalogOperation.DriveTrainRightVelocity, step.getRightVelocity());
-        this.setAnalogOperationState(AnalogOperation.DriveTrainHeadingCorrection, (this.startHeading + step.getHeading()) - currentHeading);
-    }
-
-    /**
-     * Cancel the current task and clear control changes
-     */
-    @Override
-    public void stop()
-    {
-        super.stop();
-
-        this.setDigitalOperationState(DigitalOperation.DriveTrainUsePathMode, false);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainLeftPosition, 0.0);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainRightPosition, 0.0);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainLeftVelocity, 0.0);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainRightVelocity, 0.0);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainHeadingCorrection, 0.0);
     }
 
     /**
@@ -113,17 +95,26 @@ public class FollowPathTask extends ControlTaskBase
     @Override
     public void end()
     {
-        this.setDigitalOperationState(DigitalOperation.DriveTrainUsePathMode, false);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainLeftPosition, 0.0);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainRightPosition, 0.0);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainLeftVelocity, 0.0);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainRightVelocity, 0.0);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainHeadingCorrection, 0.0);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainPathMode, false);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainPathXGoal, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainPathYGoal, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleGoal, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainPathXVelocityGoal, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainPathYVelocityGoal, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainPathAngleVelocityGoal, 0.0);
+        if (this.maintainInitialAngle)
+        {
+            this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleReference, 0.0);
+        }
     }
 
+    /**
+     * Checks whether this task has completed, or whether it should continue being processed
+     * @return true if we should continue onto the next task, otherwise false (to keep processing this task)
+     */
     @Override
     public boolean hasCompleted()
     {
-        return this.timer.get() - this.startTime >= this.duration;
+        return this.timer.get() > this.startTime + this.trajectoryDuration;
     }
 }

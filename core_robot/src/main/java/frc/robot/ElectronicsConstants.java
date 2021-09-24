@@ -16,6 +16,14 @@ public class ElectronicsConstants
     public static final boolean INVERT_XBONE_LEFT_Y_AXIS = true;
     public static final boolean INVERT_XBONE_RIGHT_Y_AXIS = true;
 
+    // change INVERT_X_AXIS to true if positive on the joystick isn't to the right, and negative isn't to the left
+    public static final boolean INVERT_PS4_LEFT_X_AXIS = false;
+    public static final boolean INVERT_PS4_RIGHT_X_AXIS = false;
+
+    // change INVERT_Y_AXIS to true if positive on the joystick isn't forward, and negative isn't backwards.
+    public static final boolean INVERT_PS4_LEFT_Y_AXIS = true;
+    public static final boolean INVERT_PS4_RIGHT_Y_AXIS = true;
+
     // change INVERT_THROTTLE_AXIS to true if positive on the joystick isn't forward, and negative isn't backwards.
     public static final boolean INVERT_THROTTLE_AXIS = true;
 
@@ -38,8 +46,22 @@ public class ElectronicsConstants
 
     //================================================== DriveTrain ==============================================================
 
-    public static final int DRIVETRAIN_LEFT_PRIMARY_CAN_ID = 1;
-    public static final int DRIVETRAIN_LEFT_FOLLOWER_CAN_ID = 2;
-    public static final int DRIVETRAIN_RIGHT_PRIMARY_CAN_ID = 4;
-    public static final int DRIVETRAIN_RIGHT_FOLLOWER_CAN_ID = 5;
+    public static final int DRIVETRAIN_STEER_MOTOR_1_CAN_ID = 1;
+    public static final int DRIVETRAIN_DRIVE_MOTOR_1_CAN_ID = 2;
+    public static final int DRIVETRAIN_STEER_MOTOR_2_CAN_ID = 3;
+    public static final int DRIVETRAIN_DRIVE_MOTOR_2_CAN_ID = 4;
+    public static final int DRIVETRAIN_STEER_MOTOR_3_CAN_ID = 5;
+    public static final int DRIVETRAIN_DRIVE_MOTOR_3_CAN_ID = 6;
+    public static final int DRIVETRAIN_STEER_MOTOR_4_CAN_ID = 7;
+    public static final int DRIVETRAIN_DRIVE_MOTOR_4_CAN_ID = 8;
+
+    public static final int[] DRIVETRAIN_STEER_MOTOR_CAN_ID = new int[] { ElectronicsConstants.DRIVETRAIN_STEER_MOTOR_1_CAN_ID, ElectronicsConstants.DRIVETRAIN_STEER_MOTOR_2_CAN_ID, ElectronicsConstants.DRIVETRAIN_STEER_MOTOR_3_CAN_ID, ElectronicsConstants.DRIVETRAIN_STEER_MOTOR_4_CAN_ID};
+    public static final int[] DRIVETRAIN_DRIVE_MOTOR_CAN_ID = new int[]{ ElectronicsConstants.DRIVETRAIN_DRIVE_MOTOR_1_CAN_ID, ElectronicsConstants.DRIVETRAIN_DRIVE_MOTOR_2_CAN_ID, ElectronicsConstants.DRIVETRAIN_DRIVE_MOTOR_3_CAN_ID, ElectronicsConstants.DRIVETRAIN_DRIVE_MOTOR_4_CAN_ID };
+
+    public static final int DRIVETRAIN_ABSOLUTE_ENCODER_1_ANALOG_INPUT = 0;
+    public static final int DRIVETRAIN_ABSOLUTE_ENCODER_2_ANALOG_INPUT = 1;
+    public static final int DRIVETRAIN_ABSOLUTE_ENCODER_3_ANALOG_INPUT = 2;
+    public static final int DRIVETRAIN_ABSOLUTE_ENCODER_4_ANALOG_INPUT = 3;
+
+    public static final int[] DRIVETRAIN_ABSOLUTE_ENCODER_ANALOG_INPUT = new int[] { ElectronicsConstants.DRIVETRAIN_ABSOLUTE_ENCODER_1_ANALOG_INPUT, ElectronicsConstants.DRIVETRAIN_ABSOLUTE_ENCODER_2_ANALOG_INPUT, ElectronicsConstants.DRIVETRAIN_ABSOLUTE_ENCODER_3_ANALOG_INPUT, ElectronicsConstants.DRIVETRAIN_ABSOLUTE_ENCODER_4_ANALOG_INPUT };
 }

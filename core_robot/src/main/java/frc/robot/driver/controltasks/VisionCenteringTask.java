@@ -60,7 +60,8 @@ public class VisionCenteringTask extends ControlTaskBase
             this.timer = this.getInjector().getInstance(ITimer.class);
         }
 
-        this.setDigitalOperationState(DigitalOperation.VisionEnable, true);
+        this.setDigitalOperationState(DigitalOperation.VisionDisableStream, false);
+        this.setDigitalOperationState(DigitalOperation.VisionEnableRetroreflectiveProcessing, true);
     }
 
     /**
@@ -69,14 +70,12 @@ public class VisionCenteringTask extends ControlTaskBase
     @Override
     public void update()
     {
-        this.setDigitalOperationState(DigitalOperation.DriveTrainUsePositionalMode, false);
-
         Double currentMeasuredAngle = this.visionManager.getHorizontalAngle();
         if (currentMeasuredAngle != null)
         {
             this.setAnalogOperationState(
-                AnalogOperation.DriveTrainTurn,
-                -this.turnPidHandler.calculatePosition(0.0, currentMeasuredAngle));
+                AnalogOperation.DriveTrainTurnSpeed,
+                this.turnPidHandler.calculatePosition(0.0, currentMeasuredAngle));
         }
     }
 
@@ -86,10 +85,10 @@ public class VisionCenteringTask extends ControlTaskBase
     @Override
     public void end()
     {
-        this.setDigitalOperationState(DigitalOperation.DriveTrainUsePositionalMode, false);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainTurn, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainTurnSpeed, 0.0);
 
-        this.setDigitalOperationState(DigitalOperation.VisionEnable, false);
+        this.setDigitalOperationState(DigitalOperation.VisionDisableStream, false);
+        this.setDigitalOperationState(DigitalOperation.VisionEnableRetroreflectiveProcessing, false);
     }
 
     /**

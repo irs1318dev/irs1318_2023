@@ -6,10 +6,15 @@ public enum AnalogOperation implements IOperation
 
     // DriveTrain operations:
     DriveTrainMoveForward,
-    DriveTrainTurn,
-    DriveTrainLeftPosition,
-    DriveTrainRightPosition,
-    DriveTrainLeftVelocity,
-    DriveTrainRightVelocity,
-    DriveTrainHeadingCorrection,
+    DriveTrainMoveRight,
+    DriveTrainTurnAngleReference,
+    DriveTrainTurnAngleGoal,
+    DriveTrainTurnSpeed,
+    DriveTrainRotationA,
+    DriveTrainRotationB,
+    DriveTrainPathXGoal,
+    DriveTrainPathYGoal,
+    DriveTrainPathXVelocityGoal,
+    DriveTrainPathYVelocityGoal,
+    DriveTrainPathAngleVelocityGoal,
 }

@@ -1,15 +1,14 @@
 package frc.robot.mechanisms;
 
-import javax.inject.Singleton;
-
 import frc.robot.ElectronicsConstants;
 import frc.robot.common.IMechanism;
 import frc.robot.common.robotprovider.ICompressor;
 import frc.robot.common.robotprovider.IRobotProvider;
 import frc.robot.driver.DigitalOperation;
-import frc.robot.driver.common.Driver;
+import frc.robot.driver.common.IDriver;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 /**
  * Compressor mechanism.
@@ -22,30 +21,23 @@ import com.google.inject.Inject;
 @Singleton
 public class CompressorMechanism implements IMechanism
 {
+    private final IDriver driver;
+
     private final ICompressor compressor;
 
-    private Driver driver;
     private boolean isStarted;
 
     /**
      * Initializes a new CompressorMechanism
+     * @param driver for obtaining operations
      * @param provider for obtaining electronics objects
      */
     @Inject
-    public CompressorMechanism(IRobotProvider provider)
-    {
-        this.compressor = provider.getCompressor(ElectronicsConstants.PCM_A_MODULE);
-        this.isStarted = false;
-    }
-
-    /**
-     * set the driver that the mechanism should use
-     * @param driver to use
-     */
-    @Override
-    public void setDriver(Driver driver)
+    public CompressorMechanism(IDriver driver, IRobotProvider provider)
     {
         this.driver = driver;
+        this.compressor = provider.getCompressor(ElectronicsConstants.PCM_A_MODULE);
+        this.isStarted = false;
     }
 
     /**

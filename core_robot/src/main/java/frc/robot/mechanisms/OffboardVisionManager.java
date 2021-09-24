@@ -18,27 +18,34 @@ import com.google.inject.Singleton;
 @Singleton
 public class OffboardVisionManager implements IMechanism
 {
+    private final IDriver driver;
     private final INetworkTableProvider networkTable;
     private final ILogger logger;
 
     private final IDigitalOutput ringLight;
 
-    private Driver driver;
-
     private double centerX;
     private double centerY;
+    private double width;
+    private double height;
+    private double angle;
+
+    private int missedHeartbeats;
+    private double prevHeartbeat;
 
     private Double distance;
     private Double horizontalAngle;
 
     /**
      * Initializes a new OffboardVisionManager
+     * @param driver for obtaining operations
      * @param logger for logging to smart dashboard
      * @param provider for obtaining electronics objects
      */
     @Inject
-    public OffboardVisionManager(LoggingManager logger, IRobotProvider provider)
+    public OffboardVisionManager(IDriver driver, LoggingManager logger, IRobotProvider provider)
     {
+        this.driver = driver;
         this.logger = logger;
 
         this.networkTable = provider.getNetworkTableProvider();
@@ -46,6 +53,13 @@ public class OffboardVisionManager implements IMechanism
 
         this.centerX = 0.0;
         this.centerY = 0.0;
+
+        this.width = 0.0;
+        this.height = 0.0;
+        this.angle = 0.0;
+
+        this.missedHeartbeats = 0;
+        this.prevHeartbeat = 0.0;
     }
 
     /**
@@ -54,14 +68,32 @@ public class OffboardVisionManager implements IMechanism
     @Override
     public void readSensors()
     {
-        this.centerX = this.networkTable.getSmartDashboardNumber("v.x");
-        this.centerY = this.networkTable.getSmartDashboardNumber("v.y");
+        this.centerX = this.networkTable.getSmartDashboardNumber("v.pointX");
+        this.centerY = this.networkTable.getSmartDashboardNumber("v.pointY");
+        this.width = this.networkTable.getSmartDashboardNumber("v.width");
+        this.height = this.networkTable.getSmartDashboardNumber("v.height");
+        this.angle = this.networkTable.getSmartDashboardNumber("v.angle");
 
         this.logger.logNumber(LoggingKey.OffboardVisionX, this.centerX);
         this.logger.logNumber(LoggingKey.OffboardVisionY, this.centerY);
+        this.logger.logNumber(LoggingKey.OffboardVisionWidth, this.width);
+        this.logger.logNumber(LoggingKey.OffboardVisionHeight, this.height);
+        this.logger.logNumber(LoggingKey.OffboardVisionAngle, this.angle);
+
+        double newHeartbeat = this.networkTable.getSmartDashboardNumber("v.heartbeat");
+        if (this.prevHeartbeat != newHeartbeat)
+        {
+            this.missedHeartbeats = 0;
+        }
+        else
+        {
+            this.missedHeartbeats++;
+        }
+
+        this.logger.logNumber(LoggingKey.OffboardVisionMissedHeartbeats, this.missedHeartbeats);
 
         // return if we couldn't find a vision target
-        if (this.centerX < 0.0 || this.centerY < 0)
+        if (this.centerX < 0.0 || this.centerY < 0.0 || this.missedHeartbeats > TuningConstants.VISION_MISSED_HEARTBEAT_THRESHOLD)
         {
             this.distance = null;
             this.horizontalAngle = null;
@@ -84,14 +116,29 @@ public class OffboardVisionManager implements IMechanism
     @Override
     public void update()
     {
-        boolean enableVision = this.driver.getDigital(DigitalOperation.VisionEnable) && !this.driver.getDigital(DigitalOperation.VisionForceDisable);
-        boolean enableVideoStream = !this.driver.getDigital(DigitalOperation.VisionDisableOffboardStream);
-        boolean enableVideoProcessing = !this.driver.getDigital(DigitalOperation.VisionDisableOffboardProcessing);
+        boolean enableVision = !this.driver.getDigital(DigitalOperation.VisionForceDisable);
+        boolean enableVideoStream = !this.driver.getDigital(DigitalOperation.VisionDisableStream);
+        boolean enablePowercellProcessing = this.driver.getDigital(DigitalOperation.VisionEnablePowercellProcessing);
+        boolean enableRetroreflectiveProcessing = this.driver.getDigital(DigitalOperation.VisionEnableRetroreflectiveProcessing);
+
+        double visionProcessingMode = 0.0;
+        if (enableVision)
+        {
+            if (enableRetroreflectiveProcessing)
+            {
+                visionProcessingMode = 1.0;
+            }
+            else if (enablePowercellProcessing)
+            {
+                visionProcessingMode = 2.0;
+            }
+        }
+
         this.logger.logBoolean(LoggingKey.OffboardVisionEnableVision, enableVision);
         this.logger.logBoolean(LoggingKey.OffboardVisionEnableStream, enableVideoStream);
-        this.logger.logBoolean(LoggingKey.OffboardVisionEnableProcessing, enableVision && enableVideoProcessing);
+        this.logger.logNumber(LoggingKey.OffboardVisionEnableProcessing, visionProcessingMode);
 
-        this.ringLight.set(enableVision);
+        this.ringLight.set(enableVision && enableRetroreflectiveProcessing);
     }
 
     @Override
@@ -101,13 +148,7 @@ public class OffboardVisionManager implements IMechanism
 
         this.logger.logBoolean(LoggingKey.OffboardVisionEnableVision, false);
         this.logger.logBoolean(LoggingKey.OffboardVisionEnableStream, false);
-        this.logger.logBoolean(LoggingKey.OffboardVisionEnableProcessing, false);
-    }
-
-    @Override
-    public void setDriver(Driver driver)
-    {
-        this.driver = driver;
+        this.logger.logNumber(LoggingKey.OffboardVisionEnableProcessing, 0.0);
     }
 
     public Double getHorizontalAngle()
@@ -118,5 +159,15 @@ public class OffboardVisionManager implements IMechanism
     public Double getDistance()
     {
         return this.distance;
+    }
+
+    public double getPowercellX() 
+    {
+        return this.centerX;
+    }
+
+    public double getPowercellY() 
+    {
+        return this.centerY;
     }
 }
