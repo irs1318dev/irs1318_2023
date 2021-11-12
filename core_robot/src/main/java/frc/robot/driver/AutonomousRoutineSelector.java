@@ -32,12 +32,6 @@ public class AutonomousRoutineSelector
         None,
         PathA,
         PathB,
-        Slalom,
-        Barrel,
-        Bounce,
-        ShootAndTrenchShoot,
-        ShootAndShieldShoot,
-        ShootAndMove,
         Move,
     }
 

@@ -8,7 +8,6 @@ public enum LoggingKey
     RobotState("r.state", true),
     RobotTime("r.time", true),
     RobotMatch("r.match"),
-    RobotTimer("r.timer"),
     DriverMode("driver.mode"),
     DriverActiveMacros("driver.activeMacros", true),
     DriverActiveShifts("driver.activeShifts"),
@@ -34,6 +33,7 @@ public enum LoggingKey
     NavxY("navx.y"),
     NavxZ("navx.z"),
     NavxStartingAngle("navx.startingAngle"),
+
     DriveTrainDesiredAngle("dt.angle_goal"),
     DriveTrainAngle("dt.angle"),
     DriveTrainXPosition("dt.xpos"),

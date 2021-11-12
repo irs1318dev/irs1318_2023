@@ -18,6 +18,7 @@ public class ButtonMap implements IButtonMap
             Shift.DriverDebug,
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_LEFT_BUTTON),
+
         new ShiftDescription(
             Shift.OperatorDebug,
             UserInputDevice.Operator,
@@ -66,7 +67,8 @@ public class ButtonMap implements IButtonMap
             !ElectronicsConstants.INVERT_XBONE_RIGHT_X_AXIS, // make left positive, as counter-clockwise is positive
             -TuningConstants.DRIVETRAIN_DEAD_ZONE_TURN,
             TuningConstants.DRIVETRAIN_DEAD_ZONE_TURN),
-        new AnalogOperationDescription(
+
+            new AnalogOperationDescription(
             AnalogOperation.DriveTrainRotationA,
             UserInputDevice.Driver,
             AnalogAxis.XBONE_LT,
@@ -91,43 +93,44 @@ public class ButtonMap implements IButtonMap
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_A_BUTTON,
             Shift.DriverDebug,
-            Shift.None,
+            Shift.DriverDebug,
             ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.DriveTrainEnableFieldOrientation,
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_B_BUTTON,
             Shift.DriverDebug,
-            Shift.None,
+            Shift.DriverDebug,
             ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.DriveTrainDisableFieldOrientation,
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_X_BUTTON,
             Shift.DriverDebug,
-            Shift.None,
+            Shift.DriverDebug,
             ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.PositionResetFieldOrientation,
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_Y_BUTTON,
             Shift.DriverDebug,
-            Shift.None,
+            Shift.DriverDebug,
             ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.DriveTrainEnableMaintainDirectionMode,
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_RIGHT_STICK_BUTTON,
             Shift.DriverDebug,
-            Shift.None,
+            Shift.DriverDebug,
             ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.DriveTrainDisableMaintainDirectionMode,
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_LEFT_STICK_BUTTON,
             Shift.DriverDebug,
-            Shift.None,
+            Shift.DriverDebug,
             ButtonType.Click),
+
         new DigitalOperationDescription(
             DigitalOperation.VisionEnableRetroreflectiveProcessing,
             UserInputDevice.Operator,
@@ -140,13 +143,11 @@ public class ButtonMap implements IButtonMap
     public static MacroOperationDescription[] MacroSchema = new MacroOperationDescription[]
     {
         new MacroOperationDescription(
-            MacroOperation.VisionCenter,
+            MacroOperation.PIDBrake,
             UserInputDevice.Driver,
-            UserInputDeviceButton.XBONE_B_BUTTON,
-            Shift.DriverDebug,
-            Shift.DriverDebug,
-            ButtonType.Toggle,
-            () -> new VisionCenteringTask(),
+            180, // DPad Down
+            ButtonType.Simple,
+            () -> new PIDBrakeTask(),
             new IOperation[]
             {
                 AnalogOperation.DriveTrainMoveForward,
@@ -160,6 +161,52 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.DriveTrainPathXVelocityGoal,
                 AnalogOperation.DriveTrainPathYVelocityGoal,
                 AnalogOperation.DriveTrainPathAngleVelocityGoal,
+                AnalogOperation.DriveTrainPositionDrive1,
+                AnalogOperation.DriveTrainPositionDrive2,
+                AnalogOperation.DriveTrainPositionDrive3,
+                AnalogOperation.DriveTrainPositionDrive4,
+                AnalogOperation.DriveTrainPositionSteer1,
+                AnalogOperation.DriveTrainPositionSteer2,
+                AnalogOperation.DriveTrainPositionSteer3,
+                AnalogOperation.DriveTrainPositionSteer4,
+                DigitalOperation.DriveTrainPositionMode,
+                DigitalOperation.DriveTrainPathMode,
+                DigitalOperation.DriveTrainReset,
+                DigitalOperation.DriveTrainEnableFieldOrientation,
+                DigitalOperation.DriveTrainDisableFieldOrientation,
+            }),
+        new MacroOperationDescription(
+            MacroOperation.VisionCenter,
+            UserInputDevice.Driver,
+            0, // DPad Up
+            Shift.DriverDebug,
+            Shift.None,
+            ButtonType.Toggle,
+            () -> SequentialTask.Sequence(
+                new VisionCenteringTask(),
+                new DriveTrainFieldOrientationModeTask(true)),
+            new IOperation[]
+            {
+                AnalogOperation.DriveTrainMoveForward,
+                AnalogOperation.DriveTrainMoveRight,
+                AnalogOperation.DriveTrainTurnAngleGoal,
+                AnalogOperation.DriveTrainTurnSpeed,
+                AnalogOperation.DriveTrainRotationA,
+                AnalogOperation.DriveTrainRotationB,
+                AnalogOperation.DriveTrainPathXGoal,
+                AnalogOperation.DriveTrainPathYGoal,
+                AnalogOperation.DriveTrainPathXVelocityGoal,
+                AnalogOperation.DriveTrainPathYVelocityGoal,
+                AnalogOperation.DriveTrainPathAngleVelocityGoal,
+                AnalogOperation.DriveTrainPositionDrive1,
+                AnalogOperation.DriveTrainPositionDrive2,
+                AnalogOperation.DriveTrainPositionDrive3,
+                AnalogOperation.DriveTrainPositionDrive4,
+                AnalogOperation.DriveTrainPositionSteer1,
+                AnalogOperation.DriveTrainPositionSteer2,
+                AnalogOperation.DriveTrainPositionSteer3,
+                AnalogOperation.DriveTrainPositionSteer4,
+                DigitalOperation.DriveTrainPositionMode,
                 DigitalOperation.DriveTrainPathMode,
                 DigitalOperation.DriveTrainReset,
                 DigitalOperation.DriveTrainEnableFieldOrientation,
