@@ -36,6 +36,10 @@ public class ElectronicsConstants
     public static final int JOYSTICK_DRIVER_PORT = 0;
     public static final int JOYSTICK_CO_DRIVER_PORT = 1;
 
+    //================================================== IMU ==============================================================
+
+    public static final int PIGEON_IMU_CAN_ID = 42;
+
     //================================================== Vision ==============================================================
 
     public static final int VISION_RING_LIGHT_DIO = -1;
@@ -55,13 +59,8 @@ public class ElectronicsConstants
     public static final int DRIVETRAIN_STEER_MOTOR_4_CAN_ID = 7;
     public static final int DRIVETRAIN_DRIVE_MOTOR_4_CAN_ID = 8;
 
-    public static final int[] DRIVETRAIN_STEER_MOTOR_CAN_ID = new int[] { ElectronicsConstants.DRIVETRAIN_STEER_MOTOR_1_CAN_ID, ElectronicsConstants.DRIVETRAIN_STEER_MOTOR_2_CAN_ID, ElectronicsConstants.DRIVETRAIN_STEER_MOTOR_3_CAN_ID, ElectronicsConstants.DRIVETRAIN_STEER_MOTOR_4_CAN_ID};
-    public static final int[] DRIVETRAIN_DRIVE_MOTOR_CAN_ID = new int[]{ ElectronicsConstants.DRIVETRAIN_DRIVE_MOTOR_1_CAN_ID, ElectronicsConstants.DRIVETRAIN_DRIVE_MOTOR_2_CAN_ID, ElectronicsConstants.DRIVETRAIN_DRIVE_MOTOR_3_CAN_ID, ElectronicsConstants.DRIVETRAIN_DRIVE_MOTOR_4_CAN_ID };
-
     public static final int DRIVETRAIN_ABSOLUTE_ENCODER_1_ANALOG_INPUT = 0;
     public static final int DRIVETRAIN_ABSOLUTE_ENCODER_2_ANALOG_INPUT = 1;
     public static final int DRIVETRAIN_ABSOLUTE_ENCODER_3_ANALOG_INPUT = 2;
     public static final int DRIVETRAIN_ABSOLUTE_ENCODER_4_ANALOG_INPUT = 3;
-
-    public static final int[] DRIVETRAIN_ABSOLUTE_ENCODER_ANALOG_INPUT = new int[] { ElectronicsConstants.DRIVETRAIN_ABSOLUTE_ENCODER_1_ANALOG_INPUT, ElectronicsConstants.DRIVETRAIN_ABSOLUTE_ENCODER_2_ANALOG_INPUT, ElectronicsConstants.DRIVETRAIN_ABSOLUTE_ENCODER_3_ANALOG_INPUT, ElectronicsConstants.DRIVETRAIN_ABSOLUTE_ENCODER_4_ANALOG_INPUT };
 }
