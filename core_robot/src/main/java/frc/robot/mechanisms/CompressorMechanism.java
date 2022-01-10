@@ -36,7 +36,7 @@ public class CompressorMechanism implements IMechanism
     public CompressorMechanism(IDriver driver, IRobotProvider provider)
     {
         this.driver = driver;
-        this.compressor = provider.getCompressor(ElectronicsConstants.PCM_A_MODULE);
+        this.compressor = provider.getCompressor(ElectronicsConstants.PNEUMATICS_MODULE_A, ElectronicsConstants.PNEUMATICS_MODULE_TYPE_A);
         this.isStarted = false;
     }
 
@@ -57,12 +57,20 @@ public class CompressorMechanism implements IMechanism
     {
         if (this.driver.getDigital(DigitalOperation.CompressorForceDisable))
         {
-            this.compressor.stop();
+            this.compressor.disable();
             this.isStarted = false;
         }
         else if (!this.isStarted)
         {
-            this.compressor.start();
+            if (ElectronicsConstants.PNEUMATICS_USE_ANALOG)
+            {
+                this.compressor.enableAnalog(ElectronicsConstants.PNEUMATICS_MIN_PSI, ElectronicsConstants.PNEUMATICS_MAX_PSI);
+            }
+            else
+            {
+                this.compressor.enableDigital();
+            }
+
             this.isStarted = true;
         }
     }
@@ -73,7 +81,7 @@ public class CompressorMechanism implements IMechanism
     @Override
     public void stop()
     {
-        this.compressor.stop();
+        this.compressor.disable();
         this.isStarted = false;
     }
 }

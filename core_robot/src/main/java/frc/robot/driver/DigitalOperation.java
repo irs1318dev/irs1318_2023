@@ -8,7 +8,7 @@ public enum DigitalOperation implements IOperation
     // Vision operations:
     VisionForceDisable,
     VisionDisableStream,
-    VisionEnablePowercellProcessing,
+    VisionEnableGamePieceProcessing,
     VisionEnableRetroreflectiveProcessing,
 
     // Compressor operations:

@@ -68,7 +68,8 @@ public class ButtonMap implements IButtonMap
             -TuningConstants.DRIVETRAIN_DEAD_ZONE_TURN,
             TuningConstants.DRIVETRAIN_DEAD_ZONE_TURN),
 
-            new AnalogOperationDescription(
+/*
+        new AnalogOperationDescription(
             AnalogOperation.DriveTrainRotationA,
             UserInputDevice.Driver,
             AnalogAxis.XBONE_LT,
@@ -84,6 +85,7 @@ public class ButtonMap implements IButtonMap
             -TuningConstants.DRIVETRAIN_DEAD_ZONE_TRIGGER_AB,
             TuningConstants.DRIVETRAIN_DEAD_ZONE_TRIGGER_AB,
             TuningConstants.DRIVETRAIN_ROTATION_B_MULTIPLIER),
+*/
     };
 
     public static DigitalOperationDescription[] DigitalOperationSchema = new DigitalOperationDescription[]
@@ -138,6 +140,13 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             Shift.None,
             ButtonType.Simple),
+        new DigitalOperationDescription(
+            DigitalOperation.PositionBeginTemperatureCalibration,
+            UserInputDevice.Operator,
+            UserInputDeviceButton.PS4_OPTIONS_BUTTON,
+            Shift.None,
+            Shift.None,
+            ButtonType.Click),
     };
 
     public static MacroOperationDescription[] MacroSchema = new MacroOperationDescription[]
@@ -212,7 +221,7 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.DriveTrainEnableFieldOrientation,
                 DigitalOperation.DriveTrainDisableFieldOrientation,
                 DigitalOperation.VisionDisableStream,
-                DigitalOperation.VisionEnablePowercellProcessing,
+                DigitalOperation.VisionEnableGamePieceProcessing,
                 DigitalOperation.VisionEnableRetroreflectiveProcessing,
                 DigitalOperation.VisionForceDisable,
             }),

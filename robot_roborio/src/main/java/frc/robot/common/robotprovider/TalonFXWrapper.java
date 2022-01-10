@@ -8,8 +8,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
-import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.sensors.SensorVelocityMeasPeriod;
 
 public class TalonFXWrapper implements ITalonFX
 {
@@ -109,7 +109,7 @@ public class TalonFXWrapper implements ITalonFX
 
     public void configureVelocityMeasurements(int periodMS, int windowSize)
     {
-        this.wrappedObject.configVelocityMeasurementPeriod(VelocityMeasPeriod.valueOf(periodMS), TalonFXWrapper.timeoutMS);
+        this.wrappedObject.configVelocityMeasurementPeriod(SensorVelocityMeasPeriod.valueOf(periodMS), TalonFXWrapper.timeoutMS);
         this.wrappedObject.configVelocityMeasurementWindow(windowSize, TalonFXWrapper.timeoutMS);
     }
 

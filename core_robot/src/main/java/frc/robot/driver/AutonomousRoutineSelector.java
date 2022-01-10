@@ -32,7 +32,6 @@ public class AutonomousRoutineSelector
         None,
         PathA,
         PathB,
-        Move,
     }
 
     /**

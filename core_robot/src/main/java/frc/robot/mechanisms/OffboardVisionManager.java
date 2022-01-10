@@ -118,7 +118,7 @@ public class OffboardVisionManager implements IMechanism
     {
         boolean enableVision = !this.driver.getDigital(DigitalOperation.VisionForceDisable);
         boolean enableVideoStream = !this.driver.getDigital(DigitalOperation.VisionDisableStream);
-        boolean enablePowercellProcessing = this.driver.getDigital(DigitalOperation.VisionEnablePowercellProcessing);
+        boolean enableGamePieceProcessing = this.driver.getDigital(DigitalOperation.VisionEnableGamePieceProcessing);
         boolean enableRetroreflectiveProcessing = this.driver.getDigital(DigitalOperation.VisionEnableRetroreflectiveProcessing);
 
         double visionProcessingMode = 0.0;
@@ -128,7 +128,7 @@ public class OffboardVisionManager implements IMechanism
             {
                 visionProcessingMode = 1.0;
             }
-            else if (enablePowercellProcessing)
+            else if (enableGamePieceProcessing)
             {
                 visionProcessingMode = 2.0;
             }

@@ -7,8 +7,8 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SensorCollection;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.sensors.SensorVelocityMeasPeriod;
 
 public class TalonSRXWrapper implements ITalonSRX
 {
@@ -104,7 +104,7 @@ public class TalonSRXWrapper implements ITalonSRX
 
     public void configureVelocityMeasurements(int periodMS, int windowSize)
     {
-        this.wrappedObject.configVelocityMeasurementPeriod(VelocityMeasPeriod.valueOf(periodMS), TalonSRXWrapper.timeoutMS);
+        this.wrappedObject.configVelocityMeasurementPeriod(SensorVelocityMeasPeriod.valueOf(periodMS), TalonSRXWrapper.timeoutMS);
         this.wrappedObject.configVelocityMeasurementWindow(windowSize, TalonSRXWrapper.timeoutMS);
     }
 
