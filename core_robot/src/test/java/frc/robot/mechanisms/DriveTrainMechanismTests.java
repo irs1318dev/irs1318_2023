@@ -6,14 +6,13 @@ import frc.robot.TuningConstants;
 import frc.robot.common.Helpers;
 import frc.robot.common.LoggingManager;
 import frc.robot.common.robotprovider.INavx;
-import frc.robot.common.robotprovider.IPigeonIMU;
+import frc.robot.common.robotprovider.IPigeon2;
 import frc.robot.common.robotprovider.ITalonFX;
 import frc.robot.common.robotprovider.ITalonSRX;
 import frc.robot.common.robotprovider.ITimer;
 import frc.robot.common.robotprovider.IVictorSPX;
 import frc.robot.common.robotprovider.MotorNeutralMode;
 import frc.robot.common.robotprovider.NullLogger;
-import frc.robot.common.robotprovider.PigeonState;
 import frc.robot.common.robotprovider.Pose2d;
 import frc.robot.common.robotprovider.RobotMode;
 import frc.robot.common.robotprovider.TalonXControlMode;
@@ -21,7 +20,6 @@ import frc.robot.common.robotprovider.TalonXFeedbackDevice;
 import frc.robot.common.robotprovider.TalonXLimitSwitchStatus;
 import frc.robot.driver.AnalogOperation;
 import frc.robot.driver.DigitalOperation;
-import frc.robot.driver.common.Driver;
 import frc.robot.driver.common.IDriver;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -54,8 +52,8 @@ public class DriveTrainMechanismTests
         TestProvider provider = new TestProvider();
 
         MockTimer timer = new MockTimer();
-        MockPigeonIMU pigeon = new MockPigeonIMU();
-        provider.setPigeon(pigeon);
+        MockPigeon2 pigeon = new MockPigeon2();
+        provider.setPigeon2(pigeon);
 
         MockTalonFX[] steer = new MockTalonFX[4];
         MockTalonFX[] drive = new MockTalonFX[4];
@@ -96,8 +94,8 @@ public class DriveTrainMechanismTests
         TestProvider provider = new TestProvider();
 
         MockTimer timer = new MockTimer();
-        MockPigeonIMU pigeon = new MockPigeonIMU();
-        provider.setPigeon(pigeon);
+        MockPigeon2 pigeon = new MockPigeon2();
+        provider.setPigeon2(pigeon);
 
         MockTalonFX[] steer = new MockTalonFX[4];
         MockTalonFX[] drive = new MockTalonFX[4];
@@ -144,8 +142,8 @@ public class DriveTrainMechanismTests
         TestProvider provider = new TestProvider();
 
         MockTimer timer = new MockTimer();
-        MockPigeonIMU pigeon = new MockPigeonIMU();
-        provider.setPigeon(pigeon);
+        MockPigeon2 pigeon = new MockPigeon2();
+        provider.setPigeon2(pigeon);
 
         MockTalonFX[] steer = new MockTalonFX[4];
         MockTalonFX[] drive = new MockTalonFX[4];
@@ -193,8 +191,8 @@ public class DriveTrainMechanismTests
         TestProvider provider = new TestProvider();
 
         MockTimer timer = new MockTimer();
-        MockPigeonIMU pigeon = new MockPigeonIMU();
-        provider.setPigeon(pigeon);
+        MockPigeon2 pigeon = new MockPigeon2();
+        provider.setPigeon2(pigeon);
 
         MockTalonFX[] steer = new MockTalonFX[4];
         MockTalonFX[] drive = new MockTalonFX[4];
@@ -243,8 +241,8 @@ public class DriveTrainMechanismTests
         TestProvider provider = new TestProvider();
 
         MockTimer timer = new MockTimer();
-        MockPigeonIMU pigeon = new MockPigeonIMU();
-        provider.setPigeon(pigeon);
+        MockPigeon2 pigeon = new MockPigeon2();
+        provider.setPigeon2(pigeon);
 
         MockTalonFX[] steer = new MockTalonFX[4];
         MockTalonFX[] drive = new MockTalonFX[4];
@@ -292,8 +290,8 @@ public class DriveTrainMechanismTests
         TestProvider provider = new TestProvider();
 
         MockTimer timer = new MockTimer();
-        MockPigeonIMU pigeon = new MockPigeonIMU();
-        provider.setPigeon(pigeon);
+        MockPigeon2 pigeon = new MockPigeon2();
+        provider.setPigeon2(pigeon);
 
         MockTalonFX[] steer = new MockTalonFX[4];
         MockTalonFX[] drive = new MockTalonFX[4];
@@ -463,11 +461,11 @@ public class DriveTrainMechanismTests
     }
 
 
-    private class MockPigeonIMU implements IPigeonIMU
+    private class MockPigeon2 implements IPigeon2
     {
         private double currentAngle;
 
-        MockPigeonIMU()
+        MockPigeon2()
         {
         }
 
@@ -485,18 +483,9 @@ public class DriveTrainMechanismTests
             return 0;
         }
 
-        public PigeonState getState()
-        {
-            return PigeonState.Ready;
-        }
-
         public void set(double angle)
         {
             this.currentAngle = angle;
-        }
-
-        public void enterTemperatureCalibrationMode()
-        {
         }
     }
 

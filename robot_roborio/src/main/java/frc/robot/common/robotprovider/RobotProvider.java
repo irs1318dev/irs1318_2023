@@ -90,6 +90,12 @@ public class RobotProvider implements IRobotProvider
     }
 
     @Override
+    public ICANCoder getCANCoder(int deviceNumber)
+    {
+        return new CANCoderWrapper(deviceNumber);
+    }
+
+    @Override
     public IJoystick getJoystick(int port)
     {
         return new JoystickWrapper(port);
@@ -159,6 +165,18 @@ public class RobotProvider implements IRobotProvider
     public IPigeonIMU getPigeonIMU(int deviceNumber)
     {
         return new PigeonIMUWrapper(deviceNumber);
+    }
+
+    @Override
+    public IPigeon2 getPigeon2(int deviceNumber)
+    {
+        return new Pigeon2Wrapper(deviceNumber);
+    }
+
+    @Override
+    public ICANdle getCANdle(int deviceNumber)
+    {
+        return new CANdleWrapper(deviceNumber);
     }
 
     @Override
