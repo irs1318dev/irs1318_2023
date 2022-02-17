@@ -11,13 +11,17 @@ public class Pigeon2Wrapper implements IPigeon2
         this.wrappedObject = new Pigeon2(deviceNumber);
     }
 
-    public int getYawPitchRoll(double[] ypr_deg)
+    public void getYawPitchRoll(double[] ypr_deg)
     {
-        return this.wrappedObject.getYawPitchRoll(ypr_deg).value;
+        CTREErrorCodeHelper.printError(
+            this.wrappedObject.getYawPitchRoll(ypr_deg),
+            "Pigeon2.getYawPitchRoll");
     }
 
-    public int setYaw(double angleDeg)
+    public void setYaw(double angleDeg)
     {
-        return this.wrappedObject.setYaw(angleDeg).value;
+        CTREErrorCodeHelper.printError(
+            this.wrappedObject.setYaw(angleDeg),
+            "Pigeon2.setYaw");
     }
 }

@@ -6,6 +6,26 @@ public class FauxbotCANdle implements ICANdle
     {
     }
 
+    public double getBusVoltage()
+    {
+        return 0.0;
+    }
+
+    public double get5VRailVoltage()
+    {
+        return 0.0;
+    }
+
+    public double getCurrent()
+    {
+        return 0.0;
+    }
+
+    public double getTemperature()
+    {
+        return 0.0;
+    }
+
     public void configBrightnessScalar(double brightness)
     {
     }

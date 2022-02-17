@@ -54,7 +54,7 @@ public class ElectronicsConstants
 
     //================================================== Indicator Lights ==============================================================
 
-    public static final int INDICATOR_LIGHT_X_DIO = -1;
+    public static final int INDICATOR_LIGHT_CANDLE_CAN_ID = 42;
 
     //================================================== DriveTrain ==============================================================
 

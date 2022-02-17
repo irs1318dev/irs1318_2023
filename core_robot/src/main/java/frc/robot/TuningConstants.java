@@ -76,7 +76,12 @@ public class TuningConstants
 
     //================================================== Indicator Lights ========================================================
 
-    public static final double INDICATOR_LIGHT_VISION_ACCEPTABLE_ANGLE_RANGE = 3.0;
+    public static final int CANDLE_TOTAL_NUMBER_LEDS = 8;
+
+    public static final int INDICATOR_OFF_COLOR_RED = 0;
+    public static final int INDICATOR_OFF_COLOR_GREEN = 0;
+    public static final int INDICATOR_OFF_COLOR_BLUE = 0;
+    public static final int INDICATOR_OFF_COLOR_WHITE = 0;
 
     //================================================== DriveTrain ==============================================================
 

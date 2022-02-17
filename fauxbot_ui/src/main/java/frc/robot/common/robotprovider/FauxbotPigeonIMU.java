@@ -13,16 +13,14 @@ public class FauxbotPigeonIMU extends FauxbotSensorBase implements IPigeonIMU
         FauxbotSensorManager.set(new FauxbotSensorConnection(FauxbotSensorConnection.SensorConnector.CAN, deviceNumber), this);
     }
 
-    public int getYawPitchRoll(double[] ypr_deg)
+    public void getYawPitchRoll(double[] ypr_deg)
     {
         ypr_deg[0] = this.angleProperty.getValue();
-        return 0;
     }
 
-    public int setYaw(double angleDeg)
+    public void setYaw(double angleDeg)
     {
         this.angleProperty.setValue(angleDeg);
-        return 0;
     }
 
     public PigeonState getState()

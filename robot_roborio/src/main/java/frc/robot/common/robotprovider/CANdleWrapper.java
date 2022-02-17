@@ -11,9 +11,31 @@ public class CANdleWrapper implements ICANdle
         this.wrappedObject = new CANdle(deviceNumber);
     }
 
+    public double getBusVoltage()
+    {
+        return this.wrappedObject.getBusVoltage();
+    }
+
+    public double get5VRailVoltage()
+    {
+        return this.wrappedObject.get5VRailVoltage();
+    }
+
+    public double getCurrent()
+    {
+        return this.wrappedObject.getCurrent();
+    }
+
+    public double getTemperature()
+    {
+        return this.wrappedObject.getTemperature();
+    }
+
     public void configBrightnessScalar(double brightness)
     {
-        this.wrappedObject.configBrightnessScalar(brightness);
+        CTREErrorCodeHelper.printError(
+            this.wrappedObject.configBrightnessScalar(brightness),
+            "CANdle.configBrightnessScalar");
     }
 
     public void configLEDType(CANdleLEDStripType type)
@@ -46,17 +68,23 @@ public class CANdleWrapper implements ICANdle
                 break;
         }
 
-        this.wrappedObject.configLEDType(stripType);
+        CTREErrorCodeHelper.printError(
+            this.wrappedObject.configLEDType(stripType),
+            "CANdle.configLEDType");
     }
 
     public void configLOSBehavior(boolean disableWhenLOS)
     {
-        this.wrappedObject.configLOSBehavior(disableWhenLOS);
+        CTREErrorCodeHelper.printError(
+            this.wrappedObject.configLOSBehavior(disableWhenLOS),
+            "CANdle.configLOSBehavior");
     }
 
     public void configStatusLedState(boolean disableWhenRunning)
     {
-        this.wrappedObject.configStatusLedState(disableWhenRunning);
+        CTREErrorCodeHelper.printError(
+            this.wrappedObject.configStatusLedState(disableWhenRunning),
+            "CANdle.configStatusLedState");
     }
 
     public void configVBatOutput(CANdleVBatOutputMode mode)
@@ -77,22 +105,30 @@ public class CANdleWrapper implements ICANdle
                 break;
         }
 
-        this.wrappedObject.configVBatOutput(outputMode);
+        CTREErrorCodeHelper.printError(
+            this.wrappedObject.configVBatOutput(outputMode),
+            "CANdle.configVBatOutput");
     }
 
     public void modulateVBatOutput(double dutyCyclePercent)
     {
-        this.wrappedObject.modulateVBatOutput(dutyCyclePercent);
+        CTREErrorCodeHelper.printError(
+            this.wrappedObject.modulateVBatOutput(dutyCyclePercent),
+            "CANdle.modulateVBatOutput");
     }
 
     public void setLEDs(int r, int g, int b)
     {
-        this.wrappedObject.setLEDs(r, g, b);
+        CTREErrorCodeHelper.printError(
+            this.wrappedObject.setLEDs(r, g, b),
+            "CANdle.setLEDs");
     }
 
     public void setLEDs(int r, int g, int b, int w, int startIdx, int count)
     {
-        this.wrappedObject.setLEDs(r, g, b, w, startIdx, count);
+        CTREErrorCodeHelper.printError(
+            this.wrappedObject.setLEDs(r, g, b, w, startIdx, count),
+            "CANdle.setLEDs");
     }
 
     public void startTwinkleAnimation(int r, int g, int b, int w, double speed, int numLed, CANdleTwinklePercent divider)
@@ -133,7 +169,9 @@ public class CANdleWrapper implements ICANdle
                 break;
         }
 
-        this.wrappedObject.animate(new TwinkleAnimation(r, g, b, w, speed, numLed, twinkleDivider));
+        CTREErrorCodeHelper.printError(
+            this.wrappedObject.animate(new TwinkleAnimation(r, g, b, w, speed, numLed, twinkleDivider)),
+            "CANdle.startTwinkleAnimation");
     }
 
     public void startTwinkleOffAnimation(int r, int g, int b, int w, double speed, int numLed, CANdleTwinklePercent divider)
@@ -174,27 +212,37 @@ public class CANdleWrapper implements ICANdle
                 break;
         }
 
-        this.wrappedObject.animate(new TwinkleOffAnimation(r, g, b, w, speed, numLed, twinkleDivider));
+        CTREErrorCodeHelper.printError(
+            this.wrappedObject.animate(new TwinkleOffAnimation(r, g, b, w, speed, numLed, twinkleDivider)),
+            "CANdle.startTwinkleOffAnimation");
     }
 
     public void startStrobeAnimation(int r, int g, int b, int w, double speed, int numLed)
     {
-        this.wrappedObject.animate(new StrobeAnimation(r, g, b, w, speed, numLed));
+        CTREErrorCodeHelper.printError(
+            this.wrappedObject.animate(new StrobeAnimation(r, g, b, w, speed, numLed)),
+            "CANdle.startStrobeAnimation");
     }
 
     public void startSingleFadeAnimation(int r, int g, int b, int w, double speed, int numLed)
     {
-        this.wrappedObject.animate(new SingleFadeAnimation(r, g, b, w, speed, numLed));
+        CTREErrorCodeHelper.printError(
+            this.wrappedObject.animate(new SingleFadeAnimation(r, g, b, w, speed, numLed)),
+            "CANdle.startSingleFadeAnimation");
     }
 
     public void startRgbFadeAnimation(double brightness, double speed, int numLed)
     {
-        this.wrappedObject.animate(new RgbFadeAnimation(brightness, speed, numLed));
+        CTREErrorCodeHelper.printError(
+            this.wrappedObject.animate(new RgbFadeAnimation(brightness, speed, numLed)),
+            "CANdle.startRgbFaseAnimation");
     }
 
     public void startRainbowAnimation(double brightness, double speed, int numLed)
     {
-        this.wrappedObject.animate(new RainbowAnimation(brightness, speed, numLed));
+        CTREErrorCodeHelper.printError(
+            this.wrappedObject.animate(new RainbowAnimation(brightness, speed, numLed)),
+            "CANdle.startRainbowAnimation");
     }
 
     public void startLarsonAnimation(int r, int g, int b, int w, double speed, int numLed, CANdleLarsonBounceMode mode, int size)
@@ -215,16 +263,22 @@ public class CANdleWrapper implements ICANdle
                 break;
         }
 
-        this.wrappedObject.animate(new LarsonAnimation(r, g, b, w, speed, numLed, bounceMode, size));
+        CTREErrorCodeHelper.printError(
+            this.wrappedObject.animate(new LarsonAnimation(r, g, b, w, speed, numLed, bounceMode, size)),
+            "CANdle.startLarsonAnimation");
     }
 
     public void startFireAnimation(double brightness, double speed, int numLed, double sparking, double cooling)
     {
-        this.wrappedObject.animate(new FireAnimation(brightness, speed, numLed, sparking, cooling));
+        CTREErrorCodeHelper.printError(
+            this.wrappedObject.animate(new FireAnimation(brightness, speed, numLed, sparking, cooling)),
+            "CANdle.startFireAnimation");
     }
 
     public void startColorFlowAnimation(int r, int g, int b, int w, double speed, int numLed, boolean forward)
     {
-        this.wrappedObject.animate(new ColorFlowAnimation(r, g, b, w, speed, numLed, forward ? ColorFlowAnimation.Direction.Forward : ColorFlowAnimation.Direction.Backward));
+        CTREErrorCodeHelper.printError(
+            this.wrappedObject.animate(new ColorFlowAnimation(r, g, b, w, speed, numLed, forward ? ColorFlowAnimation.Direction.Forward : ColorFlowAnimation.Direction.Backward)),
+            "CANdle.startColorFlowAnimation");
     }
 }

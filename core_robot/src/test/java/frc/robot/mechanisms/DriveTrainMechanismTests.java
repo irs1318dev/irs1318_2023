@@ -469,18 +469,16 @@ public class DriveTrainMechanismTests
         {
         }
 
-        public int getYawPitchRoll(double[] ypr_deg)
+        public void getYawPitchRoll(double[] ypr_deg)
         {
             ypr_deg[0] = this.currentAngle;
             ypr_deg[1] = this.currentAngle;
             ypr_deg[2] = this.currentAngle;
-            return 0;
         }
 
-        public int setYaw(double angleDeg)
+        public void setYaw(double angleDeg)
         {
             this.currentAngle = currentAngle;
-            return 0;
         }
 
         public void set(double angle)
