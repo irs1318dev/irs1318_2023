@@ -423,7 +423,7 @@ public class DriveTrainMechanism implements IMechanism
         this.yPosition = 0.0;
 
         this.firstRun = TuningConstants.DRIVETRAIN_RESET_ON_ROBOT_START;
-        this.fieldOriented = false;
+        this.fieldOriented = true;
         this.maintainOrientation = true;
         this.updatedOrientation = false;
     }
@@ -485,7 +485,7 @@ public class DriveTrainMechanism implements IMechanism
         }
 
         if (this.driver.getDigital(DigitalOperation.DriveTrainDisableFieldOrientation) ||
-            this.pigeonManager.getIsConnected())
+            !this.pigeonManager.getIsConnected())
         {
             this.fieldOriented = false;
         }
@@ -500,6 +500,9 @@ public class DriveTrainMechanism implements IMechanism
         {
             this.maintainOrientation = false;
         }
+
+        this.logger.logBoolean(LoggingKey.DriveTrainFieldOriented, this.fieldOriented);
+        this.logger.logBoolean(LoggingKey.DriveTrainMaintainOrientation, this.maintainOrientation);
 
         if (this.driver.getDigital(DigitalOperation.PositionResetFieldOrientation))
         {
