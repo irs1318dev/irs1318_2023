@@ -3,6 +3,30 @@ package frc.robot.common.robotprovider;
 public interface ICANdle
 {
     /**
+     * Gets the Voltage of VBat as measured by CANdle
+     * @return Voltage of VBat
+     */
+    double getBusVoltage();
+
+    /**
+     * Gets the Voltage of the 5V line as measured by CANdle
+     * @return Voltage of the 5V line
+     */
+    double get5VRailVoltage();
+
+    /**
+     * Gets the low-side current as measured by CANdle
+     * @return Current in Amps
+     */
+    double getCurrent();
+
+    /**
+     * Gets the temperature of the CANdle in Celcius
+     * @return Temperature in Celcius
+     */
+    double getTemperature();
+
+    /**
      * Configures the brightness scalar to be applied to every LED output.
      * This value is bounded to [0, 1].
      * 

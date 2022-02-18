@@ -143,54 +143,54 @@ public class PreferencesWrapper implements IPreferences
      * Puts the given boolean into the preferences table.
      * */
     @Override
-    public void putBoolean(String key, boolean value)
+    public void setBoolean(String key, boolean value)
     {
-        Preferences.putBoolean(key, value);
+        Preferences.setBoolean(key, value);
     }
 
     /**
      * Puts the given double into the preferences table.
      * */
     @Override
-    public void putDouble(String key, double value)
+    public void setDouble(String key, double value)
     {
-        Preferences.putDouble(key, value);
+        Preferences.setDouble(key, value);
     }
 
     /**
      * Puts the given float into the preferences table.
      * */
     @Override
-    public void putFloat(String key, float value)
+    public void setFloat(String key, float value)
     {
-        Preferences.putFloat(key, value);
+        Preferences.setFloat(key, value);
     }
 
     /**
      * Puts the given int into the preferences table.
      * */
     @Override
-    public void putInt(String key, int value)
+    public void setInt(String key, int value)
     {
-        Preferences.putInt(key, value);
+        Preferences.setInt(key, value);
     }
 
     /**
      * Puts the given long into the preferences table.
      * */
     @Override
-    public void putLong(String key, long value)
+    public void setLong(String key, long value)
     {
-        Preferences.putLong(key, value);
+        Preferences.setLong(key, value);
     }
 
     /**
      * Puts the given string into the preferences table.
      * */
     @Override
-    public void putString(String key, String value)
+    public void setString(String key, String value)
     {
-        Preferences.putString(key, value);
+        Preferences.setString(key, value);
     }
 
     /**

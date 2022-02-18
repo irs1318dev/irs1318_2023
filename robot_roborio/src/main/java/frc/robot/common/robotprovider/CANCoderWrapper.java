@@ -28,21 +28,29 @@ public class CANCoderWrapper implements ICANCoder
 
     public void setPosition(double newPosition)
     {
-        this.wrappedObject.setPosition(newPosition);
+        CTREErrorCodeHelper.printError(
+            this.wrappedObject.setPosition(newPosition),
+            "CANCoder.setPosition");
     }
 
     public void configSensorDirection(boolean clockwisePositive)
     {
-        this.wrappedObject.configSensorDirection(clockwisePositive);
+        CTREErrorCodeHelper.printError(
+            this.wrappedObject.configSensorDirection(clockwisePositive),
+            "CANCoder.configSensorDirection");
     }
 
     public void configAbsoluteRange(boolean useZeroToThreeSixty)
     {
-        this.wrappedObject.configAbsoluteSensorRange(useZeroToThreeSixty ? AbsoluteSensorRange.Unsigned_0_to_360 : AbsoluteSensorRange.Signed_PlusMinus180);
+        CTREErrorCodeHelper.printError(
+            this.wrappedObject.configAbsoluteSensorRange(useZeroToThreeSixty ? AbsoluteSensorRange.Unsigned_0_to_360 : AbsoluteSensorRange.Signed_PlusMinus180),
+            "CANCoder.configAbsoluteRange");
     }
 
     public void configMagnetOffset(double offsetDegrees)
     {
-        this.wrappedObject.configMagnetOffset(offsetDegrees);
+        CTREErrorCodeHelper.printError(
+            this.wrappedObject.configMagnetOffset(offsetDegrees),
+            "CANCoder.configMagnetOffset");
     }
 }

@@ -16,28 +16,26 @@ import com.google.inject.Singleton;
 @Singleton
 public class IndicatorLightManager implements IMechanism
 {
-    private enum LightMode
+    private final ICANdle candle;
+
+    private enum LightTransition
     {
-        Off,
-        Flashing,
-        On,
+        NoChange,
+        TurnOn,
+        TurnOff;
     }
 
-    private static final double FlashingFrequency = 0.5;
-    private static final double FlashingComparisonFrequency = IndicatorLightManager.FlashingFrequency / 2.0;
-
-    private final ITimer timer;
-
-    private final IDigitalOutput xIndicator;
+    private boolean wasDisabled;
 
     @Inject
     public IndicatorLightManager(
-        IRobotProvider provider,
-        ITimer timer)
+        IRobotProvider provider)
     {
-        this.timer = timer;
+        this.candle = provider.getCANdle(ElectronicsConstants.INDICATOR_LIGHT_CANDLE_CAN_ID);
+        this.candle.configLEDType(CANdleLEDStripType.GRB);
+        this.candle.configVBatOutput(CANdleVBatOutputMode.Off);
 
-        this.xIndicator = provider.getDigitalOutput(ElectronicsConstants.INDICATOR_LIGHT_X_DIO);
+        this.wasDisabled = true;
     }
 
     @Override
@@ -48,42 +46,90 @@ public class IndicatorLightManager implements IMechanism
     @Override
     public void update()
     {
-        LightMode spunUpMode = LightMode.Off;
-        if (true == false) // some condition
-        {
-            spunUpMode = LightMode.On;
-        }
-
-        this.controlLight(this.xIndicator, spunUpMode);
+        this.wasDisabled = false;
     }
 
     @Override
     public void stop()
     {
-        this.xIndicator.set(false);
+        this.wasDisabled = true;
+
+        this.candle.startRainbowAnimation(1.0, 0.5, TuningConstants.CANDLE_TOTAL_NUMBER_LEDS);
     }
 
-    private void controlLight(IDigitalOutput indicatorLight, LightMode mode)
+    /**
+     * Check whether there is a transition required given the current state and the new state
+     * @param needsUpdate
+     * @param currentState the current state of the lights (on or off)
+     * @param newState the new desired state of the lights (on or off)
+     * @return NoChange if no state change is required, TurnOn if we need to turn the lights on, TurnOff if we need to turn the lights off
+     */
+    private LightTransition checkTransitionRequired(boolean needsUpdate, boolean currentState, boolean newState)
     {
-        if (mode == LightMode.On)
+        if (!needsUpdate &&
+            currentState == newState)
         {
-            indicatorLight.set(true);
+            return LightTransition.NoChange;
         }
-        else if (mode == LightMode.Off)
+
+        if (newState)
         {
-            indicatorLight.set(false);
+            return LightTransition.TurnOn;
         }
-        else
+
+        return LightTransition.TurnOff;
+    }
+
+    /**
+     * Update a pair of light ranges to a certiain color (if TurnOn) or to the off (if TurnOff)
+     * @param updateType whether to turn the lights to the on color, or the off color (NoChange not supported!!)
+     * @param onColorRed the on color's red content [0, 255]
+     * @param onColorGreen the on color's green content [0, 255]
+     * @param onColorBlue the on color's blue content [0, 255]
+     * @param onColorWhite the on color's white content [0, 255]
+     * @param range1Start the beginning of the first range to modify
+     * @param range1Count the size of the first range to modify
+     * @param range2Start the beginning of the second range to modify
+     * @param range2Count the size of the second range to modify
+     * @return true if we turned on the light ranges, false if we turned off the light ranges
+     */
+    private boolean updateLightRanges(
+        LightTransition updateType,
+        int onColorRed,
+        int onColorGreen,
+        int onColorBlue,
+        int onColorWhite,
+        int range1Start,
+        int range1Count,
+        int range2Start,
+        int range2Count)
+    {
+        boolean result;
+
+        int r;
+        int g;
+        int b;
+        int w;
+        if (updateType == LightTransition.TurnOn)
         {
-            double currentTime = this.timer.get();
-            if (currentTime % IndicatorLightManager.FlashingFrequency >= IndicatorLightManager.FlashingComparisonFrequency)
-            {
-                indicatorLight.set(true);
-            }
-            else
-            {
-                indicatorLight.set(false);
-            }
+            result = true;
+            r = onColorRed;
+            g = onColorGreen;
+            b = onColorBlue;
+            w = onColorWhite;
         }
+        else // if (updateType == LightTransition.TurnOff)
+        {
+            result = false;
+            r = TuningConstants.INDICATOR_OFF_COLOR_RED;
+            g = TuningConstants.INDICATOR_OFF_COLOR_GREEN;
+            b = TuningConstants.INDICATOR_OFF_COLOR_BLUE;
+            w = TuningConstants.INDICATOR_OFF_COLOR_WHITE;
+        }
+
+        this.candle.setLEDs(r, g, b, w, range1Start, range1Count);
+        this.candle.setLEDs(r, g, b, w, range2Start, range2Count);
+
+        return result;
     }
 }
