@@ -90,28 +90,7 @@ public enum LoggingKey
     DriveTrainSteerError4("dt.steer_err4"),
     DriveTrainSteerPositionGoal4("dt.steer_goal4"),
 
-    CompressorPreassure("com.pres"),
-
-    ClimberWinchPower("c.winch_pow"),
-    ClimberWinchPosition("c.winch_pos"),
-    ClimberWinchError("c.winch_error"),
-    ClimberWinchRetracted("c.winch_retracted"),
-    ClimberWinchDesiredPosition("c.winch_goal"),
-    ClimberHookGrasped("c.hook_grasp"),
-    ClimberArmOut("c.arm_out"),
-    ClimberWinchLockIn("c.lock_in"),
-
-    CargoIntakePower("cg.intake_pow"),
-    CargoFlywheelPower("cg.flywheel_pow"),
-    CargoFlywheelPosition("cg.flywheel_pos"),
-    CargoFlywheelVelocity("cg.flywheel_vel", true),
-    CargoFlywheelError("cg.flywheel_err", true),
-    CargoFlywheelDesiredVelocity("cg.flywheel_goal", true),
-    CargoConveyorState("cg.conveyor"),
-    CargoFeederSensor("cg.feeder_tb_voltage"),
-    CargoConveyerSensor("cg.conveyer_tb_voltage"),
-    CargoFeederBeamBroken("cg.feeder_tb_broken", true),
-    CargoConveyerBeamBroken("cg.conveyer_tb_broken", true);
+    CompressorPreassure("com.pres");
 
     public final String value;
     public final boolean shouldLog;
