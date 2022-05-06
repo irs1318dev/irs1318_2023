@@ -41,33 +41,4 @@ public class HardwareConstants
     public static final double DRIVETRAIN_VERTICAL_WHEEL_SEPERATION_DISTANCE = 26.75; // (in inches) 38" front-to-back with bumpers
     public static final double DRIVETRAIN_HORIZONTAL_WHEEL_CENTER_DISTANCE = HardwareConstants.DRIVETRAIN_HORIZONTAL_WHEEL_SEPERATION_DISTANCE / 2.0; // (in inches)
     public static final double DRIVETRAIN_VERTICAL_WHEEL_CENTER_DISTANCE = HardwareConstants.DRIVETRAIN_VERTICAL_WHEEL_SEPERATION_DISTANCE / 2.0; // (in inches)
-
-    //================================================== Climber ==============================================================
-
-    public static final TalonFXInvertType CLIMBER_WINCH_MOTOR_MASTER_INVERT = TalonFXInvertType.CounterClockwise;
-    public static final TalonFXInvertType CLIMBER_WINCH_MOTOR_FOLLOWER_INVERT = TalonFXInvertType.FollowMaster;
-
-    public static final double CLIMBER_WINCH_MAX_POSITION = 100.0; // units for (typical) maximum extension of the winch
-
-    //================================================== Cargo ==============================================================
-
-    public static final TalonFXInvertType CARGO_FLYWHEEL_MOTOR_INVERT = TalonFXInvertType.Clockwise;
-    public static final TalonFXInvertType CARGO_FLYWHEEL_FOLLOWER_MOTOR_INVERT = TalonFXInvertType.OpposeMaster;
-    public static final boolean CARGO_INTAKE_MOTOR_INVERT_OUTPUT = false;
-    public static final boolean CARGO_FEEDER_MOTOR_INVERT_OUTPUT = true;
-    public static final boolean CARGO_CONVEYOR_MOTOR_INVERT_OUTPUT = true;
-
-    public static final double CARGO_SHOOTER_POINTBLANK_ANGLE = 74.0; // degrees
-    public static final double CARGO_SHOOTER_SHORT_ANGLE = 68.5; // degrees
-    public static final double CARGO_SHOOTER_MEDIUM_ANGLE = 66.0; // degrees
-    public static final double CARGO_SHOOTER_LONG_ANGLE = 59.0; // degrees
-    public static final double CARGO_SHOOTER_HEIGHT = 19.81; // inches
-    public static final double CARGO_FLYWHEEL_DIAMETER = 4.0; // inches
-    public static final double CARGO_FLYWHEEL_TICKS_PER_REVOLUTION = 2048.0;
-    public static final double CARGO_FLYWHEEL_GEAR_RATIO = 1.0; // right now, shooter is 1:1
-    public static final double CARGO_FLYWHEEL_CIRCUMFERENCE = Math.PI * HardwareConstants.CARGO_FLYWHEEL_DIAMETER;
-    public static final double CARGO_FLYWHEEL_TICK_DISTANCE = HardwareConstants.CARGO_FLYWHEEL_CIRCUMFERENCE / (HardwareConstants.CARGO_FLYWHEEL_GEAR_RATIO * HardwareConstants.CARGO_FLYWHEEL_TICKS_PER_REVOLUTION);
-    public static final double CARGO_FLYWHEEL_TICKS_PER_INCH = (HardwareConstants.CARGO_FLYWHEEL_GEAR_RATIO * HardwareConstants.CARGO_FLYWHEEL_TICKS_PER_REVOLUTION) / HardwareConstants.CARGO_FLYWHEEL_CIRCUMFERENCE;
-    public static final double CARGO_FLYWHEEL_MOTOR_VELOCITY_TO_INCHES_PER_SECOND = 10.0 * HardwareConstants.CARGO_FLYWHEEL_TICK_DISTANCE; // multiplying by this value converts #ticks per 100ms into inches per second.
-    public static final double CARGO_FLYWHEEL_INCHES_PER_SECOND_TO_MOTOR_VELOCITY = 0.1 * HardwareConstants.CARGO_FLYWHEEL_TICKS_PER_INCH; // multiplying by this value converts inches per second into #ticks per 100ms.
 }

@@ -204,7 +204,7 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.DriveTrainUseRobotOrientation,
             }),
         new MacroOperationDescription(
-            MacroOperation.VisionCenterHub,
+            MacroOperation.VisionCenterRetroReflective,
             UserInputDevice.Driver,
             0, // DPAD-up
             Shift.DriverDebug,
@@ -245,7 +245,7 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.VisionForceDisable,
             }),
         new MacroOperationDescription(
-            MacroOperation.VisionCenterCargo,
+            MacroOperation.VisionCenterGamePiece,
             UserInputDevice.Driver,
             90, // DPAD-right
             Shift.DriverDebug,

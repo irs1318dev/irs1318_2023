@@ -13,6 +13,6 @@ public enum MacroOperation implements IOperation
     PIDHeavyBrake,
 
     // Vision operations
-    VisionCenterHub,
-    VisionCenterCargo,
+    VisionCenterRetroReflective,
+    VisionCenterGamePiece,
 }
