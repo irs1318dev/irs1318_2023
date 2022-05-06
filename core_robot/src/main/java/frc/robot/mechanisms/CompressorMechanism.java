@@ -1,8 +1,11 @@
 package frc.robot.mechanisms;
 
 import frc.robot.ElectronicsConstants;
+import frc.robot.LoggingKey;
 import frc.robot.common.IMechanism;
+import frc.robot.common.LoggingManager;
 import frc.robot.common.robotprovider.ICompressor;
+import frc.robot.common.robotprovider.ILogger;
 import frc.robot.common.robotprovider.IRobotProvider;
 import frc.robot.driver.DigitalOperation;
 import frc.robot.driver.common.IDriver;
@@ -22,8 +25,11 @@ import com.google.inject.Singleton;
 public class CompressorMechanism implements IMechanism
 {
     private final IDriver driver;
+    private final ILogger logger;
 
     private final ICompressor compressor;
+
+    private double preassureValue;
 
     private boolean isStarted;
 
@@ -33,9 +39,10 @@ public class CompressorMechanism implements IMechanism
      * @param provider for obtaining electronics objects
      */
     @Inject
-    public CompressorMechanism(IDriver driver, IRobotProvider provider)
+    public CompressorMechanism(IDriver driver, LoggingManager logger, IRobotProvider provider)
     {
         this.driver = driver;
+        this.logger = logger;
         this.compressor = provider.getCompressor(ElectronicsConstants.PNEUMATICS_MODULE_A, ElectronicsConstants.PNEUMATICS_MODULE_TYPE_A);
         this.isStarted = false;
     }
@@ -46,7 +53,8 @@ public class CompressorMechanism implements IMechanism
     @Override
     public void readSensors()
     {
-        // no sensors to read for this mechanism
+        this.preassureValue = this.compressor.getPressure();
+        this.logger.logNumber(LoggingKey.CompressorPreassure, this.preassureValue);
     }
 
     /**
@@ -57,12 +65,19 @@ public class CompressorMechanism implements IMechanism
     {
         if (this.driver.getDigital(DigitalOperation.CompressorForceDisable))
         {
-            this.compressor.disable();
-            this.isStarted = false;
+            if (this.isStarted)
+            {
+                this.compressor.disable();
+                this.isStarted = false;
+            }
         }
         else if (!this.isStarted)
         {
-            if (ElectronicsConstants.PNEUMATICS_USE_ANALOG)
+            if (ElectronicsConstants.PNEUMATICS_USE_HYBRID)
+            {
+                this.compressor.enableHybrid(ElectronicsConstants.PNEUMATICS_MIN_PSI, ElectronicsConstants.PNEUMATICS_MAX_PSI);
+            }
+            else if (ElectronicsConstants.PNEUMATICS_USE_ANALOG)
             {
                 this.compressor.enableAnalog(ElectronicsConstants.PNEUMATICS_MIN_PSI, ElectronicsConstants.PNEUMATICS_MAX_PSI);
             }
@@ -83,5 +98,10 @@ public class CompressorMechanism implements IMechanism
     {
         this.compressor.disable();
         this.isStarted = false;
+    }
+
+    public double getPressureValue()
+    {
+        return this.preassureValue;
     }
 }

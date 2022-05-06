@@ -48,6 +48,12 @@ public class RobotProvider implements IRobotProvider
     }
 
     @Override
+    public ITalonFX getTalonFX(int deviceNumber, String canbus)
+    {
+        return new TalonFXWrapper(deviceNumber, canbus);
+    }
+
+    @Override
     public IVictorSPX getVictorSPX(int deviceNumber)
     {
         return new VictorSPXWrapper(deviceNumber);
@@ -93,6 +99,12 @@ public class RobotProvider implements IRobotProvider
     public ICANCoder getCANCoder(int deviceNumber)
     {
         return new CANCoderWrapper(deviceNumber);
+    }
+
+    @Override
+    public ICANCoder getCANCoder(int deviceNumber, String canbus)
+    {
+        return new CANCoderWrapper(deviceNumber, canbus);
     }
 
     @Override
@@ -174,9 +186,21 @@ public class RobotProvider implements IRobotProvider
     }
 
     @Override
+    public IPigeon2 getPigeon2(int deviceNumber, String canbus)
+    {
+        return new Pigeon2Wrapper(deviceNumber, canbus);
+    }
+
+    @Override
     public ICANdle getCANdle(int deviceNumber)
     {
         return new CANdleWrapper(deviceNumber);
+    }
+
+    @Override
+    public ICANdle getCANdle(int deviceNumber, String canbus)
+    {
+        return new CANdleWrapper(deviceNumber, canbus);
     }
 
     @Override

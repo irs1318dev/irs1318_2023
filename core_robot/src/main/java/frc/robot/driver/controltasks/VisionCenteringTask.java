@@ -15,8 +15,10 @@ public class VisionCenteringTask extends ControlTaskBase
     private static final int NO_CENTER_THRESHOLD = 40;
 
     private final boolean useTime;
+    private final boolean gamePiece;
+    private final boolean bestEffort;
 
-    protected OffboardVisionManager visionManager;
+    private OffboardVisionManager visionManager;
     private ITimer timer;
     private PIDHandler turnPidHandler;
 
@@ -26,19 +28,34 @@ public class VisionCenteringTask extends ControlTaskBase
 
     /**
     * Initializes a new VisionCenteringTask
+     * @param gamePiece whether to center on game piece or vision target
     */
-    public VisionCenteringTask()
+    public VisionCenteringTask(boolean gamePiece)
     {
-        this(true);
+        this(true, gamePiece, false);
     }
 
     /**
     * Initializes a new VisionCenteringTask
-    * @param useTime whether to make sure we are centered for a second or not
+     * @param gamePiece whether to center on game piece or vision target
+     * @param bestEffort whether to end (true) or cancel (false, default) when we cannot see the game piece or vision target (for sequential tasks, whether to continue on or not)
     */
-    public VisionCenteringTask(boolean useTime)
+    public VisionCenteringTask(boolean gamePiece, boolean bestEffort)
+    {
+        this(true, gamePiece, bestEffort);
+    }
+
+    /**
+     * Initializes a new VisionCenteringTask
+     * @param useTime whether to make sure we are centered for a second or not
+     * @param gamePiece whether to center on game piece or vision target
+     * @param bestEffort whether to end (true) or cancel (false, default) when we cannot see the game piece or vision target (for sequential tasks, whether to continue on or not)
+     */
+    public VisionCenteringTask(boolean useTime, boolean gamePiece, boolean bestEffort)
     {
         this.useTime = useTime;
+        this.gamePiece = gamePiece;
+        this.bestEffort = bestEffort;
 
         this.turnPidHandler = null;
         this.centeredTime = null;
@@ -62,8 +79,10 @@ public class VisionCenteringTask extends ControlTaskBase
 
         this.setDigitalOperationState(DigitalOperation.VisionDisableStream, false);
         this.setDigitalOperationState(DigitalOperation.DriveTrainEnableFieldOrientation, false);
-        this.setDigitalOperationState(DigitalOperation.DriveTrainDisableFieldOrientation, true);
-        this.setDigitalOperationState(DigitalOperation.VisionEnableRetroreflectiveProcessing, true);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainDisableFieldOrientation, false);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainUseRobotOrientation, true);
+        this.setDigitalOperationState(DigitalOperation.VisionEnableRetroreflectiveProcessing, !this.gamePiece);
+        this.setDigitalOperationState(DigitalOperation.VisionEnableGamePieceProcessing, this.gamePiece);
     }
 
     /**
@@ -72,12 +91,13 @@ public class VisionCenteringTask extends ControlTaskBase
     @Override
     public void update()
     {
-        Double currentMeasuredAngle = this.visionManager.getHorizontalAngle();
+        Double currentMeasuredAngle = this.getHorizontalAngle();
         if (currentMeasuredAngle != null)
         {
+            double turnSpeed = this.turnPidHandler.calculatePosition(0.0, currentMeasuredAngle);
             this.setAnalogOperationState(
                 AnalogOperation.DriveTrainTurnSpeed,
-                this.turnPidHandler.calculatePosition(0.0, currentMeasuredAngle));
+                turnSpeed);
         }
     }
 
@@ -92,7 +112,9 @@ public class VisionCenteringTask extends ControlTaskBase
         this.setDigitalOperationState(DigitalOperation.VisionDisableStream, false);
         this.setDigitalOperationState(DigitalOperation.DriveTrainEnableFieldOrientation, false);
         this.setDigitalOperationState(DigitalOperation.DriveTrainDisableFieldOrientation, false);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainUseRobotOrientation, false);
         this.setDigitalOperationState(DigitalOperation.VisionEnableRetroreflectiveProcessing, false);
+        this.setDigitalOperationState(DigitalOperation.VisionEnableGamePieceProcessing, false);
     }
 
     /**
@@ -102,8 +124,19 @@ public class VisionCenteringTask extends ControlTaskBase
     @Override
     public boolean hasCompleted()
     {
-        Double currentMeasuredAngle = this.visionManager.getHorizontalAngle();
-        if (currentMeasuredAngle == null)
+        Double currentMeasuredAngle = this.getHorizontalAngle();
+        if (this.bestEffort)
+        {
+            if (currentMeasuredAngle == null)
+            {
+                this.noCenterCount++;
+
+                return this.noCenterCount >= VisionCenteringTask.NO_CENTER_THRESHOLD;
+            }
+
+            this.noCenterCount = 0;
+        }
+        else if (currentMeasuredAngle == null)
         {
             return false;
         }
@@ -120,12 +153,13 @@ public class VisionCenteringTask extends ControlTaskBase
         }
 
         // otherwise, use time:
+        double currTime = this.timer.get();
         if (this.centeredTime == null)
         {
-            this.centeredTime = this.timer.get();
+            this.centeredTime = currTime;
             return false;
         }
-        else if (this.timer.get() - this.centeredTime < 0.75)
+        else if (currTime - this.centeredTime < TuningConstants.VISION_CENTERING_DURATION)
         {
             return false;
         }
@@ -142,7 +176,13 @@ public class VisionCenteringTask extends ControlTaskBase
     @Override
     public boolean shouldCancel()
     {
-        if (this.visionManager.getDistance() == null)
+        if (this.bestEffort)
+        {
+            // note: in best-effort mode, this is done in hasCompleted() instead.
+            return super.shouldCancel();
+        }
+
+        if (this.getHorizontalAngle() == null)
         {
             this.noCenterCount++;
         }
@@ -151,7 +191,37 @@ public class VisionCenteringTask extends ControlTaskBase
             this.noCenterCount = 0;
         }
 
-        return this.noCenterCount >= VisionCenteringTask.NO_CENTER_THRESHOLD;
+        return this.noCenterCount >= VisionCenteringTask.NO_CENTER_THRESHOLD || super.shouldCancel();
+    }
+
+    protected Double getDistance()
+    {
+        Double distance;
+        if (this.gamePiece)
+        {
+            distance = this.visionManager.getGamePieceDistance();
+        }
+        else
+        {
+            distance = this.visionManager.getVisionTargetDistance();
+        }
+
+        return distance;
+    }
+
+    protected Double getHorizontalAngle()
+    {
+        Double angle;
+        if (this.gamePiece)
+        {
+            angle = this.visionManager.getGamePieceHorizontalAngle();
+        }
+        else
+        {
+            angle = this.visionManager.getVisionTargetHorizontalAngle();
+        }
+
+        return angle;
     }
 
     protected PIDHandler createTurnHandler()

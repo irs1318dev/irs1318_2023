@@ -11,6 +11,11 @@ public class CANCoderWrapper implements ICANCoder
         this.wrappedObject = new CANCoder(deviceNumber);
     }
 
+    public CANCoderWrapper(int deviceNumber, String canbus)
+    {
+        this.wrappedObject = new CANCoder(deviceNumber, canbus);
+    }
+
     public double getPosition()
     {
         return this.wrappedObject.getPosition();

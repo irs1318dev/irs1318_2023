@@ -9,6 +9,7 @@ public interface IRobotProvider
     public IDutyCycle getDutyCycle(int digitalInputChannel);
     public ITalonSRX getTalonSRX(int deviceNumber);
     public ITalonFX getTalonFX(int deviceNumber);
+    public ITalonFX getTalonFX(int deviceNumber, String canbus);
     public IVictorSPX getVictorSPX(int deviceNumber);
     public ISparkMax getSparkMax(int deviceID, SparkMaxMotorType motorType);
     public ICompressor getCompressor(PneumaticsModuleType moduleType);
@@ -17,6 +18,7 @@ public interface IRobotProvider
     public IDoubleSolenoid getDoubleSolenoid(int module, PneumaticsModuleType moduleType, int forwardChannel, int reverseChannel);
     public IEncoder getEncoder(int channelA, int channelB);
     public ICANCoder getCANCoder(int deviceNumber);
+    public ICANCoder getCANCoder(int deviceNumber, String canbus);
     public IJoystick getJoystick(int port);
     public IMotor getTalon(int channel);
     public IMotor getVictor(int channel);
@@ -30,7 +32,9 @@ public interface IRobotProvider
     public INavx getNavx();
     public IPigeonIMU getPigeonIMU(int deviceNumber);
     public IPigeon2 getPigeon2(int deviceNumber);
+    public IPigeon2 getPigeon2(int deviceNumber, String canbus);
     public ICANdle getCANdle(int deviceNumber);
+    public ICANdle getCANdle(int deviceNumber, String canbus);
     public IVideoStream getMJPEGStream(String name, int width, int height);
     public IUsbCamera getUsbCamera(String name, int dev);
     public IDriverStation getDriverStation();

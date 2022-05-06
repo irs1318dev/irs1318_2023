@@ -15,10 +15,12 @@ public enum DigitalOperation implements IOperation
 
     // DriveTrain operations:
     DriveTrainPathMode,
-    DriveTrainPositionMode,
+    DriveTrainSteerMode,
+    DriveTrainMaintainPositionMode,
     DriveTrainReset,
     DriveTrainEnableFieldOrientation,
     DriveTrainDisableFieldOrientation,
+    DriveTrainUseRobotOrientation,
     DriveTrainEnableMaintainDirectionMode,
     DriveTrainDisableMaintainDirectionMode,
 }

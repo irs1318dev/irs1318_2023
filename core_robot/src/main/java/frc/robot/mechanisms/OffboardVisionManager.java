@@ -11,30 +11,23 @@ import com.google.inject.Singleton;
 
 /**
  * Offboard Vision manager.
- * 
- * @author Will
- *
  */
 @Singleton
 public class OffboardVisionManager implements IMechanism
 {
     private final IDriver driver;
-    private final INetworkTableProvider networkTable;
     private final ILogger logger;
 
-    private final IDigitalOutput ringLight;
+    private final IDriverStation driverStation;
+    private final INetworkTableProvider networkTable;
 
-    private double centerX;
-    private double centerY;
-    private double width;
-    private double height;
-    private double angle;
+    private Double vDistance;
+    private Double vAngle;
+    private Double gDistance;
+    private Double gAngle;
 
     private int missedHeartbeats;
     private double prevHeartbeat;
-
-    private Double distance;
-    private Double horizontalAngle;
 
     /**
      * Initializes a new OffboardVisionManager
@@ -48,15 +41,13 @@ public class OffboardVisionManager implements IMechanism
         this.driver = driver;
         this.logger = logger;
 
+        this.driverStation = provider.getDriverStation();
         this.networkTable = provider.getNetworkTableProvider();
-        this.ringLight = provider.getDigitalOutput(ElectronicsConstants.VISION_RING_LIGHT_DIO);
 
-        this.centerX = 0.0;
-        this.centerY = 0.0;
-
-        this.width = 0.0;
-        this.height = 0.0;
-        this.angle = 0.0;
+        this.vDistance = null;
+        this.vAngle = null;
+        this.gDistance = null;
+        this.gAngle = null;
 
         this.missedHeartbeats = 0;
         this.prevHeartbeat = 0.0;
@@ -68,17 +59,10 @@ public class OffboardVisionManager implements IMechanism
     @Override
     public void readSensors()
     {
-        this.centerX = this.networkTable.getSmartDashboardNumber("v.pointX");
-        this.centerY = this.networkTable.getSmartDashboardNumber("v.pointY");
-        this.width = this.networkTable.getSmartDashboardNumber("v.width");
-        this.height = this.networkTable.getSmartDashboardNumber("v.height");
-        this.angle = this.networkTable.getSmartDashboardNumber("v.angle");
-
-        this.logger.logNumber(LoggingKey.OffboardVisionX, this.centerX);
-        this.logger.logNumber(LoggingKey.OffboardVisionY, this.centerY);
-        this.logger.logNumber(LoggingKey.OffboardVisionWidth, this.width);
-        this.logger.logNumber(LoggingKey.OffboardVisionHeight, this.height);
-        this.logger.logNumber(LoggingKey.OffboardVisionAngle, this.angle);
+        this.vDistance = this.networkTable.getSmartDashboardNumber("v.distance");
+        this.vAngle = this.networkTable.getSmartDashboardNumber("v.horizontalAngle");
+        this.gDistance = this.networkTable.getSmartDashboardNumber("g.distance");
+        this.gAngle = this.networkTable.getSmartDashboardNumber("g.horizontalAngle");
 
         double newHeartbeat = this.networkTable.getSmartDashboardNumber("v.heartbeat");
         if (this.prevHeartbeat != newHeartbeat)
@@ -92,25 +76,26 @@ public class OffboardVisionManager implements IMechanism
 
         this.logger.logNumber(LoggingKey.OffboardVisionMissedHeartbeats, this.missedHeartbeats);
 
-        // return if we couldn't find a vision target
-        if (this.centerX < 0.0 || this.centerY < 0.0 || this.missedHeartbeats > TuningConstants.VISION_MISSED_HEARTBEAT_THRESHOLD)
-        {
-            this.distance = null;
-            this.horizontalAngle = null;
+        boolean missedHeartbeatExceedsThreshold = this.missedHeartbeats > TuningConstants.VISION_MISSED_HEARTBEAT_THRESHOLD;
 
-            return;
+        // reset if we couldn't find the vision target
+        if (missedHeartbeatExceedsThreshold || this.vDistance < 0.0 || this.vAngle == TuningConstants.MAGIC_NULL_VALUE)
+        {
+            this.vDistance = null;
+            this.vAngle = null;
         }
 
-        double yOffset = VisionConstants.LIFECAM_CAMERA_CENTER_WIDTH - this.centerY;
-        double verticalAngle = Helpers.atand(yOffset / VisionConstants.LIFECAM_CAMERA_FOCAL_LENGTH_Y);
+        // reset if we couldn't find the game piece
+        if (missedHeartbeatExceedsThreshold || this.gDistance < 0.0 || this.gAngle == TuningConstants.MAGIC_NULL_VALUE)
+        {
+            this.gDistance = null;
+            this.gAngle = null;
+        }
 
-        this.distance = (HardwareConstants.CAMERA_TO_TARGET_Z_OFFSET / Helpers.tand(verticalAngle + HardwareConstants.CAMERA_PITCH)) - HardwareConstants.CAMERA_X_OFFSET;
-
-        double xOffset = this.centerX - VisionConstants.LIFECAM_CAMERA_CENTER_WIDTH;
-        this.horizontalAngle = Helpers.atand(xOffset / VisionConstants.LIFECAM_CAMERA_FOCAL_LENGTH_X) + HardwareConstants.CAMERA_YAW;
-
-        this.logger.logNumber(LoggingKey.OffboardVisionDistance, this.distance);
-        this.logger.logNumber(LoggingKey.OffboardVisionHorizontalAngle, this.horizontalAngle);
+        this.logger.logNumber(LoggingKey.OffboardVisionTargetDistance, this.vDistance);
+        this.logger.logNumber(LoggingKey.OffboardVisionTargetHorizontalAngle, this.vAngle);
+        this.logger.logNumber(LoggingKey.OffboardVisionGamePieceDistance, this.gDistance);
+        this.logger.logNumber(LoggingKey.OffboardVisionGamePieceHorizontalAngle, this.gAngle);
     }
 
     @Override
@@ -130,44 +115,67 @@ public class OffboardVisionManager implements IMechanism
             }
             else if (enableGamePieceProcessing)
             {
-                visionProcessingMode = 2.0;
+                if (this.isRedTeam())
+                {
+                    visionProcessingMode = 2.0; // 2.0 means red team
+                }
+                else
+                {
+                    visionProcessingMode = 3.0; // 3.0 means blue team
+                }
             }
         }
 
         this.logger.logBoolean(LoggingKey.OffboardVisionEnableVision, enableVision);
         this.logger.logBoolean(LoggingKey.OffboardVisionEnableStream, enableVideoStream);
         this.logger.logNumber(LoggingKey.OffboardVisionEnableProcessing, visionProcessingMode);
-
-        this.ringLight.set(enableVision && enableRetroreflectiveProcessing);
     }
 
     @Override
     public void stop()
     {
-        this.ringLight.set(false);
-
         this.logger.logBoolean(LoggingKey.OffboardVisionEnableVision, false);
         this.logger.logBoolean(LoggingKey.OffboardVisionEnableStream, false);
         this.logger.logNumber(LoggingKey.OffboardVisionEnableProcessing, 0.0);
     }
 
-    public Double getHorizontalAngle()
+    public Double getVisionTargetHorizontalAngle()
     {
-        return this.horizontalAngle;
+        return this.vAngle;
     }
 
-    public Double getDistance()
+    public Double getVisionTargetDistance()
     {
-        return this.distance;
+        return this.vDistance;
     }
 
-    public double getPowercellX() 
+    public Double getGamePieceHorizontalAngle()
     {
-        return this.centerX;
+        return this.gAngle;
     }
 
-    public double getPowercellY() 
+    public Double getGamePieceDistance()
     {
-        return this.centerY;
+        return this.gDistance;
+    }
+
+    private boolean isRedTeam()
+    {
+        Alliance currentAlliance = this.driverStation.getAlliance();
+        switch (currentAlliance)
+        {
+            case Red:
+                return true;
+
+            case Blue:
+                return false;
+
+            case Invalid:
+            default:
+                break;
+        }
+
+        // fallback: use the game-specific message.  if "red", use red, otherwise use blue
+        return this.driverStation.getGameSpecificMessage().equalsIgnoreCase("red");
     }
 }

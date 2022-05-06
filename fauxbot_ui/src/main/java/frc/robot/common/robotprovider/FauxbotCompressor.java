@@ -14,8 +14,17 @@ public class FauxbotCompressor implements ICompressor
     {
     }
 
+    public void enableHybrid(double minPressurePSI, double maxPressurePSI)
+    {
+    }
+
     public void enableDigital()
     {
+    }
+
+    public double getPressure()
+    {
+        return 0.0;
     }
 
     public void disable()

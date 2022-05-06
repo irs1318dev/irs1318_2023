@@ -37,4 +37,9 @@ public class PowerDistributionWrapper implements IPowerDistribution
     {
         return this.wrappedObject.getCurrent(pdpChannel);
     }
+
+    public void setSwitchableChannel(boolean enabled)
+    {
+        this.wrappedObject.setSwitchableChannel(enabled);
+    }
 }

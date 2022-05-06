@@ -60,6 +60,12 @@ public class FauxbotProvider implements IRobotProvider
     }
 
     @Override
+    public ITalonFX getTalonFX(int deviceNumber, String canbus)
+    {
+        return new FauxbotTalonFX(deviceNumber, this.simulator);
+    }
+
+    @Override
     public IVictorSPX getVictorSPX(int deviceNumber)
     {
         return new FauxbotVictorSPX(deviceNumber);
@@ -103,6 +109,12 @@ public class FauxbotProvider implements IRobotProvider
 
     @Override
     public ICANCoder getCANCoder(int deviceNumber)
+    {
+        return new FauxbotCANCoder(deviceNumber);
+    }
+
+    @Override
+    public ICANCoder getCANCoder(int deviceNumber, String canbus)
     {
         return new FauxbotCANCoder(deviceNumber);
     }
@@ -186,7 +198,19 @@ public class FauxbotProvider implements IRobotProvider
     }
 
     @Override
+    public IPigeon2 getPigeon2(int deviceNumber, String canbus)
+    {
+        return new FauxbotPigeon2(deviceNumber);
+    }
+
+    @Override
     public ICANdle getCANdle(int deviceNumber)
+    {
+        return new FauxbotCANdle(deviceNumber);
+    }
+
+    @Override
+    public ICANdle getCANdle(int deviceNumber, String canbus)
     {
         return new FauxbotCANdle(deviceNumber);
     }

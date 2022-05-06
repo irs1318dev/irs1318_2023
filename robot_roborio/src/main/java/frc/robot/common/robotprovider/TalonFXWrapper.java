@@ -26,6 +26,12 @@ public class TalonFXWrapper implements ITalonFX
         this.controlMode = ControlMode.PercentOutput;
     }
 
+    public TalonFXWrapper(int deviceNumber, String canbus)
+    {
+        this.wrappedObject = new TalonFX(deviceNumber, canbus);
+        this.controlMode = ControlMode.PercentOutput;
+    }
+
     public void set(double value)
     {
         this.wrappedObject.set(this.controlMode, value);
@@ -99,11 +105,11 @@ public class TalonFXWrapper implements ITalonFX
             "TalonFX.configSelectedFeedbackSensor");
     }
 
-    public void setPIDFFramePeriod(int periodMS)
+    public void setGeneralFramePeriod(int periodMS)
     {
         CTREErrorCodeHelper.printError(
-            this.wrappedObject.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, periodMS, TalonFXWrapper.timeoutMS),
-            "TalonFX.setPIDFFramePeriod");
+            this.wrappedObject.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, periodMS, TalonFXWrapper.timeoutMS),
+            "TalonFX.setGeneralFramePeriod");
     }
 
     public void setFeedbackFramePeriod(int periodMS)
@@ -111,6 +117,13 @@ public class TalonFXWrapper implements ITalonFX
         CTREErrorCodeHelper.printError(
             this.wrappedObject.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, periodMS, TalonFXWrapper.timeoutMS),
             "TalonFX.setFeedbackFramePeriod");
+    }
+
+    public void setPIDFFramePeriod(int periodMS)
+    {
+        CTREErrorCodeHelper.printError(
+            this.wrappedObject.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, periodMS, TalonFXWrapper.timeoutMS),
+            "TalonFX.setPIDFFramePeriod");
     }
 
     public void configureVelocityMeasurements(int periodMS, int windowSize)
@@ -151,7 +164,7 @@ public class TalonFXWrapper implements ITalonFX
             "TalonFX.setPIDF_kF");
     }
 
-    public void setMotionMagicPIDF(double p, double i, double d, double f, int velocity, int acceleration, int slotId)
+    public void setMotionMagicPIDF(double p, double i, double d, double f, double velocity, double acceleration, int slotId)
     {
         CTREErrorCodeHelper.printError(
             this.wrappedObject.config_kP(slotId, p, TalonFXWrapper.timeoutMS),
@@ -247,6 +260,32 @@ public class TalonFXWrapper implements ITalonFX
     public void setInvertSensor(boolean invert)
     {
         this.wrappedObject.setSensorPhase(invert);
+    }
+
+    public void setInvert(TalonFXInvertType invertType)
+    {
+        com.ctre.phoenix.motorcontrol.TalonFXInvertType ctreInvertType;
+        switch (invertType)
+        {
+            case CounterClockwise:
+                ctreInvertType = com.ctre.phoenix.motorcontrol.TalonFXInvertType.CounterClockwise;
+                break;
+
+            case FollowMaster:
+                ctreInvertType = com.ctre.phoenix.motorcontrol.TalonFXInvertType.FollowMaster;
+                break;
+
+            case OpposeMaster:
+                ctreInvertType = com.ctre.phoenix.motorcontrol.TalonFXInvertType.OpposeMaster;
+                break;
+
+            default:
+            case Clockwise:
+                ctreInvertType = com.ctre.phoenix.motorcontrol.TalonFXInvertType.Clockwise;
+                break;
+        }
+
+        this.wrappedObject.setInverted(ctreInvertType);
     }
 
     public void setNeutralMode(MotorNeutralMode neutralMode)

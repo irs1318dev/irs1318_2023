@@ -8,12 +8,12 @@ public class SolenoidWrapper implements ISolenoid
 
     public SolenoidWrapper(PneumaticsModuleType moduleType, int channel)
     {
-        this.wrappedObject = new Solenoid(CompressorWrapper.getModuleType(moduleType), channel);
+        this.wrappedObject = new Solenoid(PneumaticHubWrapper.getModuleType(moduleType), channel);
     }
 
     public SolenoidWrapper(int moduleNumber, PneumaticsModuleType moduleType, int channel)
     {
-        this.wrappedObject = new Solenoid(moduleNumber, CompressorWrapper.getModuleType(moduleType), channel);
+        this.wrappedObject = new Solenoid(moduleNumber, PneumaticHubWrapper.getModuleType(moduleType), channel);
     }
 
     public void set(boolean on)

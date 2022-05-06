@@ -10,6 +10,9 @@ repositories
     mavenCentral()
     mavenLocal()
     gradlePluginPortal()
+    maven {
+        url "https://maven.brott.dev/"
+    }
 }
 
 def currentOS = org.gradle.internal.os.OperatingSystem.current()

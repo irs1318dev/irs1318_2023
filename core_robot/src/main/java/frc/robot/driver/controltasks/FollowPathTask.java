@@ -1,5 +1,6 @@
 package frc.robot.driver.controltasks;
 
+import frc.robot.TuningConstants;
 import frc.robot.common.robotprovider.ITimer;
 import frc.robot.common.robotprovider.ITrajectory;
 import frc.robot.common.robotprovider.Pose2d;
@@ -98,7 +99,7 @@ public class FollowPathTask extends ControlTaskBase
         this.setDigitalOperationState(DigitalOperation.DriveTrainPathMode, false);
         this.setAnalogOperationState(AnalogOperation.DriveTrainPathXGoal, 0.0);
         this.setAnalogOperationState(AnalogOperation.DriveTrainPathYGoal, 0.0);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleGoal, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleGoal, TuningConstants.MAGIC_NULL_VALUE);
         this.setAnalogOperationState(AnalogOperation.DriveTrainPathXVelocityGoal, 0.0);
         this.setAnalogOperationState(AnalogOperation.DriveTrainPathYVelocityGoal, 0.0);
         this.setAnalogOperationState(AnalogOperation.DriveTrainPathAngleVelocityGoal, 0.0);

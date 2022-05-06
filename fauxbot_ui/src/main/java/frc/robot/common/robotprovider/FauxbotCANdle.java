@@ -26,6 +26,11 @@ public class FauxbotCANdle implements ICANdle
         return 0.0;
     }
 
+    public int getMaxSimultaneousAnimationCount()
+    {
+        return 0;
+    }
+
     public void configBrightnessScalar(double brightness)
     {
     }
@@ -58,39 +63,43 @@ public class FauxbotCANdle implements ICANdle
     {
     }
 
-    public void startTwinkleAnimation(int r, int g, int b, int w, double speed, int numLed, CANdleTwinklePercent divider)
+    public void startTwinkleAnimation(int animSlot, int r, int g, int b, int w, double speed, int numLed, CANdleTwinklePercent divider, int ledOffset)
     {
     }
 
-    public void startTwinkleOffAnimation(int r, int g, int b, int w, double speed, int numLed, CANdleTwinklePercent divider)
+    public void startTwinkleOffAnimation(int animSlot, int r, int g, int b, int w, double speed, int numLed, CANdleTwinklePercent divider, int ledOffset)
     {
     }
 
-    public void startStrobeAnimation(int r, int g, int b, int w, double speed, int numLed)
+    public void startStrobeAnimation(int animSlot, int r, int g, int b, int w, double speed, int numLed, int ledOffset)
     {
     }
 
-    public void startSingleFadeAnimation(int r, int g, int b, int w, double speed, int numLed)
+    public void startSingleFadeAnimation(int animSlot, int r, int g, int b, int w, double speed, int numLed, int ledOffset)
     {
     }
 
-    public void startRgbFadeAnimation(double brightness, double speed, int numLed)
+    public void startRgbFadeAnimation(int animSlot, double brightness, double speed, int numLed, int ledOffset)
     {
     }
 
-    public void startRainbowAnimation(double brightness, double speed, int numLed)
+    public void startRainbowAnimation(int animSlot, double brightness, double speed, int numLed, boolean reverseDirection, int ledOffset)
     {
     }
 
-    public void startLarsonAnimation(int r, int g, int b, int w, double speed, int numLed, CANdleLarsonBounceMode mode, int size)
+    public void startLarsonAnimation(int animSlot, int r, int g, int b, int w, double speed, int numLed, CANdleLarsonBounceMode mode, int size, int ledOffset)
     {
     }
 
-    public void startFireAnimation(double brightness, double speed, int numLed, double sparking, double cooling)
+    public void startFireAnimation(int animSlot, double brightness, double speed, int numLed, double sparking, double cooling, boolean reverseDirection, int ledOffset)
     {
     }
 
-    public void startColorFlowAnimation(int r, int g, int b, int w, double speed, int numLed, boolean forward)
+    public void startColorFlowAnimation(int animSlot, int r, int g, int b, int w, double speed, int numLed, boolean forward, int ledOffset)
+    {
+    }
+
+    public void stopAnimation(int animSlot)
     {
     }
 }

@@ -11,6 +11,11 @@ public class Pigeon2Wrapper implements IPigeon2
         this.wrappedObject = new Pigeon2(deviceNumber);
     }
 
+    public Pigeon2Wrapper(int deviceNumber, String canbus)
+    {
+        this.wrappedObject = new Pigeon2(deviceNumber, canbus);
+    }
+
     public void getYawPitchRoll(double[] ypr_deg)
     {
         CTREErrorCodeHelper.printError(

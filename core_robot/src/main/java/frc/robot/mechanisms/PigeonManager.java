@@ -47,6 +47,7 @@ public class PigeonManager implements IMechanism
         this.logger = logger;
 
         this.pigeon = provider.getPigeon2(ElectronicsConstants.PIGEON_IMU_CAN_ID);
+        this.pigeon.setYaw(0.0);
 
         this.ypr_deg = new double[3];
 

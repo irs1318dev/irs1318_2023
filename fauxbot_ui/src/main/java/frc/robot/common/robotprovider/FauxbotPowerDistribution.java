@@ -19,4 +19,8 @@ public class FauxbotPowerDistribution implements IPowerDistribution
     {
         return 0.0;
     }
+
+    public void setSwitchableChannel(boolean enabled)
+    {
+    }
 }
