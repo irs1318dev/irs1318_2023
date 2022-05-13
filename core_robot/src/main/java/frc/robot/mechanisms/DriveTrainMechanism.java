@@ -54,7 +54,7 @@ public class DriveTrainMechanism implements IMechanism
     private final ILogger logger;
     private final ITimer timer;
 
-    private final PigeonManager imuManager;
+    private final IPositionManager imuManager;
 
     private final ITalonFX[] steerMotors;
     private final ITalonFX[] driveMotors;
