@@ -16,7 +16,7 @@ package frc.robot.driver.common;
  * 1 - DPAD Y (all or nothing: -1, 0, or 1)
  * 2 - Thumb button (all or nothing: 0 or 1)
  * -----------------------
- * XBox One Controller:
+ * XBox One Controller (and Logitech F310):
  * 0 - LS_X (left stick, X)
  * 1 - LS_Y (left stick, Y)
  * 2 - LT (left trigger): 0 to 1

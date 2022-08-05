@@ -42,7 +42,7 @@ package frc.robot.driver.common;
  * 16 - Button 16
  * POV - Not supported... DPAD on the Tartarus is used for X/Y axes (up/right positive y/x, respectively).
  * -----------------------
- * XBox One Controller:
+ * XBox One Controller (and Logitech F310):
  * 1 - A
  * 2 - B
  * 3 - X
