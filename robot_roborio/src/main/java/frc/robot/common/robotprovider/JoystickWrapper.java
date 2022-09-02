@@ -1,6 +1,7 @@
 package frc.robot.common.robotprovider;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 public class JoystickWrapper implements IJoystick
 {
@@ -29,5 +30,20 @@ public class JoystickWrapper implements IJoystick
     public boolean getRawButton(int value)
     {
         return this.wrappedObject.getRawButton(value);
+    }
+
+    public void setRumble(JoystickRumbleType type, double value)
+    {
+        RumbleType rumbleType;
+        if (type == JoystickRumbleType.Left)
+        {
+            rumbleType = RumbleType.kLeftRumble;
+        }
+        else // if (type == JoystickRumbleType.Right)
+        {
+            rumbleType = RumbleType.kRightRumble;
+        }
+
+        this.wrappedObject.setRumble(rumbleType, value);
     }
 }

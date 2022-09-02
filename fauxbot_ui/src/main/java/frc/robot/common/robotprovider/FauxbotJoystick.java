@@ -58,6 +58,10 @@ public class FauxbotJoystick implements IJoystick
         return this.axes.get(relevantAxis).get();
     }
 
+    public void setRumble(JoystickRumbleType type, double value)
+    {
+    }
+
     public BooleanProperty getButtonProperty(int buttonNumber)
     {
         if (!this.buttons.containsKey(buttonNumber))

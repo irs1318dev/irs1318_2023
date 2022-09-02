@@ -316,7 +316,8 @@ public class Driver implements IDriver
     }
 
     /**
-     * Starts the autonomous period of the match (e.g. begins auto routine)
+     * Starts a particular mode of the match
+     * @param mode that is being started
      */
     @Override
     public void startMode(RobotMode mode)
@@ -375,5 +376,27 @@ public class Driver implements IDriver
 
         AnalogOperationState analogState = (AnalogOperationState)state;
         return analogState.getState();
+    }
+
+    /**
+     * Instructs the joystick to rumble (if supported)
+     * @param device device to attempt to rumble
+     * @param type whether left or right rumbler
+     * @param value between 0.0 for no rumble and 1.0 for full rumble
+     */
+    public void setRumble(UserInputDevice device, JoystickRumbleType type, double value)
+    {
+        IJoystick joystick = this.joysticks[device.getId()];
+        if (joystick == null || !joystick.isConnected())
+        {
+            if (!TuningConstants.EXPECT_UNUSED_JOYSTICKS && TuningConstants.THROW_EXCEPTIONS)
+            {
+                throw new RuntimeException("Unexpected user input device " + device.toString());
+            }
+
+            return;
+        }
+
+        joystick.setRumble(type, value);
     }
 }
