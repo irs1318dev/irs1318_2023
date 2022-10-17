@@ -16,6 +16,7 @@ import frc.robot.common.*;
 import frc.robot.common.robotprovider.*;
 import frc.robot.driver.*;
 import frc.robot.driver.common.IDriver;
+import frc.robot.mechanisms.PowerManager.CurrentLimiting;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -54,7 +55,8 @@ public class DriveTrainMechanism implements IMechanism
     private final ILogger logger;
     private final ITimer timer;
 
-    private final IPositionManager imuManager;
+    private final PigeonManager imuManager;
+    private final PowerManager powerManager;
 
     private final ITalonFX[] steerMotors;
     private final ITalonFX[] driveMotors;
@@ -99,6 +101,7 @@ public class DriveTrainMechanism implements IMechanism
         LoggingManager logger,
         IRobotProvider provider,
         PigeonManager imuManager,
+        PowerManager powerManager,
         ITimer timer)
     {
         this.driver = driver;
@@ -106,6 +109,7 @@ public class DriveTrainMechanism implements IMechanism
         this.timer = timer;
 
         this.imuManager = imuManager;
+        this.powerManager = powerManager;
 
         this.steerMotors = new ITalonFX[DriveTrainMechanism.NUM_MODULES];
         this.driveMotors = new ITalonFX[DriveTrainMechanism.NUM_MODULES];
@@ -833,6 +837,28 @@ public class DriveTrainMechanism implements IMechanism
             for (int i = 0; i < DriveTrainMechanism.NUM_MODULES; i++)
             {
                 this.result[i].driveVelocity *= invPercentage;
+            }
+        }
+
+        if (TuningConstants.DRIVETRAIN_USE_OVERCURRENT_ADJUSTMENT)
+        {
+            CurrentLimiting value = this.powerManager.getCurrentLimitingValue();
+            if (value != CurrentLimiting.Normal)
+            {
+                double currentLimitingMultiplier;
+                if (value == CurrentLimiting.OverCurrent)
+                {
+                    currentLimitingMultiplier = TuningConstants.DRIVETRAIN_OVERCURRENT_ADJUSTMENT;
+                }
+                else // if (value == CurrentLimiting.OverCurrentHigh)
+                {
+                    currentLimitingMultiplier = TuningConstants.DRIVETRAIN_OVERCURRENT_HIGH_ADJUSTMENT;
+                }
+
+                for (int i = 0; i < DriveTrainMechanism.NUM_MODULES; i++)
+                {
+                    this.result[i].driveVelocity *= currentLimitingMultiplier;
+                }
             }
         }
     }

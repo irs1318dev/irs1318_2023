@@ -20,6 +20,26 @@ public class FauxbotPowerDistribution implements IPowerDistribution
         return 0.0;
     }
 
+    public double getTotalCurrent()
+    {
+        return 0.0;
+    }
+
+    public double getTotalEnergy()
+    {
+        return 0.0;
+    }
+
+    public double getTotalPower()
+    {
+        return 0.0;
+    }
+
+    public double getTemperature()
+    {
+        return 0.0;
+    }
+
     public void setSwitchableChannel(boolean enabled)
     {
     }

@@ -2,6 +2,7 @@ package frc.robot.driver.common;
 
 import frc.robot.common.robotprovider.*;
 import frc.robot.driver.*;
+import frc.robot.driver.common.descriptions.UserInputDevice;
 
 /**
  * Interface describing the Driver that operates the robot.  This is either autonomous or teleop/user driver.
@@ -43,4 +44,12 @@ public interface IDriver
      * @return the current value of the analog operation
      */
     public double getAnalog(AnalogOperation analogOperation);
+
+    /**
+     * Instructs the joystick to rumble (if supported)
+     * @param device device to attempt to rumble
+     * @param type whether left or right rumbler
+     * @param value between 0.0 for no rumble and 1.0 for full rumble
+     */
+    public void setRumble(UserInputDevice device, JoystickRumbleType type, double value);
 }

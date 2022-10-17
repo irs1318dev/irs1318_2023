@@ -4,6 +4,9 @@ public enum DigitalOperation implements IOperation
 {
     PositionResetFieldOrientation,
 
+    // Driver interaction operations
+    ForceLightDriverRumble,
+
     // Vision operations:
     VisionForceDisable,
     VisionDisableStream,

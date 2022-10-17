@@ -38,6 +38,26 @@ public class PowerDistributionWrapper implements IPowerDistribution
         return this.wrappedObject.getCurrent(pdpChannel);
     }
 
+    public double getTotalCurrent()
+    {
+        return this.wrappedObject.getTotalCurrent();
+    }
+
+    public double getTotalEnergy()
+    {
+        return this.wrappedObject.getTotalEnergy();
+    }
+
+    public double getTotalPower()
+    {
+        return this.wrappedObject.getTotalPower();
+    }
+
+    public double getTemperature()
+    {
+        return this.wrappedObject.getTemperature();
+    }
+
     public void setSwitchableChannel(boolean enabled)
     {
         this.wrappedObject.setSwitchableChannel(enabled);
