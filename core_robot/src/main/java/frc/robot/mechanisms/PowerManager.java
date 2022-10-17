@@ -87,8 +87,8 @@ public class PowerManager implements IMechanism
 
         if (TuningConstants.POWER_TRACK_CURRENT)
         {
-            int prevIndex = (int)(this.prevTime * TuningConstants.LOOPS_PER_SECOND) % TuningConstants.POWER_OVERCURRENT_SAMPLES;
-            int currIndex = (int)(currTime * TuningConstants.LOOPS_PER_SECOND) % TuningConstants.POWER_OVERCURRENT_SAMPLES;
+            int prevIndex = (int)(this.prevTime * TuningConstants.SAMPLES_PER_SECOND) % TuningConstants.POWER_OVERCURRENT_SAMPLES;
+            int currIndex = (int)(currTime * TuningConstants.SAMPLES_PER_SECOND) % TuningConstants.POWER_OVERCURRENT_SAMPLES;
 
             int slots = currIndex - prevIndex + 1;
             if (slots < 0)
@@ -97,10 +97,10 @@ public class PowerManager implements IMechanism
             }
 
             double currCurrent = this.powerDistribution.getTotalCurrent();
-            for (int i = 0; i < slots; i++)
+            for (int i = 1; i < slots; i++)
             {
                 int index = (prevIndex + i) % TuningConstants.POWER_OVERCURRENT_SAMPLES;
-                this.currentFloatingAverage += (currCurrent - this.currentSamples[index]) * TuningConstants.LOOP_DURATION;
+                this.currentFloatingAverage += (currCurrent - this.currentSamples[index]) * TuningConstants.SAMPLE_DURATION;
                 this.currentSamples[index] = currCurrent;
             }
 
