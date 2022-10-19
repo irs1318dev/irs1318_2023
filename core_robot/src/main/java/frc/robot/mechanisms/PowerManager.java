@@ -104,6 +104,7 @@ public class PowerManager implements IMechanism
                 this.currentSamples[index] = currCurrent;
             }
 
+            this.logger.logNumber(LoggingKey.PowerCurrent, currCurrent);
             this.logger.logNumber(LoggingKey.PowerCurrentFloatingAverage, this.currentFloatingAverage);
         }
 

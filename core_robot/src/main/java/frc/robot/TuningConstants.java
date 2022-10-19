@@ -252,15 +252,15 @@ public class TuningConstants
     public static final double DRIVETRAIN_DRIVE_VOLTAGE_COMPENSATION = 11.0;
     public static final boolean DRIVETRAIN_DRIVE_SUPPLY_CURRENT_LIMITING_ENABLED = true;
     public static final double DRIVETRAIN_DRIVE_SUPPLY_CURRENT_MAX = 30.0;
-    public static final double DRIVETRAIN_DRIVE_SUPPLY_TRIGGER_CURRENT = 40.0;
-    public static final double DRIVETRAIN_DRIVE_SUPPLY_TRIGGER_DURATION = 100.0;
+    public static final double DRIVETRAIN_DRIVE_SUPPLY_TRIGGER_CURRENT = 32.5;
+    public static final double DRIVETRAIN_DRIVE_SUPPLY_TRIGGER_DURATION = 0.75;
 
     public static final boolean DRIVETRAIN_STEER_VOLTAGE_COMPENSATION_ENABLED = true;
     public static final double DRIVETRAIN_STEER_VOLTAGE_COMPENSATION = 11.0;
     public static final boolean DRIVETRAIN_STEER_SUPPLY_CURRENT_LIMITING_ENABLED = true;
-    public static final double DRIVETRAIN_STEER_SUPPLY_CURRENT_MAX = 30.0;
-    public static final double DRIVETRAIN_STEER_SUPPLY_TRIGGER_CURRENT = 40.0;
-    public static final double DRIVETRAIN_STEER_SUPPLY_TRIGGER_DURATION = 100.0;
+    public static final double DRIVETRAIN_STEER_SUPPLY_CURRENT_MAX = 20.0;
+    public static final double DRIVETRAIN_STEER_SUPPLY_TRIGGER_CURRENT = 30.0;
+    public static final double DRIVETRAIN_STEER_SUPPLY_TRIGGER_DURATION = 1.0;
 
     public static final int DRIVETRAIN_SENSOR_FRAME_PERIOD_MS = 10;
     public static final int DRIVETRAIN_PID_FRAME_PERIOD_MS = 100;

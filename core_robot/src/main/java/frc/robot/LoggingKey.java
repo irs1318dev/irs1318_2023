@@ -22,6 +22,7 @@ public enum LoggingKey
     OffboardVisionEnableStream("rpi.enableStream", true),
     OffboardVisionEnableProcessing("rpi.processingSetting", true),
     OffboardVisionMissedHeartbeats("rpi.missedHeartbeats", true),
+    PowerCurrent("power.curr"),
     PowerCurrentFloatingAverage("power.currFltAvg"),
     PowerBatteryVoltage("power.battV"),
     NavxStartingAngle("navx.startingAngle"),
