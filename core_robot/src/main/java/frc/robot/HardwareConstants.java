@@ -29,7 +29,7 @@ public class HardwareConstants
     public static final double DRIVETRAIN_STEER_TICKS_PER_DEGREE = (HardwareConstants.DRIVETRAIN_STEER_GEAR_RATIO * HardwareConstants.DRIVETRAIN_STEER_TICKS_PER_REVOLUTION) / HardwareConstants.DRIVETRAIN_STEER_DEGREES; // in ticks
 
     public static final double DRIVETRAIN_DRIVE_TICKS_PER_REVOLUTION = 2048.0;
-    public static final double DRIVETRAIN_DRIVE_GEAR_RATIO = 1275.0 / 189.0; // According to SDS Mk4i fast code: (50.0 / 14.0) * (17.0 / 27.0) * (45.0 / 15.0) == ~6.75 : 1
+    public static final double DRIVETRAIN_DRIVE_GEAR_RATIO = 36000.0 / 5880; // According to SDS Mk4i Very Fast code: (50.0 / 14.0) * (16.0 / 28.0) * (45.0 / 15.0) == ~6.12 : 1
     public static final double DRIVETRAIN_DRIVE_WHEEL_DIAMETER = 3.95; // SDS Mk4i code claims their 4-inch wheels are actually 3.95 inches now (in inches)
     public static final double DRIVETRAIN_DRIVE_WHEEL_CIRCUMFERENCE = Math.PI * HardwareConstants.DRIVETRAIN_DRIVE_WHEEL_DIAMETER;
     public static final double DRIVETRAIN_DRIVE_TICK_DISTANCE = HardwareConstants.DRIVETRAIN_DRIVE_WHEEL_CIRCUMFERENCE / (HardwareConstants.DRIVETRAIN_DRIVE_GEAR_RATIO * HardwareConstants.DRIVETRAIN_DRIVE_TICKS_PER_REVOLUTION);

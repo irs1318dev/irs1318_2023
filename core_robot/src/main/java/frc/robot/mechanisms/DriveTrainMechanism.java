@@ -187,105 +187,6 @@ public class DriveTrainMechanism implements IMechanism
                 HardwareConstants.DRIVETRAIN_STEER_MOTOR4_INVERT
             };
 
-        double[][] driveMotorVelocityKPIDFs =
-            new double[][]
-            {
-                new double[]
-                {
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR1_VELOCITY_PID_KP,
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR1_VELOCITY_PID_KI,
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR1_VELOCITY_PID_KD,
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR1_VELOCITY_PID_KF,
-                },
-                new double[]
-                {
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR2_VELOCITY_PID_KP,
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR2_VELOCITY_PID_KI,
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR2_VELOCITY_PID_KD,
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR2_VELOCITY_PID_KF,
-                },
-                new double[]
-                {
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR3_VELOCITY_PID_KP,
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR3_VELOCITY_PID_KI,
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR3_VELOCITY_PID_KD,
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR3_VELOCITY_PID_KF,
-                },
-                new double[]
-                {
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR4_VELOCITY_PID_KP,
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR4_VELOCITY_PID_KI,
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR4_VELOCITY_PID_KD,
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR4_VELOCITY_PID_KF,
-                },
-            };
-
-        double[][] driveMotorPositionKPIDFs =
-            new double[][]
-            {
-                new double[]
-                {
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR1_POSITION_PID_KP,
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR1_POSITION_PID_KI,
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR1_POSITION_PID_KD,
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR1_POSITION_PID_KF,
-                },
-                new double[]
-                {
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR2_POSITION_PID_KP,
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR2_POSITION_PID_KI,
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR2_POSITION_PID_KD,
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR2_POSITION_PID_KF,
-                },
-                new double[]
-                {
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR3_POSITION_PID_KP,
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR3_POSITION_PID_KI,
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR3_POSITION_PID_KD,
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR3_POSITION_PID_KF,
-                },
-                new double[]
-                {
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR4_POSITION_PID_KP,
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR4_POSITION_PID_KI,
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR4_POSITION_PID_KD,
-                    TuningConstants.DRIVETRAIN_DRIVE_MOTOR4_POSITION_PID_KF,
-                },
-            };
-
-        double[][] steerMotorPositionKPIDFs =
-            new double[][]
-            {
-                new double[]
-                {
-                    TuningConstants.DRIVETRAIN_STEER_MOTOR1_POSITION_PID_KP,
-                    TuningConstants.DRIVETRAIN_STEER_MOTOR1_POSITION_PID_KI,
-                    TuningConstants.DRIVETRAIN_STEER_MOTOR1_POSITION_PID_KD,
-                    TuningConstants.DRIVETRAIN_STEER_MOTOR1_POSITION_PID_KF,
-                },
-                new double[]
-                {
-                    TuningConstants.DRIVETRAIN_STEER_MOTOR2_POSITION_PID_KP,
-                    TuningConstants.DRIVETRAIN_STEER_MOTOR2_POSITION_PID_KI,
-                    TuningConstants.DRIVETRAIN_STEER_MOTOR2_POSITION_PID_KD,
-                    TuningConstants.DRIVETRAIN_STEER_MOTOR2_POSITION_PID_KF,
-                },
-                new double[]
-                {
-                    TuningConstants.DRIVETRAIN_STEER_MOTOR3_POSITION_PID_KP,
-                    TuningConstants.DRIVETRAIN_STEER_MOTOR3_POSITION_PID_KI,
-                    TuningConstants.DRIVETRAIN_STEER_MOTOR3_POSITION_PID_KD,
-                    TuningConstants.DRIVETRAIN_STEER_MOTOR3_POSITION_PID_KF,
-                },
-                new double[]
-                {
-                    TuningConstants.DRIVETRAIN_STEER_MOTOR4_POSITION_PID_KP,
-                    TuningConstants.DRIVETRAIN_STEER_MOTOR4_POSITION_PID_KI,
-                    TuningConstants.DRIVETRAIN_STEER_MOTOR4_POSITION_PID_KD,
-                    TuningConstants.DRIVETRAIN_STEER_MOTOR4_POSITION_PID_KF,
-                },
-            };
-
         for (int i = 0; i < DriveTrainMechanism.NUM_MODULES; i++)
         {
             this.driveMotors[i] = provider.getTalonFX(driveMotorCanIds[i], ElectronicsConstants.CANIVORE_NAME);
@@ -296,16 +197,16 @@ public class DriveTrainMechanism implements IMechanism
             this.driveMotors[i].setInvert(driveMotorInvert[i]);
             this.driveMotors[i].configureVelocityMeasurements(10, 32);
             this.driveMotors[i].setPIDF(
-                driveMotorVelocityKPIDFs[i][0],
-                driveMotorVelocityKPIDFs[i][1],
-                driveMotorVelocityKPIDFs[i][2],
-                driveMotorVelocityKPIDFs[i][3],
+                TuningConstants.DRIVETRAIN_DRIVE_MOTORS_VELOCITY_PID_KP,
+                TuningConstants.DRIVETRAIN_DRIVE_MOTORS_VELOCITY_PID_KI,
+                TuningConstants.DRIVETRAIN_DRIVE_MOTORS_VELOCITY_PID_KD,
+                TuningConstants.DRIVETRAIN_DRIVE_MOTORS_VELOCITY_PID_KF,
                 DriveTrainMechanism.defaultPidSlotId);
             this.driveMotors[i].setPIDF(
-                driveMotorPositionKPIDFs[i][0],
-                driveMotorPositionKPIDFs[i][1],
-                driveMotorPositionKPIDFs[i][2],
-                driveMotorPositionKPIDFs[i][3],
+                TuningConstants.DRIVETRAIN_DRIVE_MOTORS_POSITION_PID_KP,
+                TuningConstants.DRIVETRAIN_DRIVE_MOTORS_POSITION_PID_KI,
+                TuningConstants.DRIVETRAIN_DRIVE_MOTORS_POSITION_PID_KD,
+                TuningConstants.DRIVETRAIN_DRIVE_MOTORS_POSITION_PID_KF,
                 DriveTrainMechanism.secondaryPidSlotId);
             this.driveMotors[i].setVoltageCompensation(
                 TuningConstants.DRIVETRAIN_DRIVE_VOLTAGE_COMPENSATION_ENABLED,
@@ -323,11 +224,19 @@ public class DriveTrainMechanism implements IMechanism
             this.steerMotors[i].setNeutralMode(MotorNeutralMode.Brake);
             this.steerMotors[i].setSensorType(TalonXFeedbackDevice.IntegratedSensor);
             this.steerMotors[i].setPIDF(
-                steerMotorPositionKPIDFs[i][0],
-                steerMotorPositionKPIDFs[i][1],
-                steerMotorPositionKPIDFs[i][2],
-                steerMotorPositionKPIDFs[i][3],
+                TuningConstants.DRIVETRAIN_STEER_MOTORS_POSITION_PID_KP,
+                TuningConstants.DRIVETRAIN_STEER_MOTORS_POSITION_PID_KI,
+                TuningConstants.DRIVETRAIN_STEER_MOTORS_POSITION_PID_KD,
+                TuningConstants.DRIVETRAIN_STEER_MOTORS_POSITION_PID_KF,
                 DriveTrainMechanism.defaultPidSlotId);
+            this.steerMotors[i].setMotionMagicPIDF(
+                TuningConstants.DRIVETRAIN_STEER_MOTORS_MM_PID_KP,
+                TuningConstants.DRIVETRAIN_STEER_MOTORS_MM_PID_KI,
+                TuningConstants.DRIVETRAIN_STEER_MOTORS_MM_PID_KD,
+                TuningConstants.DRIVETRAIN_STEER_MOTORS_MM_PID_KF,
+                TuningConstants.DRIVETRAIN_STEER_MOTORS_MM_PID_CRUISE_VELOC,
+                TuningConstants.DRIVETRAIN_STEER_MOTORS_MM_PID_ACCEL,
+                DriveTrainMechanism.secondaryPidSlotId);
             this.steerMotors[i].setVoltageCompensation(
                 TuningConstants.DRIVETRAIN_STEER_VOLTAGE_COMPENSATION_ENABLED,
                 TuningConstants.DRIVETRAIN_STEER_VOLTAGE_COMPENSATION);
@@ -338,8 +247,16 @@ public class DriveTrainMechanism implements IMechanism
                 TuningConstants.DRIVETRAIN_STEER_SUPPLY_TRIGGER_DURATION);
             this.steerMotors[i].setFeedbackFramePeriod(TuningConstants.DRIVETRAIN_SENSOR_FRAME_PERIOD_MS);
             this.steerMotors[i].setFeedbackFramePeriod(TuningConstants.DRIVETRAIN_PID_FRAME_PERIOD_MS);
-            this.steerMotors[i].setControlMode(TalonXControlMode.Position);
-            this.steerMotors[i].setSelectedSlot(DriveTrainMechanism.defaultPidSlotId);
+            if (TuningConstants.DRIVETRAIN_STEER_MOTORS_USE_MOTION_MAGIC)
+            {
+                this.steerMotors[i].setControlMode(TalonXControlMode.MotionMagicPosition);
+                this.steerMotors[i].setSelectedSlot(DriveTrainMechanism.secondaryPidSlotId);
+            }
+            else
+            {
+                this.steerMotors[i].setControlMode(TalonXControlMode.Position);
+                this.steerMotors[i].setSelectedSlot(DriveTrainMechanism.defaultPidSlotId);
+            }
 
             this.absoluteEncoders[i] = provider.getCANCoder(absoluteEncoderCanIds[i], ElectronicsConstants.CANIVORE_NAME);
             this.absoluteEncoders[i].configAbsoluteRange(false);

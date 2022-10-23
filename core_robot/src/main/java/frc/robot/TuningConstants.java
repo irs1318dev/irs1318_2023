@@ -136,93 +136,53 @@ public class TuningConstants
 
     //================================================== DriveTrain ==============================================================
 
+    public static final boolean DRIVETRAIN_STEER_MOTORS_USE_MOTION_MAGIC = true;
+
     public static final boolean DRIVETRAIN_USE_ODOMETRY = true;
     public static final boolean DRIVETRAIN_RESET_ON_ROBOT_START = true;
     public static final boolean DRIVETRAIN_FIELD_ORIENTED_ON_ROBOT_START = true;
     public static final boolean DRIVETRAIN_MAINTAIN_ORIENTATION_ON_ROBOT_START = true;
 
-    public static final boolean DRIVETRAIN_USE_OVERCURRENT_ADJUSTMENT = false;
-    public static final double DRIVETRAIN_OVERCURRENT_ADJUSTMENT = 0.75;
-    public static final double DRIVETRAIN_OVERCURRENT_HIGH_ADJUSTMENT = 0.5;
-
-    public static final double DRIVETRAIN_STEER_MOTOR1_ABSOLUTE_OFFSET = -124.365;
-    public static final double DRIVETRAIN_STEER_MOTOR2_ABSOLUTE_OFFSET = 51.943;
-    public static final double DRIVETRAIN_STEER_MOTOR3_ABSOLUTE_OFFSET = -128.848;
-    public static final double DRIVETRAIN_STEER_MOTOR4_ABSOLUTE_OFFSET = -128.672;
+    public static final double DRIVETRAIN_STEER_MOTOR1_ABSOLUTE_OFFSET = 79.365;
+    public static final double DRIVETRAIN_STEER_MOTOR2_ABSOLUTE_OFFSET = 52.119;
+    public static final double DRIVETRAIN_STEER_MOTOR3_ABSOLUTE_OFFSET = -128.935;
+    public static final double DRIVETRAIN_STEER_MOTOR4_ABSOLUTE_OFFSET = -125.419;
 
     // Position PID (angle) per-module
     public static final double DRIVETRAIN_STEER_MOTOR_POSITION_PID_KS = HardwareConstants.DRIVETRAIN_STEER_TICKS_PER_DEGREE;
 
-    public static final double DRIVETRAIN_STEER_MOTOR1_POSITION_PID_KP = 0.5;
-    public static final double DRIVETRAIN_STEER_MOTOR1_POSITION_PID_KI = 0.0;
-    public static final double DRIVETRAIN_STEER_MOTOR1_POSITION_PID_KD = 0.0;
-    public static final double DRIVETRAIN_STEER_MOTOR1_POSITION_PID_KF = 0.0;
+    public static final double DRIVETRAIN_STEER_MOTORS_POSITION_PID_KP = 0.5;
+    public static final double DRIVETRAIN_STEER_MOTORS_POSITION_PID_KI = 0.0;
+    public static final double DRIVETRAIN_STEER_MOTORS_POSITION_PID_KD = 0.0;
+    public static final double DRIVETRAIN_STEER_MOTORS_POSITION_PID_KF = 0.0;
 
-    public static final double DRIVETRAIN_STEER_MOTOR2_POSITION_PID_KP = 0.5;
-    public static final double DRIVETRAIN_STEER_MOTOR2_POSITION_PID_KI = 0.0;
-    public static final double DRIVETRAIN_STEER_MOTOR2_POSITION_PID_KD = 0.0;
-    public static final double DRIVETRAIN_STEER_MOTOR2_POSITION_PID_KF = 0.0;
-
-    public static final double DRIVETRAIN_STEER_MOTOR3_POSITION_PID_KP = 0.5;
-    public static final double DRIVETRAIN_STEER_MOTOR3_POSITION_PID_KI = 0.0;
-    public static final double DRIVETRAIN_STEER_MOTOR3_POSITION_PID_KD = 0.0;
-    public static final double DRIVETRAIN_STEER_MOTOR3_POSITION_PID_KF = 0.0;
-
-    public static final double DRIVETRAIN_STEER_MOTOR4_POSITION_PID_KP = 0.5;
-    public static final double DRIVETRAIN_STEER_MOTOR4_POSITION_PID_KI = 0.0;
-    public static final double DRIVETRAIN_STEER_MOTOR4_POSITION_PID_KD = 0.0;
-    public static final double DRIVETRAIN_STEER_MOTOR4_POSITION_PID_KF = 0.0;
+    public static final double DRIVETRAIN_STEER_MOTORS_MM_PID_KP = 0.5;
+    public static final double DRIVETRAIN_STEER_MOTORS_MM_PID_KI = 0.0;
+    public static final double DRIVETRAIN_STEER_MOTORS_MM_PID_KD = 0.0;
+    public static final double DRIVETRAIN_STEER_MOTORS_MM_PID_KF = 0.34; // 1023 over max speed (3000 ticks per 100ms)
+    public static final int DRIVETRAIN_STEER_MOTORS_MM_PID_CRUISE_VELOC = 48000;
+    public static final int DRIVETRAIN_STEER_MOTORS_MM_PID_ACCEL = 48000;
 
     // Velocity PID (drive) per-module
-    public static final double DRIVETRAIN_DRIVE_MOTOR_VELOCITY_PID_KS = 17000.0; // 21400 was highest speed at full throttle FF on blocks. this is #ticks / 100ms
+    public static final double DRIVETRAIN_DRIVE_MOTOR_VELOCITY_PID_KS = 16000.0; // 20000 was highest speed at full throttle FF on blocks. this is #ticks / 100ms
 
-    public static final double DRIVETRAIN_DRIVE_MOTOR1_VELOCITY_PID_KP = 0.09;
-    public static final double DRIVETRAIN_DRIVE_MOTOR1_VELOCITY_PID_KI = 0.0;
-    public static final double DRIVETRAIN_DRIVE_MOTOR1_VELOCITY_PID_KD = 0.0;
-    public static final double DRIVETRAIN_DRIVE_MOTOR1_VELOCITY_PID_KF = 0.0478; // .0478 ==> ~ 1023 / 21400 (100% control authority)
+    public static final double DRIVETRAIN_DRIVE_MOTORS_VELOCITY_PID_KP = 0.1;
+    public static final double DRIVETRAIN_DRIVE_MOTORS_VELOCITY_PID_KI = 0.0;
+    public static final double DRIVETRAIN_DRIVE_MOTORS_VELOCITY_PID_KD = 0.0;
+    public static final double DRIVETRAIN_DRIVE_MOTORS_VELOCITY_PID_KF = 0.05115; // .05115 ==> ~ 1023 / 20000 (100% control authority)
 
-    public static final double DRIVETRAIN_DRIVE_MOTOR2_VELOCITY_PID_KP = 0.09;
-    public static final double DRIVETRAIN_DRIVE_MOTOR2_VELOCITY_PID_KI = 0.0;
-    public static final double DRIVETRAIN_DRIVE_MOTOR2_VELOCITY_PID_KD = 0.0;
-    public static final double DRIVETRAIN_DRIVE_MOTOR2_VELOCITY_PID_KF = 0.0478; // .0478 ==> ~ 1023 / 21400 (100% control authority)
-
-    public static final double DRIVETRAIN_DRIVE_MOTOR3_VELOCITY_PID_KP = 0.09;
-    public static final double DRIVETRAIN_DRIVE_MOTOR3_VELOCITY_PID_KI = 0.0;
-    public static final double DRIVETRAIN_DRIVE_MOTOR3_VELOCITY_PID_KD = 0.0;
-    public static final double DRIVETRAIN_DRIVE_MOTOR3_VELOCITY_PID_KF = 0.0478; // .0478 ==> ~ 1023 / 21400 (100% control authority)
-
-    public static final double DRIVETRAIN_DRIVE_MOTOR4_VELOCITY_PID_KP = 0.09;
-    public static final double DRIVETRAIN_DRIVE_MOTOR4_VELOCITY_PID_KI = 0.0;
-    public static final double DRIVETRAIN_DRIVE_MOTOR4_VELOCITY_PID_KD = 0.0;
-    public static final double DRIVETRAIN_DRIVE_MOTOR4_VELOCITY_PID_KF = 0.0478; // .0478 ==> ~ 1023 / 21400 (100% control authority)
-
-    public static final double DRIVETRAIN_DRIVE_MOTOR1_POSITION_PID_KP = 1.0;
-    public static final double DRIVETRAIN_DRIVE_MOTOR1_POSITION_PID_KI = 0.0;
-    public static final double DRIVETRAIN_DRIVE_MOTOR1_POSITION_PID_KD = 0.0;
-    public static final double DRIVETRAIN_DRIVE_MOTOR1_POSITION_PID_KF = 0.0;
-
-    public static final double DRIVETRAIN_DRIVE_MOTOR2_POSITION_PID_KP = 1.0;
-    public static final double DRIVETRAIN_DRIVE_MOTOR2_POSITION_PID_KI = 0.0;
-    public static final double DRIVETRAIN_DRIVE_MOTOR2_POSITION_PID_KD = 0.0;
-    public static final double DRIVETRAIN_DRIVE_MOTOR2_POSITION_PID_KF = 0.0;
-
-    public static final double DRIVETRAIN_DRIVE_MOTOR3_POSITION_PID_KP = 1.0;
-    public static final double DRIVETRAIN_DRIVE_MOTOR3_POSITION_PID_KI = 0.0;
-    public static final double DRIVETRAIN_DRIVE_MOTOR3_POSITION_PID_KD = 0.0;
-    public static final double DRIVETRAIN_DRIVE_MOTOR3_POSITION_PID_KF = 0.0;
-
-    public static final double DRIVETRAIN_DRIVE_MOTOR4_POSITION_PID_KP = 1.0;
-    public static final double DRIVETRAIN_DRIVE_MOTOR4_POSITION_PID_KI = 0.0;
-    public static final double DRIVETRAIN_DRIVE_MOTOR4_POSITION_PID_KD = 0.0;
-    public static final double DRIVETRAIN_DRIVE_MOTOR4_POSITION_PID_KF = 0.0;
+    public static final double DRIVETRAIN_DRIVE_MOTORS_POSITION_PID_KP = 1.0;
+    public static final double DRIVETRAIN_DRIVE_MOTORS_POSITION_PID_KI = 0.0;
+    public static final double DRIVETRAIN_DRIVE_MOTORS_POSITION_PID_KD = 0.0;
+    public static final double DRIVETRAIN_DRIVE_MOTORS_POSITION_PID_KF = 0.0;
 
     public static final double DRIVETRAIN_OMEGA_POSITION_PID_KP = 0.1;
     public static final double DRIVETRAIN_OMEGA_POSITION_PID_KI = 0.0;
     public static final double DRIVETRAIN_OMEGA_POSITION_PID_KD = 0.0;
     public static final double DRIVETRAIN_OMEGA_POSITION_PID_KF = 0.0;
     public static final double DRIVETRAIN_OMEGA_POSITION_PID_KS = 1.0;
-    public static final double DRIVETRAIN_OMEGA_MAX_OUTPUT = 4.0;
-    public static final double DRIVETRAIN_OMEGA_MIN_OUTPUT = -4.0;
+    public static final double DRIVETRAIN_OMEGA_MAX_OUTPUT = 5.0;
+    public static final double DRIVETRAIN_OMEGA_MIN_OUTPUT = -5.0;
 
     public static final double DRIVETRAIN_PATH_OMEGA_POSITION_PID_KP = 0.1;
     public static final double DRIVETRAIN_PATH_OMEGA_POSITION_PID_KI = 0.0;
@@ -248,19 +208,23 @@ public class TuningConstants
     public static final double DRIVETRAIN_PATH_Y_MAX_OUTPUT = 10.0;
     public static final double DRIVETRAIN_PATH_Y_MIN_OUTPUT = -10.0;
 
+    public static final boolean DRIVETRAIN_USE_OVERCURRENT_ADJUSTMENT = true;
+    public static final double DRIVETRAIN_OVERCURRENT_ADJUSTMENT = 0.75;
+    public static final double DRIVETRAIN_OVERCURRENT_HIGH_ADJUSTMENT = 0.5;
+
     public static final boolean DRIVETRAIN_DRIVE_VOLTAGE_COMPENSATION_ENABLED = true;
     public static final double DRIVETRAIN_DRIVE_VOLTAGE_COMPENSATION = 11.0;
     public static final boolean DRIVETRAIN_DRIVE_SUPPLY_CURRENT_LIMITING_ENABLED = true;
-    public static final double DRIVETRAIN_DRIVE_SUPPLY_CURRENT_MAX = 30.0;
-    public static final double DRIVETRAIN_DRIVE_SUPPLY_TRIGGER_CURRENT = 32.5;
-    public static final double DRIVETRAIN_DRIVE_SUPPLY_TRIGGER_DURATION = 0.75;
+    public static final double DRIVETRAIN_DRIVE_SUPPLY_CURRENT_MAX = 35.0;
+    public static final double DRIVETRAIN_DRIVE_SUPPLY_TRIGGER_CURRENT = 35.0;
+    public static final double DRIVETRAIN_DRIVE_SUPPLY_TRIGGER_DURATION = 0.25;
 
     public static final boolean DRIVETRAIN_STEER_VOLTAGE_COMPENSATION_ENABLED = true;
     public static final double DRIVETRAIN_STEER_VOLTAGE_COMPENSATION = 11.0;
     public static final boolean DRIVETRAIN_STEER_SUPPLY_CURRENT_LIMITING_ENABLED = true;
     public static final double DRIVETRAIN_STEER_SUPPLY_CURRENT_MAX = 20.0;
     public static final double DRIVETRAIN_STEER_SUPPLY_TRIGGER_CURRENT = 30.0;
-    public static final double DRIVETRAIN_STEER_SUPPLY_TRIGGER_DURATION = 1.0;
+    public static final double DRIVETRAIN_STEER_SUPPLY_TRIGGER_DURATION = 0.1;
 
     public static final int DRIVETRAIN_SENSOR_FRAME_PERIOD_MS = 10;
     public static final int DRIVETRAIN_PID_FRAME_PERIOD_MS = 100;
