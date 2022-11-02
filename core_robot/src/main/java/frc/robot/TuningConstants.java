@@ -8,7 +8,7 @@ package frc.robot;
  */
 public class TuningConstants
 {
-    public static final boolean COMPETITION_ROBOT = true;
+    public static final boolean COMPETITION_ROBOT = false;
     public static boolean THROW_EXCEPTIONS = !TuningConstants.COMPETITION_ROBOT;
     public static boolean LOG_EXCEPTIONS = true;
     public static double LOOP_DURATION = 0.02; // we expect the robot's main loop to run at roughly ~50 Hz, or 1 update per 20ms (0.02s)
@@ -62,7 +62,7 @@ public class TuningConstants
     public static final double VISION_STATIONARY_CENTERING_PID_MAX = 0.4;
 
     // PID settings for Centering the robot on a vision target
-    public static final double VISION_MOVING_CENTERING_PID_KP = 0.01;
+    public static final double VISION_MOVING_CENTERING_PID_KP = 0.012;
     public static final double VISION_MOVING_CENTERING_PID_KI = 0.0;
     public static final double VISION_MOVING_CENTERING_PID_KD = 0.0;
     public static final double VISION_MOVING_CENTERING_PID_KF = 0.0;

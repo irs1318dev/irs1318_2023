@@ -100,7 +100,7 @@ public class PowerManager implements IMechanism
             for (int i = 1; i < slots; i++)
             {
                 int index = (prevIndex + i) % TuningConstants.POWER_OVERCURRENT_SAMPLES;
-                this.currentFloatingAverage += (currCurrent - this.currentSamples[index]) * TuningConstants.SAMPLE_DURATION;
+                this.currentFloatingAverage += ((currCurrent - this.currentSamples[index]) * TuningConstants.SAMPLE_DURATION) / TuningConstants.POWER_OVERCURRENT_TRACKING_DURATION;
                 this.currentSamples[index] = currCurrent;
             }
 
