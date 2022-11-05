@@ -6,6 +6,8 @@ import com.google.inject.Singleton;
 import frc.robot.LoggingKey;
 import frc.robot.common.LoggingManager;
 import frc.robot.common.robotprovider.*;
+import frc.robot.driver.SmartDashboardSelectionManager.AutoRoutine;
+import frc.robot.driver.SmartDashboardSelectionManager.StartPosition;
 import frc.robot.driver.common.*;
 import frc.robot.driver.controltasks.*;
 
@@ -15,24 +17,8 @@ public class AutonomousRoutineSelector
     private final ILogger logger;
 
     private final PathManager pathManager;
+    private final SmartDashboardSelectionManager selectionManager;
     private final IDriverStation driverStation;
-
-    private final ISendableChooser<StartPosition> positionChooser;
-    private final ISendableChooser<AutoRoutine> routineChooser;
-
-    public enum StartPosition
-    {
-        Center,
-        Left,
-        Right
-    }
-
-    public enum AutoRoutine
-    {
-        None,
-        PathA,
-        PathB,
-    }
 
     /**
      * Initializes a new AutonomousRoutineSelector
@@ -40,28 +26,15 @@ public class AutonomousRoutineSelector
     @Inject
     public AutonomousRoutineSelector(
         LoggingManager logger,
-        PathManager pathManager, 
+        PathManager pathManager,
+        SmartDashboardSelectionManager selectionManager,
         IRobotProvider provider)
     {
-        // initialize robot parts that are used to select autonomous routine (e.g. dipswitches) here...
         this.logger = logger;
         this.pathManager = pathManager;
+        this.selectionManager = selectionManager;
 
         this.driverStation = provider.getDriverStation();
-
-        INetworkTableProvider networkTableProvider = provider.getNetworkTableProvider();
-
-        this.routineChooser = networkTableProvider.getSendableChooser();
-        this.routineChooser.addDefault("None", AutoRoutine.None);
-        this.routineChooser.addObject("Path A", AutoRoutine.PathA);
-        this.routineChooser.addObject("Path B", AutoRoutine.PathB);
-        networkTableProvider.addChooser("Auto Routine", this.routineChooser);
-
-        this.positionChooser = networkTableProvider.getSendableChooser();
-        this.positionChooser.addDefault("center", StartPosition.Center);
-        this.positionChooser.addObject("left", StartPosition.Left);
-        this.positionChooser.addObject("right", StartPosition.Right);
-        networkTableProvider.addChooser("Start Position", this.positionChooser);
 
         RoadRunnerTrajectoryGenerator.generateTrajectories(this.pathManager);
     }
@@ -85,17 +58,8 @@ public class AutonomousRoutineSelector
             return null;
         }
 
-        StartPosition startPosition = this.positionChooser.getSelected();
-        if (startPosition == null)
-        {
-            startPosition = StartPosition.Center;
-        }
-
-        AutoRoutine routine = this.routineChooser.getSelected();
-        if (routine == null)
-        {
-            routine = AutoRoutine.None;
-        }
+        StartPosition startPosition = this.selectionManager.getSelectedStartPosition();
+        AutoRoutine routine = this.selectionManager.getSelectedAutoRoutine();
 
         this.logger.logString(LoggingKey.AutonomousSelection, startPosition.toString() + "." + routine.toString());
 

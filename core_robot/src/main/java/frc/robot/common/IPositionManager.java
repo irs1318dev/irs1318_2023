@@ -1,6 +1,4 @@
-package frc.robot.mechanisms;
-
-import frc.robot.common.*;
+package frc.robot.common;
 
 public interface IPositionManager extends IMechanism
 {
