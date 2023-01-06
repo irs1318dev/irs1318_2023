@@ -5,5 +5,6 @@ public enum RobotMode
     Disabled,
     Autonomous,
     Teleop,
-    Test;
+    Test,
+    Simulation;
 }
