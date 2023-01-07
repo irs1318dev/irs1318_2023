@@ -1,6 +1,6 @@
-# irs1318_2022
+# irs1318_general
 
-2022 FIRST Rapid React code
+General Robot code for team 1318
 
 ## Links
 1. [Robot Programming Guide](/Robot%20Programming%20Guide.md)
