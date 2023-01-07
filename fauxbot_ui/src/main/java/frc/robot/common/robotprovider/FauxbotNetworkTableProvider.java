@@ -3,7 +3,7 @@ package frc.robot.common.robotprovider;
 public class FauxbotNetworkTableProvider implements INetworkTableProvider
 {
     @Override
-    public INetworkTableEntry getNumberSlider(String title, double initialValue)
+    public IDoubleSubscriber getNumberSlider(String title, double initialValue)
     {
         return null;
     }
@@ -23,20 +23,26 @@ public class FauxbotNetworkTableProvider implements INetworkTableProvider
     }
 
     @Override
-    public double getSmartDashboardNumber(String key)
+    public IDoubleSubscriber getDoubleSubscriber(String key)
     {
-        return 0.0;
+        return null;
     }
 
     @Override
-    public boolean getSmartDashboardBoolean(String key)
+    public IBooleanSubscriber getBooleanSubscriber(String key)
     {
-        return false;
+        return null;
     }
 
     @Override
-    public String getSmartDashboardString(String key)
+    public IIntegerSubscriber getIntegerSubscriber(String key)
     {
-        return "";
+        return null;
+    }
+
+    @Override
+    public IStringSubscriber getStringSubscriber(String key)
+    {
+        return null;
     }
 }
