@@ -12,5 +12,5 @@ public interface IPigeon2
      * Sets the Yaw register to the specified value.
      * @param angleDeg New yaw in degrees [+/- 368,640 degrees]
      */
-    void setYaw(double angleDeg);
+    void setYaw(double angleDeg);   
 }
