@@ -1,6 +1,6 @@
-# irs1318_general
+# irs1318_2023
 
-General Robot code for team 1318
+2023 FIRST Charged Up! code
 
 ## Links
 1. [Robot Programming Guide](/Robot%20Programming%20Guide.md)
