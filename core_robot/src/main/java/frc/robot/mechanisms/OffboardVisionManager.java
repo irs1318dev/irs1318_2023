@@ -23,14 +23,14 @@ public class OffboardVisionManager implements IMechanism
 
     private IDoubleSubscriber vDistanceSubsciber;
     private IDoubleSubscriber vAngleSubsciber;
-    private IDoubleSubscriber gDistanceSubsciber;
-    private IDoubleSubscriber gAngleSubsciber;
+    private IDoubleSubscriber aPointXSubsciber;
+    private IDoubleSubscriber aPointYSubsciber;
     private IIntegerSubscriber heartbeatSubscriber;
 
     private Double vDistance;
     private Double vAngle;
-    private Double gDistance;
-    private Double gAngle;
+    private Double aPointX;
+    private Double aPointY;
 
     private int missedHeartbeats;
     private long prevHeartbeat;
@@ -51,14 +51,14 @@ public class OffboardVisionManager implements IMechanism
         this.networkTable = provider.getNetworkTableProvider();
         this.vDistanceSubsciber = this.networkTable.getDoubleSubscriber("v.distance");
         this.vAngleSubsciber = this.networkTable.getDoubleSubscriber("v.horizontalAngle");
-        this.gDistanceSubsciber = this.networkTable.getDoubleSubscriber("g.distance");
-        this.gAngleSubsciber = this.networkTable.getDoubleSubscriber("g.horizontalAngle");
+        this.aPointXSubsciber = this.networkTable.getDoubleSubscriber("a.pointX");
+        this.aPointYSubsciber = this.networkTable.getDoubleSubscriber("a.pointY");
         this.heartbeatSubscriber = this.networkTable.getIntegerSubscriber("v.heartbeat");
 
         this.vDistance = null;
         this.vAngle = null;
-        this.gDistance = null;
-        this.gAngle = null;
+        this.aPointX = null;
+        this.aPointY = null;
 
         this.missedHeartbeats = 0;
         this.prevHeartbeat = 0L;
@@ -72,8 +72,8 @@ public class OffboardVisionManager implements IMechanism
     {
         this.vDistance = this.vDistanceSubsciber.get();
         this.vAngle = this.vAngleSubsciber.get();
-        this.gDistance = this.gDistanceSubsciber.get();
-        this.gAngle = this.gAngleSubsciber.get();
+        this.aPointX = this.aPointXSubsciber.get();
+        this.aPointY = this.aPointYSubsciber.get();
 
         long newHeartbeat = this.heartbeatSubscriber.get();
         if (this.prevHeartbeat != newHeartbeat)
@@ -97,16 +97,16 @@ public class OffboardVisionManager implements IMechanism
         }
 
         // reset if we couldn't find the game piece
-        if (missedHeartbeatExceedsThreshold || this.gDistance < 0.0 || this.gAngle == TuningConstants.MAGIC_NULL_VALUE)
+        if (missedHeartbeatExceedsThreshold || this.aPointX < 0.0 || this.aPointY < 0.0)
         {
-            this.gDistance = null;
-            this.gAngle = null;
+            this.aPointX = null;
+            this.aPointY = null;
         }
 
         this.logger.logNumber(LoggingKey.OffboardVisionTargetDistance, this.vDistance);
         this.logger.logNumber(LoggingKey.OffboardVisionTargetHorizontalAngle, this.vAngle);
-        this.logger.logNumber(LoggingKey.OffboardVisionGamePieceDistance, this.gDistance);
-        this.logger.logNumber(LoggingKey.OffboardVisionGamePieceHorizontalAngle, this.gAngle);
+        this.logger.logNumber(LoggingKey.OffboardVisionTagX, this.aPointX);
+        this.logger.logNumber(LoggingKey.OffboardVisionTagY, this.aPointY);
     }
 
     @Override
@@ -126,14 +126,7 @@ public class OffboardVisionManager implements IMechanism
             }
             else if (enableGamePieceProcessing)
             {
-                if (this.isRedTeam())
-                {
-                    visionProcessingMode = 2.0; // 2.0 means red team
-                }
-                else
-                {
-                    visionProcessingMode = 3.0; // 3.0 means blue team
-                }
+                visionProcessingMode = 2.0;
             }
         }
 
@@ -160,14 +153,14 @@ public class OffboardVisionManager implements IMechanism
         return this.vDistance;
     }
 
-    public Double getGamePieceHorizontalAngle()
+    public Double getTagX()
     {
-        return this.gAngle;
+        return this.aPointX;
     }
 
-    public Double getGamePieceDistance()
+    public Double getTagY()
     {
-        return this.gDistance;
+        return this.aPointY;
     }
 
     private boolean isRedTeam()
