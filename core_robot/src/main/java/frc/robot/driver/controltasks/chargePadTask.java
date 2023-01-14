@@ -1,5 +1,7 @@
 package frc.robot.driver.controltasks;
 
+import com.google.inject.Injector;
+
 import frc.robot.driver.*;
 import frc.robot.mechanisms.DriveTrainMechanism;
 import frc.robot.mechanisms.PigeonManager;
@@ -10,6 +12,9 @@ public class chargePadTask extends ControlTaskBase
     
     private double pitch = 0;
     private PigeonManager imuManager;
+    private DriveTrainMechanism driveTrain;
+    private double sign = 1;
+    private double xPos = 1;
 
     public chargePadTask()
     {
@@ -23,6 +28,7 @@ public class chargePadTask extends ControlTaskBase
     public void begin()
     {
         imuManager = this.getInjector().getInstance(PigeonManager.class);
+        driveTrain = this.getInjector().getInstance(DriveTrainMechanism.class);
         
         this.setDigitalOperationState(DigitalOperation.DriveTrainEnableMaintainDirectionMode, true);
         this.setDigitalOperationState(DigitalOperation.DriveTrainPathMode, false);
@@ -38,8 +44,17 @@ public class chargePadTask extends ControlTaskBase
     @Override
     public void update()
     {
-        pitch = imuManager.getPitch();
-        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, pitch / 180);
+        this.pitch = imuManager.getPitch();
+        if(this.pitch > 0)
+        {
+            this.sign = 1;
+        }
+        else if(this.pitch < 0)
+        {
+            this.sign = -1;
+        }       
+        this.xPos = driveTrain.getPositionX();
+        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, sign * 2 / xPos);
     }
 
     /**

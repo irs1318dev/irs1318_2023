@@ -838,4 +838,9 @@ public class DriveTrainMechanism implements IMechanism
         {
         }
     }
+
+    public double getPositionX()
+    {
+        return this.xPosition;
+    }
 }

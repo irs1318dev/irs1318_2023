@@ -153,6 +153,16 @@ public class OffboardVisionManager implements IMechanism
         return this.vDistance;
     }
 
+    public Double getGamePieceDistance()
+    {
+        return 0.0;
+    }
+
+    public Double getGamePieceHorizontalAngle()
+    {
+        return 0.0;
+    }
+
     public Double getTagX()
     {
         return this.aPointX;
