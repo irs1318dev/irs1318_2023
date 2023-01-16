@@ -19,7 +19,7 @@ public class TuningConstants
     //================================================== Magic Values ==============================================================
 
     public static final double MAGIC_NULL_VALUE = -1318.0;
-    public static final double PERRY_THE_PLATYPUS = 0.0;
+    public static final double ZERO = 0.0;
     public static final double ENDGAME_START_TIME = 30.0;
     public static final double ENDGAME_CLIMB_TIME = 5.0;
 
@@ -252,4 +252,7 @@ public class TuningConstants
     public static final double DRIVETRAIN_MAX_PATH_TURN_VELOCITY = 180.0; // in degrees per second
     public static final double DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY = 0.80 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // in inches per second
     public static final double DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION = 0.75 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // in inches per second per second
+
+    //================================================= Intake Motor ================================================================================
+    public static final double INTAKE_POWER = 0.6;
 }

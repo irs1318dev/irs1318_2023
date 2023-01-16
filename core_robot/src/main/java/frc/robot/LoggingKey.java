@@ -93,6 +93,8 @@ public enum LoggingKey
     DriveTrainSteerError4("dt.steer_err4"),
     DriveTrainSteerPositionGoal4("dt.steer_goal4"),
 
+    IntakePower("i.motor_power"),
+
     CompressorPreassure("com.pres");
 
     public final String value;

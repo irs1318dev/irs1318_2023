@@ -26,4 +26,10 @@ public enum DigitalOperation implements IOperation
     DriveTrainUseRobotOrientation,
     DriveTrainEnableMaintainDirectionMode,
     DriveTrainDisableMaintainDirectionMode,
+
+    //Intake Operations
+    IntakeExtend,
+    IntakeRetract,
+    IntakeIn,
+    IntakeOut,
 }
