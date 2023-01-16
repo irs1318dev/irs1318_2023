@@ -189,7 +189,7 @@ public class DriveTrainMechanism implements IMechanism
 
         for (int i = 0; i < DriveTrainMechanism.NUM_MODULES; i++)
         {
-            this.driveMotors[i] = provider.getTalonFX(driveMotorCanIds[i], ElectronicsConstants.CANIVORE_NAME);
+            this.driveMotors[i] = provider.getTalonFX(driveMotorCanIds[i]);
             this.driveMotors[i].setNeutralMode(MotorNeutralMode.Brake);
             this.driveMotors[i].setSensorType(TalonXFeedbackDevice.IntegratedSensor);
             this.driveMotors[i].setFeedbackFramePeriod(TuningConstants.DRIVETRAIN_SENSOR_FRAME_PERIOD_MS);
@@ -219,7 +219,7 @@ public class DriveTrainMechanism implements IMechanism
             this.driveMotors[i].setControlMode(TalonXControlMode.Velocity);
             this.driveMotors[i].setSelectedSlot(DriveTrainMechanism.defaultPidSlotId);
 
-            this.steerMotors[i] = provider.getTalonFX(steerMotorCanIds[i], ElectronicsConstants.CANIVORE_NAME);
+            this.steerMotors[i] = provider.getTalonFX(steerMotorCanIds[i]);
             this.steerMotors[i].setInvert(steerMotorInvert[i]);
             this.steerMotors[i].setNeutralMode(MotorNeutralMode.Brake);
             this.steerMotors[i].setSensorType(TalonXFeedbackDevice.IntegratedSensor);
@@ -258,7 +258,7 @@ public class DriveTrainMechanism implements IMechanism
                 this.steerMotors[i].setSelectedSlot(DriveTrainMechanism.defaultPidSlotId);
             }
 
-            this.absoluteEncoders[i] = provider.getCANCoder(absoluteEncoderCanIds[i], ElectronicsConstants.CANIVORE_NAME);
+            this.absoluteEncoders[i] = provider.getCANCoder(absoluteEncoderCanIds[i]);
             this.absoluteEncoders[i].configAbsoluteRange(false);
         }
 
