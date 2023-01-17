@@ -1,6 +1,7 @@
 package frc.robot.driver.controltasks;
 
 import frc.robot.TuningConstants;
+import frc.robot.common.Helpers;
 import frc.robot.common.PIDHandler;
 import frc.robot.common.robotprovider.ITimer;
 import frc.robot.driver.AnalogOperation;
@@ -214,6 +215,7 @@ public class VisionCenteringTask extends ControlTaskBase
         Double angle;
         if (this.aprilTag)
         {
+            // Note: we want to point toward it, not match its yaw (make ourselves parallel to it), so we can use the fact that tan(angle) = opposite / adjacent
             angle = Helpers.atan2d(this.visionManager.getAprilTagXOffset(), this.visionManager.getAprilTagYOffset());
         }
         else
