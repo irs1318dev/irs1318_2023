@@ -1,24 +1,22 @@
 package frc.robot.driver.controltasks;
 
-import com.google.inject.Injector;
-
 import frc.robot.driver.*;
 import frc.robot.mechanisms.DriveTrainMechanism;
 import frc.robot.mechanisms.PigeonManager;
 
-public class chargePadTask extends ControlTaskBase
+public class ChargePadLevellingTask extends ControlTaskBase
 {
-
-    
     private double pitch = 0;
     private PigeonManager imuManager;
     private DriveTrainMechanism driveTrain;
     private double sign = 1;
     private double xPos = 1;
 
-    public chargePadTask()
+    public ChargePadLevellingTask()
     {
-        
+        this.pitch = 0.0;
+        this.sign = 1.0;
+        this.xPos = 1.0;
     }
 
     /**
