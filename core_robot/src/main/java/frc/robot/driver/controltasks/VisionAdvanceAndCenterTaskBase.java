@@ -15,9 +15,9 @@ public abstract class VisionAdvanceAndCenterTaskBase extends VisionCenteringTask
     /**
     * Initializes a new VisionAdvanceAndCenterTaskBase
     */
-    protected VisionAdvanceAndCenterTaskBase(boolean useFastMode, boolean gamePiece, boolean bestEffort, boolean verifyAngle)
+    protected VisionAdvanceAndCenterTaskBase(boolean useFastMode, boolean aprilTag, boolean bestEffort, boolean verifyAngle)
     {
-        super(false, gamePiece, bestEffort);
+        super(false, aprilTag, bestEffort);
 
         this.useFastMode = useFastMode;
         this.verifyAngle = verifyAngle;

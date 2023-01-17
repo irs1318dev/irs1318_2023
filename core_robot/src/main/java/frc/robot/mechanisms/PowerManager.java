@@ -115,7 +115,7 @@ public class PowerManager implements IMechanism
     public void update()
     {
         boolean enableVision = !this.driver.getDigital(DigitalOperation.VisionForceDisable);
-        boolean enableGamePieceProcessing = this.driver.getDigital(DigitalOperation.VisionEnableGamePieceProcessing);
+        boolean enableGamePieceProcessing = this.driver.getDigital(DigitalOperation.VisionEnableAprilTagProcessing);
         boolean enableRetroreflectiveProcessing = this.driver.getDigital(DigitalOperation.VisionEnableRetroreflectiveProcessing);
         this.powerDistribution.setSwitchableChannel(enableVision && (enableGamePieceProcessing || enableRetroreflectiveProcessing));
     }
