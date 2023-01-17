@@ -15,7 +15,7 @@ public class VisionCenteringTask extends ControlTaskBase
     private static final int NO_CENTER_THRESHOLD = 40;
 
     private final boolean useTime;
-    private final boolean gamePiece;
+    private final boolean aprilTag;
     private final boolean bestEffort;
 
     private OffboardVisionManager visionManager;
@@ -28,33 +28,33 @@ public class VisionCenteringTask extends ControlTaskBase
 
     /**
     * Initializes a new VisionCenteringTask
-     * @param gamePiece whether to center on game piece or vision target
+     * @param aprilTag whether to center on aprilTag or retroreflective vision target
     */
-    public VisionCenteringTask(boolean gamePiece)
+    public VisionCenteringTask(boolean aprilTag)
     {
-        this(true, gamePiece, false);
+        this(true, aprilTag, false);
     }
 
     /**
     * Initializes a new VisionCenteringTask
-     * @param gamePiece whether to center on game piece or vision target
+     * @param aprilTag whether to center on aprilTag or retroreflective vision target
      * @param bestEffort whether to end (true) or cancel (false, default) when we cannot see the game piece or vision target (for sequential tasks, whether to continue on or not)
     */
-    public VisionCenteringTask(boolean gamePiece, boolean bestEffort)
+    public VisionCenteringTask(boolean aprilTag, boolean bestEffort)
     {
-        this(true, gamePiece, bestEffort);
+        this(true, aprilTag, bestEffort);
     }
 
     /**
      * Initializes a new VisionCenteringTask
      * @param useTime whether to make sure we are centered for a second or not
-     * @param gamePiece whether to center on game piece or vision target
+     * @param aprilTag whether to center on aprilTag or retroreflective vision target
      * @param bestEffort whether to end (true) or cancel (false, default) when we cannot see the game piece or vision target (for sequential tasks, whether to continue on or not)
      */
-    public VisionCenteringTask(boolean useTime, boolean gamePiece, boolean bestEffort)
+    public VisionCenteringTask(boolean useTime, boolean aprilTag, boolean bestEffort)
     {
         this.useTime = useTime;
-        this.gamePiece = gamePiece;
+        this.aprilTag = aprilTag;
         this.bestEffort = bestEffort;
 
         this.turnPidHandler = null;
@@ -81,8 +81,8 @@ public class VisionCenteringTask extends ControlTaskBase
         this.setDigitalOperationState(DigitalOperation.DriveTrainEnableFieldOrientation, false);
         this.setDigitalOperationState(DigitalOperation.DriveTrainDisableFieldOrientation, false);
         this.setDigitalOperationState(DigitalOperation.DriveTrainUseRobotOrientation, true);
-        this.setDigitalOperationState(DigitalOperation.VisionEnableRetroreflectiveProcessing, !this.gamePiece);
-        this.setDigitalOperationState(DigitalOperation.VisionEnableGamePieceProcessing, this.gamePiece);
+        this.setDigitalOperationState(DigitalOperation.VisionEnableRetroreflectiveProcessing, !this.aprilTag);
+        this.setDigitalOperationState(DigitalOperation.VisionEnableAprilTagProcessing, this.aprilTag);
     }
 
     /**
@@ -114,7 +114,7 @@ public class VisionCenteringTask extends ControlTaskBase
         this.setDigitalOperationState(DigitalOperation.DriveTrainDisableFieldOrientation, false);
         this.setDigitalOperationState(DigitalOperation.DriveTrainUseRobotOrientation, false);
         this.setDigitalOperationState(DigitalOperation.VisionEnableRetroreflectiveProcessing, false);
-        this.setDigitalOperationState(DigitalOperation.VisionEnableGamePieceProcessing, false);
+        this.setDigitalOperationState(DigitalOperation.VisionEnableAprilTagProcessing, false);
     }
 
     /**
@@ -197,9 +197,9 @@ public class VisionCenteringTask extends ControlTaskBase
     protected Double getDistance()
     {
         Double distance;
-        if (this.gamePiece)
+        if (this.aprilTag)
         {
-            distance = this.visionManager.getGamePieceDistance();
+            distance = this.visionManager.getAprilTagXOffset();
         }
         else
         {
@@ -212,9 +212,9 @@ public class VisionCenteringTask extends ControlTaskBase
     protected Double getHorizontalAngle()
     {
         Double angle;
-        if (this.gamePiece)
+        if (this.aprilTag)
         {
-            angle = this.visionManager.getGamePieceHorizontalAngle();
+            angle = Helpers.atan2d(this.visionManager.getAprilTagXOffset(), this.visionManager.getAprilTagYOffset());
         }
         else
         {
