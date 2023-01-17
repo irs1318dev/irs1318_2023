@@ -6,11 +6,12 @@ import frc.robot.mechanisms.PigeonManager;
 
 public class ChargePadLevellingTask extends ControlTaskBase
 {
-    private double pitch = 0;
     private PigeonManager imuManager;
     private DriveTrainMechanism driveTrain;
-    private double sign = 1;
-    private double xPos = 1;
+
+    private double pitch;
+    private double sign;
+    private double xPos;
 
     public ChargePadLevellingTask()
     {
@@ -25,15 +26,13 @@ public class ChargePadLevellingTask extends ControlTaskBase
     @Override
     public void begin()
     {
-        imuManager = this.getInjector().getInstance(PigeonManager.class);
-        driveTrain = this.getInjector().getInstance(DriveTrainMechanism.class);
-        
+        this.imuManager = this.getInjector().getInstance(PigeonManager.class);
+        this.driveTrain = this.getInjector().getInstance(DriveTrainMechanism.class);
+
         this.setDigitalOperationState(DigitalOperation.DriveTrainEnableMaintainDirectionMode, true);
-        this.setDigitalOperationState(DigitalOperation.DriveTrainPathMode, false);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleGoal, 0);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, 0);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0);
-        
+        this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleGoal, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0);
     }
 
     /**
@@ -42,17 +41,18 @@ public class ChargePadLevellingTask extends ControlTaskBase
     @Override
     public void update()
     {
-        this.pitch = imuManager.getPitch();
-        if(this.pitch > 0)
+        this.pitch = this.imuManager.getPitch();
+        if (this.pitch > 0)
         {
             this.sign = 1;
         }
-        else if(this.pitch < 0)
+        else if (this.pitch < 0)
         {
             this.sign = -1;
-        }       
-        this.xPos = driveTrain.getPositionX();
-        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, sign * 2 / xPos);
+        }
+
+        this.xPos = this.driveTrain.getPositionX();
+        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, this.sign * 2 / this.xPos);
     }
 
     /**
@@ -62,8 +62,7 @@ public class ChargePadLevellingTask extends ControlTaskBase
     public void end()
     {
         this.setDigitalOperationState(DigitalOperation.DriveTrainEnableMaintainDirectionMode, false);
-        this.setDigitalOperationState(DigitalOperation.DriveTrainPathMode, false);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0);
     }
 
     /**
@@ -73,9 +72,6 @@ public class ChargePadLevellingTask extends ControlTaskBase
     @Override
     public boolean hasCompleted()
     {
-        if(Math.abs(pitch) < 0.5) {
-            return true;
-        }
-        return false;
+        return Math.abs(this.pitch) < 0.5;
     }
 }
