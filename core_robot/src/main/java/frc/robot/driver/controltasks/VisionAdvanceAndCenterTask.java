@@ -6,9 +6,9 @@ public class VisionAdvanceAndCenterTask extends VisionAdvanceAndCenterTaskBase
     /**
     * Initializes a new VisionForwardAndCenterTask
     */
-    public VisionAdvanceAndCenterTask(boolean useFastMode, boolean gamePiece, boolean bestEffort)
+    public VisionAdvanceAndCenterTask(boolean useFastMode, boolean aprilTag, boolean bestEffort)
     {
-        super(useFastMode, gamePiece, bestEffort, false);
+        super(useFastMode, aprilTag, bestEffort, false);
     }
 
     @Override

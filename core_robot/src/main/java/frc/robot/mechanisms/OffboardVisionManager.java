@@ -21,16 +21,24 @@ public class OffboardVisionManager implements IMechanism
     private final IDriverStation driverStation;
     private final INetworkTableProvider networkTable;
 
-    private IDoubleSubscriber vDistanceSubsciber;
-    private IDoubleSubscriber vAngleSubsciber;
-    private IDoubleSubscriber aPointXSubsciber;
-    private IDoubleSubscriber aPointYSubsciber;
+    private IDoubleSubscriber atXOffsetSubscriber;
+    private IDoubleSubscriber atYOffsetSubscriber;
+    private IDoubleSubscriber atZOffsetSubscriber;
+    private IDoubleSubscriber atYawSubscriber;
+    private IDoubleSubscriber atPitchSubscriber;
+    private IDoubleSubscriber atRollSubscriber;
+    private IDoubleSubscriber rrDistanceSubscriber;
+    private IDoubleSubscriber rrAngleSubscriber;
     private IIntegerSubscriber heartbeatSubscriber;
 
-    private Double vDistance;
-    private Double vAngle;
-    private Double aPointX;
-    private Double aPointY;
+    private Double atXOffset;
+    private Double atYOffset;
+    private Double atZOffset;
+    private Double atYaw;
+    private Double atPitch;
+    private Double atRoll;
+    private Double rrDistance;
+    private Double rrAngle;
 
     private int missedHeartbeats;
     private long prevHeartbeat;
@@ -49,16 +57,24 @@ public class OffboardVisionManager implements IMechanism
 
         this.driverStation = provider.getDriverStation();
         this.networkTable = provider.getNetworkTableProvider();
-        this.vDistanceSubsciber = this.networkTable.getDoubleSubscriber("v.distance");
-        this.vAngleSubsciber = this.networkTable.getDoubleSubscriber("v.horizontalAngle");
-        this.aPointXSubsciber = this.networkTable.getDoubleSubscriber("a.pointX");
-        this.aPointYSubsciber = this.networkTable.getDoubleSubscriber("a.pointY");
+        this.atXOffsetSubscriber = this.networkTable.getDoubleSubscriber("at.xOffset");
+        this.atYOffsetSubscriber = this.networkTable.getDoubleSubscriber("at.yOffset");
+        this.atZOffsetSubscriber = this.networkTable.getDoubleSubscriber("at.zOffset");
+        this.atYawSubscriber = this.networkTable.getDoubleSubscriber("at.yaw");
+        this.atPitchSubscriber = this.networkTable.getDoubleSubscriber("at.pitch");
+        this.atRollSubscriber = this.networkTable.getDoubleSubscriber("at.roll");
+        this.rrDistanceSubscriber = this.networkTable.getDoubleSubscriber("rr.distance");
+        this.rrAngleSubscriber = this.networkTable.getDoubleSubscriber("rr.horizontalAngle");
         this.heartbeatSubscriber = this.networkTable.getIntegerSubscriber("v.heartbeat");
 
-        this.vDistance = null;
-        this.vAngle = null;
-        this.aPointX = null;
-        this.aPointY = null;
+        this.atXOffset = null;
+        this.atYOffset = null;
+        this.atZOffset = null;
+        this.atYaw = null;
+        this.atPitch = null;
+        this.atRoll = null;
+        this.rrDistance = null;
+        this.rrAngle = null;
 
         this.missedHeartbeats = 0;
         this.prevHeartbeat = 0L;
@@ -70,10 +86,14 @@ public class OffboardVisionManager implements IMechanism
     @Override
     public void readSensors()
     {
-        this.vDistance = this.vDistanceSubsciber.get();
-        this.vAngle = this.vAngleSubsciber.get();
-        this.aPointX = this.aPointXSubsciber.get();
-        this.aPointY = this.aPointYSubsciber.get();
+        this.atXOffset = this.atXOffsetSubscriber.get();
+        this.atYOffset = this.atYOffsetSubscriber.get();
+        this.atZOffset = this.atZOffsetSubscriber.get();
+        this.atYaw = this.atYawSubscriber.get();
+        this.atPitch = this.atPitchSubscriber.get();
+        this.atRoll = this.atRollSubscriber.get();
+        this.rrDistance = this.rrDistanceSubscriber.get();
+        this.rrAngle = this.rrAngleSubscriber.get();
 
         long newHeartbeat = this.heartbeatSubscriber.get();
         if (this.prevHeartbeat != newHeartbeat)
@@ -89,24 +109,32 @@ public class OffboardVisionManager implements IMechanism
 
         boolean missedHeartbeatExceedsThreshold = this.missedHeartbeats > TuningConstants.VISION_MISSED_HEARTBEAT_THRESHOLD;
 
-        // reset if we couldn't find the vision target
-        if (missedHeartbeatExceedsThreshold || this.vDistance < 0.0 || this.vAngle == TuningConstants.MAGIC_NULL_VALUE)
+        // reset if we couldn't find the april tag
+        if (missedHeartbeatExceedsThreshold || this.atXOffset == TuningConstants.MAGIC_NULL_VALUE || this.atYOffset == TuningConstants.MAGIC_NULL_VALUE || this.atZOffset == TuningConstants.MAGIC_NULL_VALUE)
         {
-            this.vDistance = null;
-            this.vAngle = null;
+            this.atXOffset = null;
+            this.atYOffset = null;
+            this.atZOffset = null;
+            this.atYaw = null;
+            this.atPitch = null;
+            this.atRoll = null;
         }
 
-        // reset if we couldn't find the game piece
-        if (missedHeartbeatExceedsThreshold || this.aPointX < 0.0 || this.aPointY < 0.0)
+        // reset if we couldn't find the retro-reflective vision target
+        if (missedHeartbeatExceedsThreshold || this.rrDistance < 0.0 || this.rrAngle == TuningConstants.MAGIC_NULL_VALUE)
         {
-            this.aPointX = null;
-            this.aPointY = null;
+            this.rrDistance = null;
+            this.rrAngle = null;
         }
 
-        this.logger.logNumber(LoggingKey.OffboardVisionTargetDistance, this.vDistance);
-        this.logger.logNumber(LoggingKey.OffboardVisionTargetHorizontalAngle, this.vAngle);
-        this.logger.logNumber(LoggingKey.OffboardVisionTagX, this.aPointX);
-        this.logger.logNumber(LoggingKey.OffboardVisionTagY, this.aPointY);
+        this.logger.logNumber(LoggingKey.OffboardVisionAprilTagXOffset, this.atXOffset);
+        this.logger.logNumber(LoggingKey.OffboardVisionAprilTagYOffset, this.atYOffset);
+        this.logger.logNumber(LoggingKey.OffboardVisionAprilTagZOffset, this.atZOffset);
+        this.logger.logNumber(LoggingKey.OffboardVisionAprilTagYaw, this.atYaw);
+        this.logger.logNumber(LoggingKey.OffboardVisionAprilTagPitch, this.atPitch);
+        this.logger.logNumber(LoggingKey.OffboardVisionAprilTagRoll, this.atRoll);
+        this.logger.logNumber(LoggingKey.OffboardVisionRRTargetDistance, this.rrDistance);
+        this.logger.logNumber(LoggingKey.OffboardVisionRRTargetHorizontalAngle, this.rrAngle);
     }
 
     @Override
@@ -114,63 +142,71 @@ public class OffboardVisionManager implements IMechanism
     {
         boolean enableVision = !this.driver.getDigital(DigitalOperation.VisionForceDisable);
         boolean enableVideoStream = !this.driver.getDigital(DigitalOperation.VisionDisableStream);
-        boolean enableGamePieceProcessing = this.driver.getDigital(DigitalOperation.VisionEnableGamePieceProcessing);
+        boolean enableAprilTagProcessing = this.driver.getDigital(DigitalOperation.VisionEnableAprilTagProcessing);
         boolean enableRetroreflectiveProcessing = this.driver.getDigital(DigitalOperation.VisionEnableRetroreflectiveProcessing);
 
         double visionProcessingMode = 0.0;
         if (enableVision)
         {
-            if (enableRetroreflectiveProcessing)
+            if (enableAprilTagProcessing)
             {
                 visionProcessingMode = 1.0;
             }
-            else if (enableGamePieceProcessing)
+            else if (enableRetroreflectiveProcessing)
             {
                 visionProcessingMode = 2.0;
             }
         }
 
-        this.logger.logBoolean(LoggingKey.OffboardVisionEnableVision, enableVision);
         this.logger.logBoolean(LoggingKey.OffboardVisionEnableStream, enableVideoStream);
-        this.logger.logNumber(LoggingKey.OffboardVisionEnableProcessing, visionProcessingMode);
+        this.logger.logNumber(LoggingKey.OffboardVisionProcessingMode, visionProcessingMode);
     }
 
     @Override
     public void stop()
     {
-        this.logger.logBoolean(LoggingKey.OffboardVisionEnableVision, false);
         this.logger.logBoolean(LoggingKey.OffboardVisionEnableStream, false);
-        this.logger.logNumber(LoggingKey.OffboardVisionEnableProcessing, 0.0);
+        this.logger.logNumber(LoggingKey.OffboardVisionProcessingMode, 0.0);
     }
 
     public Double getVisionTargetHorizontalAngle()
     {
-        return this.vAngle;
+        return this.rrAngle;
     }
 
     public Double getVisionTargetDistance()
     {
-        return this.vDistance;
+        return this.rrDistance;
     }
 
-    public Double getGamePieceDistance()
+    public Double getAprilTagXOffset()
     {
-        return 0.0;
+        return this.atXOffset;
     }
 
-    public Double getGamePieceHorizontalAngle()
+    public Double getAprilTagYOffset()
     {
-        return 0.0;
+        return this.atXOffset;
     }
 
-    public Double getTagX()
+    public Double getAprilTagZOffset()
     {
-        return this.aPointX;
+        return this.atXOffset;
     }
 
-    public Double getTagY()
+    public Double getAprilTagYaw()
     {
-        return this.aPointY;
+        return this.atYaw;
+    }
+
+    public Double getAprilTagPitch()
+    {
+        return this.atPitch;
+    }
+
+    public Double getAprilTagRoll()
+    {
+        return this.atRoll;
     }
 
     private boolean isRedTeam()
