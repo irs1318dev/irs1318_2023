@@ -49,7 +49,7 @@ public class DriveTrainMechanism implements IMechanism
     // the y offsets of the swerve modules from the default center of rotation
     private final double[] moduleOffsetY;
 
-    private final double[] drivetrainSteerMotorAbsoluteOffsets;;
+    private final double[] drivetrainSteerMotorAbsoluteOffsets;
 
     private final IDriver driver;
     private final ILogger logger;
