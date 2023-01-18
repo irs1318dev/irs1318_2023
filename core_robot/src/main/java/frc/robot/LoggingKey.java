@@ -31,7 +31,7 @@ public enum LoggingKey
     NavxStartingAngle("navx.startingAngle"),
     PigeonState("pigeon.state"),
     PigeonYaw("pigeon.yaw", true),
-    PigeonPitch("pigeon.pitch"),
+    PigeonPitch("pigeon.pitch", true),
     PigeonRoll("pigeon.roll"),
     PigeonStartingYaw("pigeon.startingYaw"),
     NavxConnected("navx.isConnected"),

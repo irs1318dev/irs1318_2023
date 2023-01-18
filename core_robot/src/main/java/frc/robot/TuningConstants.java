@@ -268,6 +268,7 @@ public class TuningConstants
     public static final double UPPER_ARM_POSITION_MM_PID_KD = 0.0;
     public static final double UPPER_ARM_POSITION_MM_PID_KF = 0.05;
 
+<<<<<<< HEAD
     public static final boolean LOWER_ARM_INVERT_OUTPUT = false;
     public static final boolean UPPER_ARM_INVERT_OUTPUT = false;
 
@@ -281,4 +282,9 @@ public class TuningConstants
 
 
     
+=======
+    public static final boolean PIGEON_PITCH_LOG = true;
+    public static final boolean PIGEON_YAW_LOG = true;
+    public static final boolean PIGEON_ROLL_LOG = true;
+>>>>>>> dc354359ec9226540dd5fd6ff8b2214a5a73a626
 }
