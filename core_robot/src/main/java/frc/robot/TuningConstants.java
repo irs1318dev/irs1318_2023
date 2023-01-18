@@ -267,4 +267,18 @@ public class TuningConstants
     public static final double UPPER_ARM_POSITION_MM_PID_KI = 0.0;
     public static final double UPPER_ARM_POSITION_MM_PID_KD = 0.0;
     public static final double UPPER_ARM_POSITION_MM_PID_KF = 0.05;
+
+    public static final boolean LOWER_ARM_INVERT_OUTPUT = false;
+    public static final boolean UPPER_ARM_INVERT_OUTPUT = false;
+
+    public static final boolean LOWER_ARM_INVERT_SENSOR = false;
+    public static final boolean UPPER_ARM_INVERT_SENSOR = false;
+
+    public static final double ARM_MAX_VELOCITY = 50.0;
+    public static final double ARM_MAX_ACCLERATION = 50.0;
+    public static final double UPPER_ARM_FULLY_RETRACTED = 0.0;
+
+
+
+    
 }

@@ -97,6 +97,8 @@ public enum LoggingKey
     DriveTrainSteerPositionGoal4("dt.steer_goal4"),
 
     IntakePower("i.motor_power"),
+    LowerArmPosition("A.low_pos"), 
+    UpperArmPosition("A.up_pos"), 
 
     CompressorPreassure("com.pres");
 

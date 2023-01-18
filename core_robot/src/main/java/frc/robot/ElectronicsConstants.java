@@ -72,14 +72,16 @@ public class ElectronicsConstants
     public static final int DRIVETRAIN_ABSOLUTE_ENCODER_4_CAN_ID = 4;
 
 
-    //================================================= Intake Motors =====================================================================
+    //================================================= Arm Mechanism =====================================================================
     public static final int INTAKE_MOTOR_CAN_ID = 9;
     public static final int CARGO_INTAKE_PISTON_FORWARD = 7;
     public static final int CARGO_INTAKE_PISTON_REVERSE = 8;
 
     public static final int ARM_LOWER_CAN_ID = 10;
     public static final int ARM_UPPER_CAN_ID = 11;
-    public static final int ARM_LOWER_ABSOLUTE_ENCODER_CAN_ID = 10;
-    public static final int ARM_UPPER_ABSOLUTE_ENCODER_CAN_ID = 11;
+
+    public static final int ARM_LOWER_FOLLOWER_CAN_ID = 12;
+    public static final int ARM_UPPER_FOLLOWER_CAN_ID = 13;
+
 
 }
