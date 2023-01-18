@@ -6,31 +6,29 @@ import frc.robot.TuningConstants;
 import frc.robot.TuningConstants.*;
 import frc.robot.common.LoggingManager;
 import frc.robot.driver.*;
-import frc.robot.driver.common.Driver;
 import frc.robot.mechanisms.DriveTrainMechanism;
 import frc.robot.mechanisms.PigeonManager;
 
 
 public class ChargeStationTask extends ControlTaskBase
 {
-
-    
-    private double pitch = 0.0;
     private PigeonManager imuManager;
     private DriveTrainMechanism driveTrain;
-    private double sign = 1;
-    private double xPos = 1;
-    private double balancePos = 0;
     private LoggingManager logger;
-    private double distanceTraveled = 0;
-    //private Driver driver;
+
+    private double pitch;
+    private double sign;
+    private double xPos;
+    private double balancePos;
+    private double distanceTraveled;
 
     public ChargeStationTask()
     {
-        imuManager = this.getInjector().getInstance(PigeonManager.class);
-        driveTrain = this.getInjector().getInstance(DriveTrainMechanism.class);
-        logger = this.getInjector().getInstance(LoggingManager.class);
-        //this.driver = this.getInjector().getInstance(Driver.class);
+        this.pitch = 0.0;
+        this.sign = 1;
+        this.xPos = 1;
+        this.balancePos = 0;
+        this.distanceTraveled = 0;
     }
 
     /**
@@ -39,7 +37,12 @@ public class ChargeStationTask extends ControlTaskBase
     @Override
     public void begin()
     {
-        
+        this.imuManager = this.getInjector().getInstance(PigeonManager.class);
+        this.driveTrain = this.getInjector().getInstance(DriveTrainMechanism.class);
+        this.logger = this.getInjector().getInstance(LoggingManager.class);
+
+        this.pitch = this.imuManager.getPitch();
+
         this.setDigitalOperationState(DigitalOperation.DriveTrainEnableMaintainDirectionMode, true);
         this.setDigitalOperationState(DigitalOperation.DriveTrainPathMode, false);
         this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleGoal, 0);
