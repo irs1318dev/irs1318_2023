@@ -80,6 +80,9 @@ public class DriveTrainMechanism implements IMechanism
 
     private final Setpoint[] result;
 
+
+    
+
     private boolean firstRun;
 
     private boolean fieldOriented;
@@ -94,6 +97,7 @@ public class DriveTrainMechanism implements IMechanism
     private double deltaT;
 
     private double robotYaw;
+    private double robotPitch;
 
     @Inject
     public DriveTrainMechanism(
@@ -358,6 +362,7 @@ public class DriveTrainMechanism implements IMechanism
         double prevYaw = this.robotYaw;
         double prevTime = this.time;
         this.robotYaw = this.imuManager.getAngle();
+        this.robotPitch = this.imuManager.getPitch();
         this.time = this.timer.get();
 
         this.deltaT = this.time - prevTime;
@@ -485,6 +490,19 @@ public class DriveTrainMechanism implements IMechanism
                 this.steerMotors[i].set(steerSetpoint);
             }
         }
+
+        if (TuningConstants.PIGEON_PITCH_LOG)
+        {
+            this.logger.logNumber(LoggingKey.PigeonPitch, this.robotPitch);
+        }
+
+        /*
+         * PigeonState("pigeon.state"),
+    PigeonYaw("pigeon.yaw", true),
+    PigeonPitch("pigeon.pitch", true),
+    PigeonRoll("pigeon.roll"),
+         */
+        
     }
 
     @Override
