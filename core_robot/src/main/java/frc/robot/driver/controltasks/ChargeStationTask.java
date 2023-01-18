@@ -61,11 +61,13 @@ public class ChargeStationTask extends ControlTaskBase
         this.pitch = imuManager.getPitch();
         if (this.pitch <= (TuningConstants.CHARGE_STATION_LEVEL_ANGLE - TuningConstants.CHARGE_STATION_PITCH_VARIATION))
         {
-            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.5);
+            //this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.5);
+            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, 0.5);
         }
         else if (this.pitch >= (TuningConstants.CHARGE_STATION_LEVEL_ANGLE - TuningConstants.CHARGE_STATION_PITCH_VARIATION))
         {
-            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, -0.5);
+            //this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, -0.5);
+            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, -0.5);
         }
         else 
         {
