@@ -416,7 +416,7 @@ public class DriveTrainMechanism implements IMechanism
         }
 
         double startingAngle = this.driver.getAnalog(AnalogOperation.PositionStartingAngle);
-        if (startingAngle != TuningConstants.PERRY_THE_PLATYPUS)
+        if (startingAngle != TuningConstants.ZERO)
         {
             this.angle = startingAngle;
         }
@@ -634,7 +634,7 @@ public class DriveTrainMechanism implements IMechanism
             }
 
             double forcedOmega = this.driver.getAnalog(AnalogOperation.DriveTrainSpinLeft) + this.driver.getAnalog(AnalogOperation.DriveTrainSpinRight);
-            if (forcedOmega != TuningConstants.PERRY_THE_PLATYPUS)
+            if (forcedOmega != TuningConstants.ZERO)
             {
                 this.desiredYaw = this.robotYaw;
                 omega = forcedOmega * TuningConstants.DRIVETRAIN_TURN_SCALE;

@@ -15,4 +15,7 @@ public enum MacroOperation implements IOperation
     // Vision operations
     VisionCenterRetroReflective,
     VisionCenterGamePiece,
+
+    //Charge station
+    ChargeStationBalance
 }
