@@ -382,7 +382,10 @@ public class ButtonMap implements IButtonMap
                 Shift.DriverDebug,
                 Shift.None,
                 ButtonType.Toggle,
-                () -> new ChargeStationTask(),
+                () -> SequentialTask.Sequence(
+                    new ChargeStationTask(),
+                    new PIDBrakeTask()
+                ),
                 new IOperation[]
                 {
                     AnalogOperation.DriveTrainMoveForward,

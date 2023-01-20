@@ -1,3 +1,8 @@
+//Jamie Hsieh, Calvin Rodrigue
+//1.19.2023
+//Levels the robot on charge station.
+//Jamie's first robot code commit.
+
 package frc.robot.driver.controltasks;
 
 import com.google.inject.Injector;
@@ -61,17 +66,22 @@ public class ChargeStationTask extends ControlTaskBase
         this.pitch = imuManager.getPitch();
         if (this.pitch <= (TuningConstants.CHARGE_STATION_LEVEL_ANGLE - TuningConstants.CHARGE_STATION_PITCH_VARIATION))
         {
-            //this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.5);
-            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, 0.5);
+            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.2);
+
+            //IF ON 2022 DRIVETRAIN
+            //this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, 0.5);
         }
-        else if (this.pitch >= (TuningConstants.CHARGE_STATION_LEVEL_ANGLE - TuningConstants.CHARGE_STATION_PITCH_VARIATION))
+        else if (this.pitch >= (TuningConstants.CHARGE_STATION_LEVEL_ANGLE + TuningConstants.CHARGE_STATION_PITCH_VARIATION))
         {
-            //this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, -0.5);
-            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, -0.5);
+            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, -0.2);
+            
+            //IF ON 2022 DRIVETRAIN
+            //this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, -0.5);
         }
         else 
         {
             this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0);
+
         }
         
         /*
