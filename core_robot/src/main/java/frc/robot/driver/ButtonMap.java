@@ -128,7 +128,7 @@ public class ButtonMap implements IButtonMap
             DigitalOperation.VisionEnableAprilTagProcessing,
             UserInputDevice.Test1,
             UserInputDeviceButton.XBONE_A_BUTTON,
-            ButtonType.Click),
+            ButtonType.Simple),
     };
 
     public static MacroOperationDescription[] MacroSchema = new MacroOperationDescription[]
