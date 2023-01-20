@@ -17,11 +17,7 @@ public class ArmMechanism implements IMechanism{
     
     //Positions are in ticks
     private double lowerArmPosition;
-    private double upperArmPosition;
-
-    private double lowerArmPositionInitial;
-    private double upperArmPositionInitial; 
-    
+    private double upperArmPosition;    
 
     private final ITalonSRX lowerArm;
     private final ITalonSRX upperArm;
@@ -54,8 +50,9 @@ public class ArmMechanism implements IMechanism{
         this.ARM_MAX_VELOCITY = TuningConstants.ARM_MAX_VELOCITY;
         this.ARM_MAX_ACCLERATION = TuningConstants.ARM_MAX_ACCLERATION;
 
-        this.lowerArmPosition = 0; // Fully Extended
-        this.upperArmPosition = 0; // Fully Retracted
+        this.lowerArmPosition = TuningConstants.LOWER_ARM_FULL_EXTENTION_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // Fully Extended
+        this.upperArmPosition = TuningConstants.UPPER_ARM_FULL_RETRACTED_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // Fully Retracted
+
 
         this.lowerArm = provider.getTalonSRX(ElectronicsConstants.ARM_LOWER_CAN_ID);
         this.upperArm = provider.getTalonSRX(ElectronicsConstants.ARM_UPPER_CAN_ID);
@@ -91,7 +88,7 @@ public class ArmMechanism implements IMechanism{
         this.upperArm.setInvertSensor(TuningConstants.UPPER_ARM_INVERT_SENSOR);
 
         this.lowerArm.setPosition(lowerArmPosition); // 8 inches of extension 254 ticks per inch mayber 256 chekc specs
-        this.upperArm.setPosition(TuningConstants.UPPER_ARM_FULLY_RETRACTED);
+        this.upperArm.setPosition(upperArmPosition);
 
         this.lowerArm.setNeutralMode(MotorNeutralMode.Brake);
         this.upperArm.setNeutralMode(MotorNeutralMode.Brake);
@@ -121,16 +118,31 @@ public class ArmMechanism implements IMechanism{
     @Override
     public void update()
     {
-        // TODO Auto-generated method stub
-        
-        
+        if(driver.getDigital(DigitalOperation.IntakeLowerExtend))
+        {
+            lowerArm.set( (driver.getAnalog(AnalogOperation.LowerArmPosition) + 1) * 1016);
+        }
+        else
+        {
+            lowerArm.set(this.lowerArmPosition);
+        }
+
+        if(driver.getDigital(DigitalOperation.IntakeUpperExtend))
+        {
+            upperArm.set( (driver.getAnalog(AnalogOperation.UpperArmPosition) + 1) * 1016);
+        }
+        else
+        {
+            upperArm.set(this.upperArmPosition);
+        }
+       
     }
 
     @Override
     public void stop()
     {
-        // TODO Auto-generated method stub
-        
+        lowerArm.set(0);
+        upperArm.set(0);
     }
     
 }

@@ -255,8 +255,7 @@ public class TuningConstants
 
     //================================================= ARM ================================================================================
     public static final double INTAKE_POWER = 0.6;
-    public static final double LOWER_ARM_ABSOLUTE_OFFSET = 50; // This is in ticks
-    public static final double UPPER_ARM_ABSOLUTE_OFFSET = 50; // This is in ticks
+
 
     public static final double LOWER_ARM_POSITION_MM_PID_KP = 0.1;
     public static final double LOWER_ARM_POSITION_MM_PID_KI = 0.0;
@@ -274,9 +273,13 @@ public class TuningConstants
     public static final boolean LOWER_ARM_INVERT_SENSOR = false;
     public static final boolean UPPER_ARM_INVERT_SENSOR = false;
 
+    public static final double LOWER_ARM_FULL_EXTENTION_LENGTH = 8.0;
+    public static final double UPPER_ARM_FULL_RETRACTED_LENGTH = 0.0;
+
     public static final double ARM_MAX_VELOCITY = 50.0;
     public static final double ARM_MAX_ACCLERATION = 50.0;
-    public static final double UPPER_ARM_FULLY_RETRACTED = 0.0;
+ 
+    public static final double ARM_STRING_ENCODER_TICKS_PER_INCH = 254;
 
     public static final boolean PIGEON_PITCH_LOG = true;
     public static final boolean PIGEON_YAW_LOG = true;
@@ -284,4 +287,6 @@ public class TuningConstants
 
     public static final double CHARGE_STATION_PITCH_VARIATION = 1.0;
     public static final double CHARGE_STATION_LEVEL_ANGLE = 0.0;
+
+    
 }
