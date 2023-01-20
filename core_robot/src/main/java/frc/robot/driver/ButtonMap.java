@@ -384,8 +384,7 @@ public class ButtonMap implements IButtonMap
                 ButtonType.Toggle,
                 () -> SequentialTask.Sequence(
                     new ChargeStationTask(),
-                    new PIDBrakeTask()
-                ),
+                    new PIDBrakeTask()),
                 new IOperation[]
                 {
                     AnalogOperation.DriveTrainMoveForward,
