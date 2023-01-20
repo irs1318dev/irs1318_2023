@@ -27,4 +27,11 @@ public enum AnalogOperation implements IOperation
     DriveTrainPositionDrive2,
     DriveTrainPositionDrive3,
     DriveTrainPositionDrive4,
+
+    // Intake
+
+    // Arm
+    LowerArmPosition,
+    UpperArmPosition,
+    
 }

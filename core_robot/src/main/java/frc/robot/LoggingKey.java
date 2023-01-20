@@ -96,7 +96,9 @@ public enum LoggingKey
     DriveTrainSteerError4("dt.steer_err4"),
     DriveTrainSteerPositionGoal4("dt.steer_goal4"),
 
-    CompressorPreassure("com.pres");
+    CompressorPreassure("com.pres"),
+
+    IntakePower("it.power");
 
     public final String value;
     public final boolean shouldLog;
