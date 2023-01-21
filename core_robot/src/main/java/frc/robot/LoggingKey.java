@@ -32,6 +32,7 @@ public enum LoggingKey
     PigeonState("pigeon.state"),
     PigeonYaw("pigeon.yaw", true),
     PigeonPitch("pigeon.pitch", true),
+    PigeonPitchOffset("pigeon.pitchOffset"),
     PigeonRoll("pigeon.roll"),
     PigeonStartingYaw("pigeon.startingYaw"),
     NavxConnected("navx.isConnected"),

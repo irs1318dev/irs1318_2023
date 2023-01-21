@@ -58,10 +58,8 @@ public class PigeonManager implements IPositionManager
         this.pitch = 0.0;
         this.roll = 0.0;
 
-        this.pitchOffset = 0;
-
+        this.pitchOffset = 0.0;
         this.startYaw = 0.0;
-
     }
 
     /**
@@ -74,7 +72,7 @@ public class PigeonManager implements IPositionManager
 
         this.pigeon.getYawPitchRoll(this.ypr_deg);
         this.yaw = this.ypr_deg[0];
-        this.pitch = this.ypr_deg[1] - this.pitchOffset;
+        this.pitch = this.ypr_deg[1];
         this.roll = this.ypr_deg[2];
 
         // log the current position and orientation
@@ -84,6 +82,7 @@ public class PigeonManager implements IPositionManager
         this.logger.logNumber(LoggingKey.PigeonRoll, this.roll);
 
         this.logger.logNumber(LoggingKey.PigeonStartingYaw, this.startYaw);
+        this.logger.logNumber(LoggingKey.PigeonPitchOffset, this.pitchOffset);
     }
 
     /**
@@ -133,7 +132,7 @@ public class PigeonManager implements IPositionManager
 
     public double getPitch()
     {
-        return this.pitch;
+        return this.pitch - this.pitchOffset;
     }
 
     /**
@@ -153,6 +152,5 @@ public class PigeonManager implements IPositionManager
         }
 
         this.pigeon.setYaw(0.0);
-        
     }
 }

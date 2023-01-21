@@ -62,9 +62,9 @@ public class ChargeStationStepOneTask extends ControlTaskBase
     {
         
         this.pitch = imuManager.getPitch();
-        if (this.pitch <= (TuningConstants.CHARGE_STATION_STEP_ONE_GOAL_ANGLE - TuningConstants.CHARGE_STATION_PITCH_VARIATION))
+        if (this.pitch >= -(TuningConstants.CHARGE_STATION_STEP_ONE_GOAL_ANGLE + TuningConstants.CHARGE_STATION_PITCH_VARIATION))
         {
-            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.4);
+            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.3);
         }
         
         else 
@@ -93,7 +93,7 @@ public class ChargeStationStepOneTask extends ControlTaskBase
     @Override
     public boolean hasCompleted()
     {
-        if( (this.pitch > (TuningConstants.CHARGE_STATION_STEP_ONE_GOAL_ANGLE - TuningConstants.CHARGE_STATION_PITCH_VARIATION) ) && (this.pitch < (TuningConstants.CHARGE_STATION_STEP_ONE_GOAL_ANGLE + TuningConstants.CHARGE_STATION_PITCH_VARIATION))) {//TODO: test if this value is acceptable
+        if( (this.pitch < -(TuningConstants.CHARGE_STATION_STEP_ONE_GOAL_ANGLE - TuningConstants.CHARGE_STATION_PITCH_VARIATION) ) && (this.pitch > -(TuningConstants.CHARGE_STATION_STEP_ONE_GOAL_ANGLE + TuningConstants.CHARGE_STATION_PITCH_VARIATION))) {//TODO: test if this value is acceptable
             return true;
         }
         return false;
