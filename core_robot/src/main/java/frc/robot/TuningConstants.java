@@ -273,5 +273,8 @@ public class TuningConstants
     public static final boolean PIGEON_YAW_LOG = true;
     public static final boolean PIGEON_ROLL_LOG = true;
     public static final double CHARGE_STATION_PITCH_VARIATION = 0.3;
+    public static final double CHARGE_STATION_STEP_ONE_GOAL_ANGLE = 11;
+    public static final double CHARGE_STATION_STEP_TWO_GOAL_ANGLE = 8;
+    public static final double CHARGE_STATION_STEP_THREE_GOAL_POSITION = 3;
     public static final double CHARGE_STATION_LEVEL_ANGLE = 0.0;
 }
