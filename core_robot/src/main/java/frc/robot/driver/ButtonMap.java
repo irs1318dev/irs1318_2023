@@ -77,6 +77,14 @@ public class ButtonMap implements IButtonMap
             !ElectronicsConstants.INVERT_XBONE_RIGHT_TRIGGER, // make left positive, as counter-clockwise is positive
             -TuningConstants.DRIVETRAIN_DEAD_ZONE_TURN,
             TuningConstants.DRIVETRAIN_DEAD_ZONE_TURN),
+        new AnalogOperationDescription(
+            AnalogOperation.LowerArmVelocity,
+            UserInputDevice.Codriver,
+            AnalogAxis.XBONE_LSY,
+            !ElectronicsConstants.INVERT_XBONE_RIGHT_TRIGGER,
+            TuningConstants.LOWER_ARM_VELOCITY_DEAZONE // make left positive, as counter-clockwise is positive
+        )
+        
     };
 
     public static DigitalOperationDescription[] DigitalOperationSchema = new DigitalOperationDescription[]

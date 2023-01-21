@@ -288,5 +288,7 @@ public class TuningConstants
     public static final double CHARGE_STATION_PITCH_VARIATION = 1.0;
     public static final double CHARGE_STATION_LEVEL_ANGLE = 0.0;
 
+    public static final double LOWER_ARM_VELOCITY_DEAZONE = 0.1;
+
     
 }

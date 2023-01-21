@@ -35,5 +35,5 @@ public enum DigitalOperation implements IOperation
 
     //Arm
     IntakeUpperExtend,
-    IntakeLowerExtend,
+    IntakeLowerExtend,    
 }

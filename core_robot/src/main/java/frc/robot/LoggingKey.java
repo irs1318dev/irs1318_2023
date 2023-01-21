@@ -99,6 +99,9 @@ public enum LoggingKey
     IntakePower("i.motor_power"),
     LowerArmPosition("A.low_pos"), 
     UpperArmPosition("A.up_pos"), 
+    LowerArmVelocity("A.low_vel"), 
+    UpperArmVelocity("A.up_vel"), 
+    
 
     CompressorPreassure("com.pres");
 

@@ -31,4 +31,7 @@ public enum AnalogOperation implements IOperation
     // Arm operations;
     LowerArmPosition,
     UpperArmPosition,
+
+    LowerArmVelocity,
+    
 }
