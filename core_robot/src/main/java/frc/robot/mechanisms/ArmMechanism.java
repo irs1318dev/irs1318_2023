@@ -14,28 +14,24 @@ public class ArmMechanism implements IMechanism{
 
     public static final AnalogOperation LOWER_ARM_SETPOINT_OPERATION = AnalogOperation.LowerArmPosition;
     public static final AnalogOperation UPPER_ARM_SETPOINT_OPERATION = AnalogOperation.UpperArmPosition;
-    
-    //Positions are in ticks
+
+    // Positions are in ticks
     private double lowerArmPosition;
-    private double upperArmPosition;
+    // private double upperArmPosition;
     private double lowerArmVelocity;
-    //private double upperArmVelocity;
-     
+    // private double upperArmVelocity;
 
     private final ITalonSRX lowerArm;
-   // private final ITalonSRX upperArm;
+    // private final ITalonSRX upperArm;
+    // private final ICANCoder lowerAbsoluteEncoder;
+    // private final ICANCoder upperAbsoluteEncdoer;
 
-    private final double ARM_MAX_VELOCITY;
-    private final double ARM_MAX_ACCLERATION;
-
-    
     private final IDriver driver;
     private final ILogger logger;
     private final ITimer timer;
     private final PowerManager powerManager;
 
     private static final int defaultPidSlotId = 0;
-    
 
     @Inject
     public ArmMechanism(
@@ -49,9 +45,12 @@ public class ArmMechanism implements IMechanism{
         this.logger = logger;
         this.timer = timer;
         this.powerManager = powerManager;
-        
-        this.ARM_MAX_VELOCITY = TuningConstants.ARM_MAX_VELOCITY;
-        this.ARM_MAX_ACCLERATION = TuningConstants.ARM_MAX_ACCLERATION;
+
+        // this.lowerAbsoluteEncoder = provider.getCANCoder(ElectronicsConstants.ARM_LOWER_ABSOLUTE_ENCODER_CAN_ID, ElectronicsConstants.CANIVORE_NAME);
+        // this.lowerAbsoluteEncoder.configAbsoluteRange(false);
+
+        // this.upperAbsoluteEncdoer = provider.getCANCoder(ElectronicsConstants.ARM_UPPER_ABSOLUTE_ENCODER_CAN_ID, ElectronicsConstants.CANIVORE_NAME);
+        // this.upperAbsoluteEncdoer.configAbsoluteRange(false);
 
         this.lowerArmPosition = TuningConstants.LOWER_ARM_FULL_EXTENTION_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // Fully Extended
         //this.upperArmPosition = TuningConstants.UPPER_ARM_FULL_RETRACTED_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // Fully Retracted
@@ -63,24 +62,22 @@ public class ArmMechanism implements IMechanism{
         //this.upperArm = provider.getTalonSRX(ElectronicsConstants.ARM_UPPER_CAN_ID);
         /* 
         this.lowerArm.setMotionMagicPIDF(
-                TuningConstants.LOWER_ARM_POSITION_MM_PID_KP,
-                TuningConstants.LOWER_ARM_POSITION_MM_PID_KI,
-                TuningConstants.LOWER_ARM_POSITION_MM_PID_KD,
-                TuningConstants.LOWER_ARM_POSITION_MM_PID_KF, 
-                this.ARM_MAX_VELOCITY, 
-                this.ARM_MAX_ACCLERATION, 
-                defaultPidSlotId);
-                
+            TuningConstants.LOWER_ARM_POSITION_MM_PID_KP,
+            TuningConstants.LOWER_ARM_POSITION_MM_PID_KI,
+            TuningConstants.LOWER_ARM_POSITION_MM_PID_KD,
+            TuningConstants.LOWER_ARM_POSITION_MM_PID_KF,
+            TuningConstants.LOWER_ARM_POSITION_MM_CRUISE_VELOCITY,
+            TuningConstants.LOWER_ARM_POSITION_MM_ACCELERATION,
+            ArmMechanism.defaultPidSlotId);
         
         this.upperArm.setMotionMagicPIDF(
-                TuningConstants.UPPER_ARM_POSITION_MM_PID_KP,
-                TuningConstants.UPPER_ARM_POSITION_MM_PID_KI,
-                TuningConstants.UPPER_ARM_POSITION_MM_PID_KD,
-                TuningConstants.UPPER_ARM_POSITION_MM_PID_KF, 
-                this.ARM_MAX_VELOCITY, 
-                this.ARM_MAX_ACCLERATION, 
-                defaultPidSlotId);
-                */
+            TuningConstants.UPPER_ARM_POSITION_MM_PID_KP,
+            TuningConstants.UPPER_ARM_POSITION_MM_PID_KI,
+            TuningConstants.UPPER_ARM_POSITION_MM_PID_KD,
+            TuningConstants.UPPER_ARM_POSITION_MM_PID_KF,
+            TuningConstants.UPPER_ARM_POSITION_MM_CRUISE_VELOCITY,
+            TuningConstants.UPPER_ARM_POSITION_MM_ACCELERATION,
+            ArmMechanism.defaultPidSlotId);
         
         this.lowerArm.setControlMode(TalonXControlMode.PercentOutput);
         //this.upperArm.setControlMode(TalonXControlMode.PercentOutput);
@@ -121,7 +118,7 @@ public class ArmMechanism implements IMechanism{
         
         this.logger.logNumber(LoggingKey.LowerArmPosition, this.lowerArmPosition);
         //this.logger.logNumber(LoggingKey.UpperArmPosition, this.upperArmPosition);
-        this.logger.logNumber(LoggingKey.LowerArmVelocity, this.lowerArmVelocity);        
+        this.logger.logNumber(LoggingKey.LowerArmVelocity, this.lowerArmVelocity);
     }
 
     @Override
@@ -130,31 +127,29 @@ public class ArmMechanism implements IMechanism{
         double lowerArmVelocity = driver.getAnalog(AnalogOperation.LowerArmVelocity);
         this.lowerArm.set(lowerArmVelocity);
 
-        // if(driver.getDigital(DigitalOperation.IntakeLowerExtend))
+        // if (this.driver.getDigital(DigitalOperation.IntakeLowerExtend))
         // {
-        //     lowerArm.set( (driver.getAnalog(AnalogOperation.LowerArmPosition) + 1) * 1016);
+        //     this.lowerArm.set( (driver.getAnalog(AnalogOperation.LowerArmPosition) + 1) * 1016);
         // }
         // else
         // {
-        //     lowerArm.set(this.lowerArmPosition);
+        //     this.lowerArm.set(this.lowerArmPosition);
         // }
 
-        // if(driver.getDigital(DigitalOperation.IntakeUpperExtend))
+        // if (this.driver.getDigital(DigitalOperation.IntakeUpperExtend))
         // {
-        //     upperArm.set( (driver.getAnalog(AnalogOperation.UpperArmPosition) + 1) * 1016);
+        //     this.upperArm.set((this.driver.getAnalog(AnalogOperation.UpperArmPosition) + 1) * 1016);
         // }
         // else
         // {
-        //     upperArm.set(this.upperArmPosition);
+        //     this.upperArm.set(this.upperArmPosition);
         // }
-       
     }
 
     @Override
     public void stop()
     {
-        lowerArm.set(0);
-        //upperArm.set(0);
+        this.lowerArm.stop();
+        // this.upperArm.stop();
     }
-    
 }

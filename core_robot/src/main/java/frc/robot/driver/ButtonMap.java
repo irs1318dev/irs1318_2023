@@ -136,7 +136,7 @@ public class ButtonMap implements IButtonMap
             DigitalOperation.VisionEnableAprilTagProcessing,
             UserInputDevice.Test1,
             UserInputDeviceButton.XBONE_A_BUTTON,
-            ButtonType.Click),
+            ButtonType.Simple),
         new DigitalOperationDescription(
             DigitalOperation.IntakeExtend,
             UserInputDevice.Driver,
@@ -417,8 +417,10 @@ public class ButtonMap implements IButtonMap
                 UserInputDeviceButton.XBONE_SELECT_BUTTON, // Left menu button
                 Shift.DriverDebug,
                 Shift.None,
-                ButtonType.Click,
-                () -> new PIDBrakeTask(false),
+                ButtonType.Toggle,
+                () -> SequentialTask.Sequence(
+                    new ChargeStationTask(),
+                    new PIDBrakeTask()),
                 new IOperation[]
                 {
                     AnalogOperation.DriveTrainMoveForward,
@@ -447,6 +449,53 @@ public class ButtonMap implements IButtonMap
                     DigitalOperation.DriveTrainEnableFieldOrientation,
                     DigitalOperation.DriveTrainDisableFieldOrientation,
                     DigitalOperation.DriveTrainUseRobotOrientation,
+                    DigitalOperation.DriveTrainEnableMaintainDirectionMode
+                }),
+
+            new MacroOperationDescription(
+                MacroOperation.CompleteChargeStation,
+                UserInputDevice.Test1,
+                UserInputDeviceButton.XBONE_SELECT_BUTTON, // Left menu button
+                Shift.Test1Debug,
+                Shift.None,
+                ButtonType.Toggle,
+                () -> SequentialTask.Sequence(
+                    new PositionStartingTask(0.0, false, true),
+                    new ChargeStationStepOneTask(),
+                    new ChargeStationStepTwoTask(),
+                    new PositionStartingTask(0.0, true, false),
+                    new ChargeStationFinalStepTask(),
+                    new ChargeStationTask(),
+                    new PIDBrakeTask()),
+                new IOperation[]
+                {
+                    AnalogOperation.DriveTrainMoveForward,
+                    AnalogOperation.DriveTrainMoveRight,
+                    AnalogOperation.DriveTrainTurnAngleGoal,
+                    AnalogOperation.DriveTrainTurnSpeed,
+                    AnalogOperation.DriveTrainRotationA,
+                    AnalogOperation.DriveTrainRotationB,
+                    AnalogOperation.DriveTrainPathXGoal,
+                    AnalogOperation.DriveTrainPathYGoal,
+                    AnalogOperation.DriveTrainPathXVelocityGoal,
+                    AnalogOperation.DriveTrainPathYVelocityGoal,
+                    AnalogOperation.DriveTrainPathAngleVelocityGoal,
+                    AnalogOperation.DriveTrainPositionDrive1,
+                    AnalogOperation.DriveTrainPositionDrive2,
+                    AnalogOperation.DriveTrainPositionDrive3,
+                    AnalogOperation.DriveTrainPositionDrive4,
+                    AnalogOperation.DriveTrainPositionSteer1,
+                    AnalogOperation.DriveTrainPositionSteer2,
+                    AnalogOperation.DriveTrainPositionSteer3,
+                    AnalogOperation.DriveTrainPositionSteer4,
+                    DigitalOperation.DriveTrainSteerMode,
+                    DigitalOperation.DriveTrainMaintainPositionMode,
+                    DigitalOperation.DriveTrainPathMode,
+                    DigitalOperation.DriveTrainReset,
+                    DigitalOperation.DriveTrainEnableFieldOrientation,
+                    DigitalOperation.DriveTrainDisableFieldOrientation,
+                    DigitalOperation.DriveTrainUseRobotOrientation,
+                    DigitalOperation.DriveTrainEnableMaintainDirectionMode
                 }),
     };
 
