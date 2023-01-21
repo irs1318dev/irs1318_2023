@@ -1,6 +1,6 @@
 //Jamie Hsieh, Calvin Rodrigue
 //1.19.2023
-//Levels the robot on charge station.
+//Overshoots the robot forwards on the charge station.
 //Jamie's first robot code commit.
 
 package frc.robot.driver.controltasks;
@@ -10,6 +10,7 @@ import com.google.inject.Injector;
 import frc.robot.TuningConstants;
 import frc.robot.TuningConstants.*;
 import frc.robot.common.LoggingManager;
+import frc.robot.common.robotprovider.ITimer;
 import frc.robot.driver.*;
 import frc.robot.driver.common.Driver;
 import frc.robot.mechanisms.DriveTrainMechanism;
@@ -17,9 +18,18 @@ import frc.robot.mechanisms.PigeonManager;
 
 public class ChargeStationTask extends ControlTaskBase
 {
+    private enum State
+    {
+        ReadPitch,
+        MoveForward,
+        MoveBackward,
+
+    }
+
     private PigeonManager imuManager;
     private DriveTrainMechanism driveTrain;
     private LoggingManager logger;
+    private ITimer timer;
 
     private double pitch;
     private double sign;
@@ -45,6 +55,7 @@ public class ChargeStationTask extends ControlTaskBase
         this.imuManager = this.getInjector().getInstance(PigeonManager.class);
         this.driveTrain = this.getInjector().getInstance(DriveTrainMechanism.class);
         this.logger = this.getInjector().getInstance(LoggingManager.class);
+        this.timer = this.getInjector().getInstance(ITimer.class);
 
         this.pitch = this.imuManager.getPitch();
 
@@ -66,12 +77,18 @@ public class ChargeStationTask extends ControlTaskBase
         this.pitch = imuManager.getPitch();
         if (this.pitch <= (TuningConstants.CHARGE_STATION_LEVEL_ANGLE - TuningConstants.CHARGE_STATION_PITCH_VARIATION))
         {
-            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.5);
+            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.05);
         }
+        
+        /*
         else if (this.pitch >= (TuningConstants.CHARGE_STATION_LEVEL_ANGLE - TuningConstants.CHARGE_STATION_PITCH_VARIATION))
         {
-            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, -0.5);
+            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, -0.05);
         }
+
+        previously used for attempting to level on the charge station. Current task does not need to go backwards.
+        */ 
+
         else 
         {
             this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0);
@@ -112,9 +129,9 @@ public class ChargeStationTask extends ControlTaskBase
     @Override
     public boolean hasCompleted()
     {
-        if(Math.abs(pitch) < TuningConstants.CHARGE_STATION_PITCH_VARIATION)
+        //if(Math.abs(pitch) < 0) Previously used for balancing
+        if (pitch > 0) //Detects when overshoot
         {
-            //TODO: test if this value is acceptable
             return true;
         }
 

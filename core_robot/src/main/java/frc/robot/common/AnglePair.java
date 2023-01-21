@@ -27,11 +27,11 @@ public class AnglePair
      */
     public static AnglePair getClosestAngle(double desiredAngle, double currentAngle, boolean allowReverse)
     {
-        if (TuningConstants.THROW_EXCEPTIONS && 
-            !Helpers.WithinRange(desiredAngle, -180.0, 180.0))
-        {
-            throw new RuntimeException(String.format("expect desiredAngle to be between (-180, 180). actual %f", desiredAngle));
-        }
+        // if (TuningConstants.THROW_EXCEPTIONS && 
+        //     !Helpers.WithinRange(desiredAngle, -180.0, 180.0))
+        // {
+        //     throw new RuntimeException(String.format("expect desiredAngle to be between (-180, 180). actual %f", desiredAngle));
+        // }
 
         // get the difference in degrees between -180 and 180
         double difference = Helpers.updateAngleRange(desiredAngle - currentAngle);

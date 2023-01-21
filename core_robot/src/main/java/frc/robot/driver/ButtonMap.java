@@ -411,8 +411,12 @@ public class ButtonMap implements IButtonMap
                 Shift.None,
                 ButtonType.Toggle,
                 () -> SequentialTask.Sequence(
+                    new PositionStartingTask(-6.1, false, true), //calibration
+                    new ChargeStationStepOneTask(),
                     new ChargeStationTask(),
-                    new PIDBrakeTask()),
+                    new PIDBrakeTask(),
+                    new PositionStartingTask(0.0, true, false),
+                    new FollowPathTask("goBackwards4inch")),
                 new IOperation[]
                 {
                     AnalogOperation.DriveTrainMoveForward,
@@ -434,6 +438,7 @@ public class ButtonMap implements IButtonMap
                     AnalogOperation.DriveTrainPositionSteer2,
                     AnalogOperation.DriveTrainPositionSteer3,
                     AnalogOperation.DriveTrainPositionSteer4,
+                    AnalogOperation.DriveTrainTurnAngleReference,
                     DigitalOperation.DriveTrainSteerMode,
                     DigitalOperation.DriveTrainMaintainPositionMode,
                     DigitalOperation.DriveTrainPathMode,
@@ -441,7 +446,60 @@ public class ButtonMap implements IButtonMap
                     DigitalOperation.DriveTrainEnableFieldOrientation,
                     DigitalOperation.DriveTrainDisableFieldOrientation,
                     DigitalOperation.DriveTrainUseRobotOrientation,
-                    DigitalOperation.DriveTrainEnableMaintainDirectionMode
+                    DigitalOperation.DriveTrainEnableMaintainDirectionMode,
+                    AnalogOperation.PositionStartingAngle,
+                    DigitalOperation.VisionDisableStream,
+                    DigitalOperation.VisionEnableAprilTagProcessing,
+                    DigitalOperation.VisionEnableRetroreflectiveProcessing,
+                    DigitalOperation.VisionForceDisable,
+                }),
+
+            new MacroOperationDescription(
+                MacroOperation.ChargeStationBalance,
+                UserInputDevice.Test1,
+                UserInputDeviceButton.XBONE_RIGHT_BUTTON, // Left menu button
+                Shift.DriverDebug,
+                Shift.None,
+                ButtonType.Toggle,
+                () -> SequentialTask.Sequence(
+                    new PositionStartingTask(0.0, true, false), //calibration
+                    new FollowPathTask("goBackwards4inch")),
+                new IOperation[]
+                {
+                    AnalogOperation.DriveTrainMoveForward,
+                    AnalogOperation.DriveTrainMoveRight,
+                    AnalogOperation.DriveTrainTurnAngleGoal,
+                    AnalogOperation.DriveTrainTurnSpeed,
+                    AnalogOperation.DriveTrainRotationA,
+                    AnalogOperation.DriveTrainRotationB,
+                    AnalogOperation.DriveTrainPathXGoal,
+                    AnalogOperation.DriveTrainPathYGoal,
+                    AnalogOperation.DriveTrainPathXVelocityGoal,
+                    AnalogOperation.DriveTrainPathYVelocityGoal,
+                    AnalogOperation.DriveTrainPathAngleVelocityGoal,
+                    AnalogOperation.DriveTrainPositionDrive1,
+                    AnalogOperation.DriveTrainPositionDrive2,
+                    AnalogOperation.DriveTrainPositionDrive3,
+                    AnalogOperation.DriveTrainPositionDrive4,
+                    AnalogOperation.DriveTrainPositionSteer1,
+                    AnalogOperation.DriveTrainPositionSteer2,
+                    AnalogOperation.DriveTrainPositionSteer3,
+                    AnalogOperation.DriveTrainPositionSteer4,
+                    AnalogOperation.DriveTrainTurnAngleReference,
+                    AnalogOperation.PositionStartingAngle,
+                    DigitalOperation.DriveTrainSteerMode,
+                    DigitalOperation.DriveTrainMaintainPositionMode,
+                    DigitalOperation.DriveTrainPathMode,
+                    DigitalOperation.DriveTrainReset,
+                    DigitalOperation.DriveTrainEnableFieldOrientation,
+                    DigitalOperation.DriveTrainDisableFieldOrientation,
+                    DigitalOperation.DriveTrainUseRobotOrientation,
+                    DigitalOperation.DriveTrainEnableMaintainDirectionMode,
+                    DigitalOperation.PositionResetFieldOrientation,
+                    DigitalOperation.VisionDisableStream,
+                    DigitalOperation.VisionEnableAprilTagProcessing,
+                    DigitalOperation.VisionEnableRetroreflectiveProcessing,
+                    DigitalOperation.VisionForceDisable,
                 }),
 
             new MacroOperationDescription(
@@ -452,15 +510,17 @@ public class ButtonMap implements IButtonMap
                 Shift.None,
                 ButtonType.Toggle,
                 () -> SequentialTask.Sequence(
-                    new PositionStartingTask(0.0, false, true),
-                    new ChargeStationStepOneTask(),
-                    new ChargeStationStepTwoTask(),
-                    new PositionStartingTask(0.0, true, false),
-                    new ChargeStationFinalStepTask(),
-                    new ChargeStationTask(),
-                    new PIDBrakeTask()),
+                    new PositionStartingTask(0.0, false, true), //calibration
+                    new ChargeStationStepOneTask(), //gets robot onto the middle part
+
+                    new ChargeStationTask(), //Jamie's function
+                    ConcurrentTask.AllTasks(
+                        new PIDBrakeTask(),
+                        new WaitTask(0.5))),
                 new IOperation[]
                 {
+                    DigitalOperation.PositionResetFieldOrientation,
+                    AnalogOperation.PositionStartingAngle,
                     AnalogOperation.DriveTrainMoveForward,
                     AnalogOperation.DriveTrainMoveRight,
                     AnalogOperation.DriveTrainTurnAngleGoal,
