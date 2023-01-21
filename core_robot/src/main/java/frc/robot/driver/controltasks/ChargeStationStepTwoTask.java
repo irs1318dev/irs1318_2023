@@ -1,7 +1,5 @@
-//Jamie Hsieh, Calvin Rodrigue
-//1.19.2023
-//Levels the robot on charge station.
-//Jamie's first robot code commit.
+//Pranav Neti
+//1.21.2023
 
 package frc.robot.driver.controltasks;
 
@@ -11,11 +9,11 @@ import frc.robot.TuningConstants;
 import frc.robot.TuningConstants.*;
 import frc.robot.common.LoggingManager;
 import frc.robot.driver.*;
-import frc.robot.driver.common.Driver;
 import frc.robot.mechanisms.DriveTrainMechanism;
 import frc.robot.mechanisms.PigeonManager;
 
-public class ChargeStationTask extends ControlTaskBase
+
+public class ChargeStationStepTwoTask extends ControlTaskBase
 {
     private PigeonManager imuManager;
     private DriveTrainMechanism driveTrain;
@@ -24,16 +22,16 @@ public class ChargeStationTask extends ControlTaskBase
     private double pitch;
     private double sign;
     private double xPos;
-    private double balancePos;
+    private double goalAngle;
     private double distanceTraveled;
 
-    public ChargeStationTask()
+    public ChargeStationStepTwoTask()
     {
         this.pitch = 0.0;
-        this.sign = 1.0;
-        this.xPos = 1.0;
-        this.balancePos = 0.0;
-        this.distanceTraveled = 0.0;
+        this.sign = 1;
+        this.xPos = 1;
+        this.goalAngle = 8;
+        this.distanceTraveled = 0;
     }
 
     /**
@@ -64,33 +62,16 @@ public class ChargeStationTask extends ControlTaskBase
     {
         
         this.pitch = imuManager.getPitch();
-        if (this.pitch <= (TuningConstants.CHARGE_STATION_LEVEL_ANGLE - TuningConstants.CHARGE_STATION_PITCH_VARIATION))
+        if (this.pitch >= (TuningConstants.CHARGE_STATION_STEP_TWO_GOAL_ANGLE + TuningConstants.CHARGE_STATION_PITCH_VARIATION))
         {
-            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.5);
+            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.3);
         }
-        else if (this.pitch >= (TuningConstants.CHARGE_STATION_LEVEL_ANGLE - TuningConstants.CHARGE_STATION_PITCH_VARIATION))
-        {
-            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, -0.5);
-        }
+        
         else 
         {
             this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0);
-        }
-        
-        /*
-        if(this.pitch > 0)
-        {
-            this.sign = 1;
-        }
-        else if(this.pitch < 0)
-        {
-            this.sign = -1;
-        }       
-        this.xPos = driveTrain.getPositionX();
-        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, sign * 2 / xPos);
-        */
 
-
+        }
     }
 
     /**
@@ -112,12 +93,11 @@ public class ChargeStationTask extends ControlTaskBase
     @Override
     public boolean hasCompleted()
     {
-        if(Math.abs(pitch) < TuningConstants.CHARGE_STATION_PITCH_VARIATION)
-        {
-            //TODO: test if this value is acceptable
+        if( (this.pitch > (TuningConstants.CHARGE_STATION_STEP_TWO_GOAL_ANGLE - TuningConstants.CHARGE_STATION_PITCH_VARIATION) ) && (this.pitch < (TuningConstants.CHARGE_STATION_STEP_TWO_GOAL_ANGLE + TuningConstants.CHARGE_STATION_PITCH_VARIATION))) {//TODO: test if this value is acceptable
             return true;
         }
-
         return false;
     }
+
+    
 }
