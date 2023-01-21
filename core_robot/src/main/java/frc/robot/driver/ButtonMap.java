@@ -128,7 +128,7 @@ public class ButtonMap implements IButtonMap
             DigitalOperation.VisionEnableAprilTagProcessing,
             UserInputDevice.Test1,
             UserInputDeviceButton.XBONE_A_BUTTON,
-            ButtonType.Click),
+            ButtonType.Simple),
         new DigitalOperationDescription(
             DigitalOperation.IntakeExtend,
             UserInputDevice.Driver,
@@ -409,8 +409,11 @@ public class ButtonMap implements IButtonMap
                 UserInputDeviceButton.XBONE_SELECT_BUTTON, // Left menu button
                 Shift.DriverDebug,
                 Shift.None,
-                ButtonType.Click,
-                () -> new PIDBrakeTask(false),
+                ButtonType.Toggle,
+                () -> SequentialTask.Sequence(
+                    new ChargeStationTask(),
+                    new PIDBrakeTask()
+                ),
                 new IOperation[]
                 {
                     AnalogOperation.DriveTrainMoveForward,
@@ -439,6 +442,7 @@ public class ButtonMap implements IButtonMap
                     DigitalOperation.DriveTrainEnableFieldOrientation,
                     DigitalOperation.DriveTrainDisableFieldOrientation,
                     DigitalOperation.DriveTrainUseRobotOrientation,
+                    DigitalOperation.DriveTrainEnableMaintainDirectionMode
                 }),
     };
 

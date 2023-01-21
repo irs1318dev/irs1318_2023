@@ -254,6 +254,7 @@ public class TuningConstants
     public static final double DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION = 0.75 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // in inches per second per second
 
     //================================================= ARM ================================================================================
+
     public static final double INTAKE_POWER = 0.6;
     public static final double LOWER_ARM_ABSOLUTE_OFFSET = 50; // This is in ticks
     public static final double UPPER_ARM_ABSOLUTE_OFFSET = 50; // This is in ticks
@@ -262,11 +263,15 @@ public class TuningConstants
     public static final double LOWER_ARM_POSITION_MM_PID_KI = 0.0;
     public static final double LOWER_ARM_POSITION_MM_PID_KD = 0.0;
     public static final double LOWER_ARM_POSITION_MM_PID_KF = 0.05;
+    public static final double LOWER_ARM_POSITION_MM_CRUISE_VELOCITY = 0.0;
+    public static final double LOWER_ARM_POSITION_MM_ACCELERATION = 0.0;
 
     public static final double UPPER_ARM_POSITION_MM_PID_KP = 0.1;
     public static final double UPPER_ARM_POSITION_MM_PID_KI = 0.0;
     public static final double UPPER_ARM_POSITION_MM_PID_KD = 0.0;
     public static final double UPPER_ARM_POSITION_MM_PID_KF = 0.05;
+    public static final double UPPER_ARM_POSITION_MM_CRUISE_VELOCITY = 0.0;
+    public static final double UPPER_ARM_POSITION_MM_ACCELERATION = 0.0;
 
     public static final boolean LOWER_ARM_INVERT_OUTPUT = false;
     public static final boolean UPPER_ARM_INVERT_OUTPUT = false;
@@ -281,6 +286,8 @@ public class TuningConstants
     public static final boolean PIGEON_PITCH_LOG = true;
     public static final boolean PIGEON_YAW_LOG = true;
     public static final boolean PIGEON_ROLL_LOG = true;
+
+    //============================================= CHARGE PAD ==================================================================
 
     public static final double CHARGE_STATION_PITCH_VARIATION = 1.0;
     public static final double CHARGE_STATION_LEVEL_ANGLE = 0.0;

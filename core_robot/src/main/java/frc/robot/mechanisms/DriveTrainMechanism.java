@@ -80,9 +80,6 @@ public class DriveTrainMechanism implements IMechanism
 
     private final Setpoint[] result;
 
-
-    
-
     private boolean firstRun;
 
     private boolean fieldOriented;
