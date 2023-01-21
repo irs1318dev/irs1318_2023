@@ -144,10 +144,10 @@ public class TuningConstants
     public static final boolean DRIVETRAIN_FIELD_ORIENTED_ON_ROBOT_START = true;
     public static final boolean DRIVETRAIN_MAINTAIN_ORIENTATION_ON_ROBOT_START = true;
 
-    public static final double DRIVETRAIN_STEER_MOTOR1_ABSOLUTE_OFFSET = 128.056;
-    public static final double DRIVETRAIN_STEER_MOTOR2_ABSOLUTE_OFFSET = -16.259;
-    public static final double DRIVETRAIN_STEER_MOTOR3_ABSOLUTE_OFFSET = 2.725;
-    public static final double DRIVETRAIN_STEER_MOTOR4_ABSOLUTE_OFFSET = -30.586;
+    public static final double DRIVETRAIN_STEER_MOTOR1_ABSOLUTE_OFFSET = 79.365;
+    public static final double DRIVETRAIN_STEER_MOTOR2_ABSOLUTE_OFFSET = 52.119;
+    public static final double DRIVETRAIN_STEER_MOTOR3_ABSOLUTE_OFFSET = -128.935;
+    public static final double DRIVETRAIN_STEER_MOTOR4_ABSOLUTE_OFFSET = -125.419;
 
     // Position PID (angle) per-module
     public static final double DRIVETRAIN_STEER_MOTOR_POSITION_PID_KS = HardwareConstants.DRIVETRAIN_STEER_TICKS_PER_DEGREE;
