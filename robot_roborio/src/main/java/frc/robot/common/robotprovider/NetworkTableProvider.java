@@ -56,24 +56,48 @@ public class NetworkTableProvider implements INetworkTableProvider
     @Override
     public IDoubleSubscriber getDoubleSubscriber(String key)
     {
-        return new DoubleSubscriberWrapper(NetworkTableProvider.getSmartDashboard().getDoubleTopic(key).subscribe(0.0));
+        return this.getDoubleSubscriber(key, 0.0);
+    }
+
+    @Override
+    public IDoubleSubscriber getDoubleSubscriber(String key, double defaultValue)
+    {
+        return new DoubleSubscriberWrapper(NetworkTableProvider.getSmartDashboard().getDoubleTopic(key).subscribe(defaultValue));
     }
 
     @Override
     public IBooleanSubscriber getBooleanSubscriber(String key)
     {
-        return new BooleanSubscriberWrapper(NetworkTableProvider.getSmartDashboard().getBooleanTopic(key).subscribe(false));
+        return this.getBooleanSubscriber(key, false);
+    }
+
+    @Override
+    public IBooleanSubscriber getBooleanSubscriber(String key, boolean defaultValue)
+    {
+        return new BooleanSubscriberWrapper(NetworkTableProvider.getSmartDashboard().getBooleanTopic(key).subscribe(defaultValue));
     }
 
     @Override
     public IIntegerSubscriber getIntegerSubscriber(String key)
     {
-        return new IntegerSubscriberWrapper(NetworkTableProvider.getSmartDashboard().getIntegerTopic(key).subscribe(0));
+        return this.getIntegerSubscriber(key, 0);
+    }
+
+    @Override
+    public IIntegerSubscriber getIntegerSubscriber(String key, int defaultValue)
+    {
+        return new IntegerSubscriberWrapper(NetworkTableProvider.getSmartDashboard().getIntegerTopic(key).subscribe(defaultValue));
     }
 
     @Override
     public IStringSubscriber getStringSubscriber(String key)
     {
-        return new StringSubscriberWrapper(NetworkTableProvider.getSmartDashboard().getStringTopic(key).subscribe(null));
+        return this.getStringSubscriber(key, null);
+    }
+
+    @Override
+    public IStringSubscriber getStringSubscriber(String key, String defaultValue)
+    {
+        return new StringSubscriberWrapper(NetworkTableProvider.getSmartDashboard().getStringTopic(key).subscribe(defaultValue));
     }
 }
