@@ -10,11 +10,8 @@ import frc.robot.mechanisms.PowerManager.CurrentLimiting;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-public class ArmMechanism implements IMechanism{
-
-    public static final AnalogOperation LOWER_ARM_SETPOINT_OPERATION = AnalogOperation.LowerArmPosition;
-    public static final AnalogOperation UPPER_ARM_SETPOINT_OPERATION = AnalogOperation.UpperArmPosition;
-
+public class ArmMechanism implements IMechanism
+{
     // Positions are in ticks
     private double lowerArmPosition;
     // private double upperArmPosition;
@@ -23,8 +20,6 @@ public class ArmMechanism implements IMechanism{
 
     private final ITalonSRX lowerArm;
     // private final ITalonSRX upperArm;
-    // private final ICANCoder lowerAbsoluteEncoder;
-    // private final ICANCoder upperAbsoluteEncdoer;
 
     private final IDriver driver;
     private final ILogger logger;
@@ -45,12 +40,6 @@ public class ArmMechanism implements IMechanism{
         this.logger = logger;
         this.timer = timer;
         this.powerManager = powerManager;
-
-        // this.lowerAbsoluteEncoder = provider.getCANCoder(ElectronicsConstants.ARM_LOWER_ABSOLUTE_ENCODER_CAN_ID, ElectronicsConstants.CANIVORE_NAME);
-        // this.lowerAbsoluteEncoder.configAbsoluteRange(false);
-
-        // this.upperAbsoluteEncdoer = provider.getCANCoder(ElectronicsConstants.ARM_UPPER_ABSOLUTE_ENCODER_CAN_ID, ElectronicsConstants.CANIVORE_NAME);
-        // this.upperAbsoluteEncdoer.configAbsoluteRange(false);
 
         this.lowerArmPosition = TuningConstants.LOWER_ARM_FULL_EXTENTION_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // Fully Extended
         //this.upperArmPosition = TuningConstants.UPPER_ARM_FULL_RETRACTED_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // Fully Retracted
@@ -112,9 +101,9 @@ public class ArmMechanism implements IMechanism{
     @Override
     public void readSensors()
     {
-        this.lowerArmPosition = lowerArm.getPosition();
-        //this.upperArmPosition = upperArm.getPosition();
-        this.lowerArmVelocity = lowerArm.getVelocity();
+        this.lowerArmPosition = this.lowerArm.getPosition();
+        //this.upperArmPosition = this.upperArm.getPosition();
+        this.lowerArmVelocity = this.lowerArm.getVelocity();
         
         this.logger.logNumber(LoggingKey.LowerArmPosition, this.lowerArmPosition);
         //this.logger.logNumber(LoggingKey.UpperArmPosition, this.upperArmPosition);
@@ -124,7 +113,7 @@ public class ArmMechanism implements IMechanism{
     @Override
     public void update()
     {
-        double lowerArmVelocity = driver.getAnalog(AnalogOperation.LowerArmVelocity);
+        double lowerArmVelocity = this.driver.getAnalog(AnalogOperation.LowerArmVelocity);
         this.lowerArm.set(lowerArmVelocity);
 
         // if (this.driver.getDigital(DigitalOperation.IntakeLowerExtend))
