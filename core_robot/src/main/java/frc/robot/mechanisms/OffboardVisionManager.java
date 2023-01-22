@@ -57,15 +57,15 @@ public class OffboardVisionManager implements IMechanism
 
         this.driverStation = provider.getDriverStation();
         this.networkTable = provider.getNetworkTableProvider();
-        this.atXOffsetSubscriber = this.networkTable.getDoubleSubscriber("at.xOffset");
-        this.atYOffsetSubscriber = this.networkTable.getDoubleSubscriber("at.yOffset");
-        this.atZOffsetSubscriber = this.networkTable.getDoubleSubscriber("at.zOffset");
-        this.atYawSubscriber = this.networkTable.getDoubleSubscriber("at.yaw");
-        this.atPitchSubscriber = this.networkTable.getDoubleSubscriber("at.pitch");
-        this.atRollSubscriber = this.networkTable.getDoubleSubscriber("at.roll");
-        this.rrDistanceSubscriber = this.networkTable.getDoubleSubscriber("rr.distance");
-        this.rrAngleSubscriber = this.networkTable.getDoubleSubscriber("rr.horizontalAngle");
-        this.heartbeatSubscriber = this.networkTable.getIntegerSubscriber("v.heartbeat");
+        this.atXOffsetSubscriber = this.networkTable.getDoubleSubscriber("at.xOffset", TuningConstants.MAGIC_NULL_VALUE);
+        this.atYOffsetSubscriber = this.networkTable.getDoubleSubscriber("at.yOffset", TuningConstants.MAGIC_NULL_VALUE);
+        this.atZOffsetSubscriber = this.networkTable.getDoubleSubscriber("at.zOffset", TuningConstants.MAGIC_NULL_VALUE);
+        this.atYawSubscriber = this.networkTable.getDoubleSubscriber("at.yawAngle", TuningConstants.MAGIC_NULL_VALUE);
+        this.atPitchSubscriber = this.networkTable.getDoubleSubscriber("at.pitchAngle", TuningConstants.MAGIC_NULL_VALUE);
+        this.atRollSubscriber = this.networkTable.getDoubleSubscriber("at.rollAngle", TuningConstants.MAGIC_NULL_VALUE);
+        this.rrDistanceSubscriber = this.networkTable.getDoubleSubscriber("rr.distance", TuningConstants.MAGIC_NULL_VALUE);
+        this.rrAngleSubscriber = this.networkTable.getDoubleSubscriber("rr.horizontalAngle", TuningConstants.MAGIC_NULL_VALUE);
+        this.heartbeatSubscriber = this.networkTable.getIntegerSubscriber("v.heartbeat", 0);
 
         this.atXOffset = null;
         this.atYOffset = null;

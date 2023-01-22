@@ -29,7 +29,19 @@ public class FauxbotNetworkTableProvider implements INetworkTableProvider
     }
 
     @Override
+    public IDoubleSubscriber getDoubleSubscriber(String key, double defaultValue)
+    {
+        return null;
+    }
+
+    @Override
     public IBooleanSubscriber getBooleanSubscriber(String key)
+    {
+        return null;
+    }
+
+    @Override
+    public IBooleanSubscriber getBooleanSubscriber(String key, boolean defaultValue)
     {
         return null;
     }
@@ -41,7 +53,19 @@ public class FauxbotNetworkTableProvider implements INetworkTableProvider
     }
 
     @Override
+    public IIntegerSubscriber getIntegerSubscriber(String key, int defaultVAlue)
+    {
+        return null;
+    }
+
+    @Override
     public IStringSubscriber getStringSubscriber(String key)
+    {
+        return null;
+    }
+
+    @Override
+    public IStringSubscriber getStringSubscriber(String key, String defaultValue)
     {
         return null;
     }
