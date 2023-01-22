@@ -62,7 +62,7 @@ public class SmartDashboardLogger implements ISmartDashboardLogger
         String valueString = "N/A";
         if (value != null)
         {
-            valueString = "" + value;
+            valueString = String.valueOf(value);
         }
 
         SmartDashboard.putString(key.value, valueString);
