@@ -10,22 +10,14 @@ import frc.robot.mechanisms.PowerManager.CurrentLimiting;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-public class ArmMechanism implements IMechanism{
-
-    public static final AnalogOperation LOWER_ARM_SETPOINT_OPERATION = AnalogOperation.LowerArmPosition;
-    public static final AnalogOperation UPPER_ARM_SETPOINT_OPERATION = AnalogOperation.UpperArmPosition;
-
-    //Positions are in ticks
+public class ArmMechanism implements IMechanism
+{
+    // Positions are in ticks
     private double lowerArmPosition;
     private double upperArmPosition;
 
     private final ITalonSRX lowerArm;
     private final ITalonSRX upperArm;
-    private final ICANCoder lowerAbsoluteEncoder;
-    private final ICANCoder upperAbsoluteEncdoer;
-
-    private final double LowerArmAbsoluteOffsets;
-    private final double UpperArmAbsoluteOffsets;
 
     private final IDriver driver;
     private final ILogger logger;
@@ -46,15 +38,6 @@ public class ArmMechanism implements IMechanism{
         this.logger = logger;
         this.timer = timer;
         this.powerManager = powerManager;
-
-        this.lowerAbsoluteEncoder = provider.getCANCoder(ElectronicsConstants.ARM_LOWER_ABSOLUTE_ENCODER_CAN_ID, ElectronicsConstants.CANIVORE_NAME);
-        this.lowerAbsoluteEncoder.configAbsoluteRange(false);
-
-        this.upperAbsoluteEncdoer = provider.getCANCoder(ElectronicsConstants.ARM_UPPER_ABSOLUTE_ENCODER_CAN_ID, ElectronicsConstants.CANIVORE_NAME);
-        this.upperAbsoluteEncdoer.configAbsoluteRange(false);
-
-        this.LowerArmAbsoluteOffsets = TuningConstants.LOWER_ARM_ABSOLUTE_OFFSET;
-        this.UpperArmAbsoluteOffsets = TuningConstants.UPPER_ARM_ABSOLUTE_OFFSET;
 
         this.lowerArmPosition = 0;
         this.upperArmPosition = 0;
@@ -112,9 +95,9 @@ public class ArmMechanism implements IMechanism{
     @Override
     public void readSensors()
     {
-        lowerArmPosition = lowerArm.getPosition();
-        upperArmPosition = upperArm.getPosition();
-        
+        this.lowerArmPosition = this.lowerArm.getPosition();
+        this.upperArmPosition = this.upperArm.getPosition();
+
         this.logger.logNumber(LoggingKey.LowerArmPosition, this.lowerArmPosition);
         this.logger.logNumber(LoggingKey.UpperArmPosition, this.upperArmPosition);
     }
