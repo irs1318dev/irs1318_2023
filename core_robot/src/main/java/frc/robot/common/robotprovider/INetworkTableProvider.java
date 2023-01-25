@@ -2,6 +2,8 @@ package frc.robot.common.robotprovider;
 
 public interface INetworkTableProvider
 {
+    void startShuffleboardRecording();
+    void stopShuffleboardRecording();
     IDoubleSubscriber getNumberSlider(String title, double initialValue);
     <V> ISendableChooser<V> getSendableChooser();
     <V> void addChooser(String name, ISendableChooser<V> chooser);
