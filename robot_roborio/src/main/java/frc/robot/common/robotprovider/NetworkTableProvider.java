@@ -3,6 +3,7 @@ package frc.robot.common.robotprovider;
 import edu.wpi.first.networktables.DoubleTopic;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class NetworkTableProvider implements INetworkTableProvider
@@ -30,6 +31,18 @@ public class NetworkTableProvider implements INetworkTableProvider
         }
 
         return NetworkTableProvider.smartDashboard;
+    }
+
+    @Override
+    public void startShuffleboardRecording()
+    {
+        Shuffleboard.startRecording();
+    }
+
+    @Override
+    public void stopShuffleboardRecording()
+    {
+        Shuffleboard.stopRecording();
     }
 
     @Override

@@ -3,6 +3,16 @@ package frc.robot.common.robotprovider;
 public class FauxbotNetworkTableProvider implements INetworkTableProvider
 {
     @Override
+    public void startShuffleboardRecording()
+    {
+    }
+
+    @Override
+    public void stopShuffleboardRecording()
+    {
+    }
+
+    @Override
     public IDoubleSubscriber getNumberSlider(String title, double initialValue)
     {
         return null;
