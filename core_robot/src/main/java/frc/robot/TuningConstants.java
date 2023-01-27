@@ -285,10 +285,6 @@ public class TuningConstants
  
     public static final double ARM_STRING_ENCODER_TICKS_PER_INCH = 254; // .1 mm per tick
 
-    public static final boolean PIGEON_PITCH_LOG = true;
-    public static final boolean PIGEON_YAW_LOG = true;
-    public static final boolean PIGEON_ROLL_LOG = true;
-
     public static final double ARM_MAX_HEIGHT = 78.0;
     public static final double ARM_MAX_LENGTH = 48.0;
 
