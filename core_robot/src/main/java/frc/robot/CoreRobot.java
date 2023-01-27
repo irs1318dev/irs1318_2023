@@ -32,7 +32,7 @@ public class CoreRobot<T extends AbstractModule>
     // Mechanisms and injector
     private MechanismManager mechanisms;
     private LoggingManager logger;
-    private INetworkTableProvider networkTableProvider;
+    // private INetworkTableProvider networkTableProvider;
     private Injector injector;
 
     private ITimer timer;
@@ -68,7 +68,8 @@ public class CoreRobot<T extends AbstractModule>
         this.logger.logNumber(LoggingKey.RobotTime, this.timer.get());
         this.timerStarted = false;
 
-        this.networkTableProvider = injector.getInstance(INetworkTableProvider.class);
+        // IRobotProvider provider = injector.getInstance(IRobotProvider.class);
+        // this.networkTableProvider = provider.getNetworkTableProvider();
 
         // reset number of logger updates
         this.loggerUpdates = 0;
@@ -98,7 +99,7 @@ public class CoreRobot<T extends AbstractModule>
         this.logger.update();
         this.logger.flush();
 
-        this.networkTableProvider.stopShuffleboardRecording();
+        // this.networkTableProvider.stopShuffleboardRecording();
     }
 
     /**
@@ -203,7 +204,7 @@ public class CoreRobot<T extends AbstractModule>
     {
         try
         {
-            this.networkTableProvider.startShuffleboardRecording();
+            // this.networkTableProvider.startShuffleboardRecording();
 
             this.driver.startMode(robotMode);
 
