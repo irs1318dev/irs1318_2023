@@ -166,7 +166,7 @@ public class ButtonMap implements IButtonMap
             Shift.DriverDebug,
             ButtonType.Click),
         new DigitalOperationDescription(
-            DigitalOperation.SwitchArm,
+            DigitalOperation.ExtendFlipper,
             UserInputDevice.Codriver,
             UserInputDeviceButton.XBONE_START_BUTTON,
             Shift.DriverDebug,

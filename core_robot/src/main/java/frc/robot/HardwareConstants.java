@@ -42,7 +42,7 @@ public class HardwareConstants
     public static final double DRIVETRAIN_HORIZONTAL_WHEEL_CENTER_DISTANCE = HardwareConstants.DRIVETRAIN_HORIZONTAL_WHEEL_SEPERATION_DISTANCE / 2.0; // (in inches)
     public static final double DRIVETRAIN_VERTICAL_WHEEL_CENTER_DISTANCE = HardwareConstants.DRIVETRAIN_VERTICAL_WHEEL_SEPERATION_DISTANCE / 2.0; // (in inches)
 
-    //================================================= Intake =================================================================================================================
+    //================================================= Arm =================================================================================================================
 
     public static final boolean INTAKE_MOTOR_INVERT_OUTPUT = true;
 

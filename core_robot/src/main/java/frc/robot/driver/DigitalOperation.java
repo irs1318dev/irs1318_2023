@@ -32,9 +32,9 @@ public enum DigitalOperation implements IOperation
     IntakeRetract,
     IntakeIn,
     IntakeOut,
-    IntakeUpperExtend,
-    IntakeLowerExtend,
 
-    //Arm
-    SwitchArm,
+    // Arm operations
+    ExtendFlipper,
+    ArmUpperExtend,
+    ArmLowerExtend,
 }

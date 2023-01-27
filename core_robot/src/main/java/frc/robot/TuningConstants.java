@@ -257,7 +257,6 @@ public class TuningConstants
 
     public static final double INTAKE_POWER = 0.6;
 
-
     public static final double LOWER_ARM_POSITION_MM_PID_KP = 0.1;
     public static final double LOWER_ARM_POSITION_MM_PID_KI = 0.0;
     public static final double LOWER_ARM_POSITION_MM_PID_KD = 0.0;
@@ -284,16 +283,18 @@ public class TuningConstants
     public static final double ARM_MAX_VELOCITY = 50.0;
     public static final double ARM_MAX_ACCLERATION = 50.0;
  
-    public static final double ARM_STRING_ENCODER_TICKS_PER_INCH = 254;
+    public static final double ARM_STRING_ENCODER_TICKS_PER_INCH = 254; // .1 mm per tick
 
     public static final boolean PIGEON_PITCH_LOG = true;
     public static final boolean PIGEON_YAW_LOG = true;
     public static final boolean PIGEON_ROLL_LOG = true;
 
-    public static final double MAX_HEIGHT = 78.0;
-    public static final double MAX_LENGTH = 48.0;
+    public static final double ARM_MAX_HEIGHT = 78.0;
+    public static final double ARM_MAX_LENGTH = 48.0;
 
-    //============================================= CHARGE PAD ==================================================================
+    public static final double LOWER_ARM_VELOCITY_DEAZONE = 0.1;
+
+    //============================================= ChargeStation Macro ==================================================================
 
     public static final double CHARGE_STATION_PITCH_VARIATION = 0.3;
     public static final double CHARGE_STATION_STEP_ONE_GOAL_ANGLE = 15;
@@ -301,8 +302,4 @@ public class TuningConstants
     public static final double CHARGE_STATION_STEP_THREE_GOAL_POSITION = 4.5;
 
     public static final double CHARGE_STATION_LEVEL_ANGLE = 0.0;
-
-    public static final double LOWER_ARM_VELOCITY_DEAZONE = 0.1;
-
-    
 }
