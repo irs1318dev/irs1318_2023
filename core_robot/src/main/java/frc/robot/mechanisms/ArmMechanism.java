@@ -10,8 +10,12 @@ import frc.robot.mechanisms.PowerManager.CurrentLimiting;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+
+
+@Singleton
 public class ArmMechanism implements IMechanism
 {
+    //----------------- Main Arm Variables ----------------------------------------
     // Positions are in ticks
     private double lowerArmPosition;
     // private double upperArmPosition;
@@ -28,6 +32,17 @@ public class ArmMechanism implements IMechanism
 
     private static final int defaultPidSlotId = 0;
 
+    
+    
+    //-------------------- Side Stick Variables ------------------------------------
+    private enum SideArmState
+    {
+        Retracted,
+        Extended
+    };
+    private SideArmState currentSideArmState;
+    private IDoubleSolenoid SideStick;
+
     @Inject
     public ArmMechanism(
         IDriver driver,
@@ -36,16 +51,15 @@ public class ArmMechanism implements IMechanism
         PowerManager powerManager,
         ITimer timer)
     {
-        this.driver = driver;
-        this.logger = logger;
-        this.timer = timer;
-        this.powerManager = powerManager;
+        //------------------------- Main Arm Initializiation -----------------------------------
 
         this.lowerArmPosition = TuningConstants.LOWER_ARM_FULL_EXTENTION_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // Fully Extended
         //this.upperArmPosition = TuningConstants.UPPER_ARM_FULL_RETRACTED_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // Fully Retracted
 
         this.lowerArmVelocity = 0;
         //this.upperArmVelocity = 0;
+
+        
 
         this.lowerArm = provider.getTalonSRX(ElectronicsConstants.ARM_LOWER_CAN_ID);
         //this.upperArm = provider.getTalonSRX(ElectronicsConstants.ARM_UPPER_CAN_ID);
@@ -95,6 +109,20 @@ public class ArmMechanism implements IMechanism
         upperArmFollower.setInvertOutput(TuningConstants.UPPER_ARM_INVERT_OUTPUT);
         upperArmFollower.setNeutralMode(MotorNeutralMode.Brake);
         upperArmFollower.follow(this.upperArm);*/
+
+        //------------------------- Side Stick Initialization ------------------------------
+    
+        this.SideStick = provider.getDoubleSolenoid(
+            ElectronicsConstants.PNEUMATICS_MODULE_C,
+            ElectronicsConstants.PNEUMATICS_MODULE_TYPE_C,
+            ElectronicsConstants.SIDE_STICK_PISTON_FORWARD, 
+            ElectronicsConstants.SIDE_STICK_PISTON_BACKWARD);
+
+        this.currentSideArmState = SideArmState.Retracted;
+        this.driver = driver;
+        this.logger = logger;
+        this.timer = timer;
+        this.powerManager = powerManager;
     }
 
 
@@ -113,6 +141,30 @@ public class ArmMechanism implements IMechanism
     @Override
     public void update()
     {
+
+        if (this.driver.getDigital(DigitalOperation.SwitchArm))
+        {
+            this.SideStick.set(DoubleSolenoidValue.Forward);
+            lowerArm.set(90 * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH); //LowerArm Straight up
+            //upperArmAngle etc... // UpperArm fully retracted
+        }
+        else {
+            this.SideStick.set(DoubleSolenoidValue.Reverse);
+            MainArm();
+        }
+        
+    }
+
+    @Override
+    public void stop()
+    {
+        this.lowerArm.stop();
+        // this.upperArm.stop();
+    }
+
+    public void MainArm()
+        {
+            //------------------------- Main Arm Update --------------------------------
          double targetXPos = 0; // Place holder value - How far away desired point is after from robot after reading april tag
          double targetZPos = 0;
          if (targetXPos < TuningConstants.MAX_LENGTH && targetZPos < TuningConstants.MAX_HEIGHT)
@@ -150,39 +202,31 @@ public class ArmMechanism implements IMechanism
             Math.cos(totalLowerArmAngle)));
 
             this.lowerArmPosition *= TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
-         }
 
-         else { return ;}
+            double lowerArmVelocity = this.driver.getAnalog(AnalogOperation.LowerArmVelocity);
+            
+            this.lowerArm.set(lowerArmVelocity);
 
-        double lowerArmVelocity = this.driver.getAnalog(AnalogOperation.LowerArmVelocity);
-        
-        this.lowerArm.set(lowerArmVelocity);
+            if (this.driver.getDigital(DigitalOperation.IntakeLowerExtend))
+            {
+                this.lowerArm.set((driver.getAnalog(AnalogOperation.LowerArmPosition) + 1) * 1016);
+            }
+            else
+            {
+                this.lowerArm.set(this.lowerArmPosition);
+            }
 
-         if (this.driver.getDigital(DigitalOperation.IntakeLowerExtend))
-         {
-             this.lowerArm.set((driver.getAnalog(AnalogOperation.LowerArmPosition) + 1) * 1016);
-         }
-         else
-         {
-             this.lowerArm.set(this.lowerArmPosition);
-         }
-
-         // if (this.driver.getDigital(DigitalOperation.IntakeUpperExtend))
-        // {
-        //     this.upperArm.set((this.driver.getAnalog(AnalogOperation.UpperArmPosition) + 1) * 1016);
-        // }
-        // else
-        // {
-        //     this.upperArm.set(this.upperArmPosition);
-        // }
+            // if (this.driver.getDigital(DigitalOperation.IntakeUpperExtend))
+            // {
+            //     this.upperArm.set((this.driver.getAnalog(AnalogOperation.UpperArmPosition) + 1) * 1016);
+            // }
+            // else
+            // {
+            //     this.upperArm.set(this.upperArmPosition);
+            // }
+            
+         
+        }
+       // return lowerArmPosition;
     }
-
-    @Override
-    public void stop()
-    {
-        this.lowerArm.stop();
-        // this.upperArm.stop();
-    }
-
-    
 }

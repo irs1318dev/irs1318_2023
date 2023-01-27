@@ -41,6 +41,9 @@ public class ElectronicsConstants
     public static final PneumaticsModuleType PNEUMATICS_MODULE_TYPE_A = PneumaticsModuleType.PneumaticsHub; // Module A
     public static final int PNEUMATICS_MODULE_B = 2; // Module B
     public static final PneumaticsModuleType PNEUMATICS_MODULE_TYPE_B = PneumaticsModuleType.PneumaticsHub; // Module B
+    public static final int PNEUMATICS_MODULE_C = 3; // Module A
+    public static final PneumaticsModuleType PNEUMATICS_MODULE_TYPE_C = PneumaticsModuleType.PneumaticsHub; // Module C
+
 
     public static final boolean PNEUMATICS_USE_HYBRID = false;
     public static final boolean PNEUMATICS_USE_ANALOG = false;
@@ -71,7 +74,7 @@ public class ElectronicsConstants
     public static final int DRIVETRAIN_ABSOLUTE_ENCODER_3_CAN_ID = 3;
     public static final int DRIVETRAIN_ABSOLUTE_ENCODER_4_CAN_ID = 4;
 
-    //================================================= Arm =====================================================================
+    //================================================= Main Arm =====================================================================
 
     public static final int INTAKE_MOTOR_CAN_ID = 9;
     public static final int CARGO_INTAKE_PISTON_FORWARD = 7;
@@ -85,4 +88,9 @@ public class ElectronicsConstants
 
     public static final int ARM_LOWER_ABSOLUTE_ENCODER_CAN_ID = 14;
     public static final int ARM_UPPER_ABSOLUTE_ENCODER_CAN_ID = 15;
+
+    //================================================ Side Arm ==========================================================================
+
+    public static final int SIDE_STICK_PISTON_FORWARD = 16; //Should change this
+    public static final int SIDE_STICK_PISTON_BACKWARD = 17; // ^
 }
