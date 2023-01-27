@@ -283,10 +283,6 @@ public class TuningConstants
     public static final double ARM_MAX_ACCLERATION = 50.0;
     public static final double UPPER_ARM_FULLY_RETRACTED = 0.0;
 
-    public static final boolean PIGEON_PITCH_LOG = true;
-    public static final boolean PIGEON_YAW_LOG = true;
-    public static final boolean PIGEON_ROLL_LOG = true;
-
     //============================================= ChargeStation Macro ==================================================================
 
     public static final double CHARGE_STATION_PITCH_VARIATION = 0.3;
