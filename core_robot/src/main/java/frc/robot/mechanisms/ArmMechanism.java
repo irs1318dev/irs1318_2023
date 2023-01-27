@@ -85,11 +85,6 @@ public class ArmMechanism implements IMechanism
         lowerArmFollower.setInvertOutput(TuningConstants.LOWER_ARM_INVERT_OUTPUT);
         lowerArmFollower.setNeutralMode(MotorNeutralMode.Brake);
         lowerArmFollower.follow(this.lowerArm);
-
-        ITalonSRX upperArmFollower = provider.getTalonSRX(ElectronicsConstants.ARM_UPPER_FOLLOWER_CAN_ID);
-        upperArmFollower.setInvertOutput(TuningConstants.UPPER_ARM_INVERT_OUTPUT);
-        upperArmFollower.setNeutralMode(MotorNeutralMode.Brake);
-        upperArmFollower.follow(this.upperArm);
     }
 
     @Override
