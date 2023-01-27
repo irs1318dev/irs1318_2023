@@ -113,51 +113,49 @@ public class ArmMechanism implements IMechanism
     @Override
     public void update()
     {
+         double targetXPos = 0; // Place holder value - How far away desired point is after from robot after reading april tag
+         double targetZPos = 0;
+         if (targetXPos < TuningConstants.MAX_LENGTH && targetZPos < TuningConstants.MAX_HEIGHT)
+         {
+            double lowerArmAngle = 90; // 90 if Starting straight up (Extended)
+            double lowerArmAngleToMove = 0; // From current angle to desired angle
+            double upperArmAngle = 0; //0 if retracted *angle is relative to upper arm angle*
+            double upperArmAngleToMove = 0; // From current angle to desired angle
+
+            lowerArmAngleToMove = Math.atan(
+                (targetZPos/targetXPos)) + 
+                Math.atan((HardwareConstants.UPPER_ARM_LENGTH * Math.sin(upperArmAngleToMove))/
+                (HardwareConstants.LOWER_ARM_LENGTH + (HardwareConstants.UPPER_ARM_LENGTH * Math.cos(upperArmAngleToMove))));
+            
+            upperArmAngleToMove = -Math.acos(
+                ((targetXPos * targetXPos) + 
+                (targetZPos * targetZPos) - 
+                (HardwareConstants.LOWER_ARM_LENGTH * HardwareConstants.LOWER_ARM_LENGTH) - 
+                (HardwareConstants.UPPER_ARM_LENGTH * HardwareConstants.UPPER_ARM_LENGTH)) /
+                (2 * HardwareConstants.UPPER_ARM_LENGTH * HardwareConstants.LOWER_ARM_LENGTH));
+            
+            double totalLowerArmAngle = lowerArmAngle + 
+            HardwareConstants.LOWER_ARM_LINEAR_ACTUATOR_RIGHT_ANGLE_OFFSET + 
+            HardwareConstants.LOWER_ARM_LINEAR_ACTUATOR_LEFT_ANGLE_OFFSET; //With offsets
+            
+            double linearActuatorDistanceToMove = 8; //Starting value of 8 inch, maybe (placeholder)
+
+            linearActuatorDistanceToMove = (Math.sqrt(
+            HardwareConstants.LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM *
+            HardwareConstants.LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM +
+            HardwareConstants.LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM *
+            HardwareConstants.LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM - 
+            2 * HardwareConstants.LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM * 
+            HardwareConstants.LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM * 
+            Math.cos(totalLowerArmAngle)));
+
+            this.lowerArmPosition *= TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
+         }
+
+         else { return ;}
+
         double lowerArmVelocity = this.driver.getAnalog(AnalogOperation.LowerArmVelocity);
         
-         //--------------------------------------------------------Inverse Kinematics-------------------------------------------
-         
-         double targetXPos = 0; // Place holder value - How far away desired point is after from robot after reading april tag
-         double targetZPos = 0; // Place holder value - How high the point is, relative to the robot after reading april tag
-         double lowerArmAngle = 90; // 90 if Starting straight up (Extended)
-         double lowerArmAngleToMove = 0; // From current angle to desired angle
-         //double upperArmAngle = 0; //0 if retracted *angle is relative to upper arm angle*
-        // double upperArmAngleToMove = 0; // From current angle to desired angle
-
-         lowerArmAngleToMove = StrictMath.acos(
-            ((targetXPos * targetXPos) + 
-            (targetZPos * targetZPos) - 
-            (HardwareConstants.LOWER_ARM_LENGTH * HardwareConstants.LOWER_ARM_LENGTH) - 
-            (HardwareConstants.UPPER_ARM_LENGTH * HardwareConstants.UPPER_ARM_LENGTH)) /
-            (2 * HardwareConstants.UPPER_ARM_LENGTH * HardwareConstants.LOWER_ARM_LENGTH));
-        lowerArmAngle = lowerArmAngle - lowerArmAngleToMove; // PID does does this but for now
-/* 
-        upperArmAngleToMove = StrictMath.atan(
-            (targetZPos/targetXPos)) - 
-            StrictMath.atan((HardwareConstants.UPPER_ARM_LENGTH * StrictMath.sin(lowerArmAngleToMove))/
-            (HardwareConstants.LOWER_ARM_LENGTH + (HardwareConstants.UPPER_ARM_LENGTH * StrictMath.cos(lowerArmAngleToMove))));
-        upperArmAngle = upperArmAngle - upperArmAngleToMove; // PID thing
-*/     
-        //-----------------------------------------------------Angle to Distance Conversion-------------------------
-        double totalLowerArmAngle = lowerArmAngle + 
-        HardwareConstants.LOWER_ARM_LINEAR_ACTUATOR_RIGHT_ANGLE_OFFSET + 
-        HardwareConstants.LOWER_ARM_LINEAR_ACTUATOR_LEFT_ANGLE_OFFSET; //With offsets
-        
-        double linearActuatorDistanceToMove = 8; //Starting value of 8 inch, maybe (placeholder)
-
-        linearActuatorDistanceToMove = (StrictMath.sqrt(
-        HardwareConstants.LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM *
-        HardwareConstants.LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM +
-        HardwareConstants.LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM *
-        HardwareConstants.LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM - 
-        2 * HardwareConstants.LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM * 
-        HardwareConstants.LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM * 
-        StrictMath.cos(totalLowerArmAngle)));
-
-        this.lowerArmPosition = linearActuatorDistanceToMove - this.lowerArmPosition; //Pid feature, can remove later
-        this.lowerArmPosition *= TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; //Might not need this
-
-        //---------------------------------Moving Arm------
         this.lowerArm.set(lowerArmVelocity);
 
          if (this.driver.getDigital(DigitalOperation.IntakeLowerExtend))
@@ -185,4 +183,6 @@ public class ArmMechanism implements IMechanism
         this.lowerArm.stop();
         // this.upperArm.stop();
     }
+
+    
 }
