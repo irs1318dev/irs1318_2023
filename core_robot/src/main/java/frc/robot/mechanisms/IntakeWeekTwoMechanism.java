@@ -9,16 +9,15 @@ import frc.robot.driver.common.*;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-// Talon SRX
-public class IntakeWeekTwoMechanism implements IMechanism{
-
+@Singleton
+public class IntakeWeekTwoMechanism implements IMechanism
+{
     private final IDriver driver;
     private final ILogger logger;
 
     private final ITalonSRX intakeMotor;
 
     private final IDoubleSolenoid intakeExtender;
-    
 
     private enum IntakeState
     {
@@ -46,7 +45,6 @@ public class IntakeWeekTwoMechanism implements IMechanism{
                 ElectronicsConstants.PNEUMATICS_MODULE_TYPE_A,
                 ElectronicsConstants.CARGO_INTAKE_PISTON_FORWARD,
                 ElectronicsConstants.CARGO_INTAKE_PISTON_REVERSE);
-        
 
         this.currentIntakeState = IntakeState.Retracted;
     }
@@ -54,7 +52,6 @@ public class IntakeWeekTwoMechanism implements IMechanism{
     @Override
     public void readSensors()
     {
-
     }
 
     @Override
@@ -62,17 +59,16 @@ public class IntakeWeekTwoMechanism implements IMechanism{
     {
         // control intake rollers
         double intakePower = TuningConstants.ZERO;
-        if(this.driver.getDigital(DigitalOperation.IntakeIn))
+        if (this.driver.getDigital(DigitalOperation.IntakeIn))
         {
             intakePower = TuningConstants.INTAKE_POWER;
         }
-        else if(this.driver.getDigital(DigitalOperation.IntakeOut))
+        else if (this.driver.getDigital(DigitalOperation.IntakeOut))
         {
             intakePower = -TuningConstants.INTAKE_POWER;
         }
 
         this.intakeMotor.set(intakePower);
-
         this.logger.logNumber(LoggingKey.IntakePower, intakePower);
 
         // intake state transitions
