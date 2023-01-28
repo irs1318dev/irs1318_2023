@@ -84,8 +84,8 @@ public class ButtonMap implements IButtonMap
         // driving operations
         new DigitalOperationDescription(
             DigitalOperation.PositionResetFieldOrientation,
-            UserInputDevice.Codriver,
-            UserInputDeviceButton.XBONE_A_BUTTON,
+            UserInputDevice.Driver,
+            UserInputDeviceButton.XBONE_RIGHT_STICK_BUTTON,
             Shift.CodriverDebug,
             Shift.None,
             ButtonType.Click),
@@ -426,8 +426,9 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
-                new PositionStartingTask(0.0, false, true), //calibration
-                new ChargeStationStepOneTask(), //gets robot onto the middle part
+                // new PositionStartingTask(0.0, false, true), //calibration
+                //new ChargeStationStepOneTask(), 
+                //gets robot onto the middle part
 
                 new ChargeStationTask(), //Jamie's function
                 ConcurrentTask.AllTasks(

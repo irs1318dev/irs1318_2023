@@ -18,8 +18,6 @@ import frc.robot.mechanisms.PigeonManager;
 
 public class ChargeStationTask extends ControlTaskBase
 {
-    
-
     private PigeonManager imuManager;
     private DriveTrainMechanism driveTrain;
     private LoggingManager logger;
@@ -43,8 +41,6 @@ public class ChargeStationTask extends ControlTaskBase
         this.distanceTraveled = 0.0;
         this.timeSinceLastPitchLog = 0.0;
         this.prevPitchLogTime = 0.0;
-        
-        
     }
 
     private double findDiff() //finds the absolute value diff of pitch values of beginning and end of pitchLog[]
@@ -68,17 +64,15 @@ public class ChargeStationTask extends ControlTaskBase
 
         //at the beginning of task set all array values to be current pitch
         for (int i = 0; i < this.pitchLog.length; i++)
-            {
-                this.pitchLog[i] = this.pitch;
-            }
-        
+        {
+            this.pitchLog[i] = this.pitch;
+        }
+
         this.setDigitalOperationState(DigitalOperation.DriveTrainEnableMaintainDirectionMode, true);
         this.setDigitalOperationState(DigitalOperation.DriveTrainPathMode, false);
         this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleGoal, 0);
         this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, 0);
         this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0);
-
-        
     }
 
     /**
@@ -94,16 +88,16 @@ public class ChargeStationTask extends ControlTaskBase
         //previous pitch log movement
         if (this.timeSinceLastPitchLog >= 0.02)
         {
-            //if previous pitch log time was 0.02 secs ago then set pitch log time as current time, and log
+            // if previous pitch log time was 0.02 secs ago then set pitch log time as current time, and log
             this.prevPitchLogTime = this.timer.get(); 
 
-            //constantly update array for past 0.5 seconds
+            // constantly update array for past 0.5 seconds
             for (int i = 1; i < this.pitchLog.length; i++)
             {
                 this.pitchLog[i-1] = this.pitchLog[i];
             }
 
-            //put current pitch in final space
+            // put current pitch in final space
             this.pitchLog[this.pitchLog.length - 1] = this.pitch;
         }
 
@@ -111,24 +105,24 @@ public class ChargeStationTask extends ControlTaskBase
         this.pitch = imuManager.getPitch();
 
         //if the pitch diff of 0.5 seconds is greater than the acceptable diff
-        if (TuningConstants.CHARGE_STATION_ACCEPTABLE_PITCH_DIFF <= (findDiff()))
+        if (TuningConstants.CHARGE_STATION_ACCEPTABLE_PITCH_DIFF >= (findDiff()))
         {
             if (this.pitch < 0) //if negative pitch, move forward
             {
-            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.03);
+            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.06);
             }
 
             if (this.pitch > 0) //if positive pitch, move backward
             {
-            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.03);
+            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, -0.06);
             }
         }
 
         //wait to see if leveled
-        else
-        {
-            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0);
-        }
+         else
+         {
+             this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0);
+         }
 
         
         
