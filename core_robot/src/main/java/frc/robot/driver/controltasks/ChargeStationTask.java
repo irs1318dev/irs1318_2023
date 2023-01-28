@@ -33,7 +33,6 @@ public class ChargeStationTask extends ControlTaskBase
     private double timeSinceLastPitchLog;
     private double prevPitchLogTime;
     private double[] pitchLog = new double[25]; //logs every 0.02 secs, array is 0.5 secs total
-    private int logRefPoint = 3; //array space in pitchLog[] to reference from for diff
 
     public ChargeStationTask()
     {
@@ -95,7 +94,7 @@ public class ChargeStationTask extends ControlTaskBase
         //previous pitch log movement
         if (this.timeSinceLastPitchLog >= 0.02)
         {
-            //if previous pitch log time was 0.1 secs ago then set pitch log time as current time, and log
+            //if previous pitch log time was 0.02 secs ago then set pitch log time as current time, and log
             this.prevPitchLogTime = this.timer.get(); 
 
             //constantly update array for past 0.5 seconds
