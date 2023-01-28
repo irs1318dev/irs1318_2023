@@ -157,14 +157,14 @@ public class ButtonMap implements IButtonMap
             UserInputDeviceButton.XBONE_RIGHT_BUTTON,
             Shift.DriverDebug,
             Shift.None,
-            ButtonType.Click),
+            ButtonType.Simple),
         new DigitalOperationDescription(
             DigitalOperation.IntakeOut,
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_RIGHT_BUTTON,
             Shift.DriverDebug,
             Shift.DriverDebug,
-            ButtonType.Click),
+            ButtonType.Simple),
         new DigitalOperationDescription(
             DigitalOperation.ExtendFlipper,
             UserInputDevice.Codriver,
