@@ -16,7 +16,7 @@ public class PositionStartingTask extends UpdateCycleTask
      * Initializes a new PositionStartingTask
      * @param angle - offset to use from the default of facing away from the alliance driver station (in degrees)
      * @param resetDriveTrain - whether to reset the drivetrain wheels (to read from the absolute encoders)
-     * @param resetOrientation - whether to reset the 
+     * @param resetOrientation - whether to reset the orientation of the robot
      */
     public PositionStartingTask(Double angle, boolean resetDriveTrain, boolean resetOrientation)
     {
