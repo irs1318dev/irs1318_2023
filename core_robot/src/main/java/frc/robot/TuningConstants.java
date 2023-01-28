@@ -289,6 +289,7 @@ public class TuningConstants
     public static final double CHARGE_STATION_STEP_ONE_GOAL_ANGLE = 15;
     public static final double CHARGE_STATION_STEP_TWO_GOAL_ANGLE = 9;
     public static final double CHARGE_STATION_STEP_THREE_GOAL_POSITION = 4.5;
+    public static final double CHARGE_STATION_ACCEPTABLE_PITCH_DIFF = 2.0;
 
     public static final double CHARGE_STATION_LEVEL_ANGLE = 0.0;
 }
