@@ -1,6 +1,6 @@
 //Jamie Hsieh, Calvin Rodrigue
 //1.19.2023
-//Overshoots the robot forwards on the charge station.
+//Assumes the robot is on the center platform, and adjusts position.
 //Jamie's first robot code commit.
 
 package frc.robot.driver.controltasks;
@@ -18,13 +18,7 @@ import frc.robot.mechanisms.PigeonManager;
 
 public class ChargeStationTask extends ControlTaskBase
 {
-    private enum State
-    {
-        ReadPitch,
-        MoveForward,
-        MoveBackward,
-
-    }
+    
 
     private PigeonManager imuManager;
     private DriveTrainMechanism driveTrain;
@@ -38,7 +32,7 @@ public class ChargeStationTask extends ControlTaskBase
     private double distanceTraveled;
     private double timeSinceLastPitchLog;
     private double prevPitchLogTime;
-    private double[] pitchLog = new double[10];
+    private double[] pitchLog = new double[25]; //logs every 0.02 secs, array is 0.5 secs total
     private int logRefPoint = 3; //array space in pitchLog[] to reference from for diff
 
     public ChargeStationTask()
@@ -54,6 +48,11 @@ public class ChargeStationTask extends ControlTaskBase
         
     }
 
+    private double findDiff() //finds the absolute value diff of pitch values of beginning and end of pitchLog[]
+    {
+        return Math.abs((this.pitchLog[this.pitchLog.length - 1]) - this.pitchLog[0]);
+    }
+
     /**
      * Begin the current task.
      */
@@ -66,12 +65,12 @@ public class ChargeStationTask extends ControlTaskBase
         this.timer = this.getInjector().getInstance(ITimer.class);
         this.pitch = this.imuManager.getPitch();
         this.prevPitchLogTime = this.timer.get();
-        timeSinceLastPitchLog = this.timer.get() - this.prevPitchLogTime;
+        this.timeSinceLastPitchLog = this.timer.get() - this.prevPitchLogTime;
 
         //at the beginning of task set all array values to be current pitch
-        for (int i = 0; i < pitchLog.length; i++)
+        for (int i = 0; i < this.pitchLog.length; i++)
             {
-                pitchLog[i] = this.pitch;
+                this.pitchLog[i] = this.pitch;
             }
         
         this.setDigitalOperationState(DigitalOperation.DriveTrainEnableMaintainDirectionMode, true);
@@ -92,60 +91,48 @@ public class ChargeStationTask extends ControlTaskBase
 
         this.timeSinceLastPitchLog = this.timer.get() - this.prevPitchLogTime; //current time - previous pitch log time
 
-        if (this.timeSinceLastPitchLog >= 0.05)
+
+        //previous pitch log movement
+        if (this.timeSinceLastPitchLog >= 0.02)
         {
             //if previous pitch log time was 0.1 secs ago then set pitch log time as current time, and log
             this.prevPitchLogTime = this.timer.get(); 
 
-            //if log position is at max, reset (only log set amount of time)
-            //move every value left 1
-            for (int i = 1; i < pitchLog.length; i++)
+            //constantly update array for past 0.5 seconds
+            for (int i = 1; i < this.pitchLog.length; i++)
             {
-                pitchLog[i-1] = pitchLog[i];
+                this.pitchLog[i-1] = this.pitchLog[i];
             }
-            
+
             //put current pitch in final space
-            pitchLog[pitchLog.length - 1] = this.pitch;
-            
+            this.pitchLog[this.pitchLog.length - 1] = this.pitch;
         }
 
-        
-
-        //check for IMU pitch diff
-        
-        
+        //if the pitch is greater than 15 degrees (both wheels on center platform) move forward
         this.pitch = imuManager.getPitch();
-        if (this.pitch <= (TuningConstants.CHARGE_STATION_LEVEL_ANGLE - TuningConstants.CHARGE_STATION_PITCH_VARIATION))
+
+        //if the pitch diff of 0.5 seconds is greater than the acceptable diff
+        if (TuningConstants.CHARGE_STATION_ACCEPTABLE_PITCH_DIFF <= (findDiff()))
         {
-            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.05);
-        }
-        
-        /*
-        else if (this.pitch >= (TuningConstants.CHARGE_STATION_LEVEL_ANGLE - TuningConstants.CHARGE_STATION_PITCH_VARIATION))
-        {
-            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, -0.05);
+            if (this.pitch < 0) //if negative pitch, move forward
+            {
+            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.03);
+            }
+
+            if (this.pitch > 0) //if positive pitch, move backward
+            {
+            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.03);
+            }
         }
 
-        previously used for attempting to level on the charge station. Current task does not need to go backwards.
-        */ 
-
-        else 
+        //wait to see if leveled
+        else
         {
             this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0);
         }
+
         
-        /*
-        if(this.pitch > 0)
-        {
-            this.sign = 1;
-        }
-        else if(this.pitch < 0)
-        {
-            this.sign = -1;
-        }       
-        this.xPos = driveTrain.getPositionX();
-        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, sign * 2 / xPos);
-        */
+        
 
 
     }
@@ -169,12 +156,16 @@ public class ChargeStationTask extends ControlTaskBase
     @Override
     public boolean hasCompleted()
     {
-        //if(Math.abs(pitch) < 0) Previously used for balancing
-        if (pitch > 0) //Detects when overshoot
+        //if the diff of past 0.5 seconds is within acceptable pitch diff, 
+        //and the current pitch is within acceptable leveled variation, end.
+        if ((TuningConstants.CHARGE_STATION_ACCEPTABLE_PITCH_DIFF >= findDiff()) && 
+        (Math.abs(this.pitch) <= TuningConstants.CHARGE_STATION_PITCH_VARIATION)) 
         {
             return true;
         }
 
         return false;
     }
+
+    
 }
