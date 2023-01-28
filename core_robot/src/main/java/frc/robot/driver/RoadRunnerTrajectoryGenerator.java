@@ -111,17 +111,17 @@ public class RoadRunnerTrajectoryGenerator
         addPath(
             pathManager,
             startTrajectory(30.08, 108.015, 180.0 * Helpers.DEGREES_TO_RADIANS, 180.0 * Helpers.DEGREES_TO_RADIANS)
-                .splineToConstantHeading(new Vector2d(60.425, 108.015), 0.0 * Helpers.DEGREES_TO_RADIANS),
-            "StartToPickupToChargeStation");
+                .splineToConstantHeading(new Vector2d(90.77, 108.015), 0.0 * Helpers.DEGREES_TO_RADIANS), // Goes infront of charge staton
+            "MiddleStartToChargeStation");
 
         addPath(
             pathManager,
             startTrajectory(30.08, 186.335, 180.0 * Helpers.DEGREES_TO_RADIANS, 180.0 * Helpers.DEGREES_TO_RADIANS)
-                .splineToConstantHeading(new Vector2d(254.08, 186.335), 0.0 * Helpers.DEGREES_TO_RADIANS) //Change to lines
+                .splineToConstantHeading(new Vector2d(254.08, 186.335), 0.0 * Helpers.DEGREES_TO_RADIANS) //
                 .splineToConstantHeading(new Vector2d(254.08, 180.18), 0.0 * Helpers.DEGREES_TO_RADIANS)
                 .splineToConstantHeading(new Vector2d(254.08, 186.335), 0.0 * Helpers.DEGREES_TO_RADIANS)
-                .splineToConstantHeading(new Vector2d(30.08, 186.335), 0.0 * Helpers.DEGREES_TO_RADIANS), //Change to lines
-            "ToGroundNodeFarUp");
+                .splineToConstantHeading(new Vector2d(30.08, 186.335), 0.0 * Helpers.DEGREES_TO_RADIANS),
+            "UpStartToGroundNodeFarUp");
 
     }
 
