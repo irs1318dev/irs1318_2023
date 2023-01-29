@@ -422,6 +422,13 @@ public class DriveTrainMechanismTests
             ypr_deg[2] = this.currentAngle;
         }
 
+        public void getRawGyro(double[] xyz_dps)
+        {
+            xyz_dps[0] = this.currentAngle;
+            xyz_dps[1] = this.currentAngle;
+            xyz_dps[2] = this.currentAngle;
+        }
+
         public void setYaw(double angleDeg)
         {
             this.currentAngle = angleDeg;

@@ -23,6 +23,13 @@ public class Pigeon2Wrapper implements IPigeon2
             "Pigeon2.getYawPitchRoll");
     }
 
+    public void getRawGyro(double[] xyz_dps)
+    {
+        CTREErrorCodeHelper.printError(
+            this.wrappedObject.getRawGyro(xyz_dps),
+            "Pigeon2.getRawGyro");
+    }
+
     public void setYaw(double angleDeg)
     {
         CTREErrorCodeHelper.printError(

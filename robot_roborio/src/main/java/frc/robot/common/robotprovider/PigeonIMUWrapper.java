@@ -19,6 +19,13 @@ public class PigeonIMUWrapper implements IPigeonIMU
             "PigeonIMU.getYawPitchRoll");
     }
 
+    public void getRawGyro(double[] xyz_dps)
+    {
+        CTREErrorCodeHelper.printError(
+            this.wrappedObject.getRawGyro(xyz_dps),
+            "PigeonIMU.getRawGyro");
+    }
+
     public void setYaw(double angleDeg)
     {
         CTREErrorCodeHelper.printError(
