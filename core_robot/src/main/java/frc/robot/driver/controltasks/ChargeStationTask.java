@@ -33,6 +33,15 @@ public class ChargeStationTask extends ControlTaskBase
     private double timeSinceLastPitchLog;
     private double prevPitchLogTime;
     private double[] pitchLog = new double[25]; //logs every 0.02 secs, array is 0.5 secs total
+    private enum State{
+        Starting,
+        Climbing,
+        Balancing,
+        Tipping,
+        Completed
+    }
+    private State currentState;
+    
 
     public ChargeStationTask()
     {
@@ -58,6 +67,8 @@ public class ChargeStationTask extends ControlTaskBase
     @Override
     public void begin()
     {
+        currentState = State.Starting;
+
         this.imuManager = this.getInjector().getInstance(PigeonManager.class);
         this.driveTrain = this.getInjector().getInstance(DriveTrainMechanism.class);
         this.logger = this.getInjector().getInstance(LoggingManager.class);
@@ -88,47 +99,109 @@ public class ChargeStationTask extends ControlTaskBase
     public void update()
     {
 
+        
+
         this.timeSinceLastPitchLog = this.timer.get() - this.prevPitchLogTime; //current time - previous pitch log time
 
 
         //previous pitch log movement
         if (this.timeSinceLastPitchLog >= 0.02)
         {
-            //if previous pitch log time was 0.02 secs ago then set pitch log time as current time, and log
+            // if previous pitch log time was 0.02 secs ago then set pitch log time as current time, and log
             this.prevPitchLogTime = this.timer.get(); 
 
-            //constantly update array for past 0.5 seconds
+            // constantly update array for past 0.5 seconds
             for (int i = 1; i < this.pitchLog.length; i++)
             {
                 this.pitchLog[i-1] = this.pitchLog[i];
             }
 
-            //put current pitch in final space
+            // put current pitch in final space
             this.pitchLog[this.pitchLog.length - 1] = this.pitch;
         }
 
         //if the pitch is greater than 15 degrees (both wheels on center platform) move forward
         this.pitch = imuManager.getPitch();
 
-        //if the pitch diff of 0.5 seconds is greater than the acceptable diff
-        if (TuningConstants.CHARGE_STATION_ACCEPTABLE_PITCH_DIFF <= (findDiff()))
+        if (this.currentState == State.Starting)
         {
-            if (this.pitch < 0) //if negative pitch, move forward
-            {
-            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.03);
+                //if front wheel is on first part, set switch to climbing
+                if (this.pitch >= TuningConstants.CHARGE_STATION_START_TRANSITION_PITCH)
+                {
+                    this.currentState = State.Climbing;
+
+                }
+        }
+        else if (this.currentState == State.Climbing)
+        {
+                //if pitch is larger than 15-ish, set speed to balancing speed
+                if (this.pitch >= (TuningConstants.CHARGE_STATION_CLIMBING_TRANSITION_PITCH - TuningConstants.CHARGE_STATION_CLIMBING_TRANSITION_ACCEPTABLE_VARIATION))
+                {
+                    this.currentState = State.Balancing;
+
+                }
+        }
+        else if (this.currentState == State.Balancing)
+        {
+            //if the diff of past 0.5 seconds is within acceptable pitch diff, 
+            //and the current pitch is within acceptable leveled variation, end.
+            if ((TuningConstants.CHARGE_STATION_ACCEPTABLE_PITCH_DIFF >= findDiff()) && 
+            (Math.abs(this.pitch) <= TuningConstants.CHARGE_STATION_PITCH_VARIATION)) {
+                this.currentState = State.Completed;
             }
 
-            if (this.pitch > 0) //if positive pitch, move backward
-            {
-            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.03);
-            }
         }
 
-        //wait to see if leveled
-        else
+        switch (this.currentState)
         {
-            this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0);
+
+            //sets starting, climbing, speed.
+
+            /*
+            balancing: moves forward slowly until diff of past 0.5 secs is low enough. 
+            Then checks if pitch is within acceptable range.
+            */
+
+
+            case Balancing:
+                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_BALANCING_SPEED);
+
+                //if the pitch diff of 0.5 seconds is greater than the acceptable diff
+                if (TuningConstants.CHARGE_STATION_ACCEPTABLE_PITCH_DIFF >= (findDiff()))
+                {
+                    if (this.pitch < 0) //if negative pitch, move forward
+                    {
+                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_BALANCING_SPEED);
+                    }
+
+                    if (this.pitch > 0) //if positive pitch, move backward
+                    {
+                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, - TuningConstants.CHARGE_STATION_BALANCING_SPEED);
+                    }
+                }
+
+                //if pitch diff is within acceptable range, then pause.
+                else
+                {
+                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0);
+                }
+
+                break;
+
+            case Climbing:
+                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_CLIMBING_SPEED);
+                break;
+
+            case Starting:
+                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_STARTING_SPEED);
+                break;
+
+            default:
+            case Completed:
+                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0);
+                break;
         }
+        
 
         
         
@@ -155,15 +228,8 @@ public class ChargeStationTask extends ControlTaskBase
     @Override
     public boolean hasCompleted()
     {
-        //if the diff of past 0.5 seconds is within acceptable pitch diff, 
-        //and the current pitch is within acceptable leveled variation, end.
-        if ((TuningConstants.CHARGE_STATION_ACCEPTABLE_PITCH_DIFF >= findDiff()) && 
-        (Math.abs(this.pitch) <= TuningConstants.CHARGE_STATION_PITCH_VARIATION)) 
-        {
-            return true;
-        }
+        return this.currentState == State.Completed;
 
-        return false;
     }
 
     
