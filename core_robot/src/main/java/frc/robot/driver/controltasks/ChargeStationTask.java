@@ -143,15 +143,26 @@ public class ChargeStationTask extends ControlTaskBase
         }
         else if (this.currentState == State.Balancing)
         {
-            //if pitch is larger than 15-ish, set speed to balancing speed
-            if (this.pitch >= (TuningConstants.CHARGE_STATION_CLIMBING_TRANSITION_PITCH - TuningConstants.CHARGE_STATION_CLIMBING_TRANSITION_ACCEPTABLE_VARIATION))
-            {
-                this.currentState = State.Balancing;
+            //if the diff of past 0.5 seconds is within acceptable pitch diff, 
+            //and the current pitch is within acceptable leveled variation, end.
+            if ((TuningConstants.CHARGE_STATION_ACCEPTABLE_PITCH_DIFF >= findDiff()) && 
+            (Math.abs(this.pitch) <= TuningConstants.CHARGE_STATION_PITCH_VARIATION)) {
+                this.currentState = State.Completed;
             }
+
         }
 
         switch (this.currentState)
         {
+
+            //sets starting, climbing, speed.
+
+            /*
+            balancing: moves forward slowly until diff of past 0.5 secs is low enough. 
+            Then checks if pitch is within acceptable range.
+            */
+
+
             case Balancing:
                 this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_BALANCING_SPEED);
 
@@ -169,7 +180,7 @@ public class ChargeStationTask extends ControlTaskBase
                     }
                 }
 
-                //wait to see if leveled
+                //if pitch diff is within acceptable range, then pause.
                 else
                 {
                     this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0);
@@ -178,9 +189,16 @@ public class ChargeStationTask extends ControlTaskBase
                 break;
 
             case Climbing:
+                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_CLIMBING_SPEED);
                 break;
 
             case Starting:
+                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_STARTING_SPEED);
+                break;
+
+            default:
+            case Completed:
+                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0);
                 break;
         }
         
@@ -211,15 +229,7 @@ public class ChargeStationTask extends ControlTaskBase
     public boolean hasCompleted()
     {
         return this.currentState == State.Completed;
-        //if the diff of past 0.5 seconds is within acceptable pitch diff, 
-        //and the current pitch is within acceptable leveled variation, end.
-        if ((TuningConstants.CHARGE_STATION_ACCEPTABLE_PITCH_DIFF >= findDiff()) && 
-        (Math.abs(this.pitch) <= TuningConstants.CHARGE_STATION_PITCH_VARIATION)) 
-        {
-            return true;
-        }
 
-        return false;
     }
 
     
