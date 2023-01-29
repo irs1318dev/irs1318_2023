@@ -37,4 +37,6 @@ public enum DigitalOperation implements IOperation
     ExtendFlipper,
     ArmUpperExtend,
     ArmLowerExtend,
+
+    ArmSimpleMode,
 }

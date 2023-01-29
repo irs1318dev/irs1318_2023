@@ -21,12 +21,17 @@ public class ArmMechanism implements IMechanism
 
     // Positions are in ticks
     private double lowerArmPosition;
-    // private double upperArmPosition;
-    private double lowerArmVelocity;
+    private double upperArmPosition;
+    // private double lowerArmVelocity;
     // private double upperArmVelocity;
+
 
     private final ITalonSRX lowerArm;
     // private final ITalonSRX upperArm;
+    private double desiredLowerArmPosition;
+    //private final double desiredUpperArmPosition;
+    private boolean inSimpleMode;
+    
 
     private final IDriver driver;
     private final ILogger logger;
@@ -44,6 +49,21 @@ public class ArmMechanism implements IMechanism
 
     private SideArmState currentSideArmState;
 
+    //---------------- Intake Variables ----------------------
+    private final ITalonSRX intakeMotor;
+
+    private final IDoubleSolenoid intakeExtender;
+
+    private enum IntakeState
+    {
+        Retracted,
+        Extended
+    };
+
+    //---------------- Timer -----------
+    private double prevTime;
+    private IntakeState currentIntakeState;
+
     @Inject
     public ArmMechanism(
         IDriver driver,
@@ -56,14 +76,17 @@ public class ArmMechanism implements IMechanism
         this.logger = logger;
         this.timer = timer;
         this.powerManager = powerManager;
+        
 
         //------------------------- Main Arm Initializiation -------------------------
 
         // assume initial position:
         this.lowerArmPosition = TuningConstants.LOWER_ARM_FULL_EXTENTION_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // Fully Extended
         // this.upperArmPosition = TuningConstants.UPPER_ARM_FULL_RETRACTED_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // Fully Retracted
-
-        this.lowerArmVelocity = 0;
+        this.desiredLowerArmPosition = 0;
+        //this.desiredUpperArmPosition = 0;
+        this.inSimpleMode = false;
+        //this.lowerArmVelocity = 0;
         // this.upperArmVelocity = 0;
 
         this.lowerArm = provider.getTalonSRX(ElectronicsConstants.ARM_LOWER_CAN_ID);
@@ -120,6 +143,21 @@ public class ArmMechanism implements IMechanism
             ElectronicsConstants.SIDE_STICK_PISTON_BACKWARD);
 
         this.currentSideArmState = SideArmState.Retracted;
+
+        //-------------------------- Intake Initialization ----------------------------------
+        this.intakeMotor = provider.getTalonSRX(ElectronicsConstants.INTAKE_MOTOR_CAN_ID);
+        this.intakeMotor.setControlMode(TalonXControlMode.PercentOutput);
+        this.intakeMotor.setInvertOutput(HardwareConstants.INTAKE_MOTOR_INVERT_OUTPUT);
+        this.intakeMotor.setNeutralMode(MotorNeutralMode.Brake);
+
+        this.intakeExtender =
+            provider.getDoubleSolenoid(
+                ElectronicsConstants.PNEUMATICS_MODULE_A,
+                ElectronicsConstants.PNEUMATICS_MODULE_TYPE_A,
+                ElectronicsConstants.CARGO_INTAKE_PISTON_FORWARD,
+                ElectronicsConstants.CARGO_INTAKE_PISTON_REVERSE);
+
+        this.currentIntakeState = IntakeState.Retracted;
     }
 
 
@@ -128,31 +166,153 @@ public class ArmMechanism implements IMechanism
     {
         this.lowerArmPosition = this.lowerArm.getPosition();
         // this.upperArmPosition = this.upperArm.getPosition();
-        this.lowerArmVelocity = this.lowerArm.getVelocity();
+        //this.lowerArmVelocity = this.lowerArm.getVelocity();
         
         this.logger.logNumber(LoggingKey.LowerArmPosition, this.lowerArmPosition);
         // this.logger.logNumber(LoggingKey.UpperArmPosition, this.upperArmPosition);
-        this.logger.logNumber(LoggingKey.LowerArmVelocity, this.lowerArmVelocity);
+        //this.logger.logNumber(LoggingKey.LowerArmVelocity, this.lowerArmVelocity);
     }
 
     @Override
     public void update()
     {
+        double currTime = this.timer.get();
+        /* 
+            if (this.driver.getDigital(DigitalOperation.ArmLowerExtend))
+            {
+                double lowerArmVelocity = this.driver.getAnalog(AnalogOperation.LowerArmVelocity);
+                this.lowerArm.set(lowerArmVelocity);  
+                this.lowerArm.set((driver.getAnalog(AnalogOperation.LowerArmPosition) + 1) * 1016); 
+            }
+            else
+            {
+                this.lowerArm.set(lowerArmPosition);
+            }
+        */
+
+            //----------------------------------- Intake Update -----------------------------------------------------------
+
+            // control intake rollers
+            double intakePower = TuningConstants.ZERO;
+            if (this.driver.getDigital(DigitalOperation.IntakeIn))
+            {
+                intakePower = TuningConstants.INTAKE_POWER;
+            }
+            else if (this.driver.getDigital(DigitalOperation.IntakeOut))
+            {
+                intakePower = -TuningConstants.INTAKE_POWER;
+            }
+
+            this.intakeMotor.set(intakePower);
+            this.logger.logNumber(LoggingKey.IntakePower, intakePower);
+
+            // intake state transitions
+            if (this.driver.getDigital(DigitalOperation.IntakeExtend))
+            {
+                this.currentIntakeState = IntakeState.Extended;
+            }
+            else if (this.driver.getDigital(DigitalOperation.IntakeRetract))
+            {
+                this.currentIntakeState = IntakeState.Retracted;
+            }
+
+            switch (this.currentIntakeState)
+            {
+                case Extended:
+                    this.intakeExtender.set(DoubleSolenoidValue.Forward);
+                    break;
+
+                default:
+                case Retracted:
+                    this.intakeExtender.set(DoubleSolenoidValue.Reverse);
+                    break;
+            }
+
+
+        //---------------------------------------------------- Main Arm -----------------------------------------------
         boolean extendFlipper = this.driver.getDigital(DigitalOperation.ExtendFlipper);
+
+        
+         
+       
+
+        
         if (extendFlipper)
         {
-            // TODO: ensure that the arm is fully retracted _before_ we attempt to extend the cone-flipper
-            this.flipper.set(DoubleSolenoidValue.Forward);
+            // TODO: ensure that the arm is fully retracted _before_ we attempt to extend the cone-flipper -- Done
+            this.flipper.set(DoubleSolenoidValue.Forward); 
+            this.lowerArm.setControlMode(TalonXControlMode.Position);
+            //this.upperArm.setControlMode(TalonXControlMode.Position); 
+            this.lowerArm.setPIDF(0.2, 0.0, 0.0, 0.0, 1);
+            this.lowerArm.set((8 + 1) * 1016); //Sets the lower arm to a retracted position
+            //this.upperArm.setPIDF(0.2, 0.0, 0.0, 0.0, 1);
+            //this.upperArm.set(0); //Sets the upper arm to a retracted position
+
+
         }
         else
         {
+            this.lowerArm.setControlMode(TalonXControlMode.PercentOutput);
+            //this.upperArm.setControlMode(TalonXControlMode.PercentOutput);
             this.flipper.set(DoubleSolenoidValue.Reverse);
-        }
+            
+            //Main Arm Control
+            if (this.driver.getDigital(DigitalOperation.ArmSimpleMode))
+            {
+                this.inSimpleMode = true;
+                this.lowerArm.setControlMode(TalonXControlMode.PercentOutput);
+                //this.upperArm.setControlMode(TalonXControlMode.PercentOutput); 
+            }
 
-        // TODO: ensure that our cone flipper is fully retrated.
+            if (this.inSimpleMode)
+            {
+                this.lowerArm.set(this.driver.getAnalog(AnalogOperation.ArmSimpleForceLower) * 10);
+                //this.upperArm.set(this.driver.getAnalog(AnalogOperation.ArmSimpleForceUpper));
+            }
+            else
+            {
+            if (this.driver.getAnalog(AnalogOperation.ArmIKXPosition) >= 0 && this.driver.getAnalog(AnalogOperation.ArmIKYPosition) >= 0)
+            {
+                Setpoint IK = this.calculateIK(this.driver.getAnalog(AnalogOperation.ArmIKXPosition), this.driver.getAnalog(AnalogOperation.ArmIKYPosition));
+                this.desiredLowerArmPosition = IK.lowerPosition;
+                //this.desiredupperArmPosition = IK.upperPosition;
+            }
+            else if(this.driver.getAnalog(AnalogOperation.ArmMMUpperPosition) < 0 && this.driver.getAnalog(AnalogOperation.ArmMMLowerPosition) < 0)
+            {
+                this.desiredLowerArmPosition =this.driver.getAnalog(AnalogOperation.ArmMMLowerPosition);
+                //this.desiredUpperArmPosition = this.driver.getAnalog(AnalogOperation.ArmMMUpperPosition); 
+            }
+            else if (this.driver.getAnalog(AnalogOperation.ArmLowerPositionAdjustment) != 0.0 && this.driver.getAnalog(AnalogOperation.ArmUpperPositionAdjustment) != 0.0)
+            {
+            
+                double elapsedTime = this.prevTime - currTime;
+                //this.desiredLowerArmPosition = this.driver.getAnalog(AnalogOperation.ArmLowerPositionAdjustment) * RATE * elapsedTime;
+            }
+
+                this.lowerArm.set(this.desiredLowerArmPosition);
+                this.prevTime = currTime;
+
+            }
+        }
+        
+        // Setpoint IK = this.calculateIK(x, y)
+        // IK.lowerPosition;
+        // IK.upperPosition;
+    }
+
+    @Override
+    public void stop()
+    {
+        this.lowerArm.stop();
+        this.flipper.set(DoubleSolenoidValue.Off);
+        // this.upperArm.stop();
+    }
+
+    private Setpoint calculateIK(double targetXPos, double targetZPos)
+    {
+        // TODO: ensure that our cone flipper is fully retrated -- Done
         // if the cone-flipper isn't fully retracted then we should ensure that our arm is in the fully-retracted position
-        double targetXPos = 0; // X goal
-        double targetZPos = 0; // Z goal
+
         if (targetXPos < TuningConstants.ARM_MAX_LENGTH && targetZPos < TuningConstants.ARM_MAX_HEIGHT)
         {
             double lowerArmAngle = 90; // 90 if Starting straight up (Extended)
@@ -186,27 +346,27 @@ public class ArmMechanism implements IMechanism
                     HardwareConstants.LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM * 
                     Math.cos(totalLowerArmAngle)));
 
-            this.lowerArmPosition *= TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
-
-            double lowerArmVelocity = this.driver.getAnalog(AnalogOperation.LowerArmVelocity);
-            
-            this.lowerArm.set(lowerArmVelocity);
-
-            if (this.driver.getDigital(DigitalOperation.ArmLowerExtend))
-            {
-                this.lowerArm.set((driver.getAnalog(AnalogOperation.LowerArmPosition) + 1) * 1016);
-            }
-            else
-            {
-                this.lowerArm.set(this.lowerArmPosition);
-            }
+            double lowerArmPosition = 0;
+            lowerArmPosition *= TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; 
+            lowerArmPosition = (lowerArmPosition + 1) * 1016;
+            double upperArmPosition = 0;        
         }
-    }
 
-    @Override
-    public void stop()
+        return new Setpoint(upperArmPosition, lowerArmPosition);
+    }
+    
+    /**
+     * Basic structure to hold an angle/drive pair
+     */
+    private class Setpoint
     {
-        this.lowerArm.stop();
-        // this.upperArm.stop();
+        public final double upperPosition;
+        public final double lowerPosition;
+
+        public Setpoint(double upperPosition, double lowerPosition)
+        {
+            this.upperPosition = upperPosition;
+            this.lowerPosition = lowerPosition;
+        }
     }
 }

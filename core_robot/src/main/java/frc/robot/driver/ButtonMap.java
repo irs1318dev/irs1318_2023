@@ -82,8 +82,23 @@ public class ButtonMap implements IButtonMap
             UserInputDevice.Codriver,
             AnalogAxis.XBONE_LSY,
             !ElectronicsConstants.INVERT_XBONE_RIGHT_TRIGGER,
-            TuningConstants.LOWER_ARM_VELOCITY_DEAZONE // make left positive, as counter-clockwise is positive
-        )
+            TuningConstants.LOWER_ARM_VELOCITY_DEAZONE), // make left positive, as counter-clockwise is positive           
+        
+            // Arm Analog Operations
+        new AnalogOperationDescription(
+            AnalogOperation.ArmLowerPositionAdjustment,
+            UserInputDevice.Codriver,
+            AnalogAxis.XBONE_RSX,
+            !ElectronicsConstants.INVERT_XBONE_RIGHT_TRIGGER,
+            TuningConstants.LOWER_ARM_VELOCITY_DEAZONE),
+        
+        new AnalogOperationDescription(
+            AnalogOperation.ArmUpperPositionAdjustment,
+            UserInputDevice.Codriver,
+            AnalogAxis.XBONE_RSY,
+            !ElectronicsConstants.INVERT_XBONE_RIGHT_TRIGGER,
+            TuningConstants.LOWER_ARM_VELOCITY_DEAZONE)
+        
         
     };
 
