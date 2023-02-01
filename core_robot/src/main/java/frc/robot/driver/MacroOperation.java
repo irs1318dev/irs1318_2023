@@ -18,5 +18,4 @@ public enum MacroOperation implements IOperation
 
     // Charge station
     ChargeStationBalance,
-    CompleteChargeStation
 }

@@ -5,58 +5,47 @@
 
 package frc.robot.driver.controltasks;
 
-import com.google.inject.Injector;
-
 import frc.robot.TuningConstants;
-import frc.robot.TuningConstants.*;
-import frc.robot.common.LoggingManager;
 import frc.robot.common.robotprovider.ITimer;
 import frc.robot.driver.*;
-import frc.robot.driver.common.Driver;
-import frc.robot.mechanisms.DriveTrainMechanism;
-import frc.robot.mechanisms.PigeonManager;
+import frc.robot.mechanisms.*;
 
 public class ChargeStationTask extends ControlTaskBase
 {
-    
-
-    private PigeonManager imuManager;
-    private DriveTrainMechanism driveTrain;
-    private LoggingManager logger;
-    private ITimer timer;
-
-    private double pitch;
-    private double sign;
-    private double xPos;
-    private double balancePos;
-    private double distanceTraveled;
-    private double climbingFinishTime;
-
-    private double timeSinceLastPitchLog;
-    private double prevPitchLogTime;
-    private double[] pitchLog = new double[25]; //logs every 0.02 secs, array is 0.5 secs total
-    private enum State{
+    private enum State
+    {
         Starting,
         Climbing,
         Balancing,
-        Tipping,
         Completed
     }
+
     private State currentState;
-    
+
+    private PigeonManager imuManager;
+    private ITimer timer;
+
+    private double pitch;
+    private double climbingExceededTransitionTime;
+
+    private final double[] pitchLog;
+    private double prevPitchLogTime;
 
     public ChargeStationTask()
     {
+        this.currentState = State.Starting;
         this.pitch = 0.0;
-        this.sign = 1.0;
-        this.xPos = 1.0;
-        this.balancePos = 0.0;
-        this.distanceTraveled = 0.0;
-        this.timeSinceLastPitchLog = 0.0;
+        this.climbingExceededTransitionTime = 0.0;
+
+        this.pitchLog = new double[25]; // logs every 0.02 secs, array is 0.5 secs total
         this.prevPitchLogTime = 0.0;
     }
 
-    private double findDiff() //finds the absolute value diff of pitch values of beginning and end of pitchLog[]
+    /**
+     * finds the absolute value diff of pitch values of beginning and end of pitchLog[]
+     * @return diff of first and last sample
+     */
+    private double findDiff()
     {
         return Math.abs((this.pitchLog[this.pitchLog.length - 1]) - this.pitchLog[0]);
     }
@@ -67,29 +56,23 @@ public class ChargeStationTask extends ControlTaskBase
     @Override
     public void begin()
     {
-        currentState = State.Starting;
+        this.currentState = State.Starting;
 
         this.imuManager = this.getInjector().getInstance(PigeonManager.class);
-        this.driveTrain = this.getInjector().getInstance(DriveTrainMechanism.class);
-        this.logger = this.getInjector().getInstance(LoggingManager.class);
         this.timer = this.getInjector().getInstance(ITimer.class);
         this.pitch = this.imuManager.getPitch();
-        this.prevPitchLogTime = this.timer.get();
-        this.timeSinceLastPitchLog = this.timer.get() - this.prevPitchLogTime;
 
-        //at the beginning of task set all array values to be current pitch
+        // at the beginning of task set all array values to be current pitch
         for (int i = 0; i < this.pitchLog.length; i++)
-            {
-                this.pitchLog[i] = this.pitch;
-            }
-        
+        {
+            this.pitchLog[i] = this.pitch;
+        }
+
         this.setDigitalOperationState(DigitalOperation.DriveTrainEnableMaintainDirectionMode, true);
         this.setDigitalOperationState(DigitalOperation.DriveTrainPathMode, false);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleGoal, 0);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, 0);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0);
-
-        
+        this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleGoal, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, 0.0);
     }
 
     /**
@@ -98,34 +81,28 @@ public class ChargeStationTask extends ControlTaskBase
     @Override
     public void update()
     {
+        double currTime = this.timer.get();
 
-        
+        this.pitch = this.imuManager.getPitch();
 
-        this.timeSinceLastPitchLog = this.timer.get() - this.prevPitchLogTime; //current time - previous pitch log time
-
-
-        //previous pitch log movement
-        if (this.timeSinceLastPitchLog >= 0.02)
+        // if previous pitch log time was at least 0.02 secs ago then set pitch log time as current time, and log the new pitch
+        if (currTime - this.prevPitchLogTime >= 0.02)
         {
-            // if previous pitch log time was 0.02 secs ago then set pitch log time as current time, and log
-            this.prevPitchLogTime = this.timer.get(); 
+            this.prevPitchLogTime = currTime; 
 
             // constantly update array for past 0.5 seconds
             for (int i = 1; i < this.pitchLog.length; i++)
             {
-                this.pitchLog[i-1] = this.pitchLog[i];
+                this.pitchLog[i - 1] = this.pitchLog[i];
             }
 
             // put current pitch in final space
             this.pitchLog[this.pitchLog.length - 1] = this.pitch;
         }
 
-        //if the pitch is greater than 15 degrees (both wheels on center platform) move forward
-        this.pitch = imuManager.getPitch();
-
         if (this.currentState == State.Starting)
         {
-            //if front wheel is on first part, set switch to climbing
+            // if front wheel is on first part, set switch to climbing
             if (Math.abs(this.pitch) >= TuningConstants.CHARGE_STATION_START_TRANSITION_PITCH)
             {
                 this.currentState = State.Climbing;
@@ -133,23 +110,24 @@ public class ChargeStationTask extends ControlTaskBase
         }
         else if (this.currentState == State.Climbing)
         {
-            //if pitch is larger than 15-ish, set speed to balancing speed
+            // if pitch is larger than 15-ish for more than the configured length of time, switch to balancing mode
             if (Math.abs(this.pitch) >= (TuningConstants.CHARGE_STATION_CLIMBING_TRANSITION_PITCH - TuningConstants.CHARGE_STATION_CLIMBING_TRANSITION_ACCEPTABLE_VARIATION) &&
-                this.climbingFinishTime == 0.0)
+                this.climbingExceededTransitionTime == 0.0)
             {
-                this.climbingFinishTime = this.timer.get();
+                this.climbingExceededTransitionTime = currTime;
             }
 
-            if (this.climbingFinishTime != 0.0)
+            if (this.climbingExceededTransitionTime != 0.0)
             {
-                if (this.timer.get() - this.climbingFinishTime >= 1.35)
+                // TODO: use a constant for the finish time comparison
+                if (currTime - this.climbingExceededTransitionTime >= 1.35)
                 {
                     this.currentState = State.Balancing;
                 }
             }
         }
         else if (this.currentState == State.Balancing)
-        {            
+        {
             if ((TuningConstants.CHARGE_STATION_ACCEPTABLE_PITCH_DIFF >= findDiff()) && 
                 (Math.abs(this.pitch) <= TuningConstants.CHARGE_STATION_PITCH_VARIATION))
             {
@@ -159,45 +137,36 @@ public class ChargeStationTask extends ControlTaskBase
 
         switch (this.currentState)
         {
-
-            //sets starting, climbing, speed.
-
-            /*
-            balancing: moves forward slowly until diff of past 0.5 secs is low enough. 
-            Then checks if pitch is within acceptable range.
-            */
-
-
             case Balancing:
                 this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_BALANCING_SPEED);
 
-                //if the pitch diff of 0.5 seconds is greater than the acceptable diff
-                if (TuningConstants.CHARGE_STATION_ACCEPTABLE_PITCH_DIFF >= (findDiff()))
+                // if the pitch diff over the past 0.5 seconds is greater than the acceptable diff
+                if (TuningConstants.CHARGE_STATION_ACCEPTABLE_PITCH_DIFF >= findDiff())
                 {
-                    if (this.pitch < 0) //if negative pitch, move forward
+                    // if negative pitch, move forward
+                    if (this.pitch < 0)
                     {
-                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_BALANCING_SPEED);
+                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_BALANCING_SPEED);
                     }
-
-                    if (this.pitch > 0) //if positive pitch, move backward
+                    else // if (this.pitch > 0)
                     {
-                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, - TuningConstants.CHARGE_STATION_BALANCING_SPEED);
+                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, -TuningConstants.CHARGE_STATION_BALANCING_SPEED);
                     }
                 }
-
-                //if pitch diff is within acceptable range, then pause.
-                else
+                else // if pitch diff is within acceptable range, then pause.
                 {
-                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0);
+                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0);
                 }
 
                 break;
 
             case Climbing:
+                // TODO: should we have a mode that climbs in the opposite direction? Possibly add a parameter to the constructor for "startBackwards"...
                 this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_CLIMBING_SPEED);
                 break;
 
             case Starting:
+                // TODO: should we have a mode that climbs in the opposite direction? Possibly add a parameter to the constructor for "startBackwards"...
                 this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_STARTING_SPEED);
                 break;
 
@@ -206,12 +175,6 @@ public class ChargeStationTask extends ControlTaskBase
                 this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0);
                 break;
         }
-        
-
-        
-        
-
-
     }
 
     /**
@@ -222,9 +185,8 @@ public class ChargeStationTask extends ControlTaskBase
     {
         this.setDigitalOperationState(DigitalOperation.DriveTrainEnableMaintainDirectionMode, false);
         this.setDigitalOperationState(DigitalOperation.DriveTrainPathMode, false);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0);
     }
-
 
     /**
      * Checks whether this task has completed, or whether it should continue being processed.
@@ -236,6 +198,4 @@ public class ChargeStationTask extends ControlTaskBase
         return this.currentState == State.Completed;
 
     }
-
-    
 }
