@@ -301,7 +301,6 @@ public class TuningConstants
     public static final double CHARGE_STATION_STARTING_SPEED = 0.5;
     public static final double CHARGE_STATION_CLIMBING_SPEED = 0.2;
     public static final double CHARGE_STATION_BALANCING_SPEED = 0.06;
-    public static final double CHARGE_STATION_LEVEL_ANGLE = 0.0;
     public static final double CHARGE_STATION_START_TRANSITION_PITCH = 5.0;
     public static final double CHARGE_STATION_CLIMBING_TRANSITION_PITCH = 13;
     public static final double CHARGE_STATION_CLIMBING_TRANSITION_ACCEPTABLE_VARIATION = 0.3;
