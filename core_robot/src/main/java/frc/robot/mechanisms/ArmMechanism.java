@@ -19,7 +19,8 @@ public class ArmMechanism implements IMechanism
     //----------------- Side Stick Variables -----------------
     private final IDoubleSolenoid flipperRight;
     private final IDoubleSolenoid flipperLeft;
-    private double commandTime;
+    private double retractingCommandTime;
+    private double extendedCommandTime;
     private enum SideArmState
     {
         Extended,
@@ -29,6 +30,7 @@ public class ArmMechanism implements IMechanism
 
     private SideArmState curLeftSideArmState;
     private SideArmState curRightSideArmState;
+    private boolean mainArmOverride;
 
     private static final int defaultPidSlotId = 0;
     
@@ -152,10 +154,12 @@ public class ArmMechanism implements IMechanism
             ElectronicsConstants.RIGHT_SIDE_STICK_PISTON_FORWARD, 
             ElectronicsConstants.RIGHT_SIDE_STICK_PISTON_BACKWARD);
        
-        this.commandTime = 0;
+        this.retractingCommandTime = 0;
+        this.extendedCommandTime = 0;
 
         this.curRightSideArmState = SideArmState.Retracted;
         this.curLeftSideArmState = SideArmState.Retracted;
+        this.mainArmOverride = false;
 
         //-------------------------- Intake Initialization ----------------------------------
         this.intakeMotor = provider.getTalonSRX(ElectronicsConstants.INTAKE_MOTOR_CAN_ID);
@@ -205,38 +209,78 @@ public class ArmMechanism implements IMechanism
 
 
         //------------------------------- Flipper's ----------------------------------------------------------------------
+
+        //Add digital operations for extednding :>
         if(this.driver.getDigital(DigitalOperation.ExtendRightFlipper))
         {
-            this.curRightSideArmState = SideArmState.Extended;
             this.curLeftSideArmState = SideArmState.Retracting;
-            this.flipperLeft.set(DoubleSolenoidValue.Reverse);
-            resetArms();
-            this.commandTime = currTime;
+            this.mainArmOverride = true;
+            this.retractingCommandTime = currTime;
 
         }
         else if(this.driver.getDigital(DigitalOperation.ExtendLeftFlipper))
         {
             this.curRightSideArmState = SideArmState.Retracting;
-            this.curLeftSideArmState = SideArmState.Extended;
-            this.flipperRight.set(DoubleSolenoidValue.Reverse);
-            resetArms();
-            this.commandTime = currTime;
+            this.mainArmOverride = true;
+            this.retractingCommandTime = currTime;
         }
 
-        if(commandTime + 0.5 < currTime)
+        if(this.retractingCommandTime + 0.5 < currTime)
         {
             if(this.curRightSideArmState == SideArmState.Retracting) {
                 this.curRightSideArmState = SideArmState.Retracted;
-                this.flipperRight.set(DoubleSolenoidValue.Forward);
+                this.curLeftSideArmState = SideArmState.Extended;
             }
             
             if(this.curLeftSideArmState == SideArmState.Retracting) {
                 this.curLeftSideArmState = SideArmState.Retracted;
-                this.flipperLeft.set(DoubleSolenoidValue.Forward);
+                this.curRightSideArmState = SideArmState.Extended;
             }
                         
         }
+
+        if(!this.driver.getDigital(DigitalOperation.ExtendRightFlipper) && this.curRightSideArmState != SideArmState.Extended)
+        {
+            this.curRightSideArmState = SideArmState.Retracting;
+            this.extendedCommandTime = currTime;
+        }
+
+        else if(!this.driver.getDigital(DigitalOperation.ExtendLeftFlipper) && this.curLeftSideArmState != SideArmState.Extended)
+        {
+            this.curLeftSideArmState = SideArmState.Retracting;
+            this.extendedCommandTime = currTime;
+        }      
+
+        if(this.extendedCommandTime + 0.5 < currTime)
+        {
+            if(this.curLeftSideArmState == SideArmState.Retracting)
+            {
+                this.curLeftSideArmState = SideArmState.Retracted;
+            }
+            if(this.curRightSideArmState == SideArmState.Retracting)
+            {
+                this.curRightSideArmState = SideArmState.Retracted;
+            }
+        }
         
+        if(curRightSideArmState == SideArmState.Extended)
+        {
+            flipperRight.set(DoubleSolenoidValue.Forward);
+        }
+        if(curLeftSideArmState == SideArmState.Extended)
+        {
+            flipperLeft.set(DoubleSolenoidValue.Forward);
+        }
+        if(curLeftSideArmState == SideArmState.Retracted || curLeftSideArmState == SideArmState.Retracting)
+        {
+            flipperLeft.set(DoubleSolenoidValue.Reverse);
+        }
+        if(curRightSideArmState == SideArmState.Retracted || curRightSideArmState == SideArmState.Retracting)
+        {
+            flipperRight.set(DoubleSolenoidValue.Reverse);
+        }
+        
+
             //----------------------------------- Intake Update -----------------------------------------------------------
 
             // control intake rollers
@@ -276,11 +320,15 @@ public class ArmMechanism implements IMechanism
             }
 
         //---------------------------------------------------- Main Arm -----------------------------------------------
+        if(mainArmOverride)
+        {
+            resetArms(); // Add code for individual modes(percent output or mmposition) 
+        }
         else
         {
             this.lowerArm.setControlMode(TalonXControlMode.PercentOutput);
             //this.upperArm.setControlMode(TalonXControlMode.PercentOutput);
-            this.flipper.set(DoubleSolenoidValue.Reverse);
+            resetSideArms();
             
             //Main Arm Control
             if (this.driver.getDigital(DigitalOperation.ArmSimpleMode))
@@ -330,7 +378,8 @@ public class ArmMechanism implements IMechanism
     public void stop()
     {
         this.lowerArm.stop();
-        this.flipper.set(DoubleSolenoidValue.Off);
+        this.flipperLeft.set(DoubleSolenoidValue.Off);
+        this.flipperRight.set(DoubleSolenoidValue.Off);
         // this.upperArm.stop();
     }
 
@@ -388,7 +437,14 @@ public class ArmMechanism implements IMechanism
         this.lowerArm.set(TuningConstants.LOWER_ARM_FULL_EXTENTION_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH); //Sets the lower arm to a extended position
         //this.upperArm.set(TuningConstants.UPPER_ARM_FULL_RETRACTED_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH); //Sets the upper arm to a retracted position
     }
-    
+
+    public void resetSideArms()
+    {
+        this.curLeftSideArmState = SideArmState.Retracted;
+        this.curRightSideArmState = SideArmState.Retracted;
+        this.flipperLeft.set(DoubleSolenoidValue.Reverse);
+        this.flipperRight.set(DoubleSolenoidValue.Reverse);
+    }    
     /**
      * Basic structure to hold an angle/drive pair
      */

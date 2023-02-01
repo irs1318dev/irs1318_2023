@@ -180,13 +180,6 @@ public class ButtonMap implements IButtonMap
             Shift.DriverDebug,
             Shift.DriverDebug,
             ButtonType.Simple),
-        new DigitalOperationDescription(
-            DigitalOperation.ExtendFlipper,
-            UserInputDevice.Codriver,
-            UserInputDeviceButton.XBONE_START_BUTTON,
-            Shift.DriverDebug,
-            Shift.DriverDebug,
-            ButtonType.Simple),
         
     };
 
