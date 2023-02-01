@@ -126,7 +126,7 @@ public class ChargeStationTask extends ControlTaskBase
         if (this.currentState == State.Starting)
         {
                 //if front wheel is on first part, set switch to climbing
-                if (this.pitch >= TuningConstants.CHARGE_STATION_START_TRANSITION_PITCH)
+                if (Math.abs(this.pitch) >= TuningConstants.CHARGE_STATION_START_TRANSITION_PITCH)
                 {
                     this.currentState = State.Climbing;
 
@@ -135,7 +135,7 @@ public class ChargeStationTask extends ControlTaskBase
         else if (this.currentState == State.Climbing)
         {
                 //if pitch is larger than 15-ish, set speed to balancing speed
-                if (this.pitch >= (TuningConstants.CHARGE_STATION_CLIMBING_TRANSITION_PITCH - TuningConstants.CHARGE_STATION_CLIMBING_TRANSITION_ACCEPTABLE_VARIATION))
+                if (Math.abs(this.pitch) >= (TuningConstants.CHARGE_STATION_CLIMBING_TRANSITION_PITCH - TuningConstants.CHARGE_STATION_CLIMBING_TRANSITION_ACCEPTABLE_VARIATION))
                 {
                     this.currentState = State.Balancing;
 
