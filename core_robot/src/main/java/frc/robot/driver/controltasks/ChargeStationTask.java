@@ -30,6 +30,8 @@ public class ChargeStationTask extends ControlTaskBase
     private double xPos;
     private double balancePos;
     private double distanceTraveled;
+    private double climbingFinishTime;
+
     private double timeSinceLastPitchLog;
     private double prevPitchLogTime;
     private double[] pitchLog = new double[25]; //logs every 0.02 secs, array is 0.5 secs total
@@ -52,8 +54,6 @@ public class ChargeStationTask extends ControlTaskBase
         this.distanceTraveled = 0.0;
         this.timeSinceLastPitchLog = 0.0;
         this.prevPitchLogTime = 0.0;
-        
-        
     }
 
     private double findDiff() //finds the absolute value diff of pitch values of beginning and end of pitchLog[]
@@ -125,31 +125,36 @@ public class ChargeStationTask extends ControlTaskBase
 
         if (this.currentState == State.Starting)
         {
-                //if front wheel is on first part, set switch to climbing
-                if (Math.abs(this.pitch) >= TuningConstants.CHARGE_STATION_START_TRANSITION_PITCH)
-                {
-                    this.currentState = State.Climbing;
-
-                }
+            //if front wheel is on first part, set switch to climbing
+            if (Math.abs(this.pitch) >= TuningConstants.CHARGE_STATION_START_TRANSITION_PITCH)
+            {
+                this.currentState = State.Climbing;
+            }
         }
         else if (this.currentState == State.Climbing)
         {
-                //if pitch is larger than 15-ish, set speed to balancing speed
-                if (Math.abs(this.pitch) >= (TuningConstants.CHARGE_STATION_CLIMBING_TRANSITION_PITCH - TuningConstants.CHARGE_STATION_CLIMBING_TRANSITION_ACCEPTABLE_VARIATION))
-                {
-                    this.currentState = State.Balancing;
-
-                }
-        }
-        else if (this.currentState == State.Balancing)
-        {
-            //if the diff of past 0.5 seconds is within acceptable pitch diff, 
-            //and the current pitch is within acceptable leveled variation, end.
-            if ((TuningConstants.CHARGE_STATION_ACCEPTABLE_PITCH_DIFF >= findDiff()) && 
-            (Math.abs(this.pitch) <= TuningConstants.CHARGE_STATION_PITCH_VARIATION)) {
-                this.currentState = State.Completed;
+            //if pitch is larger than 15-ish, set speed to balancing speed
+            if (Math.abs(this.pitch) >= (TuningConstants.CHARGE_STATION_CLIMBING_TRANSITION_PITCH - TuningConstants.CHARGE_STATION_CLIMBING_TRANSITION_ACCEPTABLE_VARIATION) &&
+                this.climbingFinishTime == 0.0)
+            {
+                this.climbingFinishTime = this.timer.get();
             }
 
+            if (this.climbingFinishTime != 0.0)
+            {
+                if (this.timer.get() - this.climbingFinishTime >= 1.35)
+                {
+                    this.currentState = State.Balancing;
+                }
+            }
+        }
+        else if (this.currentState == State.Balancing)
+        {            
+            if ((TuningConstants.CHARGE_STATION_ACCEPTABLE_PITCH_DIFF >= findDiff()) && 
+                (Math.abs(this.pitch) <= TuningConstants.CHARGE_STATION_PITCH_VARIATION))
+            {
+                this.currentState = State.Completed;
+            }
         }
 
         switch (this.currentState)
