@@ -33,12 +33,9 @@ public class TuningConstants
 
     //================================================= Power ======================================================
 
-    public static final boolean POWER_TRACK_CURRENT = true;
     public static final double POWER_OVERCURRENT_TRACKING_DURATION = 5.0; // duration of time to keep track of the average current
-    public static final double SAMPLES_PER_LOOP = 1.0; // we may want to increase this if we find our update loop duration isn't very consistent...
-    public static final double SAMPLES_PER_SECOND = TuningConstants.LOOPS_PER_SECOND * TuningConstants.SAMPLES_PER_LOOP;
-    public static final double SAMPLE_DURATION = TuningConstants.LOOP_DURATION / TuningConstants.SAMPLES_PER_LOOP;
-    public static final int POWER_OVERCURRENT_SAMPLES = (int)(TuningConstants.POWER_OVERCURRENT_TRACKING_DURATION * TuningConstants.SAMPLES_PER_SECOND); // duration of time to keep track of the average current
+    public static final double POWER_OVERCURRENT_SAMPLES_PER_LOOP = 1.0; // we may want to increase this if we find our update loop duration isn't very consistent...
+    public static final double POWER_OVERCURRENT_SAMPLES_PER_SECOND = TuningConstants.LOOPS_PER_SECOND * TuningConstants.POWER_OVERCURRENT_SAMPLES_PER_LOOP;
     public static final double POWER_OVERCURRENT_THRESHOLD = 120.0;
     public static final double POWER_OVERCURREHT_HIGH_THRESHOLD = 160.0;
 
