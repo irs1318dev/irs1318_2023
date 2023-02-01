@@ -15,8 +15,23 @@ import com.google.inject.Singleton;
 @Singleton
 public class ArmMechanism implements IMechanism
 {
-    private static final int defaultPidSlotId = 0;
 
+    //----------------- Side Stick Variables -----------------
+    private final IDoubleSolenoid flipperRight;
+    private final IDoubleSolenoid flipperLeft;
+    private double commandTime;
+    private enum SideArmState
+    {
+        Extended,
+        Retracted,
+        Retracting,
+    };
+
+    private SideArmState curLeftSideArmState;
+    private SideArmState curRightSideArmState;
+
+    private static final int defaultPidSlotId = 0;
+    
     //----------------- Main Arm Variables -----------------
 
     // Positions are in ticks
@@ -37,17 +52,6 @@ public class ArmMechanism implements IMechanism
     private final ILogger logger;
     private final ITimer timer;
     private final PowerManager powerManager;
-
-    //----------------- Side Stick Variables -----------------
-    private final IDoubleSolenoid flipper;
-
-    private enum SideArmState
-    {
-        Retracted,
-        Extended
-    };
-
-    private SideArmState currentSideArmState;
 
     //---------------- Intake Variables ----------------------
     private final ITalonSRX intakeMotor;
@@ -136,13 +140,22 @@ public class ArmMechanism implements IMechanism
 
         //------------------------- Side Stick Initialization ------------------------------
     
-        this.flipper = provider.getDoubleSolenoid(
+        this.flipperLeft = provider.getDoubleSolenoid(
             ElectronicsConstants.PNEUMATICS_MODULE_A,
             ElectronicsConstants.PNEUMATICS_MODULE_TYPE_A,
-            ElectronicsConstants.SIDE_STICK_PISTON_FORWARD, 
-            ElectronicsConstants.SIDE_STICK_PISTON_BACKWARD);
+            ElectronicsConstants.LEFT_SIDE_STICK_PISTON_FORWARD, 
+            ElectronicsConstants.LEFT_SIDE_STICK_PISTON_BACKWARD);
+        
+        this.flipperRight = provider.getDoubleSolenoid(
+            ElectronicsConstants.PNEUMATICS_MODULE_A,
+            ElectronicsConstants.PNEUMATICS_MODULE_TYPE_A,
+            ElectronicsConstants.RIGHT_SIDE_STICK_PISTON_FORWARD, 
+            ElectronicsConstants.RIGHT_SIDE_STICK_PISTON_BACKWARD);
+       
+        this.commandTime = 0;
 
-        this.currentSideArmState = SideArmState.Retracted;
+        this.curRightSideArmState = SideArmState.Retracted;
+        this.curLeftSideArmState = SideArmState.Retracted;
 
         //-------------------------- Intake Initialization ----------------------------------
         this.intakeMotor = provider.getTalonSRX(ElectronicsConstants.INTAKE_MOTOR_CAN_ID);
@@ -190,6 +203,40 @@ public class ArmMechanism implements IMechanism
             }
         */
 
+
+        //------------------------------- Flipper's ----------------------------------------------------------------------
+        if(this.driver.getDigital(DigitalOperation.ExtendRightFlipper))
+        {
+            this.curRightSideArmState = SideArmState.Extended;
+            this.curLeftSideArmState = SideArmState.Retracting;
+            this.flipperLeft.set(DoubleSolenoidValue.Reverse);
+            resetArms();
+            this.commandTime = currTime;
+
+        }
+        else if(this.driver.getDigital(DigitalOperation.ExtendLeftFlipper))
+        {
+            this.curRightSideArmState = SideArmState.Retracting;
+            this.curLeftSideArmState = SideArmState.Extended;
+            this.flipperRight.set(DoubleSolenoidValue.Reverse);
+            resetArms();
+            this.commandTime = currTime;
+        }
+
+        if(commandTime + 0.5 < currTime)
+        {
+            if(this.curRightSideArmState == SideArmState.Retracting) {
+                this.curRightSideArmState = SideArmState.Retracted;
+                this.flipperRight.set(DoubleSolenoidValue.Forward);
+            }
+            
+            if(this.curLeftSideArmState == SideArmState.Retracting) {
+                this.curLeftSideArmState = SideArmState.Retracted;
+                this.flipperLeft.set(DoubleSolenoidValue.Forward);
+            }
+                        
+        }
+        
             //----------------------------------- Intake Update -----------------------------------------------------------
 
             // control intake rollers
@@ -228,28 +275,7 @@ public class ArmMechanism implements IMechanism
                     break;
             }
 
-
         //---------------------------------------------------- Main Arm -----------------------------------------------
-        boolean extendFlipper = this.driver.getDigital(DigitalOperation.ExtendFlipper);
-
-        
-         
-       
-
-        
-        if (extendFlipper)
-        {
-            // TODO: ensure that the arm is fully retracted _before_ we attempt to extend the cone-flipper -- Done
-            this.flipper.set(DoubleSolenoidValue.Forward); 
-            this.lowerArm.setControlMode(TalonXControlMode.Position);
-            //this.upperArm.setControlMode(TalonXControlMode.Position); 
-            this.lowerArm.setPIDF(0.2, 0.0, 0.0, 0.0, 1);
-            this.lowerArm.set((8 + 1) * 1016); //Sets the lower arm to a retracted position
-            //this.upperArm.setPIDF(0.2, 0.0, 0.0, 0.0, 1);
-            //this.upperArm.set(0); //Sets the upper arm to a retracted position
-
-
-        }
         else
         {
             this.lowerArm.setControlMode(TalonXControlMode.PercentOutput);
@@ -286,7 +312,7 @@ public class ArmMechanism implements IMechanism
             {
             
                 double elapsedTime = this.prevTime - currTime;
-                //this.desiredLowerArmPosition = this.driver.getAnalog(AnalogOperation.ArmLowerPositionAdjustment) * RATE * elapsedTime;
+                this.desiredLowerArmPosition = this.driver.getAnalog(AnalogOperation.ArmLowerPositionAdjustment) * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * elapsedTime;
             }
 
                 this.lowerArm.set(this.desiredLowerArmPosition);
@@ -353,6 +379,14 @@ public class ArmMechanism implements IMechanism
         }
 
         return new Setpoint(upperArmPosition, lowerArmPosition);
+    }
+
+    public void resetArms()
+    {
+        this.lowerArm.setControlMode(TalonXControlMode.MotionMagicPosition);
+        //this.upperArm.setControlMode(TalonXControlMode.MotionMagicPosition); 
+        this.lowerArm.set(TuningConstants.LOWER_ARM_FULL_EXTENTION_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH); //Sets the lower arm to a extended position
+        //this.upperArm.set(TuningConstants.UPPER_ARM_FULL_RETRACTED_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH); //Sets the upper arm to a retracted position
     }
     
     /**

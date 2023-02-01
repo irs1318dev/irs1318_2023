@@ -40,6 +40,9 @@ public class ElectronicsConstants
     public static final int PNEUMATICS_MODULE_A = 1; // Module A
     public static final PneumaticsModuleType PNEUMATICS_MODULE_TYPE_A = PneumaticsModuleType.PneumaticsHub; // Module A
 
+    public static final int PNEUMATICS_MODULE_B = 2; // Module B
+    public static final PneumaticsModuleType PNEUMATICS_MODULE_TYPE_B = PneumaticsModuleType.PneumaticsHub; // Module B
+
     public static final boolean PNEUMATICS_USE_HYBRID = false;
     public static final boolean PNEUMATICS_USE_ANALOG = false;
     public static final double PNEUMATICS_MIN_PSI = 110.0;
@@ -80,6 +83,8 @@ public class ElectronicsConstants
 
     public static final int ARM_LOWER_FOLLOWER_CAN_ID = 12;
 
-    public static final int SIDE_STICK_PISTON_FORWARD = 6;
-    public static final int SIDE_STICK_PISTON_BACKWARD = 9;
+    public static final int LEFT_SIDE_STICK_PISTON_FORWARD = 8;
+    public static final int LEFT_SIDE_STICK_PISTON_BACKWARD = 9;
+    public static final int RIGHT_SIDE_STICK_PISTON_FORWARD = 10;
+    public static final int RIGHT_SIDE_STICK_PISTON_BACKWARD = 11;
 }

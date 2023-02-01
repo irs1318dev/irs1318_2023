@@ -34,7 +34,8 @@ public enum DigitalOperation implements IOperation
     IntakeOut,
 
     // Arm operations
-    ExtendFlipper,
+    ExtendLeftFlipper,
+    ExtendRightFlipper,
     ArmUpperExtend,
     ArmLowerExtend,
 
