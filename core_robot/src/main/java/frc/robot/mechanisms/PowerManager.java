@@ -26,14 +26,13 @@ public class PowerManager implements IMechanism
     }
 
     private final IDriver driver;
-    private final ITimer timer;
     private final LoggingManager logger;
     private final IPowerDistribution powerDistribution;
 
-    private ComplementaryFilter batteryVoltageFilter;
-    private double prevTime;
+    private final ComplementaryFilter batteryVoltageFilter;
+
+    private final FloatingAverageCalculator currentAverageCalculator;
     private double currentFloatingAverage;
-    private double[] currentSamples;
 
     /**
      * Initializes a new PowerManager
@@ -43,17 +42,12 @@ public class PowerManager implements IMechanism
     public PowerManager(IDriver driver, ITimer timer, LoggingManager logger, IRobotProvider provider)
     {
         this.driver = driver;
-        this.timer = timer;
         this.logger = logger;
         this.powerDistribution = provider.getPowerDistribution(ElectronicsConstants.POWER_DISTRIBUTION_CAN_ID, ElectronicsConstants.POWER_DISTRIBUTION_TYPE);
         this.batteryVoltageFilter = new ComplementaryFilter(0.4, 0.6, this.powerDistribution.getBatteryVoltage());
 
-        this.prevTime = 0.0;
+        this.currentAverageCalculator = new FloatingAverageCalculator(timer, TuningConstants.POWER_OVERCURRENT_TRACKING_DURATION, TuningConstants.POWER_OVERCURRENT_SAMPLES_PER_SECOND);
         this.currentFloatingAverage = 0.0;
-        if (TuningConstants.POWER_TRACK_CURRENT)
-        {
-            this.currentSamples = new double[TuningConstants.POWER_OVERCURRENT_SAMPLES];
-        }
     }
 
     public CurrentLimiting getCurrentLimitingValue()
@@ -80,35 +74,15 @@ public class PowerManager implements IMechanism
     @Override
     public void readSensors()
     {
-        double currTime = this.timer.get();
 
         this.batteryVoltageFilter.update(this.powerDistribution.getBatteryVoltage());
         this.logger.logNumber(LoggingKey.PowerBatteryVoltage, this.batteryVoltageFilter.getValue());
 
-        if (TuningConstants.POWER_TRACK_CURRENT)
-        {
-            int prevIndex = (int)(this.prevTime * TuningConstants.SAMPLES_PER_SECOND) % TuningConstants.POWER_OVERCURRENT_SAMPLES;
-            int currIndex = (int)(currTime * TuningConstants.SAMPLES_PER_SECOND) % TuningConstants.POWER_OVERCURRENT_SAMPLES;
+        double currCurrent = this.powerDistribution.getTotalCurrent();
+        this.currentFloatingAverage = this.currentAverageCalculator.update(currCurrent);
 
-            int slots = currIndex - prevIndex + 1;
-            if (slots < 0)
-            {
-                slots += TuningConstants.POWER_OVERCURRENT_SAMPLES;
-            }
-
-            double currCurrent = this.powerDistribution.getTotalCurrent();
-            for (int i = 1; i < slots; i++)
-            {
-                int index = (prevIndex + i) % TuningConstants.POWER_OVERCURRENT_SAMPLES;
-                this.currentFloatingAverage += ((currCurrent - this.currentSamples[index]) * TuningConstants.SAMPLE_DURATION) / TuningConstants.POWER_OVERCURRENT_TRACKING_DURATION;
-                this.currentSamples[index] = currCurrent;
-            }
-
-            this.logger.logNumber(LoggingKey.PowerCurrent, currCurrent);
-            this.logger.logNumber(LoggingKey.PowerCurrentFloatingAverage, this.currentFloatingAverage);
-        }
-
-        this.prevTime = currTime;
+        this.logger.logNumber(LoggingKey.PowerCurrent, currCurrent);
+        this.logger.logNumber(LoggingKey.PowerCurrentFloatingAverage, this.currentFloatingAverage);
     }
 
     @Override
@@ -123,15 +97,8 @@ public class PowerManager implements IMechanism
     @Override
     public void stop()
     {
-        this.prevTime = 0.0;
         this.currentFloatingAverage = 0.0;
-        if (TuningConstants.POWER_TRACK_CURRENT)
-        {
-            for (int i = 0; i < this.currentSamples.length; i++)
-            {
-                this.currentSamples[i] = 0.0;
-            }
-        }
+        this.currentAverageCalculator.reset();
 
         this.powerDistribution.setSwitchableChannel(false);
         this.batteryVoltageFilter.reset();
