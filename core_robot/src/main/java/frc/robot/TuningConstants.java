@@ -26,8 +26,8 @@ public class TuningConstants
     //================================================== Logging  ==============================================================
 
     public static final int CALENDAR_YEAR = 2022;
-    public static final boolean LOG_TO_FILE = TuningConstants.COMPETITION_ROBOT;
-    public static final boolean LOG_FILE_ONLY_COMPETITION_MATCHES = true;
+    public static final boolean LOG_TO_FILE = true; // TuningConstants.COMPETITION_ROBOT;
+    public static final boolean LOG_FILE_ONLY_COMPETITION_MATCHES = false;
     public static final long LOG_FILE_REQUIRED_FREE_SPACE = 50 * 1024 * 1024; // require at least 50 MB of space
     public static final int LOG_FLUSH_THRESHOLD = 25;
 
