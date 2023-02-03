@@ -121,6 +121,11 @@ public class PigeonManager implements IPositionManager
             // clear the startAngle too if we are not actively setting it
             this.reset(newYaw == 0.0);
         }
+
+        if (this.driver.getDigital(DigitalOperation.PositionResetRobotPitch))
+        {
+            this.pitchOffset = this.pitch;
+        }
     }
 
     /**
@@ -165,10 +170,12 @@ public class PigeonManager implements IPositionManager
      */
     public void reset(boolean resetStartAngle)
     {
-        this.pitchOffset = this.pitch;
         this.yaw = 0.0;
         this.pitch = 0.0;
         this.roll = 0.0;
+        this.yawRate = 0.0;
+        this.pitchRate = 0.0;
+        this.rollRate = 0.0;
 
         if (resetStartAngle)
         {

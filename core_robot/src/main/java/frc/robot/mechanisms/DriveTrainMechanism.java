@@ -415,6 +415,12 @@ public class DriveTrainMechanism implements IMechanism
             this.angle = 0.0;
         }
 
+        if (this.driver.getDigital(DigitalOperation.DriveTrainResetXYPosition))
+        {
+            this.xPosition = this.driver.getAnalog(AnalogOperation.DriveTrainStartingXPosition);
+            this.yPosition = this.driver.getAnalog(AnalogOperation.DriveTrainStartingYPosition);
+        }
+
         double startingAngle = this.driver.getAnalog(AnalogOperation.PositionStartingAngle);
         if (startingAngle != TuningConstants.ZERO)
         {
