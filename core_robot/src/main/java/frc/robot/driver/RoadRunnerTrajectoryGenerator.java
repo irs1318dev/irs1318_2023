@@ -163,7 +163,7 @@ public class RoadRunnerTrajectoryGenerator
                 //Jamie's Charge Station Task
 
             "UpStartToGroundNodeFarUpToUpStartToFrontChargeStation");
-
+/*
         addPath(
             pathManager,
             startTrajectory(GridX, UpGridY, 180.0 * Helpers.DEGREES_TO_RADIANS, 180.0 * Helpers.DEGREES_TO_RADIANS)
@@ -252,7 +252,7 @@ public class RoadRunnerTrajectoryGenerator
                 .splineToConstantHeading(new Vector2d(BackChargeStationX, UpChargeStationY), 180.0 * Helpers.DEGREES_TO_RADIANS), // Goes behind Charge Station
                 //Jamie's Charge Station Task
 
-            "UpStartToBackChargeStation");
+            "UpStartToBackChargeStation");*/
     }
 
     private static TrajectoryBuilder startTrajectory()
