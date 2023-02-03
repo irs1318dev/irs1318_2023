@@ -63,7 +63,7 @@ public class AutonomousRoutineSelector
 
         this.logger.logString(LoggingKey.AutonomousSelection, startPosition.toString() + "." + routine.toString());
 
-        return new PositionStartingTask(0.0, true, true);
+        return new PositionStartingTask(0.0, 0.0, 0.0);
     }
 
     /**

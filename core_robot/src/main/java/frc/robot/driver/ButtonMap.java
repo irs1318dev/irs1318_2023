@@ -327,7 +327,7 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
-                // new PositionStartingTask(0.0, false, true), //calibration
+                // new PitchResetTask(), //calibration
                 new ChargeStationTask(),
                 ConcurrentTask.AllTasks(
                     new PIDBrakeTask(),

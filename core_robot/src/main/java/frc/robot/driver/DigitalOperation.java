@@ -3,6 +3,7 @@ package frc.robot.driver;
 public enum DigitalOperation implements IOperation
 {
     PositionResetFieldOrientation,
+    PositionResetRobotPitch,
 
     // Driver interaction operations
     ForceLightDriverRumble,
@@ -26,6 +27,7 @@ public enum DigitalOperation implements IOperation
     DriveTrainUseRobotOrientation,
     DriveTrainEnableMaintainDirectionMode,
     DriveTrainDisableMaintainDirectionMode,
+    DriveTrainResetXYPosition,
 
     // Intake operations
     IntakeExtend,
