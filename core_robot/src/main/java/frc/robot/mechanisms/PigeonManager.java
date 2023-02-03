@@ -22,6 +22,7 @@ public class PigeonManager implements IPositionManager
     private final IPigeon2 pigeon;
 
     private final double[] ypr_deg; // shared array to avoid extra allocations
+    private final double[] xyz_dps; // shared array to avoid extra allocations
 
     private boolean isActive;
 
@@ -29,6 +30,10 @@ public class PigeonManager implements IPositionManager
     private double yaw;
     private double pitch;
     private double roll;
+
+    private double yawRate;
+    private double pitchRate;
+    private double rollRate;
 
     private double startYaw;
     private double pitchOffset;
@@ -51,12 +56,17 @@ public class PigeonManager implements IPositionManager
         this.pigeon.setYaw(0.0);
 
         this.ypr_deg = new double[3];
+        this.xyz_dps = new double[3];
 
         this.isActive = false;
 
         this.yaw = 0.0;
         this.pitch = 0.0;
         this.roll = 0.0;
+
+        this.yawRate = 0.0;
+        this.pitchRate = 0.0;
+        this.rollRate = 0.0;
 
         this.pitchOffset = 0.0;
         this.startYaw = 0.0;
@@ -75,11 +85,20 @@ public class PigeonManager implements IPositionManager
         this.pitch = this.ypr_deg[1];
         this.roll = this.ypr_deg[2];
 
+        this.pigeon.getRawGyro(this.xyz_dps);
+        this.yawRate = this.ypr_deg[2];
+        this.pitchRate = this.ypr_deg[1];
+        this.rollRate = this.ypr_deg[0];
+
         // log the current position and orientation
-        ////this.logger.logBoolean(LoggingKey.PigeonState, this.isActive);
         this.logger.logNumber(LoggingKey.PigeonYaw, this.yaw);
         this.logger.logNumber(LoggingKey.PigeonPitch, this.pitch);
         this.logger.logNumber(LoggingKey.PigeonRoll, this.roll);
+
+        // log the current rates change for yaw/pitch/roll
+        this.logger.logNumber(LoggingKey.PigeonYawRate, this.yawRate);
+        this.logger.logNumber(LoggingKey.PigeonPitchRate, this.pitchRate);
+        this.logger.logNumber(LoggingKey.PigeonRollRate, this.rollRate);
 
         this.logger.logNumber(LoggingKey.PigeonStartingYaw, this.startYaw);
         this.logger.logNumber(LoggingKey.PigeonPitchOffset, this.pitchOffset);
@@ -133,6 +152,11 @@ public class PigeonManager implements IPositionManager
     public double getPitch()
     {
         return this.pitch - this.pitchOffset;
+    }
+
+    public double getPitchRate()
+    {
+        return this.pitchRate;
     }
 
     /**

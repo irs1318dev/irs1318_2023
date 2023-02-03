@@ -8,9 +8,9 @@ import frc.robot.driver.*;
  */
 public class PositionStartingTask extends UpdateCycleTask
 {
-    private final double angle;
+    private final Double angle;
     private final boolean resetDriveTrain;
-    private final boolean resetOrientation; 
+    private final boolean resetOrientation;
 
     /**
      * Initializes a new PositionStartingTask
@@ -35,7 +35,11 @@ public class PositionStartingTask extends UpdateCycleTask
     {
         super.begin();
 
-        this.setAnalogOperationState(AnalogOperation.PositionStartingAngle, this.angle);
+        if (this.angle != null)
+        {
+            this.setAnalogOperationState(AnalogOperation.PositionStartingAngle, this.angle);
+        }
+
         this.setDigitalOperationState(DigitalOperation.DriveTrainReset, this.resetDriveTrain);
         this.setDigitalOperationState(DigitalOperation.PositionResetFieldOrientation, this.resetOrientation);
     }
@@ -48,7 +52,11 @@ public class PositionStartingTask extends UpdateCycleTask
     {
         super.update();
 
-        this.setAnalogOperationState(AnalogOperation.PositionStartingAngle, this.angle);
+        if (this.angle != null)
+        {
+            this.setAnalogOperationState(AnalogOperation.PositionStartingAngle, this.angle);
+        }
+
         this.setDigitalOperationState(DigitalOperation.DriveTrainReset, this.resetDriveTrain);
         this.setDigitalOperationState(DigitalOperation.PositionResetFieldOrientation, this.resetOrientation);
     }
@@ -61,7 +69,11 @@ public class PositionStartingTask extends UpdateCycleTask
     {
         super.end();
 
-        this.setAnalogOperationState(AnalogOperation.PositionStartingAngle, 0.0);
+        if (this.angle != null)
+        {
+            this.setAnalogOperationState(AnalogOperation.PositionStartingAngle, 0.0);
+        }
+
         this.setDigitalOperationState(DigitalOperation.DriveTrainReset, false);
         this.setDigitalOperationState(DigitalOperation.PositionResetFieldOrientation, false);
     }
