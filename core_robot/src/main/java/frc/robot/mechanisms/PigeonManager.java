@@ -86,9 +86,9 @@ public class PigeonManager implements IPositionManager
         this.roll = this.ypr_deg[2];
 
         this.pigeon.getRawGyro(this.xyz_dps);
-        this.yawRate = this.ypr_deg[2];
-        this.pitchRate = this.ypr_deg[1];
-        this.rollRate = this.ypr_deg[0];
+        this.yawRate = this.xyz_dps[2];
+        this.pitchRate = this.xyz_dps[1];
+        this.rollRate = this.xyz_dps[0];
 
         // log the current position and orientation
         this.logger.logNumber(LoggingKey.PigeonYaw, this.yaw);
