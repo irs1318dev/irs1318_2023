@@ -438,6 +438,14 @@ public class DriveTrainMechanismTests
         {
             this.currentAngle = angle;
         }
+
+        public void setYPRUpdatePeriod(int timeoutMs)
+        {
+        }
+
+        public void setGyroUpdatePeriod(int timeoutMs)
+        {
+        }
     }
 
     private class MockTalonFX implements ITalonFX
