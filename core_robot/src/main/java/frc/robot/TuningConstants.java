@@ -252,6 +252,8 @@ public class TuningConstants
 
     //================================================= ARM ================================================================================
 
+    public static final boolean USE_SIMPLE_MODE = false;
+    
     public static final double INTAKE_POWER = 0.6;
 
     public static final double LOWER_ARM_POSITION_MM_PID_KP = 0.1;
