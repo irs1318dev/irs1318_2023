@@ -54,6 +54,8 @@ public class PigeonManager implements IPositionManager
 
         this.pigeon = provider.getPigeon2(ElectronicsConstants.PIGEON_IMU_CAN_ID);
         this.pigeon.setYaw(0.0);
+        this.pigeon.setYPRUpdatePeriod(5);
+        this.pigeon.setGyroUpdatePeriod(5);
 
         this.ypr_deg = new double[3];
         this.xyz_dps = new double[3];
