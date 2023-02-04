@@ -151,7 +151,7 @@ public class ButtonMap implements IButtonMap
             DigitalOperation.VisionEnableAprilTagProcessing,
             UserInputDevice.Test1,
             UserInputDeviceButton.XBONE_A_BUTTON,
-            ButtonType.Simple),
+            ButtonType.Toggle),
         new DigitalOperationDescription(
             DigitalOperation.IntakeExtend,
             UserInputDevice.Driver,
