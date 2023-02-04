@@ -27,6 +27,14 @@ public class FauxbotPigeon2 extends FauxbotSensorBase implements IPigeon2
         this.angleProperty.setValue(angleDeg);
     }
 
+    public void setYPRUpdatePeriod(int timeoutMs)
+    {
+    }
+
+    public void setGyroUpdatePeriod(int timeoutMs)
+    {
+    }
+
     public DoubleProperty getProperty()
     {
         return this.angleProperty;
