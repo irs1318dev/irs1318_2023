@@ -50,7 +50,7 @@ public class ArmMechanism implements IMechanism
     private final ITalonSRX upperArm;
     private double desiredLowerArmPosition;
     private double desiredUpperArmPosition;
-    private boolean inSimpleMode;
+    private boolean inSimpleMode = TuningConstants.USE_SIMPLE_MODE;
 
     private double mainArmRetractionStartTime;
 
@@ -91,54 +91,54 @@ public class ArmMechanism implements IMechanism
 
         //------------------------- Main Arm Initializiation -------------------------
 
-        // assume initial position:
-        this.lowerArmPosition = TuningConstants.LOWER_ARM_FULL_EXTENTION_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // Fully Extended
-        this.upperArmPosition = TuningConstants.UPPER_ARM_FULL_RETRACTED_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // Fully Retracted
-        this.desiredLowerArmPosition = 0;
-        this.desiredUpperArmPosition = 0;
-        this.inSimpleMode = false;
+        this.lowerArm = provider.getTalonSRX(ElectronicsConstants.ARM_LOWER_CAN_ID);
+        this.upperArm = provider.getTalonSRX(ElectronicsConstants.ARM_UPPER_CAN_ID);
+
         if(inSimpleMode)
         {
             this.lowerArmVelocity = 0;
             this.upperArmVelocity = 0;
+
+            this.lowerArm.setControlMode(TalonXControlMode.PercentOutput);
+            this.upperArm.setControlMode(TalonXControlMode.PercentOutput);
         }
+        else
+        {
+            this.lowerArm.setMotionMagicPIDF(
+                TuningConstants.LOWER_ARM_POSITION_MM_PID_KP,
+                TuningConstants.LOWER_ARM_POSITION_MM_PID_KI,
+                TuningConstants.LOWER_ARM_POSITION_MM_PID_KD,
+                TuningConstants.LOWER_ARM_POSITION_MM_PID_KF,
+                TuningConstants.LOWER_ARM_POSITION_MM_CRUISE_VELOCITY,
+                TuningConstants.LOWER_ARM_POSITION_MM_ACCELERATION,
+                ArmMechanism.defaultPidSlotId);
 
-        this.lowerArm = provider.getTalonSRX(ElectronicsConstants.ARM_LOWER_CAN_ID);
-        this.upperArm = provider.getTalonSRX(ElectronicsConstants.ARM_UPPER_CAN_ID);
+            this.upperArm.setMotionMagicPIDF(
+                TuningConstants.UPPER_ARM_POSITION_MM_PID_KP,
+                TuningConstants.UPPER_ARM_POSITION_MM_PID_KI,
+                TuningConstants.UPPER_ARM_POSITION_MM_PID_KD,
+                TuningConstants.UPPER_ARM_POSITION_MM_PID_KF,
+                TuningConstants.UPPER_ARM_POSITION_MM_CRUISE_VELOCITY,
+                TuningConstants.UPPER_ARM_POSITION_MM_ACCELERATION,
+                ArmMechanism.defaultPidSlotId);
+            
+            this.lowerArmPosition = TuningConstants.LOWER_ARM_FULL_EXTENTION_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // Fully Extended
+            this.upperArmPosition = TuningConstants.UPPER_ARM_FULL_RETRACTED_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // Fully Retracted
+            this.desiredLowerArmPosition = 0;
+            this.desiredUpperArmPosition = 0;
 
-        this.lowerArm.setMotionMagicPIDF(
-            TuningConstants.LOWER_ARM_POSITION_MM_PID_KP,
-            TuningConstants.LOWER_ARM_POSITION_MM_PID_KI,
-            TuningConstants.LOWER_ARM_POSITION_MM_PID_KD,
-            TuningConstants.LOWER_ARM_POSITION_MM_PID_KF,
-            TuningConstants.LOWER_ARM_POSITION_MM_CRUISE_VELOCITY,
-            TuningConstants.LOWER_ARM_POSITION_MM_ACCELERATION,
-            ArmMechanism.defaultPidSlotId);
+            this.lowerArm.setSensorType(TalonXFeedbackDevice.QuadEncoder);
+            this.upperArm.setSensorType(TalonXFeedbackDevice.QuadEncoder);
+            
+            this.lowerArm.setInvertSensor(TuningConstants.LOWER_ARM_INVERT_SENSOR);
+            this.upperArm.setInvertSensor(TuningConstants.UPPER_ARM_INVERT_SENSOR);
 
-        this.upperArm.setMotionMagicPIDF(
-            TuningConstants.UPPER_ARM_POSITION_MM_PID_KP,
-            TuningConstants.UPPER_ARM_POSITION_MM_PID_KI,
-            TuningConstants.UPPER_ARM_POSITION_MM_PID_KD,
-            TuningConstants.UPPER_ARM_POSITION_MM_PID_KF,
-            TuningConstants.UPPER_ARM_POSITION_MM_CRUISE_VELOCITY,
-            TuningConstants.UPPER_ARM_POSITION_MM_ACCELERATION,
-            ArmMechanism.defaultPidSlotId);
-
-        // TODO: start in Motion-Magic mode, have separate control options for simple mode
-        this.lowerArm.setControlMode(TalonXControlMode.PercentOutput);
-        this.upperArm.setControlMode(TalonXControlMode.PercentOutput);
-
-        this.lowerArm.setSensorType(TalonXFeedbackDevice.QuadEncoder);
-        this.upperArm.setSensorType(TalonXFeedbackDevice.QuadEncoder);
+            this.lowerArm.setPosition(this.lowerArmPosition);
+            this.upperArm.setPosition(this.upperArmPosition);
+        }
 
         this.lowerArm.setInvertOutput(TuningConstants.LOWER_ARM_INVERT_OUTPUT);
         this.upperArm.setInvertOutput(TuningConstants.UPPER_ARM_INVERT_OUTPUT);
-
-        this.lowerArm.setInvertSensor(TuningConstants.LOWER_ARM_INVERT_SENSOR);
-        this.upperArm.setInvertSensor(TuningConstants.UPPER_ARM_INVERT_SENSOR);
-
-        this.lowerArm.setPosition(this.lowerArmPosition);
-        this.upperArm.setPosition(upperArmPosition);
 
         this.lowerArm.setNeutralMode(MotorNeutralMode.Brake);
         this.upperArm.setNeutralMode(MotorNeutralMode.Brake);
@@ -419,7 +419,8 @@ public class ArmMechanism implements IMechanism
             if(this.inSimpleMode)
             {
                 this.lowerArm.set(TuningConstants.ARM_MAX_SIMPLE_VELOCITY);
-            } // Add code for individual modes(percent output or mmposition)
+                this.upperArm.set(-TuningConstants.ARM_MAX_VELOCITY);
+            }
             else 
             {
                 this.desiredLowerArmPosition = TuningConstants.LOWER_ARM_FULL_EXTENTION_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
@@ -430,10 +431,7 @@ public class ArmMechanism implements IMechanism
             }
         }
         else
-        {
-            this.lowerArm.setControlMode(TalonXControlMode.PercentOutput);
-            this.upperArm.setControlMode(TalonXControlMode.PercentOutput);
-            
+        {           
             //Main Arm Control
             if (this.driver.getDigital(DigitalOperation.ArmSimpleMode))
             {
@@ -449,33 +447,31 @@ public class ArmMechanism implements IMechanism
             }
             else
             {
-            if (this.driver.getAnalog(AnalogOperation.ArmIKXPosition) >= 0 && this.driver.getAnalog(AnalogOperation.ArmIKYPosition) >= 0)
-            {
-                Setpoint IK = this.calculateIK(this.driver.getAnalog(AnalogOperation.ArmIKXPosition), this.driver.getAnalog(AnalogOperation.ArmIKYPosition));
-                this.desiredLowerArmPosition = IK.lowerPosition;
-                this.desiredUpperArmPosition = IK.upperPosition;
-            }
-            else if(this.driver.getAnalog(AnalogOperation.ArmMMUpperPosition) < 0 && this.driver.getAnalog(AnalogOperation.ArmMMLowerPosition) < 0)
-            {
-                this.desiredLowerArmPosition =this.driver.getAnalog(AnalogOperation.ArmMMLowerPosition);
-                this.desiredUpperArmPosition = this.driver.getAnalog(AnalogOperation.ArmMMUpperPosition); 
-            }
-            else if (this.driver.getAnalog(AnalogOperation.ArmLowerPositionAdjustment) != 0.0 && this.driver.getAnalog(AnalogOperation.ArmUpperPositionAdjustment) != 0.0)
-            {
-            
-                double elapsedTime = this.prevTime - currTime;
-                this.desiredLowerArmPosition = this.driver.getAnalog(AnalogOperation.ArmLowerPositionAdjustment) * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * elapsedTime;
-            }
+                if (this.driver.getAnalog(AnalogOperation.ArmIKXPosition) >= 0 && this.driver.getAnalog(AnalogOperation.ArmIKYPosition) >= 0)
+                {
+                    Setpoint IK = this.calculateIK(this.driver.getAnalog(AnalogOperation.ArmIKXPosition), this.driver.getAnalog(AnalogOperation.ArmIKYPosition));
+                    this.desiredLowerArmPosition = IK.lowerPosition;
+                    this.desiredUpperArmPosition = IK.upperPosition;
+                }
+
+                else if(this.driver.getAnalog(AnalogOperation.ArmMMUpperPosition) < 0 && this.driver.getAnalog(AnalogOperation.ArmMMLowerPosition) < 0)
+                {
+                    this.desiredLowerArmPosition = this.driver.getAnalog(AnalogOperation.ArmMMLowerPosition);
+                    this.desiredUpperArmPosition = this.driver.getAnalog(AnalogOperation.ArmMMUpperPosition); 
+                }
+
+                else if (this.driver.getAnalog(AnalogOperation.ArmLowerPositionAdjustment) != 0.0 && this.driver.getAnalog(AnalogOperation.ArmUpperPositionAdjustment) != 0.0)
+                {
+                
+                    double elapsedTime = this.prevTime - currTime;
+                    this.desiredLowerArmPosition = this.driver.getAnalog(AnalogOperation.ArmLowerPositionAdjustment) * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * elapsedTime;
+                }
 
                 this.lowerArm.set(this.desiredLowerArmPosition);
                 this.prevTime = currTime;
 
             }
         }
-        
-        // Setpoint IK = this.calculateIK(x, y)
-        // IK.lowerPosition;
-        // IK.upperPosition;
     }
 
     @Override
