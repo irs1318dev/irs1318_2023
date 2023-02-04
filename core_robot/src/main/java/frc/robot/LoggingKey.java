@@ -49,8 +49,8 @@ public enum LoggingKey
 
     DriveTrainDesiredAngle("dt.angle_goal"),
     DriveTrainAngle("dt.angle"),
-    DriveTrainXPosition("dt.xpos"),
-    DriveTrainYPosition("dt.ypos"),
+    DriveTrainXPosition("dt.xpos", true),
+    DriveTrainYPosition("dt.ypos", true),
     DriveTrainXPositionGoal("dt.xpos_goal"),
     DriveTrainYPositionGoal("dt.ypos_goal"),
     DriveTrainFieldOriented("dt.field_oriented"),
