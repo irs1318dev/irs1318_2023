@@ -31,8 +31,13 @@ public class ChargeStationTask extends ControlTaskBase
     private final double[] pitchLog;
     private double prevPitchLogTime;
 
-    public ChargeStationTask()
+    private int reverse = 1;
+
+    public ChargeStationTask(boolean reverse)
     {
+        if (reverse){
+            this.reverse = -1;
+        }
         this.currentState = State.Starting;
         this.pitch = 0.0;
         this.climbingExceededTransitionTime = 0.0;
@@ -146,33 +151,33 @@ public class ChargeStationTask extends ControlTaskBase
                     // if negative pitch, move forward
                     if (this.pitch < 0)
                     {
-                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_BALANCING_SPEED);
+                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_BALANCING_SPEED * reverse);
                     }
                     else // if (this.pitch > 0)
                     {
-                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, -TuningConstants.CHARGE_STATION_BALANCING_SPEED);
+                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, -TuningConstants.CHARGE_STATION_BALANCING_SPEED * reverse);
                     }
                 }
                 else // if pitch diff is within acceptable range, then pause.
                 {
-                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0);
+                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0 * reverse);
                 }
 
                 break;
 
             case Climbing:
                 // TODO: should we have a mode that climbs in the opposite direction? Possibly add a parameter to the constructor for "startBackwards"...
-                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_CLIMBING_SPEED);
+                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_CLIMBING_SPEED * reverse);
                 break;
 
             case Starting:
                 // TODO: should we have a mode that climbs in the opposite direction? Possibly add a parameter to the constructor for "startBackwards"...
-                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_STARTING_SPEED);
+                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_STARTING_SPEED * reverse);
                 break;
 
             default:
             case Completed:
-                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0);
+                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0 * reverse);
                 break;
         }
     }
