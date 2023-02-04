@@ -18,5 +18,17 @@ public interface IPigeon2
      * Sets the Yaw register to the specified value.
      * @param angleDeg New yaw in degrees [+/- 368,640 degrees]
      */
-    void setYaw(double angleDeg);   
+    void setYaw(double angleDeg);
+
+    /**
+     * Sets the update period for the YPR frames.
+     * @param timeoutMs update period in milliseconds
+     */
+    void setYPRUpdatePeriod(int timeoutMs);
+
+    /**
+     * Sets the update period for the Gyro frames.
+     * @param timeoutMs update period in milliseconds
+     */
+    void setGyroUpdatePeriod(int timeoutMs);
 }
