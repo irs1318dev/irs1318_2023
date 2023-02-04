@@ -61,20 +61,7 @@ public class PositionStartingTask extends UpdateCycleTask
     {
         super.begin();
 
-        if (this.orientationAngle != null)
-        {
-            this.setAnalogOperationState(AnalogOperation.PositionStartingAngle, this.orientationAngle);
-        }
-
-        if (this.xPosition != null || this.yPosition != null)
-        {
-            this.setDigitalOperationState(DigitalOperation.DriveTrainResetXYPosition, true);
-            this.setAnalogOperationState(AnalogOperation.DriveTrainStartingXPosition, this.xPosition);
-            this.setAnalogOperationState(AnalogOperation.DriveTrainStartingYPosition, this.yPosition);
-        }
-
-        this.setDigitalOperationState(DigitalOperation.DriveTrainReset, this.resetDriveTrain);
-        this.setDigitalOperationState(DigitalOperation.PositionResetFieldOrientation, this.resetOrientation);
+        this.setEverything();
     }
 
     /**
@@ -85,20 +72,7 @@ public class PositionStartingTask extends UpdateCycleTask
     {
         super.update();
 
-        if (this.orientationAngle != null)
-        {
-            this.setAnalogOperationState(AnalogOperation.PositionStartingAngle, this.orientationAngle);
-        }
-
-        if (this.xPosition != null || this.yPosition != null)
-        {
-            this.setDigitalOperationState(DigitalOperation.DriveTrainResetXYPosition, true);
-            this.setAnalogOperationState(AnalogOperation.DriveTrainStartingXPosition, this.xPosition);
-            this.setAnalogOperationState(AnalogOperation.DriveTrainStartingYPosition, this.yPosition);
-        }
-
-        this.setDigitalOperationState(DigitalOperation.DriveTrainReset, this.resetDriveTrain);
-        this.setDigitalOperationState(DigitalOperation.PositionResetFieldOrientation, this.resetOrientation);
+        this.setEverything();
     }
 
     /**
@@ -123,5 +97,23 @@ public class PositionStartingTask extends UpdateCycleTask
 
         this.setDigitalOperationState(DigitalOperation.DriveTrainReset, false);
         this.setDigitalOperationState(DigitalOperation.PositionResetFieldOrientation, false);
+    }
+
+    private void setEverything()
+    {
+        if (this.orientationAngle != null)
+        {
+            this.setAnalogOperationState(AnalogOperation.PositionStartingAngle, this.orientationAngle);
+        }
+
+        if (this.xPosition != null || this.yPosition != null)
+        {
+            this.setDigitalOperationState(DigitalOperation.DriveTrainResetXYPosition, true);
+            this.setAnalogOperationState(AnalogOperation.DriveTrainStartingXPosition, this.xPosition);
+            this.setAnalogOperationState(AnalogOperation.DriveTrainStartingYPosition, this.yPosition);
+        }
+
+        this.setDigitalOperationState(DigitalOperation.DriveTrainReset, this.resetDriveTrain);
+        this.setDigitalOperationState(DigitalOperation.PositionResetFieldOrientation, this.resetOrientation);
     }
 }
