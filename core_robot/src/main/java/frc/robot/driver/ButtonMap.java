@@ -365,8 +365,8 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.DriveTrainEnableMaintainDirectionMode
             }),
 
-            new MacroOperationDescription(
-            MacroOperation.ChargeStationBalance,
+        new MacroOperationDescription(
+            MacroOperation.ChargeStationBalanceReverse,
             UserInputDevice.Test1,
             UserInputDeviceButton.XBONE_SELECT_BUTTON, // Left menu button
             Shift.Test1Debug,
