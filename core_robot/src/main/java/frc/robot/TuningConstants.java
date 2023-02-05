@@ -277,10 +277,12 @@ public class TuningConstants
     public static final double UPPER_ARM_POSITION_MM_CRUISE_VELOCITY = 0.0;
     public static final double UPPER_ARM_POSITION_MM_ACCELERATION = 0.0;
 
-    public static final boolean LOWER_ARM_INVERT_OUTPUT = false;
+    public static final boolean LOWER_ARM_LEFT_INVERT_OUTPUT = false;
+    public static final boolean LOWER_ARM_RIGHT_INVERT_OUTPUT = false;
     public static final boolean UPPER_ARM_INVERT_OUTPUT = false;
 
-    public static final boolean LOWER_ARM_INVERT_SENSOR = false;
+    public static final boolean LOWER_ARM_LEFT_INVERT_SENSOR = false;
+    public static final boolean LOWER_ARM_RIGHT_INVERT_SENSOR = false;
     public static final boolean UPPER_ARM_INVERT_SENSOR = false;
 
     public static final double LOWER_ARM_FULL_EXTENTION_LENGTH = 8.0;
@@ -289,10 +291,12 @@ public class TuningConstants
     public static final double UPPER_ARM_NEAR_FULL_RETRACTED_LENGTH = UPPER_ARM_FULL_RETRACTED_LENGTH + 0.1;
 
     public static final double ARM_RETRACTION_MAX_TIME = 0.7;
-    
 
     public static final double ARM_MAX_VELOCITY = 50.0;
     public static final double ARM_MAX_ACCLERATION = 50.0;
+
+    public static final double ARM_LOWER_EXTENSION_ADJUSTMENT_VELOCITY = 2.0; // inches per second
+    public static final double ARM_UPPER_EXTENSION_ADJUSTMENT_VELOCITY = 2.0; // inches per second
 
     public static final double ARM_MAX_REVERSE_SIMPLE_VELOCITY = -0.8;
     public static final double ARM_MAX_FORWARD_SIMPLE_VELOCITY = 0.8;
@@ -303,6 +307,9 @@ public class TuningConstants
     public static final double ARM_MAX_LENGTH = 48.0;
 
     public static final double LOWER_ARM_VELOCITY_DEAZONE = 0.1;
+
+    public static final double ARM_FLIPPER_EXTEND_WAIT_DURATION = 0.5;
+    public static final double ARM_FLIPPER_RETRACT_WAIT_DURATION = 0.5;
 
     //============================================= ChargeStation Macro ==================================================================
 
