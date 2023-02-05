@@ -281,11 +281,8 @@ public class TuningConstants
     public static final double UPPER_ARM_FULLY_RETRACTED = 0.0;
 
     //============================================= ChargeStation Macro ==================================================================
-    public static final double CHARGE_STATION_STEP_ONE_GOAL_ANGLE = 15;
-    public static final double CHARGE_STATION_STEP_TWO_GOAL_ANGLE = 9;
-    public static final double CHARGE_STATION_STEP_THREE_GOAL_POSITION = 4.5;
 
-    //ChargeStationTask constants (owned by Jamie and Calvin)
+    // ChargeStationTask constants (owned by Jamie and Calvin)
     public static final double CHARGE_STATION_PITCH_VARIATION = 0.3;
     public static final double CHARGE_STATION_ACCEPTABLE_PITCH_DIFF = 2.0;
     public static final double CHARGE_STATION_STARTING_SPEED = 0.5;
@@ -294,5 +291,5 @@ public class TuningConstants
     public static final double CHARGE_STATION_START_TRANSITION_PITCH = 5.0;
     public static final double CHARGE_STATION_CLIMBING_TRANSITION_PITCH = 13;
     public static final double CHARGE_STATION_CLIMBING_TRANSITION_ACCEPTABLE_VARIATION = 0.3;
-
+    public static final double CHARGE_STATION_CLIMBING_TRANSITION_WAIT_DURATION = 1.35;
 }
