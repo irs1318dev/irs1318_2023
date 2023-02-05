@@ -127,8 +127,7 @@ public class ChargeStationTask extends ControlTaskBase
 
             if (this.climbingExceededTransitionTime != 0.0)
             {
-                // TODO: use a constant for the finish time comparison
-                if (currTime - this.climbingExceededTransitionTime >= 1.35)
+                if (currTime - this.climbingExceededTransitionTime >= TuningConstants.CHARGE_STATION_CLIMBING_TRANSITION_WAIT_DURATION)
                 {
                     this.currentState = State.Balancing;
                 }
@@ -202,6 +201,5 @@ public class ChargeStationTask extends ControlTaskBase
     public boolean hasCompleted()
     {
         return this.currentState == State.Completed;
-
     }
 }
