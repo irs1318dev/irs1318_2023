@@ -256,12 +256,19 @@ public class TuningConstants
     
     public static final double INTAKE_POWER = 0.6;
 
-    public static final double LOWER_ARM_POSITION_MM_PID_KP = 0.1;
-    public static final double LOWER_ARM_POSITION_MM_PID_KI = 0.0;
-    public static final double LOWER_ARM_POSITION_MM_PID_KD = 0.0;
-    public static final double LOWER_ARM_POSITION_MM_PID_KF = 0.05;
-    public static final double LOWER_ARM_POSITION_MM_CRUISE_VELOCITY = 0.0;
-    public static final double LOWER_ARM_POSITION_MM_ACCELERATION = 0.0;
+    public static final double LOWER_ARM_LEFT_POSITION_MM_PID_KP = 0.1;
+    public static final double LOWER_ARM_LEFT_POSITION_MM_PID_KI = 0.0;
+    public static final double LOWER_ARM_LEFT_POSITION_MM_PID_KD = 0.0;
+    public static final double LOWER_ARM_LEFT_POSITION_MM_PID_KF = 0.05;
+    public static final double LOWER_ARM_LEFT_POSITION_MM_CRUISE_VELOCITY = 0.0;
+    public static final double LOWER_ARM_LEFT_POSITION_MM_ACCELERATION = 0.0;
+
+    public static final double LOWER_ARM_RIGHT_POSITION_MM_PID_KP = 0.1;
+    public static final double LOWER_ARM_RIGHT_POSITION_MM_PID_KI = 0.0;
+    public static final double LOWER_ARM_RIGHT_POSITION_MM_PID_KD = 0.0;
+    public static final double LOWER_ARM_RIGHT_POSITION_MM_PID_KF = 0.05;
+    public static final double LOWER_ARM_RIGHT_POSITION_MM_CRUISE_VELOCITY = 0.0;
+    public static final double LOWER_ARM_RIGHT_POSITION_MM_ACCELERATION = 0.0;
 
     public static final double UPPER_ARM_POSITION_MM_PID_KP = 0.1;
     public static final double UPPER_ARM_POSITION_MM_PID_KI = 0.0;
@@ -287,7 +294,8 @@ public class TuningConstants
     public static final double ARM_MAX_VELOCITY = 50.0;
     public static final double ARM_MAX_ACCLERATION = 50.0;
 
-    public static final double ARM_MAX_SIMPLE_VELOCITY = 0.8;
+    public static final double ARM_MAX_REVERSE_SIMPLE_VELOCITY = -0.8;
+    public static final double ARM_MAX_FORWARD_SIMPLE_VELOCITY = 0.8;
  
     public static final double ARM_STRING_ENCODER_TICKS_PER_INCH = (4096 / 100.0) * 25.4; // .1 mm per tick
 

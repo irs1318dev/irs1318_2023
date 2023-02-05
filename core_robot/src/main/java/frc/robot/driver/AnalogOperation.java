@@ -36,18 +36,21 @@ public enum AnalogOperation implements IOperation
 
     //Inverse Kinematics
     ArmIKXPosition,
-    ArmIKYPosition,
+    ArmIKZPosition,
     //Magic Motion
     ArmMMUpperPosition, 
     ArmMMLowerPosition,
     //Codriver Adjustment
     ArmLowerPositionAdjustment,
+   
     ArmUpperPositionAdjustment,
     //Simple - if encoders break
+    ArmSimpleForceLowerLeft,
+    ArmSimpleForceLowerRight,
     ArmSimpleForceUpper,
-    ArmSimpleForceLower,
-    
 
     LowerArmVelocity,
+    UpperArmVelocity,
+
     
 }

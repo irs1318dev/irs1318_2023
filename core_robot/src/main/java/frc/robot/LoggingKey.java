@@ -101,9 +101,11 @@ public enum LoggingKey
     DriveTrainSteerPositionGoal4("dt.steer_goal4"),
 
     IntakePower("i.motor_power"),
-    LowerArmPosition("A.low_pos"), 
+    LowerLeftArmPosition("A.low_left_pos"), 
+    LowerRightArmPosition("A.low_right_pos"), 
     UpperArmPosition("A.up_pos"), 
-    LowerArmVelocity("A.low_vel"), 
+    LowerLeftArmVelocity("A.low_left_vel"), 
+    LowerRightArmVelocity("A.low_right_vel"), 
     UpperArmVelocity("A.up_vel"), 
     
 

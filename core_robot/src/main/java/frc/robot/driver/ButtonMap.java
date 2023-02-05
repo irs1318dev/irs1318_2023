@@ -77,29 +77,49 @@ public class ButtonMap implements IButtonMap
             !ElectronicsConstants.INVERT_XBONE_RIGHT_TRIGGER, // make left positive, as counter-clockwise is positive
             -TuningConstants.DRIVETRAIN_DEAD_ZONE_TURN,
             TuningConstants.DRIVETRAIN_DEAD_ZONE_TURN),
+        
+        new AnalogOperationDescription(
+            AnalogOperation.ArmLowerPositionAdjustment, 
+            UserInputDevice.Codriver,
+            AnalogAxis.XBONE_LSY,
+            Shift.CodriverDebug,
+            Shift.None,
+            false, 
+            -0.1, 0.1, 0, TuningConstants.MAGIC_NULL_VALUE),
+        new AnalogOperationDescription(
+            AnalogOperation.ArmUpperPositionAdjustment, 
+            UserInputDevice.Codriver,
+            AnalogAxis.XBONE_RSY,
+            Shift.CodriverDebug,
+            Shift.None, 
+            false, 
+            -0.1, 0.1, 0, TuningConstants.MAGIC_NULL_VALUE),
+
         new AnalogOperationDescription(
             AnalogOperation.LowerArmVelocity,
             UserInputDevice.Codriver,
             AnalogAxis.XBONE_LSY,
+            Shift.CodriverDebug,
+            Shift.CodriverDebug, 
             !ElectronicsConstants.INVERT_XBONE_RIGHT_TRIGGER,
-            TuningConstants.LOWER_ARM_VELOCITY_DEAZONE), // make left positive, as counter-clockwise is positive           
-        
-            // Arm Analog Operations
+            TuningConstants.LOWER_ARM_VELOCITY_DEAZONE,
+            -TuningConstants.LOWER_ARM_VELOCITY_DEAZONE), // make left positive, as counter-clockwise is positive   
         new AnalogOperationDescription(
-            AnalogOperation.ArmLowerPositionAdjustment,
-            UserInputDevice.Codriver,
-            AnalogAxis.XBONE_RSX,
-            !ElectronicsConstants.INVERT_XBONE_RIGHT_TRIGGER,
-            TuningConstants.LOWER_ARM_VELOCITY_DEAZONE),
-        
-        new AnalogOperationDescription(
-            AnalogOperation.ArmUpperPositionAdjustment,
+            AnalogOperation.UpperArmVelocity,
             UserInputDevice.Codriver,
             AnalogAxis.XBONE_RSY,
+            Shift.CodriverDebug,
+            Shift.CodriverDebug, 
             !ElectronicsConstants.INVERT_XBONE_RIGHT_TRIGGER,
-            TuningConstants.LOWER_ARM_VELOCITY_DEAZONE)
+            TuningConstants.LOWER_ARM_VELOCITY_DEAZONE,
+            -TuningConstants.LOWER_ARM_VELOCITY_DEAZONE),
         
-        
+        new AnalogOperationDescription(
+            AnalogOperation.ArmIKXPosition,
+            TuningConstants.MAGIC_NULL_VALUE),
+        new AnalogOperationDescription(
+            AnalogOperation.ArmIKZPosition,
+            TuningConstants.MAGIC_NULL_VALUE),
     };
 
     public static DigitalOperationDescription[] DigitalOperationSchema = new DigitalOperationDescription[]
