@@ -34,6 +34,12 @@ public class ButtonMapVerifier
                     description.getUserInputDevicePovValue(),
                     description.getUserInputDeviceAxis());
 
+                // skip unmapped buttons
+                if (button.device == UserInputDevice.None)
+                {
+                    continue;
+                }
+
                 HashMap<Shift, List<OperationDescription>> shiftMap;
                 if (!mapping.containsKey(button))
                 {
@@ -102,6 +108,12 @@ public class ButtonMapVerifier
                     UserInputDeviceButton.ANALOG_AXIS_RANGE,
                     -1,
                     description.getUserInputDeviceAxis());
+
+                // skip unmapped buttons
+                if (button.device == UserInputDevice.None)
+                {
+                    continue;
+                }
 
                 HashMap<Shift, List<OperationDescription>> shiftMap;
                 if (!mapping.containsKey(button))
@@ -172,6 +184,12 @@ public class ButtonMapVerifier
                     description.getUserInputDevicePovValue(),
                     description.getUserInputDeviceAxis());
 
+                // skip unmapped buttons
+                if (button.device == UserInputDevice.None)
+                {
+                    continue;
+                }
+
                 HashMap<Shift, List<OperationDescription>> shiftMap;
                 if (!mapping.containsKey(button))
                 {
@@ -240,6 +258,12 @@ public class ButtonMapVerifier
                     description.getUserInputDeviceButton(),
                     description.getUserInputDevicePovValue(),
                     AnalogAxis.NONE);
+
+                // skip unmapped buttons
+                if (button.device == UserInputDevice.None)
+                {
+                    continue;
+                }
 
                 HashMap<Shift, List<OperationDescription>> shiftMap;
                 if (!mapping.containsKey(button))
