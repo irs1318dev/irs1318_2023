@@ -31,26 +31,12 @@ public enum AnalogOperation implements IOperation
     DriveTrainStartingYPosition,
 
     // Arm operations;
-    LowerArmPosition,
-    UpperArmPosition,
-
-    //Inverse Kinematics
-    ArmIKXPosition,
-    ArmIKZPosition,
-    //Magic Motion
-    ArmMMUpperPosition, 
-    ArmMMLowerPosition,
-    //Codriver Adjustment
-    ArmLowerPositionAdjustment,
-   
-    ArmUpperPositionAdjustment,
-    //Simple - if encoders break
-    ArmSimpleForceLowerLeft,
-    ArmSimpleForceLowerRight,
-    ArmSimpleForceUpper,
-
-    LowerArmVelocity,
-    UpperArmVelocity,
-
-    
+    ArmIKXPosition, // Inverse Kinematics
+    ArmIKZPosition, // Inverse Kinematics
+    ArmMMUpperPosition, // Magic Motion
+    ArmMMLowerPosition, // Magic Motion
+    ArmLowerPositionAdjustment, // Codriver minor adjustment
+    ArmUpperPositionAdjustment, // Codriver minor adjustment
+    ArmSimpleForceLower, // Simple control - in case encoder(s) break
+    ArmSimpleForceUpper, // Simple control - in case encoder(s) break
 }

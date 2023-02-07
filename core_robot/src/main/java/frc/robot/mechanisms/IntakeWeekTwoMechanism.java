@@ -61,15 +61,15 @@ public class IntakeWeekTwoMechanism implements IMechanism
         double intakePower = TuningConstants.ZERO;
         if (this.driver.getDigital(DigitalOperation.IntakeIn))
         {
-            intakePower = TuningConstants.INTAKE_POWER;
+            intakePower = TuningConstants.ARM_INTAKE_POWER;
         }
         else if (this.driver.getDigital(DigitalOperation.IntakeOut))
         {
-            intakePower = -TuningConstants.INTAKE_POWER;
+            intakePower = -TuningConstants.ARM_INTAKE_POWER;
         }
 
         this.intakeMotor.set(intakePower);
-        this.logger.logNumber(LoggingKey.IntakePower, intakePower);
+        this.logger.logNumber(LoggingKey.ArmIntakePower, intakePower);
 
         // intake state transitions
         if (this.driver.getDigital(DigitalOperation.IntakeExtend))

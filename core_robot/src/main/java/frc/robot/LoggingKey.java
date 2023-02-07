@@ -100,14 +100,19 @@ public enum LoggingKey
     DriveTrainSteerError4("dt.steer_err4"),
     DriveTrainSteerPositionGoal4("dt.steer_goal4"),
 
-    IntakePower("i.motor_power"),
-    LowerLeftArmPosition("A.low_left_pos"), 
-    LowerRightArmPosition("A.low_right_pos"), 
-    UpperArmPosition("A.up_pos"), 
-    LowerLeftArmVelocity("A.low_left_vel"), 
-    LowerRightArmVelocity("A.low_right_vel"), 
-    UpperArmVelocity("A.up_vel"), 
-    
+    ArmLowerLeftPosition("a.low_left_pos"),
+    ArmLowerRightPosition("a.low_right_pos"),
+    ArmUpperPosition("a.up_pos"),
+    ArmLowerLeftVelocity("a.low_left_vel"),
+    ArmLowerRightVelocity("a.low_right_vel"),
+    ArmUpperVelocity("a.up_vel"),
+    ArmLowerLeftDesiredPosition("a.low_left_pos_desired"),
+    ArmLowerRightDesiredPosition("a.low_right_pos_desired"),
+    ArmUpperDesiredPosition("a.up_pos_desired"),
+    ArmIntakePower("a.intake_power"),
+    ArmIntakeExtended("a.intake_extended"),
+    ArmLeftFlipperState("a.left_flipper"),
+    ArmRightFlipperState("a.right_flipper"),
 
     CompressorPreassure("com.pres");
 

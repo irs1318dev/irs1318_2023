@@ -39,15 +39,15 @@ public class ButtonMap implements IButtonMap
             UserInputDevice.Driver,
             AnalogAxis.XBONE_LSY,
             ElectronicsConstants.INVERT_XBONE_LEFT_Y_AXIS,
-            -TuningConstants.DRIVETRAIN_DEAD_ZONE_VELOCITY,
-            TuningConstants.DRIVETRAIN_DEAD_ZONE_VELOCITY),
+            -TuningConstants.DRIVETRAIN_DEAD_ZONE_VELOCITY_Y,
+            TuningConstants.DRIVETRAIN_DEAD_ZONE_VELOCITY_Y),
         new AnalogOperationDescription(
             AnalogOperation.DriveTrainMoveRight,
             UserInputDevice.Driver,
             AnalogAxis.XBONE_LSX,
             ElectronicsConstants.INVERT_XBONE_LEFT_X_AXIS,
-            -TuningConstants.DRIVETRAIN_DEAD_ZONE_VELOCITY,
-            TuningConstants.DRIVETRAIN_DEAD_ZONE_VELOCITY),
+            -TuningConstants.DRIVETRAIN_DEAD_ZONE_VELOCITY_X,
+            TuningConstants.DRIVETRAIN_DEAD_ZONE_VELOCITY_X),
         new AnalogOperationDescription(
             AnalogOperation.DriveTrainTurnAngleGoal,
             UserInputDevice.Driver,
@@ -77,43 +77,49 @@ public class ButtonMap implements IButtonMap
             !ElectronicsConstants.INVERT_XBONE_RIGHT_TRIGGER, // make left positive, as counter-clockwise is positive
             -TuningConstants.DRIVETRAIN_DEAD_ZONE_TURN,
             TuningConstants.DRIVETRAIN_DEAD_ZONE_TURN),
-        
+
         new AnalogOperationDescription(
-            AnalogOperation.ArmLowerPositionAdjustment, 
+            AnalogOperation.ArmLowerPositionAdjustment,
             UserInputDevice.Codriver,
             AnalogAxis.XBONE_LSY,
             Shift.CodriverDebug,
             Shift.None,
-            false, 
-            -0.1, 0.1, 0, TuningConstants.MAGIC_NULL_VALUE),
+            false,
+            -TuningConstants.ARM_LOWER_VELOCITY_DEAZONE,
+            TuningConstants.ARM_LOWER_VELOCITY_DEAZONE,
+            1.0,
+            TuningConstants.MAGIC_NULL_VALUE),
         new AnalogOperationDescription(
-            AnalogOperation.ArmUpperPositionAdjustment, 
+            AnalogOperation.ArmUpperPositionAdjustment,
             UserInputDevice.Codriver,
             AnalogAxis.XBONE_RSY,
             Shift.CodriverDebug,
-            Shift.None, 
-            false, 
-            -0.1, 0.1, 0, TuningConstants.MAGIC_NULL_VALUE),
+            Shift.None,
+            false,
+            -TuningConstants.ARM_UPPER_VELOCITY_DEAZONE,
+            TuningConstants.ARM_UPPER_VELOCITY_DEAZONE,
+            1.0,
+            TuningConstants.MAGIC_NULL_VALUE),
 
         new AnalogOperationDescription(
-            AnalogOperation.LowerArmVelocity,
+            AnalogOperation.ArmSimpleForceLower,
             UserInputDevice.Codriver,
             AnalogAxis.XBONE_LSY,
             Shift.CodriverDebug,
-            Shift.CodriverDebug, 
+            Shift.CodriverDebug,
             !ElectronicsConstants.INVERT_XBONE_RIGHT_TRIGGER,
-            TuningConstants.LOWER_ARM_VELOCITY_DEAZONE,
-            -TuningConstants.LOWER_ARM_VELOCITY_DEAZONE), // make left positive, as counter-clockwise is positive   
+            TuningConstants.ARM_LOWER_VELOCITY_DEAZONE,
+            -TuningConstants.ARM_LOWER_VELOCITY_DEAZONE), // make left positive, as counter-clockwise is positive
         new AnalogOperationDescription(
-            AnalogOperation.UpperArmVelocity,
+            AnalogOperation.ArmSimpleForceUpper,
             UserInputDevice.Codriver,
             AnalogAxis.XBONE_RSY,
             Shift.CodriverDebug,
-            Shift.CodriverDebug, 
+            Shift.CodriverDebug,
             !ElectronicsConstants.INVERT_XBONE_RIGHT_TRIGGER,
-            TuningConstants.LOWER_ARM_VELOCITY_DEAZONE,
-            -TuningConstants.LOWER_ARM_VELOCITY_DEAZONE),
-        
+            TuningConstants.ARM_UPPER_VELOCITY_DEAZONE,
+            -TuningConstants.ARM_UPPER_VELOCITY_DEAZONE),
+
         new AnalogOperationDescription(
             AnalogOperation.ArmIKXPosition,
             TuningConstants.MAGIC_NULL_VALUE),
@@ -200,7 +206,6 @@ public class ButtonMap implements IButtonMap
             Shift.DriverDebug,
             Shift.DriverDebug,
             ButtonType.Simple),
-        
     };
 
     public static MacroOperationDescription[] MacroSchema = new MacroOperationDescription[]
