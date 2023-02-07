@@ -558,21 +558,45 @@ public class ArmMechanism implements IMechanism
             HardwareConstants.LOWER_ARM_LINEAR_ACTUATOR_RIGHT_ANGLE_OFFSET +
             HardwareConstants.LOWER_ARM_LINEAR_ACTUATOR_LEFT_ANGLE_OFFSET; // With offsets
 
-        double linearActuatorDistanceToMove = 8; //Starting value of 8 inch, maybe (placeholder)
-
-        linearActuatorDistanceToMove =
+        double lowerLinearActuatorDistanceToMove = 8; // Starting value of 8 inch, maybe (placeholder)
+        double upperLinearActuatorDistanceToMove = 8; // Length 6 in Equation, Placeholder value
+        lowerLinearActuatorDistanceToMove =
             (Math.sqrt(
                 Math.pow(HardwareConstants.LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM, 2) +
                 Math.pow(HardwareConstants.LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM, 2) -
                 2 * HardwareConstants.LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM *
                 HardwareConstants.LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM *
                 Math.cos(totalLowerArmAngle)));
-
+        //Upper Linear Actuator Angle & Length Calculations
+        double phiAngle = Math.atan2(HardwareConstants.DISTANCE_ONE + HardwareConstants.DISTANCE_TWO, HardwareConstants.DISTANCE_FOUR);
+        double angleOne = upperArmAngleToMove + phiAngle;
+        double lengthFive = Math.sqrt(Math.pow(HardwareConstants.LENGTH_ONE, 2) + 
+        Math.pow(HardwareConstants.LENGTH_FOUR, 2) - 
+        2 * HardwareConstants.LENGTH_ONE * HardwareConstants.LENGTH_FOUR * 
+        Math.cos(angleOne));
+        double angleFour = Math.acos((Math.pow(HardwareConstants.LENGTH_THREE, 2) +
+        Math.pow(lengthFive, 2) -
+        Math.pow(HardwareConstants.LENGTH_TWO, 2)) / 
+        2 * HardwareConstants.LENGTH_THREE * lengthFive);
+        double angleThree = Math.acos((Math.pow(HardwareConstants.LENGTH_FOUR, 2) +
+        Math.pow(lengthFive, 2) -
+        Math.pow(HardwareConstants.LENGTH_ONE, 2)) / 
+        2 * HardwareConstants.LENGTH_FOUR * lengthFive);
+        double betaOne = 180 - angleThree - angleFour - phiAngle - HardwareConstants.PSI_ANGLE + HardwareConstants.SIGMA_ANGLE;
+        double lengthSeven = Math.sqrt(HardwareConstants.DISTANCE_SIX + HardwareConstants.DISTANCE_FIVE);
+        double lengthEight = Math.sqrt(HardwareConstants.DISTANCE_TWO + HardwareConstants.DISTANCE_THREE);
+        upperLinearActuatorDistanceToMove = Math.sqrt(Math.pow(lengthSeven, 2) + Math.pow(lengthEight, 2) -
+        2 * lengthSeven * lengthEight * Math.acos(betaOne));
+        
+        
         double lowerArmPosition = 0;
-        lowerArmPosition *= TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
-        lowerArmPosition = (lowerArmPosition + 1) * 1016;
         double upperArmPosition = 0;
-        return new Setpoint(upperArmPosition, lowerLeftArmPosition);
+        lowerArmPosition *= TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * lowerLinearActuatorDistanceToMove;
+        lowerArmPosition = (lowerArmPosition + 1) * 1016;
+        upperArmPosition *= TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * upperLinearActuatorDistanceToMove;
+        upperArmPosition = (upperArmPosition + 1) * 1016;
+        
+        return new Setpoint(upperArmPosition, lowerArmPosition);
     }
 
     /**
