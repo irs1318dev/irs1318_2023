@@ -45,4 +45,19 @@ public class HardwareConstants
     //================================================= Arm =================================================================================================================
 
     public static final boolean INTAKE_MOTOR_INVERT_OUTPUT = true;
+
+
+    //================================================= Arm =================================================================================
+    
+    public static final double LOWER_ARM_LENGTH = 46; // Values will likely change
+    public static final double UPPER_ARM_LENGTH = 37;
+    
+    //======Lower Arm Linear Actuator================
+   
+    public static final double LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM = 18.347; //There has to be a better name for this 
+    public static final double LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM = 12.876;
+    public static final double LOWER_ARM_LINEAR_ACTUATOR_RIGHT_ANGLE_OFFSET = 15; //Place holder until verified from CAD
+    public static final double LOWER_ARM_LINEAR_ACTUATOR_LEFT_ANGLE_OFFSET = 10; //Place holder
+    
+    //======Upper Arm Linear Actuator================
 }

@@ -74,7 +74,6 @@ public class PowerManager implements IMechanism
     @Override
     public void readSensors()
     {
-
         this.batteryVoltageFilter.update(this.powerDistribution.getBatteryVoltage());
         this.logger.logNumber(LoggingKey.PowerBatteryVoltage, this.batteryVoltageFilter.getValue());
 
@@ -89,9 +88,8 @@ public class PowerManager implements IMechanism
     public void update()
     {
         boolean enableVision = !this.driver.getDigital(DigitalOperation.VisionForceDisable);
-        boolean enableGamePieceProcessing = this.driver.getDigital(DigitalOperation.VisionEnableAprilTagProcessing);
         boolean enableRetroreflectiveProcessing = this.driver.getDigital(DigitalOperation.VisionEnableRetroreflectiveProcessing);
-        this.powerDistribution.setSwitchableChannel(enableVision && (enableGamePieceProcessing || enableRetroreflectiveProcessing));
+        this.powerDistribution.setSwitchableChannel(enableVision && enableRetroreflectiveProcessing);
     }
 
     @Override
