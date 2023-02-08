@@ -36,35 +36,34 @@ public class RoadRunnerTrajectoryGenerator
     {
         PathManager pathManager = new PathManager();
         RoadRunnerTrajectoryGenerator.generateTrajectories(pathManager);
-        ITrajectory trajectory = pathManager.getTrajectory("w2ba-goToPickUpBall2");
+        // ITrajectory trajectory = pathManager.getTrajectory("w2ba-goToPickUpBall2");
 
-        try (CsvWriter csvWriter = CsvWriter.builder().build(java.nio.file.Path.of("test.csv"), StandardCharsets.UTF_8))
-        {
-            csvWriter.writeRow("t", "x", "y", "theta", "vx", "vy", "omega");
+        // try (CsvWriter csvWriter = CsvWriter.builder().build(java.nio.file.Path.of("test.csv"), StandardCharsets.UTF_8))
+        // {
+        //     csvWriter.writeRow("t", "x", "y", "theta", "vx", "vy", "omega");
 
-            for (double t = 0.0; t < trajectory.getDuration() + 0.01; t += 0.02)
-            {
-                TrajectoryState state = trajectory.get(t);
-                csvWriter.writeRow(
-                    Double.toString(t),
-                    Double.toString(state.xPosition),
-                    Double.toString(state.yPosition),
-                    Double.toString(state.angle),
-                    Double.toString(state.xVelocity),
-                    Double.toString(state.yVelocity),
-                    Double.toString(state.angleVelocity));
-            }
+        //     for (double t = 0.0; t < trajectory.getDuration() + 0.01; t += 0.02)
+        //     {
+        //         TrajectoryState state = trajectory.get(t);
+        //         csvWriter.writeRow(
+        //             Double.toString(t),
+        //             Double.toString(state.xPosition),
+        //             Double.toString(state.yPosition),
+        //             Double.toString(state.angle),
+        //             Double.toString(state.xVelocity),
+        //             Double.toString(state.yVelocity),
+        //             Double.toString(state.angleVelocity));
+        //     }
 
-            csvWriter.close();
-        }
-        catch (IOException e)
-        {
-        }
+        //     csvWriter.close();
+        // }
+        // catch (IOException e)
+        // {
+        // }
     }
 
     public static void generateTrajectories(PathManager pathManager)
     {
-        /*
         // ----------------------------------------- Sample paths ----------------------------------------- //
         addPath(
             pathManager,
@@ -149,10 +148,10 @@ public class RoadRunnerTrajectoryGenerator
             pathManager,
             startTrajectory(BlueStartGridX, BlueStartUpGridY, 180.0 * Helpers.DEGREES_TO_RADIANS, 180.0 * Helpers.DEGREES_TO_RADIANS)
                 //Task places cone on node
-                .splineToSplineHeading(new Pose2d(BlueMidpointAfterChargeStationX, BlueStartUpGridY), 0.0 * Helpers.DEGREES_TO_RADIANS) // Spline to midpoint
+                .splineToConstantHeading(new Vector2d(BlueMidpointAfterChargeStationX, BlueStartUpGridY), 0.0 * Helpers.DEGREES_TO_RADIANS) // Spline to midpoint
                 .splineToConstantHeading(new Vector2d(BlueGroundNodesX, BlueGroundNodeFarUpY), 0.0 * Helpers.DEGREES_TO_RADIANS) // Spline to ground node far up
                 //Pickup cone
-                .splineToSplineHeading(new Pose2d(BlueMidpointAfterChargeStationX, BlueStartUpGridY), 180.0 * Helpers.DEGREES_TO_RADIANS) // Spline to midpoint
+                .splineToConstantHeading(new Vector2d(BlueMidpointAfterChargeStationX, BlueStartUpGridY), 180.0 * Helpers.DEGREES_TO_RADIANS) // Spline to midpoint
                 .splineToConstantHeading(new Vector2d(BlueStartGridX,BlueStartUpGridY), 180.0 * Helpers.DEGREES_TO_RADIANS), // Spline to infront of the grid
                 //Task places cone on node
             "UpStartToGroundNodeFarUpToUpStart");
@@ -161,13 +160,13 @@ public class RoadRunnerTrajectoryGenerator
             pathManager,
             startTrajectory(BlueStartGridX, BlueStartUpGridY, 180.0 * Helpers.DEGREES_TO_RADIANS, 180.0 * Helpers.DEGREES_TO_RADIANS)
                 //Task places cone on node
-                .splineToSplineHeading(new Pose2d(BlueMidpointAfterChargeStationX, BlueStartUpGridY), 0.0 * Helpers.DEGREES_TO_RADIANS) // Spline to midpoint
+                .splineToConstantHeading(new Vector2d(BlueMidpointAfterChargeStationX, BlueStartUpGridY), 0.0 * Helpers.DEGREES_TO_RADIANS) // Spline to midpoint
                 .splineToConstantHeading(new Vector2d(BlueGroundNodesX, BlueGroundNodeFarUpY), 0.0 * Helpers.DEGREES_TO_RADIANS) // Spline to ground node far up
                 //Pickup cone
-                .splineToSplineHeading(new Pose2d(BlueMidpointAfterChargeStationX, BlueStartUpGridY), 180.0 * Helpers.DEGREES_TO_RADIANS) // Spline to midpoint
+                .splineToConstantHeading(new Vector2d(BlueMidpointAfterChargeStationX, BlueStartUpGridY), 180.0 * Helpers.DEGREES_TO_RADIANS) // Spline to midpoint
                 .splineToConstantHeading(new Vector2d(BlueStartGridX, BlueStartUpGridY), 180.0 * Helpers.DEGREES_TO_RADIANS) // Spline to infront of the grid
                 //Task places cone on node
-                .splineToSplineHeading(new Pose2d(BlueFrontChargeStationX, BlueUpChargeStationY), 0.0 * Helpers.DEGREES_TO_RADIANS), // Goes infront of charge staton
+                .splineToConstantHeading(new Vector2d(BlueFrontChargeStationX, BlueUpChargeStationY), 0.0 * Helpers.DEGREES_TO_RADIANS), // Goes infront of charge staton
                 //Jamie's Charge Station Task
 
             "UpStartToGroundNodeFarUpToUpStartToFrontChargeStation");
@@ -175,7 +174,7 @@ public class RoadRunnerTrajectoryGenerator
             pathManager,
             startTrajectory(BlueStartGridX, BlueStartUpGridY, 180.0 * Helpers.DEGREES_TO_RADIANS, 180.0 * Helpers.DEGREES_TO_RADIANS)
                 //Task places cone on node
-                .splineToSplineHeading(new Pose2d(BlueFrontChargeStationX, BlueUpChargeStationY), 0.0 * Helpers.DEGREES_TO_RADIANS), // Goes infront of charge staton
+                .splineToConstantHeading(new Vector2d(BlueFrontChargeStationX, BlueUpChargeStationY), 0.0 * Helpers.DEGREES_TO_RADIANS), // Goes infront of charge staton
                 //Jamie's Charge Station Task
 
             "UpStartToFrontChargeStation");
@@ -184,10 +183,10 @@ public class RoadRunnerTrajectoryGenerator
             pathManager,
             startTrajectory(BlueStartGridX, BlueStartDownGridY, 180.0 * Helpers.DEGREES_TO_RADIANS, 180.0 * Helpers.DEGREES_TO_RADIANS)
                 //Task places cone on node
-                .splineToSplineHeading(new Pose2d(BlueMidpointAfterChargeStationX, BlueStartDownGridY), 0.0 * Helpers.DEGREES_TO_RADIANS) // Spline to midpoint
+                .splineToConstantHeading(new Vector2d(BlueMidpointAfterChargeStationX, BlueStartDownGridY), 0.0 * Helpers.DEGREES_TO_RADIANS) // Spline to midpoint
                 .splineToConstantHeading(new Vector2d(BlueGroundNodesX, BlueGroundNodeFarDownY), 0.0 * Helpers.DEGREES_TO_RADIANS) // Spline to ground node far down
                 //Pickup cone
-                .splineToSplineHeading(new Pose2d(BlueMidpointAfterChargeStationX, BlueStartDownGridY), 180.0 * Helpers.DEGREES_TO_RADIANS) // Spline to midpoint
+                .splineToConstantHeading(new Vector2d(BlueMidpointAfterChargeStationX, BlueStartDownGridY), 180.0 * Helpers.DEGREES_TO_RADIANS) // Spline to midpoint
                 .splineToConstantHeading(new Vector2d(BlueStartGridX, BlueStartDownGridY), 180.0 * Helpers.DEGREES_TO_RADIANS), // Spline to infront of the grid
                 //Task places cone on node
             "DownStartToGroundNodeFarDownToDownStart");
@@ -196,13 +195,13 @@ public class RoadRunnerTrajectoryGenerator
             pathManager,
             startTrajectory(BlueStartGridX, BlueStartDownGridY, 180.0 * Helpers.DEGREES_TO_RADIANS, 180.0 * Helpers.DEGREES_TO_RADIANS)
                 //Task places cone on node
-                .splineToSplineHeading(new Pose2d(BlueMidpointAfterChargeStationX, BlueStartDownGridY), 0.0 * Helpers.DEGREES_TO_RADIANS) // Spline to midpoint
+                .splineToConstantHeading(new Vector2d(BlueMidpointAfterChargeStationX, BlueStartDownGridY), 0.0 * Helpers.DEGREES_TO_RADIANS) // Spline to midpoint
                 .splineToConstantHeading(new Vector2d(BlueGroundNodesX, BlueGroundNodeFarDownY), 0.0 * Helpers.DEGREES_TO_RADIANS) // Spline to ground node far down
                 //Pickup cone
-                .splineToSplineHeading(new Pose2d(BlueMidpointAfterChargeStationX, BlueStartDownGridY), 180.0 * Helpers.DEGREES_TO_RADIANS) // Spline to midpoint
+                .splineToConstantHeading(new Vector2d(BlueMidpointAfterChargeStationX, BlueStartDownGridY), 180.0 * Helpers.DEGREES_TO_RADIANS) // Spline to midpoint
                 .splineToConstantHeading(new Vector2d(BlueStartGridX, BlueStartDownGridY), 180.0 * Helpers.DEGREES_TO_RADIANS) // Spline to grid
                 //Task places cone on node
-                .splineToSplineHeading(new Pose2d(BlueFrontChargeStationX, BlueDownChargeStationY), 0.0 * Helpers.DEGREES_TO_RADIANS), // Goes infront of charge staton
+                .splineToConstantHeading(new Vector2d(BlueFrontChargeStationX, BlueDownChargeStationY), 0.0 * Helpers.DEGREES_TO_RADIANS), // Goes infront of charge staton
                 //Jamie's Charge Station Task
             "DownStartToGroundNodeFarDownToDownStartToFrontChargeStation");
         
@@ -210,7 +209,7 @@ public class RoadRunnerTrajectoryGenerator
             pathManager,
             startTrajectory(BlueStartGridX, BlueStartDownGridY, 180.0 * Helpers.DEGREES_TO_RADIANS, 180.0 * Helpers.DEGREES_TO_RADIANS)
                 //Task places cone on node
-                .splineToSplineHeading(new Pose2d(BlueFrontChargeStationX, BlueDownChargeStationY), 0.0 * Helpers.DEGREES_TO_RADIANS), // Goes infront of charge staton
+                .splineToConstantHeading(new Vector2d(BlueFrontChargeStationX, BlueDownChargeStationY), 0.0 * Helpers.DEGREES_TO_RADIANS), // Goes infront of charge staton
                 //Jamie's Charge Station Task
             "DownStartToFrontChargeStation");
 
@@ -219,12 +218,12 @@ public class RoadRunnerTrajectoryGenerator
             pathManager,
             startTrajectory(BlueStartGridX, BlueStartMiddleGridY, 180.0 * Helpers.DEGREES_TO_RADIANS, 180.0 * Helpers.DEGREES_TO_RADIANS)
                 //Task places cone on node
-                .splineToSplineHeading(new Pose2d(BlueMidpointAfterChargeStationX, BlueStartMiddleGridY), 0.0 * Helpers.DEGREES_TO_RADIANS) // Spline to Midpoint past the charge station
+                .splineToConstantHeading(new Vector2d(BlueMidpointAfterChargeStationX, BlueStartMiddleGridY), 0.0 * Helpers.DEGREES_TO_RADIANS) // Spline to Midpoint past the charge station
                 .splineToConstantHeading(new Vector2d(BlueGroundNodesX, BlueGroundNodeSecondUpY), 0.0 * Helpers.DEGREES_TO_RADIANS) // Spline to the ground node Second Up
                 //Pickup cone
-                .splineToSplineHeading(new Pose2d(BlueMidpointAfterChargeStationX, BlueStartMiddleGridY), 180.0 * Helpers.DEGREES_TO_RADIANS) // Spline to Midpoint past the charge station
+                .splineToConstantHeading(new Vector2d(BlueMidpointAfterChargeStationX, BlueStartMiddleGridY), 180.0 * Helpers.DEGREES_TO_RADIANS) // Spline to Midpoint past the charge station
                 .splineToConstantHeading(new Vector2d(BlueStartGridX, BlueStartMiddleGridY), 180.0 * Helpers.DEGREES_TO_RADIANS) // Spline to Grid
-                .splineToSplineHeading(new Pose2d(BlueFrontChargeStationX, BlueMiddleChargeStationY), 0.0 * Helpers.DEGREES_TO_RADIANS), // Goes infront of charge staton
+                .splineToConstantHeading(new Vector2d(BlueFrontChargeStationX, BlueMiddleChargeStationY), 0.0 * Helpers.DEGREES_TO_RADIANS), // Goes infront of charge staton
                 //Jamie's Charge Station Task
             "MiddleStartToConeSecondUpToMiddleStartToFrontChargeStation");
 
@@ -232,12 +231,12 @@ public class RoadRunnerTrajectoryGenerator
             pathManager,
             startTrajectory(BlueStartGridX, BlueStartMiddleGridY, 180.0 * Helpers.DEGREES_TO_RADIANS, 180.0 * Helpers.DEGREES_TO_RADIANS)
                 //Task places cone on node
-                .splineToSplineHeading(new Pose2d(BlueMidpointAfterChargeStationX, BlueStartMiddleGridY), 0.0 * Helpers.DEGREES_TO_RADIANS) // Spline to Midpoint past the charge station
+                .splineToConstantHeading(new Vector2d(BlueMidpointAfterChargeStationX, BlueStartMiddleGridY), 0.0 * Helpers.DEGREES_TO_RADIANS) // Spline to Midpoint past the charge station
                 .splineToConstantHeading(new Vector2d(BlueGroundNodesX, BlueGroundNodeSecondDownY), 0.0 * Helpers.DEGREES_TO_RADIANS) // Spline to the ground node Second Down
                 //Pickup cone
-                .splineToSplineHeading(new Pose2d(BlueMidpointAfterChargeStationX, BlueStartMiddleGridY), 180.0 * Helpers.DEGREES_TO_RADIANS) // Spline to Midpoint past the charge station
+                .splineToConstantHeading(new Vector2d(BlueMidpointAfterChargeStationX, BlueStartMiddleGridY), 180.0 * Helpers.DEGREES_TO_RADIANS) // Spline to Midpoint past the charge station
                 .splineToConstantHeading(new Vector2d(BlueStartGridX, BlueStartMiddleGridY), 180.0 * Helpers.DEGREES_TO_RADIANS) // Spline to Grid
-                .splineToSplineHeading(new Pose2d(BlueFrontChargeStationX, BlueMiddleChargeStationY), 0.0 * Helpers.DEGREES_TO_RADIANS), // Goes infront of charge staton
+                .splineToConstantHeading(new Vector2d(BlueFrontChargeStationX, BlueMiddleChargeStationY), 0.0 * Helpers.DEGREES_TO_RADIANS), // Goes infront of charge staton
                 //Jamie's Charge Station Task
             "MiddleStartToConeSecondDownToMiddleStartToFrontChargeStation");
 
@@ -245,8 +244,8 @@ public class RoadRunnerTrajectoryGenerator
             pathManager,
             startTrajectory(BlueStartGridX, BlueStartUpGridY, 180.0 * Helpers.DEGREES_TO_RADIANS, 180.0 * Helpers.DEGREES_TO_RADIANS)
                 //Task places cone on node
-                .splineToSplineHeading(new Pose2d(BlueMidpointAfterChargeStationX, BlueStartUpGridY), 0.0 * Helpers.DEGREES_TO_RADIANS) // Splines to midpoint
-                .splineToSplineHeading(new Pose2d(BlueBackChargeStationX, BlueUpChargeStationY), 180.0 * Helpers.DEGREES_TO_RADIANS), // Goes behind the Charge Station
+                .splineToConstantHeading(new Vector2d(BlueMidpointAfterChargeStationX, BlueStartUpGridY), 0.0 * Helpers.DEGREES_TO_RADIANS) // Splines to midpoint
+                .splineToConstantHeading(new Vector2d(BlueBackChargeStationX, BlueUpChargeStationY), 180.0 * Helpers.DEGREES_TO_RADIANS), // Goes behind the Charge Station
                 //Jamie's Charge Station Task
 
             "UpStartToBackChargeStation");
@@ -255,12 +254,11 @@ public class RoadRunnerTrajectoryGenerator
             pathManager,
             startTrajectory(BlueStartGridX, BlueStartUpGridY, 180.0 * Helpers.DEGREES_TO_RADIANS, 180.0 * Helpers.DEGREES_TO_RADIANS)
                 //Task places cone on node
-                .splineToSplineHeading(new Pose2d(BlueMidpointAfterChargeStationX, BlueStartUpGridY), 0.0 * Helpers.DEGREES_TO_RADIANS) // Splines to midpoint
-                .splineToSplineHeading(new Pose2d(BlueBackChargeStationX, BlueUpChargeStationY), 180.0 * Helpers.DEGREES_TO_RADIANS), // Goes behind Charge Station
+                .splineToConstantHeading(new Vector2d(BlueMidpointAfterChargeStationX, BlueStartUpGridY), 0.0 * Helpers.DEGREES_TO_RADIANS) // Splines to midpoint
+                .splineToConstantHeading(new Vector2d(BlueBackChargeStationX, BlueUpChargeStationY), 180.0 * Helpers.DEGREES_TO_RADIANS), // Goes behind Charge Station
                 //Jamie's Charge Station Task
 
             "UpStartToBackChargeStation");
-        */
     }
 
     private static TrajectoryBuilder startTrajectory()

@@ -485,7 +485,7 @@ public class ArmMechanism implements IMechanism
             //     if (this.driver.getAnalog(AnalogOperation.ArmIKXPosition) >= 0.0 && this.driver.getAnalog(AnalogOperation.ArmIKZPosition) >= 0.0)
             //     {
             //         // controlled by macro
-            //         Setpoint ikResult = this.calculateIK(this.driver.getAnalog(AnalogOperation.ArmIKXPosition), this.driver.getAnalog(AnalogOperation.ArmIKZPosition));
+            //         ArmPositionSetpoint ikResult = this.calculateIK(this.driver.getAnalog(AnalogOperation.ArmIKXPosition), this.driver.getAnalog(AnalogOperation.ArmIKZPosition));
             //         if (ikResult != null)
             //         {
             //             this.desiredLowerLeftArmPosition = ikResult.lowerPosition;
@@ -525,16 +525,14 @@ public class ArmMechanism implements IMechanism
     @Override
     public void stop()
     {
-        /*
-        this.lowerLeftArm.stop();
-        this.lowerRightArm.stop();
-        this.leftConeFlipper.set(DoubleSolenoidValue.Off);
-        this.rightConeFlipper.set(DoubleSolenoidValue.Off);
+        // this.lowerLeftArm.stop();
+        // this.lowerRightArm.stop();
         this.upperArm.stop();
-        */
+        // this.leftConeFlipper.set(DoubleSolenoidValue.Off);
+        // this.rightConeFlipper.set(DoubleSolenoidValue.Off);
     }
-/*
-    private Setpoint calculateIK(double targetXPos, double targetZPos)
+
+    static ArmPositionSetpoint calculateIK(double targetXPos, double targetZPos)
     {
         if (targetXPos >= TuningConstants.ARM_MAX_IKX_EXTENSION_LENGTH && targetZPos >= TuningConstants.ARM_MAX_IKZ_EXTENSION_HEIGHT)
         {
@@ -599,24 +597,7 @@ public class ArmMechanism implements IMechanism
         lowerArmPosition = (lowerArmPosition + 1) * 1016;
         upperArmPosition *= TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * upperLinearActuatorDistanceToMove;
         upperArmPosition = (upperArmPosition + 1) * 1016;
-        
-        return new Setpoint(upperArmPosition, lowerArmPosition);
-    }
- */
-    /**
-     * Basic structure to hold an position pair
-     */
-    /*
-    private class Setpoint
-    {
-        public final double upperPosition;
-        public final double lowerPosition;
 
-        public Setpoint(double upperPosition, double lowerPosition)
-        {
-            this.upperPosition = upperPosition;
-            this.lowerPosition = lowerPosition;
-        }
+        return new ArmPositionSetpoint(upperArmPosition, lowerArmPosition);
     }
-    */
 }
