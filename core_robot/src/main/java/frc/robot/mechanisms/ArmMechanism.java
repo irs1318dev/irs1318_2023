@@ -452,70 +452,69 @@ public class ArmMechanism implements IMechanism
 */
         //----------------------------------- Main Arm -----------------------------------
        // if (this.curLeftFlipperState != ConeFlipperState.Retracted || this.curRightFlipperState != ConeFlipperState.Retracted)
-        {
-            if (this.inSimpleMode)
-            {
-                //this.lowerLeftArm.set(TuningConstants.ARM_MAX_FORWARD_SIMPLE_VELOCITY);
-                //this.lowerRightArm.set(TuningConstants.ARM_MAX_FORWARD_SIMPLE_VELOCITY);
-                this.upperArm.set(TuningConstants.ARM_MAX_REVERSE_SIMPLE_VELOCITY);
-            }
-            else
-            {
-                //this.desiredLowerLeftArmPosition = TuningConstants.ARM_LOWER_FULL_EXTENTION_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
-                //this.desiredLowerRightArmPosition = TuningConstants.ARM_LOWER_FULL_EXTENTION_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
-                this.desiredUpperArmPosition = TuningConstants.ARM_UPPER_FULL_RETRACTED_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
+        // {
+        //     if (this.inSimpleMode)
+        //     {
+        //         //this.lowerLeftArm.set(TuningConstants.ARM_MAX_FORWARD_SIMPLE_VELOCITY);
+        //         //this.lowerRightArm.set(TuningConstants.ARM_MAX_FORWARD_SIMPLE_VELOCITY);
+        //         this.upperArm.set(TuningConstants.ARM_MAX_REVERSE_SIMPLE_VELOCITY);
+        //     }
+        //     else
+        //     {
+        //         //this.desiredLowerLeftArmPosition = TuningConstants.ARM_LOWER_FULL_EXTENTION_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
+        //         //this.desiredLowerRightArmPosition = TuningConstants.ARM_LOWER_FULL_EXTENTION_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
+        //         this.desiredUpperArmPosition = TuningConstants.ARM_UPPER_FULL_RETRACTED_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
 
-                //this.lowerLeftArm.set(this.desiredLowerLeftArmPosition);
-                //this.lowerRightArm.set(this.desiredLowerRightArmPosition);
-                this.upperArm.set(this.desiredUpperArmPosition);
-            }
-        }
-        /*
-        else
-        {
+        //         //this.lowerLeftArm.set(this.desiredLowerLeftArmPosition);
+        //         //this.lowerRightArm.set(this.desiredLowerRightArmPosition);
+        //         this.upperArm.set(this.desiredUpperArmPosition);
+        //     }
+        // }
+        // else
+        // {
             if (this.inSimpleMode)
             {
                 // controlled by joysticks
                 double lowerArmPower = this.driver.getAnalog(AnalogOperation.ArmSimpleForceLower);
-                this.lowerLeftArm.set(lowerArmPower);
-                this.lowerRightArm.set(lowerArmPower);
+                // this.lowerLeftArm.set(lowerArmPower);
+                // this.lowerRightArm.set(lowerArmPower);
                 this.upperArm.set(this.driver.getAnalog(AnalogOperation.ArmSimpleForceUpper));
             }
             else
             {
-                if (this.driver.getAnalog(AnalogOperation.ArmIKXPosition) >= 0.0 && this.driver.getAnalog(AnalogOperation.ArmIKZPosition) >= 0.0)
-                {
-                    // controlled by macro
-                    Setpoint ikResult = this.calculateIK(this.driver.getAnalog(AnalogOperation.ArmIKXPosition), this.driver.getAnalog(AnalogOperation.ArmIKZPosition));
-                    if (ikResult != null)
-                    {
-                        this.desiredLowerLeftArmPosition = ikResult.lowerPosition;
-                        this.desiredLowerRightArmPosition = ikResult.lowerPosition;
-                        this.desiredUpperArmPosition = ikResult.upperPosition;
-                    }
-                }
-                else if (this.driver.getAnalog(AnalogOperation.ArmMMUpperPosition) >= 0.0 && this.driver.getAnalog(AnalogOperation.ArmMMLowerPosition) >= 0.0)
-                {
-                    // controlled by macro
-                    this.desiredLowerLeftArmPosition = this.driver.getAnalog(AnalogOperation.ArmMMLowerPosition);
-                    this.desiredLowerRightArmPosition = this.driver.getAnalog(AnalogOperation.ArmMMLowerPosition);
-                    this.desiredUpperArmPosition = this.driver.getAnalog(AnalogOperation.ArmMMUpperPosition);
-                }
-                else if (this.driver.getAnalog(AnalogOperation.ArmLowerPositionAdjustment) != 0.0 && this.driver.getAnalog(AnalogOperation.ArmUpperPositionAdjustment) != 0.0)
-                {
-                    // controlled by joysticks
-                    double elapsedTime = currTime - this.prevTime;
-                    this.desiredLowerLeftArmPosition += this.driver.getAnalog(AnalogOperation.ArmLowerPositionAdjustment) * TuningConstants.ARM_LOWER_EXTENSION_ADJUSTMENT_VELOCITY * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * elapsedTime;
-                    this.desiredLowerRightArmPosition += this.driver.getAnalog(AnalogOperation.ArmLowerPositionAdjustment) * TuningConstants.ARM_LOWER_EXTENSION_ADJUSTMENT_VELOCITY * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * elapsedTime;
-                    this.desiredUpperArmPosition += this.driver.getAnalog(AnalogOperation.ArmUpperPositionAdjustment) * TuningConstants.ARM_UPPER_EXTENSION_ADJUSTMENT_VELOCITY * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * elapsedTime;
-                }
+            //     if (this.driver.getAnalog(AnalogOperation.ArmIKXPosition) >= 0.0 && this.driver.getAnalog(AnalogOperation.ArmIKZPosition) >= 0.0)
+            //     {
+            //         // controlled by macro
+            //         Setpoint ikResult = this.calculateIK(this.driver.getAnalog(AnalogOperation.ArmIKXPosition), this.driver.getAnalog(AnalogOperation.ArmIKZPosition));
+            //         if (ikResult != null)
+            //         {
+            //             this.desiredLowerLeftArmPosition = ikResult.lowerPosition;
+            //             this.desiredLowerRightArmPosition = ikResult.lowerPosition;
+            //             this.desiredUpperArmPosition = ikResult.upperPosition;
+            //         }
+            //     }
+            //     else if (this.driver.getAnalog(AnalogOperation.ArmMMUpperPosition) >= 0.0 && this.driver.getAnalog(AnalogOperation.ArmMMLowerPosition) >= 0.0)
+            //     {
+            //         // controlled by macro
+            //         this.desiredLowerLeftArmPosition = this.driver.getAnalog(AnalogOperation.ArmMMLowerPosition);
+            //         this.desiredLowerRightArmPosition = this.driver.getAnalog(AnalogOperation.ArmMMLowerPosition);
+            //         this.desiredUpperArmPosition = this.driver.getAnalog(AnalogOperation.ArmMMUpperPosition);
+            //     }
+            //     else if (this.driver.getAnalog(AnalogOperation.ArmLowerPositionAdjustment) != 0.0 && this.driver.getAnalog(AnalogOperation.ArmUpperPositionAdjustment) != 0.0)
+            //     {
+            //         // controlled by joysticks
+            //         double elapsedTime = currTime - this.prevTime;
+            //         this.desiredLowerLeftArmPosition += this.driver.getAnalog(AnalogOperation.ArmLowerPositionAdjustment) * TuningConstants.ARM_LOWER_EXTENSION_ADJUSTMENT_VELOCITY * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * elapsedTime;
+            //         this.desiredLowerRightArmPosition += this.driver.getAnalog(AnalogOperation.ArmLowerPositionAdjustment) * TuningConstants.ARM_LOWER_EXTENSION_ADJUSTMENT_VELOCITY * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * elapsedTime;
+            //         this.desiredUpperArmPosition += this.driver.getAnalog(AnalogOperation.ArmUpperPositionAdjustment) * TuningConstants.ARM_UPPER_EXTENSION_ADJUSTMENT_VELOCITY * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * elapsedTime;
+            //     }
 
-                this.lowerLeftArm.set(this.desiredLowerLeftArmPosition);
-                this.lowerRightArm.set(this.desiredLowerRightArmPosition);
-                this.upperArm.set(this.desiredUpperArmPosition);
-            }
+            //     this.lowerLeftArm.set(this.desiredLowerLeftArmPosition);
+            //     this.lowerRightArm.set(this.desiredLowerRightArmPosition);
+            //     this.upperArm.set(this.desiredUpperArmPosition);
+            // }
         }
-        */
+
         //this.logger.logNumber(LoggingKey.ArmLowerLeftDesiredPosition, this.desiredLowerLeftArmPosition);
         //this.logger.logNumber(LoggingKey.ArmLowerRightDesiredPosition, this.desiredLowerRightArmPosition);
         this.logger.logNumber(LoggingKey.ArmUpperDesiredPosition, this.desiredUpperArmPosition);

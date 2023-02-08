@@ -21,7 +21,7 @@ public class ButtonMap implements IButtonMap
         new ShiftDescription(
             Shift.CodriverDebug,
             UserInputDevice.Codriver,
-            UserInputDeviceButton.BUTTON_PAD_BUTTON_16),
+            UserInputDeviceButton.XBONE_LEFT_BUTTON),
         new ShiftDescription(
             Shift.Test1Debug,
             UserInputDevice.Test1,
@@ -107,16 +107,16 @@ public class ButtonMap implements IButtonMap
             AnalogAxis.XBONE_LSY,
             Shift.CodriverDebug,
             Shift.CodriverDebug,
-            !ElectronicsConstants.INVERT_XBONE_RIGHT_TRIGGER,
+            ElectronicsConstants.INVERT_XBONE_LEFT_Y_AXIS,
             TuningConstants.ARM_LOWER_VELOCITY_DEAZONE,
-            -TuningConstants.ARM_LOWER_VELOCITY_DEAZONE), // make left positive, as counter-clockwise is positive
+            -TuningConstants.ARM_LOWER_VELOCITY_DEAZONE),
         new AnalogOperationDescription(
             AnalogOperation.ArmSimpleForceUpper,
             UserInputDevice.Codriver,
             AnalogAxis.XBONE_RSY,
             Shift.CodriverDebug,
             Shift.CodriverDebug,
-            !ElectronicsConstants.INVERT_XBONE_RIGHT_TRIGGER,
+            ElectronicsConstants.INVERT_XBONE_RIGHT_Y_AXIS,
             TuningConstants.ARM_UPPER_VELOCITY_DEAZONE,
             -TuningConstants.ARM_UPPER_VELOCITY_DEAZONE),
 
