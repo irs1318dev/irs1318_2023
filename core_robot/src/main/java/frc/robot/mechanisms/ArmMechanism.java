@@ -600,4 +600,18 @@ public class ArmMechanism implements IMechanism
 
         return new ArmPositionSetpoint(upperArmPosition, lowerArmPosition);
     }
+
+    static double calculateLawOfCosinesDistance(double adjacent1, double adjacent2, double angle)
+    {
+        double opposite;
+        opposite = Math.sqrt(Math.pow(adjacent1, 2) + Math.pow(adjacent2, 2) - 2.0 * adjacent1 * adjacent2 * Math.cos(angle));
+        return opposite;
+    }
+
+    static double calculateLawOfCosinesAngle(double adjacent1, double adjacent2, double opposite)
+    {
+        double angle;
+        angle = Math.acos( (Math.pow(adjacent1, 2) + Math.pow(adjacent2, 2) - Math.pow(opposite, 2)) / 2.0 * adjacent1 * adjacent2);
+        return angle;
+    }
 }
