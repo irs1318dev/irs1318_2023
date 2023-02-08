@@ -64,6 +64,7 @@ public class RoadRunnerTrajectoryGenerator
 
     public static void generateTrajectories(PathManager pathManager)
     {
+        /*
         // ----------------------------------------- Sample paths ----------------------------------------- //
         addPath(
             pathManager,
@@ -252,6 +253,7 @@ public class RoadRunnerTrajectoryGenerator
                 //Jamie's Charge Station Task
 
             "UpStartToBackChargeStation");
+        */
     }
 
     private static TrajectoryBuilder startTrajectory()

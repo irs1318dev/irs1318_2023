@@ -253,7 +253,7 @@ public class TuningConstants
 
     //================================================= ARM ================================================================================
 
-    public static final boolean ARM_USE_SIMPLE_MODE = false;
+    public static final boolean ARM_USE_SIMPLE_MODE = true;
     
     public static final double ARM_INTAKE_POWER = 0.6;
 
@@ -280,7 +280,7 @@ public class TuningConstants
 
     public static final boolean ARM_LOWER_LEFT_INVERT_OUTPUT = false;
     public static final boolean ARM_LOWER_RIGHT_INVERT_OUTPUT = false;
-    public static final boolean ARM_UPPER_INVERT_OUTPUT = false;
+    public static final boolean ARM_UPPER_INVERT_OUTPUT = true;
 
     public static final boolean ARM_LOWER_LEFT_INVERT_SENSOR = false;
     public static final boolean ARM_LOWER_RIGHT_INVERT_SENSOR = false;
