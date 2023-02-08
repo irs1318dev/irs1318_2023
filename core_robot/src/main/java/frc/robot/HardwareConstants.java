@@ -60,16 +60,16 @@ public class HardwareConstants
     public static final double LOWER_ARM_LINEAR_ACTUATOR_LEFT_ANGLE_OFFSET = 10; //Place holder
     
     //======Upper Arm Linear Actuator================
-    public static final double LENGTH_ONE = 10; // All Place holders
-    public static final double LENGTH_TWO = 10;
-    public static final double LENGTH_THREE = 10;
-    public static final double LENGTH_FOUR = 10;
-    public static final double DISTANCE_ONE = 10;
-    public static final double DISTANCE_TWO = 10;
-    public static final double DISTANCE_THREE = 10;
-    public static final double DISTANCE_FOUR = 10;
-    public static final double DISTANCE_FIVE = 10;
-    public static final double DISTANCE_SIX = 10;
+    public static final double LENGTH_ONE = 8.963; // All Place holders
+    public static final double LENGTH_TWO = 13.073;
+    public static final double LENGTH_THREE = 12.515;
+    public static final double LENGTH_FOUR = 10.308;
+    public static final double DISTANCE_ONE = 3.885;
+    public static final double DISTANCE_TWO = 0.087;
+    public static final double DISTANCE_THREE = 21.049;
+    public static final double DISTANCE_FOUR = 15.075;
+    public static final double DISTANCE_FIVE = 4;
+    public static final double DISTANCE_SIX = 2;
     public static final double SIGMA_ANGLE = Math.atan2(DISTANCE_SIX, DISTANCE_FIVE); //Can calculate and hard code after we get measurements
     public static final double PSI_ANGLE = Math.atan2(DISTANCE_TWO, DISTANCE_THREE); //Hard code later
 
