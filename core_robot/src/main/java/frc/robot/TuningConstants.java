@@ -302,8 +302,8 @@ public class TuningConstants
     public static final double ARM_MAX_REVERSE_SIMPLE_VELOCITY = -0.8; // percentage output
     public static final double ARM_MAX_FORWARD_SIMPLE_VELOCITY = 0.8; // percentage output
  
-    public static final double ARM_STRING_ENCODER_TICKS_PER_INCH = (4096.0 / 100.0) * 25.4; // .1 mm per tick
-    public static final double ARM_STRING_ENCODER_INCHES_PER_TICK = (100.0 / 4096.0) / 25.4; // .1 mm per tick
+    public static final double ARM_STRING_ENCODER_TICKS_PER_INCH = (4096.0 / 100.0) * 25.4;
+    public static final double ARM_STRING_ENCODER_INCHES_PER_TICK = (100.0 / 4096.0) / 25.4;
 
     public static final double ARM_MAX_IKZ_EXTENSION_HEIGHT = 78.0;
     public static final double ARM_MAX_IKX_EXTENSION_LENGTH = 48.0;
