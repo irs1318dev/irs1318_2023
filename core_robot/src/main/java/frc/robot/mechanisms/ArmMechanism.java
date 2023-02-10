@@ -550,19 +550,22 @@ public class ArmMechanism implements IMechanism
         final double L1 = HardwareConstants.LOWER_ARM_LENGTH;
         final double L2 = HardwareConstants.UPPER_ARM_LENGTH;
 
-        double cosineTheta2 = ((x * x) + (z * z) - (L1 * L1) - (L2 * L2)) / (2.0 * L1 * L2);
+        final double L1Squared = L1 * L1;
+        final double L2Squared = L2 * L2;
+
+        double rSquared = x * x + z * z;
+        double cosineTheta2 = (L1Squared + L2Squared - rSquared) / (2.0 * L1 * L2);
         if (cosineTheta2 > 1.0 || cosineTheta2 < -1.0)
         {
-            // Not a valid value for arc-cosine, therefore this position must be unreachable
             return null;
         }
 
         double theta2 = Helpers.acosd(cosineTheta2);
-        double theta1 = Helpers.atan2d(z, x) + Helpers.atan2d((L2 * Helpers.sind(theta2)), (L1 + L2 * Helpers.cosd(theta2)));
+        double theta1 = Helpers.atan2d(z, x) + Helpers.acosd((L1Squared + rSquared - L2Squared) / (2.0 * L1 * Math.sqrt(rSquared)));
 
-        // instead of returning theta2, return "alpha"
-        return new ArmAngleSetpoint(180.0 - theta2, theta1);
+        return new ArmAngleSetpoint(theta2, theta1);
     }
+
 
     static ArmPositionSetpoint calculateIK(double x, double z)
     {
