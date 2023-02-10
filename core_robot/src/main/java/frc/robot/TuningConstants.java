@@ -69,22 +69,22 @@ public class TuningConstants
     public static final double VISION_MOVING_CENTERING_PID_MAX = 0.3;
 
     // PID settings for Advancing the robot towards a vision target
-    public static final double VISION_ADVANCING_PID_KP = 0.015;
-    public static final double VISION_ADVANCING_PID_KI = 0.0;
-    public static final double VISION_ADVANCING_PID_KD = 0.0;
-    public static final double VISION_ADVANCING_PID_KF = 0.0;
-    public static final double VISION_ADVANCING_PID_KS = 1.0;
-    public static final double VISION_ADVANCING_PID_MIN = -0.3;
-    public static final double VISION_ADVANCING_PID_MAX = 0.3;
+    public static final double VISION_MOVING_PID_KP = 0.015;
+    public static final double VISION_MOVING_PID_KI = 0.0;
+    public static final double VISION_MOVING_PID_KD = 0.0;
+    public static final double VISION_MOVING_PID_KF = 0.0;
+    public static final double VISION_MOVING_PID_KS = 1.0;
+    public static final double VISION_MOVING_PID_MIN = -0.3;
+    public static final double VISION_MOVING_PID_MAX = 0.3;
 
     // PID settings for Advancing the robot quickly towards a vision target
-    public static final double VISION_FAST_ADVANCING_PID_KP = 0.15;
-    public static final double VISION_FAST_ADVANCING_PID_KI = 0.0;
-    public static final double VISION_FAST_ADVANCING_PID_KD = 0.0;
-    public static final double VISION_FAST_ADVANCING_PID_KF = 0.0;
-    public static final double VISION_FAST_ADVANCING_PID_KS = 1.0;
-    public static final double VISION_FAST_ADVANCING_PID_MIN = -0.45;
-    public static final double VISION_FAST_ADVANCING_PID_MAX = 0.45;
+    public static final double VISION_FAST_MOVING_PID_KP = 0.15;
+    public static final double VISION_FAST_MOVING_PID_KI = 0.0;
+    public static final double VISION_FAST_MOVING_PID_KD = 0.0;
+    public static final double VISION_FAST_MOVING_PID_KF = 0.0;
+    public static final double VISION_FAST_MOVING_PID_KS = 1.0;
+    public static final double VISION_FAST_MOVING_PID_MIN = -0.45;
+    public static final double VISION_FAST_MOVING_PID_MAX = 0.45;
 
     public static final int VISION_MISSED_HEARTBEAT_THRESHOLD = 500;
 

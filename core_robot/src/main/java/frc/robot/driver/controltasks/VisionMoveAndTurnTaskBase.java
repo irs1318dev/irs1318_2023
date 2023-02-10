@@ -5,23 +5,32 @@ import frc.robot.common.PIDHandler;
 import frc.robot.common.robotprovider.ITimer;
 import frc.robot.driver.*;
 
-public abstract class VisionAdvanceAndCenterTaskBase extends VisionCenteringTask
+public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
 {
+    public enum MoveType
+    {
+        Forward,
+        AprilTagStrafe
+    }
+
+    private final MoveType translateType;
     private final boolean useFastMode;
     private final boolean verifyAngle;
 
-    private PIDHandler forwardPIDHandler;
+    private PIDHandler movePIDHandler;
 
     /**
     * Initializes a new VisionAdvanceAndCenterTaskBase
     */
-    protected VisionAdvanceAndCenterTaskBase(boolean useFastMode, boolean aprilTag, boolean bestEffort, boolean verifyAngle)
+    protected VisionMoveAndTurnTaskBase(boolean useFastMode, TurnType rotateType, MoveType translateType, boolean bestEffort, boolean verifyAngle)
     {
-        super(false, aprilTag, bestEffort);
+        super(false, rotateType, bestEffort);
+
+        this.translateType = translateType;
 
         this.useFastMode = useFastMode;
         this.verifyAngle = verifyAngle;
-        this.forwardPIDHandler = null;
+        this.movePIDHandler = null;
     }
 
     /**
@@ -33,26 +42,26 @@ public abstract class VisionAdvanceAndCenterTaskBase extends VisionCenteringTask
         super.begin();
         if (this.useFastMode)
         {
-            this.forwardPIDHandler = new PIDHandler(
-                TuningConstants.VISION_FAST_ADVANCING_PID_KP,
-                TuningConstants.VISION_FAST_ADVANCING_PID_KI,
-                TuningConstants.VISION_FAST_ADVANCING_PID_KD,
-                TuningConstants.VISION_FAST_ADVANCING_PID_KF,
-                TuningConstants.VISION_FAST_ADVANCING_PID_KS,
-                TuningConstants.VISION_FAST_ADVANCING_PID_MIN,
-                TuningConstants.VISION_FAST_ADVANCING_PID_MAX,
+            this.movePIDHandler = new PIDHandler(
+                TuningConstants.VISION_FAST_MOVING_PID_KP,
+                TuningConstants.VISION_FAST_MOVING_PID_KI,
+                TuningConstants.VISION_FAST_MOVING_PID_KD,
+                TuningConstants.VISION_FAST_MOVING_PID_KF,
+                TuningConstants.VISION_FAST_MOVING_PID_KS,
+                TuningConstants.VISION_FAST_MOVING_PID_MIN,
+                TuningConstants.VISION_FAST_MOVING_PID_MAX,
                 this.getInjector().getInstance(ITimer.class));
         }
         else
         {
-            this.forwardPIDHandler = new PIDHandler(
-                TuningConstants.VISION_ADVANCING_PID_KP,
-                TuningConstants.VISION_ADVANCING_PID_KI,
-                TuningConstants.VISION_ADVANCING_PID_KD,
-                TuningConstants.VISION_ADVANCING_PID_KF,
-                TuningConstants.VISION_ADVANCING_PID_KS,
-                TuningConstants.VISION_ADVANCING_PID_MIN,
-                TuningConstants.VISION_ADVANCING_PID_MAX,
+            this.movePIDHandler = new PIDHandler(
+                TuningConstants.VISION_MOVING_PID_KP,
+                TuningConstants.VISION_MOVING_PID_KI,
+                TuningConstants.VISION_MOVING_PID_KD,
+                TuningConstants.VISION_MOVING_PID_KF,
+                TuningConstants.VISION_MOVING_PID_KS,
+                TuningConstants.VISION_MOVING_PID_MIN,
+                TuningConstants.VISION_MOVING_PID_MAX,
                 this.getInjector().getInstance(ITimer.class));
         }
     }
@@ -65,10 +74,18 @@ public abstract class VisionAdvanceAndCenterTaskBase extends VisionCenteringTask
         if (currentDistance != null)
         {
             double desiredDistance = this.getDesiredDistance(currentDistance);
-            double forwardSpeed = -this.forwardPIDHandler.calculatePosition(desiredDistance, currentDistance);
-            this.setAnalogOperationState(
-                AnalogOperation.DriveTrainMoveForward,
-                forwardSpeed);
+            double desiredSpeed = -this.movePIDHandler.calculatePosition(desiredDistance, currentDistance);
+            switch (this.translateType)
+            {
+                case AprilTagStrafe:
+                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, desiredSpeed);
+                    break;
+
+                default:
+                case Forward:
+                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, desiredSpeed);
+                    break;
+            }
         }
     }
 
@@ -100,13 +117,20 @@ public abstract class VisionAdvanceAndCenterTaskBase extends VisionCenteringTask
     protected Double getDistance()
     {
         Double distance;
-        if (this.aprilTag)
+        if (this.translateType == MoveType.Forward)
         {
-            distance = this.visionManager.getAprilTagXOffset();
+            if (this.isAprilTag())
+            {
+                distance = this.visionManager.getAprilTagXOffset();
+            }
+            else
+            {
+                distance = this.visionManager.getVisionTargetDistance();
+            }
         }
         else
         {
-            distance = this.visionManager.getVisionTargetDistance();
+            distance = this.visionManager.getAprilTagYOffset();
         }
 
         return distance;
