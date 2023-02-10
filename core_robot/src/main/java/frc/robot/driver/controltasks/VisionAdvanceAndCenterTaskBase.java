@@ -97,6 +97,21 @@ public abstract class VisionAdvanceAndCenterTaskBase extends VisionCenteringTask
         return !this.verifyAngle || super.hasCompleted();
     }
 
+    protected Double getDistance()
+    {
+        Double distance;
+        if (this.aprilTag)
+        {
+            distance = this.visionManager.getAprilTagXOffset();
+        }
+        else
+        {
+            distance = this.visionManager.getVisionTargetDistance();
+        }
+
+        return distance;
+    }
+
     @Override
     protected PIDHandler createTurnHandler()
     {

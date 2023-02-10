@@ -11,21 +11,11 @@ import frc.robot.mechanisms.OffboardVisionManager;
 /**
  * Task that turns the robot a certain amount clockwise or counterclockwise in-place based on vision center
  */
-public class VisionCenteringTask extends ControlTaskBase
+public class VisionCenteringTask extends PIDTurnTaskBase
 {
-    private static final int NO_CENTER_THRESHOLD = 40;
+    protected final boolean aprilTag;
 
-    private final boolean useTime;
-    private final boolean aprilTag;
-    private final boolean bestEffort;
-
-    private OffboardVisionManager visionManager;
-    private ITimer timer;
-    private PIDHandler turnPidHandler;
-
-    private Double centeredTime;
-
-    private int noCenterCount;
+    protected OffboardVisionManager visionManager;
 
     /**
     * Initializes a new VisionCenteringTask
@@ -54,14 +44,8 @@ public class VisionCenteringTask extends ControlTaskBase
      */
     public VisionCenteringTask(boolean useTime, boolean aprilTag, boolean bestEffort)
     {
-        this.useTime = useTime;
+        super(useTime, bestEffort);
         this.aprilTag = aprilTag;
-        this.bestEffort = bestEffort;
-
-        this.turnPidHandler = null;
-        this.centeredTime = null;
-
-        this.noCenterCount = 0;
     }
 
     /**
@@ -71,35 +55,9 @@ public class VisionCenteringTask extends ControlTaskBase
     public void begin()
     {
         this.visionManager = this.getInjector().getInstance(OffboardVisionManager.class);
-        this.turnPidHandler = this.createTurnHandler();
 
-        if (this.useTime)
-        {
-            this.timer = this.getInjector().getInstance(ITimer.class);
-        }
-
-        this.setDigitalOperationState(DigitalOperation.VisionDisableStream, false);
-        this.setDigitalOperationState(DigitalOperation.DriveTrainEnableFieldOrientation, false);
-        this.setDigitalOperationState(DigitalOperation.DriveTrainDisableFieldOrientation, false);
-        this.setDigitalOperationState(DigitalOperation.DriveTrainUseRobotOrientation, true);
         this.setDigitalOperationState(DigitalOperation.VisionEnableRetroreflectiveProcessing, !this.aprilTag);
         this.setDigitalOperationState(DigitalOperation.VisionEnableAprilTagProcessing, this.aprilTag);
-    }
-
-    /**
-     * Run an iteration of the current task and apply any control changes
-     */
-    @Override
-    public void update()
-    {
-        Double currentMeasuredAngle = this.getHorizontalAngle();
-        if (currentMeasuredAngle != null)
-        {
-            double turnSpeed = this.turnPidHandler.calculatePosition(0.0, currentMeasuredAngle);
-            this.setAnalogOperationState(
-                AnalogOperation.DriveTrainTurnSpeed,
-                turnSpeed);
-        }
     }
 
     /**
@@ -108,115 +66,27 @@ public class VisionCenteringTask extends ControlTaskBase
     @Override
     public void end()
     {
-        this.setAnalogOperationState(AnalogOperation.DriveTrainTurnSpeed, 0.0);
-
-        this.setDigitalOperationState(DigitalOperation.VisionDisableStream, false);
-        this.setDigitalOperationState(DigitalOperation.DriveTrainEnableFieldOrientation, false);
-        this.setDigitalOperationState(DigitalOperation.DriveTrainDisableFieldOrientation, false);
-        this.setDigitalOperationState(DigitalOperation.DriveTrainUseRobotOrientation, false);
         this.setDigitalOperationState(DigitalOperation.VisionEnableRetroreflectiveProcessing, false);
         this.setDigitalOperationState(DigitalOperation.VisionEnableAprilTagProcessing, false);
     }
 
-    /**
-     * Checks whether this task has completed, or whether it should continue being processed
-     * @return true if we should continue onto the next task, otherwise false (to keep processing this task)
-     */
     @Override
-    public boolean hasCompleted()
-    {
-        Double currentMeasuredAngle = this.getHorizontalAngle();
-        if (this.bestEffort)
-        {
-            if (currentMeasuredAngle == null)
-            {
-                this.noCenterCount++;
-
-                return this.noCenterCount >= VisionCenteringTask.NO_CENTER_THRESHOLD;
-            }
-
-            this.noCenterCount = 0;
-        }
-        else if (currentMeasuredAngle == null)
-        {
-            return false;
-        }
-
-        double centerAngleDifference = Math.abs(currentMeasuredAngle);
-        if (centerAngleDifference > TuningConstants.MAX_VISION_CENTERING_RANGE_DEGREES)
-        {
-            return false;
-        }
-
-        if (!this.useTime)
-        {
-            return true;
-        }
-
-        // otherwise, use time:
-        double currTime = this.timer.get();
-        if (this.centeredTime == null)
-        {
-            this.centeredTime = currTime;
-            return false;
-        }
-        else if (currTime - this.centeredTime < TuningConstants.VISION_CENTERING_DURATION)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
-
-    /**
-     * Checks whether this task should be stopped, or whether it should continue being processed.
-     * @return true if we should cancel this task (and stop performing any subsequent tasks), otherwise false (to keep processing this task)
-     */
-    @Override
-    public boolean shouldCancel()
-    {
-        if (this.bestEffort)
-        {
-            // note: in best-effort mode, this is done in hasCompleted() instead.
-            return super.shouldCancel();
-        }
-
-        if (this.getHorizontalAngle() == null)
-        {
-            this.noCenterCount++;
-        }
-        else
-        {
-            this.noCenterCount = 0;
-        }
-
-        return this.noCenterCount >= VisionCenteringTask.NO_CENTER_THRESHOLD || super.shouldCancel();
-    }
-
-    protected Double getDistance()
-    {
-        Double distance;
-        if (this.aprilTag)
-        {
-            distance = this.visionManager.getAprilTagXOffset();
-        }
-        else
-        {
-            distance = this.visionManager.getVisionTargetDistance();
-        }
-
-        return distance;
-    }
-
     protected Double getHorizontalAngle()
     {
         Double angle;
         if (this.aprilTag)
         {
-            // Note: we want to point toward it, not match its yaw (make ourselves parallel to it), so we can use the fact that tan(angle) = opposite / adjacent
-            angle = Helpers.atan2d(this.visionManager.getAprilTagXOffset(), this.visionManager.getAprilTagYOffset());
+            // Note: we want to point toward the AprilTag, not match its yaw (make ourselves parallel to it), so we can use the fact that tan(angle) = opposite / adjacent
+            Double xOffset = this.visionManager.getAprilTagXOffset();
+            Double yOffset = this.visionManager.getAprilTagYOffset();
+            if (xOffset == null || yOffset == null)
+            {
+                angle = null;
+            }
+            else
+            {
+                angle = Helpers.atan2d(yOffset, xOffset);
+            }
         }
         else
         {
@@ -224,18 +94,5 @@ public class VisionCenteringTask extends ControlTaskBase
         }
 
         return angle;
-    }
-
-    protected PIDHandler createTurnHandler()
-    {
-        return new PIDHandler(
-            TuningConstants.VISION_STATIONARY_CENTERING_PID_KP,
-            TuningConstants.VISION_STATIONARY_CENTERING_PID_KI,
-            TuningConstants.VISION_STATIONARY_CENTERING_PID_KD,
-            TuningConstants.VISION_STATIONARY_CENTERING_PID_KF,
-            TuningConstants.VISION_STATIONARY_CENTERING_PID_KS,
-            TuningConstants.VISION_STATIONARY_CENTERING_PID_MIN,
-            TuningConstants.VISION_STATIONARY_CENTERING_PID_MAX,
-            this.getInjector().getInstance(ITimer.class));
     }
 }
