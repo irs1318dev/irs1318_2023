@@ -532,6 +532,36 @@ public class ArmMechanism implements IMechanism
         // this.rightConeFlipper.set(DoubleSolenoidValue.Off);
     }
 
+    static ArmAngleSetpoint calculaterIKAngles(double targetXPos, double targetZPos)
+    {
+        if (targetXPos > TuningConstants.ARM_MAX_IKX_EXTENSION_LENGTH || targetZPos > TuningConstants.ARM_MAX_IKZ_EXTENSION_HEIGHT)
+        {
+            return null;
+        }
+
+        if (targetXPos < 0.0 || targetZPos < 0.0)
+        {
+            return null;
+        }
+
+        if (targetXPos == 0.0 && targetZPos == 0.0)
+        {
+            // special case fully-retracted
+            return new ArmAngleSetpoint(0.0, 90.0);
+        }
+
+        double upperDesiredAngle =
+            180.0 + (Helpers.acosd( (Math.pow(targetXPos, 2) + Math.pow(targetZPos, 2) 
+            - Math.pow(HardwareConstants.LOWER_ARM_LENGTH, 2) - Math.pow(HardwareConstants.UPPER_ARM_LENGTH, 2)
+            ) / (2.0 * HardwareConstants.LOWER_ARM_LENGTH * HardwareConstants.UPPER_ARM_LENGTH)) );
+        
+        double lowerDesiredAngle = 
+            Helpers.atan2d(targetZPos, targetXPos) + Helpers.atan2d( HardwareConstants.UPPER_ARM_LENGTH * Helpers.sind(180.0 - upperDesiredAngle),
+            HardwareConstants.LOWER_ARM_LENGTH + HardwareConstants.UPPER_ARM_LENGTH * Helpers.cosd(180.0 - upperDesiredAngle));
+
+        return new ArmAngleSetpoint(upperDesiredAngle, lowerDesiredAngle);
+    }
+
     static ArmPositionSetpoint calculateIK(double targetXPos, double targetZPos)
     {
         if (targetXPos >= TuningConstants.ARM_MAX_IKX_EXTENSION_LENGTH && targetZPos >= TuningConstants.ARM_MAX_IKZ_EXTENSION_HEIGHT)
@@ -599,5 +629,19 @@ public class ArmMechanism implements IMechanism
         upperArmPosition = (upperArmPosition + 1) * 1016;
 
         return new ArmPositionSetpoint(upperArmPosition, lowerArmPosition);
+    }
+
+    static double calculateLawOfCosinesDistance(double adjacent1, double adjacent2, double angle)
+    {
+        double opposite;
+        opposite = Math.sqrt(Math.pow(adjacent1, 2) + Math.pow(adjacent2, 2) - 2.0 * adjacent1 * adjacent2 * Math.cos(angle));
+        return opposite;
+    }
+
+    static double calculateLawOfCosinesAngle(double adjacent1, double adjacent2, double opposite)
+    {
+        double angle;
+        angle = Math.acos( (Math.pow(adjacent1, 2) + Math.pow(adjacent2, 2) - Math.pow(opposite, 2)) / 2.0 * adjacent1 * adjacent2);
+        return angle;
     }
 }
