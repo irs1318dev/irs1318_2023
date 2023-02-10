@@ -532,9 +532,41 @@ public class ArmMechanism implements IMechanism
         // this.rightConeFlipper.set(DoubleSolenoidValue.Off);
     }
 
-    static ArmPositionSetpoint calculateIK(double targetXPos, double targetZPos)
+    static ArmAngleSetpoint calculateIKAngles(double x, double z)
     {
-        if (targetXPos >= TuningConstants.ARM_MAX_IKX_EXTENSION_LENGTH && targetZPos >= TuningConstants.ARM_MAX_IKZ_EXTENSION_HEIGHT)
+        // TODO: limit extension in calling function instead of here:
+        // if (x > TuningConstants.ARM_MAX_IKX_EXTENSION_LENGTH || z > TuningConstants.ARM_MAX_IKZ_EXTENSION_HEIGHT)
+        // {
+        //     return null;
+        // }
+
+        // TODO: special-case fully-retracted in calling function instead of here:
+        // if (x == 0.0 && z == 0.0)
+        // {
+        //     // special case fully-retracted
+        //     return new ArmAngleSetpoint(0.0, 90.0);
+        // }
+
+        final double L1 = HardwareConstants.LOWER_ARM_LENGTH;
+        final double L2 = HardwareConstants.UPPER_ARM_LENGTH;
+
+        double cosineTheta2 = ((x * x) + (z * z) - (L1 * L1) - (L2 * L2)) / (2.0 * L1 * L2);
+        if (cosineTheta2 > 1.0 || cosineTheta2 < -1.0)
+        {
+            // Not a valid value for arc-cosine, therefore this position must be unreachable
+            return null;
+        }
+
+        double theta2 = Helpers.acosd(cosineTheta2);
+        double theta1 = Helpers.atan2d(z, x) + Helpers.atan2d((L2 * Helpers.sind(theta2)), (L1 + L2 * Helpers.cosd(theta2)));
+
+        // instead of returning theta2, return "alpha"
+        return new ArmAngleSetpoint(180.0 - theta2, theta1);
+    }
+
+    static ArmPositionSetpoint calculateIK(double x, double z)
+    {
+        if (x >= TuningConstants.ARM_MAX_IKX_EXTENSION_LENGTH && z >= TuningConstants.ARM_MAX_IKZ_EXTENSION_HEIGHT)
         {
             return null;
         }
@@ -545,13 +577,13 @@ public class ArmMechanism implements IMechanism
         double upperArmAngleToMove = 0; // From current angle to desired angle
 
         lowerArmAngleToMove = Math.atan(
-            (targetZPos / targetXPos)) +
+            (z / x)) +
             Math.atan((HardwareConstants.UPPER_ARM_LENGTH * Math.sin(upperArmAngleToMove))/
             (HardwareConstants.LOWER_ARM_LENGTH + (HardwareConstants.UPPER_ARM_LENGTH * Math.cos(upperArmAngleToMove))));
 
         upperArmAngleToMove = -Math.acos(
-            ((targetXPos * targetXPos) +
-            (targetZPos * targetZPos) -
+            ((x * x) +
+            (z * z) -
             (HardwareConstants.LOWER_ARM_LENGTH * HardwareConstants.LOWER_ARM_LENGTH) -
             (HardwareConstants.UPPER_ARM_LENGTH * HardwareConstants.UPPER_ARM_LENGTH)) /
             (2 * HardwareConstants.UPPER_ARM_LENGTH * HardwareConstants.LOWER_ARM_LENGTH));
@@ -599,5 +631,19 @@ public class ArmMechanism implements IMechanism
         upperArmPosition = (upperArmPosition + 1) * 1016;
 
         return new ArmPositionSetpoint(upperArmPosition, lowerArmPosition);
+    }
+
+    static double calculateLawOfCosinesDistance(double adjacent1, double adjacent2, double angle)
+    {
+        double opposite;
+        opposite = Math.sqrt(Math.pow(adjacent1, 2) + Math.pow(adjacent2, 2) - 2.0 * adjacent1 * adjacent2 * Math.cos(angle));
+        return opposite;
+    }
+
+    static double calculateLawOfCosinesAngle(double adjacent1, double adjacent2, double opposite)
+    {
+        double angle;
+        angle = Math.acos( (Math.pow(adjacent1, 2) + Math.pow(adjacent2, 2) - Math.pow(opposite, 2)) / 2.0 * adjacent1 * adjacent2);
+        return angle;
     }
 }
