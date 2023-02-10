@@ -1,67 +1,42 @@
 package frc.robot.driver.controltasks;
 
 import frc.robot.TuningConstants;
-import frc.robot.common.Helpers;
 import frc.robot.common.PIDHandler;
 import frc.robot.common.robotprovider.ITimer;
 import frc.robot.driver.AnalogOperation;
 import frc.robot.driver.DigitalOperation;
-import frc.robot.mechanisms.OffboardVisionManager;
 
 /**
  * Task that turns the robot a certain amount clockwise or counterclockwise in-place based on vision center
  */
-public class VisionCenteringTask extends ControlTaskBase
+public abstract class PIDTurnTaskBase extends ControlTaskBase
 {
-    private static final int NO_CENTER_THRESHOLD = 40;
+    private static final int NO_ANGLE_THRESHOLD = 40;
 
     private final boolean useTime;
-    private final boolean aprilTag;
     private final boolean bestEffort;
 
-    private OffboardVisionManager visionManager;
     private ITimer timer;
     private PIDHandler turnPidHandler;
 
     private Double centeredTime;
 
-    private int noCenterCount;
+    private int noAngleCount;
 
     /**
-    * Initializes a new VisionCenteringTask
-     * @param aprilTag whether to center on aprilTag or retroreflective vision target
-    */
-    public VisionCenteringTask(boolean aprilTag)
-    {
-        this(true, aprilTag, false);
-    }
-
-    /**
-    * Initializes a new VisionCenteringTask
-     * @param aprilTag whether to center on aprilTag or retroreflective vision target
-     * @param bestEffort whether to end (true) or cancel (false, default) when we cannot see the game piece or vision target (for sequential tasks, whether to continue on or not)
-    */
-    public VisionCenteringTask(boolean aprilTag, boolean bestEffort)
-    {
-        this(true, aprilTag, bestEffort);
-    }
-
-    /**
-     * Initializes a new VisionCenteringTask
+     * Initializes a new PIDTurnTaskBase
      * @param useTime whether to make sure we are centered for a second or not
-     * @param aprilTag whether to center on aprilTag or retroreflective vision target
      * @param bestEffort whether to end (true) or cancel (false, default) when we cannot see the game piece or vision target (for sequential tasks, whether to continue on or not)
      */
-    public VisionCenteringTask(boolean useTime, boolean aprilTag, boolean bestEffort)
+    public PIDTurnTaskBase(boolean useTime, boolean bestEffort)
     {
         this.useTime = useTime;
-        this.aprilTag = aprilTag;
         this.bestEffort = bestEffort;
 
         this.turnPidHandler = null;
         this.centeredTime = null;
 
-        this.noCenterCount = 0;
+        this.noAngleCount = 0;
     }
 
     /**
@@ -70,7 +45,6 @@ public class VisionCenteringTask extends ControlTaskBase
     @Override
     public void begin()
     {
-        this.visionManager = this.getInjector().getInstance(OffboardVisionManager.class);
         this.turnPidHandler = this.createTurnHandler();
 
         if (this.useTime)
@@ -82,8 +56,6 @@ public class VisionCenteringTask extends ControlTaskBase
         this.setDigitalOperationState(DigitalOperation.DriveTrainEnableFieldOrientation, false);
         this.setDigitalOperationState(DigitalOperation.DriveTrainDisableFieldOrientation, false);
         this.setDigitalOperationState(DigitalOperation.DriveTrainUseRobotOrientation, true);
-        this.setDigitalOperationState(DigitalOperation.VisionEnableRetroreflectiveProcessing, !this.aprilTag);
-        this.setDigitalOperationState(DigitalOperation.VisionEnableAprilTagProcessing, this.aprilTag);
     }
 
     /**
@@ -114,8 +86,6 @@ public class VisionCenteringTask extends ControlTaskBase
         this.setDigitalOperationState(DigitalOperation.DriveTrainEnableFieldOrientation, false);
         this.setDigitalOperationState(DigitalOperation.DriveTrainDisableFieldOrientation, false);
         this.setDigitalOperationState(DigitalOperation.DriveTrainUseRobotOrientation, false);
-        this.setDigitalOperationState(DigitalOperation.VisionEnableRetroreflectiveProcessing, false);
-        this.setDigitalOperationState(DigitalOperation.VisionEnableAprilTagProcessing, false);
     }
 
     /**
@@ -130,12 +100,12 @@ public class VisionCenteringTask extends ControlTaskBase
         {
             if (currentMeasuredAngle == null)
             {
-                this.noCenterCount++;
+                this.noAngleCount++;
 
-                return this.noCenterCount >= VisionCenteringTask.NO_CENTER_THRESHOLD;
+                return this.noAngleCount >= PIDTurnTaskBase.NO_ANGLE_THRESHOLD;
             }
 
-            this.noCenterCount = 0;
+            this.noAngleCount = 0;
         }
         else if (currentMeasuredAngle == null)
         {
@@ -143,7 +113,7 @@ public class VisionCenteringTask extends ControlTaskBase
         }
 
         double centerAngleDifference = Math.abs(currentMeasuredAngle);
-        if (centerAngleDifference > TuningConstants.MAX_VISION_CENTERING_RANGE_DEGREES)
+        if (centerAngleDifference > TuningConstants.MAX_PID_TURNING_RANGE_DEGREES)
         {
             return false;
         }
@@ -160,7 +130,7 @@ public class VisionCenteringTask extends ControlTaskBase
             this.centeredTime = currTime;
             return false;
         }
-        else if (currTime - this.centeredTime < TuningConstants.VISION_CENTERING_DURATION)
+        else if (currTime - this.centeredTime < TuningConstants.PID_TURNING_DURATION)
         {
             return false;
         }
@@ -185,57 +155,28 @@ public class VisionCenteringTask extends ControlTaskBase
 
         if (this.getHorizontalAngle() == null)
         {
-            this.noCenterCount++;
+            this.noAngleCount++;
         }
         else
         {
-            this.noCenterCount = 0;
+            this.noAngleCount = 0;
         }
 
-        return this.noCenterCount >= VisionCenteringTask.NO_CENTER_THRESHOLD || super.shouldCancel();
+        return this.noAngleCount >= PIDTurnTaskBase.NO_ANGLE_THRESHOLD || super.shouldCancel();
     }
 
-    protected Double getDistance()
-    {
-        Double distance;
-        if (this.aprilTag)
-        {
-            distance = this.visionManager.getAprilTagXOffset();
-        }
-        else
-        {
-            distance = this.visionManager.getVisionTargetDistance();
-        }
-
-        return distance;
-    }
-
-    protected Double getHorizontalAngle()
-    {
-        Double angle;
-        if (this.aprilTag)
-        {
-            // Note: we want to point toward it, not match its yaw (make ourselves parallel to it), so we can use the fact that tan(angle) = opposite / adjacent
-            angle = Helpers.atan2d(this.visionManager.getAprilTagXOffset(), this.visionManager.getAprilTagYOffset());
-        }
-        else
-        {
-            angle = this.visionManager.getVisionTargetHorizontalAngle();
-        }
-
-        return angle;
-    }
+    protected abstract Double getHorizontalAngle();
 
     protected PIDHandler createTurnHandler()
     {
         return new PIDHandler(
-            TuningConstants.VISION_STATIONARY_CENTERING_PID_KP,
-            TuningConstants.VISION_STATIONARY_CENTERING_PID_KI,
-            TuningConstants.VISION_STATIONARY_CENTERING_PID_KD,
-            TuningConstants.VISION_STATIONARY_CENTERING_PID_KF,
-            TuningConstants.VISION_STATIONARY_CENTERING_PID_KS,
-            TuningConstants.VISION_STATIONARY_CENTERING_PID_MIN,
-            TuningConstants.VISION_STATIONARY_CENTERING_PID_MAX,
+            TuningConstants.STATIONARY_PID_TURNING_PID_KP,
+            TuningConstants.STATIONARY_PID_TURNING_PID_KI,
+            TuningConstants.STATIONARY_PID_TURNING_PID_KD,
+            TuningConstants.STATIONARY_PID_TURNING_PID_KF,
+            TuningConstants.STATIONARY_PID_TURNING_PID_KS,
+            TuningConstants.STATIONARY_PID_TURNING_PID_MIN,
+            TuningConstants.STATIONARY_PID_TURNING_PID_MAX,
             this.getInjector().getInstance(ITimer.class));
     }
 }
