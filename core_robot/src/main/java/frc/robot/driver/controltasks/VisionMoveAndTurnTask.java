@@ -4,8 +4,6 @@ public class VisionMoveAndTurnTask extends VisionMoveAndTurnTaskBase
 {
     private final double desiredDistance;
 
-
-
     /**
      * Initializes a new VisionMoveAndTurnTask
      * @param useFastMode whether to use faster PID settings to move towards the goal position, or regular settings
