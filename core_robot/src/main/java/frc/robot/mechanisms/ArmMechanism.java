@@ -56,6 +56,10 @@ public class ArmMechanism implements IMechanism
     private double lowerRightArmVelocity;
     private double upperArmVelocity;
 
+    // actual positions calculated using forward kinematics
+    private double xPosition;
+    private double zPosition;
+
     private boolean inSimpleMode;
 
     private double desiredLowerLeftArmPosition;
@@ -130,6 +134,8 @@ public class ArmMechanism implements IMechanism
         this.lowerLeftArmPosition = TuningConstants.ARM_LOWER_FULL_EXTENTION_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // Fully Extended
         this.lowerRightArmPosition = TuningConstants.ARM_LOWER_FULL_EXTENTION_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // Fully Extended
         this.upperArmPosition = TuningConstants.ARM_UPPER_FULL_RETRACTED_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // Fully Retracted
+        this.xPosition = TuningConstants.ARM_FULLY_RETRACTED_X_POSITION;
+        this.zPosition = TuningConstants.ARM_FULLY_RETRACTED_Z_POSITION;
 
         this.desiredLowerLeftArmPosition = this.lowerLeftArmPosition;
         this.desiredLowerRightArmPosition = this.lowerRightArmPosition;
@@ -220,6 +226,8 @@ public class ArmMechanism implements IMechanism
         this.logger.logNumber(LoggingKey.ArmLowerLeftVelocity, this.lowerLeftArmVelocity);
         this.logger.logNumber(LoggingKey.ArmLowerRightVelocity, this.lowerRightArmVelocity);
         this.logger.logNumber(LoggingKey.ArmUpperVelocity, this.upperArmVelocity);
+
+        // TODO: calculate current x, z positions using forward kinematics:
     }
 
     @Override
@@ -454,18 +462,18 @@ public class ArmMechanism implements IMechanism
         // {
         //     if (this.inSimpleMode)
         //     {
-        //         //this.lowerLeftArm.set(TuningConstants.ARM_MAX_FORWARD_SIMPLE_VELOCITY);
-        //         //this.lowerRightArm.set(TuningConstants.ARM_MAX_FORWARD_SIMPLE_VELOCITY);
+        //         this.lowerLeftArm.set(TuningConstants.ARM_MAX_FORWARD_SIMPLE_VELOCITY);
+        //         this.lowerRightArm.set(TuningConstants.ARM_MAX_FORWARD_SIMPLE_VELOCITY);
         //         this.upperArm.set(TuningConstants.ARM_MAX_REVERSE_SIMPLE_VELOCITY);
         //     }
         //     else
         //     {
-        //         //this.desiredLowerLeftArmPosition = TuningConstants.ARM_LOWER_FULL_EXTENTION_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
-        //         //this.desiredLowerRightArmPosition = TuningConstants.ARM_LOWER_FULL_EXTENTION_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
+        //         this.desiredLowerLeftArmPosition = TuningConstants.ARM_LOWER_FULL_EXTENTION_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
+        //         this.desiredLowerRightArmPosition = TuningConstants.ARM_LOWER_FULL_EXTENTION_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
         //         this.desiredUpperArmPosition = TuningConstants.ARM_UPPER_FULL_RETRACTED_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
 
-        //         //this.lowerLeftArm.set(this.desiredLowerLeftArmPosition);
-        //         //this.lowerRightArm.set(this.desiredLowerRightArmPosition);
+        //         this.lowerLeftArm.set(this.desiredLowerLeftArmPosition);
+        //         this.lowerRightArm.set(this.desiredLowerRightArmPosition);
         //         this.upperArm.set(this.desiredUpperArmPosition);
         //     }
         // }
@@ -475,21 +483,23 @@ public class ArmMechanism implements IMechanism
             {
                 // controlled by joysticks
                 double lowerArmPower = this.driver.getAnalog(AnalogOperation.ArmSimpleForceLower);
+                double upperArmPower = this.driver.getAnalog(AnalogOperation.ArmSimpleForceUpper);
                 this.lowerLeftArm.set(lowerArmPower);
                 this.lowerRightArm.set(lowerArmPower);
-                this.upperArm.set(this.driver.getAnalog(AnalogOperation.ArmSimpleForceUpper));
+                this.upperArm.set(upperArmPower);
+                System.out.println("Power: " + lowerArmPower + ", " + upperArmPower);
             }
             else
             {
                  if (this.driver.getAnalog(AnalogOperation.ArmIKXPosition) >= 0.0 && this.driver.getAnalog(AnalogOperation.ArmIKZPosition) >= 0.0)
                  {
-                     // controlled by macro
-                     ArmPositionSetpoint ikResult = ArmMechanism.calculateIK(this.driver.getAnalog(AnalogOperation.ArmIKXPosition), this.driver.getAnalog(AnalogOperation.ArmIKZPosition));
+                    // controlled by macro
+                    DoubleTuple ikResult = ArmMechanism.calculateIK(this.driver.getAnalog(AnalogOperation.ArmIKXPosition), this.driver.getAnalog(AnalogOperation.ArmIKZPosition));
                     if (ikResult != null)
                     {
-                        this.desiredLowerLeftArmPosition = ikResult.lowerPosition;
-                        this.desiredLowerRightArmPosition = ikResult.lowerPosition;
-                        this.desiredUpperArmPosition = ikResult.upperPosition;
+                        this.desiredLowerLeftArmPosition = ikResult.second;
+                        this.desiredLowerRightArmPosition = ikResult.second;
+                        this.desiredUpperArmPosition = ikResult.first;
                     }
                 }
                 else if (this.driver.getAnalog(AnalogOperation.ArmMMUpperPosition) >= 0.0 && this.driver.getAnalog(AnalogOperation.ArmMMLowerPosition) >= 0.0)
@@ -541,21 +551,18 @@ public class ArmMechanism implements IMechanism
         return this.upperArmPosition;
     }
 
-    static ArmAngleSetpoint calculateIKAngles(double x, double z)
+    public double getFKXPosition()
     {
-        // TODO: limit extension in calling function instead of here:
-        // if (x > TuningConstants.ARM_MAX_IKX_EXTENSION_LENGTH || z > TuningConstants.ARM_MAX_IKZ_EXTENSION_HEIGHT)
-        // {
-        //     return null;
-        // }
+        return this.xPosition;
+    }
 
-        // TODO: special-case fully-retracted in calling function instead of here:
-        // if (x == 0.0 && z == 0.0)
-        // {
-        //     // special case fully-retracted
-        //     return new ArmAngleSetpoint(0.0, 90.0);
-        // }
+    public double getFKZPosition()
+    {
+        return this.zPosition;
+    }
 
+    static DoubleTuple calculateIKAngles(double x, double z)
+    {
         final double L1 = HardwareConstants.ARM_LOWER_ARM_LENGTH;
         final double L2 = HardwareConstants.ARM_UPPER_ARM_LENGTH;
 
@@ -572,15 +579,32 @@ public class ArmMechanism implements IMechanism
         double theta2 = Helpers.acosd(cosineTheta2);
         double theta1 = Helpers.atan2d(z, x) + Helpers.acosd((L1Squared + rSquared - L2Squared) / (2.0 * L1 * Math.sqrt(rSquared)));
 
-        return new ArmAngleSetpoint(theta2, theta1);
+        // in order lower, upper
+        return new DoubleTuple(theta1, theta2);
     }
 
-
-    static ArmPositionSetpoint calculateIK(double x, double z)
+    static DoubleTuple calculateFKPositions(double lowerAngle, double upperAngle)
     {
-        if (x >= TuningConstants.ARM_MAX_IKX_EXTENSION_LENGTH && z >= TuningConstants.ARM_MAX_IKZ_EXTENSION_HEIGHT)
+        final double L1 = HardwareConstants.ARM_LOWER_ARM_LENGTH;
+        final double L2 = HardwareConstants.ARM_UPPER_ARM_LENGTH;
+
+        double xPosition = L1 * Helpers.cosd(lowerAngle) + L2 * Helpers.cosd(lowerAngle + upperAngle);
+        double zPosition = L1 * Helpers.sind(lowerAngle) + L2 * Helpers.sind(lowerAngle + upperAngle);
+        return new DoubleTuple(xPosition, zPosition);
+    }
+
+    static DoubleTuple calculateIK(double x, double z)
+    {
+        if (x > TuningConstants.ARM_MAX_IKX_EXTENSION_LENGTH || z > TuningConstants.ARM_MAX_IKZ_EXTENSION_HEIGHT)
         {
             return null;
+        }
+
+        // special-case fully-retracted zone to the fully retracted position
+        if (x <= TuningConstants.ARM_FULLY_RETRACTED_X_POSITION &&
+            z <= TuningConstants.ARM_FULLY_RETRACTED_Z_POSITION)
+        {
+            return new DoubleTuple(TuningConstants.ARM_LOWER_FULL_EXTENTION_LENGTH, TuningConstants.ARM_UPPER_FULL_RETRACTED_LENGTH);
         }
 
         double lowerArmAngle = 90; // 90 if Starting straight up (Extended)
@@ -642,7 +666,8 @@ public class ArmMechanism implements IMechanism
         upperArmPosition *= TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * upperLinearActuatorDistanceToMove;
         upperArmPosition = (upperArmPosition + 1) * 1016;
 
-        return new ArmPositionSetpoint(upperArmPosition, lowerArmPosition);
+        // in order lower, upper
+        return new DoubleTuple(lowerArmPosition, upperArmPosition);
     }
 
     static double calculateLawOfCosinesDistance(double adjacent1, double adjacent2, double angle)
