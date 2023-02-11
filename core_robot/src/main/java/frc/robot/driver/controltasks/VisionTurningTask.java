@@ -58,6 +58,8 @@ public class VisionTurningTask extends PIDTurnTaskBase
     @Override
     public void begin()
     {
+        super.begin();
+
         this.visionManager = this.getInjector().getInstance(OffboardVisionManager.class);
 
         this.setDigitalOperationState(DigitalOperation.VisionEnableRetroreflectiveProcessing, !this.isAprilTag());
@@ -70,6 +72,8 @@ public class VisionTurningTask extends PIDTurnTaskBase
     @Override
     public void end()
     {
+        super.end();
+
         this.setDigitalOperationState(DigitalOperation.VisionEnableRetroreflectiveProcessing, false);
         this.setDigitalOperationState(DigitalOperation.VisionEnableAprilTagProcessing, false);
     }
@@ -88,6 +92,11 @@ public class VisionTurningTask extends PIDTurnTaskBase
             case AprilTagParallelizing:
                 // turn to match the yaw, so we are lined up parallel to the tag
                 angle = this.visionManager.getAprilTagYaw();
+                if (angle != null)
+                {
+                    angle *= -1.0;
+                }
+
                 break;
 
             case AprilTagCentering:
@@ -100,7 +109,7 @@ public class VisionTurningTask extends PIDTurnTaskBase
                 }
                 else
                 {
-                    angle = Helpers.atan2d(yOffset, xOffset);
+                    angle = -Helpers.atan2d(yOffset, xOffset);
                 }
 
                 break;
