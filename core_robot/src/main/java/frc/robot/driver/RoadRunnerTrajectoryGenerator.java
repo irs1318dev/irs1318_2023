@@ -134,6 +134,23 @@ public class RoadRunnerTrajectoryGenerator
         double BlueGroundFourY = 84.19;
         
 
+        
+        //TANGENTS:
+        // +x = 0
+        // -x = 180
+        // -y = -90
+        // +y = 90
+        addPath(
+            pathManager,
+            startTrajectory(BlueStartGridX,  BlueStartNineGridY,  0 * Helpers.DEGREES_TO_RADIANS, 0 * Helpers.DEGREES_TO_RADIANS)
+                
+                .lineTo(new Vector2d(BlueFarChargeStationX, BlueStartNineGridY)) // Goes forward
+                .splineToConstantHeading(new Vector2d(BlueFarChargeStationX, BlueChargeStationY), 90 * Helpers.DEGREES_TO_RADIANS),
+
+                
+                //Jamie's Charge Station task
+            "BlueNineStartToGuardInBetweenToFarChargeStation");
+
     }
 
     private static TrajectoryBuilder startTrajectory()
