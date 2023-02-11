@@ -108,13 +108,11 @@ public class RoadRunnerTrajectoryGenerator
                 .splineTo(new Vector2d(-72, 0), 180.0 * Helpers.DEGREES_TO_RADIANS),
             "goBack6ft");
         
-        //---------------------------------------------- 2023 Paths -----------------------------------------------------
-
-        // 180 heading is towards the grind and 0 is towards the charge station
+        //---------------------------------------------- 2023 Paths ------------------------------------------------------//
 
         //Blue Alliance Values
         final double BlueStartGridX = 70.188;
-        final double BlueStartOneGridY = -196.595;
+        final double BlueStartOneGridY = 196.595;
         final double BlueStartTwoCubeGridY = 174.19;
         final double BlueStartThreeGridY = 152.375;
         final double BlueStartFourGridY = 130.375;
@@ -123,8 +121,8 @@ public class RoadRunnerTrajectoryGenerator
         final double BlueStartSevenGridY = 64.095;
         final double BlueStartEightGridY = 42.19;
         final double BlueStartNineGridY = 20.095;
-        final double BlueCloseChargeStationX = 98.5;
-        final double BlueFarChargeStationX = 207.001;
+        final double BlueCloseChargeStationX = 122.5; // 24 inches from the ChargeStation exact entry
+        final double BlueFarChargeStationX = 183.001; // -5 inches from the ChargeStation exact entry
         final double BlueChargeStationY = 108.015;
         final double BlueInBetweenPointAfterChargeStationX = 213.5;
         final double BlueGroundPiecesX = 260.455;
@@ -133,11 +131,16 @@ public class RoadRunnerTrajectoryGenerator
         final double BlueGroundThreeY = 132.19;
         final double BlueGroundFourY = 84.19;
 
+        //Red Alliance Values
+        final double RedStartGridX = 578.035;
+        final double RedCloseChargeStation = 576.223; // 24 inches from the ChargeStation exact entry
+        final double RedFarChargeStation = 419.097; // 24 inches from the ChargeStation exact entry
+
         //TANGENTS:
         // +x = 0
         // -x = 180
-        // -y = -90
-        // +y = 90
+        // -y = -90 Towards Charge Station
+        // +y = 90 Towards Grid
         addPath(
             pathManager,
             startTrajectory(BlueStartGridX,  BlueStartNineGridY,  0 * Helpers.DEGREES_TO_RADIANS, 0 * Helpers.DEGREES_TO_RADIANS)
