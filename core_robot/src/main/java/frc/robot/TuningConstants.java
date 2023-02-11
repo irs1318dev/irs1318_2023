@@ -313,8 +313,14 @@ public class TuningConstants
     public static final double ARM_FLIPPER_EXTEND_WAIT_DURATION = 0.5;
     public static final double ARM_FLIPPER_RETRACT_WAIT_DURATION = 0.5;
 
-    public static final double ARM_LOWER_MIN_EXTENTION_THRESHOLD = 0.25 * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
-    public static final double ARM_UPPER_MIN_EXTENTION_THRESHOLD = 0.25 * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
+    public static final double ARM_FULLY_RETRACTED_X_POSITION = 0.0; // in inches
+    public static final double ARM_FULLY_RETRACTED_Z_POSITION = 0.0; // in inches
+
+    // thresholds for auto/macro tasks for whether it has reached the desired position:
+    public static final double ARM_LOWER_MM_GOAL_THRESHOLD = 0.25 * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // in ticks
+    public static final double ARM_UPPER_MM_GOAL_THRESHOLD = 0.25 * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // in ticks
+    public static final double ARM_X_IK_GOAL_THRESHOLD = 0.5; // in inches
+    public static final double ARM_Z_IK_GOAL_THRESHOLD = 0.5; // in inches
 
     //Set Points for Motion Magic
     // Place Holder VALUES
