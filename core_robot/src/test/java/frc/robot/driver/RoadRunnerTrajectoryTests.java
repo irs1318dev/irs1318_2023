@@ -9,7 +9,8 @@ public class RoadRunnerTrajectoryTests
     @Test
     public void verifyTrajectoryGeneration()
     {
-        TrajectoryManager pathManager = new TrajectoryManager();
-        RoadRunnerTrajectoryGenerator.generateTrajectories(pathManager);
+        TrajectoryManager trajectoryManager = new TrajectoryManager();
+        RoadRunnerTrajectoryGenerator.generateTrajectories(trajectoryManager);
+        trajectoryManager.buildAll();
     }
 }

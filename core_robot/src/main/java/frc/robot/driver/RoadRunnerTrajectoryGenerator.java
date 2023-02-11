@@ -34,9 +34,9 @@ public class RoadRunnerTrajectoryGenerator
 
     public static void main(String[] args)
     {
-        TrajectoryManager pathManager = new TrajectoryManager();
-        RoadRunnerTrajectoryGenerator.generateTrajectories(pathManager);
-        // ITrajectory trajectory = pathManager.getTrajectory("w2ba-goToPickUpBall2");
+        TrajectoryManager trajectoryManager = new TrajectoryManager();
+        RoadRunnerTrajectoryGenerator.generateTrajectories(trajectoryManager);
+        // ITrajectory trajectory = trajectoryManager.getTrajectory("w2ba-goToPickUpBall2");
 
         // try (CsvWriter csvWriter = CsvWriter.builder().build(java.nio.file.Path.of("test.csv"), StandardCharsets.UTF_8))
         // {

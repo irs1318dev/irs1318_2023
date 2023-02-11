@@ -51,8 +51,8 @@ public class FollowPathTask extends ControlTaskBase
     @Override
     public void begin()
     {
-        TrajectoryManager pathManager = this.getInjector().getInstance(TrajectoryManager.class);
-        this.trajectory = pathManager.getTrajectory(this.pathName);
+        TrajectoryManager trajectoryManager = this.getInjector().getInstance(TrajectoryManager.class);
+        this.trajectory = trajectoryManager.getTrajectory(this.pathName);
 
         this.timer = this.getInjector().getInstance(ITimer.class);
         this.startTime = this.timer.get();

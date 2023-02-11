@@ -16,7 +16,7 @@ public class TrajectoryManager
     private final HashMap<String, ITrajectory> map;
 
     /**
-     * Initializes a new PathManager
+     * Initializes a new TrajectoryManager
      */
     @Inject
     public TrajectoryManager()
@@ -57,5 +57,23 @@ public class TrajectoryManager
         {
             this.trajectoryBuilderMap.put(name, trajectoryBuilder);
         }
+    }
+
+    public void buildAll()
+    {
+        for (String name : this.trajectoryBuilderMap.keySet())
+        {
+            TrajectoryBuilder trajectoryBuilder = this.trajectoryBuilderMap.getOrDefault(name, null);
+            if (trajectoryBuilder != null)
+            {
+                this.map.put(name, new TrajectoryWrapper(trajectoryBuilder.build()));
+            }
+            else if (TuningConstants.THROW_EXCEPTIONS)
+            {
+                throw new RuntimeException("Unexpected null trajectory named " + name);
+            }
+        }
+
+        this.trajectoryBuilderMap.clear();
     }
 }
