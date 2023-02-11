@@ -508,7 +508,9 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             Shift.None,
             ButtonType.Toggle,
-            () -> new FollowPathTask("goForward4ft"),
+            () -> SequentialTask.Sequence(
+                new PositionStartingTask(70.188, 20.095, 0.0),
+                new FollowPathTask("BlueNineStartToGuardInBetweenToFarChargeStation", false, false)),
             new IOperation[]
             {
                 AnalogOperation.DriveTrainMoveForward,
