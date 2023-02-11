@@ -108,8 +108,9 @@ public class ButtonMap implements IButtonMap
             Shift.CodriverDebug,
             Shift.CodriverDebug,
             ElectronicsConstants.INVERT_XBONE_LEFT_Y_AXIS,
+            -TuningConstants.ARM_LOWER_VELOCITY_DEAZONE,
             TuningConstants.ARM_LOWER_VELOCITY_DEAZONE,
-            -TuningConstants.ARM_LOWER_VELOCITY_DEAZONE),
+            -1.0), // forward is negative...
         new AnalogOperationDescription(
             AnalogOperation.ArmSimpleForceUpper,
             UserInputDevice.Codriver,
@@ -117,8 +118,8 @@ public class ButtonMap implements IButtonMap
             Shift.CodriverDebug,
             Shift.CodriverDebug,
             ElectronicsConstants.INVERT_XBONE_RIGHT_Y_AXIS,
-            TuningConstants.ARM_UPPER_VELOCITY_DEAZONE,
-            -TuningConstants.ARM_UPPER_VELOCITY_DEAZONE),
+            -TuningConstants.ARM_UPPER_VELOCITY_DEAZONE,
+            TuningConstants.ARM_UPPER_VELOCITY_DEAZONE),
 
         new AnalogOperationDescription(
             AnalogOperation.ArmIKXPosition,

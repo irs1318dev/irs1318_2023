@@ -79,10 +79,8 @@ public class ElectronicsConstants
     public static final int CARGO_INTAKE_PISTON_REVERSE = 7;
 
     public static final int ARM_LOWER_LEFT_CAN_ID = 10;
-    public static final int ARM_LOWER_RIGHT_CAN_ID = 13;
-    public static final int ARM_UPPER_CAN_ID = 11;
-
-    public static final int ARM_LOWER_FOLLOWER_CAN_ID = 12;
+    public static final int ARM_LOWER_RIGHT_CAN_ID = 11;
+    public static final int ARM_UPPER_CAN_ID = 12;
 
     public static final int LEFT_SIDE_STICK_PISTON_FORWARD = 8;
     public static final int LEFT_SIDE_STICK_PISTON_BACKWARD = 9;
