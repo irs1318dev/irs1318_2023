@@ -409,6 +409,113 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.VisionForceDisable,
             }),
 
+        // arm macros
+        new MacroOperationDescription(
+            MacroOperation.GroundPickup,
+            UserInputDevice.Driver,
+            UserInputDeviceButton.XBONE_A_BUTTON,
+            Shift.DriverDebug,
+            Shift.None,
+            ButtonType.Toggle,
+            () -> new ArmMMPositionTask(
+                TuningConstants.ARM_LOWER_MM_GROUND_PICKUP,
+                TuningConstants.ARM_UPPER_MM_GROUND_PICKUP),
+            new IOperation[]
+            {
+                AnalogOperation.ArmMMLowerPosition,
+                AnalogOperation.ArmMMUpperPosition,
+            }),
+        new MacroOperationDescription(
+            MacroOperation.GroundPlace,
+            UserInputDevice.Codriver,
+            UserInputDeviceButton.XBONE_A_BUTTON,
+            Shift.DriverDebug,
+            Shift.DriverDebug,
+            ButtonType.Toggle,
+            () -> new ArmMMPositionTask(
+                TuningConstants.ARM_LOWER_MM_GROUND_PLACING,
+                TuningConstants.ARM_UPPER_MM_GROUND_PLACING),
+            new IOperation[]
+            {
+                AnalogOperation.ArmMMLowerPosition,
+                AnalogOperation.ArmMMUpperPosition,
+            }),
+        new MacroOperationDescription(
+            MacroOperation.MiddleCone,
+            UserInputDevice.Driver,
+            UserInputDeviceButton.XBONE_B_BUTTON,
+            Shift.DriverDebug,
+            Shift.None,
+            ButtonType.Toggle,
+            () -> new ArmMMPositionTask(
+                TuningConstants.ARM_LOWER_MM_MIDDLE_CONE,
+                TuningConstants.ARM_UPPER_MM_MIDDLE_CONE),
+            new IOperation[]
+            {
+                AnalogOperation.ArmMMLowerPosition,
+                AnalogOperation.ArmMMUpperPosition,
+            }),
+        new MacroOperationDescription(
+            MacroOperation.MiddleCube,
+            UserInputDevice.Driver,
+            UserInputDeviceButton.XBONE_B_BUTTON,
+            Shift.DriverDebug,
+            Shift.DriverDebug,
+            ButtonType.Toggle,
+            () -> new ArmMMPositionTask(
+                TuningConstants.ARM_LOWER_MM_MIDDLE_CUBE,
+                TuningConstants.ARM_UPPER_MM_MIDDLE_CUBE),
+            new IOperation[]
+            {
+                AnalogOperation.ArmMMLowerPosition,
+                AnalogOperation.ArmMMUpperPosition,
+            }),
+        new MacroOperationDescription(
+            MacroOperation.HighCone,
+            UserInputDevice.Driver,
+            UserInputDeviceButton.XBONE_X_BUTTON,
+            Shift.DriverDebug,
+            Shift.None,
+            ButtonType.Toggle,
+            () -> new ArmMMPositionTask(
+                TuningConstants.ARM_LOWER_MM_HIGH_CONE,
+                TuningConstants.ARM_UPPER_MM_HIGH_CONE),
+            new IOperation[]
+            {
+                AnalogOperation.ArmMMLowerPosition,
+                AnalogOperation.ArmMMUpperPosition,
+            }),
+        new MacroOperationDescription(
+            MacroOperation.HighCube,
+            UserInputDevice.Driver,
+            UserInputDeviceButton.XBONE_X_BUTTON,
+            Shift.DriverDebug,
+            Shift.DriverDebug,
+            ButtonType.Toggle,
+            () -> new ArmMMPositionTask(
+                TuningConstants.ARM_LOWER_MM_HIGH_CUBE,
+                TuningConstants.ARM_UPPER_MM_HIGH_CUBE),
+            new IOperation[]
+            {
+                AnalogOperation.ArmMMLowerPosition,
+                AnalogOperation.ArmMMUpperPosition,
+            }),
+        new MacroOperationDescription(
+            MacroOperation.SubstationPickup,
+            UserInputDevice.Driver,
+            UserInputDeviceButton.XBONE_Y_BUTTON,
+            Shift.DriverDebug,
+            Shift.None,
+            ButtonType.Toggle,
+            () -> new ArmMMPositionTask(
+                TuningConstants.ARM_LOWER_MM_SUB_PICKUP,
+                TuningConstants.ARM_UPPER_MM_SUB_PICKUP),
+            new IOperation[]
+            {
+                AnalogOperation.ArmMMLowerPosition,
+                AnalogOperation.ArmMMUpperPosition,
+            }),
+
         new MacroOperationDescription(
             MacroOperation.ChargeStationBalance,
             UserInputDevice.Test1,
@@ -499,7 +606,7 @@ public class ButtonMap implements IButtonMap
                     DigitalOperation.DriveTrainUseRobotOrientation,
                     DigitalOperation.DriveTrainEnableMaintainDirectionMode
                 }),
-    
+
 
         new MacroOperationDescription(
             MacroOperation.ChargeStationBalanceReverse,
@@ -633,119 +740,6 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.VisionEnableRetroreflectiveProcessing,
                 DigitalOperation.VisionForceDisable,
             }),
-
-        new MacroOperationDescription(
-            MacroOperation.GroundPickup, 
-            UserInputDevice.Driver, 
-            UserInputDeviceButton.XBONE_A_BUTTON,
-            Shift.DriverDebug,
-            Shift.None,
-            ButtonType.Toggle, 
-            () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_MM_GROUND_PICKUP, 
-                TuningConstants.ARM_UPPER_MM_GROUND_PICKUP), 
-            new IOperation[]
-            {
-                AnalogOperation.ArmMMLowerPosition,
-                AnalogOperation.ArmMMUpperPosition,
-            }),
-        
-        new MacroOperationDescription(
-            MacroOperation.GroundPlace, 
-            UserInputDevice.Codriver, 
-            UserInputDeviceButton.XBONE_A_BUTTON,
-            Shift.DriverDebug,
-            Shift.DriverDebug,
-            ButtonType.Toggle, 
-            () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_MM_GROUND_PLACING, 
-                TuningConstants.ARM_UPPER_MM_GROUND_PLACING), 
-            new IOperation[]
-            {
-                AnalogOperation.ArmMMLowerPosition,
-                AnalogOperation.ArmMMUpperPosition,
-            }),
-
-        new MacroOperationDescription(
-            MacroOperation.MiddleCone, 
-            UserInputDevice.Driver, 
-            UserInputDeviceButton.XBONE_B_BUTTON,
-            Shift.DriverDebug,
-            Shift.None,
-            ButtonType.Toggle, 
-            () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_MM_MIDDLE_CONE, 
-                TuningConstants.ARM_UPPER_MM_MIDDLE_CONE), 
-            new IOperation[]
-            {
-                AnalogOperation.ArmMMLowerPosition,
-                AnalogOperation.ArmMMUpperPosition,
-            }),
-        
-        new MacroOperationDescription(
-            MacroOperation.MiddleCube, 
-            UserInputDevice.Codriver, 
-            UserInputDeviceButton.XBONE_B_BUTTON,
-            Shift.DriverDebug,
-            Shift.DriverDebug,
-            ButtonType.Toggle, 
-            () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_MM_MIDDLE_CUBE, 
-                TuningConstants.ARM_UPPER_MM_MIDDLE_CUBE), 
-            new IOperation[]
-            {
-                AnalogOperation.ArmMMLowerPosition,
-                AnalogOperation.ArmMMUpperPosition,
-            }),
-
-        new MacroOperationDescription(
-            MacroOperation.HighCone, 
-            UserInputDevice.Driver, 
-            UserInputDeviceButton.XBONE_X_BUTTON,
-            Shift.DriverDebug,
-            Shift.None,
-            ButtonType.Toggle, 
-            () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_MM_HIGH_CONE, 
-                TuningConstants.ARM_UPPER_MM_HIGH_CONE), 
-            new IOperation[]
-            {
-                AnalogOperation.ArmMMLowerPosition,
-                AnalogOperation.ArmMMUpperPosition,
-            }),
-        
-        new MacroOperationDescription(
-            MacroOperation.HighCube, 
-            UserInputDevice.Codriver, 
-            UserInputDeviceButton.XBONE_X_BUTTON,
-            Shift.DriverDebug,
-            Shift.DriverDebug,
-            ButtonType.Toggle, 
-            () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_MM_HIGH_CUBE, 
-                TuningConstants.ARM_UPPER_MM_HIGH_CUBE), 
-            new IOperation[]
-            {
-                AnalogOperation.ArmMMLowerPosition,
-                AnalogOperation.ArmMMUpperPosition,
-            }),
-        
-        new MacroOperationDescription(
-            MacroOperation.SubstationPickup, 
-            UserInputDevice.Codriver, 
-            UserInputDeviceButton.XBONE_X_BUTTON,
-            Shift.DriverDebug,
-            Shift.None,
-            ButtonType.Toggle, 
-            () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_MM_SUB_PICKUP, 
-                TuningConstants.ARM_UPPER_MM_SUB_PICKUP), 
-            new IOperation[]
-            {
-                AnalogOperation.ArmMMLowerPosition,
-                AnalogOperation.ArmMMUpperPosition,
-            }),
-        
     };
 
     @Override

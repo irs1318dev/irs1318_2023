@@ -1,5 +1,6 @@
 package frc.robot;
 
+import frc.robot.common.Helpers;
 import frc.robot.common.robotprovider.TalonFXInvertType;
 
 /**
@@ -10,6 +11,9 @@ import frc.robot.common.robotprovider.TalonFXInvertType;
  */
 public class HardwareConstants
 {
+    public static final double MAX_ROBOT_HEIGHT = 78.0; // inches, max overall height
+    public static final double MAX_ROBOT_EXTENSION = 48.0; // inches, max extension beyond frame perimeter
+
     //================================================== DriveTrain ==============================================================
 
     public static final TalonFXInvertType DRIVETRAIN_STEER_MOTOR1_INVERT = TalonFXInvertType.Clockwise;
@@ -44,20 +48,22 @@ public class HardwareConstants
 
     //================================================= Arm =================================================================================================================
 
-    public static final boolean INTAKE_MOTOR_INVERT_OUTPUT = true;
+    // values may change:
+    public static final double ARM_LOWER_ARM_LENGTH = 46.0; // in inches
+    public static final double ARM_UPPER_ARM_LENGTH = 37.0; // in inches
 
+    public static final double ARM_MAX_END_EFFECTOR_HEIGHT = 8.0; // inches, max height of the end-effector above the end of the upper arm
+    public static final double ARM_MAX_END_EFFECTOR_EXTENSION = 8.0; // inches, max extension of the end-effector past the end of the upper arm
 
-    //================================================= Arm =================================================================================
-    
-    public static final double LOWER_ARM_LENGTH = 46; // Values will likely change
-    public static final double UPPER_ARM_LENGTH = 37;
-    
+    public static final double ARM_ORIGIN_X_OFFSET = 8.0; // inches, distance from the front of the robot to the origin for the arm
+    public static final double ARM_ORIGIN_Z_OFFSET = 8.0; // inches, distance from the floor to the origin for the arm
+
     //======Lower Arm Linear Actuator================
    
-    public static final double LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM = 18.347; //There has to be a better name for this 
+    public static final double LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM = 18.347; // There has to be a better name for this
     public static final double LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM = 12.876;
-    public static final double LOWER_ARM_LINEAR_ACTUATOR_RIGHT_ANGLE_OFFSET = 15; //Place holder until verified from CAD
-    public static final double LOWER_ARM_LINEAR_ACTUATOR_LEFT_ANGLE_OFFSET = 10; //Place holder
+    public static final double LOWER_ARM_LINEAR_ACTUATOR_RIGHT_ANGLE_OFFSET = 15; // Place holder until verified from CAD
+    public static final double LOWER_ARM_LINEAR_ACTUATOR_LEFT_ANGLE_OFFSET = 10; // Place holder
     
     //======Upper Arm Linear Actuator================
     public static final double LENGTH_ONE = 8.963; // All Place holders
@@ -70,7 +76,7 @@ public class HardwareConstants
     public static final double DISTANCE_FOUR = 15.075;
     public static final double DISTANCE_FIVE = 4;
     public static final double DISTANCE_SIX = 2;
-    public static final double SIGMA_ANGLE = Math.atan2(DISTANCE_SIX, DISTANCE_FIVE); //Can calculate and hard code after we get measurements
-    public static final double PSI_ANGLE = Math.atan2(DISTANCE_TWO, DISTANCE_THREE); //Hard code later
+    public static final double SIGMA_ANGLE = Helpers.atan2d(HardwareConstants.DISTANCE_SIX, HardwareConstants.DISTANCE_FIVE); // Can calculate and hard code after we get measurements
+    public static final double PSI_ANGLE = Helpers.atan2d(HardwareConstants.DISTANCE_TWO, HardwareConstants.DISTANCE_THREE); // Hard code later
 
 }

@@ -256,7 +256,9 @@ public class TuningConstants
     public static final boolean ARM_USE_SIMPLE_MODE = true;
     
     public static final double ARM_INTAKE_POWER = 0.6;
+    public static final boolean ARM_INTAKE_MOTOR_INVERT_OUTPUT = true;
 
+    public static final double ARM_MAX_VELOCITY = 0.0;
     public static final double ARM_LOWER_LEFT_POSITION_MM_PID_KP = 0.1;
     public static final double ARM_LOWER_LEFT_POSITION_MM_PID_KI = 0.0;
     public static final double ARM_LOWER_LEFT_POSITION_MM_PID_KD = 0.0;
@@ -293,9 +295,6 @@ public class TuningConstants
 
     public static final double ARM_RETRACTION_MAX_TIME = 0.7;
 
-    public static final double ARM_MAX_VELOCITY = 50.0;
-    public static final double ARM_MAX_ACCLERATION = 50.0;
-
     public static final double ARM_LOWER_EXTENSION_ADJUSTMENT_VELOCITY = 2.0; // inches per second
     public static final double ARM_UPPER_EXTENSION_ADJUSTMENT_VELOCITY = 2.0; // inches per second
 
@@ -305,14 +304,17 @@ public class TuningConstants
     public static final double ARM_STRING_ENCODER_TICKS_PER_INCH = (4096.0 / 100.0) * 25.4;
     public static final double ARM_STRING_ENCODER_INCHES_PER_TICK = (100.0 / 4096.0) / 25.4;
 
-    public static final double ARM_MAX_IKZ_EXTENSION_HEIGHT = 78.0;
-    public static final double ARM_MAX_IKX_EXTENSION_LENGTH = 48.0;
+    public static final double ARM_MAX_IKZ_EXTENSION_HEIGHT = HardwareConstants.MAX_ROBOT_HEIGHT - HardwareConstants.ARM_ORIGIN_Z_OFFSET - HardwareConstants.ARM_MAX_END_EFFECTOR_HEIGHT;
+    public static final double ARM_MAX_IKX_EXTENSION_LENGTH = HardwareConstants.MAX_ROBOT_EXTENSION + HardwareConstants.ARM_ORIGIN_X_OFFSET - HardwareConstants.ARM_MAX_END_EFFECTOR_EXTENSION;
 
     public static final double ARM_LOWER_VELOCITY_DEAZONE = 0.1;
     public static final double ARM_UPPER_VELOCITY_DEAZONE = 0.1;
 
     public static final double ARM_FLIPPER_EXTEND_WAIT_DURATION = 0.5;
     public static final double ARM_FLIPPER_RETRACT_WAIT_DURATION = 0.5;
+
+    public static final double ARM_LOWER_MIN_EXTENTION_THRESHOLD = 0.25 * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
+    public static final double ARM_UPPER_MIN_EXTENTION_THRESHOLD = 0.25 * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
 
     //Set Points for Motion Magic
     // Place Holder VALUES
@@ -330,11 +332,6 @@ public class TuningConstants
     public static final double ARM_UPPER_MM_GROUND_PICKUP = 0.0;
     public static final double ARM_LOWER_MM_SUB_PICKUP = 0.0;
     public static final double ARM_UPPER_MM_SUB_PICKUP = 0.0;
-
-    public static final double LOWER_MIN_EXTENTION_THRESHOLD = 0.0;
-    public static final double UPPER_MIN_EXTENTION_THRESHOLD = 0.0;
-
-
 
     //============================================= ChargeStation Macro ==================================================================
 

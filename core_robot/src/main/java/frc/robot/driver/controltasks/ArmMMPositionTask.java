@@ -10,17 +10,24 @@ import frc.robot.mechanisms.*;
  */
 public class ArmMMPositionTask extends UpdateCycleTask
 {
+    private final double lowerExtensionLength;
+    private final double upperExtensionLength;
+    private final boolean waitUntilPositionReached;
 
-
-    private double lowerExtensionLength;
-    private double upperExtensionLength;
     private ArmMechanism arm;
-    
+
     public ArmMMPositionTask(double lowerExtensionLength, double upperExtensionLength)
     {
+        this(lowerExtensionLength, upperExtensionLength, false);
+    }
+
+    public ArmMMPositionTask(double lowerExtensionLength, double upperExtensionLength, boolean waitUntilPositionReached)
+    {
         super(1);
+
         this.lowerExtensionLength = lowerExtensionLength;
         this.upperExtensionLength = upperExtensionLength;
+        this.waitUntilPositionReached = waitUntilPositionReached;
     }
 
     /**
@@ -40,33 +47,38 @@ public class ArmMMPositionTask extends UpdateCycleTask
     @Override
     public void update()
     {
+        super.update();
+
         this.setAnalogOperationState(AnalogOperation.ArmMMLowerPosition, this.lowerExtensionLength);
         this.setAnalogOperationState(AnalogOperation.ArmMMUpperPosition, this.upperExtensionLength);
-        
-        super.update();
-        
     }
 
     /**
      * End the current task and reset control changes appropriately
      */
-
     @Override
     public void end()
     {
         super.end();
+
+        this.setAnalogOperationState(AnalogOperation.ArmMMLowerPosition, TuningConstants.MAGIC_NULL_VALUE);
+        this.setAnalogOperationState(AnalogOperation.ArmMMUpperPosition, TuningConstants.MAGIC_NULL_VALUE);
     }
 
     @Override
     public boolean hasCompleted()
     {
-        if(Math.abs(this.arm.getMMLowerPosition() - this.lowerExtensionLength) < TuningConstants.LOWER_MIN_EXTENTION_THRESHOLD)
+        if (!this.waitUntilPositionReached)
         {
-            if(Math.abs(this.arm.getMMUpperPosition() - this.upperExtensionLength) < TuningConstants.UPPER_MIN_EXTENTION_THRESHOLD)
-            {
-                return true;
-            }
+            return super.hasCompleted();
         }
+
+        if (Math.abs(this.arm.getMMLowerPosition() - this.lowerExtensionLength) < TuningConstants.ARM_LOWER_MIN_EXTENTION_THRESHOLD &&
+            Math.abs(this.arm.getMMUpperPosition() - this.upperExtensionLength) < TuningConstants.ARM_UPPER_MIN_EXTENTION_THRESHOLD)
+        {
+            return true;
+        }
+
         return false;
     }
 }

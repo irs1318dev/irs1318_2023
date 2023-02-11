@@ -190,7 +190,7 @@ public class ArmMechanism implements IMechanism
 
         // this.intakeMotor = provider.getTalonSRX(ElectronicsConstants.INTAKE_MOTOR_CAN_ID);
         // this.intakeMotor.setControlMode(TalonXControlMode.PercentOutput);
-        // this.intakeMotor.setInvertOutput(HardwareConstants.INTAKE_MOTOR_INVERT_OUTPUT);
+        // this.intakeMotor.setInvertOutput(TuningConstants.ARM_INTAKE_MOTOR_INVERT_OUTPUT);
         // this.intakeMotor.setNeutralMode(MotorNeutralMode.Brake);
 
         // this.intakeExtender =
@@ -484,7 +484,7 @@ public class ArmMechanism implements IMechanism
                  if (this.driver.getAnalog(AnalogOperation.ArmIKXPosition) >= 0.0 && this.driver.getAnalog(AnalogOperation.ArmIKZPosition) >= 0.0)
                  {
                      // controlled by macro
-                     ArmPositionSetpoint ikResult = this.calculateIK(this.driver.getAnalog(AnalogOperation.ArmIKXPosition), this.driver.getAnalog(AnalogOperation.ArmIKZPosition));
+                     ArmPositionSetpoint ikResult = ArmMechanism.calculateIK(this.driver.getAnalog(AnalogOperation.ArmIKXPosition), this.driver.getAnalog(AnalogOperation.ArmIKZPosition));
                     if (ikResult != null)
                     {
                         this.desiredLowerLeftArmPosition = ikResult.lowerPosition;
@@ -556,8 +556,8 @@ public class ArmMechanism implements IMechanism
         //     return new ArmAngleSetpoint(0.0, 90.0);
         // }
 
-        final double L1 = HardwareConstants.LOWER_ARM_LENGTH;
-        final double L2 = HardwareConstants.UPPER_ARM_LENGTH;
+        final double L1 = HardwareConstants.ARM_LOWER_ARM_LENGTH;
+        final double L2 = HardwareConstants.ARM_UPPER_ARM_LENGTH;
 
         final double L1Squared = L1 * L1;
         final double L2Squared = L2 * L2;
@@ -590,15 +590,15 @@ public class ArmMechanism implements IMechanism
 
         lowerArmAngleToMove = Math.atan(
             (z / x)) +
-            Math.atan((HardwareConstants.UPPER_ARM_LENGTH * Math.sin(upperArmAngleToMove))/
-            (HardwareConstants.LOWER_ARM_LENGTH + (HardwareConstants.UPPER_ARM_LENGTH * Math.cos(upperArmAngleToMove))));
+            Math.atan((HardwareConstants.ARM_UPPER_ARM_LENGTH * Math.sin(upperArmAngleToMove))/
+            (HardwareConstants.ARM_LOWER_ARM_LENGTH + (HardwareConstants.ARM_UPPER_ARM_LENGTH * Math.cos(upperArmAngleToMove))));
 
         upperArmAngleToMove = -Math.acos(
             ((x * x) +
             (z * z) -
-            (HardwareConstants.LOWER_ARM_LENGTH * HardwareConstants.LOWER_ARM_LENGTH) -
-            (HardwareConstants.UPPER_ARM_LENGTH * HardwareConstants.UPPER_ARM_LENGTH)) /
-            (2 * HardwareConstants.UPPER_ARM_LENGTH * HardwareConstants.LOWER_ARM_LENGTH));
+            (HardwareConstants.ARM_LOWER_ARM_LENGTH * HardwareConstants.ARM_LOWER_ARM_LENGTH) -
+            (HardwareConstants.ARM_UPPER_ARM_LENGTH * HardwareConstants.ARM_UPPER_ARM_LENGTH)) /
+            (2 * HardwareConstants.ARM_UPPER_ARM_LENGTH * HardwareConstants.ARM_LOWER_ARM_LENGTH));
 
         double totalLowerArmAngle = lowerArmAngle +
             HardwareConstants.LOWER_ARM_LINEAR_ACTUATOR_RIGHT_ANGLE_OFFSET +
