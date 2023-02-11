@@ -134,7 +134,7 @@ public class RoadRunnerTrajectoryGenerator
         //Red Alliance Values
         final double RedStartGridX = 578.035;
         final double RedCloseChargeStation = 576.223; // 24 inches from the ChargeStation exact entry
-        final double RedFarChargeStation 419.097; // 24 inches from the ChargeStation exact entry
+        final double RedFarChargeStation = 419.097; // 24 inches from the ChargeStation exact entry
 
         //TANGENTS:
         // +x = 0
