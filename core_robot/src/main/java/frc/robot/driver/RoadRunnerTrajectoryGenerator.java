@@ -14,7 +14,7 @@ import frc.robot.TuningConstants;
 import frc.robot.common.*;
 import frc.robot.common.robotprovider.ITrajectory;
 import frc.robot.common.robotprovider.TrajectoryState;
-import frc.robot.driver.common.PathManager;
+import frc.robot.driver.common.TrajectoryManager;
 import frc.robot.driver.common.TrajectoryWrapper;
 
 public class RoadRunnerTrajectoryGenerator
@@ -34,9 +34,9 @@ public class RoadRunnerTrajectoryGenerator
 
     public static void main(String[] args)
     {
-        PathManager pathManager = new PathManager();
-        RoadRunnerTrajectoryGenerator.generateTrajectories(pathManager);
-        // ITrajectory trajectory = pathManager.getTrajectory("w2ba-goToPickUpBall2");
+        TrajectoryManager trajectoryManager = new TrajectoryManager();
+        RoadRunnerTrajectoryGenerator.generateTrajectories(trajectoryManager);
+        // ITrajectory trajectory = trajectoryManager.getTrajectory("w2ba-goToPickUpBall2");
 
         // try (CsvWriter csvWriter = CsvWriter.builder().build(java.nio.file.Path.of("test.csv"), StandardCharsets.UTF_8))
         // {
@@ -62,7 +62,7 @@ public class RoadRunnerTrajectoryGenerator
         // }
     }
 
-    public static void generateTrajectories(PathManager pathManager)
+    public static void generateTrajectories(TrajectoryManager pathManager)
     {
         // ----------------------------------------- Sample paths ----------------------------------------- //
         addPath(
@@ -110,46 +110,43 @@ public class RoadRunnerTrajectoryGenerator
         
         //---------------------------------------------- 2023 Paths ------------------------------------------------------//
 
-        //Y Values
-        final double StartOneGridY = 196.595;
-        final double StartTwoCubeGridY = 174.19;
-        final double StartThreeGridY = 152.375;
-        final double StartFourGridY = 130.375;
-        final double StartFiveGridY = 108.19;
-        final double StartSixGridY = 86.375;
-        final double StartSevenGridY = 64.095;
-        final double StartEightGridY = 42.19;
-        final double StartNineGridY = 20.095;
-        final double ChargeStationY = 108.015;
-        final double GroundOneY = 180.19;
-        final double GroundTwoY = 36.19;
-        final double GroundThreeY = 132.19;
-        final double GroundFourY = 84.19;
-
-        //Blue Alliance X Values
+        //Blue Alliance Values
         final double BlueStartGridX = 70.188;
+        final double BlueStartOneGridY = 196.595;
+        final double BlueStartTwoCubeGridY = 174.19;
+        final double BlueStartThreeGridY = 152.375;
+        final double BlueStartFourGridY = 130.375;
+        final double BlueStartFiveGridY = 108.19;
+        final double BlueStartSixGridY = 86.375;
+        final double BlueStartSevenGridY = 64.095;
+        final double BlueStartEightGridY = 42.19;
+        final double BlueStartNineGridY = 20.095;
         final double BlueCloseChargeStationX = 122.5; // 24 inches from the ChargeStation exact entry
         final double BlueFarChargeStationX = 183.001; // -5 inches from the ChargeStation exact entry
+        final double BlueChargeStationY = 108.015;
         final double BlueInBetweenPointAfterChargeStationX = 213.5;
         final double BlueGroundPiecesX = 260.455;
+        final double BlueGroundOneY = 180.19;
+        final double BlueGroundTwoY = 36.19;
+        final double BlueGroundThreeY = 132.19;
+        final double BlueGroundFourY = 84.19;
 
-        //Red Alliance X Values
+        //Red Alliance Values
         final double RedStartGridX = 578.035;
         final double RedCloseChargeStation = 576.223; // 24 inches from the ChargeStation exact entry
-        final double RedFarChargeStation 419.097; // 24 inches from the ChargeStation exact entry
-        final double RedGroundPiecesX = 260.455;
+        final double RedFarChargeStation = 419.097; // 24 inches from the ChargeStation exact entry
 
         //TANGENTS:
-        // +x = 0 Towards the red alliance
-        // -x = 180 Towards the blue alliance
-        // -y = -90 Towards the Guardrail
-        // +y = 90 Towards Loading Zone
+        // +x = 0
+        // -x = 180
+        // -y = -90 Towards Charge Station
+        // +y = 90 Towards Grid
         addPath(
             pathManager,
-            startTrajectory(BlueStartGridX,  StartEightGridY,  0 * Helpers.DEGREES_TO_RADIANS, 0 * Helpers.DEGREES_TO_RADIANS)
+            startTrajectory(BlueStartGridX,  BlueStartNineGridY,  0 * Helpers.DEGREES_TO_RADIANS, 0 * Helpers.DEGREES_TO_RADIANS)
                 
-                .lineTo(new Vector2d(BlueFarChargeStationX, StartEightGridY)) // Goes forward
-                .splineToConstantHeading(new Vector2d(BlueFarChargeStationX, ChargeStationY), 90 * Helpers.DEGREES_TO_RADIANS),
+                .lineTo(new Vector2d(BlueFarChargeStationX, BlueStartNineGridY)) // Goes forward
+                .splineToConstantHeading(new Vector2d(BlueFarChargeStationX, BlueChargeStationY), 90 * Helpers.DEGREES_TO_RADIANS),
 
                 
                 //Jamie's Charge Station task
@@ -172,11 +169,11 @@ public class RoadRunnerTrajectoryGenerator
         return new TrajectoryBuilder(new Pose2d(startXPos, startYPos, startHeading), startTangent, RoadRunnerTrajectoryGenerator.velocityConstraint, RoadRunnerTrajectoryGenerator.accelerationConstraint);
     }
 
-    private static void addPath(PathManager pathManager, TrajectoryBuilder trajectoryBuilder, String name)
+    private static void addPath(TrajectoryManager pathManager, TrajectoryBuilder trajectoryBuilder, String name)
     {
         try
         {
-            pathManager.addPath(name, new TrajectoryWrapper(trajectoryBuilder.build()));
+            pathManager.addTrajectory(name, trajectoryBuilder);
         }
         catch (Exception ex)
         {
