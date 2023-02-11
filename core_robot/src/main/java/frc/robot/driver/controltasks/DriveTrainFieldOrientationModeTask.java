@@ -4,7 +4,7 @@ import frc.robot.driver.DigitalOperation;
 
 public class DriveTrainFieldOrientationModeTask extends CompositeOperationTask
 {
-    private static final DigitalOperation[] ORIENTATION =
+    private static final DigitalOperation[] possibleOperations =
         new DigitalOperation[]
         {
             DigitalOperation.DriveTrainEnableFieldOrientation,
@@ -18,6 +18,6 @@ public class DriveTrainFieldOrientationModeTask extends CompositeOperationTask
      */
     public DriveTrainFieldOrientationModeTask(boolean enable)
     {
-        super(0.1, enable ? DigitalOperation.DriveTrainEnableFieldOrientation : DigitalOperation.DriveTrainDisableFieldOrientation, ORIENTATION);
+        super(enable ? DigitalOperation.DriveTrainEnableFieldOrientation : DigitalOperation.DriveTrainDisableFieldOrientation, DriveTrainFieldOrientationModeTask.possibleOperations);
     }
 }

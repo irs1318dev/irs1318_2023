@@ -4,23 +4,24 @@ import frc.robot.TuningConstants;
 import frc.robot.driver.DigitalOperation;
 
 /**
- * Task that applies a single operation from a group of related operations for a single update cycle.
+ * Task that applies a single operation from a group of related operations for a short period of time.
  * 
  */
-public abstract class CompositeOperationTask extends UpdateCycleTask
+public abstract class CompositeOperationTimedTask extends TimedTask
 {
     private final DigitalOperation[] possibleOperations;
 
     private DigitalOperation toPerform;
 
     /**
-     * Initializes a new CompositeOperationTask
+     * Initializes a new CompositeOperationTimedTask
+     * @param duration to wait in seconds
      * @param toPerform the operation to perform by setting to true for duration
      * @param possibleOperations to set of linked operations that should be set to false for duration
      */
-    protected CompositeOperationTask(DigitalOperation toPerform, DigitalOperation[] possibleOperations)
+    protected CompositeOperationTimedTask(double duration, DigitalOperation toPerform, DigitalOperation[] possibleOperations)
     {
-        super(1);
+        super(duration);
         if (TuningConstants.THROW_EXCEPTIONS)
         {
             // if we are cool with throwing exceptions (testing), check if toPerform is in

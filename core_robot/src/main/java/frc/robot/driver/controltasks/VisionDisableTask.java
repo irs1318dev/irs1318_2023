@@ -11,7 +11,7 @@ public class VisionDisableTask extends CompositeOperationTask
 
     public VisionDisableTask()
     {
-        super(1.0, DigitalOperation.VisionForceDisable, VisionDisableTask.possibleOperations);
+        super(DigitalOperation.VisionForceDisable, VisionDisableTask.possibleOperations);
     }
 
     @Override
