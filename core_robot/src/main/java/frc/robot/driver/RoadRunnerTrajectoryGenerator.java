@@ -62,96 +62,117 @@ public class RoadRunnerTrajectoryGenerator
         // }
     }
 
-    public static void generateTrajectories(TrajectoryManager pathManager)
+    public static void generateTrajectories(TrajectoryManager trajectoryManager)
     {
         // ----------------------------------------- Sample paths ----------------------------------------- //
-        addPath(
-            pathManager,
+        addTrajectory(
+            trajectoryManager,
             startTrajectory()
                 .splineTo(new Vector2d(48, 0), 0),
             "goForward4ft");
 
-        addPath(pathManager, 
+        addTrajectory(trajectoryManager, 
             startTrajectory(180.0 * Helpers.DEGREES_TO_RADIANS)
                 .splineTo(new Vector2d(-4.0, 0), 180.0 * Helpers.DEGREES_TO_RADIANS), 
             "goBackwards4inch");
 
-        addPath(
-            pathManager,
+        addTrajectory(
+            trajectoryManager,
             startTrajectory(90.0 * Helpers.DEGREES_TO_RADIANS)
                 .splineTo(new Vector2d(0, 48), 90.0 * Helpers.DEGREES_TO_RADIANS),
             "goLeft4ft");
 
 
 
-        addPath(
-            pathManager,
+        addTrajectory(
+            trajectoryManager,
             startTrajectory()
                 .splineTo(new Vector2d(84, 0), 0),
             "goForward7ft");
 
-        addPath(
-            pathManager,
+        addTrajectory(
+            trajectoryManager,
             startTrajectory()
                 .splineToSplineHeading(new Pose2d(-1, 0, 180.0 * Helpers.DEGREES_TO_RADIANS), 180.0 * Helpers.DEGREES_TO_RADIANS),
             "turn180Path");
 
-        addPath(
-            pathManager,
+        addTrajectory(
+            trajectoryManager,
             startTrajectory(180.0 * Helpers.DEGREES_TO_RADIANS)
                 .splineToSplineHeading(new Pose2d(-84, 0, 180.0 * Helpers.DEGREES_TO_RADIANS), 180.0 * Helpers.DEGREES_TO_RADIANS),
             "goBack7ftRotate");
 
-        addPath(
-            pathManager,
+        addTrajectory(
+            trajectoryManager,
             startTrajectory(180.0 * Helpers.DEGREES_TO_RADIANS)
                 .splineTo(new Vector2d(-72, 0), 180.0 * Helpers.DEGREES_TO_RADIANS),
             "goBack6ft");
         
         //---------------------------------------------- 2023 Paths ------------------------------------------------------//
 
-        //Blue Alliance Values
+        //Y Values
+        final double StartOneGridY = 196.595;
+        final double StartTwoCubeGridY = 174.19;
+        final double StartThreeGridY = 152.375;
+        final double StartFourGridY = 130.375;
+        final double StartFiveGridY = 108.19;
+        final double StartSixGridY = 86.375;
+        final double StartSevenGridY = 64.095;
+        final double StartEightGridY = 42.19;
+        final double StartNineGridY = 20.095;
+        final double ChargeStationY = 108.015;
+        final double GroundOneY = 180.19;
+        final double GroundTwoY = 36.19;
+        final double GroundThreeY = 132.19;
+        final double GroundFourY = 84.19;
+        //X Values
+        final double StartGridX = 253.861;
+        final double CloseChargeStationX = 201.549;
+        final double FarChargeStation = 141.048;
+        final double InBetweenPointAfterChargeStationX = 110.549;
+        final double GroundPiecesX = 63.594;
+
+        //Changed X Values
+        double c_StartGridX;
+        double c_CloseChargeStationX;
+        double c_FarChargeStation;
+        double c_InBetweenPointAfterChargeStationX;
+        double c_GroundPiecesX;
+        boolean isRed = false;
+
+        int TurnaryOperator = (isRed ? 1 : - 1);
+        c_StartGridX = StartGridX * TurnaryOperator;
+        c_CloseChargeStationX = CloseChargeStationX * TurnaryOperator;
+        c_FarChargeStation = FarChargeStation * TurnaryOperator;
+        c_InBetweenPointAfterChargeStationX = InBetweenPointAfterChargeStationX * TurnaryOperator;
+        c_GroundPiecesX = GroundPiecesX * TurnaryOperator;
+
+
+        //Blue Alliance X Values
         final double BlueStartGridX = 70.188;
-        final double BlueStartOneGridY = 196.595;
-        final double BlueStartTwoCubeGridY = 174.19;
-        final double BlueStartThreeGridY = 152.375;
-        final double BlueStartFourGridY = 130.375;
-        final double BlueStartFiveGridY = 108.19;
-        final double BlueStartSixGridY = 86.375;
-        final double BlueStartSevenGridY = 64.095;
-        final double BlueStartEightGridY = 42.19;
-        final double BlueStartNineGridY = 20.095;
         final double BlueCloseChargeStationX = 122.5; // 24 inches from the ChargeStation exact entry
         final double BlueFarChargeStationX = 183.001; // -5 inches from the ChargeStation exact entry
-        final double BlueChargeStationY = 108.015;
         final double BlueInBetweenPointAfterChargeStationX = 213.5;
         final double BlueGroundPiecesX = 260.455;
-        final double BlueGroundOneY = 180.19;
-        final double BlueGroundTwoY = 36.19;
-        final double BlueGroundThreeY = 132.19;
-        final double BlueGroundFourY = 84.19;
-
-        //Red Alliance Values
+        //Red Alliance X Values
         final double RedStartGridX = 578.035;
         final double RedCloseChargeStation = 576.223; // 24 inches from the ChargeStation exact entry
         final double RedFarChargeStation = 419.097; // 24 inches from the ChargeStation exact entry
-
+        final double RedGroundPiecesX = 260.455;
         //TANGENTS:
-        // +x = 0
-        // -x = 180
-        // -y = -90 Towards Charge Station
-        // +y = 90 Towards Grid
-        addPath(
-            pathManager,
-            startTrajectory(BlueStartGridX,  BlueStartNineGridY,  0 * Helpers.DEGREES_TO_RADIANS, 0 * Helpers.DEGREES_TO_RADIANS)
+        // +x = 0 Towards the red alliance
+        // -x = 180 Towards the blue alliance
+        // -y = -90 Towards the Guardrail
+        // +y = 90 Towards Loading Zone
+        addTrajectory(
+            trajectoryManager,
+            startTrajectory(BlueStartGridX,  StartEightGridY,  0 * Helpers.DEGREES_TO_RADIANS, 0 * Helpers.DEGREES_TO_RADIANS)
                 
-                .lineTo(new Vector2d(BlueFarChargeStationX, BlueStartNineGridY)) // Goes forward
-                .splineToConstantHeading(new Vector2d(BlueFarChargeStationX, BlueChargeStationY), 90 * Helpers.DEGREES_TO_RADIANS),
-
+                .lineTo(new Vector2d(BlueFarChargeStationX, StartEightGridY)) // Goes forward
+                .splineToConstantHeading(new Vector2d(BlueFarChargeStationX, ChargeStationY), 90 * Helpers.DEGREES_TO_RADIANS),
                 
                 //Jamie's Charge Station task
             "BlueNineStartToGuardInBetweenToFarChargeStation");
-
     }
 
     private static TrajectoryBuilder startTrajectory()
@@ -169,11 +190,11 @@ public class RoadRunnerTrajectoryGenerator
         return new TrajectoryBuilder(new Pose2d(startXPos, startYPos, startHeading), startTangent, RoadRunnerTrajectoryGenerator.velocityConstraint, RoadRunnerTrajectoryGenerator.accelerationConstraint);
     }
 
-    private static void addPath(TrajectoryManager pathManager, TrajectoryBuilder trajectoryBuilder, String name)
+    private static void addTrajectory(TrajectoryManager trajectoryManager, TrajectoryBuilder trajectoryBuilder, String name)
     {
         try
         {
-            pathManager.addTrajectory(name, trajectoryBuilder);
+            trajectoryManager.addTrajectory(name, trajectoryBuilder);
         }
         catch (Exception ex)
         {

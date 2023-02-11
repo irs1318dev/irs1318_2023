@@ -10,12 +10,11 @@ import frc.robot.common.robotprovider.ITimer;
 import frc.robot.driver.*;
 import frc.robot.mechanisms.*;
 
-public class ChargeStationTaskGyro extends ControlTaskBase
+public class ChargeStationTaskGyro2 extends ControlTaskBase
 {
     private enum State
     {
-        Approaching,
-        Mounting,
+        Starting,
         Climbing,
         Balancing,
         Completed
@@ -27,12 +26,12 @@ public class ChargeStationTaskGyro extends ControlTaskBase
     private ITimer timer;
 
     private double pitch;
-    private double gyro;
-    private double lastBrake;
+    private double pitchRate;
+    private double climbingExceededTransitionTime;
 
     private double reverse = 1.0;
 
-    public ChargeStationTaskGyro(boolean reverse)
+    public ChargeStationTaskGyro2(boolean reverse)
     {
         this.reverse = 1.0;
         if (reverse)
@@ -40,10 +39,10 @@ public class ChargeStationTaskGyro extends ControlTaskBase
             this.reverse = -1.0;
         }
 
-        this.currentState = State.Mounting;
+        this.currentState = State.Starting;
         this.pitch = 0.0;
-        this.gyro = 0.0;
-        this.lastBrake = 0.0;
+        this.pitchRate = 0.0;
+        this.climbingExceededTransitionTime = 0.0;
     }
 
     /**
@@ -52,12 +51,12 @@ public class ChargeStationTaskGyro extends ControlTaskBase
     @Override
     public void begin()
     {
-        this.currentState = State.Approaching;
+        this.currentState = State.Starting;
 
         this.imuManager = this.getInjector().getInstance(PigeonManager.class);
         this.timer = this.getInjector().getInstance(ITimer.class);
         this.pitch = this.imuManager.getPitch();
-        this.gyro = this.imuManager.getPitchRate();
+        this.pitchRate = this.imuManager.getPitchRate();
 
         this.setDigitalOperationState(DigitalOperation.DriveTrainEnableMaintainDirectionMode, true);
         this.setDigitalOperationState(DigitalOperation.DriveTrainPathMode, false);
@@ -75,83 +74,73 @@ public class ChargeStationTaskGyro extends ControlTaskBase
         double currTime = this.timer.get();
 
         this.pitch = this.imuManager.getPitch();
-        this.gyro = this.imuManager.getPitchRate();
+        this.pitchRate = this.imuManager.getPitchRate();
 
-        if (this.currentState == State.Approaching)
+        if (this.currentState == State.Starting)
         {
-            if (this.pitch <= -TuningConstants.CHARGE_STATION_2_MOUNTING_TRANSITION_PITCH)
-            {
-                this.currentState = State.Mounting;
-            }
-        }
-        else if (this.currentState == State.Mounting)
-        {
-            if (this.gyro <= TuningConstants.CHARGE_STATION_2_CLIMBING_TRANSITION_GYRO)
+            // if front wheel is on first part, set switch to climbing
+            if (Math.abs(this.pitch) >= TuningConstants.CHARGE_STATION_2_START_TRANSITION_PITCH)
             {
                 this.currentState = State.Climbing;
             }
         }
         else if (this.currentState == State.Climbing)
         {
-            if (this.gyro >= TuningConstants.CHARGE_STATION_2_BRAKE_GYRO ||
-                this.pitch >= TuningConstants.CHARGE_STATION_ACCEPTABLE_PITCH_DIFF)
+            // if pitch is larger than 15-ish for more than the configured length of time, switch to balancing mode
+            if (this.reverse != -1.0 && this.pitchRate >= TuningConstants.CHARGE_STATION_2_TRANSITION_PITCH_DIFF ||
+                this.reverse == -1.0 && this.pitchRate <= -TuningConstants.CHARGE_STATION_2_TRANSITION_PITCH_DIFF)
             {
                 this.currentState = State.Balancing;
-
-                // initial braking
-                if (this.lastBrake == 0.0)
-                {
-                    this.lastBrake = currTime;
-                }
             }
         }
         else if (this.currentState == State.Balancing)
         {
-            if (Math.abs(this.pitch) <= TuningConstants.CHARGE_STATION_PITCH_VARIATION &&
-                Math.abs(this.gyro) <= TuningConstants.CHARGE_STATION_2_COMPLETED_GYRO)
+            if ((Math.abs(this.pitchRate) <= TuningConstants.CHARGE_STATION_2_ACCEPTABLE_PITCH_DIFF) && 
+                (Math.abs(this.pitch) <= TuningConstants.CHARGE_STATION_2_PITCH_VARIATION))
             {
                 this.currentState = State.Completed;
             }
         }
 
-        System.out.println(this.currentState.toString());
         switch (this.currentState)
         {
             case Balancing:
-                if (this.lastBrake + TuningConstants.CHARGE_STATION_2_MIN_BRAKE_TIME > currTime)
-                {
-                    // brake if withing brake time
-                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0);
-                }
-                else if (this.pitch < -TuningConstants.CHARGE_STATION_PITCH_VARIATION)
+                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_2_BALANCING_SPEED);
+
+                // if the pitch diff over the past 0.5 seconds is greater than the acceptable diff
+                if (Math.abs(this.pitchRate) <= TuningConstants.CHARGE_STATION_2_ACCEPTABLE_PITCH_DIFF)
                 {
                     // if negative pitch, move forward
-                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_2_BALANCING_SPEED);
+                    if (this.pitch < -5.0)
+                    {
+                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_2_FAST_BALANCING_SPEED);
+                    }
+                    else if (this.pitch < -0.5)
+                    {
+                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_2_BALANCING_SPEED);
+                    }
+                    else if (this.pitch > 5.0)
+                    {
+                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, -TuningConstants.CHARGE_STATION_2_FAST_BALANCING_SPEED);
+                    }
+                    else if (this.pitch > 0.5)
+                    {
+                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, -TuningConstants.CHARGE_STATION_2_BALANCING_SPEED);
+                    }
                 }
-                else if (this.pitch > TuningConstants.CHARGE_STATION_PITCH_VARIATION)
+                else // if pitch diff is within acceptable range, then pause.
                 {
-                    // if positive pitch, move backward
-                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, -TuningConstants.CHARGE_STATION_2_BALANCING_SPEED);
-                }
-                else
-                {
-                    // if pitch diff is within acceptable range, then pause.
-                    this.lastBrake = currTime;
                     this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0);
                 }
 
-                break;
-
-            case Approaching:
-                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_2_APPROACH_SPEED * this.reverse);
-                break;
-
-            case Mounting:
-                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_2_MOUNT_SPEED * this.reverse);
                 break;
 
             case Climbing:
                 this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_2_CLIMBING_SPEED * this.reverse);
+                break;
+
+            case Starting:
+                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_2_STARTING_SPEED * this.reverse);
                 break;
 
             default:
