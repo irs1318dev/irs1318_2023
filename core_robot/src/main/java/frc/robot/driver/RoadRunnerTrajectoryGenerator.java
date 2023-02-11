@@ -14,7 +14,7 @@ import frc.robot.TuningConstants;
 import frc.robot.common.*;
 import frc.robot.common.robotprovider.ITrajectory;
 import frc.robot.common.robotprovider.TrajectoryState;
-import frc.robot.driver.common.PathManager;
+import frc.robot.driver.common.TrajectoryManager;
 import frc.robot.driver.common.TrajectoryWrapper;
 
 public class RoadRunnerTrajectoryGenerator
@@ -34,9 +34,9 @@ public class RoadRunnerTrajectoryGenerator
 
     public static void main(String[] args)
     {
-        PathManager pathManager = new PathManager();
-        RoadRunnerTrajectoryGenerator.generateTrajectories(pathManager);
-        // ITrajectory trajectory = pathManager.getTrajectory("w2ba-goToPickUpBall2");
+        TrajectoryManager trajectoryManager = new TrajectoryManager();
+        RoadRunnerTrajectoryGenerator.generateTrajectories(trajectoryManager);
+        // ITrajectory trajectory = trajectoryManager.getTrajectory("w2ba-goToPickUpBall2");
 
         // try (CsvWriter csvWriter = CsvWriter.builder().build(java.nio.file.Path.of("test.csv"), StandardCharsets.UTF_8))
         // {
@@ -62,48 +62,48 @@ public class RoadRunnerTrajectoryGenerator
         // }
     }
 
-    public static void generateTrajectories(PathManager pathManager)
+    public static void generateTrajectories(TrajectoryManager trajectoryManager)
     {
         // ----------------------------------------- Sample paths ----------------------------------------- //
-        addPath(
-            pathManager,
+        addTrajectory(
+            trajectoryManager,
             startTrajectory()
                 .splineTo(new Vector2d(48, 0), 0),
             "goForward4ft");
 
-        addPath(pathManager, 
+        addTrajectory(trajectoryManager, 
             startTrajectory(180.0 * Helpers.DEGREES_TO_RADIANS)
                 .splineTo(new Vector2d(-4.0, 0), 180.0 * Helpers.DEGREES_TO_RADIANS), 
             "goBackwards4inch");
 
-        addPath(
-            pathManager,
+        addTrajectory(
+            trajectoryManager,
             startTrajectory(90.0 * Helpers.DEGREES_TO_RADIANS)
                 .splineTo(new Vector2d(0, 48), 90.0 * Helpers.DEGREES_TO_RADIANS),
             "goLeft4ft");
 
 
 
-        addPath(
-            pathManager,
+        addTrajectory(
+            trajectoryManager,
             startTrajectory()
                 .splineTo(new Vector2d(84, 0), 0),
             "goForward7ft");
 
-        addPath(
-            pathManager,
+        addTrajectory(
+            trajectoryManager,
             startTrajectory()
                 .splineToSplineHeading(new Pose2d(-1, 0, 180.0 * Helpers.DEGREES_TO_RADIANS), 180.0 * Helpers.DEGREES_TO_RADIANS),
             "turn180Path");
 
-        addPath(
-            pathManager,
+        addTrajectory(
+            trajectoryManager,
             startTrajectory(180.0 * Helpers.DEGREES_TO_RADIANS)
                 .splineToSplineHeading(new Pose2d(-84, 0, 180.0 * Helpers.DEGREES_TO_RADIANS), 180.0 * Helpers.DEGREES_TO_RADIANS),
             "goBack7ftRotate");
 
-        addPath(
-            pathManager,
+        addTrajectory(
+            trajectoryManager,
             startTrajectory(180.0 * Helpers.DEGREES_TO_RADIANS)
                 .splineTo(new Vector2d(-72, 0), 180.0 * Helpers.DEGREES_TO_RADIANS),
             "goBack6ft");
@@ -164,8 +164,8 @@ public class RoadRunnerTrajectoryGenerator
         // -x = 180 Towards the blue alliance
         // -y = -90 Towards the Guardrail
         // +y = 90 Towards Loading Zone
-        addPath(
-            pathManager,
+        addTrajectory(
+            trajectoryManager,
             startTrajectory(BlueStartGridX,  StartEightGridY,  0 * Helpers.DEGREES_TO_RADIANS, 0 * Helpers.DEGREES_TO_RADIANS)
                 
                 .lineTo(new Vector2d(BlueFarChargeStationX, StartEightGridY)) // Goes forward
@@ -190,11 +190,11 @@ public class RoadRunnerTrajectoryGenerator
         return new TrajectoryBuilder(new Pose2d(startXPos, startYPos, startHeading), startTangent, RoadRunnerTrajectoryGenerator.velocityConstraint, RoadRunnerTrajectoryGenerator.accelerationConstraint);
     }
 
-    private static void addPath(PathManager pathManager, TrajectoryBuilder trajectoryBuilder, String name)
+    private static void addTrajectory(TrajectoryManager trajectoryManager, TrajectoryBuilder trajectoryBuilder, String name)
     {
         try
         {
-            pathManager.addPath(name, new TrajectoryWrapper(trajectoryBuilder.build()));
+            trajectoryManager.addTrajectory(name, trajectoryBuilder);
         }
         catch (Exception ex)
         {

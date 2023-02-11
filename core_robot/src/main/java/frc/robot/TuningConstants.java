@@ -31,6 +31,10 @@ public class TuningConstants
     public static final long LOG_FILE_REQUIRED_FREE_SPACE = 50 * 1024 * 1024; // require at least 50 MB of space
     public static final int LOG_FLUSH_THRESHOLD = 25;
 
+    //================================================== Autonomous ==============================================================
+
+    public static final boolean TRAJECTORY_FORCE_BUILD = true;
+
     //================================================= Power ======================================================
 
     public static final double POWER_OVERCURRENT_TRACKING_DURATION = 5.0; // duration of time to keep track of the average current
@@ -251,7 +255,7 @@ public class TuningConstants
     public static final double DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY = 0.40 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // in inches per second
     public static final double DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION = 0.75 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // in inches per second per second
 
-    //================================================= ARM ================================================================================
+    //================================================= Arm ================================================================================
 
     public static final boolean ARM_USE_SIMPLE_MODE = true;
     
