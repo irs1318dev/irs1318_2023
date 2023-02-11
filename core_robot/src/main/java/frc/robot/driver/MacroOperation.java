@@ -22,4 +22,12 @@ public enum MacroOperation implements IOperation
     ChargeStationBalanceReverse,
 
     //Arm Movement
+    GroundPickup,
+    GroundPlace,
+    MiddleCone,
+    MiddleCube,
+    HighCone,
+    HighCube,
+    SubstationPickup,
+
 }

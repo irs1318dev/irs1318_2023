@@ -314,6 +314,28 @@ public class TuningConstants
     public static final double ARM_FLIPPER_EXTEND_WAIT_DURATION = 0.5;
     public static final double ARM_FLIPPER_RETRACT_WAIT_DURATION = 0.5;
 
+    //Set Points for Motion Magic
+    // Place Holder VALUES
+    public static final double ARM_LOWER_MM_GROUND_PLACING = 0.0;
+    public static final double ARM_UPPER_MM_GROUND_PLACING = 0.0;
+    public static final double ARM_LOWER_MM_MIDDLE_CONE = 0.0; 
+    public static final double ARM_UPPER_MM_MIDDLE_CONE = 0.0;
+    public static final double ARM_LOWER_MM_MIDDLE_CUBE = 0.0; 
+    public static final double ARM_UPPER_MM_MIDDLE_CUBE = 0.0;
+    public static final double ARM_LOWER_MM_HIGH_CONE = 0.0;
+    public static final double ARM_UPPER_MM_HIGH_CONE = 0.0;
+    public static final double ARM_LOWER_MM_HIGH_CUBE = 0.0;
+    public static final double ARM_UPPER_MM_HIGH_CUBE = 0.0;
+    public static final double ARM_LOWER_MM_GROUND_PICKUP = 0.0;
+    public static final double ARM_UPPER_MM_GROUND_PICKUP = 0.0;
+    public static final double ARM_LOWER_MM_SUB_PICKUP = 0.0;
+    public static final double ARM_UPPER_MM_SUB_PICKUP = 0.0;
+
+    public static final double LOWER_MIN_EXTENTION_THRESHOLD = 0.0;
+    public static final double UPPER_MIN_EXTENTION_THRESHOLD = 0.0;
+
+
+
     //============================================= ChargeStation Macro ==================================================================
 
     // ChargeStationTask constants (owned by Jamie and Calvin)
