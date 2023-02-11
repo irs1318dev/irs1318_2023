@@ -5,7 +5,7 @@ import frc.robot.driver.*;
 import frc.robot.mechanisms.*;
 
 /**
- * Task that resets the robot's pitch to be 0
+ * Task that sets the Arm to the desired position using MM
  * 
  */
 public class ArmMMPositionTask extends UpdateCycleTask
@@ -73,8 +73,8 @@ public class ArmMMPositionTask extends UpdateCycleTask
             return super.hasCompleted();
         }
 
-        if (Math.abs(this.arm.getMMLowerPosition() - this.lowerExtensionLength) < TuningConstants.ARM_LOWER_MIN_EXTENTION_THRESHOLD &&
-            Math.abs(this.arm.getMMUpperPosition() - this.upperExtensionLength) < TuningConstants.ARM_UPPER_MIN_EXTENTION_THRESHOLD)
+        if (Math.abs(this.arm.getMMLowerPosition() - this.lowerExtensionLength) < TuningConstants.ARM_LOWER_MM_GOAL_THRESHOLD &&
+            Math.abs(this.arm.getMMUpperPosition() - this.upperExtensionLength) < TuningConstants.ARM_UPPER_MM_GOAL_THRESHOLD)
         {
             return true;
         }
