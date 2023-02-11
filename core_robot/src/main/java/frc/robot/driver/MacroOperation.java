@@ -23,4 +23,12 @@ public enum MacroOperation implements IOperation
     ChargeStationBalanceGyro,
 
     //Arm Movement
+    GroundPickup,
+    GroundPlace,
+    MiddleCone,
+    MiddleCube,
+    HighCone,
+    HighCube,
+    SubstationPickup,
+
 }

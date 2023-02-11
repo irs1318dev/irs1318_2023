@@ -113,28 +113,26 @@ public class RoadRunnerTrajectoryGenerator
         // 180 heading is towards the grind and 0 is towards the charge station
 
         //Blue Alliance Values
-        double BlueStartGridX = 70.188;
-        double BlueStartOneGridY = -196.595;
-        double BlueStartTwoCubeGridY = 174.19;
-        double BlueStartThreeGridY = 152.375;
-        double BlueStartFourGridY = 130.375;
-        double BlueStartFiveGridY = 108.19;
-        double BlueStartSixGridY = 86.375;
-        double BlueStartSevenGridY = 64.095;
-        double BlueStartEightGridY = 42.19;
-        double BlueStartNineGridY = 20.095;
-        double BlueCloseChargeStationX = 98.5;
-        double BlueFarChargeStationX = 207.001;
-        double BlueChargeStationY = 108.015;
-        double BlueInBetweenPointAfterChargeStationX = 213.5;
-        double BlueGroundPiecesX = 260.455;
-        double BlueGroundOneY = 180.19;
-        double BlueGroundTwoY = 36.19;
-        double BlueGroundThreeY = 132.19;
-        double BlueGroundFourY = 84.19;
-        
+        final double BlueStartGridX = 70.188;
+        final double BlueStartOneGridY = -196.595;
+        final double BlueStartTwoCubeGridY = 174.19;
+        final double BlueStartThreeGridY = 152.375;
+        final double BlueStartFourGridY = 130.375;
+        final double BlueStartFiveGridY = 108.19;
+        final double BlueStartSixGridY = 86.375;
+        final double BlueStartSevenGridY = 64.095;
+        final double BlueStartEightGridY = 42.19;
+        final double BlueStartNineGridY = 20.095;
+        final double BlueCloseChargeStationX = 98.5;
+        final double BlueFarChargeStationX = 207.001;
+        final double BlueChargeStationY = 108.015;
+        final double BlueInBetweenPointAfterChargeStationX = 213.5;
+        final double BlueGroundPiecesX = 260.455;
+        final double BlueGroundOneY = 180.19;
+        final double BlueGroundTwoY = 36.19;
+        final double BlueGroundThreeY = 132.19;
+        final double BlueGroundFourY = 84.19;
 
-        
         //TANGENTS:
         // +x = 0
         // -x = 180

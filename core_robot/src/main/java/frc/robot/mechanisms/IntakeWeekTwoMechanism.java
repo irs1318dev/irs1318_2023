@@ -36,7 +36,7 @@ public class IntakeWeekTwoMechanism implements IMechanism
         
         this.intakeMotor = provider.getTalonSRX(ElectronicsConstants.INTAKE_MOTOR_CAN_ID);
         this.intakeMotor.setControlMode(TalonXControlMode.PercentOutput);
-        this.intakeMotor.setInvertOutput(HardwareConstants.INTAKE_MOTOR_INVERT_OUTPUT);
+        this.intakeMotor.setInvertOutput(TuningConstants.ARM_INTAKE_MOTOR_INVERT_OUTPUT);
         this.intakeMotor.setNeutralMode(MotorNeutralMode.Brake);
 
         this.intakeExtender =
