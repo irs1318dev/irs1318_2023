@@ -186,12 +186,12 @@ public class OffboardVisionManager implements IMechanism
 
     public Double getAprilTagYOffset()
     {
-        return this.atXOffset;
+        return this.atYOffset;
     }
 
     public Double getAprilTagZOffset()
     {
-        return this.atXOffset;
+        return this.atZOffset;
     }
 
     public Double getAprilTagYaw()
