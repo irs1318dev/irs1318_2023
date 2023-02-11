@@ -125,6 +125,29 @@ public class RoadRunnerTrajectoryGenerator
         final double GroundTwoY = 36.19;
         final double GroundThreeY = 132.19;
         final double GroundFourY = 84.19;
+        //X Values
+        final double StartGridX = 253.861;
+        final double CloseChargeStationX = 201.549;
+        final double FarChargeStation = 141.048;
+        final double InBetweenPointAfterChargeStationX = 110.549;
+        final double GroundPiecesX = 63.594;
+
+        //Changed X Values
+        double c_StartGridX;
+        double c_CloseChargeStationX;
+        double c_FarChargeStation;
+        double c_InBetweenPointAfterChargeStationX;
+        double c_GroundPiecesX;
+        boolean isRed = false;
+
+        int TurnaryOperator = (isRed ? 1 : - 1);
+        c_StartGridX = StartGridX * TurnaryOperator;
+        c_CloseChargeStationX = CloseChargeStationX * TurnaryOperator;
+        c_FarChargeStation = FarChargeStation * TurnaryOperator;
+        c_InBetweenPointAfterChargeStationX = InBetweenPointAfterChargeStationX * TurnaryOperator;
+        c_GroundPiecesX = GroundPiecesX * TurnaryOperator;
+
+
         //Blue Alliance X Values
         final double BlueStartGridX = 70.188;
         final double BlueCloseChargeStationX = 122.5; // 24 inches from the ChargeStation exact entry
