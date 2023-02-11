@@ -454,6 +454,52 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.DriveTrainUseRobotOrientation,
                 DigitalOperation.DriveTrainEnableMaintainDirectionMode
             }),
+            new MacroOperationDescription(
+                MacroOperation.ChargeStationBalanceGyro,
+                UserInputDevice.Test1,
+                UserInputDeviceButton.XBONE_START_BUTTON, // Left menu button
+                Shift.Test1Debug,
+                Shift.None,
+                ButtonType.Toggle,
+                () -> SequentialTask.Sequence(
+                    // new PitchResetTask(), //calibration
+                    new ChargeStationTask(false), //false means charge station in front of robot
+                    ConcurrentTask.AllTasks(
+                        new PIDBrakeTask(),
+                        new WaitTask(0.5))),
+                new IOperation[]
+                {
+                    DigitalOperation.PositionResetFieldOrientation,
+                    AnalogOperation.PositionStartingAngle,
+                    AnalogOperation.DriveTrainMoveForward,
+                    AnalogOperation.DriveTrainMoveRight,
+                    AnalogOperation.DriveTrainTurnAngleGoal,
+                    AnalogOperation.DriveTrainTurnSpeed,
+                    AnalogOperation.DriveTrainRotationA,
+                    AnalogOperation.DriveTrainRotationB,
+                    AnalogOperation.DriveTrainPathXGoal,
+                    AnalogOperation.DriveTrainPathYGoal,
+                    AnalogOperation.DriveTrainPathXVelocityGoal,
+                    AnalogOperation.DriveTrainPathYVelocityGoal,
+                    AnalogOperation.DriveTrainPathAngleVelocityGoal,
+                    AnalogOperation.DriveTrainPositionDrive1,
+                    AnalogOperation.DriveTrainPositionDrive2,
+                    AnalogOperation.DriveTrainPositionDrive3,
+                    AnalogOperation.DriveTrainPositionDrive4,
+                    AnalogOperation.DriveTrainPositionSteer1,
+                    AnalogOperation.DriveTrainPositionSteer2,
+                    AnalogOperation.DriveTrainPositionSteer3,
+                    AnalogOperation.DriveTrainPositionSteer4,
+                    DigitalOperation.DriveTrainSteerMode,
+                    DigitalOperation.DriveTrainMaintainPositionMode,
+                    DigitalOperation.DriveTrainPathMode,
+                    DigitalOperation.DriveTrainReset,
+                    DigitalOperation.DriveTrainEnableFieldOrientation,
+                    DigitalOperation.DriveTrainDisableFieldOrientation,
+                    DigitalOperation.DriveTrainUseRobotOrientation,
+                    DigitalOperation.DriveTrainEnableMaintainDirectionMode
+                }),
+    
 
         new MacroOperationDescription(
             MacroOperation.ChargeStationBalanceReverse,

@@ -326,4 +326,14 @@ public class TuningConstants
     public static final double CHARGE_STATION_CLIMBING_TRANSITION_PITCH = 13;
     public static final double CHARGE_STATION_CLIMBING_TRANSITION_ACCEPTABLE_VARIATION = 0.3;
     public static final double CHARGE_STATION_CLIMBING_TRANSITION_WAIT_DURATION = 1.35;
+
+    //ChargeStationTaskGyro (owned by Calvin)
+    public static final double APPROACH_SPEED = 0.5;
+    public static final double MOUNT_SPEED = 0.2;
+    public static final double BALANCING_SPEED = 0.06;
+    public static final double MOUNTING_TRANSITION_GYRO = 15;
+    public static final double CLIMBING_TRANSITION_GYRO = 15;
+    public static final double BRAKE_GYRO = 15;
+    public static final double MIN_BRAKE_TIME = 0.3;
+    public static final double COMPLETED_GYRO = 10;
 }

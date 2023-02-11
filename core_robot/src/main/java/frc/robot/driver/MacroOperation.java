@@ -20,6 +20,7 @@ public enum MacroOperation implements IOperation
     // Charge station
     ChargeStationBalance,
     ChargeStationBalanceReverse,
+    ChargeStationBalanceGyro,
 
     //Arm Movement
 }
