@@ -16,10 +16,6 @@ public class TuningConstants
 
     public static final boolean EXPECT_UNUSED_JOYSTICKS = true;
 
-    //================================================== Autonomous ==============================================================
-
-    public static final boolean TRAJECTORY_FORCE_BUILD = true;
-
     //================================================== Magic Values ==============================================================
 
     public static final double MAGIC_NULL_VALUE = -1318.0;
@@ -255,7 +251,7 @@ public class TuningConstants
     public static final double DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY = 0.40 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // in inches per second
     public static final double DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION = 0.75 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // in inches per second per second
 
-    //================================================= Arm ================================================================================
+    //================================================= ARM ================================================================================
 
     public static final boolean ARM_USE_SIMPLE_MODE = true;
     

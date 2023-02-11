@@ -14,7 +14,7 @@ import frc.robot.TuningConstants;
 import frc.robot.common.*;
 import frc.robot.common.robotprovider.ITrajectory;
 import frc.robot.common.robotprovider.TrajectoryState;
-import frc.robot.driver.common.TrajectoryManager;
+import frc.robot.driver.common.PathManager;
 import frc.robot.driver.common.TrajectoryWrapper;
 
 public class RoadRunnerTrajectoryGenerator
@@ -34,9 +34,9 @@ public class RoadRunnerTrajectoryGenerator
 
     public static void main(String[] args)
     {
-        TrajectoryManager trajectoryManager = new TrajectoryManager();
-        RoadRunnerTrajectoryGenerator.generateTrajectories(trajectoryManager);
-        // ITrajectory trajectory = trajectoryManager.getTrajectory("w2ba-goToPickUpBall2");
+        PathManager pathManager = new PathManager();
+        RoadRunnerTrajectoryGenerator.generateTrajectories(pathManager);
+        // ITrajectory trajectory = pathManager.getTrajectory("w2ba-goToPickUpBall2");
 
         // try (CsvWriter csvWriter = CsvWriter.builder().build(java.nio.file.Path.of("test.csv"), StandardCharsets.UTF_8))
         // {
@@ -62,7 +62,7 @@ public class RoadRunnerTrajectoryGenerator
         // }
     }
 
-    public static void generateTrajectories(TrajectoryManager pathManager)
+    public static void generateTrajectories(PathManager pathManager)
     {
         // ----------------------------------------- Sample paths ----------------------------------------- //
         addPath(
@@ -110,6 +110,7 @@ public class RoadRunnerTrajectoryGenerator
         
         //---------------------------------------------- 2023 Paths ------------------------------------------------------//
 
+        //Y Values
         final double StartOneGridY = 196.595;
         final double StartTwoCubeGridY = 174.19;
         final double StartThreeGridY = 152.375;
@@ -133,9 +134,8 @@ public class RoadRunnerTrajectoryGenerator
         //Red Alliance X Values
         final double RedStartGridX = 578.035;
         final double RedCloseChargeStation = 576.223; // 24 inches from the ChargeStation exact entry
-        final double RedFarChargeStation = 419.097; // 24 inches from the ChargeStation exact entry
+        final double RedFarChargeStation 419.097; // 24 inches from the ChargeStation exact entry
         final double RedGroundPiecesX = 260.455;
-
         //TANGENTS:
         // +x = 0 Towards the red alliance
         // -x = 180 Towards the blue alliance
@@ -144,8 +144,11 @@ public class RoadRunnerTrajectoryGenerator
         addPath(
             pathManager,
             startTrajectory(BlueStartGridX,  StartEightGridY,  0 * Helpers.DEGREES_TO_RADIANS, 0 * Helpers.DEGREES_TO_RADIANS)
+                
                 .lineTo(new Vector2d(BlueFarChargeStationX, StartEightGridY)) // Goes forward
                 .splineToConstantHeading(new Vector2d(BlueFarChargeStationX, ChargeStationY), 90 * Helpers.DEGREES_TO_RADIANS),
+                
+                //Jamie's Charge Station task
             "BlueNineStartToGuardInBetweenToFarChargeStation");
     }
 
@@ -164,11 +167,11 @@ public class RoadRunnerTrajectoryGenerator
         return new TrajectoryBuilder(new Pose2d(startXPos, startYPos, startHeading), startTangent, RoadRunnerTrajectoryGenerator.velocityConstraint, RoadRunnerTrajectoryGenerator.accelerationConstraint);
     }
 
-    private static void addPath(TrajectoryManager pathManager, TrajectoryBuilder trajectoryBuilder, String name)
+    private static void addPath(PathManager pathManager, TrajectoryBuilder trajectoryBuilder, String name)
     {
         try
         {
-            pathManager.addTrajectory(name, trajectoryBuilder);
+            pathManager.addPath(name, new TrajectoryWrapper(trajectoryBuilder.build()));
         }
         catch (Exception ex)
         {
