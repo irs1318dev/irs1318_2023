@@ -483,9 +483,11 @@ public class ArmMechanism implements IMechanism
             {
                 // controlled by joysticks
                 double lowerArmPower = this.driver.getAnalog(AnalogOperation.ArmSimpleForceLower);
+                double upperArmPower = this.driver.getAnalog(AnalogOperation.ArmSimpleForceUpper);
                 this.lowerLeftArm.set(lowerArmPower);
                 this.lowerRightArm.set(lowerArmPower);
-                this.upperArm.set(this.driver.getAnalog(AnalogOperation.ArmSimpleForceUpper));
+                this.upperArm.set(upperArmPower);
+                System.out.println("Power: " + lowerArmPower + ", " + upperArmPower);
             }
             else
             {

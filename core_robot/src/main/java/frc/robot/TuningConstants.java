@@ -280,8 +280,8 @@ public class TuningConstants
     public static final double ARM_UPPER_POSITION_MM_CRUISE_VELOCITY = 0.0;
     public static final double ARM_UPPER_POSITION_MM_ACCELERATION = 0.0;
 
-    public static final boolean ARM_LOWER_LEFT_INVERT_OUTPUT = false;
-    public static final boolean ARM_LOWER_RIGHT_INVERT_OUTPUT = false;
+    public static final boolean ARM_LOWER_LEFT_INVERT_OUTPUT = true;
+    public static final boolean ARM_LOWER_RIGHT_INVERT_OUTPUT = true;
     public static final boolean ARM_UPPER_INVERT_OUTPUT = true;
 
     public static final boolean ARM_LOWER_LEFT_INVERT_SENSOR = false;
@@ -307,8 +307,8 @@ public class TuningConstants
     public static final double ARM_MAX_IKZ_EXTENSION_HEIGHT = HardwareConstants.MAX_ROBOT_HEIGHT - HardwareConstants.ARM_ORIGIN_Z_OFFSET - HardwareConstants.ARM_MAX_END_EFFECTOR_HEIGHT;
     public static final double ARM_MAX_IKX_EXTENSION_LENGTH = HardwareConstants.MAX_ROBOT_EXTENSION + HardwareConstants.ARM_ORIGIN_X_OFFSET - HardwareConstants.ARM_MAX_END_EFFECTOR_EXTENSION;
 
-    public static final double ARM_LOWER_VELOCITY_DEAZONE = 0.1;
-    public static final double ARM_UPPER_VELOCITY_DEAZONE = 0.1;
+    public static final double ARM_LOWER_VELOCITY_DEAZONE = 0.15;
+    public static final double ARM_UPPER_VELOCITY_DEAZONE = 0.15;
 
     public static final double ARM_FLIPPER_EXTEND_WAIT_DURATION = 0.5;
     public static final double ARM_FLIPPER_RETRACT_WAIT_DURATION = 0.5;
