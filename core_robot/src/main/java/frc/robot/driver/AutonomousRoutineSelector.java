@@ -16,7 +16,7 @@ public class AutonomousRoutineSelector
 {
     private final ILogger logger;
 
-    private final TrajectoryManager trajectoryManager;
+    private final PathManager pathManager;
     private final SmartDashboardSelectionManager selectionManager;
     private final IDriverStation driverStation;
 
@@ -26,17 +26,17 @@ public class AutonomousRoutineSelector
     @Inject
     public AutonomousRoutineSelector(
         LoggingManager logger,
-        TrajectoryManager trajectoryManager,
+        PathManager pathManager,
         SmartDashboardSelectionManager selectionManager,
         IRobotProvider provider)
     {
         this.logger = logger;
-        this.trajectoryManager = trajectoryManager;
+        this.pathManager = pathManager;
         this.selectionManager = selectionManager;
 
         this.driverStation = provider.getDriverStation();
 
-        RoadRunnerTrajectoryGenerator.generateTrajectories(this.trajectoryManager);
+        RoadRunnerTrajectoryGenerator.generateTrajectories(this.pathManager);
     }
 
     /**

@@ -136,7 +136,7 @@ public class Driver implements IDriver
         this.currentMode = RobotMode.Disabled;
 
         // initialize the path manager and load all of the paths
-        injector.getInstance(TrajectoryManager.class);
+        injector.getInstance(PathManager.class);
     }
 
     /**

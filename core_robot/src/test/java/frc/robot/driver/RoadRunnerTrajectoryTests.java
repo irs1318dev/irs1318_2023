@@ -2,15 +2,14 @@ package frc.robot.driver;
 
 import org.junit.jupiter.api.Test;
 
-import frc.robot.driver.common.TrajectoryManager;
+import frc.robot.driver.common.PathManager;
 
 public class RoadRunnerTrajectoryTests
 {
     @Test
     public void verifyTrajectoryGeneration()
     {
-        TrajectoryManager trajectoryManager = new TrajectoryManager();
-        RoadRunnerTrajectoryGenerator.generateTrajectories(trajectoryManager);
-        trajectoryManager.buildAll();
+        PathManager pathManager = new PathManager();
+        RoadRunnerTrajectoryGenerator.generateTrajectories(pathManager);
     }
 }
