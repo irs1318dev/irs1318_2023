@@ -16,7 +16,7 @@ public class AutonomousRoutineSelector
 {
     private final ILogger logger;
 
-    private final PathManager pathManager;
+    private final TrajectoryManager pathManager;
     private final SmartDashboardSelectionManager selectionManager;
     private final IDriverStation driverStation;
 
@@ -26,7 +26,7 @@ public class AutonomousRoutineSelector
     @Inject
     public AutonomousRoutineSelector(
         LoggingManager logger,
-        PathManager pathManager,
+        TrajectoryManager pathManager,
         SmartDashboardSelectionManager selectionManager,
         IRobotProvider provider)
     {
