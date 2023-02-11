@@ -7,7 +7,7 @@ import frc.robot.common.robotprovider.Pose2d;
 import frc.robot.common.robotprovider.TrajectoryState;
 import frc.robot.driver.AnalogOperation;
 import frc.robot.driver.DigitalOperation;
-import frc.robot.driver.common.PathManager;
+import frc.robot.driver.common.TrajectoryManager;
 import frc.robot.mechanisms.DriveTrainMechanism;
 
 /**
@@ -51,7 +51,7 @@ public class FollowPathTask extends ControlTaskBase
     @Override
     public void begin()
     {
-        PathManager pathManager = this.getInjector().getInstance(PathManager.class);
+        TrajectoryManager pathManager = this.getInjector().getInstance(TrajectoryManager.class);
         this.trajectory = pathManager.getTrajectory(this.pathName);
 
         this.timer = this.getInjector().getInstance(ITimer.class);

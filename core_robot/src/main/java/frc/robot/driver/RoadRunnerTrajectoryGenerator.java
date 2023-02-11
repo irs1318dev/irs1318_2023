@@ -14,7 +14,7 @@ import frc.robot.TuningConstants;
 import frc.robot.common.*;
 import frc.robot.common.robotprovider.ITrajectory;
 import frc.robot.common.robotprovider.TrajectoryState;
-import frc.robot.driver.common.PathManager;
+import frc.robot.driver.common.TrajectoryManager;
 import frc.robot.driver.common.TrajectoryWrapper;
 
 public class RoadRunnerTrajectoryGenerator
@@ -34,7 +34,7 @@ public class RoadRunnerTrajectoryGenerator
 
     public static void main(String[] args)
     {
-        PathManager pathManager = new PathManager();
+        TrajectoryManager pathManager = new TrajectoryManager();
         RoadRunnerTrajectoryGenerator.generateTrajectories(pathManager);
         // ITrajectory trajectory = pathManager.getTrajectory("w2ba-goToPickUpBall2");
 
@@ -62,7 +62,7 @@ public class RoadRunnerTrajectoryGenerator
         // }
     }
 
-    public static void generateTrajectories(PathManager pathManager)
+    public static void generateTrajectories(TrajectoryManager pathManager)
     {
         // ----------------------------------------- Sample paths ----------------------------------------- //
         addPath(
@@ -166,11 +166,11 @@ public class RoadRunnerTrajectoryGenerator
         return new TrajectoryBuilder(new Pose2d(startXPos, startYPos, startHeading), startTangent, RoadRunnerTrajectoryGenerator.velocityConstraint, RoadRunnerTrajectoryGenerator.accelerationConstraint);
     }
 
-    private static void addPath(PathManager pathManager, TrajectoryBuilder trajectoryBuilder, String name)
+    private static void addPath(TrajectoryManager pathManager, TrajectoryBuilder trajectoryBuilder, String name)
     {
         try
         {
-            pathManager.addPath(name, new TrajectoryWrapper(trajectoryBuilder.build()));
+            pathManager.addTrajectory(name, trajectoryBuilder);
         }
         catch (Exception ex)
         {
