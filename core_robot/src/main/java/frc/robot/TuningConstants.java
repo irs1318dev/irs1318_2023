@@ -347,7 +347,7 @@ public class TuningConstants
 
     // ChargeStationTask constants (owned by Jamie and Calvin)
     public static final double CHARGE_STATION_PITCH_VARIATION = 0.3;
-    public static final double CHARGE_STATION_ACCEPTABLE_PITCH_DIFF = 2.0;
+    public static final double CHARGE_STATION_ACCEPTABLE_PITCH_DIFF = -2.0;
     public static final double CHARGE_STATION_STARTING_SPEED = 0.5;
     public static final double CHARGE_STATION_CLIMBING_SPEED = 0.2;
     public static final double CHARGE_STATION_BALANCING_SPEED = 0.06;
@@ -357,12 +357,23 @@ public class TuningConstants
     public static final double CHARGE_STATION_CLIMBING_TRANSITION_WAIT_DURATION = 1.35;
 
     //ChargeStationTaskGyro (owned by Calvin)
-    public static final double APPROACH_SPEED = 0.5;
-    public static final double MOUNT_SPEED = 0.2;
-    public static final double BALANCING_SPEED = 0.06;
-    public static final double MOUNTING_TRANSITION_GYRO = 15;
-    public static final double CLIMBING_TRANSITION_GYRO = 15;
-    public static final double BRAKE_GYRO = 15;
-    public static final double MIN_BRAKE_TIME = 0.3;
-    public static final double COMPLETED_GYRO = 10;
+    public static final double CHARGE_STATION_2_PITCH_VARIATION = 0.3;
+    public static final double CHARGE_STATION_2_STARTING_SPEED = 0.5;
+    public static final double CHARGE_STATION_2_START_TRANSITION_PITCH = 5.0;
+    public static final double CHARGE_STATION_2_CLIMBING_TRANSITION_PITCH = 13;
+    public static final double CHARGE_STATION_2_CLIMBING_TRANSITION_ACCEPTABLE_VARIATION = 0.3;
+    public static final double CHARGE_STATION_2_CLIMBING_TRANSITION_WAIT_DURATION = 1.35;
+
+    public static final double CHARGE_STATION_2_ACCEPTABLE_PITCH_DIFF = 8.0;
+    public static final double CHARGE_STATION_2_TRANSITION_PITCH_DIFF = 40.0;
+    public static final double CHARGE_STATION_2_APPROACH_SPEED = 0.5;
+    public static final double CHARGE_STATION_2_MOUNT_SPEED = 0.25;
+    public static final double CHARGE_STATION_2_CLIMBING_SPEED = 0.2;
+    public static final double CHARGE_STATION_2_BALANCING_SPEED = 0.06;
+    public static final double CHARGE_STATION_2_FAST_BALANCING_SPEED = 0.12;
+    public static final double CHARGE_STATION_2_MOUNTING_TRANSITION_PITCH = 5.0;
+    public static final double CHARGE_STATION_2_CLIMBING_TRANSITION_GYRO = 15;
+    public static final double CHARGE_STATION_2_BRAKE_GYRO = 50.0;
+    public static final double CHARGE_STATION_2_MIN_BRAKE_TIME = 0.5;
+    public static final double CHARGE_STATION_2_COMPLETED_GYRO = 1.0;
 }
