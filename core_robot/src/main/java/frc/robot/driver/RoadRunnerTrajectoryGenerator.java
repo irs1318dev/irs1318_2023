@@ -112,13 +112,13 @@ public class RoadRunnerTrajectoryGenerator
 
         //Y Values
         final double StartOneGridY = 196.595;
-        final double StartTwoCubeGridY = 174.19;
+        final double StartTwoCubeGridY = 174.19; // April Tag ID's 6 and 3
         final double StartThreeGridY = 152.375;
         final double StartFourGridY = 130.375;
-        final double StartFiveGridY = 108.19;
+        final double StartFiveGridY = 108.19; // April Tag ID's 7 and 2
         final double StartSixGridY = 86.375;
         final double StartSevenGridY = 64.095;
-        final double StartEightGridY = 42.19;
+        final double StartEightGridY = 42.19; // April Tag ID's 8 and 1
         final double StartNineGridY = 20.095;
         final double ChargeStationY = 108.015;
         final double GroundOneY = 180.19;
@@ -140,7 +140,7 @@ public class RoadRunnerTrajectoryGenerator
         double c_GroundPiecesX;
         boolean isRed = false;
 
-        int TurnaryOperator = (isRed ? 1 : - 1);
+        double TurnaryOperator = (isRed ? 1 : - 1);
         c_StartGridX = StartGridX * TurnaryOperator;
         c_CloseChargeStationX = CloseChargeStationX * TurnaryOperator;
         c_FarChargeStation = FarChargeStation * TurnaryOperator;
