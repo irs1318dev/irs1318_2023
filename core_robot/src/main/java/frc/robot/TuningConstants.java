@@ -292,10 +292,8 @@ public class TuningConstants
     public static final boolean ARM_LOWER_RIGHT_INVERT_SENSOR = false;
     public static final boolean ARM_UPPER_INVERT_SENSOR = false;
 
-    public static final double ARM_LOWER_FULL_EXTENTION_LENGTH = 8.0; // in inches
-    public static final double ARM_UPPER_FULL_RETRACTED_LENGTH = 0.0; // in inches
-    public static final double ARM_LOWER_NEAR_FULL_EXTENSION_LENGTH = ARM_LOWER_FULL_EXTENTION_LENGTH * 0.9; // in inches
-    public static final double ARM_UPPER_NEAR_FULL_RETRACTED_LENGTH = ARM_UPPER_FULL_RETRACTED_LENGTH * 0.1; // in inches
+    public static final double ARM_NEAR_FULL_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.9; // in inches
+    public static final double ARM_NEAR_FULL_RETRACTED_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.1; // in inches
 
     public static final double ARM_RETRACTION_MAX_TIME = 0.7;
 
@@ -305,9 +303,6 @@ public class TuningConstants
     public static final double ARM_MAX_REVERSE_SIMPLE_VELOCITY = -0.8; // percentage output
     public static final double ARM_MAX_FORWARD_SIMPLE_VELOCITY = 0.8; // percentage output
  
-    public static final double ARM_STRING_ENCODER_TICKS_PER_INCH = (4096.0 / 100.0) * 25.4;
-    public static final double ARM_STRING_ENCODER_INCHES_PER_TICK = (100.0 / 4096.0) / 25.4;
-
     public static final double ARM_MAX_IKZ_EXTENSION_HEIGHT = HardwareConstants.MAX_ROBOT_HEIGHT - HardwareConstants.ARM_ORIGIN_Z_OFFSET - HardwareConstants.ARM_MAX_END_EFFECTOR_HEIGHT;
     public static final double ARM_MAX_IKX_EXTENSION_LENGTH = HardwareConstants.MAX_ROBOT_EXTENSION + HardwareConstants.ARM_ORIGIN_X_OFFSET - HardwareConstants.ARM_MAX_END_EFFECTOR_EXTENSION;
 
@@ -321,8 +316,8 @@ public class TuningConstants
     public static final double ARM_FULLY_RETRACTED_Z_POSITION = 0.0; // in inches
 
     // thresholds for auto/macro tasks for whether it has reached the desired position:
-    public static final double ARM_LOWER_MM_GOAL_THRESHOLD = 0.25 * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // in ticks
-    public static final double ARM_UPPER_MM_GOAL_THRESHOLD = 0.25 * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // in ticks
+    public static final double ARM_LOWER_MM_GOAL_THRESHOLD = 0.25 * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // in ticks
+    public static final double ARM_UPPER_MM_GOAL_THRESHOLD = 0.25 * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // in ticks
     public static final double ARM_X_IK_GOAL_THRESHOLD = 0.5; // in inches
     public static final double ARM_Z_IK_GOAL_THRESHOLD = 0.5; // in inches
 

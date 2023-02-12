@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import frc.robot.HardwareConstants;
+import frc.robot.TuningConstants;
 import frc.robot.common.Helpers;
 
 public class ArmMechanismTests
@@ -91,11 +92,10 @@ public class ArmMechanismTests
     }
 
     @Test
-    public void verifyLinearActuatorLengthsStraightUp() // Full Extention
+    public void verifyLinearActuatorLengthsStraightUp()
     {
-        DoubleTuple setpoint = ArmMechanism.calculateIKLinearActuatorDistance(0, HardwareConstants.ARM_UPPER_ARM_LENGTH + HardwareConstants.ARM_LOWER_ARM_LENGTH);
-        //assertEquals(8, setpoint.first, "Lower LA Length");
-        //assertEquals(8, setpoint.second, "Upper LA Length");
-
+        DoubleTuple setpoint = ArmMechanism.calculateIKLinearActuatorDistance(90.0, 135.0);
+        // assertEquals(8.0 * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH, setpoint.second, "Upper LA Length");
+        // assertEquals(8.0 * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH, setpoint.first, "Lower LA Length");
     }
 }

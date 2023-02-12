@@ -48,6 +48,11 @@ public class HardwareConstants
 
     //================================================= Arm =================================================================================================================
 
+    public static final double ARM_EXTENTION_LENGTH = 8.0; // in inches
+
+    public static final double ARM_LINEAR_ACTUATOR_RETRACTED_LENGTH = 17.63; // in inches
+    public static final double ARM_LINEAR_ACTUATOR_EXTENDED_LENGTH = HardwareConstants.ARM_LINEAR_ACTUATOR_RETRACTED_LENGTH + HardwareConstants.ARM_EXTENTION_LENGTH; // in inches
+
     // values may change:
     public static final double ARM_LOWER_ARM_LENGTH = 46.0; // in inches
     public static final double ARM_UPPER_ARM_LENGTH = 37.0; // in inches
@@ -58,27 +63,28 @@ public class HardwareConstants
     public static final double ARM_ORIGIN_X_OFFSET = 8.0; // inches, distance from the front of the robot to the origin for the arm
     public static final double ARM_ORIGIN_Z_OFFSET = 8.0; // inches, distance from the floor to the origin for the arm
 
-    //======Lower Arm Linear Actuator================
-   
-    public static final double LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM = 18.347; // There has to be a better name for this
-    public static final double LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM = 12.876;
-    public static final double LOWER_ARM_LINEAR_ACTUATOR_RIGHT_ANGLE_OFFSET = 15; // Place holder until verified from CAD
-    public static final double LOWER_ARM_LINEAR_ACTUATOR_LEFT_ANGLE_OFFSET = 10; // Place holder
-    
-    //======Upper Arm Linear Actuator================
-    public static final double LENGTH_ONE = 8.963; // All Place holders
-    public static final double LENGTH_TWO = 13.073;
-    public static final double LENGTH_THREE = 12.515;
-    public static final double LENGTH_FOUR = 10.308;
-    public static final double DISTANCE_ONE = 3.885;
-    public static final double DISTANCE_TWO = 0.087;
-    public static final double DISTANCE_THREE = 21.049;
-    public static final double DISTANCE_FOUR = 15.075;
-    public static final double DISTANCE_FIVE = 4;
-    public static final double DISTANCE_SIX = 2;
-    public static final double SIGMA_ANGLE = Helpers.atan2d(HardwareConstants.DISTANCE_SIX, HardwareConstants.DISTANCE_FIVE); // Can calculate and hard code after we get measurements
-    public static final double PSI_ANGLE = Helpers.atan2d(HardwareConstants.DISTANCE_TWO, HardwareConstants.DISTANCE_THREE); // Hard code later
-    public static final double phiAngle = Helpers.atan2d(HardwareConstants.DISTANCE_ONE + HardwareConstants.DISTANCE_TWO, HardwareConstants.DISTANCE_FOUR);
+    public static final double ARM_STRING_ENCODER_TICKS_PER_INCH = (4096.0 / 100.0) * 25.4;
+    public static final double ARM_STRING_ENCODER_INCHES_PER_TICK = (100.0 / 4096.0) / 25.4;
 
-    public static final double LINEAR_ACTUATOR_LENGTH = 17.63;
+    // ======Lower Arm Linear Actuator================
+    public static final double ARM_LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM = 18.347; // Diagram L10
+    public static final double ARM_LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM = 12.876; // Diagram L11
+    public static final double ARM_LOWER_ARM_LINEAR_ACTUATOR_RIGHT_ANGLE_OFFSET = 15; // Diagram rho, Place holder until verified from CAD
+    public static final double ARM_LOWER_ARM_LINEAR_ACTUATOR_LEFT_ANGLE_OFFSET = 10; // Diagram lambda, Place holder
+    //======Upper Arm Linear Actuator================
+    public static final double ARM_UPPER_ARM_FOUR_BAR_FOLLOWER_PIN_DISTANCE = 8.963; // Diagram L1, All Place holders
+    public static final double ARM_UPPER_ARM_FOUR_BAR_COUPLER_PIN_DISTANCE = 13.073; // Diagram L2
+    public static final double ARM_UPPER_ARM_FOUR_BAR_DRIVER_PIN_DISTANCE = 12.515; // Diagram L3
+    public static final double ARM_UPPER_ARM_FOUR_BAR_GROUND_PIN_DISTANCE = 10.308; // Diagram L4
+    public static final double ARM_UPPER_ARM_D1 = 3.885; // Diagram D1
+    public static final double ARM_UPPER_ARM_D2 = 0.087; // Diagram D2
+    public static final double ARM_UPPER_ARM_D3 = 21.049; // Diagram D3
+    public static final double ARM_UPPER_ARM_D4 = 15.075; // Diagram D4
+    public static final double ARM_UPPER_ARM_D5 = 4; // Diagram D5
+    public static final double ARM_UPPER_ARM_D6 = 2; // Diagram D6
+    public static final double ARM_UPPER_ARM_L7 = 5.916; // Diagram L7
+    public static final double ARM_UPPER_ARM_L8 = 21.857; // Diagram L8
+    public static final double ARM_UPPER_ARM_SIGMA_ANGLE = Helpers.atan2d(HardwareConstants.ARM_UPPER_ARM_D6, HardwareConstants.ARM_UPPER_ARM_D5); // Diagram sigma
+    public static final double ARM_UPPER_ARM_PSI_ANGLE = Helpers.atan2d(HardwareConstants.ARM_UPPER_ARM_D2, HardwareConstants.ARM_UPPER_ARM_D3); // Diagram psi
+    public static final double ARM_UPPER_ARM_PHI_ANGLE = Helpers.atan2d(HardwareConstants.ARM_UPPER_ARM_D1 + HardwareConstants.ARM_UPPER_ARM_D2, HardwareConstants.ARM_UPPER_ARM_D4); // Diagram phi
 }

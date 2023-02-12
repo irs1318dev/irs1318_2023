@@ -131,9 +131,9 @@ public class ArmMechanism implements IMechanism
         this.lowerLeftArmVelocity = 0.0;
         this.lowerRightArmVelocity = 0.0;
         this.upperArmVelocity = 0.0;
-        this.lowerLeftArmPosition = TuningConstants.ARM_LOWER_FULL_EXTENTION_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // Fully Extended
-        this.lowerRightArmPosition = TuningConstants.ARM_LOWER_FULL_EXTENTION_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // Fully Extended
-        this.upperArmPosition = TuningConstants.ARM_UPPER_FULL_RETRACTED_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // Fully Retracted
+        this.lowerLeftArmPosition = HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // Fully Extended
+        this.lowerRightArmPosition = HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // Fully Extended
+        this.upperArmPosition = 0.0; // Fully Retracted
         this.xPosition = TuningConstants.ARM_FULLY_RETRACTED_X_POSITION;
         this.zPosition = TuningConstants.ARM_FULLY_RETRACTED_Z_POSITION;
 
@@ -277,8 +277,8 @@ public class ArmMechanism implements IMechanism
         //         }
         //         else if (this.curLeftFlipperState == ConeFlipperState.Retracted &&
         //             ((!this.inSimpleMode &&
-        //                 this.upperArmPosition <= TuningConstants.ARM_UPPER_NEAR_FULL_RETRACTED_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH &&  // some value slightly larger than 0.0 inches
-        //                 this.lowerLeftArmPosition >= TuningConstants.ARM_LOWER_NEAR_FULL_EXTENSION_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH) ||  // some value slightly smaller than fully extended
+        //                 this.upperArmPosition <= TuningConstants.ARM_UPPER_NEAR_FULL_RETRACTED_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH &&  // some value slightly larger than 0.0 inches
+        //                 this.lowerLeftArmPosition >= TuningConstants.ARM_LOWER_NEAR_FULL_EXTENSION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH) ||  // some value slightly smaller than fully extended
         //             (this.inSimpleMode && currTime - this.armRetractionStartTime > TuningConstants.ARM_RETRACTION_MAX_TIME)))
         //         {
         //             this.curRightFlipperState = ConeFlipperState.Extending;
@@ -341,8 +341,8 @@ public class ArmMechanism implements IMechanism
         //         }
         //         else if (this.curLeftFlipperState == ConeFlipperState.Retracted &&
         //             ((!this.inSimpleMode &&
-        //                 this.upperArmPosition <= TuningConstants.ARM_UPPER_NEAR_FULL_RETRACTED_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH &&  // some value slightly larger than 0.0 inches
-        //                 this.lowerLeftArmPosition >= TuningConstants.ARM_LOWER_NEAR_FULL_EXTENSION_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH) ||  // some value slightly smaller than fully extended
+        //                 this.upperArmPosition <= TuningConstants.ARM_UPPER_NEAR_FULL_RETRACTED_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH &&  // some value slightly larger than 0.0 inches
+        //                 this.lowerLeftArmPosition >= TuningConstants.ARM_LOWER_NEAR_FULL_EXTENSION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH) ||  // some value slightly smaller than fully extended
         //             (this.inSimpleMode && currTime - this.armRetractionStartTime > TuningConstants.ARM_RETRACTION_MAX_TIME)))
         //         {
         //             this.curLeftFlipperState = ConeFlipperState.Extending;
@@ -468,9 +468,9 @@ public class ArmMechanism implements IMechanism
         //     }
         //     else
         //     {
-        //         this.desiredLowerLeftArmPosition = TuningConstants.ARM_LOWER_FULL_EXTENTION_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
-        //         this.desiredLowerRightArmPosition = TuningConstants.ARM_LOWER_FULL_EXTENTION_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
-        //         this.desiredUpperArmPosition = TuningConstants.ARM_UPPER_FULL_RETRACTED_LENGTH * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
+        //         this.desiredLowerLeftArmPosition = TuningConstants.ARM_LOWER_FULL_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
+        //         this.desiredLowerRightArmPosition = TuningConstants.ARM_LOWER_FULL_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
+        //         this.desiredUpperArmPosition = HardwareConstants.ARM_UPPER_FULL_RETRACTED_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
 
         //         this.lowerLeftArm.set(this.desiredLowerLeftArmPosition);
         //         this.lowerRightArm.set(this.desiredLowerRightArmPosition);
@@ -511,9 +511,9 @@ public class ArmMechanism implements IMechanism
                 {
                     // controlled by joysticks
                     double elapsedTime = currTime - this.prevTime;
-                    this.desiredLowerLeftArmPosition += this.driver.getAnalog(AnalogOperation.ArmLowerPositionAdjustment) * TuningConstants.ARM_LOWER_EXTENSION_ADJUSTMENT_VELOCITY * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * elapsedTime;
-                    this.desiredLowerRightArmPosition += this.driver.getAnalog(AnalogOperation.ArmLowerPositionAdjustment) * TuningConstants.ARM_LOWER_EXTENSION_ADJUSTMENT_VELOCITY * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * elapsedTime;
-                    this.desiredUpperArmPosition += this.driver.getAnalog(AnalogOperation.ArmUpperPositionAdjustment) * TuningConstants.ARM_UPPER_EXTENSION_ADJUSTMENT_VELOCITY * TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * elapsedTime;
+                    this.desiredLowerLeftArmPosition += this.driver.getAnalog(AnalogOperation.ArmLowerPositionAdjustment) * TuningConstants.ARM_LOWER_EXTENSION_ADJUSTMENT_VELOCITY * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * elapsedTime;
+                    this.desiredLowerRightArmPosition += this.driver.getAnalog(AnalogOperation.ArmLowerPositionAdjustment) * TuningConstants.ARM_LOWER_EXTENSION_ADJUSTMENT_VELOCITY * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * elapsedTime;
+                    this.desiredUpperArmPosition += this.driver.getAnalog(AnalogOperation.ArmUpperPositionAdjustment) * TuningConstants.ARM_UPPER_EXTENSION_ADJUSTMENT_VELOCITY * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * elapsedTime;
                 }
 
                 this.lowerLeftArm.set(this.desiredLowerLeftArmPosition);
@@ -559,6 +559,73 @@ public class ArmMechanism implements IMechanism
         return this.zPosition;
     }
 
+    /**
+     * Calculate the desired actuator values based on a desired position for the end-effector,
+     * using Inverse Kinematics
+     * @param x offset (in inches)
+     * @param z offset (in inches)
+     * @return pair of lower, upper linear actuator extensions (in ticks)
+     */
+    static DoubleTuple calculateIK(double x, double z)
+    {
+        if (x > TuningConstants.ARM_MAX_IKX_EXTENSION_LENGTH ||
+            z > TuningConstants.ARM_MAX_IKZ_EXTENSION_HEIGHT)
+        {
+            return null;
+        }
+
+        // special-case fully-retracted zone to the fully retracted position
+        if (x <= TuningConstants.ARM_FULLY_RETRACTED_X_POSITION &&
+            z <= TuningConstants.ARM_FULLY_RETRACTED_Z_POSITION)
+        {
+            return new DoubleTuple(
+                HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH,
+                TuningConstants.ZERO);
+        }
+
+        DoubleTuple ikAngles = ArmMechanism.calculateIKAngles(x, z);
+        if (ikAngles == null)
+        {
+            return null;
+        }
+
+        return ArmMechanism.calculateIKLinearActuatorDistance(ikAngles.first, ikAngles.second);
+    }
+
+    /**
+     * Calculate the current end-effector position (x, z offsets) given the current linear actuator extensions,
+     * using Forward Kinematics
+     * @param lowerLAExtension lower linear actuator extension (in ticks)
+     * @param upperLAExtension upper linear actuator extension (in ticks)
+     * @return x, z offsets where the end-effector is located (in inches)
+     */
+    static DoubleTuple calculateFK(double lowerLAExtension, double upperLAExtension)
+    {
+        // Outside the valid lengths, we don't really know - special case these!
+        if (lowerLAExtension > HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH ||
+            upperLAExtension > HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH ||
+            lowerLAExtension < 0.0 ||
+            upperLAExtension < 0.0)
+        {
+            return null;
+        }
+
+        DoubleTuple fkAngles = ArmMechanism.calculateFKAnglesFromLinearActuatorDistance(lowerLAExtension, upperLAExtension);
+        if (fkAngles == null)
+        {
+            return null;
+        }
+
+        return ArmMechanism.calculateFKPositions(fkAngles.first, fkAngles.second);
+    }
+
+    /**
+     * Calculate the angles for the lower and upper arms based on goal offsets for the end effector
+     * using inverse kinematics 
+     * @param x goal offset (in inches)
+     * @param z goal offset (in inches)
+     * @return pair of lower, upper angles (theta1, theta2) (in degrees)
+     */
     static DoubleTuple calculateIKAngles(double x, double z)
     {
         final double L1 = HardwareConstants.ARM_LOWER_ARM_LENGTH;
@@ -581,6 +648,13 @@ public class ArmMechanism implements IMechanism
         return new DoubleTuple(theta1, theta2);
     }
 
+    /**
+     * Calculate the offsets of the end effector based on the angles for the lower and upper arms
+     * using forward kinematics
+     * @param lowerAngle theta1 (in degrees)
+     * @param upperAngle theta2 (in degrees)
+     * @return pair of horizontal, vertical offsets (x, z) (in inches)
+     */
     static DoubleTuple calculateFKPositions(double lowerAngle, double upperAngle)
     {
         final double L1 = HardwareConstants.ARM_LOWER_ARM_LENGTH;
@@ -591,142 +665,60 @@ public class ArmMechanism implements IMechanism
         return new DoubleTuple(xPosition, zPosition);
     }
 
-    static DoubleTuple calculateIK(double x, double z)
+    /**
+     * Calculate desired extension of the linear actuator based on the angles of the arms
+     * @param theta1 lower arm angle (in degrees)
+     * @param theta2 upper arm angle (in degrees)
+     * @return pair of lower, upper linear actuator extensions (in ticks)
+     */
+    static DoubleTuple calculateIKLinearActuatorDistance(double theta1, double theta2)
     {
-        if (x > TuningConstants.ARM_MAX_IKX_EXTENSION_LENGTH || z > TuningConstants.ARM_MAX_IKZ_EXTENSION_HEIGHT)
-        {
-            return null;
-        }
+        // Lower Linear Actuator Angle & Length Calculations
+        final double lambda = HardwareConstants.ARM_LOWER_ARM_LINEAR_ACTUATOR_LEFT_ANGLE_OFFSET;
+        final double rho = HardwareConstants.ARM_LOWER_ARM_LINEAR_ACTUATOR_RIGHT_ANGLE_OFFSET;
+        final double L10 = HardwareConstants.ARM_LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM;
+        final double L11 = HardwareConstants.ARM_LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM;
 
-        // special-case fully-retracted zone to the fully retracted position
-        if (x <= TuningConstants.ARM_FULLY_RETRACTED_X_POSITION &&
-            z <= TuningConstants.ARM_FULLY_RETRACTED_Z_POSITION)
-        {
-            return new DoubleTuple(TuningConstants.ARM_LOWER_FULL_EXTENTION_LENGTH, TuningConstants.ARM_UPPER_FULL_RETRACTED_LENGTH);
-        }
+        double E1 = theta1 + rho - lambda;
+        double L9 = Helpers.calculateLawOfCosinesDistance(L10, L11, E1);
 
-        double lowerArmAngle = 90; // 90 if Starting straight up (Extended)
-        double lowerArmAngleToMove = 0; // From current angle to desired angle
-        double upperArmAngle = 0; //0 if retracted *angle is relative to upper arm angle*
-        double upperArmAngleToMove = 0; // From current angle to desired angle
+        // Upper Linear Actuator Angle & Length Calculations
+        final double phi = HardwareConstants.ARM_UPPER_ARM_PHI_ANGLE;
+        final double L1 = HardwareConstants.ARM_UPPER_ARM_FOUR_BAR_FOLLOWER_PIN_DISTANCE;
+        final double L2 = HardwareConstants.ARM_UPPER_ARM_FOUR_BAR_COUPLER_PIN_DISTANCE;
+        final double L3 = HardwareConstants.ARM_UPPER_ARM_FOUR_BAR_DRIVER_PIN_DISTANCE;
+        final double L4 = HardwareConstants.ARM_UPPER_ARM_FOUR_BAR_GROUND_PIN_DISTANCE;
+        final double psi = HardwareConstants.ARM_UPPER_ARM_PSI_ANGLE;
+        final double sigma = HardwareConstants.ARM_UPPER_ARM_SIGMA_ANGLE;
+        final double L7 = HardwareConstants.ARM_UPPER_ARM_L7;
+        final double L8 = HardwareConstants.ARM_UPPER_ARM_L8;
 
-        lowerArmAngleToMove = Math.atan(
-            (z / x)) +
-            Math.atan((HardwareConstants.ARM_UPPER_ARM_LENGTH * Math.sin(upperArmAngleToMove))/
-            (HardwareConstants.ARM_LOWER_ARM_LENGTH + (HardwareConstants.ARM_UPPER_ARM_LENGTH * Math.cos(upperArmAngleToMove))));
+        double A1 = theta2 + phi;
+        double L5 = Helpers.calculateLawOfCosinesDistance(L1, L4, A1);
 
-        upperArmAngleToMove = -Math.acos(
-            ((x * x) +
-            (z * z) -
-            (HardwareConstants.ARM_LOWER_ARM_LENGTH * HardwareConstants.ARM_LOWER_ARM_LENGTH) -
-            (HardwareConstants.ARM_UPPER_ARM_LENGTH * HardwareConstants.ARM_UPPER_ARM_LENGTH)) /
-            (2 * HardwareConstants.ARM_UPPER_ARM_LENGTH * HardwareConstants.ARM_LOWER_ARM_LENGTH));
+        double A4 = Helpers.calculateLawOfCosinesAngle(L3, L5, L2);
+        double A3 = Helpers.calculateLawOfCosinesAngle(L4, L5, L1);
 
-        double totalLowerArmAngle = lowerArmAngle +
-            HardwareConstants.LOWER_ARM_LINEAR_ACTUATOR_RIGHT_ANGLE_OFFSET +
-            HardwareConstants.LOWER_ARM_LINEAR_ACTUATOR_LEFT_ANGLE_OFFSET; // With offsets
-
-        double lowerLinearActuatorDistanceToMove = 8; // Starting value of 8 inch, maybe (placeholder)
-        double upperLinearActuatorDistanceToMove = 8; // Length 6 in Equation, Placeholder value
-        lowerLinearActuatorDistanceToMove = calculateLawOfCosinesDistance(HardwareConstants.LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM, 
-        HardwareConstants.LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM, totalLowerArmAngle);
-        /*
-            (Math.sqrt(
-                Math.pow(HardwareConstants.LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM, 2) +
-                Math.pow(HardwareConstants.LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM, 2) -
-                2 * HardwareConstants.LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM *
-                HardwareConstants.LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM *
-                Math.cos(totalLowerArmAngle)));
-        */
-        //Upper Linear Actuator Angle & Length Calculations
-      
-        double angleOne = upperArmAngleToMove + HardwareConstants.phiAngle;
-        double lengthFive = calculateLawOfCosinesDistance(HardwareConstants.LENGTH_ONE, HardwareConstants.LENGTH_FOUR, angleOne);
-        /*Math.sqrt(Math.pow(HardwareConstants.LENGTH_ONE, 2) + 
-        Math.pow(HardwareConstants.LENGTH_FOUR, 2) - 
-        2 * HardwareConstants.LENGTH_ONE * HardwareConstants.LENGTH_FOUR * 
-        Math.cos(angleOne));
-        */
-        double angleFour = calculateLawOfCosinesAngle(HardwareConstants.LENGTH_THREE, lengthFive, HardwareConstants.LENGTH_TWO);
-        /*Math.acos((Math.pow(HardwareConstants.LENGTH_THREE, 2) +
-        Math.pow(lengthFive, 2) -
-        Math.pow(HardwareConstants.LENGTH_TWO, 2)) / 
-        2 * HardwareConstants.LENGTH_THREE * lengthFive);
-        */
-        double angleThree = calculateLawOfCosinesAngle(HardwareConstants.LENGTH_FOUR, lengthFive, HardwareConstants.LENGTH_ONE);
-        /*Math.acos((Math.pow(HardwareConstants.LENGTH_FOUR, 2) +
-        Math.pow(lengthFive, 2) -
-        Math.pow(HardwareConstants.LENGTH_ONE, 2)) / 
-        2 * HardwareConstants.LENGTH_FOUR * lengthFive);
-        */
-        double betaOne = 180 - angleThree - angleFour - HardwareConstants.phiAngle - HardwareConstants.PSI_ANGLE + HardwareConstants.SIGMA_ANGLE;
-        double lengthSeven = 5.916; //Math.sqrt(HardwareConstants.DISTANCE_SIX + HardwareConstants.DISTANCE_FIVE);
-        double lengthEight = 21.857; //Math.sqrt(HardwareConstants.DISTANCE_TWO + HardwareConstants.DISTANCE_THREE);
-        upperLinearActuatorDistanceToMove = calculateLawOfCosinesDistance(lengthSeven, lengthEight, betaOne);
-        /*Math.sqrt(Math.pow(lengthSeven, 2) + Math.pow(lengthEight, 2) -
-        2 * lengthSeven * lengthEight * Math.acos(betaOne));
-        */
-        
-        
-        double lowerArmPosition = 0;
-        double upperArmPosition = 0;
-        lowerArmPosition *= TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * lowerLinearActuatorDistanceToMove;
-        lowerArmPosition = (lowerArmPosition + 1) * 1016;
-        upperArmPosition *= TuningConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * upperLinearActuatorDistanceToMove;
-        upperArmPosition = (upperArmPosition + 1) * 1016;
+        double B1 = 180.0 - A3 - A4 - phi - psi + sigma;
+        double L6 = Helpers.calculateLawOfCosinesDistance(L7, L8, B1);
 
         // in order lower, upper
-        return new DoubleTuple(lowerArmPosition, upperArmPosition);
+        return new DoubleTuple(
+            (L9 - HardwareConstants.ARM_LINEAR_ACTUATOR_RETRACTED_LENGTH) * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH,
+            (L6 - HardwareConstants.ARM_LINEAR_ACTUATOR_RETRACTED_LENGTH) * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH);
     }
 
-    static DoubleTuple calculateIKLinearActuatorDistance(double x, double z)
+    /**
+     * Calculate the angles of the lower and upper arms given the extension of the linear actuators
+     * @param lowerLAExtension amount the lower LA has been extended
+     * @param upperLAExtension amount the upper LA has been extended
+     * @return lower, upper arm angles (theta1, theta2)
+     */
+    static DoubleTuple calculateFKAnglesFromLinearActuatorDistance(double lowerLAExtension, double upperLAExtension)
     {
-        final double L1 = HardwareConstants.ARM_LOWER_ARM_LENGTH;
-        final double L2 = HardwareConstants.ARM_UPPER_ARM_LENGTH;
+        // TODO: invert the above
 
-        final double L1Squared = L1 * L1;
-        final double L2Squared = L2 * L2;
-
-        double rSquared = x * x + z * z;
-        double cosineTheta2 = (L1Squared + L2Squared - rSquared) / (2.0 * L1 * L2);
-        if (cosineTheta2 > 1.0 || cosineTheta2 < -1.0)
-        {
-            return null;
-        }
-
-        double theta2 = Helpers.acosd(cosineTheta2);
-        double theta1 = Helpers.atan2d(z, x) + Helpers.acosd((L1Squared + rSquared - L2Squared) / (2.0 * L1 * Math.sqrt(rSquared)));
-
-        double upperLinearActuatorLength;  
-        double lowerLinearActuatorLength;      
-        
-        //Lower LA Angle to Distance Conversion
-        lowerLinearActuatorLength = (calculateLawOfCosinesDistance(HardwareConstants.LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM, 
-        HardwareConstants.LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM, theta1) - HardwareConstants.LINEAR_ACTUATOR_LENGTH);
-        //Upper LA Angle to Distance Conversion
-        double angleOne = theta2 + HardwareConstants.phiAngle;
-        double lengthFive = calculateLawOfCosinesDistance(HardwareConstants.LENGTH_ONE, HardwareConstants.LENGTH_FOUR, angleOne);
-        double angleFour = calculateLawOfCosinesAngle(HardwareConstants.LENGTH_THREE, lengthFive, HardwareConstants.LENGTH_TWO);
-        double angleThree = calculateLawOfCosinesAngle(HardwareConstants.LENGTH_FOUR, lengthFive, HardwareConstants.LENGTH_ONE);
-        double betaOne = 180 - angleThree - angleFour - HardwareConstants.phiAngle - HardwareConstants.PSI_ANGLE + HardwareConstants.SIGMA_ANGLE;
-        double lengthSeven = 5.916; //Math.sqrt(HardwareConstants.DISTANCE_SIX + HardwareConstants.DISTANCE_FIVE);
-        double lengthEight = 21.857; //Math.sqrt(HardwareConstants.DISTANCE_TWO + HardwareConstants.DISTANCE_THREE);
-        upperLinearActuatorLength = (calculateLawOfCosinesDistance(lengthSeven, lengthEight, betaOne) - HardwareConstants.LINEAR_ACTUATOR_LENGTH);
-
-        return new DoubleTuple(lowerLinearActuatorLength, upperLinearActuatorLength);
-    }
-
-    static double calculateLawOfCosinesDistance(double adjacent1, double adjacent2, double angle)
-    {
-        double opposite;
-        opposite = Math.sqrt(Math.pow(adjacent1, 2) + Math.pow(adjacent2, 2) - 2.0 * adjacent1 * adjacent2 * Math.cos(angle));
-        return opposite;
-    }
-
-    static double calculateLawOfCosinesAngle(double adjacent1, double adjacent2, double opposite)
-    {
-        double angle;
-        angle = Math.acos( (Math.pow(adjacent1, 2) + Math.pow(adjacent2, 2) - Math.pow(opposite, 2)) / 2.0 * adjacent1 * adjacent2);
-        return angle;
+        // in order lower, upper
+        return null;
     }
 }
