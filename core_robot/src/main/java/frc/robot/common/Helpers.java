@@ -203,4 +203,32 @@ public class Helpers
             return Helpers.atand(y / x) + 360.0;
         }
     }
+
+    /**
+     * 
+     * @param adjacent1
+     * @param adjacent2
+     * @param angle
+     * @return
+     */
+    public static double calculateLawOfCosinesDistance(double adjacent1, double adjacent2, double angle)
+    {
+        double opposite;
+        opposite = Math.sqrt(adjacent1 * adjacent1 + adjacent2 * adjacent2 - 2.0 * adjacent1 * adjacent2 * Helpers.cosd(angle));
+        return opposite;
+    }
+
+    /**
+     * 
+     * @param adjacent1
+     * @param adjacent2
+     * @param opposite
+     * @return
+     */
+    public static double calculateLawOfCosinesAngle(double adjacent1, double adjacent2, double opposite)
+    {
+        double angle;
+        angle = Helpers.acosd((adjacent1 * adjacent1 + adjacent2 * adjacent2 - opposite * opposite) / (2.0 * adjacent1 * adjacent2));
+        return angle;
+    }
 }
