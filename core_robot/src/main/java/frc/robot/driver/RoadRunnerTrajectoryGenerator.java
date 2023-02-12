@@ -126,11 +126,11 @@ public class RoadRunnerTrajectoryGenerator
         final double GroundThreeY = 132.19;
         final double GroundFourY = 84.19;
         //X Values
-        final double StartGridX = 253.861;
-        final double CloseChargeStationX = 201.549;
-        final double FarChargeStation = 141.048;
-        final double InBetweenPointAfterChargeStationX = 110.549;
-        final double GroundPiecesX = 63.594;
+        final double StartGridX = 251.861;
+        final double CloseChargeStationX = 250.174;
+        final double FarChargeStation = 93.048;
+        final double InBetweenPointAfterChargeStationX = .549;
+        final double GroundPiecesX = 66.799;
 
         //Changed X Values
         double c_StartGridX;
@@ -164,6 +164,8 @@ public class RoadRunnerTrajectoryGenerator
         // -x = 180 Towards the blue alliance
         // -y = -90 Towards the Guardrail
         // +y = 90 Towards Loading Zone
+
+        //Jamie's Old Path
         addTrajectory(
             trajectoryManager,
             startTrajectory(BlueStartGridX,  StartEightGridY,  0 * Helpers.DEGREES_TO_RADIANS, 0 * Helpers.DEGREES_TO_RADIANS)
@@ -173,6 +175,18 @@ public class RoadRunnerTrajectoryGenerator
                 
                 //Jamie's Charge Station task
             "BlueNineStartToGuardInBetweenToFarChargeStation");
+        
+        //New Paths
+        addTrajectory(
+            trajectoryManager,
+            startTrajectory(c_StartGridX,  StartEightGridY,  0 * Helpers.DEGREES_TO_RADIANS, 0 * Helpers.DEGREES_TO_RADIANS)
+                
+                .lineTo(new Vector2d(c_CloseChargeStationX, StartEightGridY)) // Goes forward
+                .splineToConstantHeading(new Vector2d(c_CloseChargeStationX, ChargeStationY), 90 * Helpers.DEGREES_TO_RADIANS),
+                
+                //Jamie's Charge Station task
+            "BlueNineStartToGuardInBetweenToCloseChargeStation");
+        
     }
 
     private static TrajectoryBuilder startTrajectory()
