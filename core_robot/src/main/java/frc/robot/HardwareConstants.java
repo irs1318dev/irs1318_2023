@@ -50,7 +50,7 @@ public class HardwareConstants
 
     public static final double ARM_EXTENTION_LENGTH = 8.0; // in inches
 
-    public static final double ARM_LINEAR_ACTUATOR_RETRACTED_LENGTH = 17.63; // in inches
+    public static final double ARM_LINEAR_ACTUATOR_RETRACTED_LENGTH = 16.93; // in inches
     public static final double ARM_LINEAR_ACTUATOR_EXTENDED_LENGTH = HardwareConstants.ARM_LINEAR_ACTUATOR_RETRACTED_LENGTH + HardwareConstants.ARM_EXTENTION_LENGTH; // in inches
 
     // values may change:
