@@ -628,33 +628,44 @@ public class ArmMechanism implements IMechanism
 
         double lowerLinearActuatorDistanceToMove = 8; // Starting value of 8 inch, maybe (placeholder)
         double upperLinearActuatorDistanceToMove = 8; // Length 6 in Equation, Placeholder value
-        lowerLinearActuatorDistanceToMove =
+        lowerLinearActuatorDistanceToMove = calculateLawOfCosinesDistance(HardwareConstants.LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM, 
+        HardwareConstants.LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM, totalLowerArmAngle);
+        /*
             (Math.sqrt(
                 Math.pow(HardwareConstants.LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM, 2) +
                 Math.pow(HardwareConstants.LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM, 2) -
                 2 * HardwareConstants.LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM *
                 HardwareConstants.LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM *
                 Math.cos(totalLowerArmAngle)));
+        */
         //Upper Linear Actuator Angle & Length Calculations
-        double phiAngle = Math.atan2(HardwareConstants.DISTANCE_ONE + HardwareConstants.DISTANCE_TWO, HardwareConstants.DISTANCE_FOUR);
-        double angleOne = upperArmAngleToMove + phiAngle;
-        double lengthFive = Math.sqrt(Math.pow(HardwareConstants.LENGTH_ONE, 2) + 
+      
+        double angleOne = upperArmAngleToMove + HardwareConstants.phiAngle;
+        double lengthFive = calculateLawOfCosinesDistance(HardwareConstants.LENGTH_ONE, HardwareConstants.LENGTH_FOUR, angleOne);
+        /*Math.sqrt(Math.pow(HardwareConstants.LENGTH_ONE, 2) + 
         Math.pow(HardwareConstants.LENGTH_FOUR, 2) - 
         2 * HardwareConstants.LENGTH_ONE * HardwareConstants.LENGTH_FOUR * 
         Math.cos(angleOne));
-        double angleFour = Math.acos((Math.pow(HardwareConstants.LENGTH_THREE, 2) +
+        */
+        double angleFour = calculateLawOfCosinesAngle(HardwareConstants.LENGTH_THREE, lengthFive, HardwareConstants.LENGTH_TWO);
+        /*Math.acos((Math.pow(HardwareConstants.LENGTH_THREE, 2) +
         Math.pow(lengthFive, 2) -
         Math.pow(HardwareConstants.LENGTH_TWO, 2)) / 
         2 * HardwareConstants.LENGTH_THREE * lengthFive);
-        double angleThree = Math.acos((Math.pow(HardwareConstants.LENGTH_FOUR, 2) +
+        */
+        double angleThree = calculateLawOfCosinesAngle(HardwareConstants.LENGTH_FOUR, lengthFive, HardwareConstants.LENGTH_ONE);
+        /*Math.acos((Math.pow(HardwareConstants.LENGTH_FOUR, 2) +
         Math.pow(lengthFive, 2) -
         Math.pow(HardwareConstants.LENGTH_ONE, 2)) / 
         2 * HardwareConstants.LENGTH_FOUR * lengthFive);
-        double betaOne = 180 - angleThree - angleFour - phiAngle - HardwareConstants.PSI_ANGLE + HardwareConstants.SIGMA_ANGLE;
+        */
+        double betaOne = 180 - angleThree - angleFour - HardwareConstants.phiAngle - HardwareConstants.PSI_ANGLE + HardwareConstants.SIGMA_ANGLE;
         double lengthSeven = 5.916; //Math.sqrt(HardwareConstants.DISTANCE_SIX + HardwareConstants.DISTANCE_FIVE);
         double lengthEight = 21.857; //Math.sqrt(HardwareConstants.DISTANCE_TWO + HardwareConstants.DISTANCE_THREE);
-        upperLinearActuatorDistanceToMove = Math.sqrt(Math.pow(lengthSeven, 2) + Math.pow(lengthEight, 2) -
+        upperLinearActuatorDistanceToMove = calculateLawOfCosinesDistance(lengthSeven, lengthEight, betaOne);
+        /*Math.sqrt(Math.pow(lengthSeven, 2) + Math.pow(lengthEight, 2) -
         2 * lengthSeven * lengthEight * Math.acos(betaOne));
+        */
         
         
         double lowerArmPosition = 0;
@@ -666,6 +677,43 @@ public class ArmMechanism implements IMechanism
 
         // in order lower, upper
         return new DoubleTuple(lowerArmPosition, upperArmPosition);
+    }
+
+    static DoubleTuple calculateIKLinearActuatorDistance(double x, double z)
+    {
+        final double L1 = HardwareConstants.ARM_LOWER_ARM_LENGTH;
+        final double L2 = HardwareConstants.ARM_UPPER_ARM_LENGTH;
+
+        final double L1Squared = L1 * L1;
+        final double L2Squared = L2 * L2;
+
+        double rSquared = x * x + z * z;
+        double cosineTheta2 = (L1Squared + L2Squared - rSquared) / (2.0 * L1 * L2);
+        if (cosineTheta2 > 1.0 || cosineTheta2 < -1.0)
+        {
+            return null;
+        }
+
+        double theta2 = Helpers.acosd(cosineTheta2);
+        double theta1 = Helpers.atan2d(z, x) + Helpers.acosd((L1Squared + rSquared - L2Squared) / (2.0 * L1 * Math.sqrt(rSquared)));
+
+        double upperLinearActuatorLength;  
+        double lowerLinearActuatorLength;      
+        
+        //Lower LA Angle to Distance Conversion
+        lowerLinearActuatorLength = (calculateLawOfCosinesDistance(HardwareConstants.LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM, 
+        HardwareConstants.LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM, theta1) - HardwareConstants.LINEAR_ACTUATOR_LENGTH);
+        //Upper LA Angle to Distance Conversion
+        double angleOne = theta2 + HardwareConstants.phiAngle;
+        double lengthFive = calculateLawOfCosinesDistance(HardwareConstants.LENGTH_ONE, HardwareConstants.LENGTH_FOUR, angleOne);
+        double angleFour = calculateLawOfCosinesAngle(HardwareConstants.LENGTH_THREE, lengthFive, HardwareConstants.LENGTH_TWO);
+        double angleThree = calculateLawOfCosinesAngle(HardwareConstants.LENGTH_FOUR, lengthFive, HardwareConstants.LENGTH_ONE);
+        double betaOne = 180 - angleThree - angleFour - HardwareConstants.phiAngle - HardwareConstants.PSI_ANGLE + HardwareConstants.SIGMA_ANGLE;
+        double lengthSeven = 5.916; //Math.sqrt(HardwareConstants.DISTANCE_SIX + HardwareConstants.DISTANCE_FIVE);
+        double lengthEight = 21.857; //Math.sqrt(HardwareConstants.DISTANCE_TWO + HardwareConstants.DISTANCE_THREE);
+        upperLinearActuatorLength = (calculateLawOfCosinesDistance(lengthSeven, lengthEight, betaOne) - HardwareConstants.LINEAR_ACTUATOR_LENGTH);
+
+        return new DoubleTuple(lowerLinearActuatorLength, upperLinearActuatorLength);
     }
 
     static double calculateLawOfCosinesDistance(double adjacent1, double adjacent2, double angle)

@@ -89,4 +89,13 @@ public class ArmMechanismTests
             }
         }
     }
+
+    @Test
+    public void verifyLinearActuatorLengthsStraightUp() // Full Extention
+    {
+        DoubleTuple setpoint = ArmMechanism.calculateIKLinearActuatorDistance(0, HardwareConstants.ARM_UPPER_ARM_LENGTH + HardwareConstants.ARM_LOWER_ARM_LENGTH);
+        //assertEquals(8, setpoint.first, "Lower LA Length");
+        //assertEquals(8, setpoint.second, "Upper LA Length");
+
+    }
 }

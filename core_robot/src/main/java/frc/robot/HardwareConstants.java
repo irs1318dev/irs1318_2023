@@ -78,5 +78,7 @@ public class HardwareConstants
     public static final double DISTANCE_SIX = 2;
     public static final double SIGMA_ANGLE = Helpers.atan2d(HardwareConstants.DISTANCE_SIX, HardwareConstants.DISTANCE_FIVE); // Can calculate and hard code after we get measurements
     public static final double PSI_ANGLE = Helpers.atan2d(HardwareConstants.DISTANCE_TWO, HardwareConstants.DISTANCE_THREE); // Hard code later
+    public static final double phiAngle = Helpers.atan2d(HardwareConstants.DISTANCE_ONE + HardwareConstants.DISTANCE_TWO, HardwareConstants.DISTANCE_FOUR);
 
+    public static final double LINEAR_ACTUATOR_LENGTH = 17.63;
 }
