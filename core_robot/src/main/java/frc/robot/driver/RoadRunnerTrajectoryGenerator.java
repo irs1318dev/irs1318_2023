@@ -139,11 +139,16 @@ public class RoadRunnerTrajectoryGenerator
         boolean isRed = false;
 
         //Turnary Caluclations
-        double TurnaryOperator = (isRed ? 1 : - 1);
-        StartGridX = Constant_StartGridX * TurnaryOperator;
-        CloseChargeStationX = Constant_CloseChargeStationX * TurnaryOperator;
-        FarChargeStationX = Constant_FarChargeStationX * TurnaryOperator;
-        GroundPiecesX = Constant_GroundPiecesX * TurnaryOperator;
+        double TurnaryOperatorValues = (isRed ? 1 : - 1);
+        StartGridX = Constant_StartGridX * TurnaryOperatorValues;
+        CloseChargeStationX = Constant_CloseChargeStationX * TurnaryOperatorValues;
+        FarChargeStationX = Constant_FarChargeStationX * TurnaryOperatorValues;
+        GroundPiecesX = Constant_GroundPiecesX * TurnaryOperatorValues;
+
+        double TurnaryOperatorForwardsHeadingOrTangent = (isRed ? 180 : 0);
+        double TurnaryOperatorBackwardsHeadingOrTangent = (isRed ? 0 : 180);
+
+        
 
         // //Blue Alliance X Values
         // final double BlueStartGridX = 70.188;
@@ -180,7 +185,7 @@ public class RoadRunnerTrajectoryGenerator
         //Travels to april tag visability
         addTrajectory(
             trajectoryManager,
-            startTrajectory(StartGridX,  StartOneGridY,  0 * Helpers.DEGREES_TO_RADIANS, 0 * Helpers.DEGREES_TO_RADIANS)
+            startTrajectory(StartGridX, StartOneGridY, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
                 //Places cone on node
 
                 .lineTo(new Vector2d(CloseChargeStationX, StartOneGridY)), // Goes forward
@@ -190,7 +195,7 @@ public class RoadRunnerTrajectoryGenerator
         
         addTrajectory(
             trajectoryManager,
-            startTrajectory(StartGridX,  StartTwoGridY,  0 * Helpers.DEGREES_TO_RADIANS, 0 * Helpers.DEGREES_TO_RADIANS)
+            startTrajectory(StartGridX, StartTwoGridY, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
                 //Places cone on node
 
                 .lineTo(new Vector2d(CloseChargeStationX, StartTwoGridY)), // Goes forward
@@ -200,7 +205,7 @@ public class RoadRunnerTrajectoryGenerator
         
         addTrajectory(
             trajectoryManager,
-            startTrajectory(StartGridX,  StartThreeGridY,  0 * Helpers.DEGREES_TO_RADIANS, 0 * Helpers.DEGREES_TO_RADIANS)
+            startTrajectory(StartGridX, StartThreeGridY, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
                 //Places cone on node
 
                 .lineTo(new Vector2d(CloseChargeStationX, StartThreeGridY)), // Goes forward
@@ -210,7 +215,7 @@ public class RoadRunnerTrajectoryGenerator
 
         addTrajectory(
             trajectoryManager,
-            startTrajectory(StartGridX,  StartFourGridY,  0 * Helpers.DEGREES_TO_RADIANS, 0 * Helpers.DEGREES_TO_RADIANS)
+            startTrajectory(StartGridX,  StartFourGridY, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
                 //Places cone on node
 
                 .lineTo(new Vector2d(CloseChargeStationX, StartFourGridY)), // Goes forward
@@ -220,7 +225,7 @@ public class RoadRunnerTrajectoryGenerator
         
         addTrajectory(
             trajectoryManager,
-            startTrajectory(StartGridX,  StartFiveGridY,  0 * Helpers.DEGREES_TO_RADIANS, 0 * Helpers.DEGREES_TO_RADIANS)
+            startTrajectory(StartGridX,  StartFiveGridY,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
                 //Places cone on node
 
                 .lineTo(new Vector2d(CloseChargeStationX, StartFiveGridY)), // Goes forward
@@ -230,7 +235,7 @@ public class RoadRunnerTrajectoryGenerator
         
         addTrajectory(
             trajectoryManager,
-            startTrajectory(StartGridX,  StartSixGridY,  0 * Helpers.DEGREES_TO_RADIANS, 0 * Helpers.DEGREES_TO_RADIANS)
+            startTrajectory(StartGridX,  StartSixGridY,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
                 //Places cone on node
 
                 .lineTo(new Vector2d(CloseChargeStationX, StartSixGridY)), // Goes forward
@@ -240,7 +245,7 @@ public class RoadRunnerTrajectoryGenerator
         
         addTrajectory(
             trajectoryManager,
-            startTrajectory(StartGridX,  StartSevenGridY,  0 * Helpers.DEGREES_TO_RADIANS, 0 * Helpers.DEGREES_TO_RADIANS)
+            startTrajectory(StartGridX,  StartSevenGridY,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
                 //Places cone on node
 
                 .lineTo(new Vector2d(CloseChargeStationX, StartSevenGridY)), // Goes forward
@@ -250,7 +255,7 @@ public class RoadRunnerTrajectoryGenerator
 
         addTrajectory(
             trajectoryManager,
-            startTrajectory(StartGridX,  StartEightGridY,  0 * Helpers.DEGREES_TO_RADIANS, 0 * Helpers.DEGREES_TO_RADIANS)
+            startTrajectory(StartGridX,  StartEightGridY,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
                 //Places cone on node
 
                 .lineTo(new Vector2d(CloseChargeStationX, StartEightGridY)), // Goes forward
@@ -259,7 +264,7 @@ public class RoadRunnerTrajectoryGenerator
             "BlueEightStartToChargeStationCloseX");
         addTrajectory(
                 trajectoryManager,
-                startTrajectory(StartGridX,  StartNineGridY,  0 * Helpers.DEGREES_TO_RADIANS, 0 * Helpers.DEGREES_TO_RADIANS)
+                startTrajectory(StartGridX,  StartNineGridY,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
                     //Places cone on node
     
                     .lineTo(new Vector2d(CloseChargeStationX, StartNineGridY)), // Goes forward
@@ -269,7 +274,7 @@ public class RoadRunnerTrajectoryGenerator
 
         addTrajectory(
             trajectoryManager,
-            startTrajectory(CloseChargeStationX, StartEightGridY,  0 * Helpers.DEGREES_TO_RADIANS, 0 * Helpers.DEGREES_TO_RADIANS)
+            startTrajectory(CloseChargeStationX, StartEightGridY,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
 
                 .splineToConstantHeading(new Vector2d(CloseChargeStationX, ChargeStationY), 90 * Helpers.DEGREES_TO_RADIANS), // Goes to infront of charge station
                 
