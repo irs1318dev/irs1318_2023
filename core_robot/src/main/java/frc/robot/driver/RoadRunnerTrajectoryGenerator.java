@@ -182,96 +182,99 @@ public class RoadRunnerTrajectoryGenerator
         
         //New Paths based on (0,0) being in the center bottom of the field
 
-        //Travels to april tag visability
+
+        //Travels to april tag visability points
         addTrajectory(
             trajectoryManager,
             startTrajectory(StartGridX, StartOneGridY, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
                 //Places cone on node
 
-                .lineTo(new Vector2d(CloseChargeStationX, StartOneGridY)), // Goes forward
+                .lineTo(new Vector2d(CloseChargeStationX, StartTwoGridY)), //Goes to closest april tag visiblity point
                 
                 //Jamie's Charge Station task
-            "BlueOneStartToChargeStationCloseX");
+            "BlueOneStartToAprilTagVisibilityPoint");
         
         addTrajectory(
             trajectoryManager,
             startTrajectory(StartGridX, StartTwoGridY, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
                 //Places cone on node
 
-                .lineTo(new Vector2d(CloseChargeStationX, StartTwoGridY)), // Goes forward
+                .lineTo(new Vector2d(CloseChargeStationX, StartTwoGridY)), //Goes to closest april tag visiblity point
                 
                 //Jamie's Charge Station task
-            "BlueTwoStartToChargeStationCloseX");
+                "BlueOneStartToAprilTagVisibilityPoint");
         
         addTrajectory(
             trajectoryManager,
             startTrajectory(StartGridX, StartThreeGridY, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
                 //Places cone on node
 
-                .lineTo(new Vector2d(CloseChargeStationX, StartThreeGridY)), // Goes forward
+                .lineTo(new Vector2d(CloseChargeStationX, StartTwoGridY)), //Goes to closest april tag visiblity point
                 
                 //Jamie's Charge Station task
-                "BlueThreeStartToChargeStationCloseX");
+                "BlueOneStartToAprilTagVisibilityPoint");
 
         addTrajectory(
             trajectoryManager,
             startTrajectory(StartGridX,  StartFourGridY, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
                 //Places cone on node
 
-                .lineTo(new Vector2d(CloseChargeStationX, StartFourGridY)), // Goes forward
+                .lineTo(new Vector2d(CloseChargeStationX, StartFiveGridY)), //Goes to closest april tag visiblity point
                 
                 //Jamie's Charge Station task
-                "BlueFourStartToChargeStationCloseX");
+                "BlueOneStartToAprilTagVisibilityPoint");
         
         addTrajectory(
             trajectoryManager,
             startTrajectory(StartGridX,  StartFiveGridY,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
                 //Places cone on node
 
-                .lineTo(new Vector2d(CloseChargeStationX, StartFiveGridY)), // Goes forward
+                .lineTo(new Vector2d(CloseChargeStationX, StartFiveGridY)), //Goes to closest april tag visiblity point
                 
                 //Jamie's Charge Station task
-                "BlueFiveStartToChargeStationCloseX");
+                "BlueOneStartToAprilTagVisibilityPoint");
         
         addTrajectory(
             trajectoryManager,
             startTrajectory(StartGridX,  StartSixGridY,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
                 //Places cone on node
 
-                .lineTo(new Vector2d(CloseChargeStationX, StartSixGridY)), // Goes forward
+                .lineTo(new Vector2d(CloseChargeStationX, StartFiveGridY)), //Goes to closest april tag visiblity point
                 
                 //Jamie's Charge Station task
-                "BlueSixStartToChargeStationCloseX");
+                "BlueOneStartToAprilTagVisibilityPoint");
         
         addTrajectory(
             trajectoryManager,
             startTrajectory(StartGridX,  StartSevenGridY,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
                 //Places cone on node
 
-                .lineTo(new Vector2d(CloseChargeStationX, StartSevenGridY)), // Goes forward
+                .lineTo(new Vector2d(CloseChargeStationX, StartEightGridY)), //Goes to closest april tag visiblity point
                 
                 //Jamie's Charge Station task
-                "BlueSevenStartToChargeStationCloseX");
+                "BlueOneStartToAprilTagVisibilityPoint");
 
         addTrajectory(
             trajectoryManager,
             startTrajectory(StartGridX,  StartEightGridY,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
                 //Places cone on node
 
-                .lineTo(new Vector2d(CloseChargeStationX, StartEightGridY)), // Goes forward
+                .lineTo(new Vector2d(CloseChargeStationX, StartEightGridY)), //Goes to closest april tag visiblity point
                 
             //Jamie's Charge Station task
-            "BlueEightStartToChargeStationCloseX");
+            "BlueOneStartToAprilTagVisibilityPoint");
         addTrajectory(
                 trajectoryManager,
                 startTrajectory(StartGridX,  StartNineGridY,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
                     //Places cone on node
     
-                    .lineTo(new Vector2d(CloseChargeStationX, StartNineGridY)), // Goes forward
+                    .lineTo(new Vector2d(CloseChargeStationX, StartEightGridY)), //Goes to closest april tag visiblity point
                     
                     //Jamie's Charge Station task
-                    "BlueNineStartToChargeStationCloseX");
+                    "BlueOneStartToAprilTagVisibilityPoint");
 
+
+        //Travels to close charge station from starting positions
         addTrajectory(
             trajectoryManager,
             startTrajectory(CloseChargeStationX, StartEightGridY,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
@@ -279,7 +282,108 @@ public class RoadRunnerTrajectoryGenerator
                 .splineToConstantHeading(new Vector2d(CloseChargeStationX, ChargeStationY), 90 * Helpers.DEGREES_TO_RADIANS), // Goes to infront of charge station
                 
                 //Jamie's Charge Station task
-            "ChargeStationXToChargeStationY");
+            "AprilTagVisibilityPointToChargeStation");
+        
+        addTrajectory(
+            trajectoryManager,
+            startTrajectory(CloseChargeStationX, StartTwoGridY,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
+
+                .splineToConstantHeading(new Vector2d(CloseChargeStationX, ChargeStationY), 90 * Helpers.DEGREES_TO_RADIANS), // Goes to infront of charge station
+                
+                //Jamie's Charge Station task
+            "AprilTagVisibilityPointToChargeStation");
+        
+        
+        //Travels to Start positions from April Tag Visibility points
+        addTrajectory(
+            trajectoryManager,
+            startTrajectory(CloseChargeStationX, StartTwoGridY, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
+                //Places cone on node
+
+                .lineTo(new Vector2d(StartGridX, StartOneGridY)), //Goes back to grid
+                
+                //Jamie's Charge Station task
+            "BlueOneStartToAprilTagVisibilityPoint");
+        
+        addTrajectory(
+            trajectoryManager,
+            startTrajectory(CloseChargeStationX, StartTwoGridY, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
+                //Places cone on node
+
+                .lineTo(new Vector2d(StartGridX, StartTwoGridY)), //Goes back to grid
+                
+                //Jamie's Charge Station task
+                "BlueOneStartToAprilTagVisibilityPoint");
+        
+        addTrajectory(
+            trajectoryManager,
+            startTrajectory(CloseChargeStationX, StartTwoGridY, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
+                //Places cone on node
+
+                .lineTo(new Vector2d(StartGridX, StartThreeGridY)), //Goes back to grid
+                
+                //Jamie's Charge Station task
+                "BlueOneStartToAprilTagVisibilityPoint");
+
+        addTrajectory(
+            trajectoryManager,
+            startTrajectory(CloseChargeStationX, StartFiveGridY, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
+                //Places cone on node
+
+                .lineTo(new Vector2d(StartGridX,  StartFourGridY)), //Goes back to grid
+                
+                //Jamie's Charge Station task
+                "BlueOneStartToAprilTagVisibilityPoint");
+        
+        addTrajectory(
+            trajectoryManager,
+            startTrajectory(CloseChargeStationX, StartFiveGridY,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
+                //Places cone on node
+
+                .lineTo(new Vector2d(StartGridX,  StartFiveGridY)), //Goes back to grid
+                
+                //Jamie's Charge Station task
+                "BlueOneStartToAprilTagVisibilityPoint");
+        
+        addTrajectory(
+            trajectoryManager,
+            startTrajectory(CloseChargeStationX, StartFiveGridY,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
+                //Places cone on node
+
+                .lineTo(new Vector2d(StartGridX,  StartSixGridY)), //Goes back to grid
+                
+                //Jamie's Charge Station task
+                "BlueOneStartToAprilTagVisibilityPoint");
+        
+        addTrajectory(
+            trajectoryManager,
+            startTrajectory(CloseChargeStationX, StartEightGridY,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
+                //Places cone on node
+
+                .lineTo(new Vector2d(StartGridX,  StartSevenGridY)), //Goes back to grid
+                
+                //Jamie's Charge Station task
+                "BlueOneStartToAprilTagVisibilityPoint");
+
+        addTrajectory(
+            trajectoryManager,
+            startTrajectory(CloseChargeStationX, StartEightGridY,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
+                //Places cone on node
+
+                .lineTo(new Vector2d(StartGridX,  StartEightGridY)), //Goes back to grid
+                
+            //Jamie's Charge Station task
+            "BlueOneStartToAprilTagVisibilityPoint");
+        addTrajectory(
+                trajectoryManager,
+                startTrajectory(CloseChargeStationX, StartEightGridY,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
+                    //Places cone on node
+    
+                    .lineTo(new Vector2d(StartGridX,  StartNineGridY)), //Goes back to grid
+                    
+                    //Jamie's Charge Station task
+                    "BlueOneStartToAprilTagVisibilityPoint");
+
     }
 
     private static TrajectoryBuilder startTrajectory()
