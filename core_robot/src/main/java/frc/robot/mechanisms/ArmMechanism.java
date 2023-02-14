@@ -717,8 +717,17 @@ public class ArmMechanism implements IMechanism
     static DoubleTuple calculateFKAnglesFromLinearActuatorDistance(double lowerLAExtension, double upperLAExtension)
     {
         // TODO: invert the above
-
+        //Lower LA Distance FK
+        double theta1WithoutOffsets = Helpers.calculateLawOfCosinesAngle(HardwareConstants. ARM_LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM, HardwareConstants.ARM_LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM, lowerLAExtension);
+        double theta1_Out = theta1WithoutOffsets - HardwareConstants.ARM_LOWER_ARM_LINEAR_ACTUATOR_RIGHT_ANGLE_OFFSET + HardwareConstants.ARM_LOWER_ARM_LINEAR_ACTUATOR_LEFT_ANGLE_OFFSET;
+        //Upper LA Distance FK
+        double B1Prime = Helpers.calculateLawOfCosinesAngle(HardwareConstants.ARM_UPPER_ARM_L7, HardwareConstants.ARM_UPPER_ARM_L8, upperLAExtension);
+        double angle1Prime = 180 - HardwareConstants.ARM_UPPER_ARM_PHI_ANGLE - HardwareConstants.ARM_UPPER_ARM_PSI_ANGLE + HardwareConstants.ARM_UPPER_ARM_SIGMA_ANGLE - B1Prime;
+        double length5Prime = Helpers.calculateLawOfCosinesDistance(HardwareConstants.ARM_UPPER_ARM_FOUR_BAR_GROUND_PIN_DISTANCE, HardwareConstants.ARM_UPPER_ARM_FOUR_BAR_DRIVER_PIN_DISTANCE, angle1Prime);
+        double angle3Prime = Helpers.calculateLawOfCosinesAngle(HardwareConstants.ARM_UPPER_ARM_FOUR_BAR_GROUND_PIN_DISTANCE, length5Prime, HardwareConstants.ARM_UPPER_ARM_FOUR_BAR_DRIVER_PIN_DISTANCE);
+        double angle4Prime = Helpers.calculateLawOfCosinesAngle(HardwareConstants.ARM_UPPER_ARM_FOUR_BAR_FOLLOWER_PIN_DISTANCE, length5Prime, HardwareConstants.ARM_UPPER_ARM_FOUR_BAR_COUPLER_PIN_DISTANCE);
+        double theta2_out = angle4Prime + (angle3Prime - HardwareConstants.ARM_UPPER_ARM_PHI_ANGLE);
         // in order lower, upper
-        return null;
+        return new DoubleTuple(theta1_Out, theta2_out);
     }
 }
