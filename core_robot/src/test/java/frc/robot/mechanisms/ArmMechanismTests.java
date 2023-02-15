@@ -91,13 +91,13 @@ public class ArmMechanismTests
         }
     }
 
-    // @Test
+    @Test
     public void verifyFKLengthsEqualsIKLengths()
     {
         final double maxExtension = HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
-        for (double lowerExtension = 0.0; lowerExtension <= maxExtension; lowerExtension += 10.0)
+        for (double lowerExtension = 0.0 * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; lowerExtension <= maxExtension; lowerExtension += 10.0)
         {
-            for (double upperExtension = 0.0; upperExtension <= maxExtension; upperExtension += 10.0)
+            for (double upperExtension = 0.0 * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; upperExtension <= maxExtension; upperExtension += 10.0)
             {
                 DoubleTuple angles = ArmMechanism.calculateFKAnglesFromExtensions(lowerExtension, upperExtension);
                 if (angles != null)
