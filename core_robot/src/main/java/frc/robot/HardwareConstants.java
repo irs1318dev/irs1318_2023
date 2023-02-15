@@ -72,16 +72,16 @@ public class HardwareConstants
     public static final double ARM_LOWER_ARM_LINEAR_ACTUATOR_RIGHT_ANGLE_OFFSET = 15; // Diagram rho, Place holder until verified from CAD
     public static final double ARM_LOWER_ARM_LINEAR_ACTUATOR_LEFT_ANGLE_OFFSET = 10; // Diagram lambda, Place holder
     //======Upper Arm Linear Actuator================
-    public static final double ARM_UPPER_ARM_FOUR_BAR_FOLLOWER_PIN_DISTANCE = 8.963; // Diagram L1, All Place holders
-    public static final double ARM_UPPER_ARM_FOUR_BAR_COUPLER_PIN_DISTANCE = 13.073; // Diagram L2
-    public static final double ARM_UPPER_ARM_FOUR_BAR_DRIVER_PIN_DISTANCE = 12.515; // Diagram L3
-    public static final double ARM_UPPER_ARM_FOUR_BAR_GROUND_PIN_DISTANCE = 10.308; // Diagram L4
+    public static final double ARM_UPPER_ARM_FOUR_BAR_FOLLOWER_PIN_DISTANCE = 10.0; // 8.963; // Diagram L1
+    public static final double ARM_UPPER_ARM_FOUR_BAR_COUPLER_PIN_DISTANCE = 13.0; // 13.073; // Diagram L2
+    public static final double ARM_UPPER_ARM_FOUR_BAR_DRIVER_PIN_DISTANCE = 12.0; // 12.515; // Diagram L3
+    public static final double ARM_UPPER_ARM_FOUR_BAR_GROUND_PIN_DISTANCE = 11.0; // 10.308; // Diagram L4
     public static final double ARM_UPPER_ARM_D1 = 3.885; // Diagram D1
     public static final double ARM_UPPER_ARM_D2 = 0.087; // Diagram D2
     public static final double ARM_UPPER_ARM_D3 = 21.049; // Diagram D3
     public static final double ARM_UPPER_ARM_D4 = 15.075; // Diagram D4
-    public static final double ARM_UPPER_ARM_D5 = 4; // Diagram D5
-    public static final double ARM_UPPER_ARM_D6 = 2; // Diagram D6
+    public static final double ARM_UPPER_ARM_D5 = 8.0; // Diagram D5
+    public static final double ARM_UPPER_ARM_D6 = 1.0; // Diagram D6
     public static final double ARM_UPPER_ARM_L7 = 5.916; // Diagram L7
     public static final double ARM_UPPER_ARM_L8 = 21.857; // Diagram L8
     public static final double ARM_UPPER_ARM_SIGMA_ANGLE = Helpers.atan2d(HardwareConstants.ARM_UPPER_ARM_D6, HardwareConstants.ARM_UPPER_ARM_D5); // Diagram sigma

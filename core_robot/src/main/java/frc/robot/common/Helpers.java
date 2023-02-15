@@ -205,11 +205,11 @@ public class Helpers
     }
 
     /**
-     * 
-     * @param adjacent1
-     * @param adjacent2
-     * @param angle
-     * @return
+     * Calculate the distance of the link in a triange opposite the provided angle, with the two adjacent lengths known
+     * @param adjacent1 first length adjacent to the provided angle
+     * @param adjacent2 second length adjacent to the provided angle
+     * @param angle in degrees
+     * @return length of the link opposite the provided angle
      */
     public static double calculateLawOfCosinesDistance(double adjacent1, double adjacent2, double angle)
     {
@@ -219,15 +219,62 @@ public class Helpers
     }
 
     /**
-     * 
-     * @param adjacent1
-     * @param adjacent2
-     * @param opposite
-     * @return
+     * Calculate the angle between a pair of adjacent lines with the length in the triangle known
+     * @param adjacent1 first length adjacent to the desired angle
+     * @param adjacent2 second length adjacent to the desired angle
+     * @param opposite length of the line opposite to the desired angle
+     * @return angle of the value in degrees
      */
     public static double calculateLawOfCosinesAngle(double adjacent1, double adjacent2, double opposite)
     {
+        return (double)Helpers.calculateLawOfCosinesAngle(false, adjacent1, adjacent2, opposite);
+    }
+
+    /**
+     * Calculate the angle between a pair of adjacent lines with the length in the triangle known
+     * @param adjacent1 first length adjacent to the desired angle
+     * @param adjacent2 second length adjacent to the desired angle
+     * @param opposite length of the line opposite to the desired angle
+     * @return angle of the value in degrees
+     */
+    public static Double calculateLawOfCosinesAngleOrNull(double adjacent1, double adjacent2, double opposite)
+    {
+        return Helpers.calculateLawOfCosinesAngle(true, adjacent1, adjacent2, opposite);
+    }
+
+    /**
+     * Calculate the angle between a pair of adjacent lines with the length in the triangle known
+     * @param nullIfInvalid whether to return null if the angle is impossible, or to default to 0/180 degrees
+     * @param adjacent1 first length adjacent to the desired angle
+     * @param adjacent2 second length adjacent to the desired angle
+     * @param opposite length of the line opposite to the desired angle
+     * @return angle of the value in degrees
+     */
+    private static Double calculateLawOfCosinesAngle(boolean nullIfInvalid, double adjacent1, double adjacent2, double opposite)
+    {
         double angle;
+        double cosineAngle = (adjacent1 * adjacent1 + adjacent2 * adjacent2 - opposite * opposite) / (2.0 * adjacent1 * adjacent2);
+        if (cosineAngle > 1.0)
+        {
+            // be forgiving of values that are just _very slightly_ off regardless of whether we are returning null for invalid angles...
+            if (cosineAngle <= 1.00001)
+            {
+                return 0.0;
+            }
+
+            return nullIfInvalid ? null : 0.0;
+        }
+        else if (cosineAngle < -1.0)
+        {
+            // be forgiving of values that are just _very slightly_ off regardless of whether we are returning null for invalid angles...
+            if (cosineAngle >= -1.00001)
+            {
+                return 180.0;
+            }
+
+            return nullIfInvalid ? null : 180.0;
+        }
+
         angle = Helpers.acosd((adjacent1 * adjacent1 + adjacent2 * adjacent2 - opposite * opposite) / (2.0 * adjacent1 * adjacent2));
         return angle;
     }

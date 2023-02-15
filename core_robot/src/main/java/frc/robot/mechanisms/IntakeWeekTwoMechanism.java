@@ -43,8 +43,8 @@ public class IntakeWeekTwoMechanism implements IMechanism
             provider.getDoubleSolenoid(
                 ElectronicsConstants.PNEUMATICS_MODULE_A,
                 ElectronicsConstants.PNEUMATICS_MODULE_TYPE_A,
-                ElectronicsConstants.CARGO_INTAKE_PISTON_FORWARD,
-                ElectronicsConstants.CARGO_INTAKE_PISTON_REVERSE);
+                ElectronicsConstants.ARM_INTAKE_PISTON_FORWARD,
+                ElectronicsConstants.ARM_INTAKE_PISTON_REVERSE);
 
         this.currentIntakeState = IntakeState.Retracted;
     }
