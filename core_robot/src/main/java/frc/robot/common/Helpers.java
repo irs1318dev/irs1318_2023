@@ -219,7 +219,7 @@ public class Helpers
     }
 
     /**
-     * Calculate the angle between a pair of adjacent lines with the length in the triangle known 
+     * Calculate the angle between a pair of adjacent lines with the length in the triangle known
      * @param adjacent1 first length adjacent to the desired angle
      * @param adjacent2 second length adjacent to the desired angle
      * @param opposite length of the line opposite to the desired angle
@@ -227,7 +227,54 @@ public class Helpers
      */
     public static double calculateLawOfCosinesAngle(double adjacent1, double adjacent2, double opposite)
     {
+        return (double)Helpers.calculateLawOfCosinesAngle(false, adjacent1, adjacent2, opposite);
+    }
+
+    /**
+     * Calculate the angle between a pair of adjacent lines with the length in the triangle known
+     * @param adjacent1 first length adjacent to the desired angle
+     * @param adjacent2 second length adjacent to the desired angle
+     * @param opposite length of the line opposite to the desired angle
+     * @return angle of the value in degrees
+     */
+    public static Double calculateLawOfCosinesAngleOrNull(double adjacent1, double adjacent2, double opposite)
+    {
+        return Helpers.calculateLawOfCosinesAngle(true, adjacent1, adjacent2, opposite);
+    }
+
+    /**
+     * Calculate the angle between a pair of adjacent lines with the length in the triangle known
+     * @param nullIfInvalid whether to return null if the angle is impossible, or to default to 0/180 degrees
+     * @param adjacent1 first length adjacent to the desired angle
+     * @param adjacent2 second length adjacent to the desired angle
+     * @param opposite length of the line opposite to the desired angle
+     * @return angle of the value in degrees
+     */
+    private static Double calculateLawOfCosinesAngle(boolean nullIfInvalid, double adjacent1, double adjacent2, double opposite)
+    {
         double angle;
+        double cosineAngle = (adjacent1 * adjacent1 + adjacent2 * adjacent2 - opposite * opposite) / (2.0 * adjacent1 * adjacent2);
+        if (cosineAngle > 1.0)
+        {
+            // be forgiving of values that are just _very slightly_ off regardless of whether we are returning null for invalid angles...
+            if (cosineAngle <= 1.00001)
+            {
+                return 0.0;
+            }
+
+            return nullIfInvalid ? null : 0.0;
+        }
+        else if (cosineAngle < -1.0)
+        {
+            // be forgiving of values that are just _very slightly_ off regardless of whether we are returning null for invalid angles...
+            if (cosineAngle >= -1.00001)
+            {
+                return 180.0;
+            }
+
+            return nullIfInvalid ? null : 180.0;
+        }
+
         angle = Helpers.acosd((adjacent1 * adjacent1 + adjacent2 * adjacent2 - opposite * opposite) / (2.0 * adjacent1 * adjacent2));
         return angle;
     }

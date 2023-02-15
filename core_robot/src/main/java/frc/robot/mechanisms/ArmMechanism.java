@@ -634,25 +634,30 @@ public class ArmMechanism implements IMechanism
      * using inverse kinematics 
      * @param x goal offset (in inches)
      * @param z goal offset (in inches)
-     * @return pair of lower, upper angles (theta1, theta2) (in degrees)
+     * @return pair of lower, upper angles (theta1, theta2) (in degrees) or null if the position is unreachable
      */
     static DoubleTuple calculateIKAnglesFromPosition(double x, double z)
     {
         final double L1 = HardwareConstants.ARM_LOWER_ARM_LENGTH;
         final double L2 = HardwareConstants.ARM_UPPER_ARM_LENGTH;
 
-        final double L1Squared = L1 * L1;
-        final double L2Squared = L2 * L2;
-
-        double rSquared = x * x + z * z;
-        double cosineTheta2 = (L1Squared + L2Squared - rSquared) / (2.0 * L1 * L2);
-        if (cosineTheta2 > 1.0 || cosineTheta2 < -1.0)
+        double R = Math.sqrt(x * x + z * z);
+        Double theta2 = Helpers.calculateLawOfCosinesAngleOrNull(L1, L2, R);
+        if (theta2 == null)
         {
+            // must be impossible to reach this position with our current dimensions...
             return null;
         }
 
-        double theta2 = Helpers.acosd(cosineTheta2);
-        double theta1 = Helpers.atan2d(z, x) + Helpers.acosd((L1Squared + rSquared - L2Squared) / (2.0 * L1 * Math.sqrt(rSquared)));
+        Double alpha = Helpers.calculateLawOfCosinesAngleOrNull(L1, R, L2);
+        if (alpha == null)
+        {
+            // must be impossible to reach this position with our current dimensions...
+            return null;
+        }
+
+        double beta = Helpers.atan2d(z, x);
+        double theta1 = alpha + beta;
 
         // in order lower, upper
         return new DoubleTuple(theta1, theta2);
@@ -679,7 +684,7 @@ public class ArmMechanism implements IMechanism
      * Calculate desired extension of the linear actuator based on the angles of the arms
      * @param theta1 lower arm angle (in degrees)
      * @param theta2 upper arm angle (in degrees)
-     * @return pair of lower, upper linear actuator extensions (in ticks)
+     * @return pair of lower, upper linear actuator extensions (in ticks) or null if the position is unreachable
      */
     static DoubleTuple calculateIKExtensionsFromAngles(double theta1, double theta2)
     {
@@ -706,16 +711,65 @@ public class ArmMechanism implements IMechanism
         double A1 = theta2 + phi;
         double L5 = Helpers.calculateLawOfCosinesDistance(L1, L4, A1);
 
-        double A4 = Helpers.calculateLawOfCosinesAngle(L3, L5, L2);
-        double A3 = Helpers.calculateLawOfCosinesAngle(L4, L5, L1);
+        Double A4 = Helpers.calculateLawOfCosinesAngleOrNull(L3, L5, L2);
+        if (A4 == null)
+        {
+            // must be impossible to reach this position with our current dimensions...
+            return null;
+        }
+
+        Double A3 = Helpers.calculateLawOfCosinesAngleOrNull(L4, L5, L1);
+        if (A3 == null)
+        {
+            // must be impossible to reach this position with our current dimensions...
+            return null;
+        }
 
         double B1 = 180.0 - A3 - A4 - phi - psi + sigma;
         double L6 = Helpers.calculateLawOfCosinesDistance(L7, L8, B1);
 
+        double lowerLAExtension = L9 - HardwareConstants.ARM_LINEAR_ACTUATOR_RETRACTED_LENGTH;
+        if (lowerLAExtension < -0.00001 || lowerLAExtension > HardwareConstants.ARM_EXTENTION_LENGTH)
+        {
+            // be forgiving of values that are just very slightly off...
+            if (lowerLAExtension >= -0.00001)
+            {
+                lowerLAExtension = 0.0;
+            }
+            else if (lowerLAExtension <= HardwareConstants.ARM_EXTENTION_LENGTH + 0.00001)
+            {
+                lowerLAExtension = HardwareConstants.ARM_EXTENTION_LENGTH;
+            }
+            else
+            {
+                // must be impossible to reach this position with our current dimensions...
+                return null;
+            }
+        }
+
+        double upperLAExtension = L6 - HardwareConstants.ARM_LINEAR_ACTUATOR_RETRACTED_LENGTH;
+        if (upperLAExtension < -0.00001 || upperLAExtension > HardwareConstants.ARM_EXTENTION_LENGTH)
+        {
+            // be forgiving of values that are just very slightly off...
+            if (upperLAExtension >= -0.00001)
+            {
+                upperLAExtension = 0.0;
+            }
+            else if (upperLAExtension <= HardwareConstants.ARM_EXTENTION_LENGTH + 0.00001)
+            {
+                upperLAExtension = HardwareConstants.ARM_EXTENTION_LENGTH;
+            }
+            else
+            {
+                // must be impossible to reach this position with our current dimensions...
+                return null;
+            }
+        }
+
         // in order lower, upper
         return new DoubleTuple(
-            (L9 - HardwareConstants.ARM_LINEAR_ACTUATOR_RETRACTED_LENGTH) * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH,
-            (L6 - HardwareConstants.ARM_LINEAR_ACTUATOR_RETRACTED_LENGTH) * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH);
+            lowerLAExtension * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH,
+            upperLAExtension * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH);
     }
 
     /**
@@ -735,8 +789,8 @@ public class ArmMechanism implements IMechanism
         final double L10 = HardwareConstants.ARM_LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM;
         final double L11 = HardwareConstants.ARM_LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM;
         
-        double theta1WithoutOffsets = Helpers.calculateLawOfCosinesAngle(L10, L11, L9);
-        double theta1_out = theta1WithoutOffsets - rho + lambda;
+        double E1 = Helpers.calculateLawOfCosinesAngle(L10, L11, L9);
+        double theta1 = E1 - rho + lambda;
 
         // Upper LA Distance FK
         final double phi = HardwareConstants.ARM_UPPER_ARM_PHI_ANGLE;
@@ -750,13 +804,13 @@ public class ArmMechanism implements IMechanism
         final double L8 = HardwareConstants.ARM_UPPER_ARM_L8;
 
         double B1Prime = Helpers.calculateLawOfCosinesAngle(L7, L8, L6);
-        double angle1Prime = 180 - phi - psi + sigma - B1Prime;
-        double length5Prime = Helpers.calculateLawOfCosinesDistance(L4, L3, angle1Prime);
-        double angle3Prime = Helpers.calculateLawOfCosinesAngle(L4, length5Prime, L3);
-        double angle4Prime = Helpers.calculateLawOfCosinesAngle(L1, length5Prime, L2);
-        double theta2_out = angle4Prime + (angle3Prime - phi);
+        double A1Prime = 180 - phi - psi + sigma - B1Prime;
+        double L5Prime = Helpers.calculateLawOfCosinesDistance(L4, L3, A1Prime);
+        double A3Prime = Helpers.calculateLawOfCosinesAngle(L4, L5Prime, L3);
+        double A4Prime = Helpers.calculateLawOfCosinesAngle(L1, L5Prime, L2);
+        double theta2 = A4Prime + (A3Prime - phi);
 
         // in order lower, upper
-        return new DoubleTuple(theta1_out, theta2_out);
+        return new DoubleTuple(theta1, theta2);
     }
 }

@@ -1,6 +1,7 @@
 package frc.robot.mechanisms;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
 
@@ -103,6 +104,7 @@ public class ArmMechanismTests
                 if (angles != null)
                 {
                     DoubleTuple extensions = ArmMechanism.calculateIKExtensionsFromAngles(angles.first, angles.second);
+                    assertNotNull(extensions);
                     assertEquals(lowerExtension, extensions.first, 0.01, "lowerExtension");
                     assertEquals(upperExtension, extensions.second, 0.01, "upperExtension");
                 }
