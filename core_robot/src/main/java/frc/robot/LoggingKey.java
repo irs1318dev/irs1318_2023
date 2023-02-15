@@ -100,6 +100,8 @@ public enum LoggingKey
     DriveTrainSteerError4("dt.steer_err4"),
     DriveTrainSteerPositionGoal4("dt.steer_goal4"),
 
+    ArmFKXPosition("a.fk_x_pos"),
+    ArmFKZPosition("a.fk_z_pos"),
     ArmLowerLeftPosition("a.low_left_pos"),
     ArmLowerRightPosition("a.low_right_pos"),
     ArmUpperPosition("a.up_pos"),

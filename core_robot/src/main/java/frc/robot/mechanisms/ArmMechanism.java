@@ -70,16 +70,16 @@ public class ArmMechanism implements IMechanism
 
     //----------------- Intake Variables -----------------
 
-    // private final ITalonSRX intakeMotor;
-    // private final IDoubleSolenoid intakeExtender;
-
-    // private enum IntakeState
-    // {
-    //     Retracted,
-    //     Extended
-    // };
-
-    // private IntakeState currentIntakeState;
+    private final ITalonSRX intakeMotor;
+    private final IDoubleSolenoid intakeExtender;
+ 
+    private enum IntakeState
+    {
+        Retracted,
+        Extended
+    };
+ 
+    private IntakeState currentIntakeState;
 
     @Inject
     public ArmMechanism(
@@ -194,19 +194,19 @@ public class ArmMechanism implements IMechanism
 
         //-------------------------- Intake Initialization ----------------------------------
 
-        // this.intakeMotor = provider.getTalonSRX(ElectronicsConstants.INTAKE_MOTOR_CAN_ID);
-        // this.intakeMotor.setControlMode(TalonXControlMode.PercentOutput);
-        // this.intakeMotor.setInvertOutput(TuningConstants.ARM_INTAKE_MOTOR_INVERT_OUTPUT);
-        // this.intakeMotor.setNeutralMode(MotorNeutralMode.Brake);
+        this.intakeMotor = provider.getTalonSRX(ElectronicsConstants.INTAKE_MOTOR_CAN_ID);
+        this.intakeMotor.setControlMode(TalonXControlMode.PercentOutput);
+        this.intakeMotor.setInvertOutput(TuningConstants.ARM_INTAKE_MOTOR_INVERT_OUTPUT);
+        this.intakeMotor.setNeutralMode(MotorNeutralMode.Brake);
 
-        // this.intakeExtender =
-        //     provider.getDoubleSolenoid(
-        //         ElectronicsConstants.PNEUMATICS_MODULE_A,
-        //         ElectronicsConstants.PNEUMATICS_MODULE_TYPE_A,
-        //         ElectronicsConstants.CARGO_INTAKE_PISTON_FORWARD,
-        //         ElectronicsConstants.CARGO_INTAKE_PISTON_REVERSE);
+        this.intakeExtender =
+            provider.getDoubleSolenoid(
+                ElectronicsConstants.PNEUMATICS_MODULE_A,
+                ElectronicsConstants.PNEUMATICS_MODULE_TYPE_A,
+                ElectronicsConstants.ARM_INTAKE_PISTON_FORWARD,
+                ElectronicsConstants.ARM_INTAKE_PISTON_REVERSE);
 
-        // this.currentIntakeState = IntakeState.Retracted;
+        this.currentIntakeState = IntakeState.Retracted;
     }
 
 
@@ -227,7 +227,15 @@ public class ArmMechanism implements IMechanism
         this.logger.logNumber(LoggingKey.ArmLowerRightVelocity, this.lowerRightArmVelocity);
         this.logger.logNumber(LoggingKey.ArmUpperVelocity, this.upperArmVelocity);
 
-        // TODO: calculate current x, z positions using forward kinematics:
+        DoubleTuple offsets = ArmMechanism.calculateFK(
+            (this.lowerLeftArmPosition + this.lowerRightArmPosition) / 2.0,
+            this.upperArmPosition);
+
+        if (offsets != null)
+        {
+            this.logger.logNumber(LoggingKey.ArmFKXPosition, offsets.first);
+            this.logger.logNumber(LoggingKey.ArmFKZPosition, offsets.second);
+        }        
     }
 
     @Override
@@ -422,40 +430,40 @@ public class ArmMechanism implements IMechanism
         //----------------------------------- Intake Update -----------------------------------
 
         // control intake rollers
-        // double intakePower = TuningConstants.ZERO;
-        // if (this.driver.getDigital(DigitalOperation.IntakeIn))
-        // {
-        //     intakePower = TuningConstants.ARM_INTAKE_POWER;
-        // }
-        // else if (this.driver.getDigital(DigitalOperation.IntakeOut))
-        // {
-        //     intakePower = -TuningConstants.ARM_INTAKE_POWER;
-        // }
+        double intakePower = TuningConstants.ZERO;
+        if (this.driver.getDigital(DigitalOperation.IntakeIn))
+        {
+            intakePower = TuningConstants.ARM_INTAKE_POWER;
+        }
+        else if (this.driver.getDigital(DigitalOperation.IntakeOut))
+        {
+            intakePower = -TuningConstants.ARM_INTAKE_POWER;
+        }
 
-        // this.intakeMotor.set(intakePower);
-        // this.logger.logNumber(LoggingKey.ArmIntakePower, intakePower);
+        this.intakeMotor.set(intakePower);
+        this.logger.logNumber(LoggingKey.ArmIntakePower, intakePower);
 
-        // // intake state transitions
-        // if (this.driver.getDigital(DigitalOperation.IntakeExtend))
-        // {
-        //     this.currentIntakeState = IntakeState.Extended;
-        // }
-        // else if (this.driver.getDigital(DigitalOperation.IntakeRetract))
-        // {
-        //     this.currentIntakeState = IntakeState.Retracted;
-        // }
+        // intake state transitions
+        if (this.driver.getDigital(DigitalOperation.IntakeExtend))
+        {
+            this.currentIntakeState = IntakeState.Extended;
+        }
+        else if (this.driver.getDigital(DigitalOperation.IntakeRetract))
+        {
+            this.currentIntakeState = IntakeState.Retracted;
+        }
 
-        // this.logger.logBoolean(LoggingKey.ArmIntakeExtended, this.currentIntakeState == IntakeState.Extended);
-        // switch (this.currentIntakeState)
-        // {
-        //     case Extended:
-        //         this.intakeExtender.set(DoubleSolenoidValue.Forward);
-        //         break;
-        //     default:
-        //     case Retracted:
-        //         this.intakeExtender.set(DoubleSolenoidValue.Reverse);
-        //         break;
-        // }
+        this.logger.logBoolean(LoggingKey.ArmIntakeExtended, this.currentIntakeState == IntakeState.Extended);
+        switch (this.currentIntakeState)
+        {
+            case Extended:
+                this.intakeExtender.set(DoubleSolenoidValue.Forward);
+                break;
+            default:
+            case Retracted:
+                this.intakeExtender.set(DoubleSolenoidValue.Reverse);
+                break;
+        }
 
         //----------------------------------- Main Arm -----------------------------------
         // if (this.curLeftFlipperState != ConeFlipperState.Retracted || this.curRightFlipperState != ConeFlipperState.Retracted)
@@ -535,6 +543,8 @@ public class ArmMechanism implements IMechanism
         this.lowerLeftArm.stop();
         this.lowerRightArm.stop();
         this.upperArm.stop();
+        this.intakeMotor.stop();
+        this.intakeExtender.set(DoubleSolenoidValue.Off);
         //this.leftConeFlipper.set(DoubleSolenoidValue.Off);
         //this.rightConeFlipper.set(DoubleSolenoidValue.Off);
     }
