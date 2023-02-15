@@ -583,13 +583,13 @@ public class ArmMechanism implements IMechanism
                 TuningConstants.ZERO);
         }
 
-        DoubleTuple ikAngles = ArmMechanism.calculateIKAngles(x, z);
+        DoubleTuple ikAngles = ArmMechanism.calculateIKAnglesFromPosition(x, z);
         if (ikAngles == null)
         {
             return null;
         }
 
-        return ArmMechanism.calculateIKLinearActuatorDistance(ikAngles.first, ikAngles.second);
+        return ArmMechanism.calculateIKExtensionsFromAngles(ikAngles.first, ikAngles.second);
     }
 
     /**
@@ -610,13 +610,13 @@ public class ArmMechanism implements IMechanism
             return null;
         }
 
-        DoubleTuple fkAngles = ArmMechanism.calculateFKAnglesFromLinearActuatorDistance(lowerLAExtension, upperLAExtension);
+        DoubleTuple fkAngles = ArmMechanism.calculateFKAnglesFromExtensions(lowerLAExtension, upperLAExtension);
         if (fkAngles == null)
         {
             return null;
         }
 
-        return ArmMechanism.calculateFKPositions(fkAngles.first, fkAngles.second);
+        return ArmMechanism.calculateFKPositionsFromAngles(fkAngles.first, fkAngles.second);
     }
 
     /**
@@ -626,7 +626,7 @@ public class ArmMechanism implements IMechanism
      * @param z goal offset (in inches)
      * @return pair of lower, upper angles (theta1, theta2) (in degrees)
      */
-    static DoubleTuple calculateIKAngles(double x, double z)
+    static DoubleTuple calculateIKAnglesFromPosition(double x, double z)
     {
         final double L1 = HardwareConstants.ARM_LOWER_ARM_LENGTH;
         final double L2 = HardwareConstants.ARM_UPPER_ARM_LENGTH;
@@ -655,13 +655,13 @@ public class ArmMechanism implements IMechanism
      * @param upperAngle theta2 (in degrees)
      * @return pair of horizontal, vertical offsets (x, z) (in inches)
      */
-    static DoubleTuple calculateFKPositions(double lowerAngle, double upperAngle)
+    static DoubleTuple calculateFKPositionsFromAngles(double lowerAngle, double upperAngle)
     {
         final double L1 = HardwareConstants.ARM_LOWER_ARM_LENGTH;
         final double L2 = HardwareConstants.ARM_UPPER_ARM_LENGTH;
 
-        double xPosition = L1 * Helpers.cosd(lowerAngle) + L2 * Helpers.cosd(lowerAngle + upperAngle);
-        double zPosition = L1 * Helpers.sind(lowerAngle) + L2 * Helpers.sind(lowerAngle + upperAngle);
+        double xPosition = L1 * Helpers.cosd(lowerAngle) + L2 * Helpers.cosd(lowerAngle + 180.0 - upperAngle);
+        double zPosition = L1 * Helpers.sind(lowerAngle) + L2 * Helpers.sind(lowerAngle + 180.0 - upperAngle);
         return new DoubleTuple(xPosition, zPosition);
     }
 
@@ -671,7 +671,7 @@ public class ArmMechanism implements IMechanism
      * @param theta2 upper arm angle (in degrees)
      * @return pair of lower, upper linear actuator extensions (in ticks)
      */
-    static DoubleTuple calculateIKLinearActuatorDistance(double theta1, double theta2)
+    static DoubleTuple calculateIKExtensionsFromAngles(double theta1, double theta2)
     {
         // Lower Linear Actuator Angle & Length Calculations
         final double lambda = HardwareConstants.ARM_LOWER_ARM_LINEAR_ACTUATOR_LEFT_ANGLE_OFFSET;
@@ -710,24 +710,43 @@ public class ArmMechanism implements IMechanism
 
     /**
      * Calculate the angles of the lower and upper arms given the extension of the linear actuators
-     * @param lowerLAExtension amount the lower LA has been extended
-     * @param upperLAExtension amount the upper LA has been extended
+     * @param lowerLAExtension amount the lower LA has been extended (in ticks)
+     * @param upperLAExtension amount the upper LA has been extended (in ticks)
      * @return lower, upper arm angles (theta1, theta2)
      */
-    static DoubleTuple calculateFKAnglesFromLinearActuatorDistance(double lowerLAExtension, double upperLAExtension)
+    static DoubleTuple calculateFKAnglesFromExtensions(double lowerLAExtension, double upperLAExtension)
     {
-        // TODO: invert the above
-        //Lower LA Distance FK
-        double theta1WithoutOffsets = Helpers.calculateLawOfCosinesAngle(HardwareConstants. ARM_LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM, HardwareConstants.ARM_LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM, lowerLAExtension);
-        double theta1_Out = theta1WithoutOffsets - HardwareConstants.ARM_LOWER_ARM_LINEAR_ACTUATOR_RIGHT_ANGLE_OFFSET + HardwareConstants.ARM_LOWER_ARM_LINEAR_ACTUATOR_LEFT_ANGLE_OFFSET;
-        //Upper LA Distance FK
-        double B1Prime = Helpers.calculateLawOfCosinesAngle(HardwareConstants.ARM_UPPER_ARM_L7, HardwareConstants.ARM_UPPER_ARM_L8, upperLAExtension);
-        double angle1Prime = 180 - HardwareConstants.ARM_UPPER_ARM_PHI_ANGLE - HardwareConstants.ARM_UPPER_ARM_PSI_ANGLE + HardwareConstants.ARM_UPPER_ARM_SIGMA_ANGLE - B1Prime;
-        double length5Prime = Helpers.calculateLawOfCosinesDistance(HardwareConstants.ARM_UPPER_ARM_FOUR_BAR_GROUND_PIN_DISTANCE, HardwareConstants.ARM_UPPER_ARM_FOUR_BAR_DRIVER_PIN_DISTANCE, angle1Prime);
-        double angle3Prime = Helpers.calculateLawOfCosinesAngle(HardwareConstants.ARM_UPPER_ARM_FOUR_BAR_GROUND_PIN_DISTANCE, length5Prime, HardwareConstants.ARM_UPPER_ARM_FOUR_BAR_DRIVER_PIN_DISTANCE);
-        double angle4Prime = Helpers.calculateLawOfCosinesAngle(HardwareConstants.ARM_UPPER_ARM_FOUR_BAR_FOLLOWER_PIN_DISTANCE, length5Prime, HardwareConstants.ARM_UPPER_ARM_FOUR_BAR_COUPLER_PIN_DISTANCE);
-        double theta2_out = angle4Prime + (angle3Prime - HardwareConstants.ARM_UPPER_ARM_PHI_ANGLE);
+        double L9 = lowerLAExtension / HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH + HardwareConstants.ARM_LINEAR_ACTUATOR_RETRACTED_LENGTH;
+        double L6 = upperLAExtension / HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH + HardwareConstants.ARM_LINEAR_ACTUATOR_RETRACTED_LENGTH;
+
+        // Lower LA Distance FK
+        final double lambda = HardwareConstants.ARM_LOWER_ARM_LINEAR_ACTUATOR_LEFT_ANGLE_OFFSET;
+        final double rho = HardwareConstants.ARM_LOWER_ARM_LINEAR_ACTUATOR_RIGHT_ANGLE_OFFSET;
+        final double L10 = HardwareConstants.ARM_LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM;
+        final double L11 = HardwareConstants.ARM_LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM;
+        
+        double theta1WithoutOffsets = Helpers.calculateLawOfCosinesAngle(L10, L11, L9);
+        double theta1_out = theta1WithoutOffsets - rho + lambda;
+
+        // Upper LA Distance FK
+        final double phi = HardwareConstants.ARM_UPPER_ARM_PHI_ANGLE;
+        final double L1 = HardwareConstants.ARM_UPPER_ARM_FOUR_BAR_FOLLOWER_PIN_DISTANCE;
+        final double L2 = HardwareConstants.ARM_UPPER_ARM_FOUR_BAR_COUPLER_PIN_DISTANCE;
+        final double L3 = HardwareConstants.ARM_UPPER_ARM_FOUR_BAR_DRIVER_PIN_DISTANCE;
+        final double L4 = HardwareConstants.ARM_UPPER_ARM_FOUR_BAR_GROUND_PIN_DISTANCE;
+        final double psi = HardwareConstants.ARM_UPPER_ARM_PSI_ANGLE;
+        final double sigma = HardwareConstants.ARM_UPPER_ARM_SIGMA_ANGLE;
+        final double L7 = HardwareConstants.ARM_UPPER_ARM_L7;
+        final double L8 = HardwareConstants.ARM_UPPER_ARM_L8;
+
+        double B1Prime = Helpers.calculateLawOfCosinesAngle(L7, L8, L6);
+        double angle1Prime = 180 - phi - psi + sigma - B1Prime;
+        double length5Prime = Helpers.calculateLawOfCosinesDistance(L4, L3, angle1Prime);
+        double angle3Prime = Helpers.calculateLawOfCosinesAngle(L4, length5Prime, L3);
+        double angle4Prime = Helpers.calculateLawOfCosinesAngle(L1, length5Prime, L2);
+        double theta2_out = angle4Prime + (angle3Prime - phi);
+
         // in order lower, upper
-        return new DoubleTuple(theta1_Out, theta2_out);
+        return new DoubleTuple(theta1_out, theta2_out);
     }
 }
