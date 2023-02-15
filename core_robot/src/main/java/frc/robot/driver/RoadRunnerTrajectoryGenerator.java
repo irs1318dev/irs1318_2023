@@ -409,29 +409,29 @@ public class RoadRunnerTrajectoryGenerator
             "InBetweenGuardToBlueNineStart");
         
         //InBetweenPointClose to InBetweenPointFar
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(InBetweenLoadClose,  TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
+        // addTrajectory(
+        //     trajectoryManager,
+        //     startTrajectory(InBetweenLoadClose,  TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
 
-                .splineToConstantHeading(InBetweenLoadFar, TurnaryOperatorForwardsHeadingOrTangent), //Goes to InBetweenPointLoadFar
+        //         .splineToConstantHeading(InBetweenLoadFar, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS), //Goes to InBetweenPointLoadFar
                 
-                //Jamie's Charge Station task
-            "InBetweenPointCloseToInBetweenPointFar");
+        //         //Jamie's Charge Station task
+        //     "InBetweenPointCloseToInBetweenPointFar");
         
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(ChargeStationClose,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
+        // addTrajectory(
+        //     trajectoryManager,
+        //     startTrajectory(ChargeStationClose,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
             
-                .splineToConstantHeading(ChargeStationFar, TurnaryOperatorForwardsHeadingOrTangent), //Goes to ChargeStationFar over the chargestation
+        //         .splineToConstantHeading(ChargeStationFar, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS), //Goes to ChargeStationFar over the chargestation
                 
-                //Jamie's Charge Station task
-            "ChargeStationCloseToChargeStationFar");
+        //         //Jamie's Charge Station task
+        //     "ChargeStationCloseToChargeStationFar");
         
         addTrajectory(
             trajectoryManager,
             startTrajectory(InBetweenGuardClose,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
             
-                .splineToConstantHeading(InBetweenGuardFar, TurnaryOperatorForwardsHeadingOrTangent), //Goes to ChargeStationFar over the chargestation
+                .splineToConstantHeading(InBetweenGuardFar, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS), //Goes to ChargeStationFar over the chargestation
                 
                 //Jamie's Charge Station task
             "InBetweenGuardCloseToInBetweenGuardFar");
