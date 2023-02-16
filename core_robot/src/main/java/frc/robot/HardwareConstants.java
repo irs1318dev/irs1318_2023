@@ -54,8 +54,8 @@ public class HardwareConstants
     public static final double ARM_LINEAR_ACTUATOR_EXTENDED_LENGTH = HardwareConstants.ARM_LINEAR_ACTUATOR_RETRACTED_LENGTH + HardwareConstants.ARM_EXTENTION_LENGTH; // in inches
 
     // values may change:
-    public static final double ARM_LOWER_ARM_LENGTH = 46.0; // in inches
-    public static final double ARM_UPPER_ARM_LENGTH = 37.0; // in inches
+    public static final double ARM_LOWER_ARM_LENGTH = 46.0; // Diagram D11, in inches
+    public static final double ARM_UPPER_ARM_LENGTH = 37.0; // Diagram D12, in inches
 
     public static final double ARM_MAX_END_EFFECTOR_HEIGHT = 8.0; // inches, max height of the end-effector above the end of the upper arm
     public static final double ARM_MAX_END_EFFECTOR_EXTENSION = 8.0; // inches, max extension of the end-effector past the end of the upper arm
@@ -75,13 +75,13 @@ public class HardwareConstants
     public static final double ARM_UPPER_ARM_D8 = 1.75;
     public static final double ARM_UPPER_ARM_D9 = 4.0;
     public static final double ARM_UPPER_ARM_D10 = 19.45;
-    //======Upper Arm Linear Actuator================
+    // ======Upper Arm Linear Actuator================
     public static final double ARM_UPPER_ARM_FOUR_BAR_FOLLOWER_PIN_DISTANCE = 9.0; // Diagram L1
     public static final double ARM_UPPER_ARM_FOUR_BAR_COUPLER_PIN_DISTANCE = 13.0; // Diagram L2
     public static final double ARM_UPPER_ARM_FOUR_BAR_DRIVER_PIN_DISTANCE = 12.3; // Diagram L3
     public static final double ARM_UPPER_ARM_FOUR_BAR_GROUND_PIN_DISTANCE = 10.30776; // Diagram L4
     public static final double ARM_UPPER_ARM_D1 = 4.055; // Diagram D1
-    public static final double ARM_UPPER_ARM_D2 = 0.075; // Diagram D2
+    public static final double ARM_UPPER_ARM_D2 = -0.075; // Diagram D2
     public static final double ARM_UPPER_ARM_D3 = 21; // Diagram D3
     public static final double ARM_UPPER_ARM_D4 = 9.5; // Diagram D4
     public static final double ARM_UPPER_ARM_D5 = 4.0; // Diagram D5

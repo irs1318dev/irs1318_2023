@@ -638,18 +638,18 @@ public class ArmMechanism implements IMechanism
      */
     static DoubleTuple calculateIKAnglesFromPosition(double x, double z)
     {
-        final double L1 = HardwareConstants.ARM_LOWER_ARM_LENGTH;
-        final double L2 = HardwareConstants.ARM_UPPER_ARM_LENGTH;
+        final double D11 = HardwareConstants.ARM_LOWER_ARM_LENGTH;
+        final double D12 = HardwareConstants.ARM_UPPER_ARM_LENGTH;
 
-        double R = Math.sqrt(x * x + z * z);
-        Double theta2 = Helpers.calculateLawOfCosinesAngleOrNull(L1, L2, R);
+        double R0 = Math.sqrt(x * x + z * z);
+        Double theta2 = Helpers.calculateLawOfCosinesAngleOrNull(D11, D12, R0);
         if (theta2 == null)
         {
             // must be impossible to reach this position with our current dimensions...
             return null;
         }
 
-        Double alpha = Helpers.calculateLawOfCosinesAngleOrNull(L1, R, L2);
+        Double alpha = Helpers.calculateLawOfCosinesAngleOrNull(D11, R0, D12);
         if (alpha == null)
         {
             // must be impossible to reach this position with our current dimensions...
@@ -666,17 +666,17 @@ public class ArmMechanism implements IMechanism
     /**
      * Calculate the offsets of the end effector based on the angles for the lower and upper arms
      * using forward kinematics
-     * @param lowerAngle theta1 (in degrees)
-     * @param upperAngle theta2 (in degrees)
+     * @param theta1 lower angle (in degrees)
+     * @param theta2 upper angle (in degrees)
      * @return pair of horizontal, vertical offsets (x, z) (in inches)
      */
-    static DoubleTuple calculateFKPositionsFromAngles(double lowerAngle, double upperAngle)
+    static DoubleTuple calculateFKPositionsFromAngles(double theta1, double theta2)
     {
-        final double L1 = HardwareConstants.ARM_LOWER_ARM_LENGTH;
-        final double L2 = HardwareConstants.ARM_UPPER_ARM_LENGTH;
+        final double D11 = HardwareConstants.ARM_LOWER_ARM_LENGTH;
+        final double D12 = HardwareConstants.ARM_UPPER_ARM_LENGTH;
 
-        double xPosition = L1 * Helpers.cosd(lowerAngle) + L2 * Helpers.cosd(lowerAngle + 180.0 - upperAngle);
-        double zPosition = L1 * Helpers.sind(lowerAngle) + L2 * Helpers.sind(lowerAngle + 180.0 - upperAngle);
+        double xPosition = D11 * Helpers.cosd(theta1) + D12 * Helpers.cosd(theta1 - 180.0 + theta2);
+        double zPosition = D11 * Helpers.sind(theta1) + D12 * Helpers.sind(theta1 - 180.0 + theta2);
         return new DoubleTuple(xPosition, zPosition);
     }
 
@@ -708,24 +708,24 @@ public class ArmMechanism implements IMechanism
         final double L7 = HardwareConstants.ARM_UPPER_ARM_L7;
         final double L8 = HardwareConstants.ARM_UPPER_ARM_L8;
 
-        double A1 = theta2 + phi;
-        double L5 = Helpers.calculateLawOfCosinesDistance(L1, L4, A1);
+        double A1A2 = theta2 + phi;
+        double R1 = Helpers.calculateLawOfCosinesDistance(L1, L4, A1A2);
 
-        Double A4 = Helpers.calculateLawOfCosinesAngleOrNull(L3, L5, L2);
+        Double A5 = Helpers.calculateLawOfCosinesAngleOrNull(L3, R1, L2);
+        if (A5 == null)
+        {
+            // must be impossible to reach this position with our current dimensions...
+            return null;
+        }
+
+        Double A4 = Helpers.calculateLawOfCosinesAngleOrNull(L4, R1, L1);
         if (A4 == null)
         {
             // must be impossible to reach this position with our current dimensions...
             return null;
         }
 
-        Double A3 = Helpers.calculateLawOfCosinesAngleOrNull(L4, L5, L1);
-        if (A3 == null)
-        {
-            // must be impossible to reach this position with our current dimensions...
-            return null;
-        }
-
-        double B1 = 180.0 - A3 - A4 - phi - psi + sigma;
+        double B1 = 180.0 - A4 - A5 - phi - psi + sigma;
         double L6 = Helpers.calculateLawOfCosinesDistance(L7, L8, B1);
 
         double lowerLAExtension = L9 - HardwareConstants.ARM_LINEAR_ACTUATOR_RETRACTED_LENGTH;
@@ -803,12 +803,12 @@ public class ArmMechanism implements IMechanism
         final double L7 = HardwareConstants.ARM_UPPER_ARM_L7;
         final double L8 = HardwareConstants.ARM_UPPER_ARM_L8;
 
-        double B1Prime = Helpers.calculateLawOfCosinesAngle(L7, L8, L6);
-        double A1Prime = 180 - phi - psi + sigma - B1Prime;
-        double L5Prime = Helpers.calculateLawOfCosinesDistance(L4, L3, A1Prime);
-        double A3Prime = Helpers.calculateLawOfCosinesAngle(L4, L5Prime, L3);
-        double A4Prime = Helpers.calculateLawOfCosinesAngle(L1, L5Prime, L2);
-        double theta2 = A4Prime + (A3Prime - phi);
+        double B1 = Helpers.calculateLawOfCosinesAngle(L7, L8, L6);
+        double A4A5 = 180 - phi - psi + sigma - B1;
+        double R2 = Helpers.calculateLawOfCosinesDistance(L4, L3, A4A5);
+        double A1 = Helpers.calculateLawOfCosinesAngle(L4, R2, L3);
+        double A2 = Helpers.calculateLawOfCosinesAngle(L1, R2, L2);
+        double theta2 = A2 + A1 - phi;
 
         // in order lower, upper
         return new DoubleTuple(theta1, theta2);
