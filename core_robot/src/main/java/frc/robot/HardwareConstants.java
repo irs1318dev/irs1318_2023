@@ -67,27 +67,27 @@ public class HardwareConstants
     public static final double ARM_STRING_ENCODER_INCHES_PER_TICK = (100.0 / 4096.0) / 25.4;
 
     // ======Lower Arm Linear Actuator================
-    public static final double ARM_LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM = 18.347; // Diagram L10
-    public static final double ARM_LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM = 12.876; // Diagram L11
-    public static final double ARM_LOWER_ARM_D7 = 0.0; // Diagram D7, placeholder
-    public static final double ARM_LOWER_ARM_D8 = 0.0; // Diagram D8, placeholder
-    public static final double ARM_LOWER_ARM_D9 = 0.0; // Diagram D9, placeholder
-    public static final double ARM_LOWER_ARM_D10 = 0.0; // Diagram D10, placeholder
-    public static final double ARM_LOWER_ARM_LINEAR_ACTUATOR_RIGHT_ANGLE_OFFSET = Helpers.atan2d(HardwareConstants.ARM_LOWER_ARM_D9, HardwareConstants.ARM_LOWER_ARM_D10); // Diagram rho
-    public static final double ARM_LOWER_ARM_LINEAR_ACTUATOR_LEFT_ANGLE_OFFSET = Helpers.atan2d(HardwareConstants.ARM_LOWER_ARM_D8, HardwareConstants.ARM_LOWER_ARM_D7); // Diagram lambda
+    public static final double ARM_LOWER_ARM_TOP_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM = 19.857; // Diagram L10
+    public static final double ARM_LOWER_ARM_BOTTOM_PIN_OF_LINEAR_ACTUATOR_TO_PIN_ON_LOWER_ARM = 12.0234; // Diagram L11
+    public static final double ARM_LOWER_ARM_LINEAR_ACTUATOR_RIGHT_ANGLE_OFFSET = Helpers.atan2d(HardwareConstants.ARM_UPPER_ARM_D9, HardwareConstants.ARM_UPPER_ARM_D10); // Diagram rho, Place holder until verified from CAD
+    public static final double ARM_LOWER_ARM_LINEAR_ACTUATOR_LEFT_ANGLE_OFFSET = Helpers.atan2d(HardwareConstants.ARM_UPPER_ARM_D8, HardwareConstants.ARM_UPPER_ARM_D7); // Diagram lambda, Place holder
+    public static final double ARM_UPPER_ARM_D7 = 12;
+    public static final double ARM_UPPER_ARM_D8 = 1.75;
+    public static final double ARM_UPPER_ARM_D9 = 4.0;
+    public static final double ARM_UPPER_ARM_D10 = 19.45;
     //======Upper Arm Linear Actuator================
-    public static final double ARM_UPPER_ARM_FOUR_BAR_FOLLOWER_PIN_DISTANCE = 8.963; // Diagram L1, 10"?
-    public static final double ARM_UPPER_ARM_FOUR_BAR_COUPLER_PIN_DISTANCE = 13.073; // Diagram L2, 13"?
-    public static final double ARM_UPPER_ARM_FOUR_BAR_DRIVER_PIN_DISTANCE = 12.515; // Diagram L3, 12"?
-    public static final double ARM_UPPER_ARM_FOUR_BAR_GROUND_PIN_DISTANCE = 10.308; // Diagram L4, 11"?
-    public static final double ARM_UPPER_ARM_D1 = 3.885; // Diagram D1
-    public static final double ARM_UPPER_ARM_D2 = 0.087; // Diagram D2
-    public static final double ARM_UPPER_ARM_D3 = 21.049; // Diagram D3
-    public static final double ARM_UPPER_ARM_D4 = 15.075; // Diagram D4
-    public static final double ARM_UPPER_ARM_D5 = 8.0; // Diagram D5
-    public static final double ARM_UPPER_ARM_D6 = 1.0; // Diagram D6
-    public static final double ARM_UPPER_ARM_L7 = 5.916; // Diagram L7
-    public static final double ARM_UPPER_ARM_L8 = 21.857; // Diagram L8
+    public static final double ARM_UPPER_ARM_FOUR_BAR_FOLLOWER_PIN_DISTANCE = 9.0; // Diagram L1
+    public static final double ARM_UPPER_ARM_FOUR_BAR_COUPLER_PIN_DISTANCE = 13.0; // Diagram L2
+    public static final double ARM_UPPER_ARM_FOUR_BAR_DRIVER_PIN_DISTANCE = 12.3; // Diagram L3
+    public static final double ARM_UPPER_ARM_FOUR_BAR_GROUND_PIN_DISTANCE = 10.30776; // Diagram L4
+    public static final double ARM_UPPER_ARM_D1 = 4.055; // Diagram D1
+    public static final double ARM_UPPER_ARM_D2 = 0.075; // Diagram D2
+    public static final double ARM_UPPER_ARM_D3 = 21; // Diagram D3
+    public static final double ARM_UPPER_ARM_D4 = 9.5; // Diagram D4
+    public static final double ARM_UPPER_ARM_D5 = 4.0; // Diagram D5
+    public static final double ARM_UPPER_ARM_D6 = 2.0; // Diagram D6
+    public static final double ARM_UPPER_ARM_L7 = 4.4721; // Diagram L7
+    public static final double ARM_UPPER_ARM_L8 = 21; // Diagram L8
     public static final double ARM_UPPER_ARM_SIGMA_ANGLE = Helpers.atan2d(HardwareConstants.ARM_UPPER_ARM_D6, HardwareConstants.ARM_UPPER_ARM_D5); // Diagram sigma
     public static final double ARM_UPPER_ARM_PSI_ANGLE = Helpers.atan2d(HardwareConstants.ARM_UPPER_ARM_D2, HardwareConstants.ARM_UPPER_ARM_D3); // Diagram psi
     public static final double ARM_UPPER_ARM_PHI_ANGLE = Helpers.atan2d(HardwareConstants.ARM_UPPER_ARM_D1 + HardwareConstants.ARM_UPPER_ARM_D2, HardwareConstants.ARM_UPPER_ARM_D4); // Diagram phi
