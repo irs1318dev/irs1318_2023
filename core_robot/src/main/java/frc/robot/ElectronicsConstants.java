@@ -74,9 +74,9 @@ public class ElectronicsConstants
 
     //================================================= Main Arm =====================================================================
 
-    public static final int INTAKE_MOTOR_CAN_ID = 9;
-    public static final int ARM_INTAKE_PISTON_FORWARD = 6;
-    public static final int ARM_INTAKE_PISTON_REVERSE = 7;
+    public static final int ARM_INTAKE_MOTOR_CAN_ID = 9;
+    public static final int ARM_INTAKE_PISTON_FORWARD = 7;
+    public static final int ARM_INTAKE_PISTON_REVERSE = 6;
 
     public static final int ARM_LOWER_LEFT_CAN_ID = 10;
     public static final int ARM_LOWER_RIGHT_CAN_ID = 11;
