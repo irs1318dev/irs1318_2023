@@ -112,6 +112,8 @@ public enum LoggingKey
     ArmLowerRightDesiredPosition("a.low_right_pos_desired"),
     ArmUpperDesiredPosition("a.up_pos_desired"),
     ArmIntakePower("a.intake_power"),
+    FeederValue("a.light_value"),
+    IntakeSensorBroken("a.broken_status"),
     ArmIntakeExtended("a.intake_extended"),
     ArmLeftFlipperState("a.left_flipper"),
     ArmRightFlipperState("a.right_flipper"),
