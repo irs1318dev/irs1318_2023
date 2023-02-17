@@ -261,6 +261,7 @@ public class TuningConstants
     
     public static final double ARM_INTAKE_POWER = 0.6;
     public static final boolean ARM_INTAKE_MOTOR_INVERT_OUTPUT = true;
+    public static final double FEEDER_LIGHT_CUTOFF_VALUE = 10;
 
     public static final double ARM_MAX_VELOCITY = 0.0;
     public static final double ARM_LOWER_LEFT_POSITION_MM_PID_KP = 0.1;

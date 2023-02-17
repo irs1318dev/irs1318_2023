@@ -59,6 +59,7 @@ public class ArmMechanism implements IMechanism
     // actual positions calculated using forward kinematics
     private double xPosition;
     private double zPosition;
+    private boolean LightBroken;
 
     private boolean inSimpleMode;
 
@@ -72,13 +73,17 @@ public class ArmMechanism implements IMechanism
 
     private final ITalonSRX intakeMotor;
     private final IDoubleSolenoid intakeExtender;
- 
+
+    private final IAnalogInput intakeThroughBeamSensor;
+    
+
     private enum IntakeState
     {
         Retracted,
         Extended
     };
- 
+    
+    private double IntakeSensorValue;
     private IntakeState currentIntakeState;
 
     @Inject
@@ -206,6 +211,8 @@ public class ArmMechanism implements IMechanism
                 ElectronicsConstants.ARM_INTAKE_PISTON_FORWARD,
                 ElectronicsConstants.ARM_INTAKE_PISTON_REVERSE);
 
+        this.intakeThroughBeamSensor = provider.getAnalogInput(ElectronicsConstants.INTAKE_LIGHT_FEEDER);
+            
         this.currentIntakeState = IntakeState.Retracted;
     }
 
@@ -219,6 +226,9 @@ public class ArmMechanism implements IMechanism
         this.lowerLeftArmVelocity = this.lowerLeftArm.getVelocity();
         this.lowerRightArmVelocity = this.lowerRightArm.getVelocity();
         this.upperArmVelocity = this.upperArm.getVelocity();
+        
+        this.IntakeSensorValue = this.intakeThroughBeamSensor.getVoltage();
+        this.LightBroken = this.IntakeSensorValue < TuningConstants.FEEDER_LIGHT_CUTOFF_VALUE;
 
         this.logger.logNumber(LoggingKey.ArmLowerLeftPosition, this.lowerLeftArmPosition);
         this.logger.logNumber(LoggingKey.ArmLowerRightPosition, this.lowerRightArmPosition);
@@ -226,6 +236,8 @@ public class ArmMechanism implements IMechanism
         this.logger.logNumber(LoggingKey.ArmLowerLeftVelocity, this.lowerLeftArmVelocity);
         this.logger.logNumber(LoggingKey.ArmLowerRightVelocity, this.lowerRightArmVelocity);
         this.logger.logNumber(LoggingKey.ArmUpperVelocity, this.upperArmVelocity);
+        this.logger.logNumber(LoggingKey.FeederValue, IntakeSensorValue);
+        this.logger.logBoolean(LoggingKey.IntakeSensorBroken, this.LightBroken);
 
         DoubleTuple offsets = ArmMechanism.calculateFK(
             (this.lowerLeftArmPosition + this.lowerRightArmPosition) / 2.0,
@@ -464,6 +476,7 @@ public class ArmMechanism implements IMechanism
                 this.intakeExtender.set(DoubleSolenoidValue.Reverse);
                 break;
         }
+        
 
         //----------------------------------- Main Arm -----------------------------------
         // if (this.curLeftFlipperState != ConeFlipperState.Retracted || this.curRightFlipperState != ConeFlipperState.Retracted)
@@ -549,6 +562,10 @@ public class ArmMechanism implements IMechanism
         //this.rightConeFlipper.set(DoubleSolenoidValue.Off);
     }
 
+    public boolean getLightValue()
+    {
+        return this.LightBroken;
+    }
     public double getMMLowerPosition()
     {
         return this.lowerLeftArmPosition;
