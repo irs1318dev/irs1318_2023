@@ -110,13 +110,10 @@ public class RoadRunnerTrajectoryGenerator
         
         //---------------------------------------------- 2023 Paths ------------------------------------------------------//
 
-        double TurnaryOperatorForwardsHeadingOrTangent = (TuningConstants.isRed ? 180 : 0);
-        double TurnaryOperatorBackwardsHeadingOrTangent = (TuningConstants.isRed ? 0 : 180);
+        double ForwardHT = (TuningConstants.isRed ? 180 : 0); //TurnaryOperatorForwardsHeadingOrTangent
+        double BackwardHT = (TuningConstants.isRed ? 0 : 180); //TurnaryOperatorBackwardsHeadingOrTangent
 
         //Vectors
-       
-
-        
         Vector2d StartOneGrid = new Vector2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX  , TuningConstants.StartOneGridY); //1
         Vector2d StartTwoGrid = new Vector2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, TuningConstants.StartTwoGridY); //2
         Vector2d StartThreeGrid = new Vector2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, TuningConstants.StartThreeGridY); //3
@@ -138,6 +135,7 @@ public class RoadRunnerTrajectoryGenerator
         Vector2d InBetweenGuardFar = new Vector2d(TuningConstants.isRed ? TuningConstants.FarChargeStationX : -TuningConstants.FarChargeStationX, TuningConstants.GroundOneY); //19
 
         Vector2d P1 = StartOneGrid;
+        Vector2d StartP1 = new Vector2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX  , TuningConstants.StartOneGridY + 1.05);
         Vector2d P2 = StartTwoGrid;
         Vector2d P3 = StartThreeGrid;
         Vector2d P4 = StartFourGrid;
@@ -146,6 +144,7 @@ public class RoadRunnerTrajectoryGenerator
         Vector2d P7 = StartSevenGrid;
         Vector2d P8 = StartEightGrid;
         Vector2d P9 = StartNineGrid;
+        Vector2d StartP9 = new Vector2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, 18.8); //9
         Vector2d P10 = InBetweenLoadClose;
         Vector2d P11 = ChargeStationClose;
         Vector2d P12 = InBetweenGuardClose;
@@ -156,22 +155,6 @@ public class RoadRunnerTrajectoryGenerator
         Vector2d P17 = GroundFour;
         Vector2d P18 = InBetweenLoadFar;
         Vector2d P19 = InBetweenGuardFar;
-        
-
-        
-
-        // //Blue Alliance X Values
-        // final double BlueStartGridX = 70.188;
-        // final double BlueCloseChargeStationX = 122.5; // 24 inches from the ChargeStation exact entry
-        // final double BlueFarChargeStationX = 183.001; // -5 inches from the ChargeStation exact entry
-        // final double BlueInBetweenPointAfterChargeStationX = 213.5;
-        // final double BlueGroundPiecesX = 260.455;
-        // //Red Alliance X Values
-        // final double RedStartGridX = 578.035;
-        // final double RedCloseChargeStation = 576.223; // 24 inches from the ChargeStation exact entry
-        // final double RedFarChargeStation = 419.097; // 24 inches from the ChargeStation exact entry
-        // final double RedGroundPiecesX = 260.455;
-
 
         //TANGENTS:
         // +x = 0 Towards the red alliance
@@ -179,277 +162,94 @@ public class RoadRunnerTrajectoryGenerator
         // -y = -90 Towards the Guardrail
         // +y = 90 Towards Loading Zone
 
-        // //Jamie's Old Path
-        // addTrajectory(
-        //     trajectoryManager,
-        //     startTrajectory(BlueStartGridX,  StartEightGridY,  0 * Helpers.DEGREES_TO_RADIANS, 0 * Helpers.DEGREES_TO_RADIANS)
-                
-        //         .lineTo(new Vector2d(BlueFarChargeStationX, StartEightGridY)) // Goes forward
-        //         .splineToConstantHeading(new Vector2d(BlueFarChargeStationX, ChargeStationY), 90 * Helpers.DEGREES_TO_RADIANS),
-                
-        //         //Jamie's Charge Station task
-        //     "BlueNineStartToGuardInBetweenToFarChargeStation");
-        
-        //New Paths based on (0,0) being in the center bottom of the field
+        //Travels to the ground pieces
 
-
-        //Travels to InBetweenClose point 
         addTrajectory(
             trajectoryManager,
-            startTrajectory(P1, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
+            startTrajectory(P1, BackwardHT * Helpers.DEGREES_TO_RADIANS, ForwardHT * Helpers.DEGREES_TO_RADIANS)
                 //Places cone on node
 
-                .lineTo(P10), //Goes to closest april tag visiblity point
-                
-                //Jamie's Charge Station task
-            "BlueOneStartToInBetweenLoad");
+                .lineTo(P10) //Goes to closest april tag visiblity point
+                .splineToSplineHeading(new Pose2d(P18, BackwardHT * Helpers.DEGREES_TO_RADIANS), BackwardHT * Helpers.DEGREES_TO_RADIANS)
+                .lineTo(P14), //Goes to pick-up first field element
+
+            "bluePosOnePlusOnePartOne");
         
         addTrajectory(
             trajectoryManager,
-            startTrajectory(P2, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
-                //Places cone on node
+            startTrajectory(P14, BackwardHT * Helpers.DEGREES_TO_RADIANS, ForwardHT * Helpers.DEGREES_TO_RADIANS)
 
-                .lineTo(P10), //Goes to closest april tag visiblity point
-                
-                //Jamie's Charge Station task
-            "BlueTwoStartToInBetweenLoad");
-        
+                .splineToSplineHeading(new Pose2d(P10, ForwardHT * Helpers.DEGREES_TO_RADIANS), ForwardHT * Helpers.DEGREES_TO_RADIANS)
+                .lineTo(P2), //Goes to Second Point on Grid
+                 
+            "bluePosOnePlusOnePartTwo");
+
+        //Ayush
         addTrajectory(
             trajectoryManager,
-            startTrajectory(P3, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
+            startTrajectory(P9, BackwardHT * Helpers.DEGREES_TO_RADIANS, ForwardHT * Helpers.DEGREES_TO_RADIANS)
                 //Places cone on node
 
-                .lineTo(P10), //Goes to closest april tag visiblity point
-                
-                //Jamie's Charge Station task
-            "BlueThreeStartToInBetweenLoad");
+                .lineTo(P11) //Goes to closest april tag visiblity point
+                .splineToConstantHeading(P13, BackwardHT * Helpers.DEGREES_TO_RADIANS) //Goes to InBetweenPointLoadFar
+                .lineTo(P15), //Goes to InBetweenPointLoadFar
 
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P4, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
-                //Places cone on node
-
-                .lineTo(P11), //Goes to closest april tag visiblity point
                 
                 //Jamie's Charge Station task
             "BlueFourStartToChargeStationClose");
         
+        //Ayush
         addTrajectory(
             trajectoryManager,
-            startTrajectory(P5,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
+            startTrajectory(P4, BackwardHT * Helpers.DEGREES_TO_RADIANS, ForwardHT * Helpers.DEGREES_TO_RADIANS)
                 //Places cone on node
 
-                .lineTo(P11), //Goes to closest april tag visiblity point
+                .lineTo(P11) //Goes to closest april tag visiblity point
+                .splineToConstantHeading(P13, BackwardHT * Helpers.DEGREES_TO_RADIANS) //Goes to InBetweenPointLoadFar
+                .lineTo(P16), //Goes to InBetweenPointLoadFar
+                
+                //Jamie's Charge Station task
+            "BlueFourStartToChargeStationClose");
+        
+        //Ayush
+        addTrajectory(
+            trajectoryManager,
+            startTrajectory(P5,  BackwardHT * Helpers.DEGREES_TO_RADIANS, ForwardHT * Helpers.DEGREES_TO_RADIANS)
+                //Places cone on node
+
+                .lineTo(P11) //Goes to closest april tag visiblity point
+                .splineToConstantHeading(P13, BackwardHT * Helpers.DEGREES_TO_RADIANS) //Goes to InBetweenPointLoadFar
+                .lineTo(P15), //Goes to InBetweenPointLoadFar
+                
+                //Jamie's Charge Station task
+            "BlueFiveStartToChargeStationClose");
+            
+        //Ayush
+        addTrajectory(
+            trajectoryManager,
+            startTrajectory(P5,  BackwardHT * Helpers.DEGREES_TO_RADIANS, ForwardHT * Helpers.DEGREES_TO_RADIANS)
+                //Places cone on node
+
+                .lineTo(P11) //Goes to closest april tag visiblity point
+                .splineToConstantHeading(P13, BackwardHT * Helpers.DEGREES_TO_RADIANS) //Goes to InBetweenPointLoadFar
+                .lineTo(P16), //Goes to InBetweenPointLoadFar
                 
                 //Jamie's Charge Station task
             "BlueFiveStartToChargeStationClose");
         
+        //Ayush
         addTrajectory(
             trajectoryManager,
-            startTrajectory(P6,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
+            startTrajectory(P6,  BackwardHT * Helpers.DEGREES_TO_RADIANS, ForwardHT * Helpers.DEGREES_TO_RADIANS)
                 //Places cone on node
 
-                .lineTo(P11), //Goes to closest april tag visiblity point
+                .lineTo(P11) //Goes to closest april tag visiblity point
+                .splineToConstantHeading(P13, BackwardHT * Helpers.DEGREES_TO_RADIANS) //Goes to InBetweenPointLoadFar
+                .lineTo(P15), //Goes to InBetweenPointLoadFar
+
                 
                 //Jamie's Charge Station task
             "BlueSixStartToChargeStationClose");
-        
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P7,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
-                //Places cone on node
-
-                .lineTo(P12), //Goes to closest april tag visiblity point
-                
-                //Jamie's Charge Station task
-            "BlueSevenStartToInBetweenGuard");
-
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P8,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
-                //Places cone on node
-
-                .lineTo(P12), //Goes to closest april tag visiblity point
-                
-            //Jamie's Charge Station task
-            "BlueEightStartToInBetweenGuard");
-        addTrajectory(
-                trajectoryManager,
-                startTrajectory(P9,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
-                    //Places cone on node
-    
-                    .lineTo(P12), //Goes to closest april tag visiblity point
-                    
-                    //Jamie's Charge Station task
-            "BlueNineStartToInBetweenGuard");
-
-
-        //Travels to close charge station from starting positions
-        //Probably not needed
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P12, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
-
-                .splineToConstantHeading((P11), 90 * Helpers.DEGREES_TO_RADIANS), // Goes to infront of charge station
-                
-                //Jamie's Charge Station task
-            "InBetweenGuardToChargeStation");
-        
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P10, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
-
-                .splineToConstantHeading(P11, 90 * Helpers.DEGREES_TO_RADIANS), // Goes to infront of charge station
-                
-                //Jamie's Charge Station task
-            "InBetweenLoadToChargeStation");
-        
-        
-        //Travels to Start positions from InBetweenPoints
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P10, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
-                //Places cone on node
-
-                .lineTo(P1), //Goes back to grid
-                
-                //Jamie's Charge Station task
-            "InBetweenLoadToBlueOneStart");
-        
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P12, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
-                //Places cone on node
-
-                .lineTo(P2), //Goes back to grid
-                
-                //Jamie's Charge Station task
-            "InBetweenLoadToBlueTwoStart");
-        
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P10, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
-                //Places cone on node
-
-                .lineTo(P3), //Goes back to grid
-                
-                //Jamie's Charge Station task
-            "InBetweenLoadToBlueThreeStart");
-
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P13, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
-                //Places cone on node
-
-                .lineTo(P4), //Goes back to grid
-                
-                //Jamie's Charge Station task
-            "ChargeStationFarToBlueFourStart");
-        
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P13,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
-                //Places cone on node
-
-                .lineTo(P5), //Goes back to grid
-                
-                //Jamie's Charge Station task
-            "ChargeStationFarToBlueFiveStart");
-        
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P13,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
-                //Places cone on node
-
-                .lineTo(P6), //Goes back to grid
-                
-                //Jamie's Charge Station task
-            "ChargeStationFarToBlueSixStart");
-        
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P12,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
-                //Places cone on node
-
-                .lineTo(P7), //Goes back to grid
-                
-                //Jamie's Charge Station task
-            "InBetweenGuardToBlueSevenStart");
-
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P12,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
-                //Places cone on node
-
-                .lineTo(P8), //Goes back to grid
-                
-            //Jamie's Charge Station task
-            "InBetweenGuardToBlueEightStart");
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P12,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
-                //Places cone on node
-
-                .lineTo(P9), //Goes back to grid
-                
-                //Jamie's Charge Station task
-            "InBetweenGuardToBlueNineStart");
-        
-        //InBetweenPointClose to InBetweenPointFar
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P10,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
-
-                .splineToConstantHeading(P18, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS), //Goes to InBetweenPointLoadFar
-                
-                //Jamie's Charge Station task
-            "InBetweenPointCloseToInBetweenPointFar");
-        
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P11,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
-            
-                .splineToConstantHeading(P13, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS), //Goes to ChargeStationFar over the chargestation
-                
-                //Jamie's Charge Station task
-            "ChargeStationCloseToChargeStationFar");
-        
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P12,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
-            
-                .splineToConstantHeading(P19, TurnaryOperatorForwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS), //Goes to ChargeStationFar over the chargestation
-                
-                //Jamie's Charge Station task
-            "InBetweenGuardCloseToInBetweenGuardFar");
-
-        //InBetweenPointFar to InBetweenPointClose
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P18,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
-
-                .splineToConstantHeading(P10, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS), //Goes to InBetweenPointLoadFar
-                
-                //Jamie's Charge Station task
-            "InBetweenPointCloseToInBetweenPointFar");
-        
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P13,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
-            
-                .splineToConstantHeading(P11, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS), //Goes to ChargeStationFar over the chargestation
-                
-                //Jamie's Charge Station task
-            "ChargeStationCloseToChargeStationFar");
-        
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P19,  TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS)
-            
-                .splineToConstantHeading(P12, TurnaryOperatorBackwardsHeadingOrTangent * Helpers.DEGREES_TO_RADIANS), //Goes to ChargeStationFar over the chargestation
-                
-                //Jamie's Charge Station task
-            "InBetweenGuardCloseToInBetweenGuardFar");
 
     }
 
