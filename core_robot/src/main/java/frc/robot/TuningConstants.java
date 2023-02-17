@@ -35,6 +35,31 @@ public class TuningConstants
 
     public static final boolean TRAJECTORY_FORCE_BUILD = true;
 
+    public static final boolean isRed = false;
+
+        //Y Values
+    public static final double StartOneGridY = 196.595;
+    public static final double StartTwoGridY = 174.19; // April Tag ID's 6 and 3
+    public static final double StartThreeGridY = 152.375;
+    public static final double StartFourGridY = 130.375;
+    public static final double StartFiveGridY = 108.19; // April Tag ID's 7 and 2
+    public static final double StartSixGridY = 86.375;
+    public static final double StartSevenGridY = 64.095;
+    public static final double StartEightGridY = 42.19; // April Tag ID's 8 and 1
+    public static final double StartNineGridY = 20.095;
+    public static final double ChargeStationY = 108.015;
+    public static final double GroundOneY = 180.19;
+    public static final double GroundTwoY = 36.19;
+    public static final double GroundThreeY = 132.19;
+    public static final double GroundFourY = 84.19;
+    
+        //X Values
+    public static final double StartGridX = 251.861;
+    public static final double CloseChargeStationX = 250.174;
+    public static final double FarChargeStationX = 93.048;
+    public static final double GroundPiecesX = 66.799;
+
+
     //================================================= Power ======================================================
 
     public static final double POWER_OVERCURRENT_TRACKING_DURATION = 5.0; // duration of time to keep track of the average current
