@@ -163,94 +163,32 @@ public class RoadRunnerTrajectoryGenerator
         // +y = 90 Towards Loading Zone
 
         //Travels to the ground pieces
-
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P1, BackwardHT * Helpers.DEGREES_TO_RADIANS, ForwardHT * Helpers.DEGREES_TO_RADIANS)
-                //Places cone on node
-
-                .lineTo(P10) //Goes to closest april tag visiblity point
-                .splineToSplineHeading(new Pose2d(P18, BackwardHT * Helpers.DEGREES_TO_RADIANS), BackwardHT * Helpers.DEGREES_TO_RADIANS)
-                .lineTo(P14), //Goes to pick-up first field element
-
-            "bluePosOnePlusOnePartOne");
         
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P14, BackwardHT * Helpers.DEGREES_TO_RADIANS, ForwardHT * Helpers.DEGREES_TO_RADIANS)
-
-                .splineToSplineHeading(new Pose2d(P10, ForwardHT * Helpers.DEGREES_TO_RADIANS), ForwardHT * Helpers.DEGREES_TO_RADIANS)
-                .lineTo(P2), //Goes to Second Point on Grid
-                 
-            "bluePosOnePlusOnePartTwo");
-
-        //Ayush
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P9, BackwardHT * Helpers.DEGREES_TO_RADIANS, ForwardHT * Helpers.DEGREES_TO_RADIANS)
-                //Places cone on node
-
-                .lineTo(P11) //Goes to closest april tag visiblity point
-                .splineToConstantHeading(P13, BackwardHT * Helpers.DEGREES_TO_RADIANS) //Goes to InBetweenPointLoadFar
-                .lineTo(P15), //Goes to InBetweenPointLoadFar
-
-                
-                //Jamie's Charge Station task
-            "BlueFourStartToChargeStationClose");
-        
-        //Ayush
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P4, BackwardHT * Helpers.DEGREES_TO_RADIANS, ForwardHT * Helpers.DEGREES_TO_RADIANS)
-                //Places cone on node
-
-                .lineTo(P11) //Goes to closest april tag visiblity point
-                .splineToConstantHeading(P13, BackwardHT * Helpers.DEGREES_TO_RADIANS) //Goes to InBetweenPointLoadFar
-                .lineTo(P16), //Goes to InBetweenPointLoadFar
-                
-                //Jamie's Charge Station task
-            "BlueFourStartToChargeStationClose");
-        
-        //Ayush
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P5,  BackwardHT * Helpers.DEGREES_TO_RADIANS, ForwardHT * Helpers.DEGREES_TO_RADIANS)
-                //Places cone on node
-
-                .lineTo(P11) //Goes to closest april tag visiblity point
-                .splineToConstantHeading(P13, BackwardHT * Helpers.DEGREES_TO_RADIANS) //Goes to InBetweenPointLoadFar
-                .lineTo(P15), //Goes to InBetweenPointLoadFar
-                
-                //Jamie's Charge Station task
-            "BlueFiveStartToChargeStationClose");
-            
-        //Ayush
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P5,  BackwardHT * Helpers.DEGREES_TO_RADIANS, ForwardHT * Helpers.DEGREES_TO_RADIANS)
-                //Places cone on node
-
-                .lineTo(P11) //Goes to closest april tag visiblity point
-                .splineToConstantHeading(P13, BackwardHT * Helpers.DEGREES_TO_RADIANS) //Goes to InBetweenPointLoadFar
-                .lineTo(P16), //Goes to InBetweenPointLoadFar
-                
-                //Jamie's Charge Station task
-            "BlueFiveStartToChargeStationClose");
-        
-        //Ayush
-        addTrajectory(
-            trajectoryManager,
-            startTrajectory(P6,  BackwardHT * Helpers.DEGREES_TO_RADIANS, ForwardHT * Helpers.DEGREES_TO_RADIANS)
-                //Places cone on node
-
-                .lineTo(P11) //Goes to closest april tag visiblity point
-                .splineToConstantHeading(P13, BackwardHT * Helpers.DEGREES_TO_RADIANS) //Goes to InBetweenPointLoadFar
-                .lineTo(P15), //Goes to InBetweenPointLoadFar
-
-                
-                //Jamie's Charge Station task
-            "BlueSixStartToChargeStationClose");
-
+        //addTrajectory(
+        //    trajectoryManager,
+        //    startTrajectory(StartP1, BackwardHT * Helpers.DEGREES_TO_RADIANS, -90 * Helpers.DEGREES_TO_RADIANS)
+        //        .lineTo(P1),
+        //    "bluePosOnePlusOnePartOne");
+        //
+        //addTrajectory(
+        //    trajectoryManager,
+        //    startTrajectory(P1, BackwardHT * Helpers.DEGREES_TO_RADIANS, ForwardHT * Helpers.DEGREES_TO_RADIANS)
+        //        //Places cone on node
+        //
+        //        .lineTo(P10) //Goes to closest april tag visiblity point
+        //        .splineToSplineHeading(new Pose2d(P18, ForwardHT * Helpers.DEGREES_TO_RADIANS), ForwardHT * Helpers.DEGREES_TO_RADIANS)
+        //        .lineTo(P14), //Goes to pick-up first field element
+        //
+        //    "bluePosOnePlusOnePartTwo");
+        //
+        //addTrajectory(
+        //    trajectoryManager,
+        //    startTrajectory(P14, ForwardHT * Helpers.DEGREES_TO_RADIANS, BackwardHT * Helpers.DEGREES_TO_RADIANS)
+        //
+        //        .splineToSplineHeading(new Pose2d(P10, BackwardHT * Helpers.DEGREES_TO_RADIANS), -0.441)
+        //        .lineTo(P2), //Goes to Second Point on Grid
+        //         
+        //    "bluePosOnePlusOnePartThree");
     }
 
     private static TrajectoryBuilder startTrajectory()
