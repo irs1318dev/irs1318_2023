@@ -28,19 +28,19 @@ public class ArmMechanism implements IMechanism
     // private final IDoubleSolenoid rightConeFlipper;
     // private final IDoubleSolenoid leftConeFlipper;
 
-    // private double leftFlipperTransitionTime;
-    // private double rightFlipperTransitionTime;
-    // private enum ConeFlipperState
-    // {
-    //     Extended,
-    //     Extending,
-    //     ExtendingWait,
-    //     Retracted,
-    //     Retracting,
-    // };
+    private double leftFlipperTransitionTime;
+    private double rightFlipperTransitionTime;
+    private enum ConeFlipperState
+    {
+        Extended,
+        Extending,
+        ExtendingWait,
+        Retracted,
+        Retracting,
+    };
 
-    // private ConeFlipperState curLeftFlipperState;
-    // private ConeFlipperState curRightFlipperState;
+    private ConeFlipperState curLeftFlipperState;
+    private ConeFlipperState curRightFlipperState;
 
     //----------------- Main Arm Variables -----------------
 
@@ -59,7 +59,7 @@ public class ArmMechanism implements IMechanism
     // actual positions calculated using forward kinematics
     private double xPosition;
     private double zPosition;
-    private boolean LightBroken;
+    private boolean throughBeamBroken;
 
     private boolean inSimpleMode;
 
@@ -191,11 +191,11 @@ public class ArmMechanism implements IMechanism
         //     ElectronicsConstants.RIGHT_SIDE_STICK_PISTON_FORWARD,
         //     ElectronicsConstants.RIGHT_SIDE_STICK_PISTON_BACKWARD);
 
-        // this.leftFlipperTransitionTime = 0.0;
-        // this.rightFlipperTransitionTime = 0.0;
+        this.leftFlipperTransitionTime = 0.0;
+        this.rightFlipperTransitionTime = 0.0;
 
-        // this.curRightFlipperState = ConeFlipperState.Retracted;
-        // this.curLeftFlipperState = ConeFlipperState.Retracted;
+        this.curRightFlipperState = ConeFlipperState.Retracted;
+        this.curLeftFlipperState = ConeFlipperState.Retracted;
 
         //-------------------------- Intake Initialization ----------------------------------
 
@@ -228,7 +228,7 @@ public class ArmMechanism implements IMechanism
         this.upperArmVelocity = this.upperArm.getVelocity();
         
         this.IntakeSensorValue = this.intakeThroughBeamSensor.getVoltage();
-        this.LightBroken = this.IntakeSensorValue < TuningConstants.FEEDER_LIGHT_CUTOFF_VALUE;
+        this.throughBeamBroken = this.IntakeSensorValue < TuningConstants.FEEDER_LIGHT_CUTOFF_VALUE;
 
         this.logger.logNumber(LoggingKey.ArmLowerLeftPosition, this.lowerLeftArmPosition);
         this.logger.logNumber(LoggingKey.ArmLowerRightPosition, this.lowerRightArmPosition);
@@ -237,7 +237,7 @@ public class ArmMechanism implements IMechanism
         this.logger.logNumber(LoggingKey.ArmLowerRightVelocity, this.lowerRightArmVelocity);
         this.logger.logNumber(LoggingKey.ArmUpperVelocity, this.upperArmVelocity);
         this.logger.logNumber(LoggingKey.FeederValue, IntakeSensorValue);
-        this.logger.logBoolean(LoggingKey.IntakeSensorBroken, this.LightBroken);
+        this.logger.logBoolean(LoggingKey.IntakeSensorBroken, this.throughBeamBroken);
 
         DoubleTuple offsets = ArmMechanism.calculateFK(
             (this.lowerLeftArmPosition + this.lowerRightArmPosition) / 2.0,
@@ -247,7 +247,7 @@ public class ArmMechanism implements IMechanism
         {
             this.logger.logNumber(LoggingKey.ArmFKXPosition, offsets.first);
             this.logger.logNumber(LoggingKey.ArmFKZPosition, offsets.second);
-        }        
+        }
     }
 
     @Override
@@ -278,136 +278,136 @@ public class ArmMechanism implements IMechanism
         }
 
         //----------------------------------- Flippers -----------------------------------
-        // boolean extendRightFlipper = this.driver.getDigital(DigitalOperation.ExtendRightFlipper);
-        // boolean extendLeftFlipper = this.driver.getDigital(DigitalOperation.ExtendLeftFlipper);
-        // switch (this.curRightFlipperState)
-        // {
-        //     case Retracted:
-        //         if (extendRightFlipper)
-        //         {
-        //             this.curRightFlipperState = ConeFlipperState.ExtendingWait;
-        //         }
+        boolean extendRightFlipper = this.driver.getDigital(DigitalOperation.ExtendRightFlipper);
+        boolean extendLeftFlipper = this.driver.getDigital(DigitalOperation.ExtendLeftFlipper);
+        switch (this.curRightFlipperState)
+        {
+            case Retracted:
+                if (extendRightFlipper)
+                {
+                    this.curRightFlipperState = ConeFlipperState.ExtendingWait;
+                }
 
-        //         break;
+                break;
 
-        //     case ExtendingWait:
-        //         if (!extendRightFlipper)
-        //         {
-        //             this.curRightFlipperState = ConeFlipperState.Retracted;
-        //         }
-        //         else if (this.curLeftFlipperState == ConeFlipperState.Retracted &&
-        //             ((!this.inSimpleMode &&
-        //                 this.upperArmPosition <= TuningConstants.ARM_UPPER_NEAR_FULL_RETRACTED_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH &&  // some value slightly larger than 0.0 inches
-        //                 this.lowerLeftArmPosition >= TuningConstants.ARM_LOWER_NEAR_FULL_EXTENSION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH) ||  // some value slightly smaller than fully extended
-        //             (this.inSimpleMode && currTime - this.armRetractionStartTime > TuningConstants.ARM_RETRACTION_MAX_TIME)))
-        //         {
-        //             this.curRightFlipperState = ConeFlipperState.Extending;
-        //             this.rightFlipperTransitionTime = currTime;
-        //         }
+            case ExtendingWait:
+                if (!extendRightFlipper)
+                {
+                    this.curRightFlipperState = ConeFlipperState.Retracted;
+                }
+                else if (this.curLeftFlipperState == ConeFlipperState.Retracted &&
+                    ((!this.inSimpleMode &&
+                        this.upperArmPosition <= TuningConstants.ARM_NEAR_FULL_RETRACTED_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH &&  // some value slightly larger than 0.0 inches
+                        this.lowerLeftArmPosition >= TuningConstants.ARM_NEAR_FULL_EXTENSION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH) ||  // some value slightly smaller than fully extended
+                    (this.inSimpleMode && currTime - this.armRetractionStartTime > TuningConstants.ARM_RETRACTION_MAX_TIME)))
+                {
+                    this.curRightFlipperState = ConeFlipperState.Extending;
+                    this.rightFlipperTransitionTime = currTime;
+                }
 
-        //         break;
+                break;
 
-        //     case Extending:
-        //         if (!extendRightFlipper)
-        //         {
-        //             this.curRightFlipperState = ConeFlipperState.Retracting;
-        //             this.rightFlipperTransitionTime = currTime;
-        //         }
-        //         else if (currTime - this.rightFlipperTransitionTime > TuningConstants.ARM_FLIPPER_EXTEND_WAIT_DURATION)
-        //         {
-        //             this.curRightFlipperState = ConeFlipperState.Extended;
-        //         }
+            case Extending:
+                if (!extendRightFlipper)
+                {
+                    this.curRightFlipperState = ConeFlipperState.Retracting;
+                    this.rightFlipperTransitionTime = currTime;
+                }
+                else if (currTime - this.rightFlipperTransitionTime > TuningConstants.ARM_FLIPPER_EXTEND_WAIT_DURATION)
+                {
+                    this.curRightFlipperState = ConeFlipperState.Extended;
+                }
 
-        //         break;
+                break;
 
-        //     case Extended:
-        //         if (!extendRightFlipper)
-        //         {
-        //             this.curRightFlipperState = ConeFlipperState.Retracting;
-        //             this.rightFlipperTransitionTime = currTime;
-        //         }
+            case Extended:
+                if (!extendRightFlipper)
+                {
+                    this.curRightFlipperState = ConeFlipperState.Retracting;
+                    this.rightFlipperTransitionTime = currTime;
+                }
 
-        //         break;
+                break;
 
-        //     case Retracting:
-        //         if (extendRightFlipper)
-        //         {
-        //             this.curRightFlipperState = ConeFlipperState.Extending;
-        //             this.rightFlipperTransitionTime = currTime;
-        //         }
-        //         else if (currTime - this.rightFlipperTransitionTime > TuningConstants.ARM_FLIPPER_RETRACT_WAIT_DURATION)
-        //         {
-        //             this.curRightFlipperState = ConeFlipperState.Retracted;
-        //         }
+            case Retracting:
+                if (extendRightFlipper)
+                {
+                    this.curRightFlipperState = ConeFlipperState.Extending;
+                    this.rightFlipperTransitionTime = currTime;
+                }
+                else if (currTime - this.rightFlipperTransitionTime > TuningConstants.ARM_FLIPPER_RETRACT_WAIT_DURATION)
+                {
+                    this.curRightFlipperState = ConeFlipperState.Retracted;
+                }
 
-        //         break;
-        // }
+                break;
+        }
 
-        // switch (this.curLeftFlipperState)
-        // {
-        //     case Retracted:
-        //         if (extendLeftFlipper)
-        //         {
-        //             this.curLeftFlipperState = ConeFlipperState.ExtendingWait;
-        //             this.armRetractionStartTime = currTime;
-        //         }
+        switch (this.curLeftFlipperState)
+        {
+            case Retracted:
+                if (extendLeftFlipper)
+                {
+                    this.curLeftFlipperState = ConeFlipperState.ExtendingWait;
+                    this.armRetractionStartTime = currTime;
+                }
 
-        //         break;
+                break;
 
-        //     case ExtendingWait:
-        //         if (!extendLeftFlipper)
-        //         {
-        //             this.curLeftFlipperState = ConeFlipperState.Retracted;
-        //         }
-        //         else if (this.curLeftFlipperState == ConeFlipperState.Retracted &&
-        //             ((!this.inSimpleMode &&
-        //                 this.upperArmPosition <= TuningConstants.ARM_UPPER_NEAR_FULL_RETRACTED_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH &&  // some value slightly larger than 0.0 inches
-        //                 this.lowerLeftArmPosition >= TuningConstants.ARM_LOWER_NEAR_FULL_EXTENSION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH) ||  // some value slightly smaller than fully extended
-        //             (this.inSimpleMode && currTime - this.armRetractionStartTime > TuningConstants.ARM_RETRACTION_MAX_TIME)))
-        //         {
-        //             this.curLeftFlipperState = ConeFlipperState.Extending;
-        //             this.leftFlipperTransitionTime = currTime;
-        //         }
+            case ExtendingWait:
+                if (!extendLeftFlipper)
+                {
+                    this.curLeftFlipperState = ConeFlipperState.Retracted;
+                }
+                else if (this.curLeftFlipperState == ConeFlipperState.Retracted &&
+                    ((!this.inSimpleMode &&
+                        this.upperArmPosition <= TuningConstants.ARM_NEAR_FULL_RETRACTED_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH &&  // some value slightly larger than 0.0 inches
+                        this.lowerLeftArmPosition >= TuningConstants.ARM_NEAR_FULL_EXTENSION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH) ||  // some value slightly smaller than fully extended
+                    (this.inSimpleMode && currTime - this.armRetractionStartTime > TuningConstants.ARM_RETRACTION_MAX_TIME)))
+                {
+                    this.curLeftFlipperState = ConeFlipperState.Extending;
+                    this.leftFlipperTransitionTime = currTime;
+                }
 
-        //         break;
+                break;
 
-        //     case Extending:
-        //         if (!extendLeftFlipper)
-        //         {
-        //             this.curLeftFlipperState = ConeFlipperState.Retracting;
-        //             this.leftFlipperTransitionTime = currTime;
-        //         }
-        //         else if (currTime - this.leftFlipperTransitionTime > TuningConstants.ARM_FLIPPER_EXTEND_WAIT_DURATION)
-        //         {
-        //             this.curLeftFlipperState = ConeFlipperState.Extended;
-        //         }
+            case Extending:
+                if (!extendLeftFlipper)
+                {
+                    this.curLeftFlipperState = ConeFlipperState.Retracting;
+                    this.leftFlipperTransitionTime = currTime;
+                }
+                else if (currTime - this.leftFlipperTransitionTime > TuningConstants.ARM_FLIPPER_EXTEND_WAIT_DURATION)
+                {
+                    this.curLeftFlipperState = ConeFlipperState.Extended;
+                }
 
-        //         break;
+                break;
 
-        //     case Extended:
-        //         if (!extendLeftFlipper)
-        //         {
-        //             this.curLeftFlipperState = ConeFlipperState.Retracting;
-        //             this.leftFlipperTransitionTime = currTime;
-        //         }
+            case Extended:
+                if (!extendLeftFlipper)
+                {
+                    this.curLeftFlipperState = ConeFlipperState.Retracting;
+                    this.leftFlipperTransitionTime = currTime;
+                }
 
-        //         break;
+                break;
 
-        //     case Retracting:
-        //         if (extendLeftFlipper)
-        //         {
-        //             this.curLeftFlipperState = ConeFlipperState.Extending;
-        //             this.leftFlipperTransitionTime = currTime;
-        //         }
-        //         else if (currTime - this.leftFlipperTransitionTime > TuningConstants.ARM_FLIPPER_RETRACT_WAIT_DURATION)
-        //         {
-        //             this.curLeftFlipperState = ConeFlipperState.Retracted;
-        //         }
+            case Retracting:
+                if (extendLeftFlipper)
+                {
+                    this.curLeftFlipperState = ConeFlipperState.Extending;
+                    this.leftFlipperTransitionTime = currTime;
+                }
+                else if (currTime - this.leftFlipperTransitionTime > TuningConstants.ARM_FLIPPER_RETRACT_WAIT_DURATION)
+                {
+                    this.curLeftFlipperState = ConeFlipperState.Retracted;
+                }
 
-        //         break;
-        // }
-        
-        // this.logger.logString(LoggingKey.ArmRightFlipperState, this.curRightFlipperState.toString());
+                break;
+        }
+
+        this.logger.logString(LoggingKey.ArmRightFlipperState, this.curRightFlipperState.toString());
         // switch (this.curRightFlipperState)
         // {
         //     case Extended:
@@ -423,7 +423,7 @@ public class ArmMechanism implements IMechanism
         //         break;
         // }
 
-        // this.logger.logString(LoggingKey.ArmLeftFlipperState, this.curLeftFlipperState.toString());
+        this.logger.logString(LoggingKey.ArmLeftFlipperState, this.curLeftFlipperState.toString());
         // switch (this.curLeftFlipperState)
         // {
         //     case Extended:
@@ -479,26 +479,26 @@ public class ArmMechanism implements IMechanism
         
 
         //----------------------------------- Main Arm -----------------------------------
-        // if (this.curLeftFlipperState != ConeFlipperState.Retracted || this.curRightFlipperState != ConeFlipperState.Retracted)
-        // {
-        //     if (this.inSimpleMode)
-        //     {
-        //         this.lowerLeftArm.set(TuningConstants.ARM_MAX_FORWARD_SIMPLE_VELOCITY);
-        //         this.lowerRightArm.set(TuningConstants.ARM_MAX_FORWARD_SIMPLE_VELOCITY);
-        //         this.upperArm.set(TuningConstants.ARM_MAX_REVERSE_SIMPLE_VELOCITY);
-        //     }
-        //     else
-        //     {
-        //         this.desiredLowerLeftArmPosition = TuningConstants.ARM_LOWER_FULL_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
-        //         this.desiredLowerRightArmPosition = TuningConstants.ARM_LOWER_FULL_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
-        //         this.desiredUpperArmPosition = HardwareConstants.ARM_UPPER_FULL_RETRACTED_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
+        if (this.curLeftFlipperState != ConeFlipperState.Retracted || this.curRightFlipperState != ConeFlipperState.Retracted)
+        {
+            if (this.inSimpleMode)
+            {
+                this.lowerLeftArm.set(TuningConstants.ARM_MAX_FORWARD_SIMPLE_VELOCITY);
+                this.lowerRightArm.set(TuningConstants.ARM_MAX_FORWARD_SIMPLE_VELOCITY);
+                this.upperArm.set(TuningConstants.ARM_MAX_REVERSE_SIMPLE_VELOCITY);
+            }
+            else
+            {
+                this.desiredLowerLeftArmPosition = HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
+                this.desiredLowerRightArmPosition = HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
+                this.desiredUpperArmPosition = HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
 
-        //         this.lowerLeftArm.set(this.desiredLowerLeftArmPosition);
-        //         this.lowerRightArm.set(this.desiredLowerRightArmPosition);
-        //         this.upperArm.set(this.desiredUpperArmPosition);
-        //     }
-        // }
-        // else
+                this.lowerLeftArm.set(this.desiredLowerLeftArmPosition);
+                this.lowerRightArm.set(this.desiredLowerRightArmPosition);
+                this.upperArm.set(this.desiredUpperArmPosition);
+            }
+        }
+        else
         {
             if (this.inSimpleMode)
             {
@@ -541,7 +541,7 @@ public class ArmMechanism implements IMechanism
                 this.lowerRightArm.set(this.desiredLowerRightArmPosition);
                 this.upperArm.set(this.desiredUpperArmPosition);
             }
-        }        
+        }
 
         this.logger.logNumber(LoggingKey.ArmLowerLeftDesiredPosition, this.desiredLowerLeftArmPosition);
         this.logger.logNumber(LoggingKey.ArmLowerRightDesiredPosition, this.desiredLowerRightArmPosition);
@@ -562,10 +562,11 @@ public class ArmMechanism implements IMechanism
         //this.rightConeFlipper.set(DoubleSolenoidValue.Off);
     }
 
-    public boolean getLightValue()
+    public boolean isThroughBeamBroken()
     {
-        return this.LightBroken;
+        return this.throughBeamBroken;
     }
+
     public double getMMLowerPosition()
     {
         return this.lowerLeftArmPosition;
