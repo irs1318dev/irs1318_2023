@@ -95,7 +95,7 @@ public class ArmMechanismTests
     @Test
     public void verifyFKLengthsEqualsIKLengths()
     {
-        final double maxExtension = (HardwareConstants.ARM_EXTENTION_LENGTH - 0.5) * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
+        final double maxExtension = (HardwareConstants.ARM_EXTENTION_LENGTH - 0.25) * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
         for (double lowerExtension = 0.5 * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; lowerExtension <= maxExtension; lowerExtension += 10.0)
         {
             for (double upperExtension = 0.5 * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; upperExtension <= maxExtension; upperExtension += 10.0)
