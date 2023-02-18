@@ -610,7 +610,7 @@ public class ArmMechanism implements IMechanism
 
     public double getMMLowerPosition()
     {
-        return this.lowerLeftArmPosition;
+        return (this.lowerLeftArmPosition + this.lowerRightArmPosition) / 2.0;
     }
 
     public double getMMUpperPosition()
