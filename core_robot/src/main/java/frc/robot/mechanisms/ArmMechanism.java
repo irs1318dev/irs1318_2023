@@ -50,11 +50,14 @@ public class ArmMechanism implements IMechanism
 
     // Positions are in ticks, Velocities are in ticks per 100ms
     private double lowerLeftArmPosition;
-    private double lowerRightArmPosition;
-    private double upperArmPosition;
     private double lowerLeftArmVelocity;
+    private double lowerLeftArmError;
+    private double lowerRightArmPosition;
     private double lowerRightArmVelocity;
+    private double lowerRightArmError;
+    private double upperArmPosition;
     private double upperArmVelocity;
+    private double upperArmError;
 
     // actual positions calculated using forward kinematics
     private double xPosition;
@@ -115,31 +118,56 @@ public class ArmMechanism implements IMechanism
 
         this.inSimpleMode = TuningConstants.ARM_USE_SIMPLE_MODE;
 
-        this.lowerLeftArmActuator.setMotionMagicPIDF(
-            TuningConstants.ARM_LOWER_LEFT_POSITION_MM_PID_KP,
-            TuningConstants.ARM_LOWER_LEFT_POSITION_MM_PID_KI,
-            TuningConstants.ARM_LOWER_LEFT_POSITION_MM_PID_KD,
-            TuningConstants.ARM_LOWER_LEFT_POSITION_MM_PID_KF,
-            TuningConstants.ARM_LOWER_LEFT_POSITION_MM_CRUISE_VELOCITY,
-            TuningConstants.ARM_LOWER_LEFT_POSITION_MM_ACCELERATION,
-            ArmMechanism.defaultPidSlotId);
-        this.lowerRightArmActuator.setMotionMagicPIDF(
-            TuningConstants.ARM_LOWER_RIGHT_POSITION_MM_PID_KP,
-            TuningConstants.ARM_LOWER_RIGHT_POSITION_MM_PID_KI,
-            TuningConstants.ARM_LOWER_RIGHT_POSITION_MM_PID_KD,
-            TuningConstants.ARM_LOWER_RIGHT_POSITION_MM_PID_KF,
-            TuningConstants.ARM_LOWER_RIGHT_POSITION_MM_CRUISE_VELOCITY,
-            TuningConstants.ARM_LOWER_RIGHT_POSITION_MM_ACCELERATION,
-            ArmMechanism.defaultPidSlotId);
+        if (TuningConstants.ARM_USE_MM)
+        {
+            this.lowerLeftArmActuator.setMotionMagicPIDF(
+                TuningConstants.ARM_LOWER_LEFT_POSITION_MM_PID_KP,
+                TuningConstants.ARM_LOWER_LEFT_POSITION_MM_PID_KI,
+                TuningConstants.ARM_LOWER_LEFT_POSITION_MM_PID_KD,
+                TuningConstants.ARM_LOWER_LEFT_POSITION_MM_PID_KF,
+                TuningConstants.ARM_LOWER_LEFT_POSITION_MM_CRUISE_VELOCITY,
+                TuningConstants.ARM_LOWER_LEFT_POSITION_MM_ACCELERATION,
+                ArmMechanism.defaultPidSlotId);
+            this.lowerRightArmActuator.setMotionMagicPIDF(
+                TuningConstants.ARM_LOWER_RIGHT_POSITION_MM_PID_KP,
+                TuningConstants.ARM_LOWER_RIGHT_POSITION_MM_PID_KI,
+                TuningConstants.ARM_LOWER_RIGHT_POSITION_MM_PID_KD,
+                TuningConstants.ARM_LOWER_RIGHT_POSITION_MM_PID_KF,
+                TuningConstants.ARM_LOWER_RIGHT_POSITION_MM_CRUISE_VELOCITY,
+                TuningConstants.ARM_LOWER_RIGHT_POSITION_MM_ACCELERATION,
+                ArmMechanism.defaultPidSlotId);
 
-        this.upperArmActuator.setMotionMagicPIDF(
-            TuningConstants.ARM_UPPER_POSITION_MM_PID_KP,
-            TuningConstants.ARM_UPPER_POSITION_MM_PID_KI,
-            TuningConstants.ARM_UPPER_POSITION_MM_PID_KD,
-            TuningConstants.ARM_UPPER_POSITION_MM_PID_KF,
-            TuningConstants.ARM_UPPER_POSITION_MM_CRUISE_VELOCITY,
-            TuningConstants.ARM_UPPER_POSITION_MM_ACCELERATION,
-            ArmMechanism.defaultPidSlotId);
+            this.upperArmActuator.setMotionMagicPIDF(
+                TuningConstants.ARM_UPPER_POSITION_MM_PID_KP,
+                TuningConstants.ARM_UPPER_POSITION_MM_PID_KI,
+                TuningConstants.ARM_UPPER_POSITION_MM_PID_KD,
+                TuningConstants.ARM_UPPER_POSITION_MM_PID_KF,
+                TuningConstants.ARM_UPPER_POSITION_MM_CRUISE_VELOCITY,
+                TuningConstants.ARM_UPPER_POSITION_MM_ACCELERATION,
+                ArmMechanism.defaultPidSlotId);
+        }
+        else
+        {
+            this.lowerLeftArmActuator.setPIDF(
+                TuningConstants.ARM_LOWER_LEFT_POSITION_PID_KP,
+                TuningConstants.ARM_LOWER_LEFT_POSITION_PID_KI,
+                TuningConstants.ARM_LOWER_LEFT_POSITION_PID_KD,
+                TuningConstants.ARM_LOWER_LEFT_POSITION_PID_KF,
+                ArmMechanism.defaultPidSlotId);
+            this.lowerRightArmActuator.setPIDF(
+                TuningConstants.ARM_LOWER_RIGHT_POSITION_PID_KP,
+                TuningConstants.ARM_LOWER_RIGHT_POSITION_PID_KI,
+                TuningConstants.ARM_LOWER_RIGHT_POSITION_PID_KD,
+                TuningConstants.ARM_LOWER_RIGHT_POSITION_PID_KF,
+                ArmMechanism.defaultPidSlotId);
+
+            this.upperArmActuator.setPIDF(
+                TuningConstants.ARM_UPPER_POSITION_PID_KP,
+                TuningConstants.ARM_UPPER_POSITION_PID_KI,
+                TuningConstants.ARM_UPPER_POSITION_PID_KD,
+                TuningConstants.ARM_UPPER_POSITION_PID_KF,
+                ArmMechanism.defaultPidSlotId);
+        }
 
         this.lowerLeftArmVelocity = 0.0;
         this.lowerRightArmVelocity = 0.0;
@@ -178,9 +206,18 @@ public class ArmMechanism implements IMechanism
         }
         else
         {
-            this.lowerLeftArmActuator.setControlMode(TalonXControlMode.MotionMagicPosition);
-            this.lowerRightArmActuator.setControlMode(TalonXControlMode.MotionMagicPosition);
-            this.upperArmActuator.setControlMode(TalonXControlMode.MotionMagicPosition);
+            if (TuningConstants.ARM_USE_MM)
+            {
+                this.lowerLeftArmActuator.setControlMode(TalonXControlMode.MotionMagicPosition);
+                this.lowerRightArmActuator.setControlMode(TalonXControlMode.MotionMagicPosition);
+                this.upperArmActuator.setControlMode(TalonXControlMode.MotionMagicPosition);
+            }
+            else
+            {
+                this.lowerLeftArmActuator.setControlMode(TalonXControlMode.Position);
+                this.lowerRightArmActuator.setControlMode(TalonXControlMode.Position);
+                this.upperArmActuator.setControlMode(TalonXControlMode.Position);
+            }
         }
 
         this.lowerLeftArmActuator.setPosition(0.0);
@@ -235,10 +272,13 @@ public class ArmMechanism implements IMechanism
     {
         this.lowerLeftArmPosition = this.lowerLeftArmActuator.getPosition() + HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
         this.lowerLeftArmVelocity = this.lowerLeftArmActuator.getVelocity();
+        this.lowerLeftArmError = this.lowerLeftArmActuator.getError();
         this.lowerRightArmPosition = this.lowerRightArmActuator.getPosition() + HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
         this.lowerRightArmVelocity = this.lowerRightArmActuator.getVelocity();
+        this.lowerRightArmError = this.lowerRightArmActuator.getError();
         this.upperArmPosition = this.upperArmActuator.getPosition();
         this.upperArmVelocity = this.upperArmActuator.getVelocity();
+        this.upperArmError = this.upperArmActuator.getError();
 
         // this.intakeSensorValue = this.intakeThroughBeamSensor.getVoltage();
         // this.throughBeamBroken = this.intakeSensorValue < TuningConstants.FEEDER_LIGHT_CUTOFF_VALUE;
@@ -247,14 +287,17 @@ public class ArmMechanism implements IMechanism
         this.lowerRightLAPower = this.lowerRightPowerCalculator.update(this.powerManager.getCurrent(ElectronicsConstants.ARM_LOWER_RIGHT_LA_PDH_CHANNEL));
         this.upperLAPower = this.upperPowerCalculator.update(this.powerManager.getCurrent(ElectronicsConstants.ARM_UPPER_LA_PDH_CHANNEL));
 
-        this.logger.logNumber(LoggingKey.ArmLowerLeftVelocity, this.lowerLeftArmVelocity);
         this.logger.logNumber(LoggingKey.ArmLowerLeftPosition, this.lowerLeftArmPosition);
+        this.logger.logNumber(LoggingKey.ArmLowerLeftVelocity, this.lowerLeftArmVelocity);
+        this.logger.logNumber(LoggingKey.ArmLowerLeftError, this.lowerLeftArmError);
         this.logger.logNumber(LoggingKey.ArmLowerLeftPower, this.lowerLeftLAPower);
         this.logger.logNumber(LoggingKey.ArmLowerRightPosition, this.lowerRightArmPosition);
         this.logger.logNumber(LoggingKey.ArmLowerRightVelocity, this.lowerRightArmVelocity);
+        this.logger.logNumber(LoggingKey.ArmLowerRightError, this.lowerRightArmError);
         this.logger.logNumber(LoggingKey.ArmLowerRightPower, this.lowerRightLAPower);
         this.logger.logNumber(LoggingKey.ArmUpperPosition, this.upperArmPosition);
         this.logger.logNumber(LoggingKey.ArmUpperVelocity, this.upperArmVelocity);
+        this.logger.logNumber(LoggingKey.ArmUpperError, this.upperArmError);
         this.logger.logNumber(LoggingKey.ArmUpperPower, this.upperLAPower);
         this.logger.logNumber(LoggingKey.ArmIntakeThroughBeamRaw, this.intakeSensorValue);
         this.logger.logBoolean(LoggingKey.ArmIntakeSensorBroken, this.throughBeamBroken);
@@ -288,9 +331,18 @@ public class ArmMechanism implements IMechanism
         {
             this.inSimpleMode = false;
 
-            this.lowerLeftArmActuator.setControlMode(TalonXControlMode.MotionMagicPosition);
-            this.lowerRightArmActuator.setControlMode(TalonXControlMode.MotionMagicPosition);
-            this.upperArmActuator.setControlMode(TalonXControlMode.MotionMagicPosition);
+            if (TuningConstants.ARM_USE_MM)
+            {
+                this.lowerLeftArmActuator.setControlMode(TalonXControlMode.MotionMagicPosition);
+                this.lowerRightArmActuator.setControlMode(TalonXControlMode.MotionMagicPosition);
+                this.upperArmActuator.setControlMode(TalonXControlMode.MotionMagicPosition);
+            }
+            else
+            {
+                this.lowerLeftArmActuator.setControlMode(TalonXControlMode.Position);
+                this.lowerRightArmActuator.setControlMode(TalonXControlMode.Position);
+                this.upperArmActuator.setControlMode(TalonXControlMode.Position);
+            }
 
             this.desiredLowerLeftArmPosition = this.lowerLeftArmPosition;
             this.desiredLowerRightArmPosition = this.lowerRightArmPosition;
@@ -538,9 +590,10 @@ public class ArmMechanism implements IMechanism
             {
                 // controlled by joysticks
                 double lowerArmPower = this.driver.getAnalog(AnalogOperation.ArmSimpleForceLower);
+                double upperArmPower = this.driver.getAnalog(AnalogOperation.ArmSimpleForceUpper);
                 this.lowerLeftArmActuator.set(lowerArmPower);
                 this.lowerRightArmActuator.set(lowerArmPower);
-                this.upperArmActuator.set(this.driver.getAnalog(AnalogOperation.ArmSimpleForceUpper));
+                this.upperArmActuator.set(upperArmPower);
             }
             else
             {
@@ -562,7 +615,7 @@ public class ArmMechanism implements IMechanism
                     this.desiredLowerRightArmPosition = this.driver.getAnalog(AnalogOperation.ArmMMLowerPosition);
                     this.desiredUpperArmPosition = this.driver.getAnalog(AnalogOperation.ArmMMUpperPosition);
                 }
-                else if (this.driver.getAnalog(AnalogOperation.ArmLowerPositionAdjustment) != 0.0 && this.driver.getAnalog(AnalogOperation.ArmUpperPositionAdjustment) != 0.0)
+                else if (this.driver.getAnalog(AnalogOperation.ArmLowerPositionAdjustment) != 0.0 || this.driver.getAnalog(AnalogOperation.ArmUpperPositionAdjustment) != 0.0)
                 {
                     // controlled by joysticks
                     double elapsedTime = currTime - this.prevTime;

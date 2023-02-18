@@ -285,38 +285,55 @@ public class TuningConstants
     public static final boolean ARM_USE_SIMPLE_MODE = true;
     
     public static final double ARM_INTAKE_POWER = 0.6;
-    public static final boolean ARM_INTAKE_MOTOR_INVERT_OUTPUT = true;
+    public static final boolean ARM_INTAKE_MOTOR_INVERT_OUTPUT = false;
     public static final double FEEDER_LIGHT_CUTOFF_VALUE = 10;
 
-    public static final double ARM_MAX_VELOCITY = 300.0;
-    public static final double ARM_LOWER_LEFT_POSITION_MM_PID_KP = 0.1;
+    public static final boolean ARM_USE_MM = false;
+
+    public static final double ARM_MAX_VELOCITY = 400.0;
+    public static final double ARM_LOWER_LEFT_POSITION_MM_PID_KP = 0.0;
     public static final double ARM_LOWER_LEFT_POSITION_MM_PID_KI = 0.0;
     public static final double ARM_LOWER_LEFT_POSITION_MM_PID_KD = 0.0;
-    public static final double ARM_LOWER_LEFT_POSITION_MM_PID_KF = 0.05;
-    public static final double ARM_LOWER_LEFT_POSITION_MM_CRUISE_VELOCITY = 0.0;
-    public static final double ARM_LOWER_LEFT_POSITION_MM_ACCELERATION = 0.0;
+    public static final double ARM_LOWER_LEFT_POSITION_MM_PID_KF = 3.2;
+    public static final double ARM_LOWER_LEFT_POSITION_MM_CRUISE_VELOCITY = 400.0;
+    public static final double ARM_LOWER_LEFT_POSITION_MM_ACCELERATION = 200.0;
 
-    public static final double ARM_LOWER_RIGHT_POSITION_MM_PID_KP = 0.1;
+    public static final double ARM_LOWER_RIGHT_POSITION_MM_PID_KP = 0.0;
     public static final double ARM_LOWER_RIGHT_POSITION_MM_PID_KI = 0.0;
     public static final double ARM_LOWER_RIGHT_POSITION_MM_PID_KD = 0.0;
-    public static final double ARM_LOWER_RIGHT_POSITION_MM_PID_KF = 0.05;
-    public static final double ARM_LOWER_RIGHT_POSITION_MM_CRUISE_VELOCITY = 0.0;
-    public static final double ARM_LOWER_RIGHT_POSITION_MM_ACCELERATION = 0.0;
+    public static final double ARM_LOWER_RIGHT_POSITION_MM_PID_KF = 3.2;
+    public static final double ARM_LOWER_RIGHT_POSITION_MM_CRUISE_VELOCITY = 0.8 * 400.0;
+    public static final double ARM_LOWER_RIGHT_POSITION_MM_ACCELERATION = 200.0;
 
-    public static final double ARM_UPPER_POSITION_MM_PID_KP = 0.1;
+    public static final double ARM_UPPER_POSITION_MM_PID_KP = 0.0;
     public static final double ARM_UPPER_POSITION_MM_PID_KI = 0.0;
     public static final double ARM_UPPER_POSITION_MM_PID_KD = 0.0;
-    public static final double ARM_UPPER_POSITION_MM_PID_KF = 0.05;
-    public static final double ARM_UPPER_POSITION_MM_CRUISE_VELOCITY = 0.0;
-    public static final double ARM_UPPER_POSITION_MM_ACCELERATION = 0.0;
+    public static final double ARM_UPPER_POSITION_MM_PID_KF = 3.2;
+    public static final double ARM_UPPER_POSITION_MM_CRUISE_VELOCITY = 0.8 * 400.0;
+    public static final double ARM_UPPER_POSITION_MM_ACCELERATION = 200.0;
+
+    public static final double ARM_LOWER_LEFT_POSITION_PID_KP = 1.0;
+    public static final double ARM_LOWER_LEFT_POSITION_PID_KI = 0.0;
+    public static final double ARM_LOWER_LEFT_POSITION_PID_KD = 0.0;
+    public static final double ARM_LOWER_LEFT_POSITION_PID_KF = 0.0;
+
+    public static final double ARM_LOWER_RIGHT_POSITION_PID_KP = 1.0;
+    public static final double ARM_LOWER_RIGHT_POSITION_PID_KI = 0.0;
+    public static final double ARM_LOWER_RIGHT_POSITION_PID_KD = 0.0;
+    public static final double ARM_LOWER_RIGHT_POSITION_PID_KF = 0.0;
+
+    public static final double ARM_UPPER_POSITION_PID_KP = 1.0;
+    public static final double ARM_UPPER_POSITION_PID_KI = 0.0;
+    public static final double ARM_UPPER_POSITION_PID_KD = 0.0;
+    public static final double ARM_UPPER_POSITION_PID_KF = 0.0;
 
     public static final boolean ARM_LOWER_LEFT_INVERT_OUTPUT = true;
     public static final boolean ARM_LOWER_RIGHT_INVERT_OUTPUT = true;
-    public static final boolean ARM_UPPER_INVERT_OUTPUT = true;
+    public static final boolean ARM_UPPER_INVERT_OUTPUT = false;
 
     public static final boolean ARM_LOWER_LEFT_INVERT_SENSOR = false;
     public static final boolean ARM_LOWER_RIGHT_INVERT_SENSOR = false;
-    public static final boolean ARM_UPPER_INVERT_SENSOR = false;
+    public static final boolean ARM_UPPER_INVERT_SENSOR = true;
 
     public static final double ARM_NEAR_FULL_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.9; // in inches
     public static final double ARM_NEAR_FULL_RETRACTED_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.1; // in inches
@@ -346,10 +363,11 @@ public class TuningConstants
     public static final double ARM_UPPER_MM_GOAL_THRESHOLD = 0.25 * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // in ticks
     public static final double ARM_X_IK_GOAL_THRESHOLD = 0.5; // in inches
     public static final double ARM_Z_IK_GOAL_THRESHOLD = 0.5; // in inches
-    public static final double ARM_LOWER_MM_IN_TRESHOLD = 4000; // PLACEHOLDER
-    public static final double ARM_UPPER_MM_IN_TRESHOLD = 4000;  // PLACEHOLDER
-    public static final double ARM_LOWER_MM_INTERMIDATE = 6000; // PLACEHOLDER
-    public static final double ARM_UPPER_MM_INTERMIDATE = 4000; // PLACEHOLDER
+
+    public static final double ARM_LOWER_MM_INTERMIDATE = HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
+    public static final double ARM_UPPER_MM_INTERMIDATE = 1200.0;
+    public static final double ARM_LOWER_MM_IN_TRESHOLD = 8000.0; // PLACEHOLDER
+    public static final double ARM_UPPER_MM_IN_TRESHOLD = 1000.0;  // PLACEHOLDER
     public static final double ARM_X_IK_IN_TRESHOLD = 16.8; // PLACEHOLDER
     public static final double ARM_Z_IK_IN_TRESHOLD = 8.0; // PLACEHOLDER
     public static final double ARM_X_IK_INTERMIDATE = 16.8; // PLACEHOLDER
@@ -363,20 +381,18 @@ public class TuningConstants
 
     //Set Points for Motion Magic
     // Place Holder VALUES
-    public static final double ARM_LOWER_MM_OUT_WAYPOINT = 0.0;
-    public static final double ARM_UPPER_MM_OUT_WAYPOINT = 0.0;
-    public static final double ARM_LOWER_MM_GROUND_PLACING = 0.0;
-    public static final double ARM_UPPER_MM_GROUND_PLACING = 0.0;
-    public static final double ARM_LOWER_MM_MIDDLE_CONE = 0.0; 
-    public static final double ARM_UPPER_MM_MIDDLE_CONE = 0.0;
-    public static final double ARM_LOWER_MM_MIDDLE_CUBE = 0.0; 
-    public static final double ARM_UPPER_MM_MIDDLE_CUBE = 0.0;
-    public static final double ARM_LOWER_MM_HIGH_CONE = 0.0;
-    public static final double ARM_UPPER_MM_HIGH_CONE = 0.0;
-    public static final double ARM_LOWER_MM_HIGH_CUBE = 0.0;
-    public static final double ARM_UPPER_MM_HIGH_CUBE = 0.0;
-    public static final double ARM_LOWER_MM_GROUND_PICKUP = 0.0;
-    public static final double ARM_UPPER_MM_GROUND_PICKUP = 0.0;
+    public static final double ARM_LOWER_MM_GROUND_PLACING = 4700.0;
+    public static final double ARM_UPPER_MM_GROUND_PLACING = 1650.0;
+    public static final double ARM_LOWER_MM_MIDDLE_CONE = 7550.0; 
+    public static final double ARM_UPPER_MM_MIDDLE_CONE = 4750.0;
+    public static final double ARM_LOWER_MM_MIDDLE_CUBE = 5800.0; 
+    public static final double ARM_UPPER_MM_MIDDLE_CUBE = 4300.0;
+    public static final double ARM_LOWER_MM_HIGH_CONE = 2950.0;
+    public static final double ARM_UPPER_MM_HIGH_CONE = 7250.0;
+    public static final double ARM_LOWER_MM_HIGH_CUBE = 4000.0;
+    public static final double ARM_UPPER_MM_HIGH_CUBE = 6200.0;
+    public static final double ARM_LOWER_MM_GROUND_PICKUP = 1950.0;
+    public static final double ARM_UPPER_MM_GROUND_PICKUP = 1900.0;
     public static final double ARM_LOWER_MM_SUB_PICKUP = 0.0;
     public static final double ARM_UPPER_MM_SUB_PICKUP = 0.0;
 
