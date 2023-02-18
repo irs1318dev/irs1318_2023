@@ -55,7 +55,7 @@ public class TuningConstants
     
         //X Values
     public static final double StartGridX = 251.861;
-    public static final double CloseChargeStationX = 250.174;
+    public static final double CloseChargeStationX = 231.474; // 5 inches away from the charge station + Robot centering value
     public static final double FarChargeStationX = 93.048;
     public static final double GroundPiecesX = 66.799;
 
