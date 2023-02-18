@@ -622,6 +622,10 @@ public class ArmMechanism implements IMechanism
                     this.desiredLowerLeftArmPosition += this.driver.getAnalog(AnalogOperation.ArmLowerPositionAdjustment) * TuningConstants.ARM_LOWER_EXTENSION_ADJUSTMENT_VELOCITY * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * elapsedTime;
                     this.desiredLowerRightArmPosition += this.driver.getAnalog(AnalogOperation.ArmLowerPositionAdjustment) * TuningConstants.ARM_LOWER_EXTENSION_ADJUSTMENT_VELOCITY * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * elapsedTime;
                     this.desiredUpperArmPosition += this.driver.getAnalog(AnalogOperation.ArmUpperPositionAdjustment) * TuningConstants.ARM_UPPER_EXTENSION_ADJUSTMENT_VELOCITY * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * elapsedTime;
+
+                    this.desiredLowerLeftArmPosition = Helpers.EnforceRange(this.desiredLowerLeftArmPosition, 0.0, TuningConstants.ARM_LOWER_MAX_EXTENSION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH);
+                    this.desiredLowerRightArmPosition = Helpers.EnforceRange(this.desiredLowerRightArmPosition, 0.0, TuningConstants.ARM_LOWER_MAX_EXTENSION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH);
+                    this.desiredUpperArmPosition = Helpers.EnforceRange(this.desiredUpperArmPosition, 0.0, TuningConstants.ARM_UPPER_MAX_EXTENSION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH);
                 }
 
                 this.lowerLeftArmActuator.set(this.desiredLowerLeftArmPosition - HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH);

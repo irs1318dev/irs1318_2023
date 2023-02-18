@@ -338,6 +338,9 @@ public class TuningConstants
     public static final double ARM_NEAR_FULL_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.9; // in inches
     public static final double ARM_NEAR_FULL_RETRACTED_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.1; // in inches
 
+    public static final double ARM_UPPER_MAX_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.9; // in inches
+    public static final double ARM_LOWER_MAX_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 1.0; // in inches
+
     public static final double ARM_RETRACTION_MAX_TIME = 0.7;
 
     public static final double ARM_LOWER_EXTENSION_ADJUSTMENT_VELOCITY = 2.0; // inches per second
