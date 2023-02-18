@@ -213,9 +213,13 @@ public class Helpers
      */
     public static double calculateLawOfCosinesDistance(double adjacent1, double adjacent2, double angle)
     {
-        double opposite;
-        opposite = Math.sqrt(adjacent1 * adjacent1 + adjacent2 * adjacent2 - 2.0 * adjacent1 * adjacent2 * Helpers.cosd(angle));
-        return opposite;
+        double oppositeSquared = adjacent1 * adjacent1 + adjacent2 * adjacent2 - 2.0 * adjacent1 * adjacent2 * Helpers.cosd(angle);
+        if (oppositeSquared < 0.0)
+        {
+            return Math.sqrt(-oppositeSquared);
+        }
+
+        return Math.sqrt(oppositeSquared);
     }
 
     /**
