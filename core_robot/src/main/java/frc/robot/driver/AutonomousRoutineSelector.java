@@ -37,6 +37,7 @@ public class AutonomousRoutineSelector
         this.driverStation = provider.getDriverStation();
 
         RoadRunnerTrajectoryGenerator.generateTrajectories(this.trajectoryManager);
+        PathPlannerTrajectoryGenerator.generateTrajectories(this.trajectoryManager, provider.getPathPlanner());
     }
 
     /**

@@ -1,21 +1,15 @@
 package frc.robot.driver;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import com.acmerobotics.roadrunner.geometry.*;
 import com.acmerobotics.roadrunner.trajectory.*;
 import com.acmerobotics.roadrunner.trajectory.constraints.*;
 
-import de.siegmar.fastcsv.writer.CsvWriter;
 import frc.robot.HardwareConstants;
 import frc.robot.TuningConstants;
 import frc.robot.common.*;
-import frc.robot.common.robotprovider.ITrajectory;
-import frc.robot.common.robotprovider.TrajectoryState;
 import frc.robot.driver.common.TrajectoryManager;
-import frc.robot.driver.common.TrajectoryWrapper;
 
 public class RoadRunnerTrajectoryGenerator
 {
@@ -36,30 +30,7 @@ public class RoadRunnerTrajectoryGenerator
     {
         TrajectoryManager trajectoryManager = new TrajectoryManager();
         RoadRunnerTrajectoryGenerator.generateTrajectories(trajectoryManager);
-        // ITrajectory trajectory = trajectoryManager.getTrajectory("w2ba-goToPickUpBall2");
-
-        // try (CsvWriter csvWriter = CsvWriter.builder().build(java.nio.file.Path.of("test.csv"), StandardCharsets.UTF_8))
-        // {
-        //     csvWriter.writeRow("t", "x", "y", "theta", "vx", "vy", "omega");
-
-        //     for (double t = 0.0; t < trajectory.getDuration() + 0.01; t += 0.02)
-        //     {
-        //         TrajectoryState state = trajectory.get(t);
-        //         csvWriter.writeRow(
-        //             Double.toString(t),
-        //             Double.toString(state.xPosition),
-        //             Double.toString(state.yPosition),
-        //             Double.toString(state.angle),
-        //             Double.toString(state.xVelocity),
-        //             Double.toString(state.yVelocity),
-        //             Double.toString(state.angleVelocity));
-        //     }
-
-        //     csvWriter.close();
-        // }
-        // catch (IOException e)
-        // {
-        // }
+        trajectoryManager.buildAll();
     }
 
     public static void generateTrajectories(TrajectoryManager trajectoryManager)

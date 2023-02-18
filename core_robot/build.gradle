@@ -15,7 +15,7 @@ dependencies {
     implementation "javax.inject:javax.inject:1"
     implementation "com.google.guava:guava:21.0"
     implementation "com.google.inject:guice:4.1.0:no_aop"
-    implementation "com.acmerobotics.roadrunner:core:0.5.5"
+    implementation "com.acmerobotics.roadrunner:core:0.5.6"
     implementation 'de.siegmar:fastcsv:2.0.0'
 
     testImplementation "org.mockito:mockito-all:1.10.19"

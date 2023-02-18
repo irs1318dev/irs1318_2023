@@ -234,15 +234,21 @@ public class FauxbotProvider implements IRobotProvider
     }
 
     @Override
-    public IOpenCVProvider getOpenCVProvider()
-    {
-        return new OpenCVProvider();
-    }
-
-    @Override
     public INetworkTableProvider getNetworkTableProvider()
     {
         return new FauxbotNetworkTableProvider();
+    }
+
+    @Override
+    public IPathPlanner getPathPlanner()
+    {
+        return new FauxbotPathPlanner();
+    }
+
+    @Override
+    public IOpenCVProvider getOpenCVProvider()
+    {
+        return new OpenCVProvider();
     }
 
     @Override

@@ -365,13 +365,19 @@ public class TestProvider implements IRobotProvider
     }
 
     @Override
-    public IOpenCVProvider getOpenCVProvider()
+    public INetworkTableProvider getNetworkTableProvider()
     {
         return null;
     }
 
     @Override
-    public INetworkTableProvider getNetworkTableProvider()
+    public IPathPlanner getPathPlanner()
+    {
+        return null;
+    }
+
+    @Override
+    public IOpenCVProvider getOpenCVProvider()
     {
         return null;
     }

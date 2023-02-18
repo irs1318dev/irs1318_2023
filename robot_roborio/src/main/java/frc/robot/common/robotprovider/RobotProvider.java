@@ -222,15 +222,21 @@ public class RobotProvider implements IRobotProvider
     }
 
     @Override
-    public IOpenCVProvider getOpenCVProvider()
-    {
-        return new OpenCVProvider();
-    }
-
-    @Override
     public INetworkTableProvider getNetworkTableProvider()
     {
         return new NetworkTableProvider();
+    }
+
+    @Override
+    public IPathPlanner getPathPlanner()
+    {
+        return new PathPlannerWrapper();
+    }
+
+    @Override
+    public IOpenCVProvider getOpenCVProvider()
+    {
+        return new OpenCVProvider();
     }
 
     @Override

@@ -51,12 +51,17 @@ public class TrajectoryManager
     {
         if (forceBuild)
         {
-            this.map.put(name, new TrajectoryWrapper(trajectoryBuilder.build()));
+            this.addTrajectory(name, new TrajectoryWrapper(trajectoryBuilder.build()));
         }
         else
         {
             this.trajectoryBuilderMap.put(name, trajectoryBuilder);
         }
+    }
+
+    public void addTrajectory(String name, ITrajectory builtTrajectory)
+    {
+        this.map.put(name, builtTrajectory);
     }
 
     public void buildAll()
