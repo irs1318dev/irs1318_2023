@@ -74,7 +74,7 @@ public class ArmMechanism implements IMechanism
     private final ITalonSRX intakeMotor;
     private final IDoubleSolenoid intakeExtender;
 
-    private final IAnalogInput intakeThroughBeamSensor;
+    // private final IAnalogInput intakeThroughBeamSensor;
     
 
     private enum IntakeState
@@ -83,7 +83,7 @@ public class ArmMechanism implements IMechanism
         Extended
     };
     
-    private double IntakeSensorValue;
+    private double intakeSensorValue;
     private IntakeState currentIntakeState;
 
     @Inject
@@ -150,13 +150,18 @@ public class ArmMechanism implements IMechanism
         this.lowerRightArm.setSensorType(TalonXFeedbackDevice.QuadEncoder);
         this.upperArm.setSensorType(TalonXFeedbackDevice.QuadEncoder);
 
+        this.lowerLeftArm.setInvertOutput(TuningConstants.ARM_LOWER_LEFT_INVERT_OUTPUT);
+        this.lowerRightArm.setInvertOutput(TuningConstants.ARM_LOWER_RIGHT_INVERT_OUTPUT);
+        this.upperArm.setInvertOutput(TuningConstants.ARM_UPPER_INVERT_OUTPUT);
+
         this.lowerLeftArm.setInvertSensor(TuningConstants.ARM_LOWER_LEFT_INVERT_SENSOR);
         this.lowerRightArm.setInvertSensor(TuningConstants.ARM_LOWER_RIGHT_INVERT_SENSOR);
         this.upperArm.setInvertSensor(TuningConstants.ARM_UPPER_INVERT_SENSOR);
 
-        this.lowerLeftArm.setPosition(this.lowerLeftArmPosition);
-        this.lowerRightArm.setPosition(this.lowerRightArmPosition);
-        this.upperArm.setPosition(this.upperArmPosition);
+        this.lowerLeftArm.setNeutralMode(MotorNeutralMode.Brake);
+        this.lowerRightArm.setNeutralMode(MotorNeutralMode.Brake);
+        this.upperArm.setNeutralMode(MotorNeutralMode.Brake);
+
         if (this.inSimpleMode)
         {
             this.lowerLeftArm.setControlMode(TalonXControlMode.PercentOutput);
@@ -170,13 +175,9 @@ public class ArmMechanism implements IMechanism
             this.upperArm.setControlMode(TalonXControlMode.MotionMagicPosition);
         }
 
-        this.lowerLeftArm.setInvertOutput(TuningConstants.ARM_LOWER_LEFT_INVERT_OUTPUT);
-        this.lowerRightArm.setInvertOutput(TuningConstants.ARM_LOWER_RIGHT_INVERT_OUTPUT);
-        this.upperArm.setInvertOutput(TuningConstants.ARM_UPPER_INVERT_OUTPUT);
-
-        this.lowerLeftArm.setNeutralMode(MotorNeutralMode.Brake);
-        this.lowerRightArm.setNeutralMode(MotorNeutralMode.Brake);
-        this.upperArm.setNeutralMode(MotorNeutralMode.Brake);
+        this.lowerLeftArm.setPosition(0.0);
+        this.lowerRightArm.setPosition(0.0);
+        this.upperArm.setPosition(0.0);
 
         //------------------------- Side Stick Initialization ------------------------------
         // this.leftConeFlipper = provider.getDoubleSolenoid(
@@ -211,7 +212,7 @@ public class ArmMechanism implements IMechanism
                 ElectronicsConstants.ARM_INTAKE_PISTON_FORWARD,
                 ElectronicsConstants.ARM_INTAKE_PISTON_REVERSE);
 
-        this.intakeThroughBeamSensor = provider.getAnalogInput(ElectronicsConstants.INTAKE_LIGHT_FEEDER);
+        // this.intakeThroughBeamSensor = provider.getAnalogInput(ElectronicsConstants.INTAKE_LIGHT_FEEDER);
             
         this.currentIntakeState = IntakeState.Retracted;
     }
@@ -220,15 +221,15 @@ public class ArmMechanism implements IMechanism
     @Override
     public void readSensors()
     {
-        this.lowerLeftArmPosition = this.lowerLeftArm.getPosition();
-        this.lowerRightArmPosition = this.lowerRightArm.getPosition();
+        this.lowerLeftArmPosition = this.lowerLeftArm.getPosition() + HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
+        this.lowerRightArmPosition = this.lowerRightArm.getPosition() + HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
         this.upperArmPosition = this.upperArm.getPosition();
         this.lowerLeftArmVelocity = this.lowerLeftArm.getVelocity();
         this.lowerRightArmVelocity = this.lowerRightArm.getVelocity();
         this.upperArmVelocity = this.upperArm.getVelocity();
-        
-        this.IntakeSensorValue = this.intakeThroughBeamSensor.getVoltage();
-        this.throughBeamBroken = this.IntakeSensorValue < TuningConstants.FEEDER_LIGHT_CUTOFF_VALUE;
+
+        // this.intakeSensorValue = this.intakeThroughBeamSensor.getVoltage();
+        // this.throughBeamBroken = this.intakeSensorValue < TuningConstants.FEEDER_LIGHT_CUTOFF_VALUE;
 
         this.logger.logNumber(LoggingKey.ArmLowerLeftPosition, this.lowerLeftArmPosition);
         this.logger.logNumber(LoggingKey.ArmLowerRightPosition, this.lowerRightArmPosition);
@@ -236,7 +237,7 @@ public class ArmMechanism implements IMechanism
         this.logger.logNumber(LoggingKey.ArmLowerLeftVelocity, this.lowerLeftArmVelocity);
         this.logger.logNumber(LoggingKey.ArmLowerRightVelocity, this.lowerRightArmVelocity);
         this.logger.logNumber(LoggingKey.ArmUpperVelocity, this.upperArmVelocity);
-        this.logger.logNumber(LoggingKey.FeederValue, IntakeSensorValue);
+        this.logger.logNumber(LoggingKey.FeederValue, intakeSensorValue);
         this.logger.logBoolean(LoggingKey.IntakeSensorBroken, this.throughBeamBroken);
 
         DoubleTuple offsets = ArmMechanism.calculateFK(
@@ -493,8 +494,8 @@ public class ArmMechanism implements IMechanism
                 this.desiredLowerRightArmPosition = HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
                 this.desiredUpperArmPosition = HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
 
-                this.lowerLeftArm.set(this.desiredLowerLeftArmPosition);
-                this.lowerRightArm.set(this.desiredLowerRightArmPosition);
+                this.lowerLeftArm.set(this.desiredLowerLeftArmPosition - HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH);
+                this.lowerRightArm.set(this.desiredLowerRightArmPosition - HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH);
                 this.upperArm.set(this.desiredUpperArmPosition);
             }
         }
@@ -537,8 +538,8 @@ public class ArmMechanism implements IMechanism
                     this.desiredUpperArmPosition += this.driver.getAnalog(AnalogOperation.ArmUpperPositionAdjustment) * TuningConstants.ARM_UPPER_EXTENSION_ADJUSTMENT_VELOCITY * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * elapsedTime;
                 }
 
-                this.lowerLeftArm.set(this.desiredLowerLeftArmPosition);
-                this.lowerRightArm.set(this.desiredLowerRightArmPosition);
+                this.lowerLeftArm.set(this.desiredLowerLeftArmPosition - HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH);
+                this.lowerRightArm.set(this.desiredLowerRightArmPosition - HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH);
                 this.upperArm.set(this.desiredUpperArmPosition);
             }
         }
