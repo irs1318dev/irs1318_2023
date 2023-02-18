@@ -346,6 +346,14 @@ public class TuningConstants
     public static final double ARM_UPPER_MM_GOAL_THRESHOLD = 0.25 * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // in ticks
     public static final double ARM_X_IK_GOAL_THRESHOLD = 0.5; // in inches
     public static final double ARM_Z_IK_GOAL_THRESHOLD = 0.5; // in inches
+    public static final double ARM_LOWER_MM_IN_TRESHOLD = 4000; // PLACEHOLDER
+    public static final double ARM_UPPER_MM_IN_TRESHOLD = 4000;  // PLACEHOLDER
+    public static final double ARM_LOWER_MM_INTERMIDATE = 6000; // PLACEHOLDER
+    public static final double ARM_UPPER_MM_INTERMIDATE = 4000; // PLACEHOLDER
+    public static final double ARM_X_IK_IN_TRESHOLD = 16.8; // PLACEHOLDER
+    public static final double ARM_Z_IK_IN_TRESHOLD = 8.0; // PLACEHOLDER
+    public static final double ARM_X_IK_INTERMIDATE = 16.8; // PLACEHOLDER
+    public static final double ARM_Z_IK_INTERMIDATE = 10; // PLACEHOLDER
 
     // Power sampling for a 
     public static final double ARM_POWER_TRACKING_DURATION = 0.25; // duration of time to keep track of the average current

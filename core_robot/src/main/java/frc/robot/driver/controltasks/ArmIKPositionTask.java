@@ -16,6 +16,14 @@ public class ArmIKPositionTask extends UpdateCycleTask
 
     private ArmMechanism arm;
 
+    private enum armState{
+        Completed,
+        DesiredIntermidate,
+        DesiredGoal
+    }
+
+    private armState currentArmState;
+
     public ArmIKPositionTask(double xPosition, double zPosition)
     {
         this(xPosition, zPosition, false);
@@ -39,6 +47,16 @@ public class ArmIKPositionTask extends UpdateCycleTask
         super.begin();
 
         this.arm = this.getInjector().getInstance(ArmMechanism.class);
+        boolean currentIsIn = (this.arm.getFKXPosition() < TuningConstants.ARM_X_IK_IN_TRESHOLD && this.arm.getFKZPosition() < TuningConstants.ARM_Z_IK_IN_TRESHOLD);
+        boolean goalIsIn = (this.xPosition < TuningConstants.ARM_X_IK_IN_TRESHOLD && this.zPosition < TuningConstants.ARM_Z_IK_IN_TRESHOLD);
+        if(currentIsIn != goalIsIn)
+        {
+            this.currentArmState = armState.DesiredIntermidate;
+        }
+        else
+        {
+            this.currentArmState = armState.DesiredGoal;
+        }
     }
 
     /**
@@ -49,8 +67,42 @@ public class ArmIKPositionTask extends UpdateCycleTask
     {
         super.update();
 
-        this.setAnalogOperationState(AnalogOperation.ArmIKXPosition, this.xPosition);
-        this.setAnalogOperationState(AnalogOperation.ArmIKZPosition, this.zPosition);
+        if(this.currentArmState == armState.DesiredIntermidate)
+        {
+            if( Math.abs(this.arm.getFKXPosition() - TuningConstants.ARM_X_IK_INTERMIDATE) < TuningConstants.ARM_X_IK_GOAL_THRESHOLD &&
+                Math.abs(this.arm.getMMUpperPosition() - TuningConstants.ARM_Z_IK_INTERMIDATE) < TuningConstants.ARM_Z_IK_GOAL_THRESHOLD )
+                {
+                    this.currentArmState = armState.DesiredGoal;
+                }
+        }
+
+        else if(this.currentArmState == armState.DesiredGoal)
+        {
+            if( Math.abs(this.arm.getFKXPosition() - this.xPosition) < TuningConstants.ARM_X_IK_GOAL_THRESHOLD &&
+                Math.abs(this.arm.getFKZPosition() - this.zPosition) < TuningConstants.ARM_Z_IK_GOAL_THRESHOLD)
+            {
+                this.currentArmState = armState.Completed;
+            }
+        }
+
+        switch (this.currentArmState)
+        {
+            case DesiredIntermidate:
+                this.setAnalogOperationState(AnalogOperation.ArmIKXPosition, TuningConstants.ARM_X_IK_INTERMIDATE);
+                this.setAnalogOperationState(AnalogOperation.ArmIKZPosition, TuningConstants.ARM_Z_IK_INTERMIDATE);
+                break;
+            
+            case DesiredGoal:
+                this.setAnalogOperationState(AnalogOperation.ArmIKXPosition, this.xPosition);
+                this.setAnalogOperationState(AnalogOperation.ArmIKZPosition, this.zPosition);
+                break;
+            
+            default:
+            case Completed:
+                this.setAnalogOperationState(AnalogOperation.ArmIKXPosition, TuningConstants.MAGIC_NULL_VALUE);
+                this.setAnalogOperationState(AnalogOperation.ArmIKZPosition, TuningConstants.MAGIC_NULL_VALUE);
+                break;
+        }
     }
 
     /**

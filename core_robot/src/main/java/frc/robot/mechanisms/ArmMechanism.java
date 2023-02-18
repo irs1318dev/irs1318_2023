@@ -628,6 +628,11 @@ public class ArmMechanism implements IMechanism
         return this.zPosition;
     }
 
+    public DoubleTuple getFKAngles(double lowerExtension, double upperExtension)
+    {
+        return calculateFKAnglesFromExtensions(lowerExtension, upperExtension);
+    }
+
     public double getLowerLeftLAPower()
     {
         return this.lowerLeftLAPower;
