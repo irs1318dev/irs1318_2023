@@ -49,7 +49,7 @@ public class PathPlannerWaypoint
      */
     public PathPlannerWaypoint(Point2d point, double heading, double orientation, double velocityOverride)
     {
-        this(point.x, point,y, heading, orientation, velocityOverride);
+        this(point.x, point.y, heading, orientation, velocityOverride);
     }
 
     /**
