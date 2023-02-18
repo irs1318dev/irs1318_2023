@@ -87,8 +87,7 @@ public class ButtonMap implements IButtonMap
             ElectronicsConstants.INVERT_XBONE_LEFT_Y_AXIS,
             -TuningConstants.ARM_LOWER_VELOCITY_DEAZONE,
             TuningConstants.ARM_LOWER_VELOCITY_DEAZONE,
-            1.0,
-            TuningConstants.MAGIC_NULL_VALUE),
+            1.0),
         new AnalogOperationDescription(
             AnalogOperation.ArmUpperPositionAdjustment,
             UserInputDevice.Codriver,
@@ -98,8 +97,7 @@ public class ButtonMap implements IButtonMap
             ElectronicsConstants.INVERT_XBONE_RIGHT_Y_AXIS,
             -TuningConstants.ARM_UPPER_VELOCITY_DEAZONE,
             TuningConstants.ARM_UPPER_VELOCITY_DEAZONE,
-            -1.0, // forward is negative...
-            TuningConstants.MAGIC_NULL_VALUE),
+            1.0),
 
         new AnalogOperationDescription(
             AnalogOperation.ArmSimpleForceLower,
@@ -109,7 +107,8 @@ public class ButtonMap implements IButtonMap
             Shift.CodriverDebug,
             ElectronicsConstants.INVERT_XBONE_LEFT_Y_AXIS,
             -TuningConstants.ARM_LOWER_VELOCITY_DEAZONE,
-            TuningConstants.ARM_LOWER_VELOCITY_DEAZONE),
+            TuningConstants.ARM_LOWER_VELOCITY_DEAZONE,
+            1.0),
         new AnalogOperationDescription(
             AnalogOperation.ArmSimpleForceUpper,
             UserInputDevice.Codriver,
@@ -119,8 +118,14 @@ public class ButtonMap implements IButtonMap
             ElectronicsConstants.INVERT_XBONE_RIGHT_Y_AXIS,
             -TuningConstants.ARM_UPPER_VELOCITY_DEAZONE,
             TuningConstants.ARM_UPPER_VELOCITY_DEAZONE,
-            -1.0), // forward is negative...
+            1.0),
 
+        new AnalogOperationDescription(
+            AnalogOperation.ArmMMLowerPosition,
+            TuningConstants.MAGIC_NULL_VALUE),
+        new AnalogOperationDescription(
+            AnalogOperation.ArmMMUpperPosition,
+            TuningConstants.MAGIC_NULL_VALUE),
         new AnalogOperationDescription(
             AnalogOperation.ArmIKXPosition,
             TuningConstants.MAGIC_NULL_VALUE),
@@ -176,18 +181,33 @@ public class ButtonMap implements IButtonMap
             ButtonType.Click),
 
         new DigitalOperationDescription(
+            DigitalOperation.ArmDisableSimpleMode,
+            UserInputDevice.Codriver,
+            UserInputDeviceButton.XBONE_A_BUTTON,
+            Shift.CodriverDebug,
+            Shift.None,
+            ButtonType.Click),
+        new DigitalOperationDescription(
+            DigitalOperation.ArmEnableSimpleMode,
+            UserInputDevice.Codriver,
+            UserInputDeviceButton.XBONE_A_BUTTON,
+            Shift.CodriverDebug,
+            Shift.CodriverDebug,
+            ButtonType.Click),
+
+        new DigitalOperationDescription(
             DigitalOperation.IntakeExtend,
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_LEFT_BUTTON,
             Shift.DriverDebug,
-            Shift.None,
+            Shift.DriverDebug,
             ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.IntakeRetract,
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_LEFT_BUTTON,
             Shift.DriverDebug,
-            Shift.DriverDebug,
+            Shift.None,
             ButtonType.Click),
         // new DigitalOperationDescription(
         //     DigitalOperation.IntakeIn,
