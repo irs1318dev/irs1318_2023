@@ -19,13 +19,14 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(48.0, 0.0)),
             "goForward4ft");
 
-        addTrajectory(trajectoryManager,
-        pathPlanner.buildTrajectory(
-            TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
-            TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
-            new PathPlannerWaypoint(0.0, 0.0, 180.0),
-            new PathPlannerWaypoint(-4.0, 0.0, 180.0)),
-            "goBackwards4inch");
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(0.0, 0.0, 180.0),
+                new PathPlannerWaypoint(-4.0, 0.0, 180.0)),
+                "goBackwards4inch");
 
         addTrajectory(
             trajectoryManager,
