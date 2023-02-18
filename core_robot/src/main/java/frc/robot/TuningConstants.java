@@ -271,7 +271,7 @@ public class TuningConstants
     public static final double DRIVETRAIN_MAX_VELOCITY = TuningConstants.DRIVETRAIN_DRIVE_MOTOR_VELOCITY_PID_KS * HardwareConstants.DRIVETRAIN_DRIVE_MOTOR_VELOCITY_TO_INCHES_PER_SECOND; // max velocity in inches per second
     public static final double DRIVETRAIN_VELOCITY_TO_PERCENTAGE = 1.0 / TuningConstants.DRIVETRAIN_MAX_VELOCITY;
     public static final double DRIVETRAIN_TURN_GOAL_VELOCITY = 10.0; // degrees per second for turn goal
-    public static final double DRIVETRAIN_TURN_SCALE = 4.0; // radians per second
+    public static final double DRIVETRAIN_TURN_SCALE = 0.8 * Math.PI; // radians per second
     public static final double DRIVETRAIN_STATIONARY_VELOCITY = 0.1;
     public static final double DRIVETRAIN_TURN_APPROXIMATION_STATIONARY = 2.0; // number of degrees off at which point we give up trying to face an angle when uncommanded
     public static final double DRIVETRAIN_TURN_APPROXIMATION = 1.0; // number of degrees off at which point we give up trying to face an angle when uncommanded
@@ -347,8 +347,16 @@ public class TuningConstants
     public static final double ARM_X_IK_GOAL_THRESHOLD = 0.5; // in inches
     public static final double ARM_Z_IK_GOAL_THRESHOLD = 0.5; // in inches
 
+    // Power sampling for a 
+    public static final double ARM_POWER_TRACKING_DURATION = 0.25; // duration of time to keep track of the average current
+    public static final double ARM_POWER_SAMPLES_PER_LOOP = 1.0; // we may want to increase this if we find our update loop duration isn't very consistent...
+    public static final double ARM_POWER_SAMPLES_PER_SECOND = TuningConstants.LOOPS_PER_SECOND * TuningConstants.ARM_POWER_SAMPLES_PER_LOOP;
+    public static final double ARM_NOT_MOVING_POWER_THRESHOLD = 0.25; // amount of power being "used" by the linear actuator to be considered "not moving"
+
     //Set Points for Motion Magic
     // Place Holder VALUES
+    public static final double ARM_LOWER_MM_OUT_WAYPOINT = 0.0;
+    public static final double ARM_UPPER_MM_OUT_WAYPOINT = 0.0;
     public static final double ARM_LOWER_MM_GROUND_PLACING = 0.0;
     public static final double ARM_UPPER_MM_GROUND_PLACING = 0.0;
     public static final double ARM_LOWER_MM_MIDDLE_CONE = 0.0; 

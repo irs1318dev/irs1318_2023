@@ -22,13 +22,16 @@ public enum MacroOperation implements IOperation
     ChargeStationBalanceReverse,
     ChargeStationBalanceGyro,
 
-    //Arm Movement
-    GroundPickup,
-    GroundPlace,
-    MiddleCone,
-    MiddleCube,
-    HighCone,
-    HighCube,
-    SubstationPickup,
+    // Intake macros:
+    IntakeGamePiece,
 
+    // Arm Movement
+    ArmResetToZero,
+    ArmGroundPickupPosition,
+    ArmGroundPlacePosition,
+    ArmMiddleConePosition,
+    ArmMiddleCubePosition,
+    ArmHighConePosition,
+    ArmHighCubePosition,
+    ArmSubstationPickupPosition,
 }

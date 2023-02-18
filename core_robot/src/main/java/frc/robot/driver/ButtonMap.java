@@ -84,7 +84,7 @@ public class ButtonMap implements IButtonMap
             AnalogAxis.XBONE_LSY,
             Shift.CodriverDebug,
             Shift.None,
-            false,
+            ElectronicsConstants.INVERT_XBONE_LEFT_Y_AXIS,
             -TuningConstants.ARM_LOWER_VELOCITY_DEAZONE,
             TuningConstants.ARM_LOWER_VELOCITY_DEAZONE,
             1.0,
@@ -95,10 +95,10 @@ public class ButtonMap implements IButtonMap
             AnalogAxis.XBONE_RSY,
             Shift.CodriverDebug,
             Shift.None,
-            false,
+            ElectronicsConstants.INVERT_XBONE_RIGHT_Y_AXIS,
             -TuningConstants.ARM_UPPER_VELOCITY_DEAZONE,
             TuningConstants.ARM_UPPER_VELOCITY_DEAZONE,
-            1.0,
+            -1.0, // forward is negative...
             TuningConstants.MAGIC_NULL_VALUE),
 
         new AnalogOperationDescription(
@@ -136,49 +136,45 @@ public class ButtonMap implements IButtonMap
             DigitalOperation.PositionResetFieldOrientation,
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_RIGHT_STICK_BUTTON,
-            Shift.CodriverDebug,
+            Shift.DriverDebug,
             Shift.None,
             ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.DriveTrainReset,
-            UserInputDevice.Codriver,
-            UserInputDeviceButton.XBONE_A_BUTTON,
-            Shift.CodriverDebug,
-            Shift.CodriverDebug,
+            UserInputDevice.Driver,
+            UserInputDeviceButton.XBONE_RIGHT_STICK_BUTTON,
+            Shift.DriverDebug,
+            Shift.DriverDebug,
             ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.DriveTrainEnableFieldOrientation,
             UserInputDevice.Codriver,
-            UserInputDeviceButton.XBONE_X_BUTTON,
+            UserInputDeviceButton.XBONE_START_BUTTON,
             Shift.CodriverDebug,
             Shift.None,
             ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.DriveTrainDisableFieldOrientation,
             UserInputDevice.Codriver,
-            UserInputDeviceButton.XBONE_X_BUTTON,
+            UserInputDeviceButton.XBONE_START_BUTTON,
             Shift.CodriverDebug,
             Shift.CodriverDebug,
             ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.DriveTrainEnableMaintainDirectionMode,
             UserInputDevice.Codriver,
-            UserInputDeviceButton.XBONE_B_BUTTON,
+            UserInputDeviceButton.XBONE_SELECT_BUTTON,
             Shift.CodriverDebug,
             Shift.None,
             ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.DriveTrainDisableMaintainDirectionMode,
             UserInputDevice.Codriver,
-            UserInputDeviceButton.XBONE_B_BUTTON,
+            UserInputDeviceButton.XBONE_SELECT_BUTTON,
             Shift.CodriverDebug,
             Shift.CodriverDebug,
             ButtonType.Click),
-        new DigitalOperationDescription(
-            DigitalOperation.VisionEnableAprilTagProcessing,
-            UserInputDevice.Test1,
-            UserInputDeviceButton.XBONE_A_BUTTON,
-            ButtonType.Toggle),
+
         new DigitalOperationDescription(
             DigitalOperation.IntakeExtend,
             UserInputDevice.Driver,
@@ -193,13 +189,13 @@ public class ButtonMap implements IButtonMap
             Shift.DriverDebug,
             Shift.DriverDebug,
             ButtonType.Click),
-        new DigitalOperationDescription(
-            DigitalOperation.IntakeIn,
-            UserInputDevice.Driver,
-            UserInputDeviceButton.XBONE_RIGHT_BUTTON,
-            Shift.DriverDebug,
-            Shift.None,
-            ButtonType.Simple),
+        // new DigitalOperationDescription(
+        //     DigitalOperation.IntakeIn,
+        //     UserInputDevice.Driver,
+        //     UserInputDeviceButton.XBONE_RIGHT_BUTTON,
+        //     Shift.DriverDebug,
+        //     Shift.None,
+        //     ButtonType.Simple),
         new DigitalOperationDescription(
             DigitalOperation.IntakeOut,
             UserInputDevice.Driver,
@@ -207,6 +203,13 @@ public class ButtonMap implements IButtonMap
             Shift.DriverDebug,
             Shift.DriverDebug,
             ButtonType.Simple),
+
+        // Test operations:
+        new DigitalOperationDescription(
+            DigitalOperation.VisionEnableAprilTagProcessing,
+            UserInputDevice.Test1,
+            UserInputDeviceButton.XBONE_A_BUTTON,
+            ButtonType.Toggle),
     };
 
     public static MacroOperationDescription[] MacroSchema = new MacroOperationDescription[]
@@ -410,9 +413,42 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.VisionForceDisable,
             }),
 
-        // arm macros
+        // Intake macros
         new MacroOperationDescription(
-            MacroOperation.GroundPickup,
+            MacroOperation.IntakeGamePiece,
+            UserInputDevice.Driver,
+            UserInputDeviceButton.XBONE_RIGHT_BUTTON,
+            Shift.DriverDebug,
+            Shift.None,
+            ButtonType.Simple,
+            () -> new IntakeGamePieceTask(),
+            new IOperation[]
+            {
+                DigitalOperation.IntakeIn,
+                DigitalOperation.IntakeOut,
+                DigitalOperation.IntakeExtend,
+                DigitalOperation.IntakeRetract,
+            }),
+
+        // arm position macros
+        new MacroOperationDescription(
+            MacroOperation.ArmResetToZero,
+            UserInputDevice.Codriver,
+            UserInputDeviceButton.XBONE_RIGHT_BUTTON,
+            Shift.CodriverDebug,
+            Shift.None,
+            ButtonType.Toggle,
+            () -> new ArmZeroTask(),
+            new IOperation[]
+            {
+                AnalogOperation.ArmSimpleForceLower,
+                AnalogOperation.ArmSimpleForceUpper,
+                DigitalOperation.ArmEnableSimpleMode,
+                DigitalOperation.ArmDisableSimpleMode,
+                DigitalOperation.ArmForceReset,
+            }),
+        new MacroOperationDescription(
+            MacroOperation.ArmGroundPickupPosition,
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_A_BUTTON,
             Shift.DriverDebug,
@@ -427,8 +463,8 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.ArmMMUpperPosition,
             }),
         new MacroOperationDescription(
-            MacroOperation.GroundPlace,
-            UserInputDevice.Codriver,
+            MacroOperation.ArmGroundPlacePosition,
+            UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_A_BUTTON,
             Shift.DriverDebug,
             Shift.DriverDebug,
@@ -442,7 +478,7 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.ArmMMUpperPosition,
             }),
         new MacroOperationDescription(
-            MacroOperation.MiddleCone,
+            MacroOperation.ArmMiddleConePosition,
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_B_BUTTON,
             Shift.DriverDebug,
@@ -457,7 +493,7 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.ArmMMUpperPosition,
             }),
         new MacroOperationDescription(
-            MacroOperation.MiddleCube,
+            MacroOperation.ArmMiddleCubePosition,
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_B_BUTTON,
             Shift.DriverDebug,
@@ -472,7 +508,7 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.ArmMMUpperPosition,
             }),
         new MacroOperationDescription(
-            MacroOperation.HighCone,
+            MacroOperation.ArmHighConePosition,
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_X_BUTTON,
             Shift.DriverDebug,
@@ -487,7 +523,7 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.ArmMMUpperPosition,
             }),
         new MacroOperationDescription(
-            MacroOperation.HighCube,
+            MacroOperation.ArmHighCubePosition,
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_X_BUTTON,
             Shift.DriverDebug,
@@ -502,7 +538,7 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.ArmMMUpperPosition,
             }),
         new MacroOperationDescription(
-            MacroOperation.SubstationPickup,
+            MacroOperation.ArmSubstationPickupPosition,
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_Y_BUTTON,
             Shift.DriverDebug,
