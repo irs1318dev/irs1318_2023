@@ -1,6 +1,7 @@
 package frc.robot.driver.controltasks;
 
 import frc.robot.TuningConstants;
+import frc.robot.common.robotprovider.ITimer;
 import frc.robot.driver.*;
 import frc.robot.mechanisms.*;
 
@@ -20,13 +21,14 @@ public class ArmZeroTask extends ControlTaskBase
     }
 
     private ArmMechanism arm;
+    private ITimer timer;
 
     private boolean useSimpleMode;
     private ArmZeroState state;
+    private double transitionTime;
 
     public ArmZeroTask()
     {
-        this.state = ArmZeroState.RetractLowerArm;
     }
 
     /**
@@ -36,8 +38,11 @@ public class ArmZeroTask extends ControlTaskBase
     public void begin()
     {
         this.arm = this.getInjector().getInstance(ArmMechanism.class);
+        this.timer = this.getInjector().getInstance(ITimer.class);
 
         this.useSimpleMode = this.arm.getInSimpleMode();
+        this.state = ArmZeroState.RetractLowerArm;
+        this.transitionTime = timer.get();
 
         this.setDigitalOperationState(DigitalOperation.ArmEnableSimpleMode, true);
         this.setDigitalOperationState(DigitalOperation.ArmDisableSimpleMode, false);
@@ -49,17 +54,21 @@ public class ArmZeroTask extends ControlTaskBase
     @Override
     public void update()
     {
+        double currTime = this.timer.get();
         if (this.state == ArmZeroState.RetractLowerArm)
         {
-            if (this.arm.getLowerLeftLAPower() <= TuningConstants.ARM_NOT_MOVING_POWER_THRESHOLD &&
+            if (currTime >= this.transitionTime + TuningConstants.ARM_POWER_TRACKING_DURATION &&
+                this.arm.getLowerLeftLAPower() <= TuningConstants.ARM_NOT_MOVING_POWER_THRESHOLD &&
                 this.arm.getLowerRightLAPower() <= TuningConstants.ARM_NOT_MOVING_POWER_THRESHOLD)
             {
                 this.state = ArmZeroState.RetractUpperArm;
+                this.transitionTime = currTime;
             }
         }
         else if (this.state == ArmZeroState.RetractUpperArm)
         {
-            if (this.arm.getUpperLAPower() <= TuningConstants.ARM_NOT_MOVING_POWER_THRESHOLD)
+            if (currTime >= this.transitionTime + TuningConstants.ARM_POWER_TRACKING_DURATION &&
+                this.arm.getUpperLAPower() <= TuningConstants.ARM_NOT_MOVING_POWER_THRESHOLD)
             {
                 this.state = ArmZeroState.Reset;
             }
