@@ -610,7 +610,7 @@ public class ArmMechanism implements IMechanism
 
     public double getMMLowerPosition()
     {
-        return this.lowerLeftArmPosition;
+        return (this.lowerLeftArmPosition + this.lowerRightArmPosition) / 2.0;
     }
 
     public double getMMUpperPosition()
@@ -626,11 +626,6 @@ public class ArmMechanism implements IMechanism
     public double getFKZPosition()
     {
         return this.zPosition;
-    }
-
-    public DoubleTuple getFKAngles(double lowerExtension, double upperExtension)
-    {
-        return calculateFKAnglesFromExtensions(lowerExtension, upperExtension);
     }
 
     public double getLowerLeftLAPower()
