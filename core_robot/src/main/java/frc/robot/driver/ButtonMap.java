@@ -665,8 +665,8 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
-                new PositionStartingTask(70.188, 42.19, 0.0),
-                new FollowPathTask("BlueNineStartToGuardInBetweenToFarChargeStation", false, false)),
+                new PositionStartingTask(0.0, 0.0, 0.0),
+                new FollowPathTask("goForward4ft2", false, false)),
             new IOperation[]
             {
                 DigitalOperation.PositionResetFieldOrientation,
@@ -714,9 +714,17 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             Shift.None,
             ButtonType.Toggle,
-            () -> new FollowPathTask("goLeft4ft"),
+            () -> SequentialTask.Sequence(
+                    new PositionStartingTask(0.0, 0.0, 0.0),
+                    new FollowPathTask("pranavTest", false, false)),
             new IOperation[]
             {
+                DigitalOperation.PositionResetFieldOrientation,
+                DigitalOperation.PositionResetRobotPitch,
+                AnalogOperation.PositionStartingAngle,
+                DigitalOperation.DriveTrainResetXYPosition,
+                AnalogOperation.DriveTrainStartingXPosition,
+                AnalogOperation.DriveTrainStartingYPosition,
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
                 AnalogOperation.DriveTrainTurnAngleGoal,

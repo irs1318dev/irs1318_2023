@@ -37,7 +37,7 @@ public class PathPlannerWrapper implements IPathPlanner
     {
         return new PathPlannerTrajectoryWrapper(
             PathPlanner.generatePath(
-                new PathConstraints(maxVelocity, maxAcceleration),
+                new PathConstraints(maxVelocity * Helpers.METERS_PER_INCH, maxAcceleration * Helpers.METERS_PER_INCH),
                 this.convertWaypoint(firstWaypoint),
                 this.convertWaypoint(secondWaypoint),
                 this.convertWaypoints(otherWaypoints)));

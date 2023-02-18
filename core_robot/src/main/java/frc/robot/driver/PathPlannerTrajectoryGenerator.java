@@ -69,6 +69,18 @@ public class PathPlannerTrajectoryGenerator
             pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(0.0, 0.0, 0.0, 0.0),
+                new PathPlannerWaypoint(48.0, 0.0, 90.0, 0.0),
+                new PathPlannerWaypoint(48.0, 48.0, 180.0, 0.0),
+                new PathPlannerWaypoint(0.0, 48.0, -90.0, 0.0),
+                new PathPlannerWaypoint(0.0, 0.0, 0.0, 0.0)),
+            "pranavTest");
+
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(0.0, 0.0, 180.0, 0.0),
                 new PathPlannerWaypoint(-1.0, 0.0, 180.0, 0.0)),
             "goBack6ft2");
