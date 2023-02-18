@@ -17,7 +17,7 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(0.0, 0.0),
                 new PathPlannerWaypoint(48.0, 0.0)),
-            "goForward4ft");
+            "goForward4ft2");
 
         addTrajectory(
             trajectoryManager,
@@ -26,7 +26,7 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(0.0, 0.0, 180.0),
                 new PathPlannerWaypoint(-4.0, 0.0, 180.0)),
-                "goBackwards4inch");
+                "goBackwards4inch2");
 
         addTrajectory(
             trajectoryManager,
@@ -35,9 +35,7 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(0.0, 0.0, 90.0),
                 new PathPlannerWaypoint(0.0, 48.0, 90.0)),
-            "goLeft4ft");
-
-
+            "goLeft4ft2");
 
         addTrajectory(
             trajectoryManager,
@@ -46,7 +44,7 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(0.0, 0.0),
                 new PathPlannerWaypoint(84.0, 0.0)),
-            "goForward7ft");
+            "goForward7ft2");
 
         addTrajectory(
             trajectoryManager,
@@ -55,7 +53,7 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(0.0, 0.0, 0.0, 0.0),
                 new PathPlannerWaypoint(-1.0, 0.0, 180.0, 180.0)),
-            "turn180Path");
+            "turn180Path2");
 
         addTrajectory(
             trajectoryManager,
@@ -64,7 +62,7 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(0.0, 0.0, 180.0, 0.0),
                 new PathPlannerWaypoint(-84.0, 0.0, 180.0, 180.0)),
-            "goBack7ftRotate");
+            "goBack7ftRotate2");
 
         addTrajectory(
             trajectoryManager,
@@ -73,7 +71,7 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(0.0, 0.0, 180.0, 0.0),
                 new PathPlannerWaypoint(-1.0, 0.0, 180.0, 0.0)),
-            "goBack6ft");
+            "goBack6ft2");
     }
 
     private static void addTrajectory(TrajectoryManager trajectoryManager, ITrajectory trajectory, String name)
