@@ -57,6 +57,7 @@ public class FollowPathTask extends ControlTaskBase
         this.timer = this.getInjector().getInstance(ITimer.class);
         this.startTime = this.timer.get();
         this.trajectoryDuration = this.trajectory.getDuration();
+        System.out.println("duration: " + this.trajectoryDuration);
 
         if (this.fromCurrentPose)
         {

@@ -31,6 +31,29 @@ public class PathPlannerWaypoint
 
     /**
      * Creates a waypoint at position (x, y), traveling in the direction of the heading, facing the orientation, with an overridden velocity
+     * @param point position (in inches)
+     * @param heading travel direction (tangent, in degrees)
+     * @param orientation facing direction (in degrees)
+     */
+    public PathPlannerWaypoint(Point2d point, double heading, double orientation)
+    {
+        this(point.x, point.y, heading, orientation, -1.0);
+    }
+
+    /**
+     * Creates a waypoint at position (x, y), traveling in the direction of the heading, facing the orientation, with an overridden velocity
+     * @param point position (in inches)
+     * @param heading travel direction (tangent, in degrees)
+     * @param orientation facing direction (in degrees)
+     * @param velocityOverride while approaching this waypoint (in inches per second)
+     */
+    public PathPlannerWaypoint(Point2d point, double heading, double orientation, double velocityOverride)
+    {
+        this(point.x, point,y, heading, orientation, velocityOverride);
+    }
+
+    /**
+     * Creates a waypoint at position (x, y), traveling in the direction of the heading, facing the orientation, with an overridden velocity
      * @param x position (in inches)
      * @param y position (in inches)
      * @param heading travel direction (tangent, in degrees)

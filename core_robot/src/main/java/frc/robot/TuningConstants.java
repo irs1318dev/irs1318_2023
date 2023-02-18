@@ -219,7 +219,7 @@ public class TuningConstants
     public static final double DRIVETRAIN_PATH_OMEGA_MAX_OUTPUT = 4.0;
     public static final double DRIVETRAIN_PATH_OMEGA_MIN_OUTPUT = -4.0;
 
-    public static final double DRIVETRAIN_PATH_X_POSITION_PID_KP = 0.0; // 1.0;
+    public static final double DRIVETRAIN_PATH_X_POSITION_PID_KP = 1.0;
     public static final double DRIVETRAIN_PATH_X_POSITION_PID_KI = 0.0;
     public static final double DRIVETRAIN_PATH_X_POSITION_PID_KD = 0.0;
     public static final double DRIVETRAIN_PATH_X_POSITION_PID_KF = 0.0;
@@ -227,7 +227,7 @@ public class TuningConstants
     public static final double DRIVETRAIN_PATH_X_MAX_OUTPUT = 10.0;
     public static final double DRIVETRAIN_PATH_X_MIN_OUTPUT = -10.0;
 
-    public static final double DRIVETRAIN_PATH_Y_POSITION_PID_KP = 0.0; // 1.0;
+    public static final double DRIVETRAIN_PATH_Y_POSITION_PID_KP = 1.0;
     public static final double DRIVETRAIN_PATH_Y_POSITION_PID_KI = 0.0;
     public static final double DRIVETRAIN_PATH_Y_POSITION_PID_KD = 0.0;
     public static final double DRIVETRAIN_PATH_Y_POSITION_PID_KF = 0.0;
