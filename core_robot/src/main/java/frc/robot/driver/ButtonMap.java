@@ -751,8 +751,8 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
-                    new PositionStartingTask(0.0, 0.0, 0.0),
-                    new FollowPathTask("pranavTest", false, false)),
+                    new PositionStartingTask(256.861, 196.595 + 1.05, 0.0),
+                    new FollowPathTask("LoadEdgeto10", false, false)),
             new IOperation[]
             {
                 DigitalOperation.PositionResetFieldOrientation,
