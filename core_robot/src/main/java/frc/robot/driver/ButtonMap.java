@@ -476,8 +476,8 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_MM_GROUND_PICKUP,
-                TuningConstants.ARM_UPPER_MM_GROUND_PICKUP),
+                TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP,
+                TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -491,8 +491,8 @@ public class ButtonMap implements IButtonMap
             Shift.DriverDebug,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_MM_GROUND_PLACING,
-                TuningConstants.ARM_UPPER_MM_GROUND_PLACING),
+                TuningConstants.ARM_LOWER_POSITION_GROUND_PLACING,
+                TuningConstants.ARM_UPPER_POSITION_GROUND_PLACING),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -506,8 +506,8 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_MM_MIDDLE_CONE,
-                TuningConstants.ARM_UPPER_MM_MIDDLE_CONE),
+                TuningConstants.ARM_LOWER_POSITION_MIDDLE_CONE,
+                TuningConstants.ARM_UPPER_POSITION_MIDDLE_CONE),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -521,8 +521,8 @@ public class ButtonMap implements IButtonMap
             Shift.DriverDebug,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_MM_MIDDLE_CUBE,
-                TuningConstants.ARM_UPPER_MM_MIDDLE_CUBE),
+                TuningConstants.ARM_LOWER_POSITION_MIDDLE_CUBE,
+                TuningConstants.ARM_UPPER_POSITION_MIDDLE_CUBE),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -536,8 +536,8 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_MM_HIGH_CONE,
-                TuningConstants.ARM_UPPER_MM_HIGH_CONE),
+                TuningConstants.ARM_LOWER_POSITION_HIGH_CONE,
+                TuningConstants.ARM_UPPER_POSITION_HIGH_CONE),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -551,8 +551,8 @@ public class ButtonMap implements IButtonMap
             Shift.DriverDebug,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_MM_HIGH_CUBE,
-                TuningConstants.ARM_UPPER_MM_HIGH_CUBE),
+                TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE,
+                TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -566,8 +566,8 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_MM_SUB_PICKUP,
-                TuningConstants.ARM_UPPER_MM_SUB_PICKUP),
+                TuningConstants.ARM_LOWER_POSITION_SUB_PICKUP,
+                TuningConstants.ARM_UPPER_POSITION_SUB_PICKUP),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,

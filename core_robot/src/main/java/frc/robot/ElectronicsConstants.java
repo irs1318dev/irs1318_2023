@@ -78,16 +78,17 @@ public class ElectronicsConstants
     public static final int ARM_INTAKE_PISTON_FORWARD = 6;
     public static final int ARM_INTAKE_PISTON_REVERSE = 7;
 
-    public static final int ARM_LOWER_LEFT_LA_PDH_CHANNEL = 4;
-    public static final int ARM_LOWER_RIGHT_LA_PDH_CHANNEL = 5;
-    public static final int ARM_UPPER_LA_PDH_CHANNEL = 6;
+    public static final int ARM_LOWER_LEFT_LA_PDH_CHANNEL = 17;
+    public static final int ARM_LOWER_RIGHT_LA_PDH_CHANNEL = 7;
+    public static final int ARM_UPPER_LEFT_LA_PDH_CHANNEL = 15;
+    public static final int ARM_UPPER_RIGHT_LA_PDH_CHANNEL = 16;
 
     public static final int INTAKE_LIGHT_FEEDER = 14;
 
     public static final int ARM_LOWER_LEFT_LA_CAN_ID = 10;
     public static final int ARM_LOWER_RIGHT_LA_CAN_ID = 11;
     public static final int ARM_UPPER_LA_CAN_ID = 12;
-    public static final int ARM_UPPER_FOLLOWER_CAN_ID = 13;
+    public static final int ARM_UPPER_LA_FOLLOWER_CAN_ID = 13;
 
     public static final int LEFT_SIDE_STICK_PISTON_FORWARD = 8;
     public static final int LEFT_SIDE_STICK_PISTON_BACKWARD = 9;

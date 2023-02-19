@@ -393,28 +393,39 @@ public class TuningConstants
     public static final double ARM_X_IK_INTERMIDATE = 16.8; // PLACEHOLDER
     public static final double ARM_Z_IK_INTERMIDATE = 10; // PLACEHOLDER
 
-    // Power sampling for a 
+    // Power sampling for arm
     public static final double ARM_POWER_TRACKING_DURATION = 0.25; // duration of time to keep track of the average current
     public static final double ARM_POWER_SAMPLES_PER_LOOP = 1.0; // we may want to increase this if we find our update loop duration isn't very consistent...
     public static final double ARM_POWER_SAMPLES_PER_SECOND = TuningConstants.LOOPS_PER_SECOND * TuningConstants.ARM_POWER_SAMPLES_PER_LOOP;
     public static final double ARM_NOT_MOVING_POWER_THRESHOLD = 0.25; // amount of power being "used" by the linear actuator to be considered "not moving"
 
-    //Set Points for Motion Magic
-    // Place Holder VALUES
-    public static final double ARM_LOWER_MM_GROUND_PLACING = 4700.0;
-    public static final double ARM_UPPER_MM_GROUND_PLACING = 1650.0;
-    public static final double ARM_LOWER_MM_MIDDLE_CONE = 7550.0; 
-    public static final double ARM_UPPER_MM_MIDDLE_CONE = 4750.0;
-    public static final double ARM_LOWER_MM_MIDDLE_CUBE = 5800.0; 
-    public static final double ARM_UPPER_MM_MIDDLE_CUBE = 4300.0;
-    public static final double ARM_LOWER_MM_HIGH_CONE = 2950.0;
-    public static final double ARM_UPPER_MM_HIGH_CONE = 7250.0;
-    public static final double ARM_LOWER_MM_HIGH_CUBE = 4000.0;
-    public static final double ARM_UPPER_MM_HIGH_CUBE = 6200.0;
-    public static final double ARM_LOWER_MM_GROUND_PICKUP = 1950.0;
-    public static final double ARM_UPPER_MM_GROUND_PICKUP = 1900.0;
-    public static final double ARM_LOWER_MM_SUB_PICKUP = 0.0;
-    public static final double ARM_UPPER_MM_SUB_PICKUP = 0.0;
+    // Velocity sampling for arm
+    public static final double ARM_VELOCITY_TRACKING_DURATION = TuningConstants.ARM_POWER_TRACKING_DURATION; // should match the power tracking
+    public static final double ARM_VELOCITY_SAMPLES_PER_LOOP = TuningConstants.ARM_POWER_SAMPLES_PER_LOOP; // should match the power tracking
+    public static final double ARM_VELOCITY_SAMPLES_PER_SECOND = TuningConstants.ARM_POWER_SAMPLES_PER_SECOND; // should match the power tracking
+
+    // Arm stall prevention
+    public static final boolean ARM_STALL_PROTECTION_ENABLED = true;
+    public static final double ARM_STALLED_POWER_THRESHOLD = 5.0; // amount of power being "used" by the linear actuator (despite not moving according to the encoders) to be considered stalled
+    public static final double ARM_STALLED_VELOCITY_THRESHOLD = 10.0; // 10 ticks/sec is very slow, unlikely to be really moving...
+
+    // Set Points for Arm (linear actuator positions)
+    public static final double ARM_LOWER_POSITION_STOWED = 8323.0;
+    public static final double ARM_UPPER_POSITION_STOWED = 0.0;
+    public static final double ARM_LOWER_POSITION_GROUND_PLACING = 4700.0;
+    public static final double ARM_UPPER_POSITION_GROUND_PLACING = 1650.0;
+    public static final double ARM_LOWER_POSITION_MIDDLE_CONE = 7550.0; 
+    public static final double ARM_UPPER_POSITION_MIDDLE_CONE = 4750.0;
+    public static final double ARM_LOWER_POSITION_MIDDLE_CUBE = 5800.0; 
+    public static final double ARM_UPPER_POSITION_MIDDLE_CUBE = 4300.0;
+    public static final double ARM_LOWER_POSITION_HIGH_CONE = 2950.0;
+    public static final double ARM_UPPER_POSITION_HIGH_CONE = 7250.0;
+    public static final double ARM_LOWER_POSITION_HIGH_CUBE = 4000.0;
+    public static final double ARM_UPPER_POSITION_HIGH_CUBE = 6200.0;
+    public static final double ARM_LOWER_POSITION_GROUND_PICKUP = 1950.0;
+    public static final double ARM_UPPER_POSITION_GROUND_PICKUP = 1900.0;
+    public static final double ARM_LOWER_POSITION_SUB_PICKUP = 0.0;
+    public static final double ARM_UPPER_POSITION_SUB_PICKUP = 0.0;
 
     //============================================= ChargeStation Macro ==================================================================
 
