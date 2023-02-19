@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import frc.robot.*;
 import frc.robot.common.Helpers;
+import frc.robot.common.robotprovider.PathPlannerWaypoint;
 import frc.robot.driver.common.*;
 import frc.robot.driver.common.buttons.*;
 import frc.robot.driver.common.descriptions.*;
@@ -771,8 +772,8 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
-                    new PositionStartingTask(256.861, 196.595 + 1.05, 0.0),
-                    new FollowPathTask("LoadEdgeto10", false, false)),
+                    new PositionStartingTask(-251.861, 196.595 + 1.05, PathPlannerWaypoint.setOrientation(1)),
+                    new FollowPathTask("LoadEdgeto18", false, false)),
             new IOperation[]
             {
                 DigitalOperation.PositionResetFieldOrientation,
