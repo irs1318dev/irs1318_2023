@@ -89,6 +89,17 @@ public class LoggingManager implements ILogger
      * Write a number (integer) to the log
      * @param key to write to
      * @param value to write
+     */
+    @Override
+    public void logInteger(LoggingKey key, Integer value)
+    {
+        this.currentLogger.logInteger(key, value);
+    }
+
+    /**
+     * Write a number (integer) to the log
+     * @param key to write to
+     * @param value to write
      * @param formatString to use
      */
     @Override

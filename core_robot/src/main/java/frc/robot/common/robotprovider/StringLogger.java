@@ -84,6 +84,17 @@ public abstract class StringLogger implements ILogger
      * Write a number (integer) to the log
      * @param key to write to
      * @param value to write
+     */
+    @Override
+    public void logInteger(LoggingKey key, Integer value)
+    {
+        this.logString(key, String.valueOf(value));
+    }
+
+    /**
+     * Write a number (integer) to the log
+     * @param key to write to
+     * @param value to write
      * @param formatString to use
      */
     @Override
