@@ -45,7 +45,6 @@ public class ChargeStationTaskv2 extends ControlTaskBase
         this.currentState = State.Starting;
         this.pitch = 0.0;
         this.climbingExceededTransitionTime = 0.0;
-        this.pitchRateAverageCalculator = new FloatingAverageCalculator(this.timer, 0.1, 50);
         this.pitchLog = new double[25]; // logs every 0.02 secs, array is 0.5 secs total
         this.prevPitchLogTime = 0.0;
     }
@@ -69,6 +68,7 @@ public class ChargeStationTaskv2 extends ControlTaskBase
 
         this.imuManager = this.getInjector().getInstance(PigeonManager.class);
         this.timer = this.getInjector().getInstance(ITimer.class);
+        this.pitchRateAverageCalculator = new FloatingAverageCalculator(this.timer, 0.1, 50);
         this.pitch = this.imuManager.getPitch();
 
         this.pitchRateAverage = this.pitchRateAverageCalculator.update(this.imuManager.getPitchRate());

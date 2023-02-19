@@ -583,7 +583,7 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
                 new PitchResetTask(), //calibration
-                new ChargeStationTask(false), //false means charge station in front of robot
+                new ChargeStationTaskv2(false), //false means charge station in front of robot
                 ConcurrentTask.AllTasks(
                     new PIDBrakeTask(),
                     new WaitTask(0.5))),
