@@ -428,6 +428,9 @@ public class TuningConstants
     public static final double CHARGE_STATION_CLIMBING_TRANSITION_ACCEPTABLE_VARIATION = 0.3;
     public static final double CHARGE_STATION_CLIMBING_TRANSITION_WAIT_DURATION = 1.35;
 
+    //Version 2 constants
+    public static final double CHARGE_STATION_ACCEPTABLE_PITCH_DIFF_V2 = -4;
+
     //ChargeStationTaskGyro (owned by Calvin)
     public static final double CHARGE_STATION_2_PITCH_VARIATION = 0.3;
     public static final double CHARGE_STATION_2_STARTING_SPEED = 0.5;
