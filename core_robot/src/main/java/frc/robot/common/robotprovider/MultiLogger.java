@@ -17,7 +17,6 @@ public class MultiLogger implements ILogger
 
     /**
      * Write a boolean to the log
-     * @param component to log for
      * @param key to write to
      * @param value to write
      */
@@ -32,7 +31,6 @@ public class MultiLogger implements ILogger
 
     /**
      * Write a boolean array to the log
-     * @param component to log for
      * @param key to write to
      * @param value to write
      */
@@ -47,7 +45,6 @@ public class MultiLogger implements ILogger
 
     /**
      * Write a number (double) to the log
-     * @param component to log for
      * @param key to write to
      * @param value to write
      */
@@ -62,7 +59,6 @@ public class MultiLogger implements ILogger
 
     /**
      * Write a number (Double) to the log
-     * @param component to log for
      * @param key to write to
      * @param value to write
      */
@@ -77,7 +73,6 @@ public class MultiLogger implements ILogger
 
     /**
      * Write a number (integer) to the log
-     * @param component to log for
      * @param key to write to
      * @param value to write
      */
@@ -92,7 +87,20 @@ public class MultiLogger implements ILogger
 
     /**
      * Write a number (integer) to the log
-     * @param component to log for
+     * @param key to write to
+     * @param value to write
+     */
+    @Override
+    public void logInteger(LoggingKey key, Integer value)
+    {
+        for (ILogger logger : this.loggers)
+        {
+            logger.logInteger(key, value);
+        }
+    }
+
+    /**
+     * Write a number (integer) to the log
      * @param key to write to
      * @param value to write
      * @param formatString to use
@@ -108,7 +116,6 @@ public class MultiLogger implements ILogger
 
     /**
      * Write a point (x,y or N/A) to the log
-     * @param component to log for
      * @param key to write to
      * @param value to write
      */
@@ -123,7 +130,6 @@ public class MultiLogger implements ILogger
 
     /**
      * Write a string to the log
-     * @param component to log for
      * @param key to write to
      * @param value to write
      */

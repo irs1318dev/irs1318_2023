@@ -96,7 +96,7 @@ public class OffboardVisionManager implements IMechanism
         this.atYaw = this.atYawSubscriber.get();
         this.atPitch = this.atPitchSubscriber.get();
         this.atRoll = this.atRollSubscriber.get();
-        this.atId = (int) this.atIdSubscriber.get();
+        this.atId = (int)this.atIdSubscriber.get();
         this.rrDistance = this.rrDistanceSubscriber.get();
         this.rrAngle = this.rrAngleSubscriber.get();
 
@@ -139,7 +139,7 @@ public class OffboardVisionManager implements IMechanism
         this.logger.logNumber(LoggingKey.OffboardVisionAprilTagYaw, this.atYaw);
         this.logger.logNumber(LoggingKey.OffboardVisionAprilTagPitch, this.atPitch);
         this.logger.logNumber(LoggingKey.OffboardVisionAprilTagRoll, this.atRoll);
-        this.logger.logNumber(LoggingKey.OffboardVisionAprilTagId, this.atId);
+        this.logger.logInteger(LoggingKey.OffboardVisionAprilTagId, this.atId);
         this.logger.logNumber(LoggingKey.OffboardVisionRRTargetDistance, this.rrDistance);
         this.logger.logNumber(LoggingKey.OffboardVisionRRTargetHorizontalAngle, this.rrAngle);
     }
