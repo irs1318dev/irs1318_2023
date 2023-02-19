@@ -33,7 +33,7 @@ public class TuningConstants
 
     //================================================== Autonomous ==============================================================
 
-    public static final boolean TRAJECTORY_FORCE_BUILD = true;
+    public static final boolean TRAJECTORY_FORCE_BUILD = false;
 
     public static final boolean isRed = false;
 
@@ -56,8 +56,9 @@ public class TuningConstants
         //X Values
     public static final double StartGridX = 251.861;
     public static final double CloseChargeStationX = 231.474; // 5 inches away from the charge station + Robot centering value
-    public static final double FarChargeStationX = 93.048;
+    public static final double FarChargeStationX = 111.748; // 5 inches away from the charge station + Robot centering value
     public static final double GroundPiecesX = 66.799;
+    
 
 
     //================================================= Power ======================================================

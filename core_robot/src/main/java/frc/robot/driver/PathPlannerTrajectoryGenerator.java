@@ -9,12 +9,13 @@ import frc.robot.driver.common.TrajectoryManager;
 
 public class PathPlannerTrajectoryGenerator
 {   
+    
 
     public static void generateTrajectories(TrajectoryManager trajectoryManager, IPathPlanner pathPlanner)
     {
 
-        double ForwardHT = (TuningConstants.isRed ? 180 : 0); //TurnaryOperatorForwardsHeadingOrTangent
-        double BackwardHT = (TuningConstants.isRed ? 0 : 180); //TurnaryOperatorBackwardsHeadingOrTangent
+        double ForwardOT = (TuningConstants.isRed ? 180 : 0); //TurnaryOperatorForwardsHeadingOrTangent
+        double BackwardOT = (TuningConstants.isRed ? 0 : 180); //TurnaryOperatorBackwardsHeadingOrTangent
 
         //Vectors
         Point2d StartOneGrid = new Point2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, TuningConstants.StartOneGridY); //1
@@ -59,7 +60,7 @@ public class PathPlannerTrajectoryGenerator
         Point2d P18 = InBetweenLoadFar;
         Point2d P19 = InBetweenGuardFar;
 
-        //TANGENTS:
+        //TANGENTS AND ORIENTATION:
         // +x = 0 Towards the red alliance
         // -x = 180 Towards the blue alliance
         // -y = -90 Towards the Guardrail
@@ -149,9 +150,9 @@ public class PathPlannerTrajectoryGenerator
             pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(LoadEdge, ForwardHT, BackwardHT),
-                new PathPlannerWaypoint(P10, ForwardHT, ForwardHT)),
-            "LoadEdgeto10");
+                new PathPlannerWaypoint(LoadEdge, ForwardOT, ForwardOT),
+                new PathPlannerWaypoint(P18, ForwardOT, ForwardOT)),
+            "LoadEdgeto18");
 
         
 
