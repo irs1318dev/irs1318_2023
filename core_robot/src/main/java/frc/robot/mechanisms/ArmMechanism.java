@@ -228,6 +228,11 @@ public class ArmMechanism implements IMechanism
         this.lowerRightPowerCalculator = new FloatingAverageCalculator(this.timer, TuningConstants.ARM_POWER_TRACKING_DURATION, TuningConstants.ARM_POWER_SAMPLES_PER_SECOND);
         this.upperPowerCalculator = new FloatingAverageCalculator(this.timer, TuningConstants.ARM_POWER_TRACKING_DURATION, TuningConstants.ARM_POWER_SAMPLES_PER_SECOND);
 
+        ITalonSRX upperLAFollower = provider.getTalonSRX(ElectronicsConstants.ARM_UPPER_FOLLOWER_CAN_ID);
+        upperLAFollower.setNeutralMode(MotorNeutralMode.Brake);
+        upperLAFollower.setInvertOutput(TuningConstants.ARM_UPPER_FOLLOWER_INVERT_OUTPUT);
+        upperLAFollower.follow(this.upperArmActuator);
+
         //------------------------- Side Stick Initialization ------------------------------
         // this.leftConeFlipper = provider.getDoubleSolenoid(
         //     ElectronicsConstants.PNEUMATICS_MODULE_A,
