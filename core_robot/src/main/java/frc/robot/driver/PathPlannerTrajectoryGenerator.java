@@ -59,6 +59,9 @@ public class PathPlannerTrajectoryGenerator
         Point2d P17 = GroundFour;
         Point2d P18 = InBetweenLoadFar;
         Point2d P19 = InBetweenGuardFar;
+        Point2d P20;
+        Point2d P21;
+        Point2d P22;
 
         //TANGENTS AND ORIENTATION:
         // +x = 0 Towards the red alliance
@@ -209,6 +212,15 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P12, ForwardOT, BackwardOT),
                 new PathPlannerWaypoint(P1, ForwardOT, BackwardOT)),
             "10to1");
+        
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(P12, ForwardOT, BackwardOT),
+                new PathPlannerWaypoint(P2, ForwardOT, BackwardOT)),
+            "10to2");
     }
 
     private static void addTrajectory(TrajectoryManager trajectoryManager, ITrajectory trajectory, String name)
