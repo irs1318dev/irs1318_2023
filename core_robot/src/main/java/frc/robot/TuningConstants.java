@@ -60,6 +60,21 @@ public class TuningConstants
     public static final double GroundPiecesX = 66.799;
     
 
+        //April tag array by ids
+        //TODO Ayush and Hiruna 
+        //(xPosition, yPosition, orientation)
+    public static final double[][] AprilTagLocations = {
+        {0.0, 0.0, 0.0}, //ID 1
+        {0.0, 0.0, 0.0}, //ID 2
+        {0.0, 0.0, 0.0}, //ID 3
+        {0.0, 0.0, 0.0}, //ID 4
+        {0.0, 0.0, 0.0}, //ID 5
+        {0.0, 0.0, 0.0}, //ID 6
+        {0.0, 0.0, 0.0}, //ID 7
+        {0.0, 0.0, 0.0}, //ID 8
+    };
+        
+
 
     //================================================= Power ======================================================
 

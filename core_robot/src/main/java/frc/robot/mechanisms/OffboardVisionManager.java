@@ -27,6 +27,7 @@ public class OffboardVisionManager implements IMechanism
     private IDoubleSubscriber atYawSubscriber;
     private IDoubleSubscriber atPitchSubscriber;
     private IDoubleSubscriber atRollSubscriber;
+    private IIntegerSubscriber atIdSubscriber;
     private IDoubleSubscriber rrDistanceSubscriber;
     private IDoubleSubscriber rrAngleSubscriber;
     private IIntegerSubscriber heartbeatSubscriber;
@@ -37,6 +38,7 @@ public class OffboardVisionManager implements IMechanism
     private Double atYaw;
     private Double atPitch;
     private Double atRoll;
+    private Integer atId;
     private Double rrDistance;
     private Double rrAngle;
 
@@ -63,6 +65,7 @@ public class OffboardVisionManager implements IMechanism
         this.atYawSubscriber = this.networkTable.getDoubleSubscriber("at.yawAngle", TuningConstants.MAGIC_NULL_VALUE);
         this.atPitchSubscriber = this.networkTable.getDoubleSubscriber("at.pitchAngle", TuningConstants.MAGIC_NULL_VALUE);
         this.atRollSubscriber = this.networkTable.getDoubleSubscriber("at.rollAngle", TuningConstants.MAGIC_NULL_VALUE);
+        this.atIdSubscriber = this.networkTable.getIntegerSubscriber("at.tagId", (int) TuningConstants.MAGIC_NULL_VALUE);
         this.rrDistanceSubscriber = this.networkTable.getDoubleSubscriber("rr.distance", TuningConstants.MAGIC_NULL_VALUE);
         this.rrAngleSubscriber = this.networkTable.getDoubleSubscriber("rr.horizontalAngle", TuningConstants.MAGIC_NULL_VALUE);
         this.heartbeatSubscriber = this.networkTable.getIntegerSubscriber("v.heartbeat", 0);
@@ -73,6 +76,7 @@ public class OffboardVisionManager implements IMechanism
         this.atYaw = null;
         this.atPitch = null;
         this.atRoll = null;
+        this.atId = null;
         this.rrDistance = null;
         this.rrAngle = null;
 
@@ -92,6 +96,7 @@ public class OffboardVisionManager implements IMechanism
         this.atYaw = this.atYawSubscriber.get();
         this.atPitch = this.atPitchSubscriber.get();
         this.atRoll = this.atRollSubscriber.get();
+        this.atId = (int) this.atIdSubscriber.get();
         this.rrDistance = this.rrDistanceSubscriber.get();
         this.rrAngle = this.rrAngleSubscriber.get();
 
@@ -118,6 +123,7 @@ public class OffboardVisionManager implements IMechanism
             this.atYaw = null;
             this.atPitch = null;
             this.atRoll = null;
+            this.atId = null;
         }
 
         // reset if we couldn't find the retro-reflective vision target
@@ -133,6 +139,7 @@ public class OffboardVisionManager implements IMechanism
         this.logger.logNumber(LoggingKey.OffboardVisionAprilTagYaw, this.atYaw);
         this.logger.logNumber(LoggingKey.OffboardVisionAprilTagPitch, this.atPitch);
         this.logger.logNumber(LoggingKey.OffboardVisionAprilTagRoll, this.atRoll);
+        this.logger.logNumber(LoggingKey.OffboardVisionAprilTagId, this.atId);
         this.logger.logNumber(LoggingKey.OffboardVisionRRTargetDistance, this.rrDistance);
         this.logger.logNumber(LoggingKey.OffboardVisionRRTargetHorizontalAngle, this.rrAngle);
     }
@@ -207,6 +214,11 @@ public class OffboardVisionManager implements IMechanism
     public Double getAprilTagRoll()
     {
         return this.atRoll;
+    }
+
+    public Integer getAprilTagId()
+    {
+        return this.atId;
     }
 
     private boolean isRedTeam()
