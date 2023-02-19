@@ -9,6 +9,18 @@ public class Helpers
     public static final double METERS_PER_INCH = 0.0254;
     public static final double GRAVITY_INCH_PER_SQ_SECOND = 386.22047244094; // in/s^2
 
+    /**
+     * Check whether the two values are roughly equal
+     * @param value1 first value
+     * @param value2 value to check against
+     * @param range acceptable diference to be declared equal
+     * @return true if roughly equal, otherwise false
+     */
+    public static boolean RoughEquals(double value1, double value2, double range)
+    {
+        return Math.abs(value1 - value2) <= range;
+    }
+
     public static double EnforceRange(double value, double minValue, double maxValue)
     {
         if (value > maxValue)
