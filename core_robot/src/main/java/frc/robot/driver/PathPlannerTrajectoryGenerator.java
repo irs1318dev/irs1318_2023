@@ -102,9 +102,9 @@ public class PathPlannerTrajectoryGenerator
             pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(0.0, 0.0),
-                new PathPlannerWaypoint(84.0, 0.0)),
-            "goForward7ft2");
+                new PathPlannerWaypoint(0.0, 0.0, 0.0, PathPlannerWaypoint.setOrientation(1)),
+                new PathPlannerWaypoint(36.0, 0.0, 180.0, PathPlannerWaypoint.setOrientation(-1))),
+            "goForward6ft2AndRotate");
 
         addTrajectory(
             trajectoryManager,
@@ -167,7 +167,7 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(LoadEdge, ForwardOT, BackwardOT),
                 new PathPlannerWaypoint(P1, ForwardOT, BackwardOT),
-                new PathPlannerWaypoint(P10, ForwardOT, ForwardOT),
+                new PathPlannerWaypoint(P10, ForwardOT, BackwardOT),
                 new PathPlannerWaypoint(P18, ForwardOT, ForwardOT),
                 new PathPlannerWaypoint(P14, ForwardOT, ForwardOT)),
             "LoadEdgeto14");

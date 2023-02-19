@@ -718,12 +718,12 @@ public class ButtonMap implements IButtonMap
             MacroOperation.FollowPathTest1,
             UserInputDevice.Test1,
             0,
-            Shift.None,
+            Shift.Test1Debug,
             Shift.None,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
                 new PositionStartingTask(0.0, 0.0, 0.0),
-                new FollowPathTask("goForward4ft2", false, false)),
+                new FollowPathTask("goForward6ft2AndRotate", false, false)),
             new IOperation[]
             {
                 DigitalOperation.PositionResetFieldOrientation,
