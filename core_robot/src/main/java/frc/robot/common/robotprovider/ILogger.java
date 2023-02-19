@@ -43,6 +43,13 @@ public interface ILogger
      * Write a number (integer) to the log
      * @param key to write to
      * @param value to write
+     */
+    void logInteger(LoggingKey key, Integer value);
+
+    /**
+     * Write a number (integer) to the log
+     * @param key to write to
+     * @param value to write
      * @param formatString to use
      */
     void logInteger(LoggingKey key, int value, String formatString);

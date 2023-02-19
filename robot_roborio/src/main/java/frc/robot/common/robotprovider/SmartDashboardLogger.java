@@ -83,6 +83,23 @@ public class SmartDashboardLogger implements ISmartDashboardLogger
      * Write a number (integer) to the smart dashboard
      * @param key to write to
      * @param value to write
+     */
+    @Override
+    public void logInteger(LoggingKey key, Integer value)
+    {
+        String valueString = "N/A";
+        if (value != null)
+        {
+            valueString = String.valueOf(value);
+        }
+
+        SmartDashboard.putString(key.value, valueString);
+    }
+
+    /**
+     * Write a number (integer) to the smart dashboard
+     * @param key to write to
+     * @param value to write
      * @param formatString to use
      */
     @Override
