@@ -22,6 +22,7 @@ public enum LoggingKey
     OffboardVisionAprilTagYaw("vision.atYaw"),
     OffboardVisionAprilTagPitch("vision.atPitch"),
     OffboardVisionAprilTagRoll("vision.atRoll"),
+    OffboardVisionAprilTagId("vision.atId"),
     OffboardVisionProcessingMode("vision.processingMode"),
     OffboardVisionEnableStream("vision.enableStream"),
     OffboardVisionMissedHeartbeats("vision.missedHeartbeats"),
