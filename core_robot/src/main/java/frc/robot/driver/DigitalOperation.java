@@ -18,6 +18,7 @@ public enum DigitalOperation implements IOperation
     CompressorForceDisable,
 
     // DriveTrain operations:
+    DriveTrainSlowMode,
     DriveTrainPathMode,
     DriveTrainSteerMode,
     DriveTrainMaintainPositionMode,
