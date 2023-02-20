@@ -36,7 +36,7 @@ public class PathPlannerTrajectoryGenerator
         Point2d GroundThree = new Point2d(TuningConstants.isRed ? TuningConstants.GroundPiecesX : -TuningConstants.GroundPiecesX, TuningConstants.GroundThreeY); //16
         Point2d GroundFour = new Point2d(TuningConstants.isRed ? TuningConstants.GroundPiecesX : -TuningConstants.GroundPiecesX, TuningConstants.GroundFourY); //17
         Point2d InBetweenLoadFar = new Point2d(TuningConstants.isRed ? TuningConstants.FarChargeStationX : -TuningConstants.FarChargeStationX, TuningConstants.GroundOneY); //18
-        Point2d InBetweenGuardFar = new Point2d(TuningConstants.isRed ? TuningConstants.FarChargeStationX : -TuningConstants.FarChargeStationX, TuningConstants.GroundOneY); //19
+        Point2d InBetweenGuardFar = new Point2d(TuningConstants.isRed ? TuningConstants.FarChargeStationX : -TuningConstants.FarChargeStationX, TuningConstants.GroundFourY); //19
 
         Point2d P1 = StartOneGrid;
         Point2d LoadEdge = new Point2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX  , TuningConstants.StartOneGridY + 1.05); //edge of grid
@@ -48,7 +48,7 @@ public class PathPlannerTrajectoryGenerator
         Point2d P7 = StartSevenGrid;
         Point2d P8 = StartEightGrid;
         Point2d P9 = StartNineGrid;
-        Point2d GuardEdge = new Point2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, 18.8); //edge of grid
+        Point2d GuardEdge = new Point2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, 16.8); //edge of grid
         Point2d P10 = InBetweenLoadClose;
         Point2d P11 = ChargeStationClose;
         Point2d P12 = InBetweenGuardClose;
@@ -59,9 +59,9 @@ public class PathPlannerTrajectoryGenerator
         Point2d P17 = GroundFour;
         Point2d P18 = InBetweenLoadFar;
         Point2d P19 = InBetweenGuardFar;
-        Point2d P20 = new Point2d(TuningConstants.isRed ? TuningConstants.FarChargeStationX + 36 : -TuningConstants.FarChargeStationX - 36, TuningConstants.GroundOneY);
-        Point2d P21 = new Point2d(TuningConstants.isRed ? TuningConstants.FarChargeStationX + 36 : -TuningConstants.FarChargeStationX - 36, TuningConstants.ChargeStationY);
-        Point2d P22 = new Point2d(TuningConstants.isRed ? TuningConstants.FarChargeStationX + 36 : -TuningConstants.FarChargeStationX - 36, TuningConstants.GroundOneY);
+        Point2d P20 = new Point2d(TuningConstants.isRed ? TuningConstants.FarChargeStationX - 36 : -TuningConstants.FarChargeStationX + 36, TuningConstants.GroundOneY);
+        Point2d P21 = new Point2d(TuningConstants.isRed ? TuningConstants.FarChargeStationX - 36 : -TuningConstants.FarChargeStationX + 36, TuningConstants.ChargeStationY);
+        Point2d P22 = new Point2d(TuningConstants.isRed ? TuningConstants.FarChargeStationX - 36 : -TuningConstants.FarChargeStationX + 36, TuningConstants.GroundFourY);
 
         //TANGENTS AND ORIENTATION:
         // +x = 0 Towards the red alliance
@@ -160,18 +160,6 @@ public class PathPlannerTrajectoryGenerator
             "LoadEdgeto18");
 
         //Actual Paths
-        addTrajectory(
-            trajectoryManager,
-            pathPlanner.buildTrajectory(
-                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(LoadEdge, ForwardOT, BackwardOT),
-                new PathPlannerWaypoint(P1, ForwardOT, BackwardOT),
-                new PathPlannerWaypoint(P10, ForwardOT, BackwardOT),
-                new PathPlannerWaypoint(P18, ForwardOT, BackwardOT),
-                new PathPlannerWaypoint(P20, ForwardOT, ForwardOT),
-                new PathPlannerWaypoint(P14, ForwardOT, ForwardOT)),
-            "LoadEdgeto14");
         
         addTrajectory(
             trajectoryManager,
@@ -185,17 +173,6 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P22, ForwardOT, ForwardOT),
                 new PathPlannerWaypoint(P17, ForwardOT, ForwardOT)),
             "GuardEdgeto17");
-            
-        addTrajectory(
-            trajectoryManager,
-            pathPlanner.buildTrajectory(
-                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(P14, BackwardOT, ForwardOT),
-                new PathPlannerWaypoint(P20, BackwardOT, ForwardOT),
-                new PathPlannerWaypoint(P18, BackwardOT, BackwardOT),
-                new PathPlannerWaypoint(P10, BackwardOT, BackwardOT)),
-            "14to10");
         
         addTrajectory(
             trajectoryManager,
@@ -222,19 +199,24 @@ public class PathPlannerTrajectoryGenerator
             pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(P10, BackwardOT, BackwardOT),
-                new PathPlannerWaypoint(P2, BackwardOT, BackwardOT)),
-            "10to2");
-        
+                new PathPlannerWaypoint(P12, BackwardOT, BackwardOT),
+                new PathPlannerWaypoint(P8, BackwardOT, BackwardOT)),
+            "12to8");
+
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(P12, BackwardOT, BackwardOT),
-                new PathPlannerWaypoint(P8, BackwardOT, BackwardOT)),
-            "12to8");
+                new PathPlannerWaypoint(GuardEdge, 90, BackwardOT),
+                new PathPlannerWaypoint(P9, 45, BackwardOT),
+                new PathPlannerWaypoint(P12, ForwardOT, BackwardOT),
+                new PathPlannerWaypoint(P19, 90, BackwardOT),
+                new PathPlannerWaypoint(P13, 90, BackwardOT)
+                ),
+            "GuardEdgetoChargeStationFar");
 
+        // TESTED AND WORING
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
@@ -252,12 +234,43 @@ public class PathPlannerTrajectoryGenerator
             pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(GuardEdge, BackwardOT, BackwardOT),
-                new PathPlannerWaypoint(P9, BackwardOT, BackwardOT),
-                new PathPlannerWaypoint(P12, BackwardOT, BackwardOT),
-                new PathPlannerWaypoint(P19, BackwardOT, BackwardOT),
-                new PathPlannerWaypoint(P13, BackwardOT, BackwardOT)),
-            "LoadEdgetoChargeStationFar");
+                new PathPlannerWaypoint(LoadEdge, -90, BackwardOT),
+                new PathPlannerWaypoint(P1, -90, BackwardOT)),
+            "LoadEdgeto1");
+        
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(P1, -45, BackwardOT),
+                new PathPlannerWaypoint(P10, -45, BackwardOT),
+                new PathPlannerWaypoint(P18, ForwardOT, BackwardOT),
+                new PathPlannerWaypoint(P20, ForwardOT, ForwardOT),
+                new PathPlannerWaypoint(P14, ForwardOT, ForwardOT)),
+            "1to14");
+        
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(P14, BackwardOT, ForwardOT),
+                new PathPlannerWaypoint(P20, BackwardOT, ForwardOT),
+                new PathPlannerWaypoint(P18, BackwardOT, BackwardOT),
+                new PathPlannerWaypoint(P10, BackwardOT, BackwardOT)),
+            "14to10");
+        
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(P10, -160, BackwardOT),
+                new PathPlannerWaypoint(P2, BackwardOT, BackwardOT)),
+            "10to2");
+
+        
 }
 
     private static void addTrajectory(TrajectoryManager trajectoryManager, ITrajectory trajectory, String name)
