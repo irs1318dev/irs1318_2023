@@ -298,7 +298,7 @@ public class TuningConstants
 
     //================================================= Arm ================================================================================
 
-    public static final boolean ARM_USE_SIMPLE_MODE = true;
+    public static final boolean ARM_USE_SIMPLE_MODE = false;
     
     public static final double ARM_INTAKE_POWER = 0.6;
     public static final boolean ARM_INTAKE_MOTOR_INVERT_OUTPUT = false;
@@ -328,17 +328,17 @@ public class TuningConstants
     public static final double ARM_UPPER_POSITION_MM_CRUISE_VELOCITY = 0.8 * 400.0;
     public static final double ARM_UPPER_POSITION_MM_ACCELERATION = 200.0;
 
-    public static final double ARM_LOWER_LEFT_POSITION_PID_KP = 1.0;
+    public static final double ARM_LOWER_LEFT_POSITION_PID_KP = 1.2;
     public static final double ARM_LOWER_LEFT_POSITION_PID_KI = 0.0;
     public static final double ARM_LOWER_LEFT_POSITION_PID_KD = 0.0;
     public static final double ARM_LOWER_LEFT_POSITION_PID_KF = 0.0;
 
-    public static final double ARM_LOWER_RIGHT_POSITION_PID_KP = 1.0;
+    public static final double ARM_LOWER_RIGHT_POSITION_PID_KP = 1.2;
     public static final double ARM_LOWER_RIGHT_POSITION_PID_KI = 0.0;
     public static final double ARM_LOWER_RIGHT_POSITION_PID_KD = 0.0;
     public static final double ARM_LOWER_RIGHT_POSITION_PID_KF = 0.0;
 
-    public static final double ARM_UPPER_POSITION_PID_KP = 1.0;
+    public static final double ARM_UPPER_POSITION_PID_KP = 1.2;
     public static final double ARM_UPPER_POSITION_PID_KI = 0.0;
     public static final double ARM_UPPER_POSITION_PID_KD = 0.0;
     public static final double ARM_UPPER_POSITION_PID_KF = 0.0;
@@ -346,7 +346,7 @@ public class TuningConstants
     public static final boolean ARM_LOWER_LEFT_INVERT_OUTPUT = true;
     public static final boolean ARM_LOWER_RIGHT_INVERT_OUTPUT = true;
     public static final boolean ARM_UPPER_INVERT_OUTPUT = false;
-    public static final boolean ARM_UPPER_FOLLOWER_INVERT_OUTPUT = false;
+    public static final boolean ARM_UPPER_FOLLOWER_INVERT_OUTPUT = true;
 
     public static final boolean ARM_LOWER_LEFT_INVERT_SENSOR = false;
     public static final boolean ARM_LOWER_RIGHT_INVERT_SENSOR = false;
@@ -355,8 +355,8 @@ public class TuningConstants
     public static final double ARM_NEAR_FULL_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.9; // in inches
     public static final double ARM_NEAR_FULL_RETRACTED_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.1; // in inches
 
-    public static final double ARM_UPPER_MAX_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.9; // in inches
-    public static final double ARM_LOWER_MAX_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 1.0; // in inches
+    public static final double ARM_UPPER_MAX_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 1.0; // in inches
+    public static final double ARM_LOWER_MAX_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.9; // in inches
 
     public static final double ARM_RETRACTION_MAX_TIME = 0.7;
 
@@ -379,8 +379,8 @@ public class TuningConstants
     public static final double ARM_FULLY_RETRACTED_Z_POSITION = 0.0; // in inches
 
     // thresholds for auto/macro tasks for whether it has reached the desired position:
-    public static final double ARM_LOWER_MM_GOAL_THRESHOLD = 0.25 * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // in ticks
-    public static final double ARM_UPPER_MM_GOAL_THRESHOLD = 0.25 * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // in ticks
+    public static final double ARM_LOWER_MM_GOAL_THRESHOLD = 0.2 * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // in ticks
+    public static final double ARM_UPPER_MM_GOAL_THRESHOLD = 0.2 * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // in ticks
     public static final double ARM_X_IK_GOAL_THRESHOLD = 0.5; // in inches
     public static final double ARM_Z_IK_GOAL_THRESHOLD = 0.5; // in inches
 
@@ -406,11 +406,13 @@ public class TuningConstants
 
     // Arm stall prevention
     public static final boolean ARM_STALL_PROTECTION_ENABLED = true;
-    public static final double ARM_STALLED_POWER_THRESHOLD = 5.0; // amount of power being "used" by the linear actuator (despite not moving according to the encoders) to be considered stalled
+    public static final double ARM_STALLED_POWER_THRESHOLD = 3.0; // amount of power being "used" by the linear actuator (despite not moving according to the encoders) to be considered stalled
     public static final double ARM_STALLED_VELOCITY_THRESHOLD = 10.0; // 10 ticks/sec is very slow, unlikely to be really moving...
 
     // Set Points for Arm (linear actuator positions)
-    public static final double ARM_LOWER_POSITION_STOWED = 8323.0;
+    public static final double ARM_LOWER_ZEROING_POSITION = 10.0 * HardwareConstants.ARM_FULL_EXTENSION_TICKS;
+    public static final double ARM_UPPER_ZEROING_POSITION = -10.0 * HardwareConstants.ARM_FULL_EXTENSION_TICKS;
+    public static final double ARM_LOWER_POSITION_STOWED = HardwareConstants.ARM_FULL_EXTENSION_TICKS;
     public static final double ARM_UPPER_POSITION_STOWED = 0.0;
     public static final double ARM_LOWER_POSITION_GROUND_PLACING = 4700.0;
     public static final double ARM_UPPER_POSITION_GROUND_PLACING = 1650.0;
@@ -424,8 +426,8 @@ public class TuningConstants
     public static final double ARM_UPPER_POSITION_HIGH_CUBE = 6200.0;
     public static final double ARM_LOWER_POSITION_GROUND_PICKUP = 1950.0;
     public static final double ARM_UPPER_POSITION_GROUND_PICKUP = 1900.0;
-    public static final double ARM_LOWER_POSITION_SUB_PICKUP = 0.0;
-    public static final double ARM_UPPER_POSITION_SUB_PICKUP = 0.0;
+    public static final double ARM_LOWER_POSITION_SUB_PICKUP = 3350.0;
+    public static final double ARM_UPPER_POSITION_SUB_PICKUP = 6600.0;
 
     //============================================= ChargeStation Macro ==================================================================
 
