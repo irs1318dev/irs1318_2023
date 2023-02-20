@@ -100,8 +100,8 @@ public class ArmMechanism implements IMechanism
 
     //----------------- Intake Variables -----------------
 
-    // private final ITalonSRX intakeMotor;
-    // private final IDoubleSolenoid intakeExtender;
+    private final ITalonSRX intakeMotor;
+    private final IDoubleSolenoid intakeExtender;
 
     // private final IAnalogInput intakeThroughBeamSensor;
     
@@ -276,17 +276,17 @@ public class ArmMechanism implements IMechanism
 
         //-------------------------- Intake Initialization ----------------------------------
 
-        // this.intakeMotor = provider.getTalonSRX(ElectronicsConstants.ARM_INTAKE_MOTOR_CAN_ID);
-        // this.intakeMotor.setControlMode(TalonXControlMode.PercentOutput);
-        // this.intakeMotor.setInvertOutput(TuningConstants.ARM_INTAKE_MOTOR_INVERT_OUTPUT);
-        // this.intakeMotor.setNeutralMode(MotorNeutralMode.Brake);
+        this.intakeMotor = provider.getTalonSRX(ElectronicsConstants.ARM_INTAKE_MOTOR_CAN_ID);
+        this.intakeMotor.setControlMode(TalonXControlMode.PercentOutput);
+        this.intakeMotor.setInvertOutput(TuningConstants.ARM_INTAKE_MOTOR_INVERT_OUTPUT);
+        this.intakeMotor.setNeutralMode(MotorNeutralMode.Brake);
 
-        // this.intakeExtender =
-        //     provider.getDoubleSolenoid(
-        //         ElectronicsConstants.PNEUMATICS_MODULE_A,
-        //         ElectronicsConstants.PNEUMATICS_MODULE_TYPE_A,
-        //         ElectronicsConstants.ARM_INTAKE_PISTON_FORWARD,
-        //         ElectronicsConstants.ARM_INTAKE_PISTON_REVERSE);
+        this.intakeExtender =
+            provider.getDoubleSolenoid(
+                ElectronicsConstants.PNEUMATICS_MODULE_A,
+                ElectronicsConstants.PNEUMATICS_MODULE_TYPE_A,
+                ElectronicsConstants.ARM_INTAKE_PISTON_FORWARD,
+                ElectronicsConstants.ARM_INTAKE_PISTON_REVERSE);
 
         this.currentIntakeState = IntakeState.Retracted;
 
@@ -590,7 +590,7 @@ public class ArmMechanism implements IMechanism
             intakePower = -TuningConstants.ARM_INTAKE_POWER;
         }
 
-        // this.intakeMotor.set(intakePower);
+        this.intakeMotor.set(intakePower);
         this.logger.logNumber(LoggingKey.ArmIntakePower, intakePower);
 
         // intake state transitions
@@ -607,11 +607,11 @@ public class ArmMechanism implements IMechanism
         switch (this.currentIntakeState)
         {
             case Extended:
-                // this.intakeExtender.set(DoubleSolenoidValue.Forward);
+                this.intakeExtender.set(DoubleSolenoidValue.Forward);
                 break;
             default:
             case Retracted:
-                // this.intakeExtender.set(DoubleSolenoidValue.Reverse);
+                this.intakeExtender.set(DoubleSolenoidValue.Reverse);
                 break;
         }
 
@@ -904,8 +904,8 @@ public class ArmMechanism implements IMechanism
         this.lowerLeftArmLinearActuator.stop();
         this.lowerRightArmLinearActuator.stop();
         this.upperArmLinearActuator.stop();
-        // this.intakeMotor.stop();
-        // this.intakeExtender.set(DoubleSolenoidValue.Off);
+        this.intakeMotor.stop();
+        this.intakeExtender.set(DoubleSolenoidValue.Off);
         // this.leftConeFlipper.set(DoubleSolenoidValue.Off);
         // this.rightConeFlipper.set(DoubleSolenoidValue.Off);
 
