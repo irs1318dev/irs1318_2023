@@ -45,8 +45,8 @@ public class ArmMMPositionTask extends ControlTaskBase
     {
         this.arm = this.getInjector().getInstance(ArmMechanism.class);
 
-        boolean currentIsIn = (this.arm.getMMLowerPosition() < TuningConstants.ARM_LOWER_MM_IN_TRESHOLD && this.arm.getMMUpperPosition() < TuningConstants.ARM_UPPER_MM_IN_TRESHOLD);
-        boolean goalIsIn = (this.lowerExtensionLength < TuningConstants.ARM_LOWER_MM_IN_TRESHOLD && this.upperExtensionLength < TuningConstants.ARM_UPPER_MM_IN_TRESHOLD);
+        boolean currentIsIn = (this.arm.getMMLowerPosition() > TuningConstants.ARM_LOWER_MM_IN_TRESHOLD && this.arm.getMMUpperPosition() < TuningConstants.ARM_UPPER_MM_IN_TRESHOLD);
+        boolean goalIsIn = (this.lowerExtensionLength > TuningConstants.ARM_LOWER_MM_IN_TRESHOLD && this.upperExtensionLength < TuningConstants.ARM_UPPER_MM_IN_TRESHOLD);
         if (currentIsIn != goalIsIn)
         {
             this.currentArmState = ArmMMState.DesiredIntermidate;

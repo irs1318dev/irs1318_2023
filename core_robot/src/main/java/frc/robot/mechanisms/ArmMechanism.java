@@ -95,8 +95,8 @@ public class ArmMechanism implements IMechanism
 
     //----------------- Intake Variables -----------------
 
-    private final ITalonSRX intakeMotor;
-    private final IDoubleSolenoid intakeExtender;
+    // private final ITalonSRX intakeMotor;
+    // private final IDoubleSolenoid intakeExtender;
 
     // private final IAnalogInput intakeThroughBeamSensor;
     
@@ -271,17 +271,17 @@ public class ArmMechanism implements IMechanism
 
         //-------------------------- Intake Initialization ----------------------------------
 
-        this.intakeMotor = provider.getTalonSRX(ElectronicsConstants.ARM_INTAKE_MOTOR_CAN_ID);
-        this.intakeMotor.setControlMode(TalonXControlMode.PercentOutput);
-        this.intakeMotor.setInvertOutput(TuningConstants.ARM_INTAKE_MOTOR_INVERT_OUTPUT);
-        this.intakeMotor.setNeutralMode(MotorNeutralMode.Brake);
+        // this.intakeMotor = provider.getTalonSRX(ElectronicsConstants.ARM_INTAKE_MOTOR_CAN_ID);
+        // this.intakeMotor.setControlMode(TalonXControlMode.PercentOutput);
+        // this.intakeMotor.setInvertOutput(TuningConstants.ARM_INTAKE_MOTOR_INVERT_OUTPUT);
+        // this.intakeMotor.setNeutralMode(MotorNeutralMode.Brake);
 
-        this.intakeExtender =
-            provider.getDoubleSolenoid(
-                ElectronicsConstants.PNEUMATICS_MODULE_A,
-                ElectronicsConstants.PNEUMATICS_MODULE_TYPE_A,
-                ElectronicsConstants.ARM_INTAKE_PISTON_FORWARD,
-                ElectronicsConstants.ARM_INTAKE_PISTON_REVERSE);
+        // this.intakeExtender =
+        //     provider.getDoubleSolenoid(
+        //         ElectronicsConstants.PNEUMATICS_MODULE_A,
+        //         ElectronicsConstants.PNEUMATICS_MODULE_TYPE_A,
+        //         ElectronicsConstants.ARM_INTAKE_PISTON_FORWARD,
+        //         ElectronicsConstants.ARM_INTAKE_PISTON_REVERSE);
 
         this.currentIntakeState = IntakeState.Retracted;
 
@@ -585,7 +585,7 @@ public class ArmMechanism implements IMechanism
             intakePower = -TuningConstants.ARM_INTAKE_POWER;
         }
 
-        this.intakeMotor.set(intakePower);
+        // this.intakeMotor.set(intakePower);
         this.logger.logNumber(LoggingKey.ArmIntakePower, intakePower);
 
         // intake state transitions
@@ -602,11 +602,11 @@ public class ArmMechanism implements IMechanism
         switch (this.currentIntakeState)
         {
             case Extended:
-                this.intakeExtender.set(DoubleSolenoidValue.Forward);
+                // this.intakeExtender.set(DoubleSolenoidValue.Forward);
                 break;
             default:
             case Retracted:
-                this.intakeExtender.set(DoubleSolenoidValue.Reverse);
+                // this.intakeExtender.set(DoubleSolenoidValue.Reverse);
                 break;
         }
 
@@ -657,7 +657,8 @@ public class ArmMechanism implements IMechanism
             }
             else
             {
-                 if (this.driver.getAnalog(AnalogOperation.ArmIKXPosition) >= 0.0 && this.driver.getAnalog(AnalogOperation.ArmIKZPosition) >= 0.0)
+                 if (this.driver.getAnalog(AnalogOperation.ArmIKXPosition) != TuningConstants.MAGIC_NULL_VALUE &&
+                    this.driver.getAnalog(AnalogOperation.ArmIKZPosition) != TuningConstants.MAGIC_NULL_VALUE)
                  {
                     // controlled by macro
                     DoubleTuple ikResult = ArmMechanism.calculateIK(this.driver.getAnalog(AnalogOperation.ArmIKXPosition), this.driver.getAnalog(AnalogOperation.ArmIKZPosition));
@@ -682,14 +683,16 @@ public class ArmMechanism implements IMechanism
                         }
                     }
                 }
-                else if (this.driver.getAnalog(AnalogOperation.ArmMMUpperPosition) >= 0.0 && this.driver.getAnalog(AnalogOperation.ArmMMLowerPosition) >= 0.0)
+                else if (this.driver.getAnalog(AnalogOperation.ArmMMUpperPosition) != TuningConstants.MAGIC_NULL_VALUE ||
+                    this.driver.getAnalog(AnalogOperation.ArmMMLowerPosition) != TuningConstants.MAGIC_NULL_VALUE)
                 {
                     // controlled by macro
                     double newDesiredLowerPosition = this.driver.getAnalog(AnalogOperation.ArmMMLowerPosition);
                     double newDesiredUpperPosition = this.driver.getAnalog(AnalogOperation.ArmMMUpperPosition);
 
-                    if (Helpers.RoughEquals(this.desiredLowerLeftLAPosition, newDesiredLowerPosition, 0.1) ||
-                        Helpers.RoughEquals(this.desiredLowerRightLAPosition, newDesiredLowerPosition, 0.1))
+                    if (newDesiredLowerPosition != TuningConstants.MAGIC_NULL_VALUE &&
+                        (!Helpers.RoughEquals(this.desiredLowerLeftLAPosition, newDesiredLowerPosition, 0.1) ||
+                            !Helpers.RoughEquals(this.desiredLowerRightLAPosition, newDesiredLowerPosition, 0.1)))
                     {
                         this.lowerSetpointChangedTime = currTime;
                         this.lowerLAsStalled = false;
@@ -698,7 +701,8 @@ public class ArmMechanism implements IMechanism
                         this.desiredLowerRightLAPosition = newDesiredLowerPosition;
                     }
 
-                    if (Helpers.RoughEquals(this.desiredUpperLAPosition, newDesiredUpperPosition, 0.1))
+                    if (newDesiredUpperPosition != TuningConstants.MAGIC_NULL_VALUE &&
+                        !Helpers.RoughEquals(this.desiredUpperLAPosition, newDesiredUpperPosition, 0.1))
                     {
                         this.upperSetpointChangedTime = currTime;
                         this.upperLAsStalled = false;
@@ -798,10 +802,10 @@ public class ArmMechanism implements IMechanism
         this.lowerLeftArmLinearActuator.stop();
         this.lowerRightArmLinearActuator.stop();
         this.upperArmLinearActuator.stop();
-        this.intakeMotor.stop();
-        this.intakeExtender.set(DoubleSolenoidValue.Off);
-        //this.leftConeFlipper.set(DoubleSolenoidValue.Off);
-        //this.rightConeFlipper.set(DoubleSolenoidValue.Off);
+        // this.intakeMotor.stop();
+        // this.intakeExtender.set(DoubleSolenoidValue.Off);
+        // this.leftConeFlipper.set(DoubleSolenoidValue.Off);
+        // this.rightConeFlipper.set(DoubleSolenoidValue.Off);
 
         this.leftFlipperTransitionTime = 0.0;
         this.rightFlipperTransitionTime = 0.0;
@@ -862,6 +866,16 @@ public class ArmMechanism implements IMechanism
     public double getLowerRightLAPowerAverage()
     {
         return this.lowerRightLAPowerAverage;
+    }
+
+    public boolean getLowerLAsStalled()
+    {
+        return this.lowerLAsStalled;
+    }
+
+    public boolean getUpperLAsStalled()
+    {
+        return this.upperLAsStalled;
     }
 
     public double getUpperLAsPowerAverage()

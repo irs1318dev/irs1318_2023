@@ -225,6 +225,14 @@ public class ButtonMap implements IButtonMap
             Shift.DriverDebug,
             ButtonType.Simple),
 
+        new DigitalOperationDescription(
+            DigitalOperation.ArmForceReset,
+            UserInputDevice.Codriver,
+            UserInputDeviceButton.XBONE_RIGHT_BUTTON,
+            Shift.CodriverDebug,
+            Shift.CodriverDebug,
+            ButtonType.Click),
+
         // Test operations:
         new DigitalOperationDescription(
             DigitalOperation.VisionEnableAprilTagProcessing,
@@ -462,10 +470,8 @@ public class ButtonMap implements IButtonMap
             () -> new ArmZeroTask(),
             new IOperation[]
             {
-                AnalogOperation.ArmSimpleForceLower,
-                AnalogOperation.ArmSimpleForceUpper,
-                DigitalOperation.ArmEnableSimpleMode,
-                DigitalOperation.ArmDisableSimpleMode,
+                AnalogOperation.ArmMMUpperPosition,
+                AnalogOperation.ArmMMLowerPosition,
                 DigitalOperation.ArmForceReset,
             }),
         new MacroOperationDescription(
@@ -573,7 +579,22 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.ArmMMLowerPosition,
                 AnalogOperation.ArmMMUpperPosition,
             }),
-
+        new MacroOperationDescription(
+            MacroOperation.ArmStowedPosition,
+            UserInputDevice.Driver,
+            UserInputDeviceButton.XBONE_Y_BUTTON,
+            Shift.DriverDebug,
+            Shift.DriverDebug,
+            ButtonType.Toggle,
+            () -> new ArmMMPositionTask(
+                TuningConstants.ARM_LOWER_POSITION_STOWED,
+                TuningConstants.ARM_UPPER_POSITION_STOWED),
+            new IOperation[]
+            {
+                AnalogOperation.ArmMMLowerPosition,
+                AnalogOperation.ArmMMUpperPosition,
+            }),
+    
         new MacroOperationDescription(
             MacroOperation.ChargeStationBalance,
             UserInputDevice.Test1,

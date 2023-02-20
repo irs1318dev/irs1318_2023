@@ -23,7 +23,6 @@ public class ArmZeroTask extends ControlTaskBase
     private ArmMechanism arm;
     private ITimer timer;
 
-    private boolean useSimpleMode;
     private ArmZeroState state;
     private double transitionTime;
 
@@ -40,12 +39,15 @@ public class ArmZeroTask extends ControlTaskBase
         this.arm = this.getInjector().getInstance(ArmMechanism.class);
         this.timer = this.getInjector().getInstance(ITimer.class);
 
-        this.useSimpleMode = this.arm.getInSimpleMode();
-        this.state = ArmZeroState.RetractLowerArm;
-        this.transitionTime = timer.get();
-
-        this.setDigitalOperationState(DigitalOperation.ArmEnableSimpleMode, true);
-        this.setDigitalOperationState(DigitalOperation.ArmDisableSimpleMode, false);
+        if (this.arm.getInSimpleMode())
+        {
+            this.state = ArmZeroState.Completed;
+        }
+        else
+        {
+            this.state = ArmZeroState.RetractLowerArm;
+            this.transitionTime = timer.get();
+        }
     }
 
     /**
@@ -58,8 +60,9 @@ public class ArmZeroTask extends ControlTaskBase
         if (this.state == ArmZeroState.RetractLowerArm)
         {
             if (currTime >= this.transitionTime + TuningConstants.ARM_POWER_TRACKING_DURATION &&
-                this.arm.getLowerLeftLAPowerAverage() <= TuningConstants.ARM_NOT_MOVING_POWER_THRESHOLD &&
-                this.arm.getLowerRightLAPowerAverage() <= TuningConstants.ARM_NOT_MOVING_POWER_THRESHOLD)
+                (this.arm.getLowerLAsStalled() ||
+                    (this.arm.getLowerLeftLAPowerAverage() <= TuningConstants.ARM_NOT_MOVING_POWER_THRESHOLD &&
+                    this.arm.getLowerRightLAPowerAverage() <= TuningConstants.ARM_NOT_MOVING_POWER_THRESHOLD)))
             {
                 this.state = ArmZeroState.RetractUpperArm;
                 this.transitionTime = currTime;
@@ -68,7 +71,8 @@ public class ArmZeroTask extends ControlTaskBase
         else if (this.state == ArmZeroState.RetractUpperArm)
         {
             if (currTime >= this.transitionTime + TuningConstants.ARM_POWER_TRACKING_DURATION &&
-                this.arm.getUpperLAsPowerAverage() <= TuningConstants.ARM_NOT_MOVING_POWER_THRESHOLD)
+                (this.arm.getUpperLAsStalled() ||
+                    this.arm.getUpperLAsPowerAverage() <= TuningConstants.ARM_NOT_MOVING_POWER_THRESHOLD))
             {
                 this.state = ArmZeroState.Reset;
             }
@@ -81,35 +85,27 @@ public class ArmZeroTask extends ControlTaskBase
         switch (this.state)
         {
             case RetractLowerArm:
-                this.setAnalogOperationState(AnalogOperation.ArmSimpleForceLower, TuningConstants.ARM_MAX_FORWARD_SIMPLE_VELOCITY);
-                this.setAnalogOperationState(AnalogOperation.ArmSimpleForceUpper, TuningConstants.ZERO);
-                this.setDigitalOperationState(DigitalOperation.ArmEnableSimpleMode, true);
-                this.setDigitalOperationState(DigitalOperation.ArmDisableSimpleMode, false);
+                this.setAnalogOperationState(AnalogOperation.ArmMMLowerPosition, TuningConstants.ARM_LOWER_ZEROING_POSITION);
+                this.setAnalogOperationState(AnalogOperation.ArmMMUpperPosition, TuningConstants.MAGIC_NULL_VALUE);
                 this.setDigitalOperationState(DigitalOperation.ArmForceReset, false);
                 break;
 
             case RetractUpperArm:
-                this.setAnalogOperationState(AnalogOperation.ArmSimpleForceLower, TuningConstants.ARM_MAX_FORWARD_SIMPLE_VELOCITY);
-                this.setAnalogOperationState(AnalogOperation.ArmSimpleForceUpper, TuningConstants.ARM_MAX_REVERSE_SIMPLE_VELOCITY);
-                this.setDigitalOperationState(DigitalOperation.ArmEnableSimpleMode, true);
-                this.setDigitalOperationState(DigitalOperation.ArmDisableSimpleMode, false);
+                this.setAnalogOperationState(AnalogOperation.ArmMMLowerPosition, TuningConstants.ARM_LOWER_ZEROING_POSITION);
+                this.setAnalogOperationState(AnalogOperation.ArmMMUpperPosition, TuningConstants.ARM_UPPER_ZEROING_POSITION);
                 this.setDigitalOperationState(DigitalOperation.ArmForceReset, false);
                 break;
 
             case Reset:
-                this.setAnalogOperationState(AnalogOperation.ArmSimpleForceLower, TuningConstants.ZERO);
-                this.setAnalogOperationState(AnalogOperation.ArmSimpleForceUpper, TuningConstants.ZERO);
-                this.setDigitalOperationState(DigitalOperation.ArmEnableSimpleMode, this.useSimpleMode);
-                this.setDigitalOperationState(DigitalOperation.ArmDisableSimpleMode, !this.useSimpleMode);
+                this.setAnalogOperationState(AnalogOperation.ArmMMLowerPosition, TuningConstants.MAGIC_NULL_VALUE);
+                this.setAnalogOperationState(AnalogOperation.ArmMMUpperPosition, TuningConstants.MAGIC_NULL_VALUE);
                 this.setDigitalOperationState(DigitalOperation.ArmForceReset, true);
                 break;
 
             default:
             case Completed:
-                this.setAnalogOperationState(AnalogOperation.ArmSimpleForceLower, TuningConstants.ZERO);
-                this.setAnalogOperationState(AnalogOperation.ArmSimpleForceUpper, TuningConstants.ZERO);
-                this.setDigitalOperationState(DigitalOperation.ArmEnableSimpleMode, false);
-                this.setDigitalOperationState(DigitalOperation.ArmDisableSimpleMode, false);
+                this.setAnalogOperationState(AnalogOperation.ArmMMLowerPosition, TuningConstants.MAGIC_NULL_VALUE);
+                this.setAnalogOperationState(AnalogOperation.ArmMMUpperPosition, TuningConstants.MAGIC_NULL_VALUE);
                 this.setDigitalOperationState(DigitalOperation.ArmForceReset, false);
                 break;
         }
@@ -121,10 +117,8 @@ public class ArmZeroTask extends ControlTaskBase
     @Override
     public void end()
     {
-        this.setAnalogOperationState(AnalogOperation.ArmSimpleForceLower, TuningConstants.ZERO);
-        this.setAnalogOperationState(AnalogOperation.ArmSimpleForceUpper, TuningConstants.ZERO);
-        this.setDigitalOperationState(DigitalOperation.ArmEnableSimpleMode, false);
-        this.setDigitalOperationState(DigitalOperation.ArmDisableSimpleMode, false);
+        this.setAnalogOperationState(AnalogOperation.ArmMMLowerPosition, TuningConstants.MAGIC_NULL_VALUE);
+        this.setAnalogOperationState(AnalogOperation.ArmMMUpperPosition, TuningConstants.MAGIC_NULL_VALUE);
         this.setDigitalOperationState(DigitalOperation.ArmForceReset, false);
     }
 
