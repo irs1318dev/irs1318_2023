@@ -285,9 +285,11 @@ public class TuningConstants
     public static final double DRIVETRAIN_ROTATION_B_MULTIPLIER = HardwareConstants.DRIVETRAIN_VERTICAL_WHEEL_SEPERATION_DISTANCE / 2.0;
 
     public static final double DRIVETRAIN_MAX_VELOCITY = TuningConstants.DRIVETRAIN_DRIVE_MOTOR_VELOCITY_PID_KS * HardwareConstants.DRIVETRAIN_DRIVE_MOTOR_VELOCITY_TO_INCHES_PER_SECOND; // max velocity in inches per second
+    public static final double DRIVETRAIN_SLOW_MODE_MAX_VELOCITY = 0.5 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // max velocity in inches per second
     public static final double DRIVETRAIN_VELOCITY_TO_PERCENTAGE = 1.0 / TuningConstants.DRIVETRAIN_MAX_VELOCITY;
     public static final double DRIVETRAIN_TURN_GOAL_VELOCITY = 10.0; // degrees per second for turn goal
-    public static final double DRIVETRAIN_TURN_SCALE = 0.8 * Math.PI; // radians per second
+    public static final double DRIVETRAIN_TURN_SCALE = 1.0 * Math.PI; // radians per second
+    public static final double DRIVETRAIN_SLOW_MODE_TURN_SCALE = 0.5 * TuningConstants.DRIVETRAIN_TURN_SCALE; // radians per second
     public static final double DRIVETRAIN_STATIONARY_VELOCITY = 0.1;
     public static final double DRIVETRAIN_TURN_APPROXIMATION_STATIONARY = 2.0; // number of degrees off at which point we give up trying to face an angle when uncommanded
     public static final double DRIVETRAIN_TURN_APPROXIMATION = 1.0; // number of degrees off at which point we give up trying to face an angle when uncommanded
@@ -305,6 +307,7 @@ public class TuningConstants
     public static final double FEEDER_LIGHT_CUTOFF_VALUE = 10;
 
     public static final boolean ARM_USE_MM = false;
+    public static final boolean ARM_USE_IK = false;
 
     public static final double ARM_MAX_VELOCITY = 400.0;
     public static final double ARM_LOWER_LEFT_POSITION_MM_PID_KP = 0.0;
@@ -359,6 +362,9 @@ public class TuningConstants
     public static final double ARM_LOWER_MAX_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.9; // in inches
 
     public static final double ARM_RETRACTION_MAX_TIME = 0.7;
+
+    public static final double ARM_X_POSITION_ADJUSTMENT_VELOCITY = 2.0; // inches per second
+    public static final double ARM_Z_POSITION_ADJUSTMENT_VELOCITY = 2.0; // inches per second
 
     public static final double ARM_LOWER_EXTENSION_ADJUSTMENT_VELOCITY = 2.0; // inches per second
     public static final double ARM_UPPER_EXTENSION_ADJUSTMENT_VELOCITY = 2.0; // inches per second

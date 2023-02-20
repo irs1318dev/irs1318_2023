@@ -4,7 +4,6 @@ import javax.inject.Singleton;
 
 import frc.robot.*;
 import frc.robot.common.Helpers;
-import frc.robot.common.robotprovider.PathPlannerWaypoint;
 import frc.robot.driver.common.*;
 import frc.robot.driver.common.buttons.*;
 import frc.robot.driver.common.descriptions.*;
@@ -80,38 +79,38 @@ public class ButtonMap implements IButtonMap
             TuningConstants.DRIVETRAIN_DEAD_ZONE_TURN),
 
         new AnalogOperationDescription(
-            AnalogOperation.ArmLowerPositionAdjustment,
+            AnalogOperation.ArmIKZAdjustment,
             UserInputDevice.Codriver,
             AnalogAxis.XBONE_LSY,
             Shift.CodriverDebug,
             Shift.None,
+            ElectronicsConstants.INVERT_XBONE_LEFT_Y_AXIS,
+            -TuningConstants.ARM_LOWER_VELOCITY_DEAZONE,
+            TuningConstants.ARM_LOWER_VELOCITY_DEAZONE,
+            1.0),
+        new AnalogOperationDescription(
+            AnalogOperation.ArmIKXAdjustment,
+            UserInputDevice.Codriver,
+            AnalogAxis.XBONE_RSX,
+            Shift.CodriverDebug,
+            Shift.None,
+            ElectronicsConstants.INVERT_XBONE_RIGHT_X_AXIS,
+            -TuningConstants.ARM_UPPER_VELOCITY_DEAZONE,
+            TuningConstants.ARM_UPPER_VELOCITY_DEAZONE,
+            1.0),
+
+        new AnalogOperationDescription(
+            AnalogOperation.ArmLowerPositionAdjustment,
+            UserInputDevice.Codriver,
+            AnalogAxis.XBONE_LSY,
+            Shift.CodriverDebug,
+            Shift.CodriverDebug,
             ElectronicsConstants.INVERT_XBONE_LEFT_Y_AXIS,
             -TuningConstants.ARM_LOWER_VELOCITY_DEAZONE,
             TuningConstants.ARM_LOWER_VELOCITY_DEAZONE,
             1.0),
         new AnalogOperationDescription(
             AnalogOperation.ArmUpperPositionAdjustment,
-            UserInputDevice.Codriver,
-            AnalogAxis.XBONE_RSY,
-            Shift.CodriverDebug,
-            Shift.None,
-            ElectronicsConstants.INVERT_XBONE_RIGHT_Y_AXIS,
-            -TuningConstants.ARM_UPPER_VELOCITY_DEAZONE,
-            TuningConstants.ARM_UPPER_VELOCITY_DEAZONE,
-            1.0),
-
-        new AnalogOperationDescription(
-            AnalogOperation.ArmSimpleForceLower,
-            UserInputDevice.Codriver,
-            AnalogAxis.XBONE_LSY,
-            Shift.CodriverDebug,
-            Shift.CodriverDebug,
-            ElectronicsConstants.INVERT_XBONE_LEFT_Y_AXIS,
-            -TuningConstants.ARM_LOWER_VELOCITY_DEAZONE,
-            TuningConstants.ARM_LOWER_VELOCITY_DEAZONE,
-            1.0),
-        new AnalogOperationDescription(
-            AnalogOperation.ArmSimpleForceUpper,
             UserInputDevice.Codriver,
             AnalogAxis.XBONE_RSY,
             Shift.CodriverDebug,
@@ -154,61 +153,66 @@ public class ButtonMap implements IButtonMap
             ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.DriveTrainEnableFieldOrientation,
-            UserInputDevice.Codriver,
-            UserInputDeviceButton.XBONE_START_BUTTON,
-            Shift.CodriverDebug,
+            UserInputDevice.Driver,
+            UserInputDeviceButton.XBONE_B_BUTTON,
+            Shift.DriverDebug,
             Shift.None,
             ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.DriveTrainDisableFieldOrientation,
-            UserInputDevice.Codriver,
-            UserInputDeviceButton.XBONE_START_BUTTON,
-            Shift.CodriverDebug,
-            Shift.CodriverDebug,
+            UserInputDevice.Driver,
+            UserInputDeviceButton.XBONE_B_BUTTON,
+            Shift.DriverDebug,
+            Shift.DriverDebug,
             ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.DriveTrainEnableMaintainDirectionMode,
-            UserInputDevice.Codriver,
-            UserInputDeviceButton.XBONE_SELECT_BUTTON,
-            Shift.CodriverDebug,
+            UserInputDevice.Driver,
+            UserInputDeviceButton.XBONE_Y_BUTTON,
+            Shift.DriverDebug,
             Shift.None,
             ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.DriveTrainDisableMaintainDirectionMode,
-            UserInputDevice.Codriver,
-            UserInputDeviceButton.XBONE_SELECT_BUTTON,
-            Shift.CodriverDebug,
-            Shift.CodriverDebug,
+            UserInputDevice.Driver,
+            UserInputDeviceButton.XBONE_Y_BUTTON,
+            Shift.DriverDebug,
+            Shift.DriverDebug,
             ButtonType.Click),
+        new DigitalOperationDescription(
+            DigitalOperation.DriveTrainSlowMode,
+            UserInputDevice.Driver,
+            UserInputDeviceButton.XBONE_A_BUTTON,
+            ButtonType.Simple),
 
         new DigitalOperationDescription(
             DigitalOperation.ArmDisableSimpleMode,
             UserInputDevice.Codriver,
-            UserInputDeviceButton.XBONE_A_BUTTON,
+            UserInputDeviceButton.XBONE_RIGHT_STICK_BUTTON,
             Shift.CodriverDebug,
             Shift.None,
             ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.ArmEnableSimpleMode,
             UserInputDevice.Codriver,
-            UserInputDeviceButton.XBONE_A_BUTTON,
+            UserInputDeviceButton.XBONE_RIGHT_STICK_BUTTON,
             Shift.CodriverDebug,
             Shift.CodriverDebug,
             ButtonType.Click),
 
-        new DigitalOperationDescription(
-            DigitalOperation.IntakeExtend,
-            UserInputDevice.Driver,
-            UserInputDeviceButton.XBONE_LEFT_BUTTON,
-            Shift.DriverDebug,
-            Shift.DriverDebug,
-            ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.IntakeRetract,
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_LEFT_BUTTON,
             Shift.DriverDebug,
             Shift.None,
+            ButtonType.Click),
+        new DigitalOperationDescription(
+            DigitalOperation.IntakeExtend,
+            UserInputDevice.Driver,
+            UserInputDeviceButton.XBONE_LEFT_BUTTON,
+            Shift.DriverDebug,
+            Shift.DriverDebug,
             ButtonType.Click),
         // new DigitalOperationDescription(
         //     DigitalOperation.IntakeIn,
@@ -476,9 +480,9 @@ public class ButtonMap implements IButtonMap
             }),
         new MacroOperationDescription(
             MacroOperation.ArmGroundPickupPosition,
-            UserInputDevice.Driver,
+            UserInputDevice.Codriver,
             UserInputDeviceButton.XBONE_A_BUTTON,
-            Shift.DriverDebug,
+            Shift.CodriverDebug,
             Shift.None,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
@@ -491,10 +495,10 @@ public class ButtonMap implements IButtonMap
             }),
         new MacroOperationDescription(
             MacroOperation.ArmGroundPlacePosition,
-            UserInputDevice.Driver,
+            UserInputDevice.Codriver,
             UserInputDeviceButton.XBONE_A_BUTTON,
-            Shift.DriverDebug,
-            Shift.DriverDebug,
+            Shift.CodriverDebug,
+            Shift.CodriverDebug,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_GROUND_PLACING,
@@ -506,9 +510,9 @@ public class ButtonMap implements IButtonMap
             }),
         new MacroOperationDescription(
             MacroOperation.ArmMiddleConePosition,
-            UserInputDevice.Driver,
+            UserInputDevice.Codriver,
             UserInputDeviceButton.XBONE_B_BUTTON,
-            Shift.DriverDebug,
+            Shift.CodriverDebug,
             Shift.None,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
@@ -521,10 +525,10 @@ public class ButtonMap implements IButtonMap
             }),
         new MacroOperationDescription(
             MacroOperation.ArmMiddleCubePosition,
-            UserInputDevice.Driver,
+            UserInputDevice.Codriver,
             UserInputDeviceButton.XBONE_B_BUTTON,
-            Shift.DriverDebug,
-            Shift.DriverDebug,
+            Shift.CodriverDebug,
+            Shift.CodriverDebug,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_MIDDLE_CUBE,
@@ -536,9 +540,9 @@ public class ButtonMap implements IButtonMap
             }),
         new MacroOperationDescription(
             MacroOperation.ArmHighConePosition,
-            UserInputDevice.Driver,
+            UserInputDevice.Codriver,
             UserInputDeviceButton.XBONE_X_BUTTON,
-            Shift.DriverDebug,
+            Shift.CodriverDebug,
             Shift.None,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
@@ -551,10 +555,10 @@ public class ButtonMap implements IButtonMap
             }),
         new MacroOperationDescription(
             MacroOperation.ArmHighCubePosition,
-            UserInputDevice.Driver,
+            UserInputDevice.Codriver,
             UserInputDeviceButton.XBONE_X_BUTTON,
-            Shift.DriverDebug,
-            Shift.DriverDebug,
+            Shift.CodriverDebug,
+            Shift.CodriverDebug,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE,
@@ -566,9 +570,9 @@ public class ButtonMap implements IButtonMap
             }),
         new MacroOperationDescription(
             MacroOperation.ArmSubstationPickupPosition,
-            UserInputDevice.Driver,
+            UserInputDevice.Codriver,
             UserInputDeviceButton.XBONE_Y_BUTTON,
-            Shift.DriverDebug,
+            Shift.CodriverDebug,
             Shift.None,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
@@ -581,10 +585,10 @@ public class ButtonMap implements IButtonMap
             }),
         new MacroOperationDescription(
             MacroOperation.ArmStowedPosition,
-            UserInputDevice.Driver,
+            UserInputDevice.Codriver,
             UserInputDeviceButton.XBONE_Y_BUTTON,
-            Shift.DriverDebug,
-            Shift.DriverDebug,
+            Shift.CodriverDebug,
+            Shift.CodriverDebug,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_STOWED,
@@ -594,7 +598,7 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.ArmMMLowerPosition,
                 AnalogOperation.ArmMMUpperPosition,
             }),
-    
+
         new MacroOperationDescription(
             MacroOperation.ChargeStationBalance,
             UserInputDevice.Test1,

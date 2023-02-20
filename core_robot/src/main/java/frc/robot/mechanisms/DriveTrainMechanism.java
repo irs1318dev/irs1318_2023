@@ -624,9 +624,21 @@ public class DriveTrainMechanism implements IMechanism
             rotationCenterA = this.driver.getAnalog(AnalogOperation.DriveTrainRotationA);
             rotationCenterB = this.driver.getAnalog(AnalogOperation.DriveTrainRotationB);
 
+            boolean useSlowMode = this.driver.getDigital(DigitalOperation.DriveTrainSlowMode);
+
             // get the center velocity control values (could be field-oriented or robot-oriented center velocity)
-            double centerVelocityRightRaw = TuningConstants.DRIVETRAIN_MAX_VELOCITY * this.driver.getAnalog(AnalogOperation.DriveTrainMoveRight);
-            double centerVelocityForwardRaw = TuningConstants.DRIVETRAIN_MAX_VELOCITY * this.driver.getAnalog(AnalogOperation.DriveTrainMoveForward);
+            double centerVelocityRightRaw = this.driver.getAnalog(AnalogOperation.DriveTrainMoveRight);
+            double centerVelocityForwardRaw = this.driver.getAnalog(AnalogOperation.DriveTrainMoveForward);
+            if (useSlowMode)
+            {
+                centerVelocityRightRaw *= TuningConstants.DRIVETRAIN_SLOW_MODE_MAX_VELOCITY;
+                centerVelocityForwardRaw *= TuningConstants.DRIVETRAIN_SLOW_MODE_MAX_VELOCITY;
+            }
+            else
+            {
+                centerVelocityRightRaw *= TuningConstants.DRIVETRAIN_MAX_VELOCITY;
+                centerVelocityForwardRaw *= TuningConstants.DRIVETRAIN_MAX_VELOCITY;
+            }
 
             if (useFieldOriented)
             {
@@ -643,12 +655,28 @@ public class DriveTrainMechanism implements IMechanism
             if (forcedOmega != TuningConstants.ZERO)
             {
                 this.desiredYaw = this.robotYaw;
-                omega = forcedOmega * TuningConstants.DRIVETRAIN_TURN_SCALE;
+                omega = forcedOmega;
+                if (useSlowMode)
+                {
+                    omega *= TuningConstants.DRIVETRAIN_SLOW_MODE_TURN_SCALE;
+                }
+                else
+                {
+                    omega *= TuningConstants.DRIVETRAIN_TURN_SCALE;
+                }
             }
             else if (!useFieldOriented)
             {
                 this.desiredYaw = this.robotYaw;
-                omega = this.driver.getAnalog(AnalogOperation.DriveTrainTurnSpeed) * TuningConstants.DRIVETRAIN_TURN_SCALE;
+                omega = this.driver.getAnalog(AnalogOperation.DriveTrainTurnSpeed);
+                if (useSlowMode)
+                {
+                    omega *= TuningConstants.DRIVETRAIN_SLOW_MODE_TURN_SCALE;
+                }
+                else
+                {
+                    omega *= TuningConstants.DRIVETRAIN_TURN_SCALE;
+                }
             }
             else
             {
