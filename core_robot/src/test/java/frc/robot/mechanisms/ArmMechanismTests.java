@@ -3,10 +3,15 @@ package frc.robot.mechanisms;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
 import org.junit.jupiter.api.Test;
 
+import de.siegmar.fastcsv.writer.*;
+
+
 import frc.robot.HardwareConstants;
-import frc.robot.TuningConstants;
 import frc.robot.common.Helpers;
 
 public class ArmMechanismTests
@@ -81,7 +86,7 @@ public class ArmMechanismTests
         {
             for (double z = -theoreticalFullExtension; z <= theoreticalFullExtension; z += 0.1)
             {
-                DoubleTuple setpoint = ArmMechanism.calculateIKAnglesFromPosition(HardwareConstants.ARM_LOWER_ARM_LENGTH + HardwareConstants.ARM_UPPER_ARM_LENGTH, HardwareConstants.ARM_LOWER_ARM_LENGTH + HardwareConstants.ARM_UPPER_ARM_LENGTH);
+                DoubleTuple setpoint = ArmMechanism.calculateIKAnglesFromPosition(x, z);
                 if (setpoint != null)
                 {
                     DoubleTuple result = ArmMechanism.calculateFKPositionsFromAngles(setpoint.first, setpoint.second);
@@ -138,5 +143,73 @@ public class ArmMechanismTests
         DoubleTuple LA_to_Angles_out = ArmMechanism.calculateFKAnglesFromExtensions(16.93, 16.93);
         // assertEquals(40, LA_to_Angles_out.first, "Lower Arm Angle Out");
         // assertEquals(20, LA_to_Angles_out.second, "Upper Arm Angle Out");
+    }
+
+    public static void main(String[] args)
+    {
+        // Generate CSV file containing valid positions for the arm given the IK/FK (and that they agree)
+        try (CsvWriter validCsvWriter = CsvWriter.builder().build(java.nio.file.Path.of("validPositions.csv"), StandardCharsets.UTF_8))
+        {
+            try (CsvWriter problematicCsvWriter = CsvWriter.builder().build(java.nio.file.Path.of("problematicPositions.csv"), StandardCharsets.UTF_8))
+            {
+                validCsvWriter.writeRow("x", "y", "lowerExtension", "upperExtension");
+                problematicCsvWriter.writeRow("x", "y", "lowerExtension", "upperExtension", "x_FK", "y_FK");
+
+                final double theoreticalFullExtension = HardwareConstants.ARM_LOWER_ARM_LENGTH + HardwareConstants.ARM_UPPER_ARM_LENGTH;
+                for (double x = -theoreticalFullExtension; x <= theoreticalFullExtension; x += 0.1)
+                {
+                    for (double z = -theoreticalFullExtension; z <= theoreticalFullExtension; z += 0.1)
+                    {
+                        DoubleTuple setpoint = ArmMechanism.calculateIK(x, z);
+                        if (setpoint != null)
+                        {
+                            DoubleTuple result = ArmMechanism.calculateFK(setpoint.first, setpoint.second);
+                            if (result != null &&
+                                Helpers.RoughEquals(x, result.first, 0.01) &&
+                                Helpers.RoughEquals(z, result.second, 0.01))
+                            {
+                                validCsvWriter.writeRow(String.valueOf(x), String.valueOf(z), String.valueOf(setpoint.first), String.valueOf(setpoint.second));
+                            }
+                            else
+                            {
+                                problematicCsvWriter.writeRow(String.valueOf(x), String.valueOf(z), String.valueOf(setpoint.first), String.valueOf(setpoint.second), result == null ? "" : String.valueOf(result.first), result == null ? "" : String.valueOf(result.second));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace(System.err);
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace(System.err);
+        }
+
+        // try (CsvWriter csvWriter = CsvWriter.builder().build(java.nio.file.Path.of("theoreticalPositions.csv"), StandardCharsets.UTF_8))
+        // {
+        //     csvWriter.writeRow("x", "y", "lowerExtension", "upperExtension");
+
+        //     final double maxExtension = (HardwareConstants.ARM_EXTENTION_LENGTH) * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
+        //     for (double lowerExtension = 0.0 * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; lowerExtension <= maxExtension; lowerExtension += 10.0)
+        //     {
+        //         for (double upperExtension = 0.0 * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; upperExtension <= maxExtension; upperExtension += 10.0)
+        //         {
+        //             DoubleTuple position = ArmMechanism.calculateFK(lowerExtension, upperExtension);
+        //             if (position != null)
+        //             {
+        //                 csvWriter.writeRow(String.valueOf(position.first), String.valueOf(position.second), String.valueOf(lowerExtension), String.valueOf(upperExtension));
+        //             }
+        //         }
+        //     }
+
+        //     csvWriter.close();
+        // }
+        // catch (IOException e)
+        // {
+        //     e.printStackTrace(System.err);
+        // }
     }
 }
