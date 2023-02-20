@@ -999,7 +999,9 @@ public class ArmMechanism implements IMechanism
      */
     static DoubleTuple calculateIK(double x, double z)
     {
-        if (x > TuningConstants.ARM_MAX_IKX_EXTENSION_LENGTH ||
+        if (x < TuningConstants.ARM_MIN_IKX_EXTENSION_LENGTH ||
+            x > TuningConstants.ARM_MAX_IKX_EXTENSION_LENGTH ||
+            z < TuningConstants.ARM_MIN_IKZ_EXTENSION_HEIGHT ||
             z > TuningConstants.ARM_MAX_IKZ_EXTENSION_HEIGHT)
         {
             return null;

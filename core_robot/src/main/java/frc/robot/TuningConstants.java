@@ -371,9 +371,11 @@ public class TuningConstants
 
     public static final double ARM_MAX_REVERSE_SIMPLE_VELOCITY = -0.8; // percentage output
     public static final double ARM_MAX_FORWARD_SIMPLE_VELOCITY = 0.8; // percentage output
- 
-    public static final double ARM_MAX_IKZ_EXTENSION_HEIGHT = HardwareConstants.MAX_ROBOT_HEIGHT - HardwareConstants.ARM_ORIGIN_Z_OFFSET - HardwareConstants.ARM_MAX_END_EFFECTOR_HEIGHT;
+
+    public static final double ARM_MIN_IKX_EXTENSION_LENGTH = 0.0;
     public static final double ARM_MAX_IKX_EXTENSION_LENGTH = HardwareConstants.MAX_ROBOT_EXTENSION + HardwareConstants.ARM_ORIGIN_X_OFFSET - HardwareConstants.ARM_MAX_END_EFFECTOR_EXTENSION;
+    public static final double ARM_MIN_IKZ_EXTENSION_HEIGHT = -5.0;
+    public static final double ARM_MAX_IKZ_EXTENSION_HEIGHT = HardwareConstants.MAX_ROBOT_HEIGHT - HardwareConstants.ARM_ORIGIN_Z_OFFSET - HardwareConstants.ARM_MAX_END_EFFECTOR_HEIGHT;
 
     public static final double ARM_LOWER_VELOCITY_DEAZONE = 0.15;
     public static final double ARM_UPPER_VELOCITY_DEAZONE = 0.15;

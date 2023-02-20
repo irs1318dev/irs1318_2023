@@ -57,6 +57,12 @@ public class HardwareConstants
     public static final double ARM_LOWER_ARM_LENGTH = 46.0; // Diagram D11, in inches
     public static final double ARM_UPPER_ARM_LENGTH = 37.0; // Diagram D12, in inches
 
+    // max retraction/extension degrees for lower and upper arm joints
+    public static final double ARM_LOWER_JOINT_CONSTRAINT_MIN = 45.0; // in degrees
+    public static final double ARM_LOWER_JOINT_CONSTRAINT_MAX = 90.0; // in degrees
+    public static final double ARM_UPPER_JOINT_CONSTRAINT_MIN = 10.0; // in degrees
+    public static final double ARM_UPPER_JOINT_CONSTRAINT_MAX = 170.0; // in degrees
+
     public static final double ARM_MAX_END_EFFECTOR_HEIGHT = 8.0; // inches, max height of the end-effector above the end of the upper arm
     public static final double ARM_MAX_END_EFFECTOR_EXTENSION = 8.0; // inches, max extension of the end-effector past the end of the upper arm
 
