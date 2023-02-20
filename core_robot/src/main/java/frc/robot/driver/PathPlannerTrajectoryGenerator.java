@@ -14,33 +14,51 @@ public class PathPlannerTrajectoryGenerator
     public static void generateTrajectories(TrajectoryManager trajectoryManager, IPathPlanner pathPlanner)
     {
 
-        double ForwardOT = (TuningConstants.isRed ? 180 : 0); //Turnary Operator For Forwards Orientation Or Forwards Tangent
-        double BackwardOT = (TuningConstants.isRed ? 0 : 180); //Turnary Operator For Backwards Orientation Or Backwards Tangent
-        double Blue45_RedNeg135OT = (TuningConstants.isRed ? -135 : 45); //Turnary Operator For 45 Degrees On Red Or -135 Degrees On Blue, in terms of Orientation or Tangent
-        double Blue135_RedNeg45OT = (TuningConstants.isRed ? -45 : 135); //Turnary Operator For 135 Degrees On Red Or -45 Degrees On Blue, in terms of Orientation or Tangent
+        double ForwardOT = (TuningConstants.isRed ? 180 : 0); //TurnaryOperatorForwardsHeadingOrTangent
+        double BackwardOT = (TuningConstants.isRed ? 0 : 180); //TurnaryOperatorBackwardsHeadingOrTangent
 
         //Vectors
-        Point2d P1 = new Point2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, TuningConstants.StartOneGridY);; //StartOneGrid
-        Point2d LoadEdge = new Point2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX  , TuningConstants.StartOneGridY + 1.05); //Load side edge of grid
-        Point2d P2 = new Point2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, TuningConstants.StartTwoGridY); //StartTwoGrid
-        Point2d P3 = new Point2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, TuningConstants.StartThreeGridY); //StartThreeGrid
-        Point2d P4 = new Point2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, TuningConstants.StartFourGridY); //StartFourGrid
-        Point2d P5 = new Point2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, TuningConstants.StartFiveGridY); //StartFiveGrid
-        Point2d P6 = new Point2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, TuningConstants.StartSixGridY); //StartSixGrid
-        Point2d P7 = new Point2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, TuningConstants.StartSevenGridY); //StartSevenGrid
-        Point2d P8 = new Point2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, TuningConstants.StartEightGridY); //StartEightGrid
-        Point2d P9 = new Point2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, TuningConstants.StartNineGridY); //StartNineGrid
-        Point2d GuardEdge = new Point2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, 16.8); //Guard side edge of grid
-        Point2d P10 = new Point2d(TuningConstants.isRed ? TuningConstants.CloseChargeStationX : -TuningConstants.CloseChargeStationX,TuningConstants.GroundOneY); //InBetweenLoadClose
-        Point2d P11 = new Point2d(TuningConstants.isRed ? TuningConstants.CloseChargeStationX : -TuningConstants.CloseChargeStationX, TuningConstants.ChargeStationY); //ChargeStationClose
-        Point2d P12 = new Point2d(TuningConstants.isRed ? TuningConstants.CloseChargeStationX : -TuningConstants.CloseChargeStationX, TuningConstants.GroundFourY); //InBetweenGuardClose
-        Point2d P13 = new Point2d(TuningConstants.isRed ? TuningConstants.FarChargeStationX : -TuningConstants.FarChargeStationX, TuningConstants.ChargeStationY); //ChargeStationFar
-        Point2d P14 = new Point2d(TuningConstants.isRed ? TuningConstants.GroundPiecesX : -TuningConstants.GroundPiecesX, TuningConstants.GroundOneY); //GroundOne
-        Point2d P15 = new Point2d(TuningConstants.isRed ? TuningConstants.GroundPiecesX : -TuningConstants.GroundPiecesX, TuningConstants.GroundTwoY);//GroundTwo
-        Point2d P16 = new Point2d(TuningConstants.isRed ? TuningConstants.GroundPiecesX : -TuningConstants.GroundPiecesX, TuningConstants.GroundThreeY);//GroundThree
-        Point2d P17 = new Point2d(TuningConstants.isRed ? TuningConstants.GroundPiecesX : -TuningConstants.GroundPiecesX, TuningConstants.GroundFourY);//GroundFour
-        Point2d P18 = new Point2d(TuningConstants.isRed ? TuningConstants.FarChargeStationX : -TuningConstants.FarChargeStationX, TuningConstants.GroundOneY); //InBetweenLoadFar
-        Point2d P19 = new Point2d(TuningConstants.isRed ? TuningConstants.FarChargeStationX : -TuningConstants.FarChargeStationX, TuningConstants.GroundFourY); //InBetweenGuardFar
+        Point2d StartOneGrid = new Point2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, TuningConstants.StartOneGridY); //1
+        Point2d StartTwoGrid = new Point2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, TuningConstants.StartTwoGridY); //2
+        Point2d StartThreeGrid = new Point2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, TuningConstants.StartThreeGridY); //3
+        Point2d StartFourGrid = new Point2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, TuningConstants.StartFourGridY); //4
+        Point2d StartFiveGrid = new Point2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, TuningConstants.StartFiveGridY); //5
+        Point2d StartSixGrid = new Point2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, TuningConstants.StartSixGridY); //6
+        Point2d StartSevenGrid = new Point2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, TuningConstants.StartSevenGridY); //7
+        Point2d StartEightGrid = new Point2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, TuningConstants.StartEightGridY); //8
+        Point2d StartNineGrid = new Point2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, TuningConstants.StartNineGridY); //9
+        Point2d InBetweenLoadClose = new Point2d(TuningConstants.isRed ? TuningConstants.CloseChargeStationX : -TuningConstants.CloseChargeStationX,TuningConstants.GroundOneY); //10
+        Point2d ChargeStationClose = new Point2d(TuningConstants.isRed ? TuningConstants.CloseChargeStationX : -TuningConstants.CloseChargeStationX, TuningConstants.ChargeStationY); //11
+        Point2d InBetweenGuardClose = new Point2d(TuningConstants.isRed ? TuningConstants.CloseChargeStationX : -TuningConstants.CloseChargeStationX, TuningConstants.GroundFourY); //12
+        Point2d ChargeStationFar = new Point2d(TuningConstants.isRed ? TuningConstants.FarChargeStationX : -TuningConstants.FarChargeStationX, TuningConstants.ChargeStationY); //13
+        Point2d GroundOne = new Point2d(TuningConstants.isRed ? TuningConstants.GroundPiecesX : -TuningConstants.GroundPiecesX, TuningConstants.GroundOneY); //14
+        Point2d GroundTwo = new Point2d(TuningConstants.isRed ? TuningConstants.GroundPiecesX : -TuningConstants.GroundPiecesX, TuningConstants.GroundTwoY); //15
+        Point2d GroundThree = new Point2d(TuningConstants.isRed ? TuningConstants.GroundPiecesX : -TuningConstants.GroundPiecesX, TuningConstants.GroundThreeY); //16
+        Point2d GroundFour = new Point2d(TuningConstants.isRed ? TuningConstants.GroundPiecesX : -TuningConstants.GroundPiecesX, TuningConstants.GroundFourY); //17
+        Point2d InBetweenLoadFar = new Point2d(TuningConstants.isRed ? TuningConstants.FarChargeStationX : -TuningConstants.FarChargeStationX, TuningConstants.GroundOneY); //18
+        Point2d InBetweenGuardFar = new Point2d(TuningConstants.isRed ? TuningConstants.FarChargeStationX : -TuningConstants.FarChargeStationX, TuningConstants.GroundFourY); //19
+
+        Point2d P1 = StartOneGrid;
+        Point2d LoadEdge = new Point2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX  , TuningConstants.StartOneGridY + 1.05); //edge of grid
+        Point2d P2 = StartTwoGrid;
+        Point2d P3 = StartThreeGrid;
+        Point2d P4 = StartFourGrid;
+        Point2d P5 = StartFiveGrid;
+        Point2d P6 = StartSixGrid;
+        Point2d P7 = StartSevenGrid;
+        Point2d P8 = StartEightGrid;
+        Point2d P9 = StartNineGrid;
+        Point2d GuardEdge = new Point2d(TuningConstants.isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, 16.8); //edge of grid
+        Point2d P10 = InBetweenLoadClose;
+        Point2d P11 = ChargeStationClose;
+        Point2d P12 = InBetweenGuardClose;
+        Point2d P13 = ChargeStationFar;
+        Point2d P14 = GroundOne;
+        Point2d P15 = GroundTwo;
+        Point2d P16 = GroundThree;
+        Point2d P17 = GroundFour;
+        Point2d P18 = InBetweenLoadFar;
+        Point2d P19 = InBetweenGuardFar;
         Point2d P20 = new Point2d(TuningConstants.isRed ? TuningConstants.FarChargeStationX - 36 : -TuningConstants.FarChargeStationX + 36, TuningConstants.GroundOneY);
         Point2d P21 = new Point2d(TuningConstants.isRed ? TuningConstants.FarChargeStationX - 36 : -TuningConstants.FarChargeStationX + 36, TuningConstants.ChargeStationY);
         Point2d P22 = new Point2d(TuningConstants.isRed ? TuningConstants.FarChargeStationX - 36 : -TuningConstants.FarChargeStationX + 36, TuningConstants.GroundFourY);
@@ -198,7 +216,7 @@ public class PathPlannerTrajectoryGenerator
                 ),
             "GuardEdgetoChargeStationFar");
 
-        // TESTED AND WORING
+        // TESTED AND WORKING
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
@@ -251,6 +269,10 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P10, -160, BackwardOT),
                 new PathPlannerWaypoint(P2, BackwardOT, BackwardOT)),
             "10to2");
+        
+        
+
+        
 }
 
     private static void addTrajectory(TrajectoryManager trajectoryManager, ITrajectory trajectory, String name)
