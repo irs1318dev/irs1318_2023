@@ -49,15 +49,15 @@ public class TuningConstants
     public static final double StartNineGridY = 20.095;
     public static final double ChargeStationY = 108.015;
     public static final double GroundOneY = 180.19;
-    public static final double GroundTwoY = 36.19;
-    public static final double GroundThreeY = 132.19;
-    public static final double GroundFourY = 84.19;
+    public static final double GroundTwoY = 132.19;
+    public static final double GroundThreeY = 84.19;
+    public static final double GroundFourY = 36.19;
     
         //X Values
     public static final double StartGridX = 251.861;
-    public static final double CloseChargeStationX = 231.474; // 5 inches away from the charge station + Robot centering value
-    public static final double FarChargeStationX = 111.748; // 5 inches away from the charge station + Robot centering value
-    public static final double GroundPiecesX = 66.799;
+    public static final double CloseChargeStationX = 226.474; // 10 inches away from the charge station + Robot centering value
+    public static final double FarChargeStationX = 106.748; // 10 inches away from the charge station + Robot centering value
+    public static final double GroundPiecesX = 61.8 + 5; // Remove 10 in final only for testing
     
 
         //April tag array by ids
@@ -293,8 +293,8 @@ public class TuningConstants
     public static final double DRIVETRAIN_TURN_APPROXIMATION = 1.0; // number of degrees off at which point we give up trying to face an angle when uncommanded
     public static final double DRIVETRAIN_MAX_MODULE_PATH_VELOCITY = 0.85 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // up to x% of our max controllable speed
     public static final double DRIVETRAIN_MAX_PATH_TURN_VELOCITY = 180.0; // in degrees per second
-    public static final double DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY = 0.40 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // in inches per second
-    public static final double DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION = 0.75 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // in inches per second per second
+    public static final double DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY = 0.2 * TuningConstants.DRIVETRAIN_MAX_VELOCITY;//0.40 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // in inches per second
+    public static final double DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION = 0.4 * TuningConstants.DRIVETRAIN_MAX_VELOCITY;//0.75 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // in inches per second per second
 
     //================================================= Arm ================================================================================
 
