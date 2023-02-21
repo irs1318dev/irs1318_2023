@@ -445,6 +445,22 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.VisionEnableRetroreflectiveProcessing,
                 DigitalOperation.VisionForceDisable,
             }),
+        new MacroOperationDescription(
+            MacroOperation.VisionResetPosition,
+            UserInputDevice.Driver,
+            270, //DPAD left
+            Shift.DriverDebug,
+            Shift.None,
+            ButtonType.Toggle,
+            () -> new VisionResetPositionTask(),
+            new IOperation[]
+            {
+                AnalogOperation.DriveTrainStartingXPosition,
+                AnalogOperation.DriveTrainStartingYPosition,
+                DigitalOperation.DriveTrainResetXYPosition,
+                DigitalOperation.VisionEnableRetroreflectiveProcessing,
+                DigitalOperation.VisionEnableAprilTagProcessing,
+            }),
 
         // Intake macros
         new MacroOperationDescription(
