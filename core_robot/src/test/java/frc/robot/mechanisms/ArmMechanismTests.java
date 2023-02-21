@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import de.siegmar.fastcsv.writer.*;
 
-
 import frc.robot.HardwareConstants;
 import frc.robot.common.Helpers;
 
@@ -23,6 +22,7 @@ public class ArmMechanismTests
         assertEquals(90.0, setpoint.first, 0.01, "lower angle");
         assertEquals(0.0, setpoint.second, 0.01, "upper angle");
     }
+
     @Test
     public void verifycalculateAngleStraightUpAndDownFK()
     {
@@ -30,7 +30,6 @@ public class ArmMechanismTests
         // assertEquals(0.0, Math.abs(HardwareConstants.ARM_LOWER_ARM_LENGTH - setpoint.first));
         // assertEquals(Math.abs(HardwareConstants.ARM_LOWER_ARM_LENGTH - HardwareConstants.ARM_UPPER_ARM_LENGTH), setpoint.second);
     }
-
 
     @Test
     public void calculateAngleStraightOut()
