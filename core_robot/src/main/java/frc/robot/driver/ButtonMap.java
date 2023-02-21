@@ -140,42 +140,42 @@ public class ButtonMap implements IButtonMap
         new DigitalOperationDescription(
             DigitalOperation.PositionResetFieldOrientation,
             UserInputDevice.Driver,
-            UserInputDeviceButton.XBONE_RIGHT_STICK_BUTTON,
+            UserInputDeviceButton.XBONE_Y_BUTTON,
             Shift.DriverDebug,
             Shift.None,
             ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.DriveTrainReset,
             UserInputDevice.Driver,
-            UserInputDeviceButton.XBONE_RIGHT_STICK_BUTTON,
+            UserInputDeviceButton.XBONE_Y_BUTTON,
             Shift.DriverDebug,
             Shift.DriverDebug,
             ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.DriveTrainEnableFieldOrientation,
             UserInputDevice.Driver,
-            UserInputDeviceButton.XBONE_B_BUTTON,
+            UserInputDeviceButton.XBONE_X_BUTTON,
             Shift.DriverDebug,
             Shift.None,
             ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.DriveTrainDisableFieldOrientation,
             UserInputDevice.Driver,
-            UserInputDeviceButton.XBONE_B_BUTTON,
+            UserInputDeviceButton.XBONE_X_BUTTON,
             Shift.DriverDebug,
             Shift.DriverDebug,
             ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.DriveTrainEnableMaintainDirectionMode,
             UserInputDevice.Driver,
-            UserInputDeviceButton.XBONE_Y_BUTTON,
+            UserInputDeviceButton.XBONE_B_BUTTON,
             Shift.DriverDebug,
             Shift.None,
             ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.DriveTrainDisableMaintainDirectionMode,
             UserInputDevice.Driver,
-            UserInputDeviceButton.XBONE_Y_BUTTON,
+            UserInputDeviceButton.XBONE_B_BUTTON,
             Shift.DriverDebug,
             Shift.DriverDebug,
             ButtonType.Click),
@@ -201,14 +201,14 @@ public class ButtonMap implements IButtonMap
             ButtonType.Click),
 
         new DigitalOperationDescription(
-            DigitalOperation.IntakeRetract,
+            DigitalOperation.IntakeGrab,
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_LEFT_BUTTON,
             Shift.DriverDebug,
             Shift.None,
             ButtonType.Click),
         new DigitalOperationDescription(
-            DigitalOperation.IntakeExtend,
+            DigitalOperation.IntakeRelease,
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_LEFT_BUTTON,
             Shift.DriverDebug,
@@ -459,8 +459,8 @@ public class ButtonMap implements IButtonMap
             {
                 DigitalOperation.IntakeIn,
                 DigitalOperation.IntakeOut,
-                DigitalOperation.IntakeExtend,
-                DigitalOperation.IntakeRetract,
+                DigitalOperation.IntakeRelease,
+                DigitalOperation.IntakeGrab,
             }),
 
         // arm position macros
