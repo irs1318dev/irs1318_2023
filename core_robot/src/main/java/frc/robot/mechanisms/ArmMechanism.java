@@ -1007,15 +1007,6 @@ public class ArmMechanism implements IMechanism
             return null;
         }
 
-        // special-case fully-retracted zone to the fully retracted position
-        if (x <= TuningConstants.ARM_FULLY_RETRACTED_X_POSITION &&
-            z <= TuningConstants.ARM_FULLY_RETRACTED_Z_POSITION)
-        {
-            return new DoubleTuple(
-                HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH,
-                TuningConstants.ZERO);
-        }
-
         DoubleTuple ikAngles = ArmMechanism.calculateIKAnglesFromPosition(x, z);
         if (ikAngles == null)
         {
@@ -1081,6 +1072,14 @@ public class ArmMechanism implements IMechanism
 
         double beta = Helpers.atan2d(z, x);
         double theta1 = alpha + beta;
+
+        if (theta1 < HardwareConstants.ARM_LOWER_JOINT_CONSTRAINT_MIN ||
+            theta1 > HardwareConstants.ARM_LOWER_JOINT_CONSTRAINT_MAX ||
+            theta2 < HardwareConstants.ARM_UPPER_JOINT_CONSTRAINT_MIN ||
+            theta2 > HardwareConstants.ARM_UPPER_JOINT_CONSTRAINT_MAX)
+        {
+            return null;
+        }
 
         // in order lower, upper
         return new DoubleTuple(theta1, theta2);
@@ -1148,18 +1147,35 @@ public class ArmMechanism implements IMechanism
             return null;
         }
 
+        // VERIFY FOUR-BAR CONSTRAINTS:
+        // (ensure that R2, A7A8, and A3A6 can be found, and that the lengths and angles make sense together)
+        double R2 = Helpers.calculateLawOfCosinesDistance(L3, L4, A4 + A5);
+        Double A7A8 = Helpers.calculateLawOfCosinesAngleOrNull(L2, L3, R1);
+        Double A3A6 = Helpers.calculateLawOfCosinesAngleOrNull(L1, L2, R2);
+        if (A7A8 == null || 
+            A3A6 == null ||
+            L1 + L2 < R2 ||
+            L3 + L4 < R2 ||
+            L1 + L4 < R1 ||
+            L2 + L3 < R1 ||
+            !Helpers.WithinDelta(A1A2 + A3A6 + A7A8 + A4 + A5, 360.0, 0.01))
+        {
+            return null;
+        }
+
         double B1 = 180.0 - A4 - A5 - phi - psi + sigma;
         double L6 = Helpers.calculateLawOfCosinesDistance(L7, L8, B1);
 
         double lowerLAExtension = L9 - HardwareConstants.ARM_LINEAR_ACTUATOR_RETRACTED_LENGTH;
-        if (lowerLAExtension < -0.00001 || lowerLAExtension > HardwareConstants.ARM_EXTENTION_LENGTH)
+        if (lowerLAExtension < 0.0 || lowerLAExtension > HardwareConstants.ARM_EXTENTION_LENGTH)
         {
             // be forgiving of values that are just very slightly off...
             if (lowerLAExtension >= -0.00001)
             {
                 lowerLAExtension = 0.0;
             }
-            else if (lowerLAExtension <= HardwareConstants.ARM_EXTENTION_LENGTH + 0.00001)
+            else if (lowerLAExtension > HardwareConstants.ARM_EXTENTION_LENGTH &&
+                lowerLAExtension <= HardwareConstants.ARM_EXTENTION_LENGTH + 0.00001)
             {
                 lowerLAExtension = HardwareConstants.ARM_EXTENTION_LENGTH;
             }
@@ -1171,14 +1187,15 @@ public class ArmMechanism implements IMechanism
         }
 
         double upperLAExtension = L6 - HardwareConstants.ARM_LINEAR_ACTUATOR_RETRACTED_LENGTH;
-        if (upperLAExtension < -0.00001 || upperLAExtension > HardwareConstants.ARM_EXTENTION_LENGTH)
+        if (upperLAExtension < 0.0 || upperLAExtension > HardwareConstants.ARM_EXTENTION_LENGTH)
         {
             // be forgiving of values that are just very slightly off...
             if (upperLAExtension >= -0.00001)
             {
                 upperLAExtension = 0.0;
             }
-            else if (upperLAExtension <= HardwareConstants.ARM_EXTENTION_LENGTH + 0.00001)
+            else if (upperLAExtension > HardwareConstants.ARM_EXTENTION_LENGTH &&
+                upperLAExtension <= HardwareConstants.ARM_EXTENTION_LENGTH + 0.00001)
             {
                 upperLAExtension = HardwareConstants.ARM_EXTENTION_LENGTH;
             }
