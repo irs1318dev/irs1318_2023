@@ -999,10 +999,18 @@ public class ArmMechanism implements IMechanism
      */
     static DoubleTuple calculateIK(double x, double z)
     {
+        // block moving it outside of the 
         if (x < TuningConstants.ARM_MIN_IKX_EXTENSION_LENGTH ||
             x > TuningConstants.ARM_MAX_IKX_EXTENSION_LENGTH ||
             z < TuningConstants.ARM_MIN_IKZ_EXTENSION_HEIGHT ||
             z > TuningConstants.ARM_MAX_IKZ_EXTENSION_HEIGHT)
+        {
+            return null;
+        }
+
+        // block the possibility of the end-effector clipping through the robot frame
+        if (x < TuningConstants.ARM_X_IK_IN_TRESHOLD &&
+            z < TuningConstants.ARM_Z_IK_IN_TRESHOLD)
         {
             return null;
         }
