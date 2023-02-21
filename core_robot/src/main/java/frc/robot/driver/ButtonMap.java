@@ -598,21 +598,21 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.ArmMMLowerPosition,
                 AnalogOperation.ArmMMUpperPosition,
             }),
-        // new MacroOperationDescription(
-        //     MacroOperation.ArmStowedPosition,
-        //     UserInputDevice.Codriver,
-        //     UserInputDeviceButton.XBONE_A_BUTTON,
-        //     Shift.CodriverDebug,
-        //     Shift.None,
-        //     ButtonType.Toggle,
-        //     () -> new ArmMMPositionTask(
-        //         TuningConstants.ARM_LOWER_POSITION_STOWED,
-        //         TuningConstants.ARM_UPPER_POSITION_STOWED),
-        //     new IOperation[]
-        //     {
-        //         AnalogOperation.ArmMMLowerPosition,
-        //         AnalogOperation.ArmMMUpperPosition,
-        //     }),
+        new MacroOperationDescription(
+            MacroOperation.ArmApproachPosition,
+            UserInputDevice.Codriver,
+            UserInputDeviceButton.XBONE_A_BUTTON,
+            Shift.CodriverDebug,
+            Shift.CodriverDebug,
+            ButtonType.Toggle,
+            () -> new ArmMMPositionTask(
+                TuningConstants.ARM_LOWER_POSITION_APPROACH,
+                TuningConstants.ARM_UPPER_POSITION_APPROACH),
+            new IOperation[]
+            {
+                AnalogOperation.ArmMMLowerPosition,
+                AnalogOperation.ArmMMUpperPosition,
+            }),
 
         new MacroOperationDescription(
             MacroOperation.ChargeStationBalance,
