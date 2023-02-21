@@ -31,8 +31,8 @@ public enum DigitalOperation implements IOperation
     DriveTrainResetXYPosition,
 
     // Arm operations
-    IntakeExtend,
-    IntakeRetract,
+    IntakeRelease,
+    IntakeGrab,
     IntakeIn,
     IntakeOut,
     ArmExtendLeftFlipper,

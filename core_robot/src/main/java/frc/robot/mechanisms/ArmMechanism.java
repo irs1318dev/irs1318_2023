@@ -594,11 +594,11 @@ public class ArmMechanism implements IMechanism
         this.logger.logNumber(LoggingKey.ArmIntakePower, intakePower);
 
         // intake state transitions
-        if (this.driver.getDigital(DigitalOperation.IntakeExtend))
+        if (this.driver.getDigital(DigitalOperation.IntakeRelease))
         {
             this.currentIntakeState = IntakeState.Extended;
         }
-        else if (this.driver.getDigital(DigitalOperation.IntakeRetract))
+        else if (this.driver.getDigital(DigitalOperation.IntakeGrab))
         {
             this.currentIntakeState = IntakeState.Retracted;
         }

@@ -6,14 +6,14 @@ public class IntakeExtendTask extends CompositeOperationTask
 {
     private static final DigitalOperation[] possibleOperations =
         {
-            DigitalOperation.IntakeExtend,
-            DigitalOperation.IntakeRetract,
+            DigitalOperation.IntakeRelease,
+            DigitalOperation.IntakeGrab,
         };
 
     public IntakeExtendTask(boolean extend)
     {
         super(
-            extend ? DigitalOperation.IntakeExtend : DigitalOperation.IntakeRetract,
+            extend ? DigitalOperation.IntakeRelease : DigitalOperation.IntakeGrab,
             IntakeExtendTask.possibleOperations);
     }
 }

@@ -55,8 +55,8 @@ public class IntakeGamePieceTask extends ControlTaskBase
 
         this.setDigitalOperationState(DigitalOperation.IntakeIn, true);
         this.setDigitalOperationState(DigitalOperation.IntakeOut, false);
-        this.setDigitalOperationState(DigitalOperation.IntakeExtend, true);
-        this.setDigitalOperationState(DigitalOperation.IntakeRetract, false);
+        this.setDigitalOperationState(DigitalOperation.IntakeRelease, true);
+        this.setDigitalOperationState(DigitalOperation.IntakeGrab, false);
     }
 
     @Override
@@ -86,23 +86,23 @@ public class IntakeGamePieceTask extends ControlTaskBase
             case Intake:
                 this.setDigitalOperationState(DigitalOperation.IntakeIn, true);
                 this.setDigitalOperationState(DigitalOperation.IntakeOut, false);
-                this.setDigitalOperationState(DigitalOperation.IntakeExtend, true);
-                this.setDigitalOperationState(DigitalOperation.IntakeRetract, false);
+                this.setDigitalOperationState(DigitalOperation.IntakeRelease, true);
+                this.setDigitalOperationState(DigitalOperation.IntakeGrab, false);
                 break;
 
             case Close:
                 this.setDigitalOperationState(DigitalOperation.IntakeIn, false);
                 this.setDigitalOperationState(DigitalOperation.IntakeOut, false);
-                this.setDigitalOperationState(DigitalOperation.IntakeExtend, false);
-                this.setDigitalOperationState(DigitalOperation.IntakeRetract, true);
+                this.setDigitalOperationState(DigitalOperation.IntakeRelease, false);
+                this.setDigitalOperationState(DigitalOperation.IntakeGrab, true);
                 break;
 
             default:
             case Completed:
                 this.setDigitalOperationState(DigitalOperation.IntakeIn, false);
                 this.setDigitalOperationState(DigitalOperation.IntakeOut, false);
-                this.setDigitalOperationState(DigitalOperation.IntakeExtend, false);
-                this.setDigitalOperationState(DigitalOperation.IntakeRetract, false);
+                this.setDigitalOperationState(DigitalOperation.IntakeRelease, false);
+                this.setDigitalOperationState(DigitalOperation.IntakeGrab, false);
                 break;
         }
     }
@@ -112,8 +112,8 @@ public class IntakeGamePieceTask extends ControlTaskBase
     {
         this.setDigitalOperationState(DigitalOperation.IntakeIn, false);
         this.setDigitalOperationState(DigitalOperation.IntakeOut, false);
-        this.setDigitalOperationState(DigitalOperation.IntakeExtend, false);
-        this.setDigitalOperationState(DigitalOperation.IntakeRetract, false);
+        this.setDigitalOperationState(DigitalOperation.IntakeRelease, false);
+        this.setDigitalOperationState(DigitalOperation.IntakeGrab, false);
     }
 
     @Override
