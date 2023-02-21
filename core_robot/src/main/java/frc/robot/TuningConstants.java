@@ -358,8 +358,8 @@ public class TuningConstants
     public static final double ARM_NEAR_FULL_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.9; // in inches
     public static final double ARM_NEAR_FULL_RETRACTED_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.1; // in inches
 
-    public static final double ARM_UPPER_MAX_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 1.0; // in inches
-    public static final double ARM_LOWER_MAX_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.9; // in inches
+    public static final double ARM_UPPER_MAX_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.9; // in inches
+    public static final double ARM_LOWER_MAX_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 1.0; // in inches
 
     public static final double ARM_RETRACTION_MAX_TIME = 0.7;
 
@@ -429,19 +429,21 @@ public class TuningConstants
     public static final double ARM_LOWER_POSITION_MIDDLE_CUBE = 5800.0; 
     public static final double ARM_UPPER_POSITION_MIDDLE_CUBE = 4300.0;
     public static final double ARM_LOWER_POSITION_HIGH_CONE = 2950.0;
-    public static final double ARM_UPPER_POSITION_HIGH_CONE = 7250.0;
+    public static final double ARM_UPPER_POSITION_HIGH_CONE = 7400.0;
     public static final double ARM_LOWER_POSITION_HIGH_CUBE = 4000.0;
     public static final double ARM_UPPER_POSITION_HIGH_CUBE = 6200.0;
     public static final double ARM_LOWER_POSITION_GROUND_PICKUP = 1950.0;
     public static final double ARM_UPPER_POSITION_GROUND_PICKUP = 1900.0;
     public static final double ARM_LOWER_POSITION_SUB_PICKUP = 3350.0;
-    public static final double ARM_UPPER_POSITION_SUB_PICKUP = 6600.0;
+    public static final double ARM_UPPER_POSITION_SUB_PICKUP = 6750.0;
+    public static final double ARM_LOWER_POSITION_APPROACH = HardwareConstants.ARM_FULL_EXTENSION_TICKS;
+    public static final double ARM_UPPER_POSITION_APPROACH = 3000.0;
 
     //============================================= ChargeStation Macro ==================================================================
 
     // ChargeStationTask constants (owned by Jamie and Calvin)
     public static final double CHARGE_STATION_PITCH_VARIATION = 0.3;
-    public static final double CHARGE_STATION_ACCEPTABLE_PITCH_DIFF = -2.0;
+    public static final double CHARGE_STATION_ACCEPTABLE_PITCH_DIFF = 2.0;
     public static final double CHARGE_STATION_STARTING_SPEED = 0.5;
     public static final double CHARGE_STATION_CLIMBING_SPEED = 0.2;
     public static final double CHARGE_STATION_BALANCING_SPEED = 0.06;

@@ -481,7 +481,7 @@ public class ButtonMap implements IButtonMap
         new MacroOperationDescription(
             MacroOperation.ArmGroundPickupPosition,
             UserInputDevice.Codriver,
-            UserInputDeviceButton.XBONE_A_BUTTON,
+            270, // POV-left
             Shift.CodriverDebug,
             Shift.None,
             ButtonType.Toggle,
@@ -496,9 +496,9 @@ public class ButtonMap implements IButtonMap
         new MacroOperationDescription(
             MacroOperation.ArmGroundPlacePosition,
             UserInputDevice.Codriver,
-            UserInputDeviceButton.XBONE_A_BUTTON,
+            180, // POV-down
             Shift.CodriverDebug,
-            Shift.CodriverDebug,
+            Shift.None,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_GROUND_PLACING,
@@ -526,9 +526,9 @@ public class ButtonMap implements IButtonMap
         new MacroOperationDescription(
             MacroOperation.ArmMiddleCubePosition,
             UserInputDevice.Codriver,
-            UserInputDeviceButton.XBONE_B_BUTTON,
+            90, // POV-right
             Shift.CodriverDebug,
-            Shift.CodriverDebug,
+            Shift.None,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_MIDDLE_CUBE,
@@ -541,7 +541,7 @@ public class ButtonMap implements IButtonMap
         new MacroOperationDescription(
             MacroOperation.ArmHighConePosition,
             UserInputDevice.Codriver,
-            UserInputDeviceButton.XBONE_X_BUTTON,
+            UserInputDeviceButton.XBONE_Y_BUTTON,
             Shift.CodriverDebug,
             Shift.None,
             ButtonType.Toggle,
@@ -556,9 +556,9 @@ public class ButtonMap implements IButtonMap
         new MacroOperationDescription(
             MacroOperation.ArmHighCubePosition,
             UserInputDevice.Codriver,
-            UserInputDeviceButton.XBONE_X_BUTTON,
+            0, // POV-up
             Shift.CodriverDebug,
-            Shift.CodriverDebug,
+            Shift.None,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE,
@@ -571,7 +571,7 @@ public class ButtonMap implements IButtonMap
         new MacroOperationDescription(
             MacroOperation.ArmSubstationPickupPosition,
             UserInputDevice.Codriver,
-            UserInputDeviceButton.XBONE_Y_BUTTON,
+            UserInputDeviceButton.XBONE_X_BUTTON,
             Shift.CodriverDebug,
             Shift.None,
             ButtonType.Toggle,
@@ -586,9 +586,9 @@ public class ButtonMap implements IButtonMap
         new MacroOperationDescription(
             MacroOperation.ArmStowedPosition,
             UserInputDevice.Codriver,
-            UserInputDeviceButton.XBONE_Y_BUTTON,
+            UserInputDeviceButton.XBONE_A_BUTTON,
             Shift.CodriverDebug,
-            Shift.CodriverDebug,
+            Shift.None,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_STOWED,
@@ -598,6 +598,21 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.ArmMMLowerPosition,
                 AnalogOperation.ArmMMUpperPosition,
             }),
+        // new MacroOperationDescription(
+        //     MacroOperation.ArmStowedPosition,
+        //     UserInputDevice.Codriver,
+        //     UserInputDeviceButton.XBONE_A_BUTTON,
+        //     Shift.CodriverDebug,
+        //     Shift.None,
+        //     ButtonType.Toggle,
+        //     () -> new ArmMMPositionTask(
+        //         TuningConstants.ARM_LOWER_POSITION_STOWED,
+        //         TuningConstants.ARM_UPPER_POSITION_STOWED),
+        //     new IOperation[]
+        //     {
+        //         AnalogOperation.ArmMMLowerPosition,
+        //         AnalogOperation.ArmMMUpperPosition,
+        //     }),
 
         new MacroOperationDescription(
             MacroOperation.ChargeStationBalance,
