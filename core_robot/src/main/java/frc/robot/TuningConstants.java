@@ -441,7 +441,7 @@ public class TuningConstants
 
     // ChargeStationTask constants (owned by Jamie and Calvin)
     public static final double CHARGE_STATION_PITCH_VARIATION = 0.3;
-    public static final double CHARGE_STATION_ACCEPTABLE_PITCH_DIFF = -2.0;
+    public static final double CHARGE_STATION_ACCEPTABLE_PITCH_DIFF = 2.0;
     public static final double CHARGE_STATION_STARTING_SPEED = 0.5;
     public static final double CHARGE_STATION_CLIMBING_SPEED = 0.2;
     public static final double CHARGE_STATION_BALANCING_SPEED = 0.06;
