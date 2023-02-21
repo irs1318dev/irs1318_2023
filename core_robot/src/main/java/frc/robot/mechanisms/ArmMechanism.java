@@ -314,7 +314,7 @@ public class ArmMechanism implements IMechanism
         double lowerRightLAPower = this.powerManager.getCurrent(ElectronicsConstants.ARM_LOWER_RIGHT_LA_PDH_CHANNEL);
         double upperLeftLAPower = this.powerManager.getCurrent(ElectronicsConstants.ARM_UPPER_LEFT_LA_PDH_CHANNEL);
         double upperRightLAPower = this.powerManager.getCurrent(ElectronicsConstants.ARM_UPPER_RIGHT_LA_PDH_CHANNEL);
-        
+
         this.lowerLeftLAPowerAverage = this.lowerLeftLAPowerAverageCalculator.update(lowerLeftLAPower);
         this.lowerRightLAPowerAverage = this.lowerRightLAPowerAverageCalculator.update(lowerRightLAPower);
         this.upperLAsPowerAverage = this.upperLAsPowerAverageCalculator.update((upperLeftLAPower + upperRightLAPower) / 2.0);
@@ -691,7 +691,7 @@ public class ArmMechanism implements IMechanism
 
                 if (ikX != TuningConstants.MAGIC_NULL_VALUE &&
                     ikZ != TuningConstants.MAGIC_NULL_VALUE)
-                {
+                 {
                     // controlled by macro
                     DoubleTuple ikResult = ArmMechanism.calculateIK(ikX, ikZ);
                     if (ikResult != null)
@@ -706,7 +706,7 @@ public class ArmMechanism implements IMechanism
                             this.desiredLowerLeftLAPosition = ikResult.first;
                             this.desiredLowerRightLAPosition = ikResult.first;
                             updateDesiredIKPosition = true;
-                        }
+                    }
 
                         if (Helpers.RoughEquals(this.desiredUpperLAPosition, ikResult.second, 0.1))
                         {
@@ -715,7 +715,7 @@ public class ArmMechanism implements IMechanism
 
                             this.desiredUpperLAPosition = ikResult.second;
                             updateDesiredIKPosition = true;
-                        }
+                }
 
                         if (updateDesiredIKPosition)
                         {
@@ -776,7 +776,7 @@ public class ArmMechanism implements IMechanism
                         this.desiredLowerLeftLAPosition = newDesiredLowerPosition;
                         this.desiredLowerRightLAPosition = newDesiredLowerPosition;
                         updateDesiredIKPosition = true;
-                    }
+                }
 
                     if (newDesiredUpperPosition != TuningConstants.MAGIC_NULL_VALUE &&
                         !Helpers.RoughEquals(this.desiredUpperLAPosition, newDesiredUpperPosition, 0.1))
@@ -824,7 +824,7 @@ public class ArmMechanism implements IMechanism
                         this.upperSetpointChangedTime = currTime;
                         this.upperLAsStalled = false;
                         updateDesiredIKPosition = true;
-                    }
+                }
 
                     if (updateDesiredIKPosition)
                     {
