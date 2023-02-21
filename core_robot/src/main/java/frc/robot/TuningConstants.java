@@ -394,12 +394,12 @@ public class TuningConstants
 
     public static final double ARM_LOWER_MM_INTERMIDATE = HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
     public static final double ARM_UPPER_MM_INTERMIDATE = 1200.0;
-    public static final double ARM_LOWER_MM_IN_TRESHOLD = 8000.0; // PLACEHOLDER
-    public static final double ARM_UPPER_MM_IN_TRESHOLD = 1000.0;  // PLACEHOLDER
-    public static final double ARM_X_IK_IN_TRESHOLD = 16.8; // PLACEHOLDER
-    public static final double ARM_Z_IK_IN_TRESHOLD = 8.0; // PLACEHOLDER
-    public static final double ARM_X_IK_INTERMIDATE = 16.8; // PLACEHOLDER
-    public static final double ARM_Z_IK_INTERMIDATE = 10; // PLACEHOLDER
+    public static final double ARM_LOWER_MM_IN_TRESHOLD = 8000.0;
+    public static final double ARM_UPPER_MM_IN_TRESHOLD = 1000.0;
+    public static final double ARM_X_IK_IN_TRESHOLD = 18.0;
+    public static final double ARM_Z_IK_IN_TRESHOLD = 8.0;
+    public static final double ARM_X_IK_INTERMIDATE = 20.0;
+    public static final double ARM_Z_IK_INTERMIDATE = 14.5;
 
     // Power sampling for arm
     public static final double ARM_POWER_TRACKING_DURATION = 0.25; // duration of time to keep track of the average current

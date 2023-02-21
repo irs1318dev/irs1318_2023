@@ -122,7 +122,7 @@ public class ArmMechanismTests
 
         // try (CsvWriter csvWriter = CsvWriter.builder().build(java.nio.file.Path.of("theoreticalPositions.csv"), StandardCharsets.UTF_8))
         // {
-        //     csvWriter.writeRow("x", "y", "lowerExtension", "upperExtension");
+        //     csvWriter.writeRow("x", "z", "lowerExtension", "upperExtension");
 
         //     final double maxExtension = (HardwareConstants.ARM_EXTENTION_LENGTH) * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
         //     for (double lowerExtension = 0.0 * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; lowerExtension <= maxExtension; lowerExtension += 10.0)
