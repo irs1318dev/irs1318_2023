@@ -45,6 +45,10 @@ public class PathPlannerTrajectoryGenerator
         Point2d P21 = new Point2d(TuningConstants.isRed ? TuningConstants.FarChargeStationX - 36 : -TuningConstants.FarChargeStationX + 36, TuningConstants.ChargeStationY);
         Point2d P22 = new Point2d(TuningConstants.isRed ? TuningConstants.FarChargeStationX - 36 : -TuningConstants.FarChargeStationX + 36, TuningConstants.GroundFourY);
 
+        // Lower Y of 12, 19, 22
+        // Test Everything that uses loadedge again
+        // Make X 18, 13, and 19 closer to 0
+
         //TANGENTS AND ORIENTATION:
         // +x = 0 Towards the red alliance
         // -x = 180 Towards the blue alliance
