@@ -479,7 +479,49 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.IntakeGrab,
             }),
 
-        // arm position macros
+        // Cone Flipper macros
+        new MacroOperationDescription(
+            MacroOperation.ExtendLeftConeFlipper,
+            UserInputDevice.Codriver,
+            UserInputDeviceButton.XBONE_SELECT_BUTTON,
+            Shift.None,
+            Shift.None,
+            ButtonType.Simple,
+            () -> SequentialTask.Sequence(
+                new ArmMMPositionTask(
+                    TuningConstants.ARM_LOWER_POSITION_STOWED,
+                    TuningConstants.ARM_UPPER_POSITION_STOWED,
+                    true),
+                new ConeFlipperExtendTask(true)),
+            new IOperation[]
+            {
+                AnalogOperation.ArmMMUpperPosition,
+                AnalogOperation.ArmMMLowerPosition,
+                DigitalOperation.ExtendLeftConeFlipper,
+                DigitalOperation.ExtendRightConeFlipper,
+            }),
+        new MacroOperationDescription(
+            MacroOperation.ExtendRightConeFlipper,
+            UserInputDevice.Codriver,
+            UserInputDeviceButton.XBONE_START_BUTTON,
+            Shift.None,
+            Shift.None,
+            ButtonType.Simple,
+            () -> SequentialTask.Sequence(
+                new ArmMMPositionTask(
+                    TuningConstants.ARM_LOWER_POSITION_STOWED,
+                    TuningConstants.ARM_UPPER_POSITION_STOWED,
+                    true),
+                new ConeFlipperExtendTask(false)),
+            new IOperation[]
+            {
+                AnalogOperation.ArmMMUpperPosition,
+                AnalogOperation.ArmMMLowerPosition,
+                DigitalOperation.ExtendLeftConeFlipper,
+                DigitalOperation.ExtendRightConeFlipper,
+            }),
+
+        // Arm position macros
         new MacroOperationDescription(
             MacroOperation.ArmResetToZero,
             UserInputDevice.Codriver,

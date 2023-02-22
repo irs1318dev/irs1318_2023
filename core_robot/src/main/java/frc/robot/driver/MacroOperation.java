@@ -29,6 +29,10 @@ public enum MacroOperation implements IOperation
     // Intake macros:
     IntakeGamePiece,
 
+    // Cone flipepr macros:
+    ExtendLeftConeFlipper,
+    ExtendRightConeFlipper,
+
     // Arm Movement
     ArmResetToZero,
     ArmGroundPickupPosition,
