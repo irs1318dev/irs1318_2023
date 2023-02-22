@@ -963,7 +963,7 @@ public class ArmMechanism implements IMechanism
      */
     static DoubleTuple calculateIK(double x, double z)
     {
-        // block moving it outside of the 
+        // block moving it outside of the allowed ranges
         if (x < TuningConstants.ARM_MIN_IKX_EXTENSION_LENGTH ||
             x > TuningConstants.ARM_MAX_IKX_EXTENSION_LENGTH ||
             z < TuningConstants.ARM_MIN_IKZ_EXTENSION_HEIGHT ||
