@@ -21,12 +21,13 @@ public class VisionResetPositionTask extends ControlTaskBase {
     private Double xPosition;
     private Double yPosition;
 
-    public VisionResetPositionTask() {
-        
+    public VisionResetPositionTask()
+    {
     }
 
     @Override
-    public void begin() {
+    public void begin()
+    {
         this.visionManager = this.getInjector().getInstance(OffboardVisionManager.class);
 
         this.setDigitalOperationState(DigitalOperation.VisionEnableRetroreflectiveProcessing, false);
@@ -34,8 +35,8 @@ public class VisionResetPositionTask extends ControlTaskBase {
     }
 
     @Override
-    public void update() {
-        // TODO Auto-generated method stub
+    public void update()
+    {
         this.tagXOffset = visionManager.getAprilTagXOffset();
         this.tagYOffset = visionManager.getAprilTagYOffset();
         this.tagYaw = visionManager.getAprilTagYaw();
@@ -45,47 +46,47 @@ public class VisionResetPositionTask extends ControlTaskBase {
     }
 
     @Override
-    public void end() {
-        // TODO Auto-generated method stub
-        if (this.xPosition != null || this.yPosition != null)
-        {
-            this.setDigitalOperationState(DigitalOperation.DriveTrainResetXYPosition, false);
-            this.setAnalogOperationState(AnalogOperation.DriveTrainStartingXPosition, 0.0);
-            this.setAnalogOperationState(AnalogOperation.DriveTrainStartingYPosition, 0.0);
-        }
+    public void end()
+    {
+        this.setDigitalOperationState(DigitalOperation.DriveTrainResetXYPosition, false);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainStartingXPosition, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainStartingYPosition, 0.0);
+        this.setDigitalOperationState(DigitalOperation.VisionEnableRetroreflectiveProcessing, false);
+        this.setDigitalOperationState(DigitalOperation.VisionEnableAprilTagProcessing, false);
     }
 
     @Override
-    public boolean hasCompleted() {
-        // TODO Auto-generated method stub
-        return false;
+    public boolean hasCompleted()
+    {
+        return this.xPosition != null && this.yPosition != null;
     }
 
-    private void calculatePosition() {
-        if (visionManager.getAprilTagId() != null) {
-
+    private void calculatePosition() 
+    {
+        if (this.tagId != null)
+        {
             double[] thisTag = TuningConstants.AprilTagLocations[this.tagId - 1];
             double alpha = this.tagYaw;
-            double beta = Math.atan2(this.tagXOffset, this.tagYOffset) * Helpers.RADIANS_TO_DEGREES;
+            double beta = Helpers.atan2d(this.tagXOffset, this.tagYOffset);
             double hypoFieldAngle = thisTag[2] - alpha - beta;
-            if (Math.abs(hypoFieldAngle) > 180) {
+            if (Math.abs(hypoFieldAngle) > 180)
+            {
                 hypoFieldAngle += hypoFieldAngle > 0 ? -360 : 360;
             }
+
             double distToTag = Math.sqrt(this.tagXOffset * this.tagXOffset + this.tagYOffset * this.tagYOffset);
-            this.xPosition = thisTag[0] + Math.cos(Helpers.DEGREES_TO_RADIANS * hypoFieldAngle) * distToTag;
-            this.yPosition = thisTag[1] + Math.sin(Helpers.DEGREES_TO_RADIANS * hypoFieldAngle) * distToTag;
-            
+            this.xPosition = thisTag[0] + Helpers.cosd(hypoFieldAngle) * distToTag;
+            this.yPosition = thisTag[1] + Helpers.sind(hypoFieldAngle) * distToTag;
         }
     }
 
-    private void setPosition() {
-        if (this.xPosition != null && this.yPosition != null) {
+    private void setPosition()
+    {
+        if (this.xPosition != null && this.yPosition != null)
+        {
             this.setDigitalOperationState(DigitalOperation.DriveTrainResetXYPosition, true);
             this.setAnalogOperationState(AnalogOperation.DriveTrainStartingXPosition, this.xPosition);
             this.setAnalogOperationState(AnalogOperation.DriveTrainStartingYPosition, this.yPosition);
         }
     }
-    
 }
-
-
