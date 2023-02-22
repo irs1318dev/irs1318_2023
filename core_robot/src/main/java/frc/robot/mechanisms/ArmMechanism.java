@@ -432,8 +432,9 @@ public class ArmMechanism implements IMechanism
                     this.curRightFlipperState = ConeFlipperState.Retracted;
                 }
                 else if (this.curLeftFlipperState == ConeFlipperState.Retracted &&
-                    this.upperLAPosition <= TuningConstants.ARM_NEAR_FULL_RETRACTED_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH &&
-                    this.lowerLeftLAPosition >= TuningConstants.ARM_NEAR_FULL_EXTENSION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH)
+                    (this.inSimpleMode ||
+                        (this.upperLAPosition <= TuningConstants.ARM_NEAR_FULL_RETRACTED_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH &&
+                        this.lowerLeftLAPosition >= TuningConstants.ARM_NEAR_FULL_EXTENSION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH)))
                 {
                     this.curRightFlipperState = ConeFlipperState.Extending;
                     this.rightFlipperTransitionTime = currTime;
@@ -493,8 +494,9 @@ public class ArmMechanism implements IMechanism
                     this.curLeftFlipperState = ConeFlipperState.Retracted;
                 }
                 else if (this.curLeftFlipperState == ConeFlipperState.Retracted &&
-                    this.upperLAPosition <= TuningConstants.ARM_NEAR_FULL_RETRACTED_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH &&
-                    this.lowerLeftLAPosition >= TuningConstants.ARM_NEAR_FULL_EXTENSION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH)
+                    (this.inSimpleMode ||
+                        (this.upperLAPosition <= TuningConstants.ARM_NEAR_FULL_RETRACTED_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH &&
+                        this.lowerLeftLAPosition >= TuningConstants.ARM_NEAR_FULL_EXTENSION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH)))
                 {
                     this.curLeftFlipperState = ConeFlipperState.Extending;
                     this.leftFlipperTransitionTime = currTime;
