@@ -19,6 +19,7 @@ public enum MacroOperation implements IOperation
     VisionCenterRetroReflective,
     VisionCenterAprilTag,
     VisionParallelAprilTag,
+    VisionResetPosition,
 
     // Charge station
     ChargeStationBalance,
@@ -27,6 +28,10 @@ public enum MacroOperation implements IOperation
 
     // Intake macros:
     IntakeGamePiece,
+
+    // Cone flipepr macros:
+    ExtendLeftConeFlipper,
+    ExtendRightConeFlipper,
 
     // Arm Movement
     ArmResetToZero,
