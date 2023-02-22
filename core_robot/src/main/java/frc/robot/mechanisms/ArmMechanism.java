@@ -14,7 +14,8 @@ public class ArmMechanism implements IMechanism
 {
     //----------------- General variables -----------------
 
-    private static final int defaultPidSlotId = 0;
+    private static final int defaultPositionalPidSlotId = 0;
+    private static final int defaultMMPidSlotId = 1;
 
     private final IDriver driver;
     private final ILogger logger;
@@ -134,56 +135,51 @@ public class ArmMechanism implements IMechanism
 
         this.inSimpleMode = TuningConstants.ARM_USE_SIMPLE_MODE;
 
-        if (TuningConstants.ARM_USE_MM)
-        {
-            this.lowerLeftArmLinearActuator.setMotionMagicPIDF(
-                TuningConstants.ARM_LOWER_LEFT_POSITION_MM_PID_KP,
-                TuningConstants.ARM_LOWER_LEFT_POSITION_MM_PID_KI,
-                TuningConstants.ARM_LOWER_LEFT_POSITION_MM_PID_KD,
-                TuningConstants.ARM_LOWER_LEFT_POSITION_MM_PID_KF,
-                TuningConstants.ARM_LOWER_LEFT_POSITION_MM_CRUISE_VELOCITY,
-                TuningConstants.ARM_LOWER_LEFT_POSITION_MM_ACCELERATION,
-                ArmMechanism.defaultPidSlotId);
-            this.lowerRightArmLinearActuator.setMotionMagicPIDF(
-                TuningConstants.ARM_LOWER_RIGHT_POSITION_MM_PID_KP,
-                TuningConstants.ARM_LOWER_RIGHT_POSITION_MM_PID_KI,
-                TuningConstants.ARM_LOWER_RIGHT_POSITION_MM_PID_KD,
-                TuningConstants.ARM_LOWER_RIGHT_POSITION_MM_PID_KF,
-                TuningConstants.ARM_LOWER_RIGHT_POSITION_MM_CRUISE_VELOCITY,
-                TuningConstants.ARM_LOWER_RIGHT_POSITION_MM_ACCELERATION,
-                ArmMechanism.defaultPidSlotId);
+        this.lowerLeftArmLinearActuator.setMotionMagicPIDF(
+            TuningConstants.ARM_LOWER_LEFT_POSITION_MM_PID_KP,
+            TuningConstants.ARM_LOWER_LEFT_POSITION_MM_PID_KI,
+            TuningConstants.ARM_LOWER_LEFT_POSITION_MM_PID_KD,
+            TuningConstants.ARM_LOWER_LEFT_POSITION_MM_PID_KF,
+            TuningConstants.ARM_LOWER_LEFT_POSITION_MM_CRUISE_VELOCITY,
+            TuningConstants.ARM_LOWER_LEFT_POSITION_MM_ACCELERATION,
+            ArmMechanism.defaultMMPidSlotId);
+        this.lowerRightArmLinearActuator.setMotionMagicPIDF(
+            TuningConstants.ARM_LOWER_RIGHT_POSITION_MM_PID_KP,
+            TuningConstants.ARM_LOWER_RIGHT_POSITION_MM_PID_KI,
+            TuningConstants.ARM_LOWER_RIGHT_POSITION_MM_PID_KD,
+            TuningConstants.ARM_LOWER_RIGHT_POSITION_MM_PID_KF,
+            TuningConstants.ARM_LOWER_RIGHT_POSITION_MM_CRUISE_VELOCITY,
+            TuningConstants.ARM_LOWER_RIGHT_POSITION_MM_ACCELERATION,
+            ArmMechanism.defaultMMPidSlotId);
 
-            this.upperArmLinearActuator.setMotionMagicPIDF(
-                TuningConstants.ARM_UPPER_POSITION_MM_PID_KP,
-                TuningConstants.ARM_UPPER_POSITION_MM_PID_KI,
-                TuningConstants.ARM_UPPER_POSITION_MM_PID_KD,
-                TuningConstants.ARM_UPPER_POSITION_MM_PID_KF,
-                TuningConstants.ARM_UPPER_POSITION_MM_CRUISE_VELOCITY,
-                TuningConstants.ARM_UPPER_POSITION_MM_ACCELERATION,
-                ArmMechanism.defaultPidSlotId);
-        }
-        else
-        {
-            this.lowerLeftArmLinearActuator.setPIDF(
-                TuningConstants.ARM_LOWER_LEFT_POSITION_PID_KP,
-                TuningConstants.ARM_LOWER_LEFT_POSITION_PID_KI,
-                TuningConstants.ARM_LOWER_LEFT_POSITION_PID_KD,
-                TuningConstants.ARM_LOWER_LEFT_POSITION_PID_KF,
-                ArmMechanism.defaultPidSlotId);
-            this.lowerRightArmLinearActuator.setPIDF(
-                TuningConstants.ARM_LOWER_RIGHT_POSITION_PID_KP,
-                TuningConstants.ARM_LOWER_RIGHT_POSITION_PID_KI,
-                TuningConstants.ARM_LOWER_RIGHT_POSITION_PID_KD,
-                TuningConstants.ARM_LOWER_RIGHT_POSITION_PID_KF,
-                ArmMechanism.defaultPidSlotId);
+        this.upperArmLinearActuator.setMotionMagicPIDF(
+            TuningConstants.ARM_UPPER_POSITION_MM_PID_KP,
+            TuningConstants.ARM_UPPER_POSITION_MM_PID_KI,
+            TuningConstants.ARM_UPPER_POSITION_MM_PID_KD,
+            TuningConstants.ARM_UPPER_POSITION_MM_PID_KF,
+            TuningConstants.ARM_UPPER_POSITION_MM_CRUISE_VELOCITY,
+            TuningConstants.ARM_UPPER_POSITION_MM_ACCELERATION,
+            ArmMechanism.defaultMMPidSlotId);
 
-            this.upperArmLinearActuator.setPIDF(
-                TuningConstants.ARM_UPPER_POSITION_PID_KP,
-                TuningConstants.ARM_UPPER_POSITION_PID_KI,
-                TuningConstants.ARM_UPPER_POSITION_PID_KD,
-                TuningConstants.ARM_UPPER_POSITION_PID_KF,
-                ArmMechanism.defaultPidSlotId);
-        }
+        this.lowerLeftArmLinearActuator.setPIDF(
+            TuningConstants.ARM_LOWER_LEFT_POSITION_PID_KP,
+            TuningConstants.ARM_LOWER_LEFT_POSITION_PID_KI,
+            TuningConstants.ARM_LOWER_LEFT_POSITION_PID_KD,
+            TuningConstants.ARM_LOWER_LEFT_POSITION_PID_KF,
+            ArmMechanism.defaultPositionalPidSlotId);
+        this.lowerRightArmLinearActuator.setPIDF(
+            TuningConstants.ARM_LOWER_RIGHT_POSITION_PID_KP,
+            TuningConstants.ARM_LOWER_RIGHT_POSITION_PID_KI,
+            TuningConstants.ARM_LOWER_RIGHT_POSITION_PID_KD,
+            TuningConstants.ARM_LOWER_RIGHT_POSITION_PID_KF,
+            ArmMechanism.defaultPositionalPidSlotId);
+
+        this.upperArmLinearActuator.setPIDF(
+            TuningConstants.ARM_UPPER_POSITION_PID_KP,
+            TuningConstants.ARM_UPPER_POSITION_PID_KI,
+            TuningConstants.ARM_UPPER_POSITION_PID_KD,
+            TuningConstants.ARM_UPPER_POSITION_PID_KF,
+            ArmMechanism.defaultPositionalPidSlotId);
 
         this.lowerLeftLAVelocity = 0.0;
         this.lowerRightLAVelocity = 0.0;
@@ -227,12 +223,20 @@ public class ArmMechanism implements IMechanism
                 this.lowerLeftArmLinearActuator.setControlMode(TalonXControlMode.MotionMagicPosition);
                 this.lowerRightArmLinearActuator.setControlMode(TalonXControlMode.MotionMagicPosition);
                 this.upperArmLinearActuator.setControlMode(TalonXControlMode.MotionMagicPosition);
+
+                this.lowerLeftArmLinearActuator.setSelectedSlot(ArmMechanism.defaultMMPidSlotId);
+                this.lowerRightArmLinearActuator.setSelectedSlot(ArmMechanism.defaultMMPidSlotId);
+                this.upperArmLinearActuator.setSelectedSlot(ArmMechanism.defaultMMPidSlotId);
             }
             else
             {
                 this.lowerLeftArmLinearActuator.setControlMode(TalonXControlMode.Position);
                 this.lowerRightArmLinearActuator.setControlMode(TalonXControlMode.Position);
                 this.upperArmLinearActuator.setControlMode(TalonXControlMode.Position);
+
+                this.lowerLeftArmLinearActuator.setSelectedSlot(ArmMechanism.defaultPositionalPidSlotId);
+                this.lowerRightArmLinearActuator.setSelectedSlot(ArmMechanism.defaultPositionalPidSlotId);
+                this.upperArmLinearActuator.setSelectedSlot(ArmMechanism.defaultPositionalPidSlotId);
             }
         }
 
@@ -373,12 +377,20 @@ public class ArmMechanism implements IMechanism
                 this.lowerLeftArmLinearActuator.setControlMode(TalonXControlMode.MotionMagicPosition);
                 this.lowerRightArmLinearActuator.setControlMode(TalonXControlMode.MotionMagicPosition);
                 this.upperArmLinearActuator.setControlMode(TalonXControlMode.MotionMagicPosition);
+
+                this.lowerLeftArmLinearActuator.setSelectedSlot(ArmMechanism.defaultMMPidSlotId);
+                this.lowerRightArmLinearActuator.setSelectedSlot(ArmMechanism.defaultMMPidSlotId);
+                this.upperArmLinearActuator.setSelectedSlot(ArmMechanism.defaultMMPidSlotId);
             }
             else
             {
                 this.lowerLeftArmLinearActuator.setControlMode(TalonXControlMode.Position);
                 this.lowerRightArmLinearActuator.setControlMode(TalonXControlMode.Position);
                 this.upperArmLinearActuator.setControlMode(TalonXControlMode.Position);
+
+                this.lowerLeftArmLinearActuator.setSelectedSlot(ArmMechanism.defaultPositionalPidSlotId);
+                this.lowerRightArmLinearActuator.setSelectedSlot(ArmMechanism.defaultPositionalPidSlotId);
+                this.upperArmLinearActuator.setSelectedSlot(ArmMechanism.defaultPositionalPidSlotId);
             }
 
             this.desiredLowerLeftLAPosition = this.lowerLeftLAPosition;
