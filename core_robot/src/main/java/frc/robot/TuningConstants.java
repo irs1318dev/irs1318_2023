@@ -58,22 +58,20 @@ public class TuningConstants
     public static final double CloseChargeStationX = 226.474; // 10 inches away from the charge station + Robot centering value
     public static final double FarChargeStationX = 106.748; // 10 inches away from the charge station + Robot centering value
     public static final double GroundPiecesX = 61.8 + 5; // Remove 10 in final only for testing
-    
 
-        //April tag array by ids
-        //(xPosition, yPosition, orientation)
-    public static final double[][] AprilTagLocations = {
-        {285.16, 42.19, 0.0}, //ID 1
-        {285.16, 108.19, 0.0}, //ID 2
-        {285.16, 174.19, 0.0}, //ID 3
-        {311.35, 265.74, 0.0}, //ID 4
-        {-285.16, 42.19, 180.0}, //ID 5
-        {-285.16, 108.19, 180.0}, //ID 6
-        {-285.16, 174.19, 180.0}, //ID 7
-        {-311.35, 265.74, 180.0}, //ID 8
-    };
-        
-
+    // April tag array by ids
+    // (xPosition, yPosition, orientation)
+    public static final double[][] AprilTagLocations =
+        {
+            { 285.16,   42.19,   0.0 }, // ID 1
+            { 285.16,  108.19,   0.0 }, // ID 2
+            { 285.16,  174.19,   0.0 }, // ID 3
+            { 311.35,  265.74,   0.0 }, // ID 4
+            { -285.16,  42.19, 180.0 }, // ID 5
+            { -285.16, 108.19, 180.0 }, // ID 6
+            { -285.16, 174.19, 180.0 }, // ID 7
+            { -311.35, 265.74, 180.0 }, // ID 8
+        };
 
     //================================================= Power ======================================================
 
