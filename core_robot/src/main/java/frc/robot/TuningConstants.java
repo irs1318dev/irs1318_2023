@@ -25,7 +25,7 @@ public class TuningConstants
 
     //================================================== Logging  ==============================================================
 
-    public static final int CALENDAR_YEAR = 2022;
+    public static final int CALENDAR_YEAR = 2023;
     public static final boolean LOG_TO_FILE = true; // TuningConstants.COMPETITION_ROBOT;
     public static final boolean LOG_FILE_ONLY_COMPETITION_MATCHES = false;
     public static final long LOG_FILE_REQUIRED_FREE_SPACE = 50 * 1024 * 1024; // require at least 50 MB of space
@@ -37,27 +37,32 @@ public class TuningConstants
 
     public static final boolean isRed = false;
 
-        //Y Values
-    public static final double StartOneGridY = 196.595;
+    // Y Values
+    public static final double StartOneGridY = 196.19;
     public static final double StartTwoGridY = 174.19; // April Tag ID's 6 and 3
-    public static final double StartThreeGridY = 152.375;
-    public static final double StartFourGridY = 130.375;
+    public static final double StartThreeGridY = 152.19;
+    public static final double StartFourGridY = 130.19;
     public static final double StartFiveGridY = 108.19; // April Tag ID's 7 and 2
-    public static final double StartSixGridY = 86.375;
-    public static final double StartSevenGridY = 64.095;
+    public static final double StartSixGridY = 86.19;
+    public static final double StartSevenGridY = 64.19;
     public static final double StartEightGridY = 42.19; // April Tag ID's 8 and 1
-    public static final double StartNineGridY = 20.095;
+    public static final double StartNineGridY = 20.19;
     public static final double ChargeStationY = 108.015;
     public static final double GroundOneY = 180.19;
     public static final double GroundTwoY = 132.19;
     public static final double GroundThreeY = 84.19;
     public static final double GroundFourY = 36.19;
-    
-        //X Values
-    public static final double StartGridX = 251.861;
-    public static final double CloseChargeStationX = 226.474; // 10 inches away from the charge station + Robot centering value
-    public static final double FarChargeStationX = 106.748; // 10 inches away from the charge station + Robot centering value
-    public static final double GroundPiecesX = 61.8 + 5; // Remove 10 in final only for testing
+    public static final double LoadEdgeY = TuningConstants.StartOneGridY + 1.521; // Edge of grid - 17.5
+    public static final double GuardEdgeY = 17.5;
+
+    // X Values
+    public static final double StartGridX = 253.86; // Edge of grid - Robot centering value
+    public static final double CloseChargeStationX = 241.015; // 12.845 inches away from the charge station and grid + Robot centering value
+    public static final double FarChargeStationX = 102.99; // 12 inches away from the charge station + Robot centering value
+    public static final double FarChargeStationInBetweenX = TuningConstants.FarChargeStationX - 30.0; // 30 inches away from last point to allow for turning
+    public static final double GroundPiecesX = 47.36; // On ground pieces
+    public static final double LoadEdgeStartX = 176.86;
+    public static final double GuardEdgeStartX = 158.61;    
 
     // April tag array by ids
     // (xPosition, yPosition, orientation)
@@ -292,8 +297,12 @@ public class TuningConstants
     public static final double DRIVETRAIN_TURN_APPROXIMATION = 1.0; // number of degrees off at which point we give up trying to face an angle when uncommanded
     public static final double DRIVETRAIN_MAX_MODULE_PATH_VELOCITY = 0.85 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // up to x% of our max controllable speed
     public static final double DRIVETRAIN_MAX_PATH_TURN_VELOCITY = 180.0; // in degrees per second
-    public static final double DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY = 0.2 * TuningConstants.DRIVETRAIN_MAX_VELOCITY;//0.40 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // in inches per second
-    public static final double DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION = 0.4 * TuningConstants.DRIVETRAIN_MAX_VELOCITY;//0.75 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // in inches per second per second
+    public static final double DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY = 0.40 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // in inches per second
+    public static final double DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION = 0.75 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // in inches per second per second
+    public static final double DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY = TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY / 2.0; // in inches per second
+    public static final double DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION = 0.4 * TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION / 2.0; // in inches per second per second
+    public static final double DRIVETRAIN_LOW_PATH_TRANSLATIONAL_VELOCITY = TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY / 3.0; // in inches per second
+    public static final double DRIVETRAIN_LOW_PATH_TRANSLATIONAL_ACCELERATION = 0.4 * TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION / 3.0; // in inches per second per second
 
     //================================================= Arm ================================================================================
 

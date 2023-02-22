@@ -500,6 +500,7 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.ExtendLeftConeFlipper,
                 DigitalOperation.ExtendRightConeFlipper,
             }),
+            
         new MacroOperationDescription(
             MacroOperation.ExtendRightConeFlipper,
             UserInputDevice.Codriver,
