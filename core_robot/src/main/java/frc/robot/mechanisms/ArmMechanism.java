@@ -198,6 +198,10 @@ public class ArmMechanism implements IMechanism
         this.desiredLowerRightLAPosition = this.lowerRightLAPosition;
         this.desiredUpperLAPosition = this.upperLAPosition;
 
+        this.lowerLeftArmLinearActuator.setSelectedSlot(ArmMechanism.defaultPidSlotId);
+        this.lowerRightArmLinearActuator.setSelectedSlot(ArmMechanism.defaultPidSlotId);
+        this.upperArmLinearActuator.setSelectedSlot(ArmMechanism.defaultPidSlotId);
+
         this.lowerLeftArmLinearActuator.setSensorType(TalonXFeedbackDevice.QuadEncoder);
         this.lowerRightArmLinearActuator.setSensorType(TalonXFeedbackDevice.QuadEncoder);
         this.upperArmLinearActuator.setSensorType(TalonXFeedbackDevice.QuadEncoder);
@@ -234,10 +238,6 @@ public class ArmMechanism implements IMechanism
                 this.lowerRightArmLinearActuator.setControlMode(TalonXControlMode.Position);
                 this.upperArmLinearActuator.setControlMode(TalonXControlMode.Position);
             }
-
-            this.lowerLeftArmLinearActuator.setSelectedSlot(ArmMechanism.defaultPidSlotId);
-            this.lowerRightArmLinearActuator.setSelectedSlot(ArmMechanism.defaultPidSlotId);
-            this.upperArmLinearActuator.setSelectedSlot(ArmMechanism.defaultPidSlotId);
         }
 
         this.lowerLeftArmLinearActuator.setPosition(0.0);
