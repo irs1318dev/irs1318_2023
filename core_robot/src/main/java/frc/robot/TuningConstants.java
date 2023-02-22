@@ -278,6 +278,7 @@ public class TuningConstants
     public static final double DRIVETRAIN_SKIP_ANGLE_ON_ZERO_DELTA = 0.001;
     public static final double DRIVETRAIN_SKIP_OMEGA_ON_ZERO_DELTA = 0.25;
 
+    public static final double DRIVETRAIN_EXPONENTIAL = 2.0;
     public static final double DRIVETRAIN_DEAD_ZONE_TURN = 0.1;
     public static final double DRIVETRAIN_DEAD_ZONE_VELOCITY_X = 0.1;
     public static final double DRIVETRAIN_DEAD_ZONE_VELOCITY_Y = 0.1;

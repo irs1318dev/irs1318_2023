@@ -629,6 +629,14 @@ public class DriveTrainMechanism implements IMechanism
             // get the center velocity control values (could be field-oriented or robot-oriented center velocity)
             double centerVelocityRightRaw = this.driver.getAnalog(AnalogOperation.DriveTrainMoveRight);
             double centerVelocityForwardRaw = this.driver.getAnalog(AnalogOperation.DriveTrainMoveForward);
+
+            // add the ability to have an exponential curve for each component of velocity (v^n, for some n)
+            if (TuningConstants.DRIVETRAIN_EXPONENTIAL != 1.0)
+            {
+                centerVelocityRightRaw = Math.pow(centerVelocityRightRaw, TuningConstants.DRIVETRAIN_EXPONENTIAL);
+                centerVelocityForwardRaw = Math.pow(centerVelocityForwardRaw, TuningConstants.DRIVETRAIN_EXPONENTIAL);
+            }
+
             if (useSlowMode)
             {
                 centerVelocityRightRaw *= TuningConstants.DRIVETRAIN_SLOW_MODE_MAX_VELOCITY;
