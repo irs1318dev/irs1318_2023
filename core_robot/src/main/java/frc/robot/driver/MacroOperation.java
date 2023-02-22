@@ -19,7 +19,6 @@ public enum MacroOperation implements IOperation
     VisionCenterRetroReflective,
     VisionCenterAprilTag,
     VisionParallelAprilTag,
-    VisionResetPosition,
 
     // Charge station
     ChargeStationBalance,
