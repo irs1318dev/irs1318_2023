@@ -90,7 +90,7 @@ public class TalonSRXWrapper implements ITalonSRX
         }
 
         CTREErrorCodeHelper.printError(
-            this.wrappedObject.configSelectedFeedbackSensor(device, TalonSRXWrapper.pidIdx, 0),
+            this.wrappedObject.configSelectedFeedbackSensor(device, TalonSRXWrapper.pidIdx, TalonSRXWrapper.timeoutMS),
             "TalonSRX.setSensorType");
     }
 
