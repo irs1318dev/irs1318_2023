@@ -633,8 +633,23 @@ public class DriveTrainMechanism implements IMechanism
             // add the ability to have an exponential curve for each component of velocity (v^n, for some n)
             if (TuningConstants.DRIVETRAIN_EXPONENTIAL != 1.0)
             {
-                centerVelocityRightRaw = Math.pow(centerVelocityRightRaw, TuningConstants.DRIVETRAIN_EXPONENTIAL);
-                centerVelocityForwardRaw = Math.pow(centerVelocityForwardRaw, TuningConstants.DRIVETRAIN_EXPONENTIAL);
+                if (centerVelocityRightRaw < 0.0)
+                {
+                    centerVelocityRightRaw = -Math.pow(centerVelocityRightRaw, TuningConstants.DRIVETRAIN_EXPONENTIAL);
+                }
+                else
+                {
+                    centerVelocityRightRaw = Math.pow(centerVelocityRightRaw, TuningConstants.DRIVETRAIN_EXPONENTIAL);
+                }
+
+                if (centerVelocityForwardRaw < 0.0)
+                {
+                    centerVelocityForwardRaw = -Math.pow(centerVelocityForwardRaw, TuningConstants.DRIVETRAIN_EXPONENTIAL);
+                }
+                else
+                {
+                    centerVelocityForwardRaw = Math.pow(centerVelocityForwardRaw, TuningConstants.DRIVETRAIN_EXPONENTIAL);
+                }
             }
 
             if (useSlowMode)
