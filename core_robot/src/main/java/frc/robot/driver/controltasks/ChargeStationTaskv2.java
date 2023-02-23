@@ -68,9 +68,12 @@ public class ChargeStationTaskv2 extends ControlTaskBase
 
         this.imuManager = this.getInjector().getInstance(PigeonManager.class);
         this.timer = this.getInjector().getInstance(ITimer.class);
+
+        //calculate floating average of past 0.1 seconds, at an expected 50 samples per second
         this.pitchRateAverageCalculator = new FloatingAverageCalculator(this.timer, 0.1, 50);
         this.pitch = this.imuManager.getPitch();
 
+        //floating average of past 0.1 seconds of pitch rate
         this.pitchRateAverage = this.pitchRateAverageCalculator.update(this.imuManager.getPitchRate());
 
         // at the beginning of task set all array values to be current pitch
@@ -138,7 +141,7 @@ public class ChargeStationTaskv2 extends ControlTaskBase
         }
         else if (this.currentState == State.Balancing)
         {
-            if ((TuningConstants.CHARGE_STATION_ACCEPTABLE_PITCH_DIFF >= this.pitchRateAverage) && 
+            if ((TuningConstants.CHARGE_STATION_ACCEPTABLE_PITCH_DIFF_V2 >= this.pitchRateAverage) && 
                 (Math.abs(this.pitch) <= TuningConstants.CHARGE_STATION_PITCH_VARIATION))
             {
                 this.currentState = State.Completed;
@@ -150,8 +153,8 @@ public class ChargeStationTaskv2 extends ControlTaskBase
             case Balancing:
                 this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_BALANCING_SPEED);
 
-                // if the pitch diff over the past 0.5 seconds is greater than the acceptable diff
-                if (TuningConstants.CHARGE_STATION_ACCEPTABLE_PITCH_DIFF_V2 >= findDiff())
+                // if the pitch diff over the past 0.1 seconds is greater than the acceptable diff
+                if (TuningConstants.CHARGE_STATION_ACCEPTABLE_PITCH_DIFF_V2 >= this.pitchRateAverage)
                 {
                     // if negative pitch, move forward
                     if (this.pitch < 0)
