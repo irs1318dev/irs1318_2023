@@ -40,14 +40,18 @@ public class ButtonMap implements IButtonMap
             AnalogAxis.XBONE_LSY,
             ElectronicsConstants.INVERT_XBONE_LEFT_Y_AXIS,
             -TuningConstants.DRIVETRAIN_DEAD_ZONE_VELOCITY_Y,
-            TuningConstants.DRIVETRAIN_DEAD_ZONE_VELOCITY_Y),
+            TuningConstants.DRIVETRAIN_DEAD_ZONE_VELOCITY_Y,
+            1.0,
+            TuningConstants.DRIVETRAIN_EXPONENTIAL),
         new AnalogOperationDescription(
             AnalogOperation.DriveTrainMoveRight,
             UserInputDevice.Driver,
             AnalogAxis.XBONE_LSX,
             ElectronicsConstants.INVERT_XBONE_LEFT_X_AXIS,
             -TuningConstants.DRIVETRAIN_DEAD_ZONE_VELOCITY_X,
-            TuningConstants.DRIVETRAIN_DEAD_ZONE_VELOCITY_X),
+            TuningConstants.DRIVETRAIN_DEAD_ZONE_VELOCITY_X,
+            1.0,
+            TuningConstants.DRIVETRAIN_EXPONENTIAL),
         new AnalogOperationDescription(
             AnalogOperation.DriveTrainTurnAngleGoal,
             UserInputDevice.Driver,
@@ -60,7 +64,6 @@ public class ButtonMap implements IButtonMap
             0.0,
             TuningConstants.DRIVETRAIN_SKIP_OMEGA_ON_ZERO_DELTA,
             true,
-            1.0,
             TuningConstants.MAGIC_NULL_VALUE,
             (x, y) -> Helpers.atan2d(x, y)),
         new AnalogOperationDescription(
@@ -86,8 +89,7 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ElectronicsConstants.INVERT_XBONE_LEFT_Y_AXIS,
             -TuningConstants.ARM_LOWER_VELOCITY_DEAZONE,
-            TuningConstants.ARM_LOWER_VELOCITY_DEAZONE,
-            1.0),
+            TuningConstants.ARM_LOWER_VELOCITY_DEAZONE),
         new AnalogOperationDescription(
             AnalogOperation.ArmIKXAdjustment,
             UserInputDevice.Codriver,
@@ -96,8 +98,7 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ElectronicsConstants.INVERT_XBONE_RIGHT_X_AXIS,
             -TuningConstants.ARM_UPPER_VELOCITY_DEAZONE,
-            TuningConstants.ARM_UPPER_VELOCITY_DEAZONE,
-            1.0),
+            TuningConstants.ARM_UPPER_VELOCITY_DEAZONE),
 
         new AnalogOperationDescription(
             AnalogOperation.ArmLowerPositionAdjustment,
@@ -107,8 +108,7 @@ public class ButtonMap implements IButtonMap
             Shift.CodriverDebug,
             ElectronicsConstants.INVERT_XBONE_LEFT_Y_AXIS,
             -TuningConstants.ARM_LOWER_VELOCITY_DEAZONE,
-            TuningConstants.ARM_LOWER_VELOCITY_DEAZONE,
-            1.0),
+            TuningConstants.ARM_LOWER_VELOCITY_DEAZONE),
         new AnalogOperationDescription(
             AnalogOperation.ArmUpperPositionAdjustment,
             UserInputDevice.Codriver,
@@ -117,8 +117,7 @@ public class ButtonMap implements IButtonMap
             Shift.CodriverDebug,
             ElectronicsConstants.INVERT_XBONE_RIGHT_Y_AXIS,
             -TuningConstants.ARM_UPPER_VELOCITY_DEAZONE,
-            TuningConstants.ARM_UPPER_VELOCITY_DEAZONE,
-            1.0),
+            TuningConstants.ARM_UPPER_VELOCITY_DEAZONE),
 
         new AnalogOperationDescription(
             AnalogOperation.ArmMMLowerPosition,
