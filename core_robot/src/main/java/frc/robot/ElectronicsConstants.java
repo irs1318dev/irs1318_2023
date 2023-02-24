@@ -94,7 +94,4 @@ public class ElectronicsConstants
     public static final int LEFT_SIDE_STICK_PISTON_BACKWARD = 9;
     public static final int RIGHT_SIDE_STICK_PISTON_FORWARD = 10;
     public static final int RIGHT_SIDE_STICK_PISTON_BACKWARD = 11;
-
-    //================================ Indicator Lights ====================
-    public static final int animSlot = 18;
 }
