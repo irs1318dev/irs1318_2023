@@ -245,13 +245,13 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle),
 
         new DigitalOperationDescription(
-            DigitalOperation.CubeInSubstation,
+            DigitalOperation.CubeWantedFromSubstation,
             UserInputDevice.Test1,
             UserInputDeviceButton.XBONE_B_BUTTON,
             ButtonType.Click),
         
         new DigitalOperationDescription(
-            DigitalOperation.ConeInSubstation,
+            DigitalOperation.ConeWantedFromSubstation,
             UserInputDevice.Test1,
             UserInputDeviceButton.XBONE_X_BUTTON,
             ButtonType.Click),
@@ -886,11 +886,11 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
                     new PositionStartingTask(-251.861, TuningConstants.StartOneGridY + 1.05, 180),
-                    new FollowPathTask("LoadEdgeto1", false, false),
-                    new FollowPathTask("1to14", false, false),
+                    new FollowPathTask("LoadEdgeTo1", false, false),
+                    new FollowPathTask("1To14", false, false),
                     new WaitTask(2),
-                    new FollowPathTask("14to10", false, false),
-                    new FollowPathTask("10to2", false, false)
+                    new FollowPathTask("14To10", false, false),
+                    new FollowPathTask("10To2", false, false)
                     ),
             new IOperation[]
             {
@@ -942,11 +942,11 @@ public class ButtonMap implements IButtonMap
         ButtonType.Toggle,
         () -> SequentialTask.Sequence(
                 new PositionStartingTask(-TuningConstants.StartGridX, 16.8, 180),
-                new FollowPathTask("GuardEdgeto9", false, false),
-                new FollowPathTask("9to17", false, false),
+                new FollowPathTask("GuardEdgeTo9", false, false),
+                new FollowPathTask("9To17", false, false),
                 new WaitTask(2),
-                new FollowPathTask("17to12", false, false),
-                new FollowPathTask("12to8", false, false)
+                new FollowPathTask("17To12", false, false),
+                new FollowPathTask("12To8", false, false)
                 ),
         new IOperation[]
         {
@@ -997,7 +997,7 @@ public class ButtonMap implements IButtonMap
         ButtonType.Toggle,
         () -> SequentialTask.Sequence(
                 new PositionStartingTask(-TuningConstants.StartGridX, 16.8, 180),
-                new FollowPathTask("GuardEdgetoChargeStationFar", false, false)
+                new FollowPathTask("GuardEdgeToChargeStationFar", false, false)
                 ),
         new IOperation[]
         {

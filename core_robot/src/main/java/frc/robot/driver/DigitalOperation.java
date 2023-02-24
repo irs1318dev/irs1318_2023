@@ -44,6 +44,6 @@ public enum DigitalOperation implements IOperation
     ArmForceReset,
 
     // Indicator Light Manager
-    CubeInSubstation,
-    ConeInSubstation,
+    CubeWantedFromSubstation,
+    ConeWantedFromSubstation,
 }

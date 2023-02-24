@@ -72,22 +72,22 @@ public class DriverFeedbackManager implements IMechanism
         {
             newLightMode = LightMode.PurpleTwinkling;
         }
-        // else if (this.driver.getDigital(DigitalOperation.CubeInSubstation))
-        // {
-        //     newLightMode = LightMode.Purple;
-        // }
-        // else if (this.driver.getDigital(DigitalOperation.ConeInSubstation))
-        // {
-        //     newLightMode = LightMode.Yellow;
-        // }
-        // else if ((this.driver.getDigital(DigitalOperation.IntakeIn) || this.driver.getDigital(DigitalOperation.IntakeGrab)) && arm.isThroughBeamBroken())
-        // {
-        //     newLightMode = LightMode.Blue;
-        // }
-        // else if ((this.driver.getDigital(DigitalOperation.IntakeIn) || this.driver.getDigital(DigitalOperation.IntakeGrab)) && !arm.isThroughBeamBroken())
-        // {
-        //     newLightMode = LightMode.Orange;
-        // }
+        else if (this.driver.getDigital(DigitalOperation.CubeWantedFromSubstation))
+        {
+            newLightMode = LightMode.Purple;
+        }
+        else if (this.driver.getDigital(DigitalOperation.ConeWantedFromSubstation))
+        {
+            newLightMode = LightMode.Yellow;
+        }
+        else if ((this.driver.getDigital(DigitalOperation.IntakeIn) || this.driver.getDigital(DigitalOperation.IntakeGrab)) && this.arm.isThroughBeamBroken())
+        {
+            newLightMode = LightMode.Blue;
+        }
+        else if ((this.driver.getDigital(DigitalOperation.IntakeIn) || this.driver.getDigital(DigitalOperation.IntakeGrab)) && !this.arm.isThroughBeamBroken())
+        {
+            newLightMode = LightMode.Orange;
+        }
         // else if (visionTurningTask.isAprilTag())
         // {
         //     newLightMode = LightMode.Green; //Can See AprilTag
@@ -237,10 +237,10 @@ public class DriverFeedbackManager implements IMechanism
             case Rainbow:
                 this.candle.startRainbowAnimation(
                     animationSlot, 
-                    TuningConstants.brightness, 
-                    TuningConstants.speed, 
+                    TuningConstants.INDICATOR_RAINBOW_BRIGHTNESS,
+                    TuningConstants.INDICATOR_RAINBOW_SPEED,
                     rangeCount, 
-                    TuningConstants.reverseDirection, 
+                    TuningConstants.INDICATOR_RAINBOW_REVERSE_DIRECTION, 
                     rangeStart);
                 break;
 
