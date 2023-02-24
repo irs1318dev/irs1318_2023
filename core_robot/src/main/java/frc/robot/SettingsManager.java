@@ -21,10 +21,8 @@ public class SettingsManager
         mechanismList.add(injector.getInstance(PigeonManager.class)); // PigeonManager/NavxManager should come before DriveTrainMechanism
         mechanismList.add(injector.getInstance(DriveTrainMechanism.class));
         mechanismList.add(injector.getInstance(ArmMechanism.class));
-        // mechanismList.add(injector.getInstance(IntakeWeekTwoMechanism.class));
-        // mechanismList.add(injector.getInstance(OffboardVisionManager.class));
-        // mechanismList.add(injector.getInstance(IndicatorLightManager.class));
-        // mechanismList.add(injector.getInstance(DriverFeedbackManager.class)); // DriverFeedbackManager should always be the last mechanism on the list
+        mechanismList.add(injector.getInstance(OffboardVisionManager.class));
+        mechanismList.add(injector.getInstance(DriverFeedbackManager.class)); // DriverFeedbackManager should always be the last mechanism on the list
         return mechanismList;
     }
 
