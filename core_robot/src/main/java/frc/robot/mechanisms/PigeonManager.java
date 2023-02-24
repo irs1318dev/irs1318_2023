@@ -36,7 +36,10 @@ public class PigeonManager implements IPositionManager
     private double rollRate;
 
     private double startYaw;
+
     private double pitchOffset;
+    private double rollOffset;
+    private double yawOffset;
 
     /**
      * Initializes a new PigeonManager
@@ -71,6 +74,9 @@ public class PigeonManager implements IPositionManager
         this.rollRate = 0.0;
 
         this.pitchOffset = 0.0;
+        this.rollOffset = 0.0;
+        this.yawOffset = 0.0;
+
         this.startYaw = 0.0;
     }
 
@@ -103,7 +109,11 @@ public class PigeonManager implements IPositionManager
         this.logger.logNumber(LoggingKey.PigeonRollRate, this.rollRate);
 
         this.logger.logNumber(LoggingKey.PigeonStartingYaw, this.startYaw);
+
+        //offsets
         this.logger.logNumber(LoggingKey.PigeonPitchOffset, this.pitchOffset);
+        this.logger.logNumber(LoggingKey.PigeonRollOffset, this.rollOffset);
+        this.logger.logNumber(LoggingKey.PigeonYawOffset, this.yawOffset);
     }
 
     /**
@@ -127,7 +137,10 @@ public class PigeonManager implements IPositionManager
         if (this.driver.getDigital(DigitalOperation.PositionResetRobotPitch))
         {
             this.pitchOffset = this.pitch;
+            this.yawOffset = this.yaw;
+            this.rollOffset = this.roll;
         }
+
     }
 
     /**
@@ -159,6 +172,18 @@ public class PigeonManager implements IPositionManager
     public double getPitch()
     {
         return this.pitch - this.pitchOffset;
+    }
+
+
+    //ROLL AND YAW UNTESTED
+    public double getRoll()
+    {
+        return this.roll = this.rollOffset;
+    }
+
+    public double getYaw()
+    {
+        return this.yaw = this.yawOffset;
     }
 
     public double getPitchRate()
