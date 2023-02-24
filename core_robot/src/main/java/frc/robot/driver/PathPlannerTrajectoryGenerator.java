@@ -45,10 +45,10 @@ public class PathPlannerTrajectoryGenerator
         Point2d P21 = new Point2d(TuningConstants.isRed ? TuningConstants.FarChargeStationInBetweenX : -TuningConstants.FarChargeStationInBetweenX, TuningConstants.GroundTwoY);
         Point2d P22 = new Point2d(TuningConstants.isRed ? TuningConstants.FarChargeStationInBetweenX : -TuningConstants.FarChargeStationInBetweenX, TuningConstants.GroundThreeY);
         Point2d P23 = new Point2d(TuningConstants.isRed ? TuningConstants.FarChargeStationInBetweenX : -TuningConstants.FarChargeStationInBetweenX, TuningConstants.GroundFourY);
-        Point2d LoadMid = new Point2d(TuningConstants.isRed ? TuningConstants.CloseChargeStationX : -TuningConstants.CloseChargeStationX, TuningConstants.GuardEdgeY);
-        Point2d GuardMid = new Point2d(TuningConstants.isRed ? TuningConstants.CloseChargeStationX : -TuningConstants.CloseChargeStationX, TuningConstants.LoadEdgeY);
-        Point2d LoadStart = new Point2d(TuningConstants.isRed ? TuningConstants.LoadEdgeStartX : -TuningConstants.LoadEdgeStartX, TuningConstants.GuardEdgeY);
-        Point2d GuardStart = new Point2d(TuningConstants.isRed ? TuningConstants.GuardEdgeStartX : -TuningConstants.GuardEdgeStartX, TuningConstants.LoadEdgeY);
+        Point2d LoadMid = new Point2d(TuningConstants.isRed ? TuningConstants.CloseChargeStationX : -TuningConstants.CloseChargeStationX, TuningConstants.LoadEdgeY);
+        Point2d GuardMid = new Point2d(TuningConstants.isRed ? TuningConstants.CloseChargeStationX : -TuningConstants.CloseChargeStationX, TuningConstants.GuardEdgeY);
+        Point2d LoadStart = new Point2d(TuningConstants.isRed ? TuningConstants.LoadEdgeStartX : -TuningConstants.LoadEdgeStartX, TuningConstants.LoadEdgeY);
+        Point2d GuardStart = new Point2d(TuningConstants.isRed ? TuningConstants.GuardEdgeStartX : -TuningConstants.GuardEdgeStartX, TuningConstants.GuardEdgeY);
         
         // Lower Y of 12, 19, 22
         // Test Everything that uses loadedge again

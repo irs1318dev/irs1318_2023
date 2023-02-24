@@ -940,12 +940,8 @@ public class ButtonMap implements IButtonMap
         Shift.None,
         ButtonType.Toggle,
         () -> SequentialTask.Sequence(
-                new PositionStartingTask(-TuningConstants.StartGridX, 16.8, 180),
-                new FollowPathTask("GuardEdgeTo9", false, false),
-                new FollowPathTask("9To17", false, false),
-                new WaitTask(2),
-                new FollowPathTask("17To12", false, false),
-                new FollowPathTask("12To8", false, false)
+                new PositionStartingTask(-TuningConstants.GuardEdgeStartX, TuningConstants.GuardEdgeY, 180),
+                new FollowPathTask("GuardStartTo9", false, false)
                 ),
         new IOperation[]
         {
@@ -987,6 +983,7 @@ public class ButtonMap implements IButtonMap
             DigitalOperation.VisionEnableRetroreflectiveProcessing,
             DigitalOperation.VisionForceDisable,
         }),
+
     new MacroOperationDescription(
         MacroOperation.FollowPath3,
         UserInputDevice.Test1,
