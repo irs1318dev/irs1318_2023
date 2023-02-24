@@ -183,23 +183,15 @@ public class TuningConstants
     public static final int INDICATOR_ORANGE_COLOR_WHITE = 0;
 
     //RAINBOW - When balanced on charge station
-    public static final int brightness = 1; // Place Holders
-    public static final double speed = 0.25;
-    public static final int numLed = 50;
-    public static final boolean reverseDirection = false;
-    public static final int ledOffset = 5;
+    public static final int INDICATOR_RAINBOW_BRIGHTNESS = 1;
+    public static final double INDICATOR_RAINBOW_SPEED = 0.25;
+    public static final boolean INDICATOR_RAINBOW_REVERSE_DIRECTION = false;
 
     // No color
     public static final int INDICATOR_OFF_COLOR_RED = 0;
     public static final int INDICATOR_OFF_COLOR_GREEN = 0;
     public static final int INDICATOR_OFF_COLOR_BLUE = 0;
     public static final int INDICATOR_OFF_COLOR_WHITE = 0;
-
-/* Don't Need?
-    public static final double COMPRESSOR_FILL_RATE = 10.0;
-    public static final double COMPRESSOR_ENOUGH_PRESSURE = 110.0;
-*/ 
-
 
     //================================================== DriveTrain ==============================================================
 

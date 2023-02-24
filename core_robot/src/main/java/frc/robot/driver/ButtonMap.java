@@ -245,13 +245,13 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle),
 
         new DigitalOperationDescription(
-            DigitalOperation.CubeInSubstation,
+            DigitalOperation.CubeWantedFromSubstation,
             UserInputDevice.Test1,
             UserInputDeviceButton.XBONE_B_BUTTON,
             ButtonType.Click),
         
         new DigitalOperationDescription(
-            DigitalOperation.ConeInSubstation,
+            DigitalOperation.ConeWantedFromSubstation,
             UserInputDevice.Test1,
             UserInputDeviceButton.XBONE_X_BUTTON,
             ButtonType.Click),
