@@ -21,8 +21,11 @@ public class SmartDashboardSelectionManager
     public enum AutoRoutine
     {
         None,
-        PathA,
-        PathB,
+        MiddleOnePlusCharge,
+        LoadOnePlusOne,
+        LoadOnePlusCharge,
+        GuardOnePlusOne,
+        GuardOnePlusCharge
     }
 
     /**
@@ -36,8 +39,11 @@ public class SmartDashboardSelectionManager
 
         this.routineChooser = networkTableProvider.getSendableChooser();
         this.routineChooser.addDefault("None", AutoRoutine.None);
-        this.routineChooser.addObject("Path A", AutoRoutine.PathA);
-        this.routineChooser.addObject("Path B", AutoRoutine.PathB);
+        this.routineChooser.addObject("Load One Charge", AutoRoutine.LoadOnePlusCharge);
+        this.routineChooser.addObject("Load Two", AutoRoutine.LoadOnePlusOne);
+        this.routineChooser.addObject("Guard One Charge", AutoRoutine.GuardOnePlusCharge);
+        this.routineChooser.addObject("Guard Two", AutoRoutine.GuardOnePlusOne);
+        this.routineChooser.addObject("Middle One Charge", AutoRoutine.MiddleOnePlusCharge);
         networkTableProvider.addChooser("Auto Routine", this.routineChooser);
 
         this.positionChooser = networkTableProvider.getSendableChooser();
