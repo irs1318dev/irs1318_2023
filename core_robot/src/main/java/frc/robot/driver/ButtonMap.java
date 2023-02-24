@@ -243,6 +243,20 @@ public class ButtonMap implements IButtonMap
             UserInputDevice.Test1,
             UserInputDeviceButton.XBONE_A_BUTTON,
             ButtonType.Toggle),
+
+        new DigitalOperationDescription(
+            DigitalOperation.CubeInSubstation,
+            UserInputDevice.Test1,
+            UserInputDeviceButton.XBONE_B_BUTTON,
+            ButtonType.Click),
+        
+        new DigitalOperationDescription(
+            DigitalOperation.ConeInSubstation,
+            UserInputDevice.Test1,
+            UserInputDeviceButton.XBONE_X_BUTTON,
+            ButtonType.Click),
+
+        
     };
 
     public static MacroOperationDescription[] MacroSchema = new MacroOperationDescription[]
