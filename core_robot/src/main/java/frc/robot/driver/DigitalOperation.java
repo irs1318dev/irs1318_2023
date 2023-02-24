@@ -42,4 +42,8 @@ public enum DigitalOperation implements IOperation
     ArmEnableSimpleMode,
     ArmDisableSimpleMode,
     ArmForceReset,
+
+    // Indicator Light Manager
+    CubeWantedFromSubstation,
+    ConeWantedFromSubstation,
 }

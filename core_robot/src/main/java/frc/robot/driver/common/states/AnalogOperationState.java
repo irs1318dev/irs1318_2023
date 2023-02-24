@@ -138,7 +138,7 @@ public class AnalogOperationState extends OperationState
         }
         else
         {
-            newValue = this.adjustForDeadZone(newValue, description.getDeadZoneMin(), description.getDeadZoneMax(), description.getDefaultValue(), description.getMultiplier());
+            newValue = this.adjustForDeadZone(newValue, description.getDeadZoneMin(), description.getDeadZoneMax(), description.getDefaultValue(), description.getMultiplier(), description.getExp());
         }
 
         this.currentValue = newValue;
@@ -171,10 +171,13 @@ public class AnalogOperationState extends OperationState
     /**
      * Adjust the value as a part of dead zone calculation
      * @param value to adjust
-     * @param deadZone to consider
-     * @return adjusted value for deadZone
+     * @param deadZoneMin to consider
+     * @param deadZoneMax to consider
+     * @param multiplier to scale the result range
+     * @param exp to adjust the result
+     * @return adjusted value for deadZone, exponential, and multiplier
      */
-    private double adjustForDeadZone(double value, double deadZoneMin, double deadZoneMax, double defaultValue, double multiplier)
+    private double adjustForDeadZone(double value, double deadZoneMin, double deadZoneMax, double defaultValue, double multiplier, double exp)
     {
         if (value < deadZoneMax && value > deadZoneMin)
         {
@@ -188,7 +191,24 @@ public class AnalogOperationState extends OperationState
             deadZone = deadZoneMin;
         }
 
-        return multiplier * (value - deadZone) / (1.0 - Math.abs(deadZone));
+        // adjust the result to exclude the deadzone
+        double result = (value - deadZone) / (1.0 - Math.abs(deadZone));
+
+        // adjust 
+        if (exp != 1.0)
+        {
+            if (result < 0.0 && (exp % 2.0) != 1.0)
+            {
+                result = -Math.pow(result, exp);
+            }
+            else
+            {
+                result = Math.pow(result, exp);
+            }
+        }
+
+        // adjust the result range based on the multiplier
+        return multiplier * result;
     }
 
     /**

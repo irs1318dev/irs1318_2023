@@ -146,38 +146,52 @@ public class TuningConstants
     public static final int CANDLE_ANIMATION_SLOT_1 = 0;
     public static final int CANDLE_ANIMATION_SLOT_2 = 1;
 
-    // IRS1318 Purple color
-    public static final int INDICATOR_PURPLE_RED = 101;
-    public static final int INDICATOR_PURPLE_GREEN = 34;
-    public static final int INDICATOR_PURPLE_BLUE = 129;
-    public static final int INDICATOR_PURPLE_WHITE = 0;
+    // IRS1318 Purple color - Human Player Cube Substation
+    public static final int INDICATOR_PURPLE_COLOR_RED = 101;
+    public static final int INDICATOR_PURPLE_COLOR_GREEN = 34;
+    public static final int INDICATOR_PURPLE_COLOR_BLUE = 129;
+    public static final int INDICATOR_PURPLE_COLOR_WHITE = 0;
+
+    // Bright Yellow color - Human Player Cone Substation
+    public static final int INDICATOR_YELLOW_COLOR_RED = 255;
+    public static final int INDICATOR_YELLOW_COLOR_GREEN = 255;
+    public static final int INDICATOR_YELLOW_COLOR_BLUE = 0;
+    public static final int INDICATOR_YELLOW_COLOR_WHITE = 0;
+
+    // Bright Green color - Can see AprilTag
+    public static final int INDICATOR_GREEN_COLOR_RED = 0;
+    public static final int INDICATOR_GREEN_COLOR_GREEN = 255;
+    public static final int INDICATOR_GREEN_COLOR_BLUE = 0;
+    public static final int INDICATOR_GREEN_COLOR_WHITE = 0;
+
+    // Bright Red color  - Can't see AprilTag
+    public static final int INDICATOR_RED_COLOR_RED = 255;
+    public static final int INDICATOR_RED_COLOR_GREEN = 0;
+    public static final int INDICATOR_RED_COLOR_BLUE = 0;
+    public static final int INDICATOR_RED_COLOR_WHITE = 0;
+
+    //Blue - Game piece in Intake (Either Cube or Cone)
+    public static final int INDICATOR_BLUE_COLOR_RED = 0;
+    public static final int INDICATOR_BLUE_COLOR_GREEN = 0;
+    public static final int INDICATOR_BLUE_COLOR_BLUE = 255;
+    public static final double INDICATOR_BLUE_COLOR_WHITE = 0;
+
+    //Orange - No Game Piece in Intake
+    public static final int INDICATOR_ORANGE_COLOR_RED = 255;
+    public static final int INDICATOR_ORANGE_COLOR_GREEN = 128;
+    public static final int INDICATOR_ORANGE_COLOR_BLUE = 0;
+    public static final int INDICATOR_ORANGE_COLOR_WHITE = 0;
+
+    //RAINBOW - When balanced on charge station
+    public static final int INDICATOR_RAINBOW_BRIGHTNESS = 1;
+    public static final double INDICATOR_RAINBOW_SPEED = 0.25;
+    public static final boolean INDICATOR_RAINBOW_REVERSE_DIRECTION = false;
 
     // No color
     public static final int INDICATOR_OFF_COLOR_RED = 0;
     public static final int INDICATOR_OFF_COLOR_GREEN = 0;
     public static final int INDICATOR_OFF_COLOR_BLUE = 0;
     public static final int INDICATOR_OFF_COLOR_WHITE = 0;
-
-    // Bright Red color
-    public static final int INDICATOR_RED_COLOR_RED = 255;
-    public static final int INDICATOR_RED_COLOR_GREEN = 0;
-    public static final int INDICATOR_RED_COLOR_BLUE = 0;
-    public static final int INDICATOR_RED_COLOR_WHITE = 0;
-
-    // Bright Yellow color
-    public static final int INDICATOR_YELLOW_COLOR_RED = 255;
-    public static final int INDICATOR_YELLOW_COLOR_GREEN = 255;
-    public static final int INDICATOR_YELLOW_COLOR_BLUE = 0;
-    public static final int INDICATOR_YELLOW_COLOR_WHITE = 0;
-
-    // Bright Green color
-    public static final int INDICATOR_GREEN_COLOR_RED = 0;
-    public static final int INDICATOR_GREEN_COLOR_GREEN = 255;
-    public static final int INDICATOR_GREEN_COLOR_BLUE = 0;
-    public static final int INDICATOR_GREEN_COLOR_WHITE = 0;
-
-    public static final double COMPRESSOR_FILL_RATE = 10.0;
-    public static final double COMPRESSOR_ENOUGH_PRESSURE = 110.0;
 
     //================================================== DriveTrain ==============================================================
 

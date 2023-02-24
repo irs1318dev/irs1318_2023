@@ -189,7 +189,7 @@ public class DriveTrainMechanism implements IMechanism
 
         for (int i = 0; i < DriveTrainMechanism.NUM_MODULES; i++)
         {
-            this.driveMotors[i] = provider.getTalonFX(driveMotorCanIds[i]);
+            this.driveMotors[i] = provider.getTalonFX(driveMotorCanIds[i], ElectronicsConstants.CANIVORE_NAME);
             this.driveMotors[i].setNeutralMode(MotorNeutralMode.Brake);
             this.driveMotors[i].setSensorType(TalonXFeedbackDevice.IntegratedSensor);
             this.driveMotors[i].setFeedbackFramePeriod(TuningConstants.DRIVETRAIN_SENSOR_FRAME_PERIOD_MS);
@@ -219,7 +219,7 @@ public class DriveTrainMechanism implements IMechanism
             this.driveMotors[i].setControlMode(TalonXControlMode.Velocity);
             this.driveMotors[i].setSelectedSlot(DriveTrainMechanism.defaultPidSlotId);
 
-            this.steerMotors[i] = provider.getTalonFX(steerMotorCanIds[i]);
+            this.steerMotors[i] = provider.getTalonFX(steerMotorCanIds[i], ElectronicsConstants.CANIVORE_NAME);
             this.steerMotors[i].setInvert(steerMotorInvert[i]);
             this.steerMotors[i].setNeutralMode(MotorNeutralMode.Brake);
             this.steerMotors[i].setSensorType(TalonXFeedbackDevice.IntegratedSensor);
@@ -258,7 +258,7 @@ public class DriveTrainMechanism implements IMechanism
                 this.steerMotors[i].setSelectedSlot(DriveTrainMechanism.defaultPidSlotId);
             }
 
-            this.absoluteEncoders[i] = provider.getCANCoder(absoluteEncoderCanIds[i]);
+            this.absoluteEncoders[i] = provider.getCANCoder(absoluteEncoderCanIds[i], ElectronicsConstants.CANIVORE_NAME);
             this.absoluteEncoders[i].configAbsoluteRange(false);
         }
 
@@ -629,29 +629,6 @@ public class DriveTrainMechanism implements IMechanism
             // get the center velocity control values (could be field-oriented or robot-oriented center velocity)
             double centerVelocityRightRaw = this.driver.getAnalog(AnalogOperation.DriveTrainMoveRight);
             double centerVelocityForwardRaw = this.driver.getAnalog(AnalogOperation.DriveTrainMoveForward);
-
-            // add the ability to have an exponential curve for each component of velocity (v^n, for some n)
-            if (TuningConstants.DRIVETRAIN_EXPONENTIAL != 1.0)
-            {
-                if (centerVelocityRightRaw < 0.0)
-                {
-                    centerVelocityRightRaw = -Math.pow(centerVelocityRightRaw, TuningConstants.DRIVETRAIN_EXPONENTIAL);
-                }
-                else
-                {
-                    centerVelocityRightRaw = Math.pow(centerVelocityRightRaw, TuningConstants.DRIVETRAIN_EXPONENTIAL);
-                }
-
-                if (centerVelocityForwardRaw < 0.0)
-                {
-                    centerVelocityForwardRaw = -Math.pow(centerVelocityForwardRaw, TuningConstants.DRIVETRAIN_EXPONENTIAL);
-                }
-                else
-                {
-                    centerVelocityForwardRaw = Math.pow(centerVelocityForwardRaw, TuningConstants.DRIVETRAIN_EXPONENTIAL);
-                }
-            }
-
             if (useSlowMode)
             {
                 centerVelocityRightRaw *= TuningConstants.DRIVETRAIN_SLOW_MODE_MAX_VELOCITY;

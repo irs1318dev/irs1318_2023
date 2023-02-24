@@ -40,14 +40,18 @@ public class ButtonMap implements IButtonMap
             AnalogAxis.XBONE_LSY,
             ElectronicsConstants.INVERT_XBONE_LEFT_Y_AXIS,
             -TuningConstants.DRIVETRAIN_DEAD_ZONE_VELOCITY_Y,
-            TuningConstants.DRIVETRAIN_DEAD_ZONE_VELOCITY_Y),
+            TuningConstants.DRIVETRAIN_DEAD_ZONE_VELOCITY_Y,
+            1.0,
+            TuningConstants.DRIVETRAIN_EXPONENTIAL),
         new AnalogOperationDescription(
             AnalogOperation.DriveTrainMoveRight,
             UserInputDevice.Driver,
             AnalogAxis.XBONE_LSX,
             ElectronicsConstants.INVERT_XBONE_LEFT_X_AXIS,
             -TuningConstants.DRIVETRAIN_DEAD_ZONE_VELOCITY_X,
-            TuningConstants.DRIVETRAIN_DEAD_ZONE_VELOCITY_X),
+            TuningConstants.DRIVETRAIN_DEAD_ZONE_VELOCITY_X,
+            1.0,
+            TuningConstants.DRIVETRAIN_EXPONENTIAL),
         new AnalogOperationDescription(
             AnalogOperation.DriveTrainTurnAngleGoal,
             UserInputDevice.Driver,
@@ -60,7 +64,6 @@ public class ButtonMap implements IButtonMap
             0.0,
             TuningConstants.DRIVETRAIN_SKIP_OMEGA_ON_ZERO_DELTA,
             true,
-            1.0,
             TuningConstants.MAGIC_NULL_VALUE,
             (x, y) -> Helpers.atan2d(x, y)),
         new AnalogOperationDescription(
@@ -86,8 +89,7 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ElectronicsConstants.INVERT_XBONE_LEFT_Y_AXIS,
             -TuningConstants.ARM_LOWER_VELOCITY_DEAZONE,
-            TuningConstants.ARM_LOWER_VELOCITY_DEAZONE,
-            1.0),
+            TuningConstants.ARM_LOWER_VELOCITY_DEAZONE),
         new AnalogOperationDescription(
             AnalogOperation.ArmIKXAdjustment,
             UserInputDevice.Codriver,
@@ -96,8 +98,7 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ElectronicsConstants.INVERT_XBONE_RIGHT_X_AXIS,
             -TuningConstants.ARM_UPPER_VELOCITY_DEAZONE,
-            TuningConstants.ARM_UPPER_VELOCITY_DEAZONE,
-            1.0),
+            TuningConstants.ARM_UPPER_VELOCITY_DEAZONE),
 
         new AnalogOperationDescription(
             AnalogOperation.ArmLowerPositionAdjustment,
@@ -107,8 +108,7 @@ public class ButtonMap implements IButtonMap
             Shift.CodriverDebug,
             ElectronicsConstants.INVERT_XBONE_LEFT_Y_AXIS,
             -TuningConstants.ARM_LOWER_VELOCITY_DEAZONE,
-            TuningConstants.ARM_LOWER_VELOCITY_DEAZONE,
-            1.0),
+            TuningConstants.ARM_LOWER_VELOCITY_DEAZONE),
         new AnalogOperationDescription(
             AnalogOperation.ArmUpperPositionAdjustment,
             UserInputDevice.Codriver,
@@ -117,8 +117,7 @@ public class ButtonMap implements IButtonMap
             Shift.CodriverDebug,
             ElectronicsConstants.INVERT_XBONE_RIGHT_Y_AXIS,
             -TuningConstants.ARM_UPPER_VELOCITY_DEAZONE,
-            TuningConstants.ARM_UPPER_VELOCITY_DEAZONE,
-            1.0),
+            TuningConstants.ARM_UPPER_VELOCITY_DEAZONE),
 
         new AnalogOperationDescription(
             AnalogOperation.ArmMMLowerPosition,
@@ -243,6 +242,20 @@ public class ButtonMap implements IButtonMap
             UserInputDevice.Test1,
             UserInputDeviceButton.XBONE_A_BUTTON,
             ButtonType.Toggle),
+
+        new DigitalOperationDescription(
+            DigitalOperation.CubeWantedFromSubstation,
+            UserInputDevice.Test1,
+            UserInputDeviceButton.XBONE_B_BUTTON,
+            ButtonType.Click),
+        
+        new DigitalOperationDescription(
+            DigitalOperation.ConeWantedFromSubstation,
+            UserInputDevice.Test1,
+            UserInputDeviceButton.XBONE_X_BUTTON,
+            ButtonType.Click),
+
+        
     };
 
     public static MacroOperationDescription[] MacroSchema = new MacroOperationDescription[]
@@ -872,11 +885,11 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
                     new PositionStartingTask(-251.861, TuningConstants.StartOneGridY + 1.05, 180),
-                    new FollowPathTask("LoadEdgeto1", false, false),
-                    new FollowPathTask("1to14", false, false),
+                    new FollowPathTask("LoadEdgeTo1", false, false),
+                    new FollowPathTask("1To14", false, false),
                     new WaitTask(2),
-                    new FollowPathTask("14to10", false, false),
-                    new FollowPathTask("10to2", false, false)
+                    new FollowPathTask("14To10", false, false),
+                    new FollowPathTask("10To2", false, false)
                     ),
             new IOperation[]
             {
@@ -927,12 +940,8 @@ public class ButtonMap implements IButtonMap
         Shift.None,
         ButtonType.Toggle,
         () -> SequentialTask.Sequence(
-                new PositionStartingTask(-TuningConstants.StartGridX, 16.8, 180),
-                new FollowPathTask("GuardEdgeto9", false, false),
-                new FollowPathTask("9to17", false, false),
-                new WaitTask(2),
-                new FollowPathTask("17to12", false, false),
-                new FollowPathTask("12to8", false, false)
+                new PositionStartingTask(-TuningConstants.GuardEdgeStartX, TuningConstants.GuardEdgeY, 180),
+                new FollowPathTask("GuardStartTo9", false, false)
                 ),
         new IOperation[]
         {
@@ -974,6 +983,7 @@ public class ButtonMap implements IButtonMap
             DigitalOperation.VisionEnableRetroreflectiveProcessing,
             DigitalOperation.VisionForceDisable,
         }),
+
     new MacroOperationDescription(
         MacroOperation.FollowPath3,
         UserInputDevice.Test1,
@@ -983,7 +993,7 @@ public class ButtonMap implements IButtonMap
         ButtonType.Toggle,
         () -> SequentialTask.Sequence(
                 new PositionStartingTask(-TuningConstants.StartGridX, 16.8, 180),
-                new FollowPathTask("GuardEdgetoChargeStationFar", false, false)
+                new FollowPathTask("GuardEdgeToChargeStationFar", false, false)
                 ),
         new IOperation[]
         {
