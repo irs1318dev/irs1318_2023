@@ -51,13 +51,24 @@ public class FollowPathTask extends ControlTaskBase
     @Override
     public void begin()
     {
+        this.timer = this.getInjector().getInstance(ITimer.class);
+
         TrajectoryManager trajectoryManager = this.getInjector().getInstance(TrajectoryManager.class);
         this.trajectory = trajectoryManager.getTrajectory(this.pathName);
+        if (this.trajectory == null)
+        {
+            if (TuningConstants.THROW_EXCEPTIONS)
+            {
+                throw new RuntimeException("Unknown trajectory " + this.pathName);
+            }
 
-        this.timer = this.getInjector().getInstance(ITimer.class);
+            this.startTime = 0.0;
+            this.trajectoryDuration = 0.0;
+            return;
+        }
+
         this.startTime = this.timer.get();
         this.trajectoryDuration = this.trajectory.getDuration();
-        System.out.println("duration: " + this.trajectoryDuration);
 
         if (this.fromCurrentPose)
         {

@@ -12,7 +12,7 @@ import frc.robot.mechanisms.*;
 
 public class ChargeStationTask extends ControlTaskBase
 {
-    private enum State
+    public enum State
     {
         Starting,
         Climbing,
@@ -20,7 +20,7 @@ public class ChargeStationTask extends ControlTaskBase
         Completed
     }
 
-    private State currentState;
+    public State currentState;
 
     private PigeonManager imuManager;
     private ITimer timer;
