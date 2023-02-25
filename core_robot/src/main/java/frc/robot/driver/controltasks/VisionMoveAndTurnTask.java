@@ -6,22 +6,21 @@ public class VisionMoveAndTurnTask extends VisionMoveAndTurnTaskBase
 
     /**
      * Initializes a new VisionMoveAndTurnTask
-     * @param useFastMode whether to use faster PID settings to move towards the goal position, or regular settings
-     * @param useSlowMode 
      * @param rotateType the type of rotation we are trying to perform (e.g. RetroReflective, AprilTag Center/Yaw, etc.)
      * @param translateType the type of translation we are trying to perform (e.g. Forward, Strafe)
+     * @param moveSpeed which set of PID settings to use to move towards the goal position
      * @param bestEffort whether to consider the task successful/completed if we stop seeing the vision target instead of cancelled
      * @param verifyAngle whether to verify the angle when we declare completed as well as distance, or consider ourselves completed when we are at the goal distance
      * @param desiredDistance the desired distance value to reach
      */
-    public VisionMoveAndTurnTask(boolean useFastMode, TurnType rotateType, MoveType translateType, boolean bestEffort, boolean verifyAngle, double desiredDistance)
+    public VisionMoveAndTurnTask(TurnType rotateType, MoveType translateType, MoveSpeed moveSpeed, boolean bestEffort, boolean verifyAngle, double desiredDistance)
     {
-        super(useFastMode, rotateType, translateType, bestEffort, verifyAngle);
+        super(rotateType, translateType, moveSpeed, bestEffort, verifyAngle);
         this.desiredDistance = desiredDistance;
     }
 
     @Override
-    protected double getDesiredDistance(double currentDistance)
+    protected double getMoveDesiredValue(double currentDistance)
     {
         return this.desiredDistance;
     }

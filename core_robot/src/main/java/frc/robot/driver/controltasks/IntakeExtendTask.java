@@ -10,6 +10,10 @@ public class IntakeExtendTask extends CompositeOperationTask
             DigitalOperation.IntakeGrab,
         };
 
+    /**
+     * Task to extend/retract (open/grab) the intake pneumatics
+     * @param extend true to open, or false to close the intake
+     */
     public IntakeExtendTask(boolean extend)
     {
         super(
