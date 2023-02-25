@@ -68,6 +68,7 @@ public class DriverFeedbackManager implements IMechanism
     public void update()
     {
         LightMode newLightMode;
+        /*
         if (this.ds.getMode() == RobotMode.Autonomous) 
         {
             newLightMode = LightMode.PurpleTwinkling;
@@ -88,6 +89,7 @@ public class DriverFeedbackManager implements IMechanism
         {
             newLightMode = LightMode.Orange;
         }
+        */
         // else if (visionTurningTask.isAprilTag())
         // {
         //     newLightMode = LightMode.Green; //Can See AprilTag
@@ -100,6 +102,31 @@ public class DriverFeedbackManager implements IMechanism
         // {
         //     newLightMode = LightMode.Rainbow; //Balanced on Charge Station
         // }
+        if (this.driver.getDigital(DigitalOperation.Rainbow))
+        {
+            newLightMode = LightMode.Rainbow;
+        }
+
+        else if (this.driver.getDigital(DigitalOperation.Purple))
+        {
+            newLightMode = LightMode.Purple;
+        }
+
+        else if (this.driver.getDigital(DigitalOperation.Green))
+        {
+            newLightMode = LightMode.Green;
+        }
+
+        else if (this.driver.getDigital(DigitalOperation.Red))
+        {
+            newLightMode = LightMode.Red;
+        }
+
+        else if (this.driver.getDigital(DigitalOperation.Yellow))
+        {
+            newLightMode = LightMode.Yellow;
+        }
+        
         else
         {
             newLightMode = LightMode.Off;

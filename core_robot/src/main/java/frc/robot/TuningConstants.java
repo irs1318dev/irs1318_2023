@@ -95,6 +95,10 @@ public class TuningConstants
     // Acceptable vision distance from tape in inches (as measured by vision system)
     public static final double MAX_VISION_ACCEPTABLE_FORWARD_DISTANCE = 1.75;
 
+
+    // Acceptable vision distance from tape in angles 
+    public static final double ACCEPTABLE_ANGLE_RR_ERROR = 10.0;
+
     // PID settings for Centering the robot on a vision target from one stationary place
     public static final double STATIONARY_PID_TURNING_PID_KP = 0.025;
     public static final double STATIONARY_PID_TURNING_PID_KI = 0.0;
@@ -496,4 +500,9 @@ public class TuningConstants
     public static final double CHARGE_STATION_2_BRAKE_GYRO = 50.0;
     public static final double CHARGE_STATION_2_MIN_BRAKE_TIME = 0.5;
     public static final double CHARGE_STATION_2_COMPLETED_GYRO = 1.0;
+
+    //==================================Retro Reflective Tape Macro=======================
+    public static final double RR_CENTERING_ACCEPTABLE_RIGHT_ANGLE_ERROR = 5.0; 
+    public static final double RR_CENTERING_ACCEPTABLE_LEFT_ANGLE_ERROR = -5.0; 
+    public static final double RR_CENTERING_MOVEMENT_SPEED_TO_CENTER_WITH_REFLECTIVE_TAPE = 0.05;
 }

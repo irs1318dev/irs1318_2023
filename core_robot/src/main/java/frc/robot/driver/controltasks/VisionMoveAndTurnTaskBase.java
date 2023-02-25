@@ -4,18 +4,31 @@ import frc.robot.TuningConstants;
 import frc.robot.common.PIDHandler;
 import frc.robot.common.robotprovider.ITimer;
 import frc.robot.driver.*;
+import frc.robot.mechanisms.OffboardVisionManager;
 
+
+    // after apriltag vision
+    // see lower RRT
+    // get horizontal angle and center with it
+    // then score (arm task)
+
+    
 public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
 {
     public enum MoveType
     {
         Forward,
-        AprilTagStrafe
+        AprilTagStrafe,
+        RetroReflectiveStrafe,
     }
 
     private final MoveType translateType;
     private final boolean useFastMode;
+    private final boolean useSlowMode;
     private final boolean verifyAngle;
+
+    private double horizontalAngle;
+    protected OffboardVisionManager visionManager;
 
     private PIDHandler movePIDHandler;
 
@@ -29,8 +42,19 @@ public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
         this.translateType = translateType;
 
         this.useFastMode = useFastMode;
+        this.useSlowMode = false;
         this.verifyAngle = verifyAngle;
         this.movePIDHandler = null;
+    }
+
+    public VisionMoveAndTurnTaskBase(boolean useSlowMode, MoveType translateType)
+    {
+        super(false, null, true);
+        this.useSlowMode = useSlowMode;
+        this.translateType = translateType;
+        this.verifyAngle = true;
+        this.movePIDHandler = null;
+        this.useFastMode = false;
     }
 
     /**
@@ -40,6 +64,9 @@ public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
     public void begin()
     {
         super.begin();
+
+        horizontalAngle = visionManager.getVisionTargetHorizontalAngle();
+        
         if (this.useFastMode)
         {
             this.movePIDHandler = new PIDHandler(
@@ -52,6 +79,20 @@ public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
                 TuningConstants.VISION_FAST_MOVING_PID_MAX,
                 this.getInjector().getInstance(ITimer.class));
         }
+
+        else if(useSlowMode)
+        {
+            this.movePIDHandler = new PIDHandler(
+                TuningConstants.VISION_MOVING_CENTERING_PID_KP,
+                TuningConstants.VISION_MOVING_CENTERING_PID_KI,
+                TuningConstants.VISION_MOVING_CENTERING_PID_KD,
+                TuningConstants.VISION_MOVING_CENTERING_PID_KF,
+                TuningConstants.VISION_MOVING_CENTERING_PID_KS,
+                TuningConstants.VISION_MOVING_CENTERING_PID_MIN,
+                TuningConstants.VISION_MOVING_CENTERING_PID_MAX,
+                this.getInjector().getInstance(ITimer.class));
+        }
+
         else
         {
             this.movePIDHandler = new PIDHandler(
@@ -63,12 +104,13 @@ public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
                 TuningConstants.VISION_MOVING_PID_MIN,
                 TuningConstants.VISION_MOVING_PID_MAX,
                 this.getInjector().getInstance(ITimer.class));
-        }
+        }    
     }
 
     @Override
     public void update()
     {
+        horizontalAngle = visionManager.getVisionTargetHorizontalAngle();
         super.update();
         Double currentDistance = this.getDistance();
         if (currentDistance != null)
@@ -77,6 +119,20 @@ public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
             double desiredSpeed = -this.movePIDHandler.calculatePosition(desiredDistance, currentDistance);
             switch (this.translateType)
             {
+                case RetroReflectiveStrafe:
+
+                    // if to the right of the RRT
+                    if (horizontalAngle > TuningConstants.ACCEPTABLE_ANGLE_RR_ERROR)
+                    {
+                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, TuningConstants.RR_CENTERING_MOVEMENT_SPEED_TO_CENTER_WITH_REFLECTIVE_TAPE);
+                    }
+
+                    //If to the left of the RRT
+                    else if(horizontalAngle < -TuningConstants.ACCEPTABLE_ANGLE_RR_ERROR)
+                    {
+                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, -TuningConstants.RR_CENTERING_MOVEMENT_SPEED_TO_CENTER_WITH_REFLECTIVE_TAPE);
+                    }
+
                 case AprilTagStrafe:
                     this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, desiredSpeed);
                     break;
