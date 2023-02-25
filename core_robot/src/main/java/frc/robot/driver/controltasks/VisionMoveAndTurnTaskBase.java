@@ -11,10 +11,15 @@ import frc.robot.mechanisms.OffboardVisionManager;
     // see lower RRT
     // get horizontal angle and center with it
     // then score (arm task)
-
-    
 public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
 {
+    public enum MoveSpeed
+    {
+        Normal,
+        Fast,
+        Slow,
+    }
+
     public enum MoveType
     {
         Forward,
@@ -23,38 +28,24 @@ public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
     }
 
     private final MoveType translateType;
-    private final boolean useFastMode;
-    private final boolean useSlowMode;
+    private final MoveSpeed moveSpeed;
     private final boolean verifyAngle;
-
-    private double horizontalAngle;
-    protected OffboardVisionManager visionManager;
 
     private PIDHandler movePIDHandler;
 
     /**
     * Initializes a new VisionAdvanceAndCenterTaskBase
     */
-    protected VisionMoveAndTurnTaskBase(boolean useFastMode, TurnType rotateType, MoveType translateType, boolean bestEffort, boolean verifyAngle)
+    protected VisionMoveAndTurnTaskBase(TurnType rotateType, MoveType translateType, MoveSpeed moveSpeed, boolean bestEffort, boolean verifyAngle)
     {
         super(false, rotateType, bestEffort);
 
         this.translateType = translateType;
 
-        this.useFastMode = useFastMode;
-        this.useSlowMode = false;
+        this.moveSpeed = moveSpeed;
         this.verifyAngle = verifyAngle;
-        this.movePIDHandler = null;
-    }
 
-    public VisionMoveAndTurnTaskBase(boolean useSlowMode, MoveType translateType)
-    {
-        super(false, null, true);
-        this.useSlowMode = useSlowMode;
-        this.translateType = translateType;
-        this.verifyAngle = true;
         this.movePIDHandler = null;
-        this.useFastMode = false;
     }
 
     /**
@@ -65,81 +56,70 @@ public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
     {
         super.begin();
 
-        horizontalAngle = visionManager.getVisionTargetHorizontalAngle();
-        
-        if (this.useFastMode)
+        switch (this.moveSpeed)
         {
-            this.movePIDHandler = new PIDHandler(
-                TuningConstants.VISION_FAST_MOVING_PID_KP,
-                TuningConstants.VISION_FAST_MOVING_PID_KI,
-                TuningConstants.VISION_FAST_MOVING_PID_KD,
-                TuningConstants.VISION_FAST_MOVING_PID_KF,
-                TuningConstants.VISION_FAST_MOVING_PID_KS,
-                TuningConstants.VISION_FAST_MOVING_PID_MIN,
-                TuningConstants.VISION_FAST_MOVING_PID_MAX,
-                this.getInjector().getInstance(ITimer.class));
-        }
+            case Fast:
+                this.movePIDHandler = new PIDHandler(
+                    TuningConstants.VISION_FAST_MOVING_PID_KP,
+                    TuningConstants.VISION_FAST_MOVING_PID_KI,
+                    TuningConstants.VISION_FAST_MOVING_PID_KD,
+                    TuningConstants.VISION_FAST_MOVING_PID_KF,
+                    TuningConstants.VISION_FAST_MOVING_PID_KS,
+                    TuningConstants.VISION_FAST_MOVING_PID_MIN,
+                    TuningConstants.VISION_FAST_MOVING_PID_MAX,
+                    this.getInjector().getInstance(ITimer.class));
+                break;
 
-        else if(useSlowMode)
-        {
-            this.movePIDHandler = new PIDHandler(
-                TuningConstants.VISION_MOVING_CENTERING_PID_KP,
-                TuningConstants.VISION_MOVING_CENTERING_PID_KI,
-                TuningConstants.VISION_MOVING_CENTERING_PID_KD,
-                TuningConstants.VISION_MOVING_CENTERING_PID_KF,
-                TuningConstants.VISION_MOVING_CENTERING_PID_KS,
-                TuningConstants.VISION_MOVING_CENTERING_PID_MIN,
-                TuningConstants.VISION_MOVING_CENTERING_PID_MAX,
-                this.getInjector().getInstance(ITimer.class));
-        }
+            case Slow:
+                this.movePIDHandler = new PIDHandler(
+                    TuningConstants.VISION_SLOW_MOVING_PID_KP,
+                    TuningConstants.VISION_SLOW_MOVING_PID_KI,
+                    TuningConstants.VISION_SLOW_MOVING_PID_KD,
+                    TuningConstants.VISION_SLOW_MOVING_PID_KF,
+                    TuningConstants.VISION_SLOW_MOVING_PID_KS,
+                    TuningConstants.VISION_SLOW_MOVING_PID_MIN,
+                    TuningConstants.VISION_SLOW_MOVING_PID_MAX,
+                    this.getInjector().getInstance(ITimer.class));
+                break;
 
-        else
-        {
-            this.movePIDHandler = new PIDHandler(
-                TuningConstants.VISION_MOVING_PID_KP,
-                TuningConstants.VISION_MOVING_PID_KI,
-                TuningConstants.VISION_MOVING_PID_KD,
-                TuningConstants.VISION_MOVING_PID_KF,
-                TuningConstants.VISION_MOVING_PID_KS,
-                TuningConstants.VISION_MOVING_PID_MIN,
-                TuningConstants.VISION_MOVING_PID_MAX,
-                this.getInjector().getInstance(ITimer.class));
-        }    
+            default:
+            case Normal:
+                this.movePIDHandler = new PIDHandler(
+                    TuningConstants.VISION_MOVING_PID_KP,
+                    TuningConstants.VISION_MOVING_PID_KI,
+                    TuningConstants.VISION_MOVING_PID_KD,
+                    TuningConstants.VISION_MOVING_PID_KF,
+                    TuningConstants.VISION_MOVING_PID_KS,
+                    TuningConstants.VISION_MOVING_PID_MIN,
+                    TuningConstants.VISION_MOVING_PID_MAX,
+                    this.getInjector().getInstance(ITimer.class));
+                break;
+        }
     }
 
     @Override
     public void update()
     {
-        horizontalAngle = visionManager.getVisionTargetHorizontalAngle();
         super.update();
-        Double currentDistance = this.getDistance();
+
+        Double currentDistance = this.getMoveMeasuredValue();
         if (currentDistance != null)
         {
-            double desiredDistance = this.getDesiredDistance(currentDistance);
-            double desiredSpeed = -this.movePIDHandler.calculatePosition(desiredDistance, currentDistance);
+            double desiredValue = this.getMoveDesiredValue(currentDistance);
+            double desiredVelocity = -this.movePIDHandler.calculatePosition(desiredValue, currentDistance);
             switch (this.translateType)
             {
                 case RetroReflectiveStrafe:
-
-                    // if to the right of the RRT
-                    if (horizontalAngle > TuningConstants.ACCEPTABLE_ANGLE_RR_ERROR)
-                    {
-                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, TuningConstants.RR_CENTERING_MOVEMENT_SPEED_TO_CENTER_WITH_REFLECTIVE_TAPE);
-                    }
-
-                    //If to the left of the RRT
-                    else if(horizontalAngle < -TuningConstants.ACCEPTABLE_ANGLE_RR_ERROR)
-                    {
-                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, -TuningConstants.RR_CENTERING_MOVEMENT_SPEED_TO_CENTER_WITH_REFLECTIVE_TAPE);
-                    }
+                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, -desiredVelocity);
+                    break;
 
                 case AprilTagStrafe:
-                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, desiredSpeed);
+                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, desiredVelocity);
                     break;
 
                 default:
                 case Forward:
-                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, desiredSpeed);
+                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, desiredVelocity);
                     break;
             }
         }
@@ -155,56 +135,75 @@ public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
     @Override
     public boolean hasCompleted()
     {
-        Double currentDistance = this.getDistance();
-        if (currentDistance == null)
+        Double measuredValue = this.getMoveMeasuredValue();
+        if (measuredValue == null)
         {
             return false;
         }
 
-        double distanceOffset = Math.abs(this.getDesiredDistance(currentDistance) - currentDistance);
-        if (distanceOffset > TuningConstants.MAX_VISION_ACCEPTABLE_FORWARD_DISTANCE)
+        double offset = Math.abs(this.getMoveDesiredValue(measuredValue) - measuredValue);
+
+        // return false if we have not yet reached an acceptable offset from our goal position
+        switch (this.translateType)
         {
-            return false;
+            case RetroReflectiveStrafe:
+                if (offset > TuningConstants.MAX_VISION_ACCEPTABLE_MOVING_RR_ANGLE_ERROR)
+                {
+                    return false;
+                }
+
+                break;
+
+            case Forward:
+            case AprilTagStrafe:
+            default:
+                if (offset > TuningConstants.MAX_VISION_ACCEPTABLE_FORWARD_DISTANCE)
+                {
+                    return false;
+                }
+
+                break;
         }
 
         return !this.verifyAngle || super.hasCompleted();
     }
 
-    protected Double getDistance()
+    protected Double getMoveMeasuredValue()
     {
-        Double distance;
         if (this.translateType == MoveType.Forward)
         {
             if (this.isAprilTag())
             {
-                distance = this.visionManager.getAprilTagXOffset();
+                return this.visionManager.getAprilTagXOffset();
             }
             else
             {
-                distance = this.visionManager.getVisionTargetDistance();
+                return this.visionManager.getVisionTargetDistance();
             }
         }
-        else
+        else if (this.translateType == MoveType.RetroReflectiveStrafe)
         {
-            distance = this.visionManager.getAprilTagYOffset();
+            return this.visionManager.getVisionTargetHorizontalAngle();
         }
-
-        return distance;
+        else // if (this.translateType == MoveType.AprilTagStrafe)
+        {
+            return this.visionManager.getAprilTagYOffset();
+        }
     }
 
     @Override
     protected PIDHandler createTurnHandler()
     {
         return new PIDHandler(
-            TuningConstants.VISION_MOVING_CENTERING_PID_KP,
-            TuningConstants.VISION_MOVING_CENTERING_PID_KI,
-            TuningConstants.VISION_MOVING_CENTERING_PID_KD,
-            TuningConstants.VISION_MOVING_CENTERING_PID_KF,
-            TuningConstants.VISION_MOVING_CENTERING_PID_KS,
-            TuningConstants.VISION_MOVING_CENTERING_PID_MIN,
-            TuningConstants.VISION_MOVING_CENTERING_PID_MAX,
+            TuningConstants.VISION_MOVING_TURNING_PID_KP,
+            TuningConstants.VISION_MOVING_TURNING_PID_KI,
+            TuningConstants.VISION_MOVING_TURNING_PID_KD,
+            TuningConstants.VISION_MOVING_TURNING_PID_KF,
+            TuningConstants.VISION_MOVING_TURNING_PID_KS,
+            TuningConstants.VISION_MOVING_TURNING_PID_MIN,
+            TuningConstants.VISION_MOVING_TURNING_PID_MAX,
             this.getInjector().getInstance(ITimer.class));
     }
 
-    protected abstract double getDesiredDistance(double currentDistance);
+    protected abstract double getMoveDesiredValue(double currentDistance);
 }

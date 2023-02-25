@@ -1,6 +1,7 @@
 package frc.robot.driver.controltasks;
 
 import frc.robot.TuningConstants;
+import frc.robot.common.robotprovider.ITimer;
 import frc.robot.driver.DigitalOperation;
 
 /**
@@ -10,15 +11,43 @@ import frc.robot.driver.DigitalOperation;
 public abstract class CompositeOperationTask extends UpdateCycleTask
 {
     private final DigitalOperation[] possibleOperations;
+    private final boolean timeoutMode;
+    private final double timeout;
 
     private DigitalOperation toPerform;
+    private ITimer timer;
+    private double startTime;
 
     /**
      * Initializes a new CompositeOperationTask
      * @param toPerform the operation to perform by setting to true for duration
      * @param possibleOperations to set of linked operations that should be set to false for duration
+
      */
     protected CompositeOperationTask(DigitalOperation toPerform, DigitalOperation[] possibleOperations)
+    {
+        this(toPerform, possibleOperations, false, 0.0);
+    }
+
+    /**
+     * Initializes a new CompositeOperationTask
+     * @param toPerform the operation to perform by setting to true for duration
+     * @param possibleOperations to set of linked operations that should be set to false for duration
+     * @param timeout how long to keep running the macro
+     */
+    protected CompositeOperationTask(DigitalOperation toPerform, DigitalOperation[] possibleOperations, double timeout)
+    {
+        this(toPerform, possibleOperations, true, timeout);
+    }
+
+    /**
+     * Initializes a new CompositeOperationTask
+     * @param toPerform the operation to perform by setting to true for duration
+     * @param possibleOperations to set of linked operations that should be set to false for duration
+     * @param timeoutMode whether we are in timeout mode
+     * @param timeout the timeout, if we are in timeout mode
+     */
+    private CompositeOperationTask(DigitalOperation toPerform, DigitalOperation[] possibleOperations, boolean timeoutMode, double timeout)
     {
         super(1);
         if (TuningConstants.THROW_EXCEPTIONS)
@@ -43,6 +72,8 @@ public abstract class CompositeOperationTask extends UpdateCycleTask
 
         this.toPerform = toPerform;
         this.possibleOperations = possibleOperations;
+        this.timeoutMode = timeoutMode;
+        this.timeout = timeout;
     }
 
     /**
@@ -52,6 +83,12 @@ public abstract class CompositeOperationTask extends UpdateCycleTask
     public void begin()
     {
         super.begin();
+        if (this.timeoutMode)
+        {
+            this.timer = this.getInjector().getInstance(ITimer.class);
+            this.startTime = this.timer.get();
+        }
+
         for (DigitalOperation op : this.possibleOperations)
         {
             this.setDigitalOperationState(op, op == this.toPerform);
@@ -80,6 +117,19 @@ public abstract class CompositeOperationTask extends UpdateCycleTask
         for (DigitalOperation op : this.possibleOperations)
         {
             this.setDigitalOperationState(op, false);
+        }
+    }
+
+    @Override
+    public boolean hasCompleted()
+    {
+        if (this.timeoutMode)
+        {
+            return this.timer.get() >= this.startTime + this.timeout;
+        }
+        else
+        {
+            return super.hasCompleted();
         }
     }
 

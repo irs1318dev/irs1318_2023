@@ -51,7 +51,7 @@ public class DriverFeedbackManager implements IMechanism
 
         this.candle = provider.getCANdle(ElectronicsConstants.INDICATOR_LIGHT_CANDLE_CAN_ID);
         this.candle.configLEDType(CANdleLEDStripType.GRB);
-        this.candle.configVBatOutput(CANdleVBatOutputMode.Off);
+        this.candle.configVBatOutput(CANdleVBatOutputMode.On);
 
         this.ds = provider.getDriverStation();
         this.arm = arm;
