@@ -1150,7 +1150,7 @@ public class ArmMechanism implements IMechanism
         if (lowerLAExtension < 0.0 || lowerLAExtension > HardwareConstants.ARM_EXTENTION_LENGTH)
         {
             // be forgiving of values that are just very slightly off...
-            if (lowerLAExtension >= -0.00001)
+            if (lowerLAExtension < 0.0 && lowerLAExtension >= -0.00001)
             {
                 lowerLAExtension = 0.0;
             }
@@ -1170,7 +1170,7 @@ public class ArmMechanism implements IMechanism
         if (upperLAExtension < 0.0 || upperLAExtension > HardwareConstants.ARM_EXTENTION_LENGTH)
         {
             // be forgiving of values that are just very slightly off...
-            if (upperLAExtension >= -0.00001)
+            if (upperLAExtension < 0.0 && upperLAExtension >= -0.00001)
             {
                 upperLAExtension = 0.0;
             }

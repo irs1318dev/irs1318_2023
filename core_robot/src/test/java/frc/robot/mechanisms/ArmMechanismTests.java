@@ -88,7 +88,7 @@ public class ArmMechanismTests
     public static void main(String[] args)
     {
         // Generate CSV file containing valid positions for the arm given the IK/FK (and that they agree)
-        try (CsvWriter validCsvWriter = CsvWriter.builder().build(java.nio.file.Path.of("validPositions-reachConstrained.csv"), StandardCharsets.UTF_8))
+        try (CsvWriter validCsvWriter = CsvWriter.builder().build(java.nio.file.Path.of("validPositions-rangeConstrained.csv"), StandardCharsets.UTF_8))
         {
             validCsvWriter.writeRow("x", "z", "lowerExtension", "upperExtension");
 
