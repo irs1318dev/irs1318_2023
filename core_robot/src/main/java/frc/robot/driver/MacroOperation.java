@@ -6,10 +6,9 @@ public enum MacroOperation implements IOperation
 
     // Path testing
     FollowPathTest1,
-
-    // Final Paths
     FollowPath2,
     FollowPath3,
+    FollowPath4,
 
     // DriveTrain operations:
     PIDLightBrake,
