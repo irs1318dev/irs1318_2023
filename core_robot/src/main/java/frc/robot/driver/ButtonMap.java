@@ -259,37 +259,37 @@ public class ButtonMap implements IButtonMap
             DigitalOperation.Rainbow,
             UserInputDevice.Test2,
             UserInputDeviceButton.XBONE_RIGHT_BUTTON,
-            ButtonType.Click),
+            ButtonType.Simple),
 
         new DigitalOperationDescription(
             DigitalOperation.Purple,
             UserInputDevice.Test2,
             UserInputDeviceButton.XBONE_LEFT_BUTTON,
-            ButtonType.Click),
+            ButtonType.Simple),
         
         new DigitalOperationDescription(
             DigitalOperation.Blue,
             UserInputDevice.Test2,
             UserInputDeviceButton.XBONE_X_BUTTON,
-            ButtonType.Click),
+            ButtonType.Simple),
         
         new DigitalOperationDescription(
             DigitalOperation.Yellow,
             UserInputDevice.Test2,
             UserInputDeviceButton.XBONE_Y_BUTTON,
-            ButtonType.Click),
+            ButtonType.Simple),
 
         new DigitalOperationDescription(
             DigitalOperation.Green,
             UserInputDevice.Test2,
             UserInputDeviceButton.XBONE_A_BUTTON,
-            ButtonType.Click),
+            ButtonType.Simple),
 
         new DigitalOperationDescription(
             DigitalOperation.Red,
             UserInputDevice.Test2,
             UserInputDeviceButton.XBONE_B_BUTTON,
-            ButtonType.Click),
+            ButtonType.Simple),
     };
 
     public static MacroOperationDescription[] MacroSchema = new MacroOperationDescription[]

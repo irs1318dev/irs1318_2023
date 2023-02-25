@@ -326,8 +326,8 @@ public class TuningConstants
     public static final boolean ARM_USE_SIMPLE_MODE = false;
     
     public static final double ARM_INTAKE_POWER = 0.6;
-    public static final boolean ARM_INTAKE_MOTOR_INVERT_OUTPUT = false;
-    public static final double FEEDER_LIGHT_CUTOFF_VALUE = 10;
+    public static final boolean ARM_INTAKE_MOTOR_INVERT_OUTPUT = true;
+    public static final double ARM_INTAKE_THROUGHBEAM_THRESHOLD = 3.5;
 
     public static final boolean ARM_USE_MM = false;
     public static final boolean ARM_USE_IK = false;
@@ -371,12 +371,12 @@ public class TuningConstants
 
     public static final boolean ARM_LOWER_LEFT_INVERT_OUTPUT = true;
     public static final boolean ARM_LOWER_RIGHT_INVERT_OUTPUT = true;
-    public static final boolean ARM_UPPER_INVERT_OUTPUT = false;
+    public static final boolean ARM_UPPER_MASTER_INVERT_OUTPUT = true;
     public static final boolean ARM_UPPER_FOLLOWER_INVERT_OUTPUT = true;
 
     public static final boolean ARM_LOWER_LEFT_INVERT_SENSOR = false;
     public static final boolean ARM_LOWER_RIGHT_INVERT_SENSOR = false;
-    public static final boolean ARM_UPPER_INVERT_SENSOR = true;
+    public static final boolean ARM_UPPER_INVERT_SENSOR = false;
 
     public static final double ARM_NEAR_FULL_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.9; // in inches
     public static final double ARM_NEAR_FULL_RETRACTED_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.1; // in inches
