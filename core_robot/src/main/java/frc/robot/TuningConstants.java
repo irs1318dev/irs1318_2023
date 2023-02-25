@@ -59,8 +59,8 @@ public class TuningConstants
     public static final double FarChargeStationX = 102.99; // 12 inches away from the charge station + Robot centering value
     public static final double FarChargeStationInBetweenX = TuningConstants.FarChargeStationX - 30.0; // 30 inches away from last point to allow for turning
     public static final double GroundPiecesX = 47.36; // On ground pieces
-    public static final double LoadEdgeStartX = 176.86;
-    public static final double GuardEdgeStartX = 158.61;    
+    public static final double LoadEdgeStartX = 214.86;
+    public static final double GuardEdgeStartX = 193.61;    
 
     // April tag array by ids
     // (xPosition, yPosition, orientation)
@@ -94,6 +94,10 @@ public class TuningConstants
 
     // Acceptable vision distance from tape in inches (as measured by vision system)
     public static final double MAX_VISION_ACCEPTABLE_FORWARD_DISTANCE = 1.75;
+
+
+    // Acceptable vision distance from tape in angles 
+    public static final double ACCEPTABLE_ANGLE_RR_ERROR = 10.0;
 
     // PID settings for Centering the robot on a vision target from one stationary place
     public static final double STATIONARY_PID_TURNING_PID_KP = 0.025;
@@ -310,20 +314,20 @@ public class TuningConstants
     public static final double DRIVETRAIN_TURN_APPROXIMATION = 1.0; // number of degrees off at which point we give up trying to face an angle when uncommanded
     public static final double DRIVETRAIN_MAX_MODULE_PATH_VELOCITY = 0.85 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // up to x% of our max controllable speed
     public static final double DRIVETRAIN_MAX_PATH_TURN_VELOCITY = 180.0; // in degrees per second
-    public static final double DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY = 0.40 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // in inches per second
+    public static final double DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY = 0.60 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // in inches per second
     public static final double DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION = 0.75 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // in inches per second per second
-    public static final double DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY = TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY / 2.0; // in inches per second
-    public static final double DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION = 0.4 * TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION / 2.0; // in inches per second per second
-    public static final double DRIVETRAIN_LOW_PATH_TRANSLATIONAL_VELOCITY = TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY / 3.0; // in inches per second
-    public static final double DRIVETRAIN_LOW_PATH_TRANSLATIONAL_ACCELERATION = 0.4 * TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION / 3.0; // in inches per second per second
+    public static final double DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY = TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY / 1.4; // in inches per second
+    public static final double DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION = TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION / 1.4; // in inches per second per second
+    public static final double DRIVETRAIN_LOW_PATH_TRANSLATIONAL_VELOCITY = TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY / 2; // in inches per second
+    public static final double DRIVETRAIN_LOW_PATH_TRANSLATIONAL_ACCELERATION = TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION / 2.0; // in inches per second per second
 
     //================================================= Arm ================================================================================
 
     public static final boolean ARM_USE_SIMPLE_MODE = false;
     
     public static final double ARM_INTAKE_POWER = 0.6;
-    public static final boolean ARM_INTAKE_MOTOR_INVERT_OUTPUT = false;
-    public static final double FEEDER_LIGHT_CUTOFF_VALUE = 10;
+    public static final boolean ARM_INTAKE_MOTOR_INVERT_OUTPUT = true;
+    public static final double ARM_INTAKE_THROUGHBEAM_THRESHOLD = 3.5;
 
     public static final boolean ARM_USE_MM = false;
     public static final boolean ARM_USE_IK = false;
@@ -367,12 +371,12 @@ public class TuningConstants
 
     public static final boolean ARM_LOWER_LEFT_INVERT_OUTPUT = true;
     public static final boolean ARM_LOWER_RIGHT_INVERT_OUTPUT = true;
-    public static final boolean ARM_UPPER_INVERT_OUTPUT = false;
+    public static final boolean ARM_UPPER_MASTER_INVERT_OUTPUT = true;
     public static final boolean ARM_UPPER_FOLLOWER_INVERT_OUTPUT = true;
 
     public static final boolean ARM_LOWER_LEFT_INVERT_SENSOR = false;
     public static final boolean ARM_LOWER_RIGHT_INVERT_SENSOR = false;
-    public static final boolean ARM_UPPER_INVERT_SENSOR = true;
+    public static final boolean ARM_UPPER_INVERT_SENSOR = false;
 
     public static final double ARM_NEAR_FULL_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.9; // in inches
     public static final double ARM_NEAR_FULL_RETRACTED_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.1; // in inches
@@ -496,4 +500,9 @@ public class TuningConstants
     public static final double CHARGE_STATION_2_BRAKE_GYRO = 50.0;
     public static final double CHARGE_STATION_2_MIN_BRAKE_TIME = 0.5;
     public static final double CHARGE_STATION_2_COMPLETED_GYRO = 1.0;
+
+    //==================================Retro Reflective Tape Macro=======================
+    public static final double RR_CENTERING_ACCEPTABLE_RIGHT_ANGLE_ERROR = 5.0; 
+    public static final double RR_CENTERING_ACCEPTABLE_LEFT_ANGLE_ERROR = -5.0; 
+    public static final double RR_CENTERING_MOVEMENT_SPEED_TO_CENTER_WITH_REFLECTIVE_TAPE = 0.05;
 }

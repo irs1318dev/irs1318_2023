@@ -46,4 +46,12 @@ public enum DigitalOperation implements IOperation
     // Indicator Light Manager
     CubeWantedFromSubstation,
     ConeWantedFromSubstation,
+
+    Rainbow,
+    //FireFlame,
+    Purple,
+    Red,
+    Blue,
+    Green,
+    Yellow,
 }

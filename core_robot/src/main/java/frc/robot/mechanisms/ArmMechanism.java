@@ -25,8 +25,8 @@ public class ArmMechanism implements IMechanism
 
     //----------------- Cone flipper Variables -----------------
 
-    // private final IDoubleSolenoid rightConeFlipper;
-    // private final IDoubleSolenoid leftConeFlipper;
+    private final IDoubleSolenoid rightConeFlipper;
+    private final IDoubleSolenoid leftConeFlipper;
 
     private double leftFlipperTransitionTime;
     private double rightFlipperTransitionTime;
@@ -130,7 +130,7 @@ public class ArmMechanism implements IMechanism
 
         this.lowerLeftArmLinearActuator = provider.getTalonSRX(ElectronicsConstants.ARM_LOWER_LEFT_LA_CAN_ID);
         this.lowerRightArmLinearActuator = provider.getTalonSRX(ElectronicsConstants.ARM_LOWER_RIGHT_LA_CAN_ID);
-        this.upperArmLinearActuator = provider.getTalonSRX(ElectronicsConstants.ARM_UPPER_LA_CAN_ID);
+        this.upperArmLinearActuator = provider.getTalonSRX(ElectronicsConstants.ARM_UPPER_LA_MASTER_CAN_ID);
 
         this.inSimpleMode = TuningConstants.ARM_USE_SIMPLE_MODE;
 
@@ -208,7 +208,7 @@ public class ArmMechanism implements IMechanism
 
         this.lowerLeftArmLinearActuator.setInvertOutput(TuningConstants.ARM_LOWER_LEFT_INVERT_OUTPUT);
         this.lowerRightArmLinearActuator.setInvertOutput(TuningConstants.ARM_LOWER_RIGHT_INVERT_OUTPUT);
-        this.upperArmLinearActuator.setInvertOutput(TuningConstants.ARM_UPPER_INVERT_OUTPUT);
+        this.upperArmLinearActuator.setInvertOutput(TuningConstants.ARM_UPPER_MASTER_INVERT_OUTPUT);
 
         this.lowerLeftArmLinearActuator.setInvertSensor(TuningConstants.ARM_LOWER_LEFT_INVERT_SENSOR);
         this.lowerRightArmLinearActuator.setInvertSensor(TuningConstants.ARM_LOWER_RIGHT_INVERT_SENSOR);
@@ -258,17 +258,17 @@ public class ArmMechanism implements IMechanism
         upperLAFollower.follow(this.upperArmLinearActuator);
 
         //------------------------- Side Stick Initialization ------------------------------
-        // this.leftConeFlipper = provider.getDoubleSolenoid(
-        //     ElectronicsConstants.PNEUMATICS_MODULE_A,
-        //     ElectronicsConstants.PNEUMATICS_MODULE_TYPE_A,
-        //     ElectronicsConstants.LEFT_SIDE_STICK_PISTON_FORWARD,
-        //     ElectronicsConstants.LEFT_SIDE_STICK_PISTON_BACKWARD);
+        this.leftConeFlipper = provider.getDoubleSolenoid(
+            ElectronicsConstants.PNEUMATICS_MODULE_A,
+            ElectronicsConstants.PNEUMATICS_MODULE_TYPE_A,
+            ElectronicsConstants.LEFT_SIDE_STICK_PISTON_FORWARD,
+            ElectronicsConstants.LEFT_SIDE_STICK_PISTON_BACKWARD);
 
-        // this.rightConeFlipper = provider.getDoubleSolenoid(
-        //     ElectronicsConstants.PNEUMATICS_MODULE_A,
-        //     ElectronicsConstants.PNEUMATICS_MODULE_TYPE_A,
-        //     ElectronicsConstants.RIGHT_SIDE_STICK_PISTON_FORWARD,
-        //     ElectronicsConstants.RIGHT_SIDE_STICK_PISTON_BACKWARD);
+        this.rightConeFlipper = provider.getDoubleSolenoid(
+            ElectronicsConstants.PNEUMATICS_MODULE_A,
+            ElectronicsConstants.PNEUMATICS_MODULE_TYPE_A,
+            ElectronicsConstants.RIGHT_SIDE_STICK_PISTON_FORWARD,
+            ElectronicsConstants.RIGHT_SIDE_STICK_PISTON_BACKWARD);
 
         this.leftFlipperTransitionTime = 0.0;
         this.rightFlipperTransitionTime = 0.0;
@@ -292,7 +292,7 @@ public class ArmMechanism implements IMechanism
 
         this.currentIntakeState = IntakeState.Retracted;
 
-        // this.intakeThroughBeamSensor = provider.getAnalogInput(ElectronicsConstants.INTAKE_LIGHT_FEEDER);
+        // this.intakeThroughBeamSensor = provider.getAnalogInput(ElectronicsConstants.ARM_INTAKE_THROUGH_BEAM_ANALOG_INPUT);
     }
 
 
@@ -501,7 +501,7 @@ public class ArmMechanism implements IMechanism
                 {
                     this.curLeftFlipperState = ConeFlipperState.Retracted;
                 }
-                else if (this.curLeftFlipperState == ConeFlipperState.Retracted &&
+                else if (this.curRightFlipperState == ConeFlipperState.Retracted &&
                     (this.inSimpleMode ||
                         (this.upperLAPosition <= TuningConstants.ARM_NEAR_FULL_RETRACTED_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH &&
                         this.lowerLeftLAPosition >= TuningConstants.ARM_NEAR_FULL_EXTENSION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH)))
@@ -549,36 +549,36 @@ public class ArmMechanism implements IMechanism
         }
 
         this.logger.logString(LoggingKey.ArmRightFlipperState, this.curRightFlipperState.toString());
-        // switch (this.curRightFlipperState)
-        // {
-        //     case Extended:
-        //     case Extending:
-        //         this.rightConeFlipper.set(DoubleSolenoidValue.Forward);
-        //         break;
+        switch (this.curRightFlipperState)
+        {
+            case Extended:
+            case Extending:
+                this.rightConeFlipper.set(DoubleSolenoidValue.Forward);
+                break;
 
-        //     default:
-        //     case ExtendingWait:
-        //     case Retracted:
-        //     case Retracting:
-        //         this.rightConeFlipper.set(DoubleSolenoidValue.Reverse);
-        //         break;
-        // }
+            default:
+            case ExtendingWait:
+            case Retracted:
+            case Retracting:
+                this.rightConeFlipper.set(DoubleSolenoidValue.Reverse);
+                break;
+        }
 
         this.logger.logString(LoggingKey.ArmLeftFlipperState, this.curLeftFlipperState.toString());
-        // switch (this.curLeftFlipperState)
-        // {
-        //     case Extended:
-        //     case Extending:
-        //         this.leftConeFlipper.set(DoubleSolenoidValue.Forward);
-        //         break;
+        switch (this.curLeftFlipperState)
+        {
+            case Extended:
+            case Extending:
+                this.leftConeFlipper.set(DoubleSolenoidValue.Forward);
+                break;
 
-        //     default:
-        //     case ExtendingWait:
-        //     case Retracted:
-        //     case Retracting:
-        //         this.leftConeFlipper.set(DoubleSolenoidValue.Reverse);
-        //         break;
-        // }
+            default:
+            case ExtendingWait:
+            case Retracted:
+            case Retracting:
+                this.leftConeFlipper.set(DoubleSolenoidValue.Reverse);
+                break;
+        }
 
         //----------------------------------- Intake Update -----------------------------------
 
@@ -879,8 +879,8 @@ public class ArmMechanism implements IMechanism
         this.upperArmLinearActuator.stop();
         this.intakeMotor.stop();
         this.intakeExtender.set(DoubleSolenoidValue.Off);
-        // this.leftConeFlipper.set(DoubleSolenoidValue.Off);
-        // this.rightConeFlipper.set(DoubleSolenoidValue.Off);
+        this.leftConeFlipper.set(DoubleSolenoidValue.Off);
+        this.rightConeFlipper.set(DoubleSolenoidValue.Off);
 
         this.leftFlipperTransitionTime = 0.0;
         this.rightFlipperTransitionTime = 0.0;

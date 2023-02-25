@@ -255,7 +255,41 @@ public class ButtonMap implements IButtonMap
             UserInputDeviceButton.XBONE_X_BUTTON,
             ButtonType.Click),
 
+        new DigitalOperationDescription(
+            DigitalOperation.Rainbow,
+            UserInputDevice.Test2,
+            UserInputDeviceButton.XBONE_RIGHT_BUTTON,
+            ButtonType.Simple),
+
+        new DigitalOperationDescription(
+            DigitalOperation.Purple,
+            UserInputDevice.Test2,
+            UserInputDeviceButton.XBONE_LEFT_BUTTON,
+            ButtonType.Simple),
         
+        new DigitalOperationDescription(
+            DigitalOperation.Blue,
+            UserInputDevice.Test2,
+            UserInputDeviceButton.XBONE_X_BUTTON,
+            ButtonType.Simple),
+        
+        new DigitalOperationDescription(
+            DigitalOperation.Yellow,
+            UserInputDevice.Test2,
+            UserInputDeviceButton.XBONE_Y_BUTTON,
+            ButtonType.Simple),
+
+        new DigitalOperationDescription(
+            DigitalOperation.Green,
+            UserInputDevice.Test2,
+            UserInputDeviceButton.XBONE_A_BUTTON,
+            ButtonType.Simple),
+
+        new DigitalOperationDescription(
+            DigitalOperation.Red,
+            UserInputDevice.Test2,
+            UserInputDeviceButton.XBONE_B_BUTTON,
+            ButtonType.Simple),
     };
 
     public static MacroOperationDescription[] MacroSchema = new MacroOperationDescription[]
@@ -891,61 +925,83 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.VisionEnableRetroreflectiveProcessing,
                 DigitalOperation.VisionForceDisable,
             }),
-        new MacroOperationDescription(
-            MacroOperation.FollowPath2,
-            UserInputDevice.Test1,
-            180,
-            Shift.None,
-            Shift.None,
-            ButtonType.Toggle,
-            () -> SequentialTask.Sequence(
-                    new PositionStartingTask(-251.861, TuningConstants.StartOneGridY + 1.05, 180),
-                    new FollowPathTask("LoadEdgeTo1", false, false),
-                    new FollowPathTask("1To14", false, false),
-                    new WaitTask(2),
-                    new FollowPathTask("14To10", false, false),
-                    new FollowPathTask("10To2", false, false)
-                    ),
-            new IOperation[]
-            {
-                DigitalOperation.PositionResetFieldOrientation,
-                DigitalOperation.PositionResetRobotPitch,
-                AnalogOperation.PositionStartingAngle,
-                DigitalOperation.DriveTrainResetXYPosition,
-                AnalogOperation.DriveTrainStartingXPosition,
-                AnalogOperation.DriveTrainStartingYPosition,
-                AnalogOperation.DriveTrainMoveForward,
-                AnalogOperation.DriveTrainMoveRight,
-                AnalogOperation.DriveTrainTurnAngleGoal,
-                AnalogOperation.DriveTrainTurnSpeed,
-                AnalogOperation.DriveTrainRotationA,
-                AnalogOperation.DriveTrainRotationB,
-                AnalogOperation.DriveTrainPathXGoal,
-                AnalogOperation.DriveTrainPathYGoal,
-                AnalogOperation.DriveTrainPathXVelocityGoal,
-                AnalogOperation.DriveTrainPathYVelocityGoal,
-                AnalogOperation.DriveTrainPathAngleVelocityGoal,
-                AnalogOperation.DriveTrainPositionDrive1,
-                AnalogOperation.DriveTrainPositionDrive2,
-                AnalogOperation.DriveTrainPositionDrive3,
-                AnalogOperation.DriveTrainPositionDrive4,
-                AnalogOperation.DriveTrainPositionSteer1,
-                AnalogOperation.DriveTrainPositionSteer2,
-                AnalogOperation.DriveTrainPositionSteer3,
-                AnalogOperation.DriveTrainPositionSteer4,
-                AnalogOperation.DriveTrainTurnAngleReference,
-                DigitalOperation.DriveTrainSteerMode,
-                DigitalOperation.DriveTrainMaintainPositionMode,
-                DigitalOperation.DriveTrainPathMode,
-                DigitalOperation.DriveTrainReset,
-                DigitalOperation.DriveTrainEnableFieldOrientation,
-                DigitalOperation.DriveTrainDisableFieldOrientation,
-                DigitalOperation.DriveTrainUseRobotOrientation,
-                DigitalOperation.VisionDisableStream,
-                DigitalOperation.VisionEnableAprilTagProcessing,
-                DigitalOperation.VisionEnableRetroreflectiveProcessing,
-                DigitalOperation.VisionForceDisable,
-            }),
+
+        // Full auton test
+        // new MacroOperationDescription(
+        //     MacroOperation.FollowPath2,
+        //     UserInputDevice.Test1,
+        //     180,
+        //     Shift.None,
+        //     Shift.None,
+        //     ButtonType.Toggle,
+        //     () -> SequentialTask.Sequence(
+        //         new PositionStartingTask(-TuningConstants.GuardEdgeStartX, 17.5, 180),
+        //         new FollowPathTask("GuardStartTo9", false, true),
+        //         new WaitTask(0.3),
+        //         new FollowPathTask("9To12", false, true),
+        //         ConcurrentTask.AllTasks(
+        //             new FollowPathTask("12To23", false, false),
+        //             SequentialTask.Sequence(
+        //                 new WaitTask(1.0),
+        //                 new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP)
+        //             )  
+        //         ),
+        //         ConcurrentTask.AllTasks(
+        //             new FollowPathTask("23To23", false, true),
+        //             new IntakeGamePieceTask()
+        //         ),
+        //         ConcurrentTask.AllTasks(
+        //             new FollowPathTask("23To12", false, false),
+        //             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
+        //         ),
+        //         new FollowPathTask("12To7", false, true)
+        //     ),
+        //     new IOperation[]
+        //     {
+        //         DigitalOperation.IntakeIn,
+        //         DigitalOperation.IntakeOut,
+        //         DigitalOperation.IntakeRelease,
+        //         DigitalOperation.IntakeGrab,
+        //         AnalogOperation.ArmMMLowerPosition,
+        //         AnalogOperation.ArmMMUpperPosition,
+        //         DigitalOperation.PositionResetFieldOrientation,
+        //         DigitalOperation.PositionResetRobotPitch,
+        //         AnalogOperation.PositionStartingAngle,
+        //         DigitalOperation.DriveTrainResetXYPosition,
+        //         AnalogOperation.DriveTrainStartingXPosition,
+        //         AnalogOperation.DriveTrainStartingYPosition,
+        //         AnalogOperation.DriveTrainMoveForward,
+        //         AnalogOperation.DriveTrainMoveRight,
+        //         AnalogOperation.DriveTrainTurnAngleGoal,
+        //         AnalogOperation.DriveTrainTurnSpeed,
+        //         AnalogOperation.DriveTrainRotationA,
+        //         AnalogOperation.DriveTrainRotationB,
+        //         AnalogOperation.DriveTrainPathXGoal,
+        //         AnalogOperation.DriveTrainPathYGoal,
+        //         AnalogOperation.DriveTrainPathXVelocityGoal,
+        //         AnalogOperation.DriveTrainPathYVelocityGoal,
+        //         AnalogOperation.DriveTrainPathAngleVelocityGoal,
+        //         AnalogOperation.DriveTrainPositionDrive1,
+        //         AnalogOperation.DriveTrainPositionDrive2,
+        //         AnalogOperation.DriveTrainPositionDrive3,
+        //         AnalogOperation.DriveTrainPositionDrive4,
+        //         AnalogOperation.DriveTrainPositionSteer1,
+        //         AnalogOperation.DriveTrainPositionSteer2,
+        //         AnalogOperation.DriveTrainPositionSteer3,
+        //         AnalogOperation.DriveTrainPositionSteer4,
+        //         AnalogOperation.DriveTrainTurnAngleReference,
+        //         DigitalOperation.DriveTrainSteerMode,
+        //         DigitalOperation.DriveTrainMaintainPositionMode,
+        //         DigitalOperation.DriveTrainPathMode,
+        //         DigitalOperation.DriveTrainReset,
+        //         DigitalOperation.DriveTrainEnableFieldOrientation,
+        //         DigitalOperation.DriveTrainDisableFieldOrientation,
+        //         DigitalOperation.DriveTrainUseRobotOrientation,
+        //         DigitalOperation.VisionDisableStream,
+        //         DigitalOperation.VisionEnableAprilTagProcessing,
+        //         DigitalOperation.VisionEnableRetroreflectiveProcessing,
+        //         DigitalOperation.VisionForceDisable,
+        //     }),
 
     new MacroOperationDescription(
         MacroOperation.FollowPath2,
@@ -955,8 +1011,14 @@ public class ButtonMap implements IButtonMap
         Shift.None,
         ButtonType.Toggle,
         () -> SequentialTask.Sequence(
-                new PositionStartingTask(-TuningConstants.GuardEdgeStartX, TuningConstants.GuardEdgeY, 180),
-                new FollowPathTask("GuardStartTo9", false, false)
+                new PositionStartingTask(-TuningConstants.GuardEdgeStartX, 17.5, 180),
+                new FollowPathTask("GuardStartTo9", false, true),
+                new WaitTask(0.3),
+                new FollowPathTask("9To12", false, true),
+                new FollowPathTask("12To23", false, false),
+                new FollowPathTask("23To23", false, true),
+                new FollowPathTask("23To12", false, false),
+                new FollowPathTask("12To7", false, true)
                 ),
         new IOperation[]
         {
