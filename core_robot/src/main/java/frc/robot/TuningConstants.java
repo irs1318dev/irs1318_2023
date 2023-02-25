@@ -35,8 +35,6 @@ public class TuningConstants
 
     public static final boolean TRAJECTORY_FORCE_BUILD = false;
 
-    public static final boolean isRed = false;
-
     // Y Values
     public static final double StartOneGridY = 196.19;
     public static final double StartTwoGridY = 174.19; // April Tag ID's 6 and 3
@@ -455,8 +453,10 @@ public class TuningConstants
     public static final double ARM_UPPER_POSITION_HIGH_CUBE = 6200.0;
     public static final double ARM_LOWER_POSITION_GROUND_PICKUP = 1950.0;
     public static final double ARM_UPPER_POSITION_GROUND_PICKUP = 1900.0;
-    public static final double ARM_LOWER_POSITION_SUB_PICKUP = 3350.0;
-    public static final double ARM_UPPER_POSITION_SUB_PICKUP = 6750.0;
+    public static final double ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP = 3350.0;
+    public static final double ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP = 6750.0;
+    public static final double ARM_LOWER_POSITION_CUBE_SUBSTATION_PICKUP = 6750.0;
+    public static final double ARM_UPPER_POSITION_CUBE_SUBSTATION_PICKUP = 3350.0;
     public static final double ARM_LOWER_POSITION_APPROACH = HardwareConstants.ARM_FULL_EXTENSION_TICKS;
     public static final double ARM_UPPER_POSITION_APPROACH = 3000.0;
 
