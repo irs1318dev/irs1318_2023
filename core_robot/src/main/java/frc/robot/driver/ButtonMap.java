@@ -553,7 +553,7 @@ public class ButtonMap implements IButtonMap
         new MacroOperationDescription(
             MacroOperation.ArmGroundPickupPosition,
             UserInputDevice.Codriver,
-            270, // POV-left
+            180, // POV-down
             Shift.CodriverDebug,
             Shift.None,
             ButtonType.Toggle,
@@ -570,7 +570,7 @@ public class ButtonMap implements IButtonMap
             UserInputDevice.Codriver,
             180, // POV-down
             Shift.CodriverDebug,
-            Shift.None,
+            Shift.CodriverDebug,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_GROUND_PLACING,
@@ -641,15 +641,30 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.ArmMMUpperPosition,
             }),
         new MacroOperationDescription(
-            MacroOperation.ArmSubstationPickupPosition,
+            MacroOperation.ArmConeSubstationPickupPosition,
             UserInputDevice.Codriver,
             UserInputDeviceButton.XBONE_X_BUTTON,
             Shift.CodriverDebug,
             Shift.None,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_SUB_PICKUP,
-                TuningConstants.ARM_UPPER_POSITION_SUB_PICKUP),
+                TuningConstants.ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP,
+                TuningConstants.ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP),
+            new IOperation[]
+            {
+                AnalogOperation.ArmMMLowerPosition,
+                AnalogOperation.ArmMMUpperPosition,
+            }),
+        new MacroOperationDescription(
+            MacroOperation.ArmCubeSubstationPickupPosition,
+            UserInputDevice.Codriver,
+            270, // POV-left
+            Shift.CodriverDebug,
+            Shift.None,
+            ButtonType.Toggle,
+            () -> new ArmMMPositionTask(
+                TuningConstants.ARM_LOWER_POSITION_CUBE_SUBSTATION_PICKUP,
+                TuningConstants.ARM_LOWER_POSITION_CUBE_SUBSTATION_PICKUP),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,

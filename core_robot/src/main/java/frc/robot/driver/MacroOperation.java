@@ -41,7 +41,8 @@ public enum MacroOperation implements IOperation
     ArmMiddleCubePosition,
     ArmHighConePosition,
     ArmHighCubePosition,
-    ArmSubstationPickupPosition,
+    ArmConeSubstationPickupPosition,
+    ArmCubeSubstationPickupPosition,
     ArmStowedPosition,
     ArmApproachPosition,
 }

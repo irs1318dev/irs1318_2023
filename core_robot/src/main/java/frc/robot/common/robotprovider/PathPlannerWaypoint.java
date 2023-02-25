@@ -1,7 +1,5 @@
 package frc.robot.common.robotprovider;
 
-import frc.robot.TuningConstants;
-
 public class PathPlannerWaypoint
 {
     public final double x;
@@ -10,30 +8,17 @@ public class PathPlannerWaypoint
     public final double orientation;
     public final double velocityOverride;
 
-    public static int setOrientation(int forwardOrBackward)
+    public static int setOrientation(boolean isRed, boolean forward)
     {
-
-        int orientation = 0;
-
-        if (forwardOrBackward == 1)
+        if (forward)
         {
-            orientation = TuningConstants.isRed ? 180 : 0;
-            return orientation;
+            return isRed ? 180 : 0;
         }
-
-        else if (forwardOrBackward == -1)
+        else
         {
-            orientation = TuningConstants.isRed ? 0 : 180;
-            return orientation;
-        }
-
-        else 
-        {
-            throw new RuntimeException("getForwardsOrientation() only takes 1 (forward) or -1 (backward) relative to driver");
+            return isRed ? 0 : 180;
         }
     }
-
-    
 
     /**
      * Creates a waypoint at position (x, y), assuming that the robot should be heading forward at this point and oriented forward.

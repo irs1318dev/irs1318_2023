@@ -34,6 +34,8 @@ public enum LoggingKey
     PigeonYaw("pigeon.yaw", true),
     PigeonPitch("pigeon.pitch", true),
     PigeonPitchOffset("pigeon.pitchOffset"),
+    PigeonRollOffset("pigeon.rollOffset"),
+    PigeonYawOffset("pigeon.yawOffset"),
     PigeonRoll("pigeon.roll", true),
     PigeonStartingYaw("pigeon.startingYaw"),
     PigeonYawRate("pigeon.yawRate", true),
