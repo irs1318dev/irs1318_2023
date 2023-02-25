@@ -318,7 +318,7 @@ public class TuningConstants
     public static final double DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION = 0.75 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // in inches per second per second
     public static final double DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY = TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY / 1.4; // in inches per second
     public static final double DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION = TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION / 1.4; // in inches per second per second
-    public static final double DRIVETRAIN_LOW_PATH_TRANSLATIONAL_VELOCITY = TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY / 2; // in inches per second
+    public static final double DRIVETRAIN_LOW_PATH_TRANSLATIONAL_VELOCITY = TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY / 2.0; // in inches per second
     public static final double DRIVETRAIN_LOW_PATH_TRANSLATIONAL_ACCELERATION = TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION / 2.0; // in inches per second per second
 
     //================================================= Arm ================================================================================
@@ -463,6 +463,8 @@ public class TuningConstants
     public static final double ARM_UPPER_POSITION_CUBE_SUBSTATION_PICKUP = 3350.0;
     public static final double ARM_LOWER_POSITION_APPROACH = HardwareConstants.ARM_FULL_EXTENSION_TICKS;
     public static final double ARM_UPPER_POSITION_APPROACH = 3000.0;
+    public static final double ARM_LOWER_POSITION_CONE_UPRIGHTING_MACRO = TuningConstants.ARM_LOWER_POSITION_GROUND_PLACING;
+    public static final double ARM_UPPER_POSITION_CONE_UPRIGHTING_MACRO = TuningConstants.ARM_UPPER_POSITION_GROUND_PLACING;
 
     //============================================= ChargeStation Macro ==================================================================
 
@@ -501,7 +503,7 @@ public class TuningConstants
     public static final double CHARGE_STATION_2_MIN_BRAKE_TIME = 0.5;
     public static final double CHARGE_STATION_2_COMPLETED_GYRO = 1.0;
 
-    //==================================Retro Reflective Tape Macro=======================
+    //============================================= Retro Reflective Tape Macro ==================================================================
     public static final double RR_CENTERING_ACCEPTABLE_RIGHT_ANGLE_ERROR = 5.0; 
     public static final double RR_CENTERING_ACCEPTABLE_LEFT_ANGLE_ERROR = -5.0; 
     public static final double RR_CENTERING_MOVEMENT_SPEED_TO_CENTER_WITH_REFLECTIVE_TAPE = 0.05;

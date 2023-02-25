@@ -258,6 +258,7 @@ public class ArmMechanism implements IMechanism
         upperLAFollower.follow(this.upperArmLinearActuator);
 
         //------------------------- Side Stick Initialization ------------------------------
+
         this.leftConeFlipper = provider.getDoubleSolenoid(
             ElectronicsConstants.PNEUMATICS_MODULE_A,
             ElectronicsConstants.PNEUMATICS_MODULE_TYPE_A,
@@ -294,7 +295,6 @@ public class ArmMechanism implements IMechanism
 
         // this.intakeThroughBeamSensor = provider.getAnalogInput(ElectronicsConstants.ARM_INTAKE_THROUGH_BEAM_ANALOG_INPUT);
     }
-
 
     @Override
     public void readSensors()

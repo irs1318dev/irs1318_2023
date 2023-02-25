@@ -4,23 +4,17 @@ public enum MacroOperation implements IOperation
 {
     AutonomousRoutine,
 
-    // Path testing
-    FollowPathTest1,
-    FollowPath2,
-    FollowPath3,
-    FollowPath4,
-
     // DriveTrain operations:
     PIDLightBrake,
     PIDHeavyBrake,
 
-    // Vision operations
+    // Vision operations:
     VisionCenterRetroReflective,
     VisionCenterAprilTag,
     VisionParallelAprilTag,
     VisionResetPosition,
 
-    // Charge station
+    // Charge station:
     ChargeStationBalance,
     ChargeStationBalanceReverse,
     ChargeStationBalanceGyro,
@@ -31,8 +25,9 @@ public enum MacroOperation implements IOperation
     // Cone flipepr macros:
     ExtendLeftConeFlipper,
     ExtendRightConeFlipper,
+    PickUpConeFromBehind,
 
-    // Arm Movement
+    // Arm Movement:
     ArmResetToZero,
     ArmGroundPickupPosition,
     ArmGroundPlacePosition,
@@ -44,4 +39,10 @@ public enum MacroOperation implements IOperation
     ArmCubeSubstationPickupPosition,
     ArmStowedPosition,
     ArmApproachPosition,
+
+    // Path testing:
+    FollowPathTest1,
+    FollowPathTest2,
+    FollowPathTest3,
+    FollowPathTest4,
 }
