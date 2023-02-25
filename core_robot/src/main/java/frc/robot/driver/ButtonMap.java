@@ -994,26 +994,14 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
-                new PositionStartingTask(-TuningConstants.GuardEdgeStartX, 17.5, 180),
-                new FollowPathTask("GuardStartTo9", false, true),
+                new PositionStartingTask(-TuningConstants.LoadEdgeStartX, TuningConstants.LoadEdgeY, 180),
+                new FollowPathTask("LoadStartTo1", false, true),
                 new WaitTask(0.3),
-                new FollowPathTask("9To12", false, true),
-                ConcurrentTask.AllTasks(
-                    new FollowPathTask("12To23", false, false),
-                    SequentialTask.Sequence(
-                        new WaitTask(1.0)
-                        //new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP)
-                    )  
-                ),
-                ConcurrentTask.AllTasks(
-                    new FollowPathTask("23To23", false, true)
-                    //new IntakeGamePieceTask()
-                ),
-                ConcurrentTask.AllTasks(
-                    new FollowPathTask("23To12", false, false)
-                    //new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
-                ),
-                new FollowPathTask("12To7", false, true)
+                new FollowPathTask("1To10", false, true),
+                new FollowPathTask("10To20", false, false),
+                new FollowPathTask("20To20", false, false),
+                new FollowPathTask("20To10", false, false),
+                new FollowPathTask("10To3", false, true)
             ),
             new IOperation[]
             {

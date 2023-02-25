@@ -46,11 +46,11 @@ public class TuningConstants
     public static final double StartEightGridY = 42.19; // April Tag ID's 8 and 1
     public static final double StartNineGridY = 20.19;
     public static final double ChargeStationY = 108.015;
-    public static final double GroundOneY = 180.19;
+    public static final double GroundOneY = 180.19; // Real: 180.19
     public static final double GroundTwoY = 132.19;
     public static final double GroundThreeY = 84.19;
     public static final double GroundFourY = 36.19;
-    public static final double LoadEdgeY = TuningConstants.StartOneGridY + 1.521; // Edge of grid - 17.5
+    public static final double LoadEdgeY = 198.53; // Edge of grid - 17.5
     public static final double GuardEdgeY = 17.5;
 
     // X Values
@@ -245,7 +245,7 @@ public class TuningConstants
     public static final double DRIVETRAIN_OMEGA_MAX_OUTPUT = 5.0;
     public static final double DRIVETRAIN_OMEGA_MIN_OUTPUT = -5.0;
 
-    public static final double DRIVETRAIN_PATH_OMEGA_POSITION_PID_KP = 0.1;
+    public static final double DRIVETRAIN_PATH_OMEGA_POSITION_PID_KP = 0.2;
     public static final double DRIVETRAIN_PATH_OMEGA_POSITION_PID_KI = 0.0;
     public static final double DRIVETRAIN_PATH_OMEGA_POSITION_PID_KD = 0.0;
     public static final double DRIVETRAIN_PATH_OMEGA_POSITION_PID_KF = 0.0;
@@ -261,7 +261,7 @@ public class TuningConstants
     public static final double DRIVETRAIN_PATH_X_MAX_OUTPUT = 10.0;
     public static final double DRIVETRAIN_PATH_X_MIN_OUTPUT = -10.0;
 
-    public static final double DRIVETRAIN_PATH_Y_POSITION_PID_KP = 1.0;
+    public static final double DRIVETRAIN_PATH_Y_POSITION_PID_KP = 1.1;
     public static final double DRIVETRAIN_PATH_Y_POSITION_PID_KI = 0.0;
     public static final double DRIVETRAIN_PATH_Y_POSITION_PID_KD = 0.0;
     public static final double DRIVETRAIN_PATH_Y_POSITION_PID_KF = 0.0;
