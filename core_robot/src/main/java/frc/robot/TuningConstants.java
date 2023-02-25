@@ -95,9 +95,8 @@ public class TuningConstants
     // Acceptable vision distance from tape in inches (as measured by vision system)
     public static final double MAX_VISION_ACCEPTABLE_FORWARD_DISTANCE = 1.75;
 
-
     // Acceptable vision distance from tape in angles 
-    public static final double ACCEPTABLE_ANGLE_RR_ERROR = 10.0;
+    public static final double MAX_VISION_ACCEPTABLE_MOVING_RR_ANGLE_ERROR = 4.0;
 
     // PID settings for Centering the robot on a vision target from one stationary place
     public static final double STATIONARY_PID_TURNING_PID_KP = 0.025;
@@ -108,16 +107,16 @@ public class TuningConstants
     public static final double STATIONARY_PID_TURNING_PID_MIN = -0.4;
     public static final double STATIONARY_PID_TURNING_PID_MAX = 0.4;
 
-    // PID settings for Centering the robot on a vision target
-    public static final double VISION_MOVING_CENTERING_PID_KP = 0.012;
-    public static final double VISION_MOVING_CENTERING_PID_KI = 0.0;
-    public static final double VISION_MOVING_CENTERING_PID_KD = 0.0;
-    public static final double VISION_MOVING_CENTERING_PID_KF = 0.0;
-    public static final double VISION_MOVING_CENTERING_PID_KS = 1.0;
-    public static final double VISION_MOVING_CENTERING_PID_MIN = -0.3;
-    public static final double VISION_MOVING_CENTERING_PID_MAX = 0.3;
+    // PID settings for rotating the robot based on a vision target while in-motion
+    public static final double VISION_MOVING_TURNING_PID_KP = 0.012;
+    public static final double VISION_MOVING_TURNING_PID_KI = 0.0;
+    public static final double VISION_MOVING_TURNING_PID_KD = 0.0;
+    public static final double VISION_MOVING_TURNING_PID_KF = 0.0;
+    public static final double VISION_MOVING_TURNING_PID_KS = 1.0;
+    public static final double VISION_MOVING_TURNING_PID_MIN = -0.3;
+    public static final double VISION_MOVING_TURNING_PID_MAX = 0.3;
 
-    // PID settings for Advancing the robot towards a vision target
+    // PID settings for translating the robot based on a vision target
     public static final double VISION_MOVING_PID_KP = 0.015;
     public static final double VISION_MOVING_PID_KI = 0.0;
     public static final double VISION_MOVING_PID_KD = 0.0;
@@ -126,7 +125,16 @@ public class TuningConstants
     public static final double VISION_MOVING_PID_MIN = -0.3;
     public static final double VISION_MOVING_PID_MAX = 0.3;
 
-    // PID settings for Advancing the robot quickly towards a vision target
+    // PID settings for translating the robot slowly based on a vision target
+    public static final double VISION_SLOW_MOVING_PID_KP = 0.012;
+    public static final double VISION_SLOW_MOVING_PID_KI = 0.0;
+    public static final double VISION_SLOW_MOVING_PID_KD = 0.0;
+    public static final double VISION_SLOW_MOVING_PID_KF = 0.0;
+    public static final double VISION_SLOW_MOVING_PID_KS = 1.0;
+    public static final double VISION_SLOW_MOVING_PID_MIN = -0.3;
+    public static final double VISION_SLOW_MOVING_PID_MAX = 0.3;
+
+    // PID settings for translating the robot quickly based on a vision target
     public static final double VISION_FAST_MOVING_PID_KP = 0.15;
     public static final double VISION_FAST_MOVING_PID_KI = 0.0;
     public static final double VISION_FAST_MOVING_PID_KD = 0.0;

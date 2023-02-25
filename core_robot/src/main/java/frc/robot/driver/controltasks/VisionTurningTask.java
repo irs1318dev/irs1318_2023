@@ -78,7 +78,7 @@ public class VisionTurningTask extends PIDTurnTaskBase
         this.setDigitalOperationState(DigitalOperation.VisionEnableAprilTagProcessing, false);
     }
 
-    public boolean isAprilTag()
+    protected boolean isAprilTag()
     {
         return this.rotateType != TurnType.RetroreflectiveCentering;
     }
