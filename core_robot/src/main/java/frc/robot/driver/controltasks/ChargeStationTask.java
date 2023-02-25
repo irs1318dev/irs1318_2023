@@ -119,7 +119,6 @@ public class ChargeStationTask extends ControlTaskBase
         else if (this.currentState == State.Climbing)
         {
             // if pitch is larger than 15-ish for more than the configured length of time, switch to balancing mode
-            // TODO: Tune transition wait period on 2023 robot
             if (Math.abs(this.pitch) >= (TuningConstants.CHARGE_STATION_CLIMBING_TRANSITION_PITCH - TuningConstants.CHARGE_STATION_CLIMBING_TRANSITION_ACCEPTABLE_VARIATION) &&
                 this.climbingExceededTransitionTime == 0.0)
             {
