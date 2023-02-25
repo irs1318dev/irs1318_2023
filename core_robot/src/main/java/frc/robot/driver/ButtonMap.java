@@ -582,11 +582,16 @@ public class ButtonMap implements IButtonMap
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_CONE_UPRIGHTING_MACRO,
                         TuningConstants.ARM_UPPER_POSITION_CONE_UPRIGHTING_MACRO)),
-                new FollowPathTask("goBackwards6inches"),
-                new ArmMMPositionTask(
-                    TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP,
-                    TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP),
-                new IntakeGamePieceTask(1.0)),
+                ConcurrentTask.AllTasks(
+                    new FollowPathTask("goBackwards6inches"),
+                    SequentialTask.Sequence(
+                        new WaitTask(0.25),
+                        new ArmMMPositionTask(
+                            TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP,
+                            TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP)),
+                    new IntakeInTask(true)),
+                new IntakeGamePieceTask(1.0),
+                new IntakeExtendTask(false)),
             new IOperation[]
             {
                 AnalogOperation.DriveTrainMoveForward,
