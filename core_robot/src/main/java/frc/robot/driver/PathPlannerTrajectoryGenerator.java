@@ -14,7 +14,17 @@ public class PathPlannerTrajectoryGenerator
         PathPlannerTrajectoryGenerator.generateTrajectories(false, trajectoryManager, pathPlanner);
         //PathPlannerTrajectoryGenerator.generateTrajectories(true, trajectoryManager, pathPlanner);
 
-        // Sample Paths
+        // Macro paths:
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(0.0, 0.0, 180.0, 0.0),
+                new PathPlannerWaypoint(-6.0, 0.0, 180.0, 0.0)),
+                "goBackwards6inches");
+
+        // Sample/Testing Paths
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
@@ -22,73 +32,52 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(0.0, 0.0),
                 new PathPlannerWaypoint(48.0, 0.0)),
-            "goForward4ft2");
+            "goForward4ft");
 
-        addTrajectory(
-            trajectoryManager,
-            pathPlanner.buildTrajectory(
-                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(0.0, 0.0, 180.0),
-                new PathPlannerWaypoint(-4.0, 0.0, 180.0)),
-                "goBackwards4inch2");
+        // addTrajectory(
+        //     trajectoryManager,
+        //     pathPlanner.buildTrajectory(
+        //         TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
+        //         TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
+        //         new PathPlannerWaypoint(0.0, 0.0, 90.0),
+        //         new PathPlannerWaypoint(0.0, 48.0, 90.0)),
+        //     "goLeft4ft");
 
-        addTrajectory(
-            trajectoryManager,
-            pathPlanner.buildTrajectory(
-                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(0.0, 0.0, 90.0),
-                new PathPlannerWaypoint(0.0, 48.0, 90.0)),
-            "goLeft4ft2");
+        // addTrajectory(
+        //     trajectoryManager,
+        //     pathPlanner.buildTrajectory(
+        //         TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
+        //         TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
+        //         new PathPlannerWaypoint(0.0, 0.0, 0.0, PathPlannerWaypoint.setOrientation(true, true)),
+        //         new PathPlannerWaypoint(36.0, 0.0, 180.0, PathPlannerWaypoint.setOrientation(true, false))),
+        //     "goForward6ftAndRotate");
 
-        addTrajectory(
-            trajectoryManager,
-            pathPlanner.buildTrajectory(
-                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(0.0, 0.0, 0.0, PathPlannerWaypoint.setOrientation(true, true)),
-                new PathPlannerWaypoint(36.0, 0.0, 180.0, PathPlannerWaypoint.setOrientation(true, false))),
-            "goForward6ft2AndRotate");
+        // addTrajectory(
+        //     trajectoryManager,
+        //     pathPlanner.buildTrajectory(
+        //         TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
+        //         TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
+        //         new PathPlannerWaypoint(0.0, 0.0, 0.0, 0.0),
+        //         new PathPlannerWaypoint(-1.0, 0.0, 180.0, 180.0)),
+        //     "turn180Path");
 
-        addTrajectory(
-            trajectoryManager,
-            pathPlanner.buildTrajectory(
-                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(0.0, 0.0, 0.0, 0.0),
-                new PathPlannerWaypoint(-1.0, 0.0, 180.0, 180.0)),
-            "turn180Path2");
+        // addTrajectory(
+        //     trajectoryManager,
+        //     pathPlanner.buildTrajectory(
+        //         TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
+        //         TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
+        //         new PathPlannerWaypoint(0.0, 0.0, 180.0, 0.0),
+        //         new PathPlannerWaypoint(-84.0, 0.0, 180.0, 180.0)),
+        //     "goBack7ftRotate");
 
-        addTrajectory(
-            trajectoryManager,
-            pathPlanner.buildTrajectory(
-                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(0.0, 0.0, 180.0, 0.0),
-                new PathPlannerWaypoint(-84.0, 0.0, 180.0, 180.0)),
-            "goBack7ftRotate2");
-
-        addTrajectory(
-            trajectoryManager,
-            pathPlanner.buildTrajectory(
-                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(0.0, 0.0, 0.0, 0.0),
-                new PathPlannerWaypoint(48.0, 0.0, 90.0, 0.0),
-                new PathPlannerWaypoint(48.0, 48.0, 180.0, 0.0),
-                new PathPlannerWaypoint(0.0, 48.0, -90.0, 0.0),
-                new PathPlannerWaypoint(0.0, 0.0, 0.0, 0.0)),
-            "pranavTest");
-
-        addTrajectory(
-            trajectoryManager,
-            pathPlanner.buildTrajectory(
-                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(0.0, 0.0, 180.0, 0.0),
-                new PathPlannerWaypoint(-1.0, 0.0, 180.0, 0.0)),
-            "goBack6ft2");
+        // addTrajectory(
+        //     trajectoryManager,
+        //     pathPlanner.buildTrajectory(
+        //         TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
+        //         TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
+        //         new PathPlannerWaypoint(0.0, 0.0, 180.0, 0.0),
+        //         new PathPlannerWaypoint(-1.0, 0.0, 180.0, 0.0)),
+        //     "goBack6ft");
     }
 
     public static void generateTrajectories(boolean isRed, TrajectoryManager trajectoryManager, IPathPlanner pathPlanner)

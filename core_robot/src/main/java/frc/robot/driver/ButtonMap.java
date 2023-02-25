@@ -374,7 +374,7 @@ public class ButtonMap implements IButtonMap
             UserInputDevice.Driver,
             0, // DPAD-up
             Shift.DriverDebug,
-            Shift.None,
+            Shift.DriverDebug,
             ButtonType.Toggle,
             () -> new VisionTurningTask(VisionTurningTask.TurnType.RetroreflectiveCentering, true),
             new IOperation[]
@@ -415,7 +415,7 @@ public class ButtonMap implements IButtonMap
             UserInputDevice.Driver,
             90, // DPAD-right
             Shift.DriverDebug,
-            Shift.None,
+            Shift.DriverDebug,
             ButtonType.Toggle,
             () -> new VisionTurningTask(VisionTurningTask.TurnType.AprilTagCentering, true),
             new IOperation[]
@@ -456,7 +456,7 @@ public class ButtonMap implements IButtonMap
             UserInputDevice.Driver,
             180, // DPAD-down
             Shift.DriverDebug,
-            Shift.None,
+            Shift.DriverDebug,
             ButtonType.Toggle,
             () -> new VisionTurningTask(VisionTurningTask.TurnType.AprilTagParallelizing, true),
             new IOperation[]
@@ -497,7 +497,7 @@ public class ButtonMap implements IButtonMap
             UserInputDevice.Driver,
             270, //DPAD left
             Shift.DriverDebug,
-            Shift.None,
+            Shift.DriverDebug,
             ButtonType.Toggle,
             () -> new VisionResetPositionTask(),
             new IOperation[]
@@ -567,6 +567,65 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.ArmMMLowerPosition,
                 DigitalOperation.ExtendLeftConeFlipper,
                 DigitalOperation.ExtendRightConeFlipper,
+            }),
+
+        new MacroOperationDescription(
+            MacroOperation.PickUpConeFromBehind,
+            UserInputDevice.Driver,
+            0,
+            Shift.DriverDebug,
+            Shift.None,
+            ButtonType.Toggle,
+            () -> SequentialTask.Sequence(
+                ConcurrentTask.AllTasks(
+                    new IntakeExtendTask(true),
+                    new ArmMMPositionTask(
+                        TuningConstants.ARM_LOWER_POSITION_CONE_UPRIGHTING_MACRO,
+                        TuningConstants.ARM_UPPER_POSITION_CONE_UPRIGHTING_MACRO)),
+                new FollowPathTask("goBackwards6inches"),
+                new ArmMMPositionTask(
+                    TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP,
+                    TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP),
+                new IntakeGamePieceTask(1.0)),
+            new IOperation[]
+            {
+                AnalogOperation.DriveTrainMoveForward,
+                AnalogOperation.DriveTrainMoveRight,
+                AnalogOperation.DriveTrainTurnAngleGoal,
+                AnalogOperation.DriveTrainTurnSpeed,
+                AnalogOperation.DriveTrainRotationA,
+                AnalogOperation.DriveTrainRotationB,
+                AnalogOperation.DriveTrainPathXGoal,
+                AnalogOperation.DriveTrainPathYGoal,
+                AnalogOperation.DriveTrainPathXVelocityGoal,
+                AnalogOperation.DriveTrainPathYVelocityGoal,
+                AnalogOperation.DriveTrainPathAngleVelocityGoal,
+                AnalogOperation.DriveTrainPositionDrive1,
+                AnalogOperation.DriveTrainPositionDrive2,
+                AnalogOperation.DriveTrainPositionDrive3,
+                AnalogOperation.DriveTrainPositionDrive4,
+                AnalogOperation.DriveTrainPositionSteer1,
+                AnalogOperation.DriveTrainPositionSteer2,
+                AnalogOperation.DriveTrainPositionSteer3,
+                AnalogOperation.DriveTrainPositionSteer4,
+                AnalogOperation.DriveTrainTurnAngleReference,
+                DigitalOperation.DriveTrainSteerMode,
+                DigitalOperation.DriveTrainMaintainPositionMode,
+                DigitalOperation.DriveTrainPathMode,
+                DigitalOperation.DriveTrainReset,
+                DigitalOperation.DriveTrainEnableFieldOrientation,
+                DigitalOperation.DriveTrainDisableFieldOrientation,
+                DigitalOperation.DriveTrainUseRobotOrientation,
+                DigitalOperation.VisionDisableStream,
+                DigitalOperation.VisionEnableAprilTagProcessing,
+                DigitalOperation.VisionEnableRetroreflectiveProcessing,
+                DigitalOperation.VisionForceDisable,
+                AnalogOperation.ArmMMUpperPosition,
+                AnalogOperation.ArmMMLowerPosition,
+                DigitalOperation.IntakeIn,
+                DigitalOperation.IntakeOut,
+                DigitalOperation.IntakeRelease,
+                DigitalOperation.IntakeGrab,
             }),
 
         // Arm position macros
@@ -884,7 +943,7 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
                 new PositionStartingTask(0.0, 0.0, 0.0),
-                new FollowPathTask("goForward4ft2", false, false)),
+                new FollowPathTask("goForward4ft", false, false)),
             new IOperation[]
             {
                 DigitalOperation.PositionResetFieldOrientation,
@@ -928,7 +987,7 @@ public class ButtonMap implements IButtonMap
 
         // Full auton test
         new MacroOperationDescription(
-            MacroOperation.FollowPath2,
+            MacroOperation.FollowPathTest2,
             UserInputDevice.Test1,
             180,
             Shift.None,
@@ -1004,7 +1063,7 @@ public class ButtonMap implements IButtonMap
             }),
 
     new MacroOperationDescription(
-        MacroOperation.FollowPath3,
+        MacroOperation.FollowPathTest3,
         UserInputDevice.Test1,
         270,
         Shift.None,
@@ -1062,7 +1121,7 @@ public class ButtonMap implements IButtonMap
         }),
 
     new MacroOperationDescription(
-        MacroOperation.FollowPath4,
+        MacroOperation.FollowPathTest4,
         UserInputDevice.Test1,
         90,
         Shift.None,
