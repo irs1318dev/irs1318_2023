@@ -15,24 +15,24 @@ public class PathPlannerTrajectoryGenerator
         //PathPlannerTrajectoryGenerator.generateTrajectories(true, trajectoryManager, pathPlanner);
 
         // Macro paths:
-        addTrajectory(
-            trajectoryManager,
-            pathPlanner.buildTrajectory(
-                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(0.0, 0.0, 180.0, 0.0),
-                new PathPlannerWaypoint(-6.0, 0.0, 180.0, 0.0)),
-                "goBackwards6inches");
+        // addTrajectory(
+        //     trajectoryManager,
+        //     pathPlanner.buildTrajectory(
+        //         TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
+        //         TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+        //         new PathPlannerWaypoint(0.0, 0.0, 180.0, 0.0),
+        //         new PathPlannerWaypoint(-6.0, 0.0, 180.0, 0.0)),
+        //         "goBackwards6inches");
 
-        // Sample/Testing Paths
-        addTrajectory(
-            trajectoryManager,
-            pathPlanner.buildTrajectory(
-                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(0.0, 0.0),
-                new PathPlannerWaypoint(48.0, 0.0)),
-            "goForward4ft");
+        // // Sample/Testing Paths
+        // addTrajectory(
+        //     trajectoryManager,
+        //     pathPlanner.buildTrajectory(
+        //         TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
+        //         TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
+        //         new PathPlannerWaypoint(0.0, 0.0),
+        //         new PathPlannerWaypoint(48.0, 0.0)),
+        //     "goForward4ft");
 
         // addTrajectory(
         //     trajectoryManager,
@@ -130,14 +130,14 @@ public class PathPlannerTrajectoryGenerator
         //2023 Paths
 
         //Test Path
-        addTrajectory(
-            trajectoryManager,
-            pathPlanner.buildTrajectory(
-                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(LoadEdge, ForwardOT, ForwardOT),
-                new PathPlannerWaypoint(P18, ForwardOT, ForwardOT)),
-            "LoadEdgeTo18");
+        // addTrajectory(
+        //     trajectoryManager,
+        //     pathPlanner.buildTrajectory(
+        //         TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
+        //         TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
+        //         new PathPlannerWaypoint(LoadEdge, ForwardOT, ForwardOT),
+        //         new PathPlannerWaypoint(P18, ForwardOT, ForwardOT)),
+        //     "LoadEdgeTo18");
 
         // ------------------------------- Actual Paths That should be Used --------------------------------------------
         
@@ -217,10 +217,18 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(P11, BackwardOT, BackwardOT),
-                new PathPlannerWaypoint(P11, BackwardOT, BackwardOT)),
+                new PathPlannerWaypoint(P5, BackwardOT, BackwardOT)),
                 isRed ? "11To5Red" : "11To5Blue");
                 
-                
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(P5, ForwardOT, BackwardOT),
+                new PathPlannerWaypoint(P11, ForwardOT, ForwardOT)),
+                isRed ? "5To11TurnRed" : "5To11TurnBlue");
+                        
                 
                 
                 

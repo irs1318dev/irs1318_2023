@@ -71,32 +71,32 @@ public class AutonomousRoutineSelector
         {
             if(routine == AutoRoutine.Taxi)
             {
-                return guardOnePlusCharge(isRed);
+                return loadTaxi();
             }
 
             else if(routine == AutoRoutine.TaxiCharge)
             {
-                return loadOnePlusCharge();
+                return loadTaxiCharge(isRed);
             }
 
             else if(routine == AutoRoutine.OnePlusTaxi)
             {
-                return loadOnePlusOne();
+                return loadOnePlusTaxi(isRed);
             }
 
             else if(routine == AutoRoutine.OnePlusCharge)
             {
-                return guardTaxi();
+                return loadOnePlusCharge(isRed);
             }
 
             else if(routine == AutoRoutine.OnePickupCharge)
             {
-                return guardTaxi();
+                return loadOnePickupCharge(isRed);
             }
 
             else if(routine == AutoRoutine.OnePlusOne)
             {
-                return guardTaxi();
+                return loadOnePlusOne(isRed);
             }
         }
 
@@ -104,22 +104,22 @@ public class AutonomousRoutineSelector
         {
             if(routine == AutoRoutine.Taxi)
             {
-                return guardOnePlusCharge(isRed);
+                return midTaxi(isRed);
             }
             
             else if(routine == AutoRoutine.Charge)
             {
-                return guardOnePlusOne();
+                return midCharge(isRed);
             }
 
             else if(routine == AutoRoutine.TaxiCharge)
             {
-                return loadOnePlusCharge();
+                return midTaxiCharge(isRed);
             }
 
             else if(routine == AutoRoutine.OnePlusCharge)
             {
-                return guardTaxi();
+                return midOnePlusCharge(isRed);
             }
         }
 
@@ -127,32 +127,32 @@ public class AutonomousRoutineSelector
         {
             if(routine == AutoRoutine.Taxi)
             {
-                return guardOnePlusCharge(isRed);
+                return guardTaxi();
             }
 
             else if(routine == AutoRoutine.TaxiCharge)
             {
-                return loadOnePlusCharge();
+                return guardTaxiCharge(isRed);
             }
             
             else if(routine == AutoRoutine.OnePlusTaxi)
             {
-                return loadOnePlusOne();
+                return guardOnePlusTaxi(isRed);
             }
 
             else if(routine == AutoRoutine.OnePlusCharge)
             {
-                return guardTaxi();
+                return guardOnePlusCharge(isRed);
             }
             
             else if(routine == AutoRoutine.OnePickupCharge)
             {
-                return guardTaxi();
+                return guardOnePickupCharge(isRed);
             }
 
             else if(routine == AutoRoutine.OnePlusOne)
             {
-                return guardTaxi();
+                return guardOnePlusOne(isRed);
             }
         }
         return new PositionStartingTask(0.0, 0.0, 0.0);
@@ -179,19 +179,6 @@ public class AutonomousRoutineSelector
             new FollowPathTask("LoadTaxi", false, true)
         );
     }
-
-    private static IControlTask guardTaxi()
-    {
-        return SequentialTask.Sequence(
-            new PositionStartingTask(
-                0.0, 
-                0.0, 
-                0.0, 
-                false, 
-                true),
-            new FollowPathTask("GuardTaxi", false, true)
-        );
-    }
     
     private static IControlTask loadTaxiCharge(boolean isRed)
     {
@@ -199,7 +186,7 @@ public class AutonomousRoutineSelector
             new PositionStartingTask(
                 isRed ? TuningConstants.LoadEdgeStartX : -TuningConstants.LoadEdgeStartX, 
                 TuningConstants.LoadEdgeY,
-                180.0, 
+                isRed ? 0.0 : 180.0, 
                 false, 
                 false),
             new FollowPathTask(isRed ? "LSToChargeRed" : "LSToChargeBlue", false, true),
@@ -213,7 +200,7 @@ public class AutonomousRoutineSelector
             new PositionStartingTask(
                 isRed ? TuningConstants.LoadEdgeStartX : -TuningConstants.LoadEdgeStartX, 
                 TuningConstants.LoadEdgeY,
-                180.0, 
+                isRed ? 0.0 : 180.0, 
                 false, 
                 false),
             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CONE, TuningConstants.ARM_UPPER_POSITION_HIGH_CONE),
@@ -232,7 +219,7 @@ public class AutonomousRoutineSelector
             new PositionStartingTask(
                 isRed ? TuningConstants.LoadEdgeStartX : -TuningConstants.LoadEdgeStartX, 
                 TuningConstants.LoadEdgeY,
-                180.0, 
+                isRed ? 0.0 : 180.0, 
                 false, 
                 false),
             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CONE, TuningConstants.ARM_UPPER_POSITION_HIGH_CONE),
@@ -256,7 +243,7 @@ public class AutonomousRoutineSelector
             new PositionStartingTask(
                 isRed ? TuningConstants.LoadEdgeStartX : -TuningConstants.LoadEdgeStartX, 
                 TuningConstants.LoadEdgeY,
-                180.0, 
+                isRed ? 0.0 : 180.0, 
                 false, 
                 false),
             ConcurrentTask.AllTasks(
@@ -292,7 +279,7 @@ public class AutonomousRoutineSelector
             new PositionStartingTask(
                 isRed ? TuningConstants.LoadEdgeStartX : -TuningConstants.LoadEdgeStartX, 
                 TuningConstants.LoadEdgeY,
-                180.0, 
+                isRed ? 0.0 : 180.0, 
                 false, 
                 false),
             ConcurrentTask.AllTasks(
@@ -353,7 +340,7 @@ public class AutonomousRoutineSelector
             new PositionStartingTask(
                 isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, 
                 TuningConstants.StartFiveGridY, 
-                0.0,
+                isRed ? 180 : 0.0,
                 false, true),
 
             new FollowPathTask(isRed ? "5ToChargeRed" : "5ToChargeBlue", false, true),
@@ -368,7 +355,7 @@ public class AutonomousRoutineSelector
             new PositionStartingTask(
                 isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, 
                 TuningConstants.StartFiveGridY, 
-                180.0, 
+                isRed ? 0.0 : 180.0, 
                 false, false),
 
             ConcurrentTask.AllTasks(
@@ -379,232 +366,165 @@ public class AutonomousRoutineSelector
                 )
             ),
 
-            new FollowPathTask("11to5", false, true),
+            new FollowPathTask(isRed ? "11To5Red" : "11To5Blue", false, true),
             new IntakeInTask(false),
 
             ConcurrentTask.AllTasks(
-                new FollowPathTask("5to11Turn", false, true),
+                new FollowPathTask(isRed ? "5To11TurnRed" : "5To11TurnBlue", false, true),
                 SequentialTask.Sequence(
                     new WaitTask(0.5),
                     new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
                 )
             ),
 
-            new FollowPathTask("11to13", false, true),
-            new FollowPathTask("TurnAround", false, false),
             new ChargeStationTask(false)
         );
     }
 
+    private static IControlTask guardTaxi()
+    {
+        return SequentialTask.Sequence(
+            new PositionStartingTask(
+                0.0, 
+                0.0, 
+                0.0, 
+                false, 
+                true),
+            new FollowPathTask("GuardTaxi", false, true)
+        );
+    }
 
+    private static IControlTask guardTaxiCharge(boolean isRed)
+    {
+        return SequentialTask.Sequence(
+            new PositionStartingTask(
+                isRed ? TuningConstants.GuardEdgeStartX : -TuningConstants.GuardEdgeStartX, 
+                TuningConstants.GuardEdgeY,
+                isRed ? 0 : 180.0, 
+                false, 
+                false),
+            new FollowPathTask(isRed ? "GSToChargeRed" : "GSToChargeBlue", false, true),
+            new ChargeStationTask(false)
+        );
+    }
+
+    private static IControlTask guardOnePlusTaxi(boolean isRed)
+    {
+        return SequentialTask.Sequence(
+            new PositionStartingTask(
+                isRed ? TuningConstants.GuardEdgeStartX : -TuningConstants.GuardEdgeStartX, 
+                TuningConstants.GuardEdgeY,
+                isRed ? 0 : 180.0, 
+                false, 
+                false),
+            new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CONE, TuningConstants.ARM_UPPER_POSITION_HIGH_CONE),
+            new FollowPathTask(isRed ? "GuardStartTo9Red" : "GuardStartTo9Blue", false, true),
+            new IntakeExtendTask(true),
+            new WaitTask(0.5),
+            new FollowPathTask(isRed ? "9To12Red" : "9To12Blue", false, true),
+            new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED),
+            new FollowPathTask(isRed ? "12To23Red" : "12To23Blue", false, false)
+        );
+    }
 
     private static IControlTask guardOnePlusCharge(boolean isRed)
     {
         return SequentialTask.Sequence(
-
             new PositionStartingTask(
-                TuningConstants.GuardEdgeStartX, 
-                TuningConstants.GuardEdgeY, 
-                180.0, 
-                false, false),
-
+                isRed ? TuningConstants.GuardEdgeStartX : -TuningConstants.GuardEdgeStartX, 
+                TuningConstants.GuardEdgeY,
+                isRed ? 0 : 180.0, 
+                false, 
+                false),
+            new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CONE, TuningConstants.ARM_UPPER_POSITION_HIGH_CONE),
+            new FollowPathTask(isRed ? "GuardStartTo9Red" : "GuardStartTo9Blue", false, true),
+            new IntakeExtendTask(true),
+            new WaitTask(0.5),
             ConcurrentTask.AllTasks(
-                new FollowPathTask(isRed ? "A" : "GStoGM", false, true) ,
-                new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_APPROACH, TuningConstants.ARM_UPPER_POSITION_APPROACH)
-            ),
-
-            ConcurrentTask.AllTasks(
-                new FollowPathTask("GMtoGE", false, true),
-                new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE, TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE)
-            ),
-            
-            new FollowPathTask("GEto8", false, true),
-            new IntakeInTask(false),
-
-            ConcurrentTask.AllTasks(
-                new FollowPathTask("8to12", false, true),
+                new FollowPathTask(isRed ? "9ToChargeRed" : "9ToChargeBlue", false, true),
                 SequentialTask.Sequence(
-                    new WaitTask(0.5),
-                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_APPROACH, TuningConstants.ARM_UPPER_POSITION_APPROACH)
+                    new WaitTask(1.0),
+                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
                 )
             ),
-
-            ConcurrentTask.AllTasks(
-                new FollowPathTask("12to19", false, true),
-                new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
-            ),
-
-            new FollowPathTask("19to13", false, true),
             new ChargeStationTask(false)
         );
     }
 
-    private static IControlTask guardOnePlusOne()
+    private static IControlTask guardOnePickupCharge(boolean isRed)
     {
         return SequentialTask.Sequence(
-
             new PositionStartingTask(
-                TuningConstants.GuardEdgeStartX, 
-                TuningConstants.GuardEdgeY, 
-                180.0, 
-                false, false),
-
+                isRed ? TuningConstants.GuardEdgeStartX : -TuningConstants.GuardEdgeStartX, 
+                TuningConstants.GuardEdgeY,
+                isRed ? 0 : 180.0, 
+                false, 
+                false),
             ConcurrentTask.AllTasks(
-                new FollowPathTask("GStoGM", false, true) ,
-                new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_APPROACH, TuningConstants.ARM_UPPER_POSITION_APPROACH)
+                new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CONE, TuningConstants.ARM_UPPER_POSITION_HIGH_CONE),
+                new FollowPathTask(isRed ? "GuardStartTo9Red" : "GuardStartTo9Blue", false, true)
             ),
-
-            ConcurrentTask.AllTasks(
-                new FollowPathTask("GMtoGE", false, true),
-                new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CONE, TuningConstants.ARM_UPPER_POSITION_HIGH_CONE)
-            ),
-            
-            new FollowPathTask("GEto9", false, true),
             new IntakeExtendTask(true),
-
+            new WaitTask(0.5),
             ConcurrentTask.AllTasks(
-                new FollowPathTask("9to12", false, true),
+                new FollowPathTask(isRed ? "9To12Red" : "9To12Blue", false, true),
                 SequentialTask.Sequence(
                     new WaitTask(0.5),
-                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_APPROACH, TuningConstants.ARM_UPPER_POSITION_APPROACH)
+                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
                 )
             ),
-
+            new FollowPathTask(isRed ? "12To23Red" : "12To23Blue", false, false),
+            new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP),
             ConcurrentTask.AllTasks(
-                new FollowPathTask("12to23", false, false),
-                SequentialTask.Sequence(
-                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED),
-                    new WaitTask(1.5),
-                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP)
-                )
+                new FollowPathTask(isRed ? "23To23Red" : "23To23Blue", false, false),
+                new IntakeGamePieceTask(3)
             ),
-
             ConcurrentTask.AllTasks(
-                new FollowPathTask("23to17", false, true),
-                new IntakeGamePieceTask(3.0)
+                new FollowPathTask(isRed ? "23ToChargeRed" : "23ToChargeBlue", false, false),
+                new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_LOWER_POSITION_STOWED)
             ),
-
-            ConcurrentTask.AllTasks(
-                new FollowPathTask("17to23", false, false),
-                new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
-            ),
-
-            ConcurrentTask.AllTasks(
-                new FollowPathTask("23to12", false, true),
-                SequentialTask.Sequence(
-                    new WaitTask(2.0),
-                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE, TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE)
-                )
-            ),
-
-
-            new FollowPathTask("12to8", false, true),
-            new IntakeInTask(false)
-        );
-    }
-
-    private static IControlTask loadOnePlusCharge()
-    {
-        return SequentialTask.Sequence(
-
-            new PositionStartingTask(
-                TuningConstants.LoadEdgeStartX, 
-                TuningConstants.LoadEdgeY, 
-                180.0, 
-                false, false),
-
-            ConcurrentTask.AllTasks(
-                new FollowPathTask("LStoLM", false, true) ,
-                new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_APPROACH, TuningConstants.ARM_UPPER_POSITION_APPROACH)
-            ),
-
-            ConcurrentTask.AllTasks(
-                new FollowPathTask("LMtoLE", false, true),
-                new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE, TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE)
-            ),
-            
-            new FollowPathTask("LEto2", false, true),
-            new IntakeInTask(false),
-
-            ConcurrentTask.AllTasks(
-                new FollowPathTask("2to12", false, true),
-                SequentialTask.Sequence(
-                    new WaitTask(0.5),
-                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_APPROACH, TuningConstants.ARM_UPPER_POSITION_APPROACH)
-                )
-            ),
-
-            ConcurrentTask.AllTasks(
-                new FollowPathTask("10to18", false, true),
-                new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
-            ),
-
-            new FollowPathTask("18to13", false, true),
             new ChargeStationTask(false)
         );
     }
 
-    private static IControlTask loadOnePlusOne()
+    private static IControlTask guardOnePlusOne(boolean isRed)
     {
         return SequentialTask.Sequence(
-
             new PositionStartingTask(
-                TuningConstants.LoadEdgeStartX, 
-                TuningConstants.LoadEdgeY, 
-                180.0, 
-                false, false),
-
+                isRed ? TuningConstants.GuardEdgeStartX : -TuningConstants.GuardEdgeStartX, 
+                TuningConstants.GuardEdgeY,
+                isRed ? 0 : 180.0, 
+                false, 
+                false),
             ConcurrentTask.AllTasks(
-                new FollowPathTask("LStoLM", false, true) ,
-                new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_APPROACH, TuningConstants.ARM_UPPER_POSITION_APPROACH)
+                new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CONE, TuningConstants.ARM_UPPER_POSITION_HIGH_CONE),
+                new FollowPathTask(isRed ? "GuardStartTo9Red" : "GuardStartTo9Blue", false, true)
             ),
-
-            ConcurrentTask.AllTasks(
-                new FollowPathTask("LMtoLE", false, true),
-                new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CONE, TuningConstants.ARM_UPPER_POSITION_HIGH_CONE)
-            ),
-            
-            new FollowPathTask("LEto1", false, true),
             new IntakeExtendTask(true),
-
+            new WaitTask(0.5),
             ConcurrentTask.AllTasks(
-                new FollowPathTask("1to10", false, true),
+                new FollowPathTask(isRed ? "9To12Red" : "9To12Blue", false, true),
                 SequentialTask.Sequence(
                     new WaitTask(0.5),
-                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_APPROACH, TuningConstants.ARM_UPPER_POSITION_APPROACH)
+                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
                 )
             ),
-
+            new FollowPathTask(isRed ? "12To23Red" : "12To23Blue", false, false),
+            new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP),
             ConcurrentTask.AllTasks(
-                new FollowPathTask("10to20", false, false),
-                SequentialTask.Sequence(
-                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED),
-                    new WaitTask(1.5),
-                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP)
-                )
+                new FollowPathTask(isRed ? "23To23Red" : "23To23Blue", false, false),
+                new IntakeGamePieceTask(3)
             ),
-
             ConcurrentTask.AllTasks(
-                new FollowPathTask("20to14", false, true),
-                new IntakeGamePieceTask(3.0)
+                new FollowPathTask(isRed ? "23To12Red" : "23To12Blue", false, false),
+                new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_APPROACH, TuningConstants.ARM_LOWER_POSITION_APPROACH)
             ),
-
             ConcurrentTask.AllTasks(
-                new FollowPathTask("14to20", false, false),
-                new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
+                new FollowPathTask(isRed ? "12To7Red" : "12To7Blue", false, true),
+                new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE, TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE)
             ),
-
-            ConcurrentTask.AllTasks(
-                new FollowPathTask("20to10", false, true),
-                SequentialTask.Sequence(
-                    new WaitTask(2.0),
-                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE, TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE)
-                )
-            ),
-
-
-            new FollowPathTask("10to2", false, true),
-            new IntakeInTask(false)
+            new IntakeInTask(false),
+            new WaitTask(0.5)
         );
     }        
 }
