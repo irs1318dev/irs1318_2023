@@ -166,7 +166,7 @@ public class PathPlannerTrajectoryGenerator
             pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(P10, ForwardOT, ForwardOT),
+                new PathPlannerWaypoint(P11, ForwardOT, ForwardOT),
                 new PathPlannerWaypoint(P13, ForwardOT, ForwardOT)),
             isRed ? "MidTaxiRed" : "MidTaxiBlue");
         
@@ -201,18 +201,28 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P22, BackwardOT, BackwardOT),
                 new PathPlannerWaypoint(P13, BackwardOT, BackwardOT)),
                 isRed ? "5ToChargeRed" : "5ToChargeBlue");
-
+        
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(P5, ForwardOT, ForwardOT),
-                new PathPlannerWaypoint(P11, ForwardOT, ForwardOT),
-                new PathPlannerWaypoint(P13, ForwardOT, ForwardOT),
-                new PathPlannerWaypoint(P22, BackwardOT, BackwardOT),
-                new PathPlannerWaypoint(P13, BackwardOT, BackwardOT)),
-                isRed ? "5ToChargeRed" : "5ToChargeBlue");
+                new PathPlannerWaypoint(P5, ForwardOT, BackwardOT),
+                new PathPlannerWaypoint(P11, ForwardOT, BackwardOT)),
+                isRed ? "5To11Red" : "5To11Blue");
+        
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(P11, BackwardOT, BackwardOT),
+                new PathPlannerWaypoint(P11, BackwardOT, BackwardOT)),
+                isRed ? "11To5Red" : "11To5Blue");
+                
+                
+                
+                
                 
         addTrajectory(
             trajectoryManager,
