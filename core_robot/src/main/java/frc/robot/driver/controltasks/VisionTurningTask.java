@@ -94,7 +94,7 @@ public class VisionTurningTask extends PIDTurnTaskBase
                 angle = this.visionManager.getAprilTagYaw();
                 if (angle != null)
                 {
-                    angle *= -1.0;
+                    angle = -1.0 * angle;
                 }
 
                 break;

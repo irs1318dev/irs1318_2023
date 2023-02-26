@@ -70,7 +70,7 @@ public class ChargeStationTaskv2 extends ControlTaskBase
         this.timer = this.getInjector().getInstance(ITimer.class);
 
         //calculate floating average of past 0.1 seconds, at an expected 50 samples per second
-        this.pitchRateAverageCalculator = new FloatingAverageCalculator(this.timer, 0.1, 50);
+        this.pitchRateAverageCalculator = new FloatingAverageCalculator(this.timer, 0.25, 50);
         this.pitch = this.imuManager.getPitch();
 
         //floating average of past 0.1 seconds of pitch rate
@@ -98,6 +98,7 @@ public class ChargeStationTaskv2 extends ControlTaskBase
         double currTime = this.timer.get();
 
         this.pitch = this.imuManager.getPitch();
+        this.pitchRateAverage = this.pitchRateAverageCalculator.update(this.imuManager.getPitchRate());
 
         // if previous pitch log time was at least 0.02 secs ago then set pitch log time as current time, and log the new pitch
         if (currTime - this.prevPitchLogTime >= 0.02)
@@ -141,29 +142,28 @@ public class ChargeStationTaskv2 extends ControlTaskBase
         }
         else if (this.currentState == State.Balancing)
         {
-            if ((TuningConstants.CHARGE_STATION_ACCEPTABLE_PITCH_DIFF_V2 >= this.pitchRateAverage) && 
-                (Math.abs(this.pitch) <= TuningConstants.CHARGE_STATION_PITCH_VARIATION))
+            if ((Math.abs(this.pitchRateAverage) <= TuningConstants.CHARGE_STATION_ACCEPTABLE_PITCH_DIFF_V2) &&
+                (Math.abs(this.pitch) <= TuningConstants.CHARGE_STATION_PITCH_VARIATION_V2))
             {
                 this.currentState = State.Completed;
             }
         }
 
+        System.out.println(this.currentState);
         switch (this.currentState)
         {
             case Balancing:
-                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_BALANCING_SPEED);
-
                 // if the pitch diff over the past 0.1 seconds is greater than the acceptable diff
-                if (TuningConstants.CHARGE_STATION_ACCEPTABLE_PITCH_DIFF_V2 >= this.pitchRateAverage)
+                if (Math.abs(this.pitchRateAverage) <= TuningConstants.CHARGE_STATION_ACCEPTABLE_PITCH_DIFF_V2)
                 {
                     // if negative pitch, move forward
                     if (this.pitch < 0)
                     {
-                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_BALANCING_SPEED);
+                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_BALANCING_SPEED_V2);
                     }
                     else // if (this.pitch > 0)
                     {
-                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, -TuningConstants.CHARGE_STATION_BALANCING_SPEED);
+                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, -TuningConstants.CHARGE_STATION_BALANCING_SPEED_V2);
                     }
                 }
                 else // if pitch diff is within acceptable range, then pause.
@@ -174,11 +174,11 @@ public class ChargeStationTaskv2 extends ControlTaskBase
                 break;
 
             case Climbing:
-                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_CLIMBING_SPEED * this.reverse);
+                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_CLIMBING_SPEED_V2 * this.reverse);
                 break;
 
             case Starting:
-                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_STARTING_SPEED * this.reverse);
+                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_STARTING_SPEED_V2 * this.reverse);
                 break;
 
             default:

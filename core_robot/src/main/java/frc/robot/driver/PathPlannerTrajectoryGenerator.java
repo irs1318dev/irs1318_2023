@@ -21,8 +21,8 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(0.0, 0.0, 180.0, 0.0),
-                new PathPlannerWaypoint(-6.0, 0.0, 180.0, 0.0)),
-                "goBackwards6inches");
+                new PathPlannerWaypoint(-12.0, 0.0, 180.0, 0.0)),
+                "goBackwards1foot");
 
         // Sample/Testing Paths
         addTrajectory(
