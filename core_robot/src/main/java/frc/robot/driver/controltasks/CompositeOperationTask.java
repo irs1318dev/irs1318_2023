@@ -101,6 +101,7 @@ public abstract class CompositeOperationTask extends UpdateCycleTask
     @Override
     public void update()
     {
+        super.update();
         for (DigitalOperation op : this.possibleOperations)
         {
             this.setDigitalOperationState(op, op == this.toPerform);

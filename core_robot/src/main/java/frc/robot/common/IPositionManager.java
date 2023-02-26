@@ -12,5 +12,5 @@ public interface IPositionManager extends IMechanism
      * Retrieve the current angle (counter-clockwise) in degrees
      * @return the current angle in degrees
      */
-    double getAngle();
+    double getYaw();
 }

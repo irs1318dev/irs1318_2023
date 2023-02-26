@@ -3,10 +3,19 @@ package frc.robot.driver;
 public enum DigitalOperation implements IOperation
 {
     PositionResetFieldOrientation,
-    PositionResetRobotPitch,
+    PositionResetRobotLevel,
 
     // Driver interaction operations
     ForceLightDriverRumble,
+    CubeWantedFromSubstation,
+    ConeWantedFromSubstation,
+    Rainbow, // for testing
+    //FireFlame, // for testing
+    Purple, // for testing
+    Red, // for testing
+    Blue, // for testing
+    Green, // for testing
+    Yellow, // for testing
 
     // Vision operations:
     VisionForceDisable,
@@ -42,16 +51,4 @@ public enum DigitalOperation implements IOperation
     ArmEnableSimpleMode,
     ArmDisableSimpleMode,
     ArmForceReset,
-
-    // Indicator Light Manager
-    CubeWantedFromSubstation,
-    ConeWantedFromSubstation,
-
-    Rainbow,
-    //FireFlame,
-    Purple,
-    Red,
-    Blue,
-    Green,
-    Yellow,
 }

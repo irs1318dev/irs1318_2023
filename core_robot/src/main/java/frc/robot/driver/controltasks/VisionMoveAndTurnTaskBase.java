@@ -114,7 +114,7 @@ public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
                     break;
 
                 case AprilTagStrafe:
-                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, desiredVelocity);
+                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, -desiredVelocity);
                     break;
 
                 default:
@@ -155,9 +155,16 @@ public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
                 break;
 
             case Forward:
+                if (offset > TuningConstants.MAX_VISION_ACCEPTABLE_FORWARD_DISTANCE)
+                {
+                    return false;
+                }
+
+                break;
+            
             case AprilTagStrafe:
             default:
-                if (offset > TuningConstants.MAX_VISION_ACCEPTABLE_FORWARD_DISTANCE)
+                if (offset > TuningConstants.MAX_VISION_ACCEPTABLE_STRAFE_DISTANCE)
                 {
                     return false;
                 }

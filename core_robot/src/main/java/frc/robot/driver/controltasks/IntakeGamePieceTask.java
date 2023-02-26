@@ -62,12 +62,10 @@ public class IntakeGamePieceTask extends ControlTaskBase
     @Override
     public void update()
     {
-        if (this.state == IntakeState.Intake)
+        if (this.state == IntakeState.Intake &&
+            this.arm.isThroughBeamBroken())
         {
-            if (this.arm.isThroughBeamBroken())
-            {
-                this.state = IntakeState.Close;
-            }
+            this.state = IntakeState.Close;
         }
         else if (this.state == IntakeState.Close)
         {

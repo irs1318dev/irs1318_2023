@@ -60,7 +60,7 @@ public class TuningConstants
     public static final double FarChargeStationInBetweenX = TuningConstants.FarChargeStationX - 30.0; // 30 inches away from last point to allow for turning
     public static final double GroundPiecesX = 47.36; // On ground pieces
     public static final double LoadEdgeStartX = 214.86;
-    public static final double GuardEdgeStartX = 193.61;    
+    public static final double GuardEdgeStartX = 193.61;
 
     // April tag array by ids
     // (xPosition, yPosition, orientation)
@@ -94,6 +94,7 @@ public class TuningConstants
 
     // Acceptable vision distance from tape in inches (as measured by vision system)
     public static final double MAX_VISION_ACCEPTABLE_FORWARD_DISTANCE = 1.75;
+    public static final double MAX_VISION_ACCEPTABLE_STRAFE_DISTANCE = 0.5;
 
     // Acceptable vision distance from tape in angles 
     public static final double MAX_VISION_ACCEPTABLE_MOVING_RR_ANGLE_ERROR = 4.0;
@@ -389,7 +390,7 @@ public class TuningConstants
     public static final double ARM_NEAR_FULL_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.9; // in inches
     public static final double ARM_NEAR_FULL_RETRACTED_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.1; // in inches
 
-    public static final double ARM_UPPER_MAX_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.9; // in inches
+    public static final double ARM_UPPER_MAX_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 1.0; // in inches
     public static final double ARM_LOWER_MAX_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 1.0; // in inches
 
     public static final double ARM_RETRACTION_MAX_TIME = 0.7;
@@ -457,20 +458,20 @@ public class TuningConstants
     public static final double ARM_UPPER_POSITION_GROUND_PLACING = 1650.0;
     public static final double ARM_LOWER_POSITION_MIDDLE_CONE = 7550.0; 
     public static final double ARM_UPPER_POSITION_MIDDLE_CONE = 4750.0;
-    public static final double ARM_LOWER_POSITION_MIDDLE_CUBE = 5800.0; 
-    public static final double ARM_UPPER_POSITION_MIDDLE_CUBE = 4300.0;
-    public static final double ARM_LOWER_POSITION_HIGH_CONE = 2950.0;
-    public static final double ARM_UPPER_POSITION_HIGH_CONE = 7400.0;
+    public static final double ARM_LOWER_POSITION_MIDDLE_CUBE = 5775.0; 
+    public static final double ARM_UPPER_POSITION_MIDDLE_CUBE = 3800.0;
+    public static final double ARM_LOWER_POSITION_HIGH_CONE = 3210.0;
+    public static final double ARM_UPPER_POSITION_HIGH_CONE = 7600.0;
     public static final double ARM_LOWER_POSITION_HIGH_CUBE = 4000.0;
     public static final double ARM_UPPER_POSITION_HIGH_CUBE = 6200.0;
-    public static final double ARM_LOWER_POSITION_GROUND_PICKUP = 1950.0;
-    public static final double ARM_UPPER_POSITION_GROUND_PICKUP = 1900.0;
+    public static final double ARM_LOWER_POSITION_GROUND_PICKUP = 2000.0;
+    public static final double ARM_UPPER_POSITION_GROUND_PICKUP = 1550.0;
     public static final double ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP = 3350.0;
     public static final double ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP = 6750.0;
     public static final double ARM_LOWER_POSITION_CUBE_SUBSTATION_PICKUP = 6750.0;
     public static final double ARM_UPPER_POSITION_CUBE_SUBSTATION_PICKUP = 3350.0;
     public static final double ARM_LOWER_POSITION_APPROACH = HardwareConstants.ARM_FULL_EXTENSION_TICKS;
-    public static final double ARM_UPPER_POSITION_APPROACH = 3000.0;
+    public static final double ARM_UPPER_POSITION_APPROACH = 4100.0;
     public static final double ARM_LOWER_POSITION_CONE_UPRIGHTING_MACRO = TuningConstants.ARM_LOWER_POSITION_GROUND_PLACING;
     public static final double ARM_UPPER_POSITION_CONE_UPRIGHTING_MACRO = TuningConstants.ARM_UPPER_POSITION_GROUND_PLACING;
 
@@ -485,10 +486,14 @@ public class TuningConstants
     public static final double CHARGE_STATION_START_TRANSITION_PITCH = 5.0;
     public static final double CHARGE_STATION_CLIMBING_TRANSITION_PITCH = 13;
     public static final double CHARGE_STATION_CLIMBING_TRANSITION_ACCEPTABLE_VARIATION = 0.3;
-    public static final double CHARGE_STATION_CLIMBING_TRANSITION_WAIT_DURATION = 1.35;
+    public static final double CHARGE_STATION_CLIMBING_TRANSITION_WAIT_DURATION = 1.5;
 
     //Version 2 constants
-    public static final double CHARGE_STATION_ACCEPTABLE_PITCH_DIFF_V2 = -4;
+    public static final double CHARGE_STATION_PITCH_VARIATION_V2 = 1.0;
+    public static final double CHARGE_STATION_ACCEPTABLE_PITCH_DIFF_V2 = 3.0;
+    public static final double CHARGE_STATION_STARTING_SPEED_V2 = 0.5;
+    public static final double CHARGE_STATION_CLIMBING_SPEED_V2 = 0.225;
+    public static final double CHARGE_STATION_BALANCING_SPEED_V2 = 0.08;
 
     //ChargeStationTaskGyro (owned by Calvin)
     public static final double CHARGE_STATION_2_PITCH_VARIATION = 0.3;

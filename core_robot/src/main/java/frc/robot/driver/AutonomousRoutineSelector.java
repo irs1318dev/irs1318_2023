@@ -65,97 +65,117 @@ public class AutonomousRoutineSelector
 
         boolean isRed = this.driverStation.getAlliance() == Alliance.Red;
 
-        this.logger.logString(LoggingKey.AutonomousSelection, startPosition.toString() + "." + routine.toString());
+        this.logger.logString(LoggingKey.AutonomousSelection, startPosition.toString() + "." + routine.toString() + "(" + (isRed ? "red" : "blue") + ")");
 
-        if(startPosition == StartPosition.Load)
+        if (startPosition == StartPosition.Load)
         {
-            if(routine == AutoRoutine.Taxi)
+            if (routine == AutoRoutine.Taxi)
             {
                 return loadTaxi();
             }
-
-            else if(routine == AutoRoutine.TaxiCharge)
+            else if (routine == AutoRoutine.TaxiCharge)
             {
                 return loadTaxiCharge(isRed);
             }
-
-            else if(routine == AutoRoutine.OnePlusTaxi)
+            else if (routine == AutoRoutine.OnePlusTaxi)
             {
                 return loadOnePlusTaxi(isRed);
             }
-
-            else if(routine == AutoRoutine.OnePlusCharge)
+            else if (routine == AutoRoutine.OnePlusCharge)
             {
                 return loadOnePlusCharge(isRed);
             }
-
-            else if(routine == AutoRoutine.OnePickupCharge)
+            else if (routine == AutoRoutine.OnePickupCharge)
             {
                 return loadOnePickupCharge(isRed);
             }
-
-            else if(routine == AutoRoutine.OnePlusOne)
+            else if (routine == AutoRoutine.OnePlusOne)
             {
                 return loadOnePlusOne(isRed);
             }
+            else
+            {
+                return ConcurrentTask.AllTasks(
+                    new ResetLevelTask(),
+                    new PositionStartingTask(
+                        isRed ? TuningConstants.LoadEdgeStartX : -TuningConstants.LoadEdgeStartX,
+                        TuningConstants.LoadEdgeY,
+                        isRed ? 0.0 : 180.0,
+                        false,
+                        false));
+            }
         }
-
-        else if(startPosition == StartPosition.Mid)
+        else if (startPosition == StartPosition.Mid)
         {
-            if(routine == AutoRoutine.Taxi)
+            if (routine == AutoRoutine.Taxi)
             {
                 return midTaxi(isRed);
             }
-            
-            else if(routine == AutoRoutine.Charge)
+            else if (routine == AutoRoutine.Charge)
             {
                 return midCharge(isRed);
             }
-
-            else if(routine == AutoRoutine.TaxiCharge)
+            else if (routine == AutoRoutine.TaxiCharge)
             {
                 return midTaxiCharge(isRed);
             }
-
-            else if(routine == AutoRoutine.OnePlusCharge)
+            else if (routine == AutoRoutine.OnePlusCharge)
             {
                 return midOnePlusCharge(isRed);
             }
+            else
+            {
+                return ConcurrentTask.AllTasks(
+                    new ResetLevelTask(),
+                    new PositionStartingTask(
+                        isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX,
+                        TuningConstants.StartFiveGridY,
+                        isRed ? 180 : 0.0,
+                        false,
+                        false));
+            }
         }
-
-        else if(startPosition == StartPosition.Guard)
+        else if (startPosition == StartPosition.Guard)
         {
-            if(routine == AutoRoutine.Taxi)
+            if (routine == AutoRoutine.Taxi)
             {
                 return guardTaxi();
             }
-
-            else if(routine == AutoRoutine.TaxiCharge)
+            else if (routine == AutoRoutine.TaxiCharge)
             {
                 return guardTaxiCharge(isRed);
             }
-            
-            else if(routine == AutoRoutine.OnePlusTaxi)
+            else if (routine == AutoRoutine.OnePlusTaxi)
             {
                 return guardOnePlusTaxi(isRed);
             }
-
-            else if(routine == AutoRoutine.OnePlusCharge)
+            else if (routine == AutoRoutine.OnePlusCharge)
             {
                 return guardOnePlusCharge(isRed);
             }
-            
-            else if(routine == AutoRoutine.OnePickupCharge)
+            else if (routine == AutoRoutine.OnePickupCharge)
             {
                 return guardOnePickupCharge(isRed);
             }
-
-            else if(routine == AutoRoutine.OnePlusOne)
+            else if (routine == AutoRoutine.OnePlusOne)
             {
                 return guardOnePlusOne(isRed);
             }
+            else
+            {
+                return ConcurrentTask.AllTasks(
+                    new ResetLevelTask(),
+                    new PositionStartingTask(
+                        isRed ? TuningConstants.GuardEdgeStartX : -TuningConstants.GuardEdgeStartX,
+                        TuningConstants.GuardEdgeY,
+                        isRed ? 0 : 180.0,
+                        false,
+                        false),
+                    new ResetLevelTask());
+            }
         }
-        return new PositionStartingTask(0.0, 0.0, 0.0);
+
+        return GetFillerRoutine();
     }
 
     /**
@@ -170,25 +190,29 @@ public class AutonomousRoutineSelector
     private static IControlTask loadTaxi()
     {
         return SequentialTask.Sequence(
-            new PositionStartingTask(
-                0.0, 
-                0.0, 
-                0.0, 
-                false, 
-                true),
+            ConcurrentTask.AllTasks(
+                new ResetLevelTask(),
+                new PositionStartingTask(
+                    0.0,
+                    0.0,
+                    0.0,
+                    false,
+                    true)),
             new FollowPathTask("LoadTaxi", false, true)
         );
     }
-    
+
     private static IControlTask loadTaxiCharge(boolean isRed)
     {
         return SequentialTask.Sequence(
-            new PositionStartingTask(
-                isRed ? TuningConstants.LoadEdgeStartX : -TuningConstants.LoadEdgeStartX, 
-                TuningConstants.LoadEdgeY,
-                isRed ? 0.0 : 180.0, 
-                false, 
-                false),
+            ConcurrentTask.AllTasks(
+                new ResetLevelTask(),
+                new PositionStartingTask(
+                    isRed ? TuningConstants.LoadEdgeStartX : -TuningConstants.LoadEdgeStartX,
+                    TuningConstants.LoadEdgeY,
+                    isRed ? 0.0 : 180.0,
+                    false,
+                    false)),
             new FollowPathTask(isRed ? "LSToChargeRed" : "LSToChargeBlue", false, true),
             new ChargeStationTask(false)
         );
@@ -197,12 +221,14 @@ public class AutonomousRoutineSelector
     private static IControlTask loadOnePlusTaxi(boolean isRed)
     {
         return SequentialTask.Sequence(
-            new PositionStartingTask(
-                isRed ? TuningConstants.LoadEdgeStartX : -TuningConstants.LoadEdgeStartX, 
-                TuningConstants.LoadEdgeY,
-                isRed ? 0.0 : 180.0, 
-                false, 
-                false),
+            ConcurrentTask.AllTasks(
+                new ResetLevelTask(),
+                new PositionStartingTask(
+                    isRed ? TuningConstants.LoadEdgeStartX : -TuningConstants.LoadEdgeStartX,
+                    TuningConstants.LoadEdgeY,
+                    isRed ? 0.0 : 180.0,
+                    false,
+                    false)),
             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CONE, TuningConstants.ARM_UPPER_POSITION_HIGH_CONE),
             new FollowPathTask(isRed ? "LoadStartTo1Red" : "LoadStartTo1Blue", false, true),
             new IntakeExtendTask(true),
@@ -216,12 +242,14 @@ public class AutonomousRoutineSelector
     private static IControlTask loadOnePlusCharge(boolean isRed)
     {
         return SequentialTask.Sequence(
-            new PositionStartingTask(
-                isRed ? TuningConstants.LoadEdgeStartX : -TuningConstants.LoadEdgeStartX, 
-                TuningConstants.LoadEdgeY,
-                isRed ? 0.0 : 180.0, 
-                false, 
-                false),
+            ConcurrentTask.AllTasks(
+                new ResetLevelTask(),
+                new PositionStartingTask(
+                    isRed ? TuningConstants.LoadEdgeStartX : -TuningConstants.LoadEdgeStartX,
+                    TuningConstants.LoadEdgeY,
+                    isRed ? 0.0 : 180.0,
+                    false,
+                    false)),
             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CONE, TuningConstants.ARM_UPPER_POSITION_HIGH_CONE),
             new FollowPathTask(isRed ? "LoadStartTo1Red" : "LoadStartTo1Blue", false, true),
             new IntakeExtendTask(true),
@@ -240,12 +268,14 @@ public class AutonomousRoutineSelector
     private static IControlTask loadOnePickupCharge(boolean isRed)
     {
         return SequentialTask.Sequence(
-            new PositionStartingTask(
-                isRed ? TuningConstants.LoadEdgeStartX : -TuningConstants.LoadEdgeStartX, 
-                TuningConstants.LoadEdgeY,
-                isRed ? 0.0 : 180.0, 
-                false, 
-                false),
+            ConcurrentTask.AllTasks(
+                new ResetLevelTask(),
+                new PositionStartingTask(
+                    isRed ? TuningConstants.LoadEdgeStartX : -TuningConstants.LoadEdgeStartX,
+                    TuningConstants.LoadEdgeY,
+                    isRed ? 0.0 : 180.0,
+                    false,
+                    false)),
             ConcurrentTask.AllTasks(
                 new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CONE, TuningConstants.ARM_UPPER_POSITION_HIGH_CONE),
                 new FollowPathTask(isRed ? "LoadStartTo1Red" : "LoadStartTo1Blue", false, true)
@@ -276,12 +306,14 @@ public class AutonomousRoutineSelector
     private static IControlTask loadOnePlusOne(boolean isRed)
     {
         return SequentialTask.Sequence(
-            new PositionStartingTask(
-                isRed ? TuningConstants.LoadEdgeStartX : -TuningConstants.LoadEdgeStartX, 
-                TuningConstants.LoadEdgeY,
-                isRed ? 0.0 : 180.0, 
-                false, 
-                false),
+            ConcurrentTask.AllTasks(
+                new ResetLevelTask(),
+                new PositionStartingTask(
+                    isRed ? TuningConstants.LoadEdgeStartX : -TuningConstants.LoadEdgeStartX,
+                    TuningConstants.LoadEdgeY,
+                    isRed ? 0.0 : 180.0,
+                    false,
+                    false)),
             ConcurrentTask.AllTasks(
                 new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CONE, TuningConstants.ARM_UPPER_POSITION_HIGH_CONE),
                 new FollowPathTask(isRed ? "LoadStartTo1Red" : "LoadStartTo1Blue", false, true)
@@ -317,12 +349,14 @@ public class AutonomousRoutineSelector
     private static IControlTask midTaxi(boolean isRed)
     {
         return SequentialTask.Sequence(
-            new PositionStartingTask(
-                isRed ? TuningConstants.CloseChargeStationX : -TuningConstants.CloseChargeStationX, 
-                TuningConstants.ChargeStationY, 
-                0.0, 
-                false, 
-                true),
+            ConcurrentTask.AllTasks(
+                new ResetLevelTask(),
+                new PositionStartingTask(
+                    isRed ? TuningConstants.CloseChargeStationX : -TuningConstants.CloseChargeStationX,
+                    TuningConstants.ChargeStationY,
+                    0.0,
+                    false,
+                    true)),
             new FollowPathTask(isRed ? "MidTaxiRed" : "MidTaxiBlue", false, true)
         );
     }
@@ -337,11 +371,14 @@ public class AutonomousRoutineSelector
     private static IControlTask midTaxiCharge(boolean isRed)
     {
         return SequentialTask.Sequence(
-            new PositionStartingTask(
-                isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, 
-                TuningConstants.StartFiveGridY, 
-                isRed ? 180 : 0.0,
-                false, true),
+            ConcurrentTask.AllTasks(
+                new ResetLevelTask(),
+                new PositionStartingTask(
+                    isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX,
+                    TuningConstants.StartFiveGridY,
+                    isRed ? 180 : 0.0,
+                    false,
+                    false)),
 
             new FollowPathTask(isRed ? "5ToChargeRed" : "5ToChargeBlue", false, true),
             new ChargeStationTask(false)
@@ -351,18 +388,19 @@ public class AutonomousRoutineSelector
     private static IControlTask midOnePlusCharge(boolean isRed)
     {
         return SequentialTask.Sequence(
-
-            new PositionStartingTask(
-                isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, 
-                TuningConstants.StartFiveGridY, 
-                isRed ? 0.0 : 180.0, 
-                false, false),
+            ConcurrentTask.AllTasks(
+                new ResetLevelTask(),
+                new PositionStartingTask(
+                    isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX,
+                    TuningConstants.StartFiveGridY,
+                    isRed ? 0.0 : 180.0,
+                    false, false)),
 
             ConcurrentTask.AllTasks(
                 new FollowPathTask(isRed ? "5To11Red" : "11To5Blue", false, true),
                 SequentialTask.Sequence(
                     new WaitTask(0.5),
-                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE, TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE)   
+                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE, TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE)
                 )
             ),
 
@@ -384,12 +422,14 @@ public class AutonomousRoutineSelector
     private static IControlTask guardTaxi()
     {
         return SequentialTask.Sequence(
-            new PositionStartingTask(
-                0.0, 
-                0.0, 
-                0.0, 
-                false, 
-                true),
+            ConcurrentTask.AllTasks(
+                new ResetLevelTask(),
+                new PositionStartingTask(
+                    0.0,
+                    0.0,
+                    0.0,
+                    false,
+                    true)),
             new FollowPathTask("GuardTaxi", false, true)
         );
     }
@@ -397,12 +437,14 @@ public class AutonomousRoutineSelector
     private static IControlTask guardTaxiCharge(boolean isRed)
     {
         return SequentialTask.Sequence(
-            new PositionStartingTask(
-                isRed ? TuningConstants.GuardEdgeStartX : -TuningConstants.GuardEdgeStartX, 
-                TuningConstants.GuardEdgeY,
-                isRed ? 0 : 180.0, 
-                false, 
-                false),
+            ConcurrentTask.AllTasks(
+                new ResetLevelTask(),
+                new PositionStartingTask(
+                    isRed ? TuningConstants.GuardEdgeStartX : -TuningConstants.GuardEdgeStartX,
+                    TuningConstants.GuardEdgeY,
+                    isRed ? 0 : 180.0,
+                    false,
+                    false)),
             new FollowPathTask(isRed ? "GSToChargeRed" : "GSToChargeBlue", false, true),
             new ChargeStationTask(false)
         );
@@ -411,12 +453,14 @@ public class AutonomousRoutineSelector
     private static IControlTask guardOnePlusTaxi(boolean isRed)
     {
         return SequentialTask.Sequence(
-            new PositionStartingTask(
-                isRed ? TuningConstants.GuardEdgeStartX : -TuningConstants.GuardEdgeStartX, 
-                TuningConstants.GuardEdgeY,
-                isRed ? 0 : 180.0, 
-                false, 
-                false),
+            ConcurrentTask.AllTasks(
+                new ResetLevelTask(),
+                new PositionStartingTask(
+                    isRed ? TuningConstants.GuardEdgeStartX : -TuningConstants.GuardEdgeStartX,
+                    TuningConstants.GuardEdgeY,
+                    isRed ? 0 : 180.0,
+                    false,
+                    false)),
             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CONE, TuningConstants.ARM_UPPER_POSITION_HIGH_CONE),
             new FollowPathTask(isRed ? "GuardStartTo9Red" : "GuardStartTo9Blue", false, true),
             new IntakeExtendTask(true),
@@ -430,12 +474,14 @@ public class AutonomousRoutineSelector
     private static IControlTask guardOnePlusCharge(boolean isRed)
     {
         return SequentialTask.Sequence(
-            new PositionStartingTask(
-                isRed ? TuningConstants.GuardEdgeStartX : -TuningConstants.GuardEdgeStartX, 
-                TuningConstants.GuardEdgeY,
-                isRed ? 0 : 180.0, 
-                false, 
-                false),
+            ConcurrentTask.AllTasks(
+                new ResetLevelTask(),
+                new PositionStartingTask(
+                    isRed ? TuningConstants.GuardEdgeStartX : -TuningConstants.GuardEdgeStartX,
+                    TuningConstants.GuardEdgeY,
+                    isRed ? 0 : 180.0,
+                    false,
+                    false)),
             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CONE, TuningConstants.ARM_UPPER_POSITION_HIGH_CONE),
             new FollowPathTask(isRed ? "GuardStartTo9Red" : "GuardStartTo9Blue", false, true),
             new IntakeExtendTask(true),
@@ -454,12 +500,14 @@ public class AutonomousRoutineSelector
     private static IControlTask guardOnePickupCharge(boolean isRed)
     {
         return SequentialTask.Sequence(
-            new PositionStartingTask(
-                isRed ? TuningConstants.GuardEdgeStartX : -TuningConstants.GuardEdgeStartX, 
-                TuningConstants.GuardEdgeY,
-                isRed ? 0 : 180.0, 
-                false, 
-                false),
+            ConcurrentTask.AllTasks(
+                new ResetLevelTask(),
+                new PositionStartingTask(
+                    isRed ? TuningConstants.GuardEdgeStartX : -TuningConstants.GuardEdgeStartX,
+                    TuningConstants.GuardEdgeY,
+                    isRed ? 0 : 180.0,
+                    false,
+                    false)),
             ConcurrentTask.AllTasks(
                 new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CONE, TuningConstants.ARM_UPPER_POSITION_HIGH_CONE),
                 new FollowPathTask(isRed ? "GuardStartTo9Red" : "GuardStartTo9Blue", false, true)
@@ -490,12 +538,14 @@ public class AutonomousRoutineSelector
     private static IControlTask guardOnePlusOne(boolean isRed)
     {
         return SequentialTask.Sequence(
-            new PositionStartingTask(
-                isRed ? TuningConstants.GuardEdgeStartX : -TuningConstants.GuardEdgeStartX, 
-                TuningConstants.GuardEdgeY,
-                isRed ? 0 : 180.0, 
-                false, 
-                false),
+            ConcurrentTask.AllTasks(
+                new ResetLevelTask(),
+                new PositionStartingTask(
+                    isRed ? TuningConstants.GuardEdgeStartX : -TuningConstants.GuardEdgeStartX,
+                    TuningConstants.GuardEdgeY,
+                    isRed ? 0 : 180.0,
+                    false,
+                    false)),
             ConcurrentTask.AllTasks(
                 new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CONE, TuningConstants.ARM_UPPER_POSITION_HIGH_CONE),
                 new FollowPathTask(isRed ? "GuardStartTo9Red" : "GuardStartTo9Blue", false, true)
@@ -665,140 +715,140 @@ public class AutonomousRoutineSelector
 
 
 /*
-                                      .                                                             
-                                    .;+;+                                                           
-                                    .+;;'   `,+'.                                                   
-                                    ;';;+:..`` :+'+                                                 
-                                    ,'+`    .+;;;;;+                                                
-                                     ;,,, .+;;;;;'+++;                                              
-                                     ;' `+;;;;;#+'+'+''#:.                                          
-                                     '`+';;;'+;+;+++'''+'.                                          
-                                     #';;;;#';+'+'''+''+'                                           
-                                     ;;;;#;,+;;+;;;'''''':                                          
-                                     ';'++'.`+;;'';;''+'',                                          
-                                     :#'#+'``.'+++'#++'':`                                          
-                                      `';++##```##+.''.##                                           
-                                      +++#   #`#  `++++                                             
-                                      +'#+ # :#: # ##'+                                             
-                                      `#+#   +`+   #'#`                                             
-                                       :,.+,+,`:+,+..,                                              
-                                       `,:```,`,`.`;,                                               
-                                        :+.;``.``;.#;                                               
-                                        .'``'+'+'``'.                                               
-                                         ,````````..                                                
-                                          :```````:                                                 
-                                          +``.:,``'                                                 
-                                          :```````:                                                 
-                                           +`````+                                                  
-                                            ';+##                                                   
-                                            '```'                                                   
-                                           `'```'`                                                  
-                                         .+''''''''                                                 
-                                        +;;;;;;;;''#                                                
-                                       :       `   `:                                               
-                                      `,            '                                               
-                                      +              '                                              
-                                     ,;';,``.``.,,,:;#                                              
-                                     +;;;;;;;;;;;;;;;'                                              
-                                    ,';;;;;;;;;;;;;;;',                                             
-                                    +:;;;;;;';;;;;;;;;+                                             
-                                   `.   .:,;+;;:::;.``,                                             
-                                   :`       #,       `.`                                            
-                                   +       # ;        .;                                            
-                                  .;;,`    ,         `,+                                            
-                                  +;;;;;;''';;;;;;;';;';                                            
-                                  +;;;;;;;';;;;;;;;;;'';;                                           
-                                 `';;;;;;';;;;;;;;;;;';;+                                           
-                                 + `:;;;;+;;;;;;;;';'''::                                           
-                                 '     `:  ```````    ,  ,                                          
-                                :       '             ;  +                                          
-                                '`     ..             ,  ,                                          
-                               ,;;;;;..+,`        ```.':;',                                         
-                               +;;;;;;'+;;;;;;;;;;;;;;+;;;+                                         
-                               ';;;;;;++;;;;;;;;;;;;;;';;;+                                         
-                              `.:';;;;;#;;;;;;;;;;;;;;';;;;`                                        
-                              ;    `,; ',:;;';;';;;;;:;``  +                                        
-                              +      ; ;              ;    `                                        
-                              ;      : +              '    `;                                       
-                              ';:`` `` '              :`,:;;+                                       
-                             `';;;;'+  +,..```````..:;#;;;;;;.                                      
-                             `;;;;;;+  +;;;;;;;;;;;;;':';;;;;#                                      
-                             .;;;;;;+  ';;;;;;;;;;;;;;,';;;;` .                                     
-                             : `.;;'+  +;;;;;;;;;;;;;','.`    +                                     
-                             '      ;  +.,,;:;:;;;,..`: ,     ``                                    
-                             +      ,  '              : ;   .;'+                                    
-                             +.`   ``  +              ;  ;:;;;;':                                   
-                             ';;;';;`  +             .'  ;;;;;;;+                                   
-                             ';;;;;'   :+++#++##+#+''',   +;;;;.`.                                  
-                             +;;;;;'   +;;::;;;+:+;;'',   ,;;.   +                                  
-                            ``:;;;;+   +;;:;;;:+;+;;++;    +     .`                                 
-                             `   ``'   +;;;;;;;+;+;;'+;     ,   ;#,                                 
-                            .      ;   ';;;;;;;;;;;;++'     + .+``.;                                
-                            ``     ;   ';;;;;;+;';;;'+'      #`````:,                               
-                             +++;,:.   ':;''++;:';:;'';      +``````,`                              
-                             ,```,+    +;;';:;;+;;;;'';      +``````,+                              
-                            .``````:   ;:;;++';;;;;;';,      ,``:#``+`.                             
-                            ,``````'   `';;;;:;;;;;;+;`     '+``+:'`..'                             
-                            ,``````'    +;;;;;;;;;;;''     ;:'``#;;.`++                             
-                            ```````;    `;:;;;;;;;;;;#     ':'``++:+`+;                             
-                            ```'`.`;     +;;;;;;;;;;;+    :::#``' +#`';                             
-                            ,``'`:`#     `';;;;;;;;;;+    +:'.`,. ++`;;                             
-                            +`.``+`'     :#;;;;;;;;;;;`   +:# ,`  +;`.'                             
-                           ,.`+`.:.      ##;;;;;;;;;;;'   ,'`     ;:+#                              
-                           '`;.`+`#      ##+;;;;;;;;;;+          ,::;                               
-                           ,+,`:``,     :###;;;;;;;;;:'          +:;`                               
-                            '`,,`+      ';##';;;;;;;;;;.         +:#                                
-                             '+.+       +;;##;;;;;;;;;;'         ;:;                                
-                               `       :;;;+#;;;;;;;;;;+        ;::`                                
-                                       +;;;;#+;;;;;;;;;;        +:'                                 
-                                       ';;;;+#;;;;;;;;;;.       ;:'                                 
-                                      ,;;;;;;#;;;;;;;;;;+      +::.                                 
-                                      +;;;;;;'';;;;;;;;;'      +:+                                  
-                                     `;;;;;;;;#;;;;;;;;;;`    `;:+                                  
-                                     ,;;;;;;;;+;;;;;;;;;;+    ':;,                                  
-                                     +;;;;;;;;;+;;;;;;;;;'    +:+                                   
-                                    .;;;;;;;;;+,;;;;;;;;;;`   ;;+                                   
-                                    ';;;;;;;;;, ';;;;;;:;;,  +;:,                                   
-                                    ';;;;;;;;'  +;;;;;;;;;'  +:+                                    
-                                   ;;;;;;;;;;+  ,;;;;;;;;;+  ;:'                                    
-                                   +;;;;;;;;;    ';;;;;;;;;`;:;`                                    
-                                   ;;;;;;;;;+    +;;;;;;;;;+#:+                                     
-                                  ';;;;;;;;;:    ;;;;;;;;;;';:'                                     
-                                 `';;;;;;;:'      ';;;;;;;;;;:.                                     
-                                 .;;;;;;;;;+      +;;;;;;;;;'+                                      
-                                 +;;;;;;;;;       ';;;;;;;;;#+                                      
-                                `;;;;;;;;;+       `;;;;;;;;;;`                                      
-                                +;;;;;;;;;.        +;;;;;;;;;`                                      
-                                ';;;;;;;:'         ;;;;;;;;;;;                                      
-                               :;;;;;;;;;:         `;;;;;;;;;+                                      
-                               +;;;;;;;;;           ';;;;;;;;;`                                     
-                               ;;;;;;;;;+           ';;;;;;;;;:                                     
-                              ';;;;;;;;;;           ,;;;;;;;;;+                                     
-                              ':;;;;;;;'             +;;;;;;;;;                                     
-                             .;:;;;;;;;'             +;;;;;;;;;:                                    
-                             +;;;;;;;;;`             .;;;;;;;;;+                                    
-                            `;;;;;;;;;+               ;:;;;;;;;;`                                   
-                            ;;;;;;;;;;.               +;;;;;;;::.                                   
-                            ';;;;;;;;'`               :;;;;;;;;:+                                   
-                           :;;;;;;;;:'                ';;;;;;;;;'                                   
-                           ';;;;;;;;'`                +#;;;;;;;;;`                                  
-                          `;;;;;;;;;+                 '';;;;;;;;;+                                  
-                          +;;;;;;;;;.                '::;;;;;;;;;+                                  
-                          ;;;;;;;;;+                 #:'';;;;;;;;;`                                 
-                         .#;;;;;;;;'                `;:+;;;;;;;;;;;                                 
-                         ':'';;;;;;                 '::.,;;;;;;;;;+                                 
-                        +::::+';;;+                 ':'  +:;;;;;;;;`                                
-                       `;;;::::;#+:                `;:+  +;;;;;;;:;;      '#+,                      
-                       +#::::::::;'`               +:;,  `;;;;:;;'#';;;;;::;:'`                     
-                      ';:''::::::::#`              +:'    ';:;;+'::;;:;::::::''                     
-                      #+::;+':::::::'.            .:;+    '''+;::;:;:::;:::;':'                     
-                    `';+';;:;'';:::::':    '      +::.     +:::::::::::::;#;:#                      
-                    :+;#'.''##;#;:;;:::'+  #     `+;'      ;:;::::::::;'+;:'+                       
-                   '#;+". ` `+:;+:;::;::+'#+     +:;#     ';:::;:+#+';:::+.                        
-                   ';#''      ,+::+#';::;+'#+    ';::      #:;;'+';'''++:`                          
-                                '':::;'''#+     ,:;;`      #';:;;:+                                 
-                                 `:'++;;':       :++       .;;:;;#,                                 
-                                       `                    '':``                                   
+                                      .
+                                    .;+;+
+                                    .+;;'   `,+'.
+                                    ;';;+:..`` :+'+
+                                    ,'+`    .+;;;;;+
+                                     ;,,, .+;;;;;'+++;
+                                     ;' `+;;;;;#+'+'+''#:.
+                                     '`+';;;'+;+;+++'''+'.
+                                     #';;;;#';+'+'''+''+'
+                                     ;;;;#;,+;;+;;;'''''':
+                                     ';'++'.`+;;'';;''+'',
+                                     :#'#+'``.'+++'#++'':`
+                                      `';++##```##+.''.##
+                                      +++#   #`#  `++++
+                                      +'#+ # :#: # ##'+
+                                      `#+#   +`+   #'#`
+                                       :,.+,+,`:+,+..,
+                                       `,:```,`,`.`;,
+                                        :+.;``.``;.#;
+                                        .'``'+'+'``'.
+                                         ,````````..
+                                          :```````:
+                                          +``.:,``'
+                                          :```````:
+                                           +`````+
+                                            ';+##
+                                            '```'
+                                           `'```'`
+                                         .+''''''''
+                                        +;;;;;;;;''#
+                                       :       `   `:
+                                      `,            '
+                                      +              '
+                                     ,;';,``.``.,,,:;#
+                                     +;;;;;;;;;;;;;;;'
+                                    ,';;;;;;;;;;;;;;;',
+                                    +:;;;;;;';;;;;;;;;+
+                                   `.   .:,;+;;:::;.``,
+                                   :`       #,       `.`
+                                   +       # ;        .;
+                                  .;;,`    ,         `,+
+                                  +;;;;;;''';;;;;;;';;';
+                                  +;;;;;;;';;;;;;;;;;'';;
+                                 `';;;;;;';;;;;;;;;;;';;+
+                                 + `:;;;;+;;;;;;;;';'''::
+                                 '     `:  ```````    ,  ,
+                                :       '             ;  +
+                                '`     ..             ,  ,
+                               ,;;;;;..+,`        ```.':;',
+                               +;;;;;;'+;;;;;;;;;;;;;;+;;;+
+                               ';;;;;;++;;;;;;;;;;;;;;';;;+
+                              `.:';;;;;#;;;;;;;;;;;;;;';;;;`
+                              ;    `,; ',:;;';;';;;;;:;``  +
+                              +      ; ;              ;    `
+                              ;      : +              '    `;
+                              ';:`` `` '              :`,:;;+
+                             `';;;;'+  +,..```````..:;#;;;;;;.
+                             `;;;;;;+  +;;;;;;;;;;;;;':';;;;;#
+                             .;;;;;;+  ';;;;;;;;;;;;;;,';;;;` .
+                             : `.;;'+  +;;;;;;;;;;;;;','.`    +
+                             '      ;  +.,,;:;:;;;,..`: ,     ``
+                             +      ,  '              : ;   .;'+
+                             +.`   ``  +              ;  ;:;;;;':
+                             ';;;';;`  +             .'  ;;;;;;;+
+                             ';;;;;'   :+++#++##+#+''',   +;;;;.`.
+                             +;;;;;'   +;;::;;;+:+;;'',   ,;;.   +
+                            ``:;;;;+   +;;:;;;:+;+;;++;    +     .`
+                             `   ``'   +;;;;;;;+;+;;'+;     ,   ;#,
+                            .      ;   ';;;;;;;;;;;;++'     + .+``.;
+                            ``     ;   ';;;;;;+;';;;'+'      #`````:,
+                             +++;,:.   ':;''++;:';:;'';      +``````,`
+                             ,```,+    +;;';:;;+;;;;'';      +``````,+
+                            .``````:   ;:;;++';;;;;;';,      ,``:#``+`.
+                            ,``````'   `';;;;:;;;;;;+;`     '+``+:'`..'
+                            ,``````'    +;;;;;;;;;;;''     ;:'``#;;.`++
+                            ```````;    `;:;;;;;;;;;;#     ':'``++:+`+;
+                            ```'`.`;     +;;;;;;;;;;;+    :::#``' +#`';
+                            ,``'`:`#     `';;;;;;;;;;+    +:'.`,. ++`;;
+                            +`.``+`'     :#;;;;;;;;;;;`   +:# ,`  +;`.'
+                           ,.`+`.:.      ##;;;;;;;;;;;'   ,'`     ;:+#
+                           '`;.`+`#      ##+;;;;;;;;;;+          ,::;
+                           ,+,`:``,     :###;;;;;;;;;:'          +:;`
+                            '`,,`+      ';##';;;;;;;;;;.         +:#
+                             '+.+       +;;##;;;;;;;;;;'         ;:;
+                               `       :;;;+#;;;;;;;;;;+        ;::`
+                                       +;;;;#+;;;;;;;;;;        +:'
+                                       ';;;;+#;;;;;;;;;;.       ;:'
+                                      ,;;;;;;#;;;;;;;;;;+      +::.
+                                      +;;;;;;'';;;;;;;;;'      +:+
+                                     `;;;;;;;;#;;;;;;;;;;`    `;:+
+                                     ,;;;;;;;;+;;;;;;;;;;+    ':;,
+                                     +;;;;;;;;;+;;;;;;;;;'    +:+
+                                    .;;;;;;;;;+,;;;;;;;;;;`   ;;+
+                                    ';;;;;;;;;, ';;;;;;:;;,  +;:,
+                                    ';;;;;;;;'  +;;;;;;;;;'  +:+
+                                   ;;;;;;;;;;+  ,;;;;;;;;;+  ;:'
+                                   +;;;;;;;;;    ';;;;;;;;;`;:;`
+                                   ;;;;;;;;;+    +;;;;;;;;;+#:+
+                                  ';;;;;;;;;:    ;;;;;;;;;;';:'
+                                 `';;;;;;;:'      ';;;;;;;;;;:.
+                                 .;;;;;;;;;+      +;;;;;;;;;'+
+                                 +;;;;;;;;;       ';;;;;;;;;#+
+                                `;;;;;;;;;+       `;;;;;;;;;;`
+                                +;;;;;;;;;.        +;;;;;;;;;`
+                                ';;;;;;;:'         ;;;;;;;;;;;
+                               :;;;;;;;;;:         `;;;;;;;;;+
+                               +;;;;;;;;;           ';;;;;;;;;`
+                               ;;;;;;;;;+           ';;;;;;;;;:
+                              ';;;;;;;;;;           ,;;;;;;;;;+
+                              ':;;;;;;;'             +;;;;;;;;;
+                             .;:;;;;;;;'             +;;;;;;;;;:
+                             +;;;;;;;;;`             .;;;;;;;;;+
+                            `;;;;;;;;;+               ;:;;;;;;;;`
+                            ;;;;;;;;;;.               +;;;;;;;::.
+                            ';;;;;;;;'`               :;;;;;;;;:+
+                           :;;;;;;;;:'                ';;;;;;;;;'
+                           ';;;;;;;;'`                +#;;;;;;;;;`
+                          `;;;;;;;;;+                 '';;;;;;;;;+
+                          +;;;;;;;;;.                '::;;;;;;;;;+
+                          ;;;;;;;;;+                 #:'';;;;;;;;;`
+                         .#;;;;;;;;'                `;:+;;;;;;;;;;;
+                         ':'';;;;;;                 '::.,;;;;;;;;;+
+                        +::::+';;;+                 ':'  +:;;;;;;;;`
+                       `;;;::::;#+:                `;:+  +;;;;;;;:;;      '#+,
+                       +#::::::::;'`               +:;,  `;;;;:;;'#';;;;;::;:'`
+                      ';:''::::::::#`              +:'    ';:;;+'::;;:;::::::''
+                      #+::;+':::::::'.            .:;+    '''+;::;:;:::;:::;':'
+                    `';+';;:;'';:::::':    '      +::.     +:::::::::::::;#;:#
+                    :+;#'.''##;#;:;;:::'+  #     `+;'      ;:;::::::::;'+;:'+
+                   '#;+". ` `+:;+:;::;::+'#+     +:;#     ';:::;:+#+';:::+.
+                   ';#''      ,+::+#';::;+'#+    ';::      #:;;'+';'''++:`
+                                '':::;'''#+     ,:;;`      #';:;;:+
+                                 `:'++;;':       :++       .;;:;;#,
+                                       `                    '':``
 
 
 */

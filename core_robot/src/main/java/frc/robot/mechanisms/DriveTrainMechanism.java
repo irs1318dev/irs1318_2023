@@ -357,7 +357,7 @@ public class DriveTrainMechanism implements IMechanism
 
         double prevYaw = this.robotYaw;
         double prevTime = this.time;
-        this.robotYaw = this.imuManager.getAngle();
+        this.robotYaw = this.imuManager.getYaw();
         this.time = this.timer.get();
 
         this.deltaT = this.time - prevTime;
@@ -410,7 +410,7 @@ public class DriveTrainMechanism implements IMechanism
 
         if (this.driver.getDigital(DigitalOperation.PositionResetFieldOrientation))
         {
-            this.robotYaw = this.imuManager.getAngle();
+            this.robotYaw = this.imuManager.getYaw();
             this.desiredYaw = this.robotYaw;
             this.angle = 0.0;
         }

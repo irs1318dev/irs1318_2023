@@ -10,11 +10,21 @@ public class ConeFlipperExtendTask extends CompositeOperationTask
             DigitalOperation.ExtendRightConeFlipper,
         };
 
-    public ConeFlipperExtendTask(boolean left)
+    private final boolean neverEnd;
+
+    public ConeFlipperExtendTask(boolean left, boolean neverEnd)
     {
         super(
             left ? DigitalOperation.ExtendLeftConeFlipper : DigitalOperation.ExtendRightConeFlipper,
             ConeFlipperExtendTask.possibleOperations);
+
+        this.neverEnd = true;
+    }
+
+    @Override
+    public boolean hasCompleted()
+    {
+        return !this.neverEnd && super.hasCompleted();
     }
 }
 
