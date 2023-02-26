@@ -48,7 +48,6 @@ public class SmartDashboardSelectionManager
         this.routineChooser.addObject("One Plus Charge", AutoRoutine.OnePlusCharge);
         this.routineChooser.addObject("One Pickup Charge", AutoRoutine.OnePickupCharge);
         this.routineChooser.addObject("One Plus One", AutoRoutine.OnePlusOne);
-        
         networkTableProvider.addChooser("Auto Routine", this.routineChooser);
 
         this.positionChooser = networkTableProvider.getSendableChooser();

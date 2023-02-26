@@ -3,15 +3,15 @@ package frc.robot.driver.controltasks;
 import frc.robot.driver.*;
 
 /**
- * Task that resets the robot's pitch to be 0
+ * Task that resets the robot's pitch/roll to be 0
  * 
  */
-public class PitchResetTask extends UpdateCycleTask
+public class ResetLevelTask extends UpdateCycleTask
 {
     /**
-     * Initializes a new PitchResetTask
+     * Initializes a new ResetLevelTask
      */
-    public PitchResetTask()
+    public ResetLevelTask()
     {
         super(1);
     }
@@ -24,7 +24,7 @@ public class PitchResetTask extends UpdateCycleTask
     {
         super.begin();
 
-        this.setDigitalOperationState(DigitalOperation.PositionResetRobotPitch, true);
+        this.setDigitalOperationState(DigitalOperation.PositionResetRobotLevel, true);
     }
 
     /**
@@ -35,7 +35,7 @@ public class PitchResetTask extends UpdateCycleTask
     {
         super.update();
 
-        this.setDigitalOperationState(DigitalOperation.PositionResetRobotPitch, true);
+        this.setDigitalOperationState(DigitalOperation.PositionResetRobotLevel, true);
     }
 
     /**
@@ -46,6 +46,6 @@ public class PitchResetTask extends UpdateCycleTask
     {
         super.end();
 
-        this.setDigitalOperationState(DigitalOperation.PositionResetRobotPitch, false);
+        this.setDigitalOperationState(DigitalOperation.PositionResetRobotLevel, false);
     }
 }

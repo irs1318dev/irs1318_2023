@@ -874,14 +874,14 @@ public class ButtonMap implements IButtonMap
                Shift.None,
                ButtonType.Toggle,
                () -> SequentialTask.Sequence(
-                   new PitchResetTask(), //calibration
+                   new ResetLevelTask(), //calibration
                    new ChargeStationTaskv2(false), // false means charge station in front of robot
                    ConcurrentTask.AllTasks(
                        new PIDBrakeTask(),
                        new WaitTask(0.5))),
                new IOperation[]
                {
-                   DigitalOperation.PositionResetRobotPitch,
+                   DigitalOperation.PositionResetRobotLevel,
                    DigitalOperation.PositionResetFieldOrientation,
                    AnalogOperation.PositionStartingAngle,
                    AnalogOperation.DriveTrainMoveForward,
@@ -973,7 +973,7 @@ public class ButtonMap implements IButtonMap
             new IOperation[]
             {
                 DigitalOperation.PositionResetFieldOrientation,
-                DigitalOperation.PositionResetRobotPitch,
+                DigitalOperation.PositionResetRobotLevel,
                 AnalogOperation.PositionStartingAngle,
                 DigitalOperation.DriveTrainResetXYPosition,
                 AnalogOperation.DriveTrainStartingXPosition,
@@ -1050,7 +1050,7 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.ArmMMLowerPosition,
                 AnalogOperation.ArmMMUpperPosition,
                 DigitalOperation.PositionResetFieldOrientation,
-                DigitalOperation.PositionResetRobotPitch,
+                DigitalOperation.PositionResetRobotLevel,
                 AnalogOperation.PositionStartingAngle,
                 DigitalOperation.DriveTrainResetXYPosition,
                 AnalogOperation.DriveTrainStartingXPosition,
@@ -1108,7 +1108,7 @@ public class ButtonMap implements IButtonMap
         new IOperation[]
         {
             DigitalOperation.PositionResetFieldOrientation,
-            DigitalOperation.PositionResetRobotPitch,
+            DigitalOperation.PositionResetRobotLevel,
             AnalogOperation.PositionStartingAngle,
             DigitalOperation.DriveTrainResetXYPosition,
             AnalogOperation.DriveTrainStartingXPosition,
@@ -1160,7 +1160,7 @@ public class ButtonMap implements IButtonMap
         new IOperation[]
         {
             DigitalOperation.PositionResetFieldOrientation,
-            DigitalOperation.PositionResetRobotPitch,
+            DigitalOperation.PositionResetRobotLevel,
             AnalogOperation.PositionStartingAngle,
             DigitalOperation.DriveTrainResetXYPosition,
             AnalogOperation.DriveTrainStartingXPosition,

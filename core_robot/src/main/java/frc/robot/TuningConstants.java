@@ -60,7 +60,7 @@ public class TuningConstants
     public static final double FarChargeStationInBetweenX = TuningConstants.FarChargeStationX - 30.0; // 30 inches away from last point to allow for turning
     public static final double GroundPiecesX = 47.36; // On ground pieces
     public static final double LoadEdgeStartX = 214.86;
-    public static final double GuardEdgeStartX = 193.61;    
+    public static final double GuardEdgeStartX = 193.61;
 
     // April tag array by ids
     // (xPosition, yPosition, orientation)

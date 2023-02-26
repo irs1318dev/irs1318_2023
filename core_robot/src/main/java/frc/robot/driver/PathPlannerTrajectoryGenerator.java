@@ -91,10 +91,10 @@ public class PathPlannerTrajectoryGenerator
         // -x = 180 Towards the blue alliance
         // -y = -90 Towards the Guardrail
         // +y = 90 Towards Loading Zone
-        double ForwardOT = (isRed ? 180 : 0); //Turnary Operator For Forwards Orientation Or Forwards Tangent
-        double BackwardOT = (isRed ? 0 : 180); //Turnary Operator For Backwards Orientation Or Backwards Tangent
-        double Blue45_Red135OT = (isRed ? 135 : 45); //Turnary Operator For 45 Degrees On Red Or 135 Degrees On Blue, in terms of Orientation or Tangent
-        double Blue135_Red45OT = (isRed ? 45 : 135); //Turnary Operator For 135 Degrees On Red Or 45 Degrees On Blue, in terms of Orientation or Tangent
+        double ForwardOT = (isRed ? 180 : 0); // ternary operator For Forwards Orientation Or Forwards Tangent
+        double BackwardOT = (isRed ? 0 : 180); // ternary operator For Backwards Orientation Or Backwards Tangent
+        double Blue45_Red135OT = (isRed ? 135 : 45); // ternary operator For 45 Degrees On Red Or 135 Degrees On Blue, in terms of Orientation or Tangent
+        double Blue135_Red45OT = (isRed ? 45 : 135); // ternary operator For 135 Degrees On Red Or 45 Degrees On Blue, in terms of Orientation or Tangent
 
         //Vectors
         Point2d P1 = new Point2d(isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX, TuningConstants.StartOneGridY);; //StartOneGrid
@@ -127,9 +127,9 @@ public class PathPlannerTrajectoryGenerator
         Point2d LoadStart = new Point2d(isRed ? TuningConstants.LoadEdgeStartX : -TuningConstants.LoadEdgeStartX, TuningConstants.LoadEdgeY);
         Point2d GuardStart = new Point2d(isRed ? TuningConstants.GuardEdgeStartX : -TuningConstants.GuardEdgeStartX, TuningConstants.GuardEdgeY);
 
-        //2023 Paths
+        // 2023 Paths
 
-        //Test Path
+        // Test Path
         // addTrajectory(
         //     trajectoryManager,
         //     pathPlanner.buildTrajectory(
@@ -140,8 +140,8 @@ public class PathPlannerTrajectoryGenerator
         //     "LoadEdgeTo18");
 
         // ------------------------------- Actual Paths That should be Used --------------------------------------------
-        
-        // Does not need Turnary Operators, so we can put outside of isRed
+
+        // Does not need ternary operator, so we can put outside of isRed
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
@@ -150,8 +150,8 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(0, 0, ForwardOT, ForwardOT),
                 new PathPlannerWaypoint(65, 0, ForwardOT)),
             "GuardTaxi");
-        
-        // Does not need Turnary Operators, so we can put outside of isRed
+
+        // Does not need ternary operator, so we can put outside of isRed
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
@@ -160,7 +160,7 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(0, 0, ForwardOT, ForwardOT),
                 new PathPlannerWaypoint(48, 0, ForwardOT)),
             "LoadTaxi");
-        
+
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
@@ -169,7 +169,7 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P11, ForwardOT, ForwardOT),
                 new PathPlannerWaypoint(P13, ForwardOT, ForwardOT)),
             isRed ? "MidTaxiRed" : "MidTaxiBlue");
-        
+
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
@@ -179,7 +179,7 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P18, -Blue45_Red135OT, BackwardOT),
                 new PathPlannerWaypoint(P13, -90, BackwardOT)),
                 isRed ? "LSToChargeRed" : "LSToChargeBlue");
-        
+
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
@@ -189,7 +189,7 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P19, Blue45_Red135OT, BackwardOT),
                 new PathPlannerWaypoint(P13, 90, BackwardOT)),
                 isRed ? "GSToChargeRed" : "GSToChargeBlue");
-        
+
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
@@ -201,7 +201,7 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P22, BackwardOT, BackwardOT),
                 new PathPlannerWaypoint(P13, BackwardOT, BackwardOT)),
                 isRed ? "5ToChargeRed" : "5ToChargeBlue");
-        
+
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
@@ -210,7 +210,7 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P5, ForwardOT, BackwardOT),
                 new PathPlannerWaypoint(P11, ForwardOT, BackwardOT)),
                 isRed ? "5To11Red" : "5To11Blue");
-        
+
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
@@ -219,7 +219,7 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P11, BackwardOT, BackwardOT),
                 new PathPlannerWaypoint(P5, BackwardOT, BackwardOT)),
                 isRed ? "11To5Red" : "11To5Blue");
-                
+
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
@@ -228,10 +228,7 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P5, ForwardOT, BackwardOT),
                 new PathPlannerWaypoint(P11, ForwardOT, ForwardOT)),
                 isRed ? "5To11TurnRed" : "5To11TurnBlue");
-                        
-                
-                
-                
+
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
@@ -241,7 +238,7 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(GuardMid, BackwardOT, BackwardOT),
                 new PathPlannerWaypoint(P9, Blue135_Red45OT, BackwardOT)),
                 isRed ? "GuardStartTo9Red" : "GuardStartTo9Blue");
-        
+
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
@@ -270,7 +267,7 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P19, ForwardOT, BackwardOT),
                 new PathPlannerWaypoint(P23, ForwardOT, ForwardOT)),
                 isRed ? "12To23Red" : "12To23Blue");
-        
+
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
@@ -280,7 +277,7 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P17, ForwardOT, ForwardOT),
                 new PathPlannerWaypoint(P23, BackwardOT, ForwardOT)),
                 isRed ? "23To23Red" : "23To23Blue");
-        
+
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
@@ -300,7 +297,7 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P19, BackwardOT, BackwardOT),
                 new PathPlannerWaypoint(P12, BackwardOT, BackwardOT)),
                 isRed ? "23To12Red" : "23To12Blue");
-        
+
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
@@ -319,7 +316,7 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(LoadMid, BackwardOT, BackwardOT),
                 new PathPlannerWaypoint(P1, -Blue135_Red45OT, BackwardOT)),
                 isRed ? "LoadStartTo1Red" : "LoadStartTo1Blue");
-        
+
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
@@ -329,7 +326,7 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P18, -Blue45_Red135OT, BackwardOT),
                 new PathPlannerWaypoint(P13, -90, BackwardOT)),
                 isRed ? "1ToChargeRed" : "1ToChargeBlue");
-        
+
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
@@ -348,7 +345,7 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P18, ForwardOT, ForwardOT),
                 new PathPlannerWaypoint(P20, ForwardOT, ForwardOT)),
                 isRed ? "10To20Red" : "10To20Blue");
-        
+
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
@@ -378,7 +375,7 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P18, BackwardOT, ForwardOT),
                 new PathPlannerWaypoint(P10, BackwardOT, BackwardOT)),
                 isRed ? "20To10Red" : "20To10Blue");
-        
+
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
@@ -386,8 +383,7 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(P10, BackwardOT, BackwardOT),
                 new PathPlannerWaypoint(P3, -Blue135_Red45OT, BackwardOT)),
-            "10To3");
-
+            isRed ? "10To3Red" : "10To3Blue");
 
         // Random, Should Delete Soon!
         // addTrajectory(
@@ -401,7 +397,7 @@ public class PathPlannerTrajectoryGenerator
         //         new PathPlannerWaypoint(P18, BackwardOT, BackwardOT),
         //         new PathPlannerWaypoint(P13, BackwardOT, BackwardOT)),
         //     "LoadEdgeToChargeStationFar");
-        
+
         // addTrajectory(
         //     trajectoryManager,
         //     pathPlanner.buildTrajectory(
@@ -410,7 +406,7 @@ public class PathPlannerTrajectoryGenerator
         //         new PathPlannerWaypoint(LoadEdge, -90, BackwardOT),
         //         new PathPlannerWaypoint(P1, -90, BackwardOT)),
         //     "LoadEdgeTo1");
-        
+
         // addTrajectory(
         //     trajectoryManager,
         //     pathPlanner.buildTrajectory(
@@ -422,7 +418,7 @@ public class PathPlannerTrajectoryGenerator
         //         new PathPlannerWaypoint(P20, ForwardOT, ForwardOT),
         //         new PathPlannerWaypoint(P14, ForwardOT, ForwardOT)),
         //     "1To14");
-        
+
         // addTrajectory(
         //     trajectoryManager,
         //     pathPlanner.buildTrajectory(
@@ -433,7 +429,7 @@ public class PathPlannerTrajectoryGenerator
         //         new PathPlannerWaypoint(P18, BackwardOT, BackwardOT),
         //         new PathPlannerWaypoint(P10, BackwardOT, BackwardOT)),
         //     "14To10");
-        
+
         // addTrajectory(
         //     trajectoryManager,
         //     pathPlanner.buildTrajectory(
@@ -442,7 +438,6 @@ public class PathPlannerTrajectoryGenerator
         //         new PathPlannerWaypoint(P10, -160, BackwardOT),
         //         new PathPlannerWaypoint(P2, BackwardOT, BackwardOT)),
         //     "10To2");
-            
 
         // addTrajectory(
         //     trajectoryManager,
@@ -456,9 +451,7 @@ public class PathPlannerTrajectoryGenerator
         //         new PathPlannerWaypoint(P13, 90, BackwardOT)
         //         ),
         //     "GuardEdgeToChargeStationFar");
-        
-        
-}
+    }
 
     private static void addTrajectory(TrajectoryManager trajectoryManager, ITrajectory trajectory, String name)
     {
