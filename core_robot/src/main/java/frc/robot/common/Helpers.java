@@ -21,6 +21,13 @@ public class Helpers
         return Math.abs(value1 - value2) <= range;
     }
 
+    /**
+     * Clamps the value to be within the supported range
+     * @param value value to clamp
+     * @param minValue minimum value in the supported range
+     * @param maxValue maximum value in the supported range
+     * @return value clamped to one between min and max
+     */
     public static double EnforceRange(double value, double minValue, double maxValue)
     {
         if (value > maxValue)
@@ -35,11 +42,25 @@ public class Helpers
         return value;
     }
 
+    /**
+     * Checks if the provided value is within the provided range
+     * @param value value to check
+     * @param minValue minimum value in the supported range
+     * @param maxValue maximum value in the supported range
+     * @return true if the value is between min and max, otherwise false
+     */
     public static boolean WithinRange(double value, double minValue, double maxValue)
     {
         return value >= minValue && value <= maxValue;
     }
 
+    /**
+     * Checks if the provided value is within a small delta of the expected value
+     * @param actualValue actual value to check
+     * @param expectedValue expected value to compare against
+     * @param acceptableDelta allowable difference to be considered within the range
+     * @return true if the actual value is within the acceptable range from the expected, otherwise false
+     */
     public static boolean WithinDelta(double actualValue, double expectedValue, double acceptableDelta)
     {
         return Helpers.WithinRange(actualValue, expectedValue - acceptableDelta, expectedValue + acceptableDelta);

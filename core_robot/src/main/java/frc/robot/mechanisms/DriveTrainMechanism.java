@@ -80,6 +80,10 @@ public class DriveTrainMechanism implements IMechanism
 
     private final Setpoint[] result;
 
+    private final SlewRateLimiter xVelocityLimiter;
+    private final SlewRateLimiter yVelocityLimiter;
+    private final SlewRateLimiter angularVelocityLimiter;
+
     private boolean firstRun;
 
     private boolean fieldOriented;
@@ -320,6 +324,39 @@ public class DriveTrainMechanism implements IMechanism
             this.result[i] = new Setpoint();
         }
 
+        if (TuningConstants.DRIVETRAIN_USE_TRANSLATIONAL_RATE_LIMITING)
+        {
+            this.xVelocityLimiter = new SlewRateLimiter(
+                this.timer,
+                TuningConstants.DRIVETRAIN_TRANSLATIONAL_VELOCITY_MAX_NEGATIVE_RATE,
+                TuningConstants.DRIVETRAIN_TRANSLATIONAL_VELOCITY_MAX_POSITIVE_RATE,
+                0.0);
+
+            this.yVelocityLimiter = new SlewRateLimiter(
+                this.timer,
+                TuningConstants.DRIVETRAIN_TRANSLATIONAL_VELOCITY_MAX_NEGATIVE_RATE,
+                TuningConstants.DRIVETRAIN_TRANSLATIONAL_VELOCITY_MAX_POSITIVE_RATE,
+                0.0);
+        }
+        else
+        {
+            this.xVelocityLimiter = null;
+            this.yVelocityLimiter = null;
+        }
+
+        if (TuningConstants.DRIVETRAIN_USE_ROTATIONAL_RATE_LIMITING)
+        {
+            this.angularVelocityLimiter = new SlewRateLimiter(
+                this.timer,
+                TuningConstants.DRIVETRAIN_ROTATIONAL_VELOCITY_MAX_NEGATIVE_RATE,
+                TuningConstants.DRIVETRAIN_ROTATIONAL_VELOCITY_MAX_POSITIVE_RATE,
+                0.0);
+        }
+        else
+        {
+            this.angularVelocityLimiter = null;
+        }
+
         this.time = 0.0;
         this.angle = 0.0;
         this.xPosition = 0.0;
@@ -506,6 +543,21 @@ public class DriveTrainMechanism implements IMechanism
             this.steerMotors[i].stop();
         }
 
+        if (this.xVelocityLimiter != null)
+        {
+            this.xVelocityLimiter.reset();
+        }
+
+        if (this.yVelocityLimiter != null)
+        {
+            this.yVelocityLimiter.reset();
+        }
+
+        if (this.angularVelocityLimiter != null)
+        {
+            this.angularVelocityLimiter.reset();
+        }
+
         this.xPosition = 0.0;
         this.yPosition = 0.0;
     }
@@ -650,6 +702,16 @@ public class DriveTrainMechanism implements IMechanism
                 centerVelocityForward = centerVelocityForwardRaw;
             }
 
+            if (this.xVelocityLimiter != null)
+            {
+                centerVelocityForward = this.xVelocityLimiter.update(centerVelocityForward);
+            }
+
+            if (this.yVelocityLimiter != null)
+            {
+                centerVelocityRight = this.xVelocityLimiter.update(centerVelocityRight);
+            }
+
             double forcedOmega = this.driver.getAnalog(AnalogOperation.DriveTrainSpinLeft) + this.driver.getAnalog(AnalogOperation.DriveTrainSpinRight);
             if (forcedOmega != TuningConstants.ZERO)
             {
@@ -662,6 +724,11 @@ public class DriveTrainMechanism implements IMechanism
                 else
                 {
                     omega *= TuningConstants.DRIVETRAIN_TURN_SCALE;
+                }
+
+                if (this.angularVelocityLimiter != null)
+                {
+                    omega = this.angularVelocityLimiter.update(omega);
                 }
             }
             else if (!useFieldOriented)
