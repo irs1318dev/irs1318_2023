@@ -13,6 +13,7 @@ public abstract class CompositeOperationTask extends UpdateCycleTask
     private final DigitalOperation[] possibleOperations;
     private final boolean timeoutMode;
     private final double timeout;
+    private final boolean runIndefinitely;
 
     private DigitalOperation toPerform;
     private ITimer timer;
@@ -22,11 +23,21 @@ public abstract class CompositeOperationTask extends UpdateCycleTask
      * Initializes a new CompositeOperationTask
      * @param toPerform the operation to perform by setting to true for duration
      * @param possibleOperations to set of linked operations that should be set to false for duration
-
      */
     protected CompositeOperationTask(DigitalOperation toPerform, DigitalOperation[] possibleOperations)
     {
-        this(toPerform, possibleOperations, false, 0.0);
+        this(toPerform, possibleOperations, false, 0.0, false);
+    }
+
+    /**
+     * Initializes a new CompositeOperationTask
+     * @param toPerform the operation to perform by setting to true for duration
+     * @param possibleOperations to set of linked operations that should be set to false for duration
+     * @param runIndefinitely whether to keep running indefinitely instead of for a single update cycle
+     */
+    protected CompositeOperationTask(DigitalOperation toPerform, DigitalOperation[] possibleOperations, boolean runIndefinitely)
+    {
+        this(toPerform, possibleOperations, false, 0.0, runIndefinitely);
     }
 
     /**
@@ -37,7 +48,7 @@ public abstract class CompositeOperationTask extends UpdateCycleTask
      */
     protected CompositeOperationTask(DigitalOperation toPerform, DigitalOperation[] possibleOperations, double timeout)
     {
-        this(toPerform, possibleOperations, true, timeout);
+        this(toPerform, possibleOperations, true, timeout, false);
     }
 
     /**
@@ -47,7 +58,7 @@ public abstract class CompositeOperationTask extends UpdateCycleTask
      * @param timeoutMode whether we are in timeout mode
      * @param timeout the timeout, if we are in timeout mode
      */
-    private CompositeOperationTask(DigitalOperation toPerform, DigitalOperation[] possibleOperations, boolean timeoutMode, double timeout)
+    private CompositeOperationTask(DigitalOperation toPerform, DigitalOperation[] possibleOperations, boolean timeoutMode, double timeout, boolean runIndefinitely)
     {
         super(1);
         if (TuningConstants.THROW_EXCEPTIONS)
@@ -74,6 +85,7 @@ public abstract class CompositeOperationTask extends UpdateCycleTask
         this.possibleOperations = possibleOperations;
         this.timeoutMode = timeoutMode;
         this.timeout = timeout;
+        this.runIndefinitely = runIndefinitely;
     }
 
     /**
@@ -124,6 +136,10 @@ public abstract class CompositeOperationTask extends UpdateCycleTask
     @Override
     public boolean hasCompleted()
     {
+        if (this.runIndefinitely)
+        {
+            return false;
+        }
         if (this.timeoutMode)
         {
             return this.timer.get() >= this.startTime + this.timeout;

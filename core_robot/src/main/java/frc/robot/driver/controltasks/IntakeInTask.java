@@ -14,7 +14,8 @@ public class IntakeInTask extends CompositeOperationTask
     {
         super(
             intakeIn ? DigitalOperation.IntakeIn : DigitalOperation.IntakeOut,
-            IntakeInTask.possibleOperations);
+            IntakeInTask.possibleOperations,
+            true);
     }
 
     public IntakeInTask(boolean intakeIn, double timeout)
