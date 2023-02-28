@@ -558,7 +558,7 @@ public class ButtonMap implements IButtonMap
                     TuningConstants.ARM_LOWER_POSITION_STOWED,
                     TuningConstants.ARM_UPPER_POSITION_STOWED,
                     true),
-                new ConeFlipperExtendTask(true, true)),
+                new ConeFlipperExtendTask(true)),
             new IOperation[]
             {
                 AnalogOperation.ArmMMUpperPosition,
@@ -579,7 +579,7 @@ public class ButtonMap implements IButtonMap
                     TuningConstants.ARM_LOWER_POSITION_STOWED,
                     TuningConstants.ARM_UPPER_POSITION_STOWED,
                     true),
-                new ConeFlipperExtendTask(false, true)),
+                new ConeFlipperExtendTask(false)),
             new IOperation[]
             {
                 AnalogOperation.ArmMMUpperPosition,
