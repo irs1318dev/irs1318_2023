@@ -218,6 +218,13 @@ public class TuningConstants
     public static final double DRIVETRAIN_STEER_MOTOR3_ABSOLUTE_OFFSET = -128.935;
     public static final double DRIVETRAIN_STEER_MOTOR4_ABSOLUTE_OFFSET = -125.419;
 
+    public static final boolean DRIVETRAIN_USE_TRANSLATIONAL_RATE_LIMITING = false;
+    public static final double DRIVETRAIN_TRANSLATIONAL_VELOCITY_MAX_NEGATIVE_RATE = -0.75 * TuningConstants.DRIVETRAIN_MAX_VELOCITY;
+    public static final double DRIVETRAIN_TRANSLATIONAL_VELOCITY_MAX_POSITIVE_RATE = 0.75 * TuningConstants.DRIVETRAIN_MAX_VELOCITY;
+    public static final boolean DRIVETRAIN_USE_ROTATIONAL_RATE_LIMITING = false;
+    public static final double DRIVETRAIN_ROTATIONAL_VELOCITY_MAX_NEGATIVE_RATE = -0.75 * TuningConstants.DRIVETRAIN_TURN_SCALE;
+    public static final double DRIVETRAIN_ROTATIONAL_VELOCITY_MAX_POSITIVE_RATE = 0.75 * TuningConstants.DRIVETRAIN_TURN_SCALE;
+
     // Position PID (angle) per-module
     public static final double DRIVETRAIN_STEER_MOTOR_POSITION_PID_KS = HardwareConstants.DRIVETRAIN_STEER_TICKS_PER_DEGREE;
 

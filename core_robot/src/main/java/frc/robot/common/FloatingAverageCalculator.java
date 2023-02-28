@@ -16,6 +16,12 @@ public class FloatingAverageCalculator
     private double prevTime;
     private double floatingAverage;
 
+    /**
+     * Average calculator to determine the mean value across a certain look-back time period
+     * @param timer to calculate elapsed time between updates
+     * @param duration over which to maintain the average
+     * @param samplesPerSecond number of samples to keep per second
+     */
     public FloatingAverageCalculator(ITimer timer, double duration, double samplesPerSecond)
     {
         this.timer = timer;
