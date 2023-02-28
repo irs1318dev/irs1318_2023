@@ -1,6 +1,7 @@
 package frc.robot.driver.controltasks;
 
 import frc.robot.TuningConstants;
+import frc.robot.common.Helpers;
 import frc.robot.common.robotprovider.ITimer;
 import frc.robot.common.robotprovider.ITrajectory;
 import frc.robot.common.robotprovider.Pose2d;
@@ -16,9 +17,15 @@ import frc.robot.mechanisms.DriveTrainMechanism;
  */
 public class FollowPathTask extends ControlTaskBase
 {
+    public enum Type
+    {
+        Absolute, // poses should match how they are 
+        RobotRelativeFromCurrentPose,
+        FieldRelativeFromCurrentPose,
+    }
+
     private final String pathName;
-    private final boolean fromCurrentPose;
-    private final boolean maintainInitialAngle;
+    private final Type type;
 
     private ITimer timer;
 
@@ -29,20 +36,22 @@ public class FollowPathTask extends ControlTaskBase
 
     /**
      * Initializes a new FollowPathTask
+     * @param pathName the path to follow
      */
     public FollowPathTask(String pathName)
     {
-        this(pathName, true, true);
+        this(pathName, Type.RobotRelativeFromCurrentPose);
     }
 
     /**
      * Initializes a new FollowPathTask
+     * @param pathName the path to follow
+     * @param type describing how to follow the path
      */
-    public FollowPathTask(String pathName, boolean fromCurrentPose, boolean maintainInitialAngle)
+    public FollowPathTask(String pathName, Type type)
     {
         this.pathName = pathName;
-        this.fromCurrentPose = fromCurrentPose;
-        this.maintainInitialAngle = maintainInitialAngle;
+        this.type = type;
     }
 
     /**
@@ -70,7 +79,7 @@ public class FollowPathTask extends ControlTaskBase
         this.startTime = this.timer.get();
         this.trajectoryDuration = this.trajectory.getDuration();
 
-        if (this.fromCurrentPose)
+        if (this.type != Type.Absolute)
         {
             DriveTrainMechanism driveTrain = this.getInjector().getInstance(DriveTrainMechanism.class);
             this.initialPose = driveTrain.getPose();
@@ -88,18 +97,62 @@ public class FollowPathTask extends ControlTaskBase
      */
     @Override
     public void update()
-    {
+    { 
         TrajectoryState state = this.trajectory.get(this.timer.get() - this.startTime);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainPathXGoal, state.xPosition + this.initialPose.x);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainPathYGoal, state.yPosition + this.initialPose.y);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleGoal, state.angle);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainPathXVelocityGoal, state.xVelocity);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainPathYVelocityGoal, state.yVelocity);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainPathAngleVelocityGoal, state.angleVelocity);
-        if (this.maintainInitialAngle)
+
+        double xPos = state.xPosition;
+        double yPos = state.yPosition;
+        double anglePos = state.angle;
+        double xVel = state.xVelocity;
+        double yVel = state.yVelocity;
+        double angleVel = state.angleVelocity;
+
+        double xGoal;
+        double yGoal;
+        double angleGoal;
+        double xVelGoal;
+        double yVelGoal;
+        double angleVelGoal;
+        switch (this.type)
         {
-            this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleReference, this.initialPose.angle);
+            case Absolute:
+                xGoal = xPos;
+                yGoal = yPos;
+                angleGoal = anglePos;
+                xVelGoal = xVel;
+                yVelGoal = yVel;
+                angleVelGoal = angleVel;
+                break;
+
+            case FieldRelativeFromCurrentPose:
+                xGoal = xPos + this.initialPose.x;
+                yGoal = yPos + this.initialPose.y;
+                angleGoal = anglePos + this.initialPose.angle;
+                xVelGoal = xVel;
+                yVelGoal = yVel;
+                angleVelGoal = angleVel;
+                break;
+
+            default:
+            case RobotRelativeFromCurrentPose:
+                double initialAngle = this.initialPose.angle;
+
+                // change so that we move in relation to the direction the robot was initially pointing
+                xGoal = Helpers.cosd(initialAngle) * xPos + Helpers.sind(initialAngle) * yPos + this.initialPose.x;
+                yGoal = Helpers.cosd(initialAngle) * yPos - Helpers.sind(initialAngle) * xPos + this.initialPose.y;
+                angleGoal = state.angle + initialAngle;
+                xVelGoal = Helpers.cosd(initialAngle) * xVel + Helpers.sind(initialAngle) * yVel;
+                yVelGoal = Helpers.cosd(initialAngle) * yVel - Helpers.sind(initialAngle) * xVel;
+                angleVelGoal = state.angleVelocity;
+                break;
         }
+
+        this.setAnalogOperationState(AnalogOperation.DriveTrainPathXGoal, xGoal);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainPathYGoal, yGoal);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleGoal, angleGoal);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainPathXVelocityGoal, xVelGoal);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainPathYVelocityGoal, yVelGoal);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainPathAngleVelocityGoal, angleVelGoal);
     }
 
     /**
@@ -115,10 +168,6 @@ public class FollowPathTask extends ControlTaskBase
         this.setAnalogOperationState(AnalogOperation.DriveTrainPathXVelocityGoal, 0.0);
         this.setAnalogOperationState(AnalogOperation.DriveTrainPathYVelocityGoal, 0.0);
         this.setAnalogOperationState(AnalogOperation.DriveTrainPathAngleVelocityGoal, 0.0);
-        if (this.maintainInitialAngle)
-        {
-            this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleReference, 0.0);
-        }
     }
 
     /**

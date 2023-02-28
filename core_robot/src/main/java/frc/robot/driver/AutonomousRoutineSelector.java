@@ -11,6 +11,7 @@ import frc.robot.driver.SmartDashboardSelectionManager.AutoRoutine;
 import frc.robot.driver.SmartDashboardSelectionManager.StartPosition;
 import frc.robot.driver.common.*;
 import frc.robot.driver.controltasks.*;
+import frc.robot.driver.controltasks.FollowPathTask.Type;
 
 @Singleton
 public class AutonomousRoutineSelector
@@ -198,7 +199,7 @@ public class AutonomousRoutineSelector
                     0.0,
                     false,
                     true)),
-            new FollowPathTask("LoadTaxi", false, true)
+            new FollowPathTask("LoadTaxi", Type.Absolute) // TODO: should type be robot-relative?
         );
     }
 
@@ -213,7 +214,7 @@ public class AutonomousRoutineSelector
                     isRed ? 0.0 : 180.0,
                     false,
                     false)),
-            new FollowPathTask(isRed ? "LSToChargeRed" : "LSToChargeBlue", false, true),
+            new FollowPathTask(isRed ? "LSToChargeRed" : "LSToChargeBlue", Type.Absolute),
             new ChargeStationTask(false)
         );
     }
@@ -230,12 +231,12 @@ public class AutonomousRoutineSelector
                     false,
                     false)),
             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CONE, TuningConstants.ARM_UPPER_POSITION_HIGH_CONE),
-            new FollowPathTask(isRed ? "LoadStartTo1Red" : "LoadStartTo1Blue", false, true),
+            new FollowPathTask(isRed ? "LoadStartTo1Red" : "LoadStartTo1Blue", Type.Absolute),
             new IntakeExtendTask(true),
             new WaitTask(0.5),
-            new FollowPathTask(isRed ? "1To10Red" : "1To10Blue", false, true),
+            new FollowPathTask(isRed ? "1To10Red" : "1To10Blue", Type.Absolute),
             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED),
-            new FollowPathTask(isRed ? "10To20Red" : "10To20Blue", false, false)
+            new FollowPathTask(isRed ? "10To20Red" : "10To20Blue", Type.Absolute)
         );
     }
 
@@ -251,11 +252,11 @@ public class AutonomousRoutineSelector
                     false,
                     false)),
             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CONE, TuningConstants.ARM_UPPER_POSITION_HIGH_CONE),
-            new FollowPathTask(isRed ? "LoadStartTo1Red" : "LoadStartTo1Blue", false, true),
+            new FollowPathTask(isRed ? "LoadStartTo1Red" : "LoadStartTo1Blue", Type.Absolute),
             new IntakeExtendTask(true),
             new WaitTask(0.5),
             ConcurrentTask.AllTasks(
-                new FollowPathTask(isRed ? "1ToChargeRed" : "1ToChargeBlue", false, true),
+                new FollowPathTask(isRed ? "1ToChargeRed" : "1ToChargeBlue", Type.Absolute),
                 SequentialTask.Sequence(
                     new WaitTask(1.0),
                     new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
@@ -278,25 +279,25 @@ public class AutonomousRoutineSelector
                     false)),
             ConcurrentTask.AllTasks(
                 new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CONE, TuningConstants.ARM_UPPER_POSITION_HIGH_CONE),
-                new FollowPathTask(isRed ? "LoadStartTo1Red" : "LoadStartTo1Blue", false, true)
+                new FollowPathTask(isRed ? "LoadStartTo1Red" : "LoadStartTo1Blue", Type.Absolute)
             ),
             new IntakeExtendTask(true),
             new WaitTask(0.5),
             ConcurrentTask.AllTasks(
-                new FollowPathTask(isRed ? "1To10Red" : "1To10Blue", false, true),
+                new FollowPathTask(isRed ? "1To10Red" : "1To10Blue", Type.Absolute),
                 SequentialTask.Sequence(
                     new WaitTask(0.5),
                     new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
                 )
             ),
-            new FollowPathTask(isRed ? "10To20Red" : "10To20Blue", false, false),
+            new FollowPathTask(isRed ? "10To20Red" : "10To20Blue", Type.Absolute),
             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP),
             ConcurrentTask.AllTasks(
-                new FollowPathTask(isRed ? "20To20Red" : "20To20Blue", false, false),
+                new FollowPathTask(isRed ? "20To20Red" : "20To20Blue", Type.Absolute),
                 new IntakeGamePieceTask(3)
             ),
             ConcurrentTask.AllTasks(
-                new FollowPathTask(isRed ? "20ToChargeRed" : "20ToChargeBlue", false, false),
+                new FollowPathTask(isRed ? "20ToChargeRed" : "20ToChargeBlue", Type.Absolute),
                 new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_LOWER_POSITION_STOWED)
             ),
             new ChargeStationTask(false)
@@ -316,29 +317,29 @@ public class AutonomousRoutineSelector
                     false)),
             ConcurrentTask.AllTasks(
                 new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CONE, TuningConstants.ARM_UPPER_POSITION_HIGH_CONE),
-                new FollowPathTask(isRed ? "LoadStartTo1Red" : "LoadStartTo1Blue", false, true)
+                new FollowPathTask(isRed ? "LoadStartTo1Red" : "LoadStartTo1Blue", Type.Absolute)
             ),
             new IntakeExtendTask(true),
             new WaitTask(0.5),
             ConcurrentTask.AllTasks(
-                new FollowPathTask(isRed ? "1To10Red" : "1To10Blue", false, true),
+                new FollowPathTask(isRed ? "1To10Red" : "1To10Blue", Type.Absolute),
                 SequentialTask.Sequence(
                     new WaitTask(0.5),
                     new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
                 )
             ),
-            new FollowPathTask(isRed ? "10To20Red" : "10To20Blue", false, false),
+            new FollowPathTask(isRed ? "10To20Red" : "10To20Blue", Type.Absolute),
             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP),
             ConcurrentTask.AllTasks(
-                new FollowPathTask(isRed ? "20To20Red" : "20To20Blue", false, false),
+                new FollowPathTask(isRed ? "20To20Red" : "20To20Blue", Type.Absolute),
                 new IntakeGamePieceTask(3)
             ),
             ConcurrentTask.AllTasks(
-                new FollowPathTask(isRed ? "20To10Red" : "20To10Blue", false, false),
+                new FollowPathTask(isRed ? "20To10Red" : "20To10Blue", Type.Absolute),
                 new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_APPROACH, TuningConstants.ARM_LOWER_POSITION_APPROACH)
             ),
             ConcurrentTask.AllTasks(
-                new FollowPathTask(isRed ? "10To3Red" : "10To3Blue", false, true),
+                new FollowPathTask(isRed ? "10To3Red" : "10To3Blue", Type.Absolute),
                 new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE, TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE)
             ),
             new IntakeExtendTask(true),
@@ -357,7 +358,7 @@ public class AutonomousRoutineSelector
                     0.0,
                     false,
                     true)),
-            new FollowPathTask(isRed ? "MidTaxiRed" : "MidTaxiBlue", false, true)
+            new FollowPathTask(isRed ? "MidTaxiRed" : "MidTaxiBlue", Type.Absolute)
         );
     }
 
@@ -380,7 +381,7 @@ public class AutonomousRoutineSelector
                     false,
                     false)),
 
-            new FollowPathTask(isRed ? "5ToChargeRed" : "5ToChargeBlue", false, true),
+            new FollowPathTask(isRed ? "5ToChargeRed" : "5ToChargeBlue", Type.Absolute),
             new ChargeStationTask(false)
         );
     }
@@ -397,18 +398,18 @@ public class AutonomousRoutineSelector
                     false, false)),
 
             ConcurrentTask.AllTasks(
-                new FollowPathTask(isRed ? "5To11Red" : "11To5Blue", false, true),
+                new FollowPathTask(isRed ? "5To11Red" : "11To5Blue", Type.Absolute),
                 SequentialTask.Sequence(
                     new WaitTask(0.5),
                     new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE, TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE)
                 )
             ),
 
-            new FollowPathTask(isRed ? "11To5Red" : "11To5Blue", false, true),
+            new FollowPathTask(isRed ? "11To5Red" : "11To5Blue", Type.Absolute),
             new IntakeInTask(false),
 
             ConcurrentTask.AllTasks(
-                new FollowPathTask(isRed ? "5To11TurnRed" : "5To11TurnBlue", false, true),
+                new FollowPathTask(isRed ? "5To11TurnRed" : "5To11TurnBlue", Type.Absolute),
                 SequentialTask.Sequence(
                     new WaitTask(0.5),
                     new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
@@ -430,7 +431,7 @@ public class AutonomousRoutineSelector
                     0.0,
                     false,
                     true)),
-            new FollowPathTask("GuardTaxi", false, true)
+            new FollowPathTask("GuardTaxi", Type.Absolute) // TODO: should type be robot-relative?
         );
     }
 
@@ -445,7 +446,7 @@ public class AutonomousRoutineSelector
                     isRed ? 0 : 180.0,
                     false,
                     false)),
-            new FollowPathTask(isRed ? "GSToChargeRed" : "GSToChargeBlue", false, true),
+            new FollowPathTask(isRed ? "GSToChargeRed" : "GSToChargeBlue", Type.Absolute),
             new ChargeStationTask(false)
         );
     }
@@ -462,12 +463,12 @@ public class AutonomousRoutineSelector
                     false,
                     false)),
             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CONE, TuningConstants.ARM_UPPER_POSITION_HIGH_CONE),
-            new FollowPathTask(isRed ? "GuardStartTo9Red" : "GuardStartTo9Blue", false, true),
+            new FollowPathTask(isRed ? "GuardStartTo9Red" : "GuardStartTo9Blue", Type.Absolute),
             new IntakeExtendTask(true),
             new WaitTask(0.5),
-            new FollowPathTask(isRed ? "9To12Red" : "9To12Blue", false, true),
+            new FollowPathTask(isRed ? "9To12Red" : "9To12Blue", Type.Absolute),
             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED),
-            new FollowPathTask(isRed ? "12To23Red" : "12To23Blue", false, false)
+            new FollowPathTask(isRed ? "12To23Red" : "12To23Blue", Type.Absolute)
         );
     }
 
@@ -483,11 +484,11 @@ public class AutonomousRoutineSelector
                     false,
                     false)),
             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CONE, TuningConstants.ARM_UPPER_POSITION_HIGH_CONE),
-            new FollowPathTask(isRed ? "GuardStartTo9Red" : "GuardStartTo9Blue", false, true),
+            new FollowPathTask(isRed ? "GuardStartTo9Red" : "GuardStartTo9Blue", Type.Absolute),
             new IntakeExtendTask(true),
             new WaitTask(0.5),
             ConcurrentTask.AllTasks(
-                new FollowPathTask(isRed ? "9ToChargeRed" : "9ToChargeBlue", false, true),
+                new FollowPathTask(isRed ? "9ToChargeRed" : "9ToChargeBlue", Type.Absolute),
                 SequentialTask.Sequence(
                     new WaitTask(1.0),
                     new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
@@ -510,25 +511,25 @@ public class AutonomousRoutineSelector
                     false)),
             ConcurrentTask.AllTasks(
                 new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CONE, TuningConstants.ARM_UPPER_POSITION_HIGH_CONE),
-                new FollowPathTask(isRed ? "GuardStartTo9Red" : "GuardStartTo9Blue", false, true)
+                new FollowPathTask(isRed ? "GuardStartTo9Red" : "GuardStartTo9Blue", Type.Absolute)
             ),
             new IntakeExtendTask(true),
             new WaitTask(0.5),
             ConcurrentTask.AllTasks(
-                new FollowPathTask(isRed ? "9To12Red" : "9To12Blue", false, true),
+                new FollowPathTask(isRed ? "9To12Red" : "9To12Blue", Type.Absolute),
                 SequentialTask.Sequence(
                     new WaitTask(0.5),
                     new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
                 )
             ),
-            new FollowPathTask(isRed ? "12To23Red" : "12To23Blue", false, false),
+            new FollowPathTask(isRed ? "12To23Red" : "12To23Blue", Type.Absolute),
             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP),
             ConcurrentTask.AllTasks(
-                new FollowPathTask(isRed ? "23To23Red" : "23To23Blue", false, false),
+                new FollowPathTask(isRed ? "23To23Red" : "23To23Blue", Type.Absolute),
                 new IntakeGamePieceTask(3)
             ),
             ConcurrentTask.AllTasks(
-                new FollowPathTask(isRed ? "23ToChargeRed" : "23ToChargeBlue", false, false),
+                new FollowPathTask(isRed ? "23ToChargeRed" : "23ToChargeBlue", Type.Absolute),
                 new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_LOWER_POSITION_STOWED)
             ),
             new ChargeStationTask(false)
@@ -548,29 +549,29 @@ public class AutonomousRoutineSelector
                     false)),
             ConcurrentTask.AllTasks(
                 new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CONE, TuningConstants.ARM_UPPER_POSITION_HIGH_CONE),
-                new FollowPathTask(isRed ? "GuardStartTo9Red" : "GuardStartTo9Blue", false, true)
+                new FollowPathTask(isRed ? "GuardStartTo9Red" : "GuardStartTo9Blue", Type.Absolute)
             ),
             new IntakeExtendTask(true),
             new WaitTask(0.5),
             ConcurrentTask.AllTasks(
-                new FollowPathTask(isRed ? "9To12Red" : "9To12Blue", false, true),
+                new FollowPathTask(isRed ? "9To12Red" : "9To12Blue", Type.Absolute),
                 SequentialTask.Sequence(
                     new WaitTask(0.5),
                     new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
                 )
             ),
-            new FollowPathTask(isRed ? "12To23Red" : "12To23Blue", false, false),
+            new FollowPathTask(isRed ? "12To23Red" : "12To23Blue", Type.Absolute),
             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP),
             ConcurrentTask.AllTasks(
-                new FollowPathTask(isRed ? "23To23Red" : "23To23Blue", false, false),
+                new FollowPathTask(isRed ? "23To23Red" : "23To23Blue", Type.Absolute),
                 new IntakeGamePieceTask(3)
             ),
             ConcurrentTask.AllTasks(
-                new FollowPathTask(isRed ? "23To12Red" : "23To12Blue", false, false),
+                new FollowPathTask(isRed ? "23To12Red" : "23To12Blue", Type.Absolute),
                 new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_APPROACH, TuningConstants.ARM_LOWER_POSITION_APPROACH)
             ),
             ConcurrentTask.AllTasks(
-                new FollowPathTask(isRed ? "12To7Red" : "12To7Blue", false, true),
+                new FollowPathTask(isRed ? "12To7Red" : "12To7Blue", Type.Absolute),
                 new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE, TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE)
             ),
             new IntakeInTask(false),

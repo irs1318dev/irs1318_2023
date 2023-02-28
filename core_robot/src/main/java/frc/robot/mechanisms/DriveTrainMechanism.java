@@ -586,7 +586,6 @@ public class DriveTrainMechanism implements IMechanism
             double xGoal = this.driver.getAnalog(AnalogOperation.DriveTrainPathXGoal);
             double yGoal = this.driver.getAnalog(AnalogOperation.DriveTrainPathYGoal);
             double angleGoal = this.driver.getAnalog(AnalogOperation.DriveTrainTurnAngleGoal);
-            double angleReference = this.driver.getAnalog(AnalogOperation.DriveTrainTurnAngleReference);
             double xVelocityGoal = this.driver.getAnalog(AnalogOperation.DriveTrainPathXVelocityGoal);
             double yVelocityGoal = this.driver.getAnalog(AnalogOperation.DriveTrainPathYVelocityGoal);
             double angleVelocityGoal = this.driver.getAnalog(AnalogOperation.DriveTrainPathAngleVelocityGoal);
@@ -606,7 +605,7 @@ public class DriveTrainMechanism implements IMechanism
                 centerVelocityForward = Helpers.cosd(this.robotYaw) * xVelocityGoal + Helpers.sind(this.robotYaw) * yVelocityGoal;
 
                 // add correction for angle drift
-                AnglePair anglePair = AnglePair.getClosestAngle(angleGoal + angleReference, this.robotYaw, false);
+                AnglePair anglePair = AnglePair.getClosestAngle(angleGoal, this.robotYaw, false);
                 this.desiredYaw = anglePair.getAngle();
 
                 this.logger.logNumber(LoggingKey.DriveTrainDesiredAngle, this.desiredYaw);
