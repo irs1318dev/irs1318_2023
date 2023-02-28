@@ -9,9 +9,11 @@ public enum MacroOperation implements IOperation
     PIDHeavyBrake,
 
     // Vision operations:
-    VisionCenterRetroReflective,
-    VisionCenterAprilTag,
-    VisionParallelAprilTag,
+    VisionDoubleSubstationLeft,
+    VisionDoubleSubstationRight,
+    VisionGridCube,
+    VisionGridConeLeft,
+    VisionGridConeRight,
     VisionResetPosition,
 
     // Charge station:

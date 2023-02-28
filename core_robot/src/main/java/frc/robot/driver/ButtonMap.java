@@ -8,6 +8,7 @@ import frc.robot.driver.common.*;
 import frc.robot.driver.common.buttons.*;
 import frc.robot.driver.common.descriptions.*;
 import frc.robot.driver.controltasks.*;
+import frc.robot.driver.controltasks.FollowPathTask.Type;
 import frc.robot.driver.controltasks.VisionMoveAndTurnTaskBase.MoveSpeed;
 import frc.robot.driver.controltasks.VisionMoveAndTurnTaskBase.MoveType;
 import frc.robot.driver.controltasks.VisionTurningTask.TurnType;
@@ -373,52 +374,11 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.DriveTrainUseRobotOrientation,
             }),
         new MacroOperationDescription(
-            MacroOperation.VisionCenterRetroReflective,
+            MacroOperation.VisionDoubleSubstationLeft,
             UserInputDevice.Driver,
-            0, // DPAD-up
+            270, // DPAD-left
             Shift.DriverDebug,
-            Shift.DriverDebug,
-            ButtonType.Toggle,
-            () -> new VisionTurningTask(VisionTurningTask.TurnType.RetroreflectiveCentering, true),
-            new IOperation[]
-            {
-                AnalogOperation.DriveTrainMoveForward,
-                AnalogOperation.DriveTrainMoveRight,
-                AnalogOperation.DriveTrainTurnAngleGoal,
-                AnalogOperation.DriveTrainTurnSpeed,
-                AnalogOperation.DriveTrainRotationA,
-                AnalogOperation.DriveTrainRotationB,
-                AnalogOperation.DriveTrainPathXGoal,
-                AnalogOperation.DriveTrainPathYGoal,
-                AnalogOperation.DriveTrainPathXVelocityGoal,
-                AnalogOperation.DriveTrainPathYVelocityGoal,
-                AnalogOperation.DriveTrainPathAngleVelocityGoal,
-                AnalogOperation.DriveTrainPositionDrive1,
-                AnalogOperation.DriveTrainPositionDrive2,
-                AnalogOperation.DriveTrainPositionDrive3,
-                AnalogOperation.DriveTrainPositionDrive4,
-                AnalogOperation.DriveTrainPositionSteer1,
-                AnalogOperation.DriveTrainPositionSteer2,
-                AnalogOperation.DriveTrainPositionSteer3,
-                AnalogOperation.DriveTrainPositionSteer4,
-                DigitalOperation.DriveTrainSteerMode,
-                DigitalOperation.DriveTrainMaintainPositionMode,
-                DigitalOperation.DriveTrainPathMode,
-                DigitalOperation.DriveTrainReset,
-                DigitalOperation.DriveTrainEnableFieldOrientation,
-                DigitalOperation.DriveTrainDisableFieldOrientation,
-                DigitalOperation.DriveTrainUseRobotOrientation,
-                DigitalOperation.VisionDisableStream,
-                DigitalOperation.VisionEnableAprilTagProcessing,
-                DigitalOperation.VisionEnableRetroreflectiveProcessing,
-                DigitalOperation.VisionForceDisable,
-            }),
-        new MacroOperationDescription(
-            MacroOperation.VisionCenterAprilTag,
-            UserInputDevice.Driver,
-            90, // DPAD-right
-            Shift.DriverDebug,
-            Shift.DriverDebug,
+            Shift.None,
             ButtonType.Toggle,
             () -> 
                 SequentialTask.Sequence(
@@ -428,6 +388,7 @@ public class ButtonMap implements IButtonMap
                     new VisionTurningTask(TurnType.AprilTagParallelizing),
                     new VisionMoveAndTurnTask(TurnType.AprilTagParallelizing, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, true, 0.0),
                     new VisionMoveAndTurnTask(TurnType.AprilTagCentering, MoveType.Forward, MoveSpeed.Normal, false, true, 80.0),
+                    new FollowPathTask("goLeft32inForward18in"),
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP,
                         TuningConstants.ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP)),
@@ -471,13 +432,24 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.IntakeGrab,
             }),
         new MacroOperationDescription(
-            MacroOperation.VisionParallelAprilTag,
+            MacroOperation.VisionDoubleSubstationRight,
             UserInputDevice.Driver,
-            180, // DPAD-down
+            90, // DPAD-right
             Shift.DriverDebug,
-            Shift.DriverDebug,
+            Shift.None,
             ButtonType.Toggle,
-            () -> new VisionTurningTask(VisionTurningTask.TurnType.AprilTagParallelizing, true),
+            () ->
+                SequentialTask.Sequence(
+                    new ArmMMPositionTask(
+                        TuningConstants.ARM_LOWER_POSITION_APPROACH,
+                        TuningConstants.ARM_UPPER_POSITION_APPROACH),
+                    new VisionTurningTask(TurnType.AprilTagParallelizing),
+                    new VisionMoveAndTurnTask(TurnType.AprilTagParallelizing, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, true, 0.0),
+                    new VisionMoveAndTurnTask(TurnType.AprilTagCentering, MoveType.Forward, MoveSpeed.Normal, false, true, 80.0),
+                    new FollowPathTask("goRight32inForward18in"),
+                    new ArmMMPositionTask(
+                        TuningConstants.ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP,
+                        TuningConstants.ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP)),
             new IOperation[]
             {
                 AnalogOperation.DriveTrainMoveForward,
@@ -510,10 +482,182 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.VisionEnableAprilTagProcessing,
                 DigitalOperation.VisionEnableRetroreflectiveProcessing,
                 DigitalOperation.VisionForceDisable,
+                AnalogOperation.ArmMMUpperPosition,
+                AnalogOperation.ArmMMLowerPosition,
+                DigitalOperation.IntakeIn,
+                DigitalOperation.IntakeOut,
+                DigitalOperation.IntakeRelease,
+                DigitalOperation.IntakeGrab,
+            }),
+        new MacroOperationDescription(
+            MacroOperation.VisionGridCube,
+            UserInputDevice.Driver,
+            0, // DPAD-up
+            Shift.DriverDebug,
+            Shift.DriverDebug,
+            ButtonType.Toggle,
+            () ->
+                SequentialTask.Sequence(
+                    new ArmMMPositionTask(
+                        TuningConstants.ARM_LOWER_POSITION_APPROACH,
+                        TuningConstants.ARM_UPPER_POSITION_APPROACH),
+                    new VisionTurningTask(TurnType.AprilTagParallelizing),
+                    new VisionMoveAndTurnTask(TurnType.AprilTagParallelizing, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, true, 0.0),
+                    new VisionMoveAndTurnTask(TurnType.AprilTagCentering, MoveType.Forward, MoveSpeed.Normal, false, true, 80.0)),
+            new IOperation[]
+            {
+                AnalogOperation.DriveTrainMoveForward,
+                AnalogOperation.DriveTrainMoveRight,
+                AnalogOperation.DriveTrainTurnAngleGoal,
+                AnalogOperation.DriveTrainTurnSpeed,
+                AnalogOperation.DriveTrainRotationA,
+                AnalogOperation.DriveTrainRotationB,
+                AnalogOperation.DriveTrainPathXGoal,
+                AnalogOperation.DriveTrainPathYGoal,
+                AnalogOperation.DriveTrainPathXVelocityGoal,
+                AnalogOperation.DriveTrainPathYVelocityGoal,
+                AnalogOperation.DriveTrainPathAngleVelocityGoal,
+                AnalogOperation.DriveTrainPositionDrive1,
+                AnalogOperation.DriveTrainPositionDrive2,
+                AnalogOperation.DriveTrainPositionDrive3,
+                AnalogOperation.DriveTrainPositionDrive4,
+                AnalogOperation.DriveTrainPositionSteer1,
+                AnalogOperation.DriveTrainPositionSteer2,
+                AnalogOperation.DriveTrainPositionSteer3,
+                AnalogOperation.DriveTrainPositionSteer4,
+                DigitalOperation.DriveTrainSteerMode,
+                DigitalOperation.DriveTrainMaintainPositionMode,
+                DigitalOperation.DriveTrainPathMode,
+                DigitalOperation.DriveTrainReset,
+                DigitalOperation.DriveTrainEnableFieldOrientation,
+                DigitalOperation.DriveTrainDisableFieldOrientation,
+                DigitalOperation.DriveTrainUseRobotOrientation,
+                DigitalOperation.VisionDisableStream,
+                DigitalOperation.VisionEnableAprilTagProcessing,
+                DigitalOperation.VisionEnableRetroreflectiveProcessing,
+                DigitalOperation.VisionForceDisable,
+                AnalogOperation.ArmMMUpperPosition,
+                AnalogOperation.ArmMMLowerPosition,
+                DigitalOperation.IntakeIn,
+                DigitalOperation.IntakeOut,
+                DigitalOperation.IntakeRelease,
+                DigitalOperation.IntakeGrab,
+            }),
+        new MacroOperationDescription(
+            MacroOperation.VisionGridConeLeft,
+            UserInputDevice.Driver,
+            270, // DPAD-left
+            Shift.DriverDebug,
+            Shift.DriverDebug,
+            ButtonType.Toggle,
+            () ->
+                SequentialTask.Sequence(
+                    new ArmMMPositionTask(
+                        TuningConstants.ARM_LOWER_POSITION_APPROACH,
+                        TuningConstants.ARM_UPPER_POSITION_APPROACH),
+                    new VisionTurningTask(TurnType.AprilTagParallelizing),
+                    new VisionMoveAndTurnTask(TurnType.AprilTagParallelizing, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, true, 0.0),
+                    new VisionMoveAndTurnTask(TurnType.AprilTagCentering, MoveType.Forward, MoveSpeed.Normal, false, true, 80.0),
+                    new FollowPathTask("goLeft22in"),
+                    new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0)),
+            new IOperation[]
+            {
+                AnalogOperation.DriveTrainMoveForward,
+                AnalogOperation.DriveTrainMoveRight,
+                AnalogOperation.DriveTrainTurnAngleGoal,
+                AnalogOperation.DriveTrainTurnSpeed,
+                AnalogOperation.DriveTrainRotationA,
+                AnalogOperation.DriveTrainRotationB,
+                AnalogOperation.DriveTrainPathXGoal,
+                AnalogOperation.DriveTrainPathYGoal,
+                AnalogOperation.DriveTrainPathXVelocityGoal,
+                AnalogOperation.DriveTrainPathYVelocityGoal,
+                AnalogOperation.DriveTrainPathAngleVelocityGoal,
+                AnalogOperation.DriveTrainPositionDrive1,
+                AnalogOperation.DriveTrainPositionDrive2,
+                AnalogOperation.DriveTrainPositionDrive3,
+                AnalogOperation.DriveTrainPositionDrive4,
+                AnalogOperation.DriveTrainPositionSteer1,
+                AnalogOperation.DriveTrainPositionSteer2,
+                AnalogOperation.DriveTrainPositionSteer3,
+                AnalogOperation.DriveTrainPositionSteer4,
+                DigitalOperation.DriveTrainSteerMode,
+                DigitalOperation.DriveTrainMaintainPositionMode,
+                DigitalOperation.DriveTrainPathMode,
+                DigitalOperation.DriveTrainReset,
+                DigitalOperation.DriveTrainEnableFieldOrientation,
+                DigitalOperation.DriveTrainDisableFieldOrientation,
+                DigitalOperation.DriveTrainUseRobotOrientation,
+                DigitalOperation.VisionDisableStream,
+                DigitalOperation.VisionEnableAprilTagProcessing,
+                DigitalOperation.VisionEnableRetroreflectiveProcessing,
+                DigitalOperation.VisionForceDisable,
+                AnalogOperation.ArmMMUpperPosition,
+                AnalogOperation.ArmMMLowerPosition,
+                DigitalOperation.IntakeIn,
+                DigitalOperation.IntakeOut,
+                DigitalOperation.IntakeRelease,
+                DigitalOperation.IntakeGrab,
+            }),
+        new MacroOperationDescription(
+            MacroOperation.VisionGridConeRight,
+            UserInputDevice.Driver,
+            90, // DPAD-right
+            Shift.DriverDebug,
+            Shift.DriverDebug,
+            ButtonType.Toggle,
+            () ->
+                SequentialTask.Sequence(
+                    new ArmMMPositionTask(
+                        TuningConstants.ARM_LOWER_POSITION_APPROACH,
+                        TuningConstants.ARM_UPPER_POSITION_APPROACH),
+                    new VisionTurningTask(TurnType.AprilTagParallelizing),
+                    new VisionMoveAndTurnTask(TurnType.AprilTagParallelizing, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, true, 0.0),
+                    new VisionMoveAndTurnTask(TurnType.AprilTagCentering, MoveType.Forward, MoveSpeed.Normal, false, true, 80.0),
+                    new FollowPathTask("goRight22in"),
+                    new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0)),
+            new IOperation[]
+            {
+                AnalogOperation.DriveTrainMoveForward,
+                AnalogOperation.DriveTrainMoveRight,
+                AnalogOperation.DriveTrainTurnAngleGoal,
+                AnalogOperation.DriveTrainTurnSpeed,
+                AnalogOperation.DriveTrainRotationA,
+                AnalogOperation.DriveTrainRotationB,
+                AnalogOperation.DriveTrainPathXGoal,
+                AnalogOperation.DriveTrainPathYGoal,
+                AnalogOperation.DriveTrainPathXVelocityGoal,
+                AnalogOperation.DriveTrainPathYVelocityGoal,
+                AnalogOperation.DriveTrainPathAngleVelocityGoal,
+                AnalogOperation.DriveTrainPositionDrive1,
+                AnalogOperation.DriveTrainPositionDrive2,
+                AnalogOperation.DriveTrainPositionDrive3,
+                AnalogOperation.DriveTrainPositionDrive4,
+                AnalogOperation.DriveTrainPositionSteer1,
+                AnalogOperation.DriveTrainPositionSteer2,
+                AnalogOperation.DriveTrainPositionSteer3,
+                AnalogOperation.DriveTrainPositionSteer4,
+                DigitalOperation.DriveTrainSteerMode,
+                DigitalOperation.DriveTrainMaintainPositionMode,
+                DigitalOperation.DriveTrainPathMode,
+                DigitalOperation.DriveTrainReset,
+                DigitalOperation.DriveTrainEnableFieldOrientation,
+                DigitalOperation.DriveTrainDisableFieldOrientation,
+                DigitalOperation.DriveTrainUseRobotOrientation,
+                DigitalOperation.VisionDisableStream,
+                DigitalOperation.VisionEnableAprilTagProcessing,
+                DigitalOperation.VisionEnableRetroreflectiveProcessing,
+                DigitalOperation.VisionForceDisable,
+                AnalogOperation.ArmMMUpperPosition,
+                AnalogOperation.ArmMMLowerPosition,
+                DigitalOperation.IntakeIn,
+                DigitalOperation.IntakeOut,
+                DigitalOperation.IntakeRelease,
+                DigitalOperation.IntakeGrab,
             }),
         new MacroOperationDescription(
             MacroOperation.VisionResetPosition,
-            UserInputDevice.Driver,
+            UserInputDevice.Test1,
             270, //DPAD left
             Shift.DriverDebug,
             Shift.DriverDebug,
@@ -602,7 +746,7 @@ public class ButtonMap implements IButtonMap
                         TuningConstants.ARM_LOWER_POSITION_CONE_UPRIGHTING_MACRO,
                         TuningConstants.ARM_UPPER_POSITION_CONE_UPRIGHTING_MACRO)),
                 ConcurrentTask.AllTasks(
-                    new FollowPathTask("goBackwards1foot"),
+                    new FollowPathTask("goBackwards1ft"),
                     SequentialTask.Sequence(
                         new WaitTask(0.25),
                         ConcurrentTask.AllTasks(
@@ -634,7 +778,6 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.DriveTrainPositionSteer2,
                 AnalogOperation.DriveTrainPositionSteer3,
                 AnalogOperation.DriveTrainPositionSteer4,
-                AnalogOperation.DriveTrainTurnAngleReference,
                 DigitalOperation.DriveTrainSteerMode,
                 DigitalOperation.DriveTrainMaintainPositionMode,
                 DigitalOperation.DriveTrainPathMode,
@@ -969,7 +1112,7 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
                 new PositionStartingTask(0.0, 0.0, 0.0),
-                new FollowPathTask("goForward4ft", false, false)),
+                new FollowPathTask("goForward4ft", Type.Absolute)),
             new IOperation[]
             {
                 DigitalOperation.PositionResetFieldOrientation,
@@ -997,7 +1140,6 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.DriveTrainPositionSteer2,
                 AnalogOperation.DriveTrainPositionSteer3,
                 AnalogOperation.DriveTrainPositionSteer4,
-                AnalogOperation.DriveTrainTurnAngleReference,
                 DigitalOperation.DriveTrainSteerMode,
                 DigitalOperation.DriveTrainMaintainPositionMode,
                 DigitalOperation.DriveTrainPathMode,
@@ -1021,25 +1163,25 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
                 new PositionStartingTask(-TuningConstants.GuardEdgeStartX, 17.5, 180),
-                new FollowPathTask("GuardStartTo9", false, true),
+                new FollowPathTask("GuardStartTo9", Type.Absolute),
                 new WaitTask(0.3),
-                new FollowPathTask("9To12", false, true),
+                new FollowPathTask("9To12", Type.Absolute),
                 ConcurrentTask.AllTasks(
-                    new FollowPathTask("12To23", false, false),
+                    new FollowPathTask("12To23", Type.Absolute),
                     SequentialTask.Sequence(
                         new WaitTask(1.0)
                         //new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP)
                     )  
                 ),
                 ConcurrentTask.AllTasks(
-                    new FollowPathTask("23To23", false, true)
+                    new FollowPathTask("23To23", Type.Absolute)
                     //new IntakeGamePieceTask()
                 ),
                 ConcurrentTask.AllTasks(
-                    new FollowPathTask("23To12", false, false)
+                    new FollowPathTask("23To12", Type.Absolute)
                     //new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
                 ),
-                new FollowPathTask("12To7", false, true)
+                new FollowPathTask("12To7", Type.Absolute)
             ),
             new IOperation[]
             {
@@ -1074,7 +1216,6 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.DriveTrainPositionSteer2,
                 AnalogOperation.DriveTrainPositionSteer3,
                 AnalogOperation.DriveTrainPositionSteer4,
-                AnalogOperation.DriveTrainTurnAngleReference,
                 DigitalOperation.DriveTrainSteerMode,
                 DigitalOperation.DriveTrainMaintainPositionMode,
                 DigitalOperation.DriveTrainPathMode,
@@ -1097,13 +1238,13 @@ public class ButtonMap implements IButtonMap
         ButtonType.Toggle,
         () -> SequentialTask.Sequence(
                 new PositionStartingTask(-TuningConstants.GuardEdgeStartX, 17.5, 180),
-                new FollowPathTask("GuardStartTo9", false, true),
+                new FollowPathTask("GuardStartTo9", Type.Absolute),
                 new WaitTask(0.3),
-                new FollowPathTask("9To12", false, true),
-                new FollowPathTask("12To23", false, false),
-                new FollowPathTask("23To23", false, true),
-                new FollowPathTask("23To12", false, false),
-                new FollowPathTask("12To7", false, true)
+                new FollowPathTask("9To12", Type.Absolute),
+                new FollowPathTask("12To23", Type.Absolute),
+                new FollowPathTask("23To23", Type.Absolute),
+                new FollowPathTask("23To12", Type.Absolute),
+                new FollowPathTask("12To7", Type.Absolute)
                 ),
         new IOperation[]
         {
@@ -1132,7 +1273,6 @@ public class ButtonMap implements IButtonMap
             AnalogOperation.DriveTrainPositionSteer2,
             AnalogOperation.DriveTrainPositionSteer3,
             AnalogOperation.DriveTrainPositionSteer4,
-            AnalogOperation.DriveTrainTurnAngleReference,
             DigitalOperation.DriveTrainSteerMode,
             DigitalOperation.DriveTrainMaintainPositionMode,
             DigitalOperation.DriveTrainPathMode,
@@ -1155,7 +1295,7 @@ public class ButtonMap implements IButtonMap
         ButtonType.Toggle,
         () -> SequentialTask.Sequence(
                 new PositionStartingTask(-TuningConstants.StartGridX, 16.8, 180),
-                new FollowPathTask("GuardEdgeToChargeStationFar", false, false)
+                new FollowPathTask("GuardEdgeToChargeStationFar", Type.Absolute)
                 ),
         new IOperation[]
         {
@@ -1184,7 +1324,6 @@ public class ButtonMap implements IButtonMap
             AnalogOperation.DriveTrainPositionSteer2,
             AnalogOperation.DriveTrainPositionSteer3,
             AnalogOperation.DriveTrainPositionSteer4,
-            AnalogOperation.DriveTrainTurnAngleReference,
             DigitalOperation.DriveTrainSteerMode,
             DigitalOperation.DriveTrainMaintainPositionMode,
             DigitalOperation.DriveTrainPathMode,

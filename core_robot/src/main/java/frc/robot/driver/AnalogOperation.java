@@ -7,7 +7,6 @@ public enum AnalogOperation implements IOperation
     // DriveTrain operations:
     DriveTrainMoveForward,
     DriveTrainMoveRight,
-    DriveTrainTurnAngleReference,
     DriveTrainTurnAngleGoal,
     DriveTrainTurnSpeed,
     DriveTrainSpinLeft,
