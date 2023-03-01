@@ -240,57 +240,50 @@ public class ButtonMap implements IButtonMap
             Shift.CodriverDebug,
             ButtonType.Click),
 
+        new DigitalOperationDescription(
+            DigitalOperation.CubeWantedFromSubstation,
+            UserInputDevice.Test1,
+            UserInputDeviceButton.XBONE_B_BUTTON,
+            ButtonType.Simple),
+        new DigitalOperationDescription(
+            DigitalOperation.ConeWantedFromSubstation,
+            UserInputDevice.Test1,
+            UserInputDeviceButton.XBONE_X_BUTTON,
+            ButtonType.Simple),
+
         // Test operations:
         new DigitalOperationDescription(
             DigitalOperation.VisionEnableAprilTagProcessing,
             UserInputDevice.Test1,
             UserInputDeviceButton.XBONE_A_BUTTON,
             ButtonType.Toggle),
-
         new DigitalOperationDescription(
-            DigitalOperation.CubeWantedFromSubstation,
-            UserInputDevice.Test1,
-            UserInputDeviceButton.XBONE_B_BUTTON,
-            ButtonType.Click),
-        
-        new DigitalOperationDescription(
-            DigitalOperation.ConeWantedFromSubstation,
-            UserInputDevice.Test1,
-            UserInputDeviceButton.XBONE_X_BUTTON,
-            ButtonType.Click),
-
-        new DigitalOperationDescription(
-            DigitalOperation.Rainbow,
+            DigitalOperation.RainbowTest,
             UserInputDevice.Test2,
             UserInputDeviceButton.XBONE_RIGHT_BUTTON,
             ButtonType.Simple),
-
         new DigitalOperationDescription(
-            DigitalOperation.Purple,
+            DigitalOperation.PurpleTest,
             UserInputDevice.Test2,
             UserInputDeviceButton.XBONE_LEFT_BUTTON,
             ButtonType.Simple),
-        
         new DigitalOperationDescription(
-            DigitalOperation.Blue,
+            DigitalOperation.BlueTest,
             UserInputDevice.Test2,
             UserInputDeviceButton.XBONE_X_BUTTON,
             ButtonType.Simple),
-        
         new DigitalOperationDescription(
-            DigitalOperation.Yellow,
+            DigitalOperation.YellowTest,
             UserInputDevice.Test2,
             UserInputDeviceButton.XBONE_Y_BUTTON,
             ButtonType.Simple),
-
         new DigitalOperationDescription(
-            DigitalOperation.Green,
+            DigitalOperation.GreenTest,
             UserInputDevice.Test2,
             UserInputDeviceButton.XBONE_A_BUTTON,
             ButtonType.Simple),
-
         new DigitalOperationDescription(
-            DigitalOperation.Red,
+            DigitalOperation.RedTest,
             UserInputDevice.Test2,
             UserInputDeviceButton.XBONE_B_BUTTON,
             ButtonType.Simple),
@@ -388,6 +381,7 @@ public class ButtonMap implements IButtonMap
                     new VisionTurningTask(TurnType.AprilTagParallelizing),
                     new VisionMoveAndTurnTask(TurnType.AprilTagParallelizing, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, true, 0.0),
                     new VisionMoveAndTurnTask(TurnType.AprilTagCentering, MoveType.Forward, MoveSpeed.Normal, false, true, 80.0),
+                    new DriveTrainFieldOrientationModeTask(true),
                     new FollowPathTask("goLeft32inForward18in"),
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP,
@@ -446,6 +440,7 @@ public class ButtonMap implements IButtonMap
                     new VisionTurningTask(TurnType.AprilTagParallelizing),
                     new VisionMoveAndTurnTask(TurnType.AprilTagParallelizing, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, true, 0.0),
                     new VisionMoveAndTurnTask(TurnType.AprilTagCentering, MoveType.Forward, MoveSpeed.Normal, false, true, 80.0),
+                    new DriveTrainFieldOrientationModeTask(true),
                     new FollowPathTask("goRight32inForward18in"),
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP,
@@ -503,7 +498,8 @@ public class ButtonMap implements IButtonMap
                         TuningConstants.ARM_UPPER_POSITION_APPROACH),
                     new VisionTurningTask(TurnType.AprilTagParallelizing),
                     new VisionMoveAndTurnTask(TurnType.AprilTagParallelizing, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, true, 0.0),
-                    new VisionMoveAndTurnTask(TurnType.AprilTagCentering, MoveType.Forward, MoveSpeed.Normal, false, true, 56.0)),
+                    new VisionMoveAndTurnTask(TurnType.AprilTagCentering, MoveType.Forward, MoveSpeed.Normal, false, true, 56.0),
+                    new DriveTrainFieldOrientationModeTask(true)),
             new IOperation[]
             {
                 AnalogOperation.DriveTrainMoveForward,
@@ -558,8 +554,10 @@ public class ButtonMap implements IButtonMap
                     new VisionTurningTask(TurnType.AprilTagParallelizing),
                     new VisionMoveAndTurnTask(TurnType.AprilTagParallelizing, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, true, 0.0),
                     new VisionMoveAndTurnTask(TurnType.AprilTagCentering, MoveType.Forward, MoveSpeed.Normal, false, true, 56.0),
+                    new DriveTrainFieldOrientationModeTask(true),
                     new FollowPathTask("goLeft22in"),
-                    new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0)),
+                    new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0),
+                    new DriveTrainFieldOrientationModeTask(true)),
             new IOperation[]
             {
                 AnalogOperation.DriveTrainMoveForward,
@@ -614,8 +612,10 @@ public class ButtonMap implements IButtonMap
                     new VisionTurningTask(TurnType.AprilTagParallelizing),
                     new VisionMoveAndTurnTask(TurnType.AprilTagParallelizing, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, true, 0.0),
                     new VisionMoveAndTurnTask(TurnType.AprilTagCentering, MoveType.Forward, MoveSpeed.Normal, false, true, 56.0),
+                    new DriveTrainFieldOrientationModeTask(true),
                     new FollowPathTask("goRight22in"),
-                    new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0)),
+                    new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0),
+                    new DriveTrainFieldOrientationModeTask(true)),
             new IOperation[]
             {
                 AnalogOperation.DriveTrainMoveForward,
@@ -963,115 +963,22 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.ArmMMUpperPosition,
             }),
 
-        // new MacroOperationDescription(
-        //     MacroOperation.ChargeStationBalance,
-        //     UserInputDevice.Test1,
-        //     UserInputDeviceButton.XBONE_SELECT_BUTTON, // Left menu button
-        //     Shift.Test1Debug,
-        //     Shift.None,
-        //     ButtonType.Toggle,
-        //     () -> SequentialTask.Sequence(
-        //         new PitchResetTask(), //calibration
-        //         new ChargeStationTask(false), //false means charge station in front of robot
-        //         ConcurrentTask.AllTasks(
-        //             new PIDBrakeTask(),
-        //             new WaitTask(0.5))),
-        //     new IOperation[]
-        //     {
-        //         DigitalOperation.PositionResetRobotPitch,
-        //         DigitalOperation.PositionResetFieldOrientation,
-        //         AnalogOperation.PositionStartingAngle,
-        //         AnalogOperation.DriveTrainMoveForward,
-        //         AnalogOperation.DriveTrainMoveRight,
-        //         AnalogOperation.DriveTrainTurnAngleGoal,
-        //         AnalogOperation.DriveTrainTurnSpeed,
-        //         AnalogOperation.DriveTrainRotationA,
-        //         AnalogOperation.DriveTrainRotationB,
-        //         AnalogOperation.DriveTrainPathXGoal,
-        //         AnalogOperation.DriveTrainPathYGoal,
-        //         AnalogOperation.DriveTrainPathXVelocityGoal,
-        //         AnalogOperation.DriveTrainPathYVelocityGoal,
-        //         AnalogOperation.DriveTrainPathAngleVelocityGoal,
-        //         AnalogOperation.DriveTrainPositionDrive1,
-        //         AnalogOperation.DriveTrainPositionDrive2,
-        //         AnalogOperation.DriveTrainPositionDrive3,
-        //         AnalogOperation.DriveTrainPositionDrive4,
-        //         AnalogOperation.DriveTrainPositionSteer1,
-        //         AnalogOperation.DriveTrainPositionSteer2,
-        //         AnalogOperation.DriveTrainPositionSteer3,
-        //         AnalogOperation.DriveTrainPositionSteer4,
-        //         DigitalOperation.DriveTrainSteerMode,
-        //         DigitalOperation.DriveTrainMaintainPositionMode,
-        //         DigitalOperation.DriveTrainPathMode,
-        //         DigitalOperation.DriveTrainReset,
-        //         DigitalOperation.DriveTrainEnableFieldOrientation,
-        //         DigitalOperation.DriveTrainDisableFieldOrientation,
-        //         DigitalOperation.DriveTrainUseRobotOrientation,
-        //         DigitalOperation.DriveTrainEnableMaintainDirectionMode
-        //     }),
-           new MacroOperationDescription(
-               MacroOperation.ChargeStationBalanceGyro,
-               UserInputDevice.Test1,
-               UserInputDeviceButton.XBONE_SELECT_BUTTON, // Left menu button
-               Shift.Test1Debug,
-               Shift.None,
-               ButtonType.Toggle,
-               () -> SequentialTask.Sequence(
-                   new ResetLevelTask(), //calibration
-                   new ChargeStationTaskv2(false), // false means charge station in front of robot
-                   ConcurrentTask.AllTasks(
-                       new PIDBrakeTask(),
-                       new WaitTask(0.5))),
-               new IOperation[]
-               {
-                   DigitalOperation.PositionResetRobotLevel,
-                   DigitalOperation.PositionResetFieldOrientation,
-                   AnalogOperation.PositionStartingAngle,
-                   AnalogOperation.DriveTrainMoveForward,
-                   AnalogOperation.DriveTrainMoveRight,
-                   AnalogOperation.DriveTrainTurnAngleGoal,
-                   AnalogOperation.DriveTrainTurnSpeed,
-                   AnalogOperation.DriveTrainRotationA,
-                   AnalogOperation.DriveTrainRotationB,
-                   AnalogOperation.DriveTrainPathXGoal,
-                   AnalogOperation.DriveTrainPathYGoal,
-                   AnalogOperation.DriveTrainPathXVelocityGoal,
-                   AnalogOperation.DriveTrainPathYVelocityGoal,
-                   AnalogOperation.DriveTrainPathAngleVelocityGoal,
-                   AnalogOperation.DriveTrainPositionDrive1,
-                   AnalogOperation.DriveTrainPositionDrive2,
-                   AnalogOperation.DriveTrainPositionDrive3,
-                   AnalogOperation.DriveTrainPositionDrive4,
-                   AnalogOperation.DriveTrainPositionSteer1,
-                   AnalogOperation.DriveTrainPositionSteer2,
-                   AnalogOperation.DriveTrainPositionSteer3,
-                   AnalogOperation.DriveTrainPositionSteer4,
-                   DigitalOperation.DriveTrainSteerMode,
-                   DigitalOperation.DriveTrainMaintainPositionMode,
-                   DigitalOperation.DriveTrainPathMode,
-                   DigitalOperation.DriveTrainReset,
-                   DigitalOperation.DriveTrainEnableFieldOrientation,
-                   DigitalOperation.DriveTrainDisableFieldOrientation,
-                   DigitalOperation.DriveTrainUseRobotOrientation,
-                   DigitalOperation.DriveTrainEnableMaintainDirectionMode
-               }),
-
-
         new MacroOperationDescription(
-            MacroOperation.ChargeStationBalanceReverse,
+            MacroOperation.ChargeStationBalance,
             UserInputDevice.Test1,
             UserInputDeviceButton.XBONE_SELECT_BUTTON, // Left menu button
             Shift.Test1Debug,
-            Shift.Test1Debug,
+            Shift.None,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
-                // new PitchResetTask(), //calibration
-                new ChargeStationTask(true), // true means charge station behind
+                new ResetLevelTask(),
+                new ChargeStationTaskv2(false),
                 ConcurrentTask.AllTasks(
                     new PIDBrakeTask(),
                     new WaitTask(0.5))),
             new IOperation[]
             {
+                DigitalOperation.PositionResetRobotLevel,
                 DigitalOperation.PositionResetFieldOrientation,
                 AnalogOperation.PositionStartingAngle,
                 AnalogOperation.DriveTrainMoveForward,
@@ -1100,7 +1007,55 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.DriveTrainEnableFieldOrientation,
                 DigitalOperation.DriveTrainDisableFieldOrientation,
                 DigitalOperation.DriveTrainUseRobotOrientation,
-                DigitalOperation.DriveTrainEnableMaintainDirectionMode
+                DigitalOperation.DriveTrainEnableMaintainDirectionMode,
+                DigitalOperation.DriveTrainIgnoreSlewRateLimitingMode
+            }),
+        new MacroOperationDescription(
+            MacroOperation.ChargeStationBalanceReverse,
+            UserInputDevice.Test1,
+            UserInputDeviceButton.XBONE_START_BUTTON, // Left menu button
+            Shift.Test1Debug,
+            Shift.None,
+            ButtonType.Toggle,
+            () -> SequentialTask.Sequence(
+                new ResetLevelTask(), // calibration
+                new ChargeStationTaskv2(true),
+                ConcurrentTask.AllTasks(
+                    new PIDBrakeTask(),
+                    new WaitTask(0.5))),
+            new IOperation[]
+            {
+                DigitalOperation.PositionResetRobotLevel,
+                DigitalOperation.PositionResetFieldOrientation,
+                AnalogOperation.PositionStartingAngle,
+                AnalogOperation.DriveTrainMoveForward,
+                AnalogOperation.DriveTrainMoveRight,
+                AnalogOperation.DriveTrainTurnAngleGoal,
+                AnalogOperation.DriveTrainTurnSpeed,
+                AnalogOperation.DriveTrainRotationA,
+                AnalogOperation.DriveTrainRotationB,
+                AnalogOperation.DriveTrainPathXGoal,
+                AnalogOperation.DriveTrainPathYGoal,
+                AnalogOperation.DriveTrainPathXVelocityGoal,
+                AnalogOperation.DriveTrainPathYVelocityGoal,
+                AnalogOperation.DriveTrainPathAngleVelocityGoal,
+                AnalogOperation.DriveTrainPositionDrive1,
+                AnalogOperation.DriveTrainPositionDrive2,
+                AnalogOperation.DriveTrainPositionDrive3,
+                AnalogOperation.DriveTrainPositionDrive4,
+                AnalogOperation.DriveTrainPositionSteer1,
+                AnalogOperation.DriveTrainPositionSteer2,
+                AnalogOperation.DriveTrainPositionSteer3,
+                AnalogOperation.DriveTrainPositionSteer4,
+                DigitalOperation.DriveTrainSteerMode,
+                DigitalOperation.DriveTrainMaintainPositionMode,
+                DigitalOperation.DriveTrainPathMode,
+                DigitalOperation.DriveTrainReset,
+                DigitalOperation.DriveTrainEnableFieldOrientation,
+                DigitalOperation.DriveTrainDisableFieldOrientation,
+                DigitalOperation.DriveTrainUseRobotOrientation,
+                DigitalOperation.DriveTrainEnableMaintainDirectionMode,
+                DigitalOperation.DriveTrainIgnoreSlewRateLimitingMode
             }),
 
         new MacroOperationDescription(

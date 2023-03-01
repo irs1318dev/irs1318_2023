@@ -81,6 +81,7 @@ public class ChargeStationTask extends ControlTaskBase
         this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleGoal, 0.0);
         this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0);
         this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, 0.0);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainIgnoreSlewRateLimitingMode, true);
     }
 
     /**
@@ -192,6 +193,7 @@ public class ChargeStationTask extends ControlTaskBase
         this.setDigitalOperationState(DigitalOperation.DriveTrainEnableMaintainDirectionMode, false);
         this.setDigitalOperationState(DigitalOperation.DriveTrainPathMode, false);
         this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainIgnoreSlewRateLimitingMode, false);
     }
 
     /**

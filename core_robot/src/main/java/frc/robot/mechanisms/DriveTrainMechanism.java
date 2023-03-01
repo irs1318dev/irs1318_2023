@@ -707,14 +707,23 @@ public class DriveTrainMechanism implements IMechanism
                 centerVelocityForward = centerVelocityForwardRaw;
             }
 
+            boolean ignoreSlewRateLimiting = this.driver.getDigital(DigitalOperation.DriveTrainIgnoreSlewRateLimitingMode);
             if (this.xVelocityLimiter != null)
             {
-                centerVelocityForward = this.xVelocityLimiter.update(centerVelocityForward);
+                double rateLimitedCenterVelocityForward = this.xVelocityLimiter.update(centerVelocityForward);
+                if (!ignoreSlewRateLimiting)
+                {
+                    centerVelocityForward = rateLimitedCenterVelocityForward;
+                }
             }
 
             if (this.yVelocityLimiter != null)
             {
-                centerVelocityRight = this.xVelocityLimiter.update(centerVelocityRight);
+                double rateLimitedCenterVelocityRight = this.yVelocityLimiter.update(centerVelocityRight);
+                if (!ignoreSlewRateLimiting)
+                {
+                    centerVelocityRight = rateLimitedCenterVelocityRight;
+                }
             }
 
             double forcedOmega = this.driver.getAnalog(AnalogOperation.DriveTrainSpinLeft) + this.driver.getAnalog(AnalogOperation.DriveTrainSpinRight);
@@ -733,7 +742,11 @@ public class DriveTrainMechanism implements IMechanism
 
                 if (this.angularVelocityLimiter != null)
                 {
-                    omega = this.angularVelocityLimiter.update(omega);
+                    double rateLimitedAngularVelocity = this.angularVelocityLimiter.update(omega);
+                    if (!ignoreSlewRateLimiting)
+                    {
+                        omega = rateLimitedAngularVelocity;
+                    }
                 }
             }
             else if (!useFieldOriented)

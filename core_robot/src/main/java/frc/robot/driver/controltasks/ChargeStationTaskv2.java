@@ -21,32 +21,41 @@ public class ChargeStationTaskv2 extends ControlTaskBase
         Completed
     }
 
+    private final double reverse;
+    private final boolean fromCurrentOrientation;
     private final double orientation;
 
-    private State currentState;
-    private FloatingAverageCalculator pitchRateAverageCalculator; 
     private PigeonManager imuManager;
     private ITimer timer;
 
+    private FloatingAverageCalculator pitchRateAverageCalculator; 
     private double pitchRateAverage;
+
+    private State currentState;
+    private double orientationOffset;
     private double pitch;
     private double climbingExceededTransitionTime;
 
-    private final double reverse;
-
     public ChargeStationTaskv2(boolean reverse)
     {
-        this(reverse, 0.0);
+        this(reverse, false, 0.0);
+    }
+
+    public ChargeStationTaskv2(boolean reverse, boolean fromCurrentOrientation)
+    {
+        this(reverse, fromCurrentOrientation, 0.0);
     }
 
     public ChargeStationTaskv2(boolean reverse, double orientation)
     {
-        this.orientation = orientation;
-        this.reverse = reverse ? -1.0 : 1.0;
+        this(reverse, false, orientation);
+    }
 
-        this.currentState = State.Starting;
-        this.pitch = 0.0;
-        this.climbingExceededTransitionTime = 0.0;
+    public ChargeStationTaskv2(boolean reverse, boolean fromCurrentOrientation, double orientation)
+    {
+        this.orientation = orientation;
+        this.fromCurrentOrientation = fromCurrentOrientation;
+        this.reverse = reverse ? -1.0 : 1.0;
     }
 
     /**
@@ -56,19 +65,28 @@ public class ChargeStationTaskv2 extends ControlTaskBase
     public void begin()
     {
         this.currentState = State.Starting;
+        this.climbingExceededTransitionTime = 0.0;
 
         this.imuManager = this.getInjector().getInstance(PigeonManager.class);
         this.timer = this.getInjector().getInstance(ITimer.class);
 
-        //calculate floating average of past 0.1 seconds, at an expected 50 samples per second
+        this.orientationOffset = 0.0;
+        if (this.fromCurrentOrientation)
+        {
+            this.orientationOffset = this.imuManager.getYaw();
+        }
+
+        // calculate floating average of past 0.1 seconds
+        this.pitchRateAverage = 0.0;
         this.pitchRateAverageCalculator = new FloatingAverageCalculator(this.timer, 0.25, 50);
         this.pitch = this.imuManager.getPitch();
 
         this.setDigitalOperationState(DigitalOperation.DriveTrainEnableMaintainDirectionMode, true);
         this.setDigitalOperationState(DigitalOperation.DriveTrainPathMode, false);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleGoal, this.orientation);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleGoal, this.orientation + this.orientationOffset);
         this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0);
         this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, 0.0);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainIgnoreSlewRateLimitingMode, false);
     }
 
     /**
@@ -116,7 +134,6 @@ public class ChargeStationTaskv2 extends ControlTaskBase
             }
         }
 
-        System.out.println(this.currentState);
         switch (this.currentState)
         {
             case Balancing:
@@ -164,6 +181,7 @@ public class ChargeStationTaskv2 extends ControlTaskBase
         this.setDigitalOperationState(DigitalOperation.DriveTrainEnableMaintainDirectionMode, false);
         this.setDigitalOperationState(DigitalOperation.DriveTrainPathMode, false);
         this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainIgnoreSlewRateLimitingMode, false);
     }
 
     /**
