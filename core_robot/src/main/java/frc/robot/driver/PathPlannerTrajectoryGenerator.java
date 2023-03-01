@@ -315,8 +315,8 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(P23, ForwardOT, ForwardOT),
-                new PathPlannerWaypoint(P19, BackwardOT, BackwardOT),
-                new PathPlannerWaypoint(P13, BackwardOT, BackwardOT)),
+                new PathPlannerWaypoint(P19, BackwardOT, ForwardOT),
+                new PathPlannerWaypoint(P13, BackwardOT, ForwardOT)),
                 isRed ? "23ToChargeRed" : "23ToChargeBlue");
 
         addTrajectory(
@@ -393,8 +393,8 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(P20, BackwardOT, ForwardOT),
-                new PathPlannerWaypoint(P18, -Blue135_Red45OT, BackwardOT),
-                new PathPlannerWaypoint(P13, -90, BackwardOT)),
+                new PathPlannerWaypoint(P18, -Blue135_Red45OT, ForwardOT),
+                new PathPlannerWaypoint(P13, -90, ForwardOT)),
                 isRed ? "20ToChargeRed" : "20ToChargeBlue");
 
         addTrajectory(
