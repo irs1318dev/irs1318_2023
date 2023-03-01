@@ -56,6 +56,10 @@ public enum LoggingKey
     DriveTrainYPosition("dt.ypos", true),
     DriveTrainXPositionGoal("dt.xpos_goal"),
     DriveTrainYPositionGoal("dt.ypos_goal"),
+    DriveTrainAngleGoal("dt.angle_pathgoal"),
+    DriveTrainXVelocityGoal("dt.xvel_goal"),
+    DriveTrainYVelocityGoal("dt.yvel_goal"),
+    DriveTrainAngleVelocityGoal("dt.anglevel_goal"),
     DriveTrainFieldOriented("dt.field_oriented"),
     DriveTrainMaintainOrientation("dt.maintain_orientation"),
 

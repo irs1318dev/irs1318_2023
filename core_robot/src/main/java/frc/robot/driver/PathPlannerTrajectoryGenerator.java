@@ -12,7 +12,7 @@ public class PathPlannerTrajectoryGenerator
     public static void generateTrajectories(TrajectoryManager trajectoryManager, IPathPlanner pathPlanner)
     {
         PathPlannerTrajectoryGenerator.generateTrajectories(false, trajectoryManager, pathPlanner);
-        //PathPlannerTrajectoryGenerator.generateTrajectories(true, trajectoryManager, pathPlanner);
+        PathPlannerTrajectoryGenerator.generateTrajectories(true, trajectoryManager, pathPlanner);
 
         // Macro paths:
         addTrajectory(
@@ -251,14 +251,14 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P5, BackwardOT, BackwardOT)),
                 isRed ? "11To5Red" : "11To5Blue");
 
-        addTrajectory(
-            trajectoryManager,
-            pathPlanner.buildTrajectory(
-                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(P5, ForwardOT, BackwardOT),
-                new PathPlannerWaypoint(P11, ForwardOT, ForwardOT)),
-                isRed ? "5To11TurnRed" : "5To11TurnBlue");
+        // addTrajectory(
+        //     trajectoryManager,
+        //     pathPlanner.buildTrajectory(
+        //         TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
+        //         TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+        //         new PathPlannerWaypoint(P5, ForwardOT, BackwardOT),
+        //         new PathPlannerWaypoint(P11, ForwardOT, ForwardOT)),
+        //         isRed ? "5To11TurnRed" : "5To11TurnBlue");
 
         addTrajectory(
             trajectoryManager,

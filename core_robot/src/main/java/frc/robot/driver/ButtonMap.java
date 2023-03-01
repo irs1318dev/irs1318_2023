@@ -503,7 +503,7 @@ public class ButtonMap implements IButtonMap
                         TuningConstants.ARM_UPPER_POSITION_APPROACH),
                     new VisionTurningTask(TurnType.AprilTagParallelizing),
                     new VisionMoveAndTurnTask(TurnType.AprilTagParallelizing, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, true, 0.0),
-                    new VisionMoveAndTurnTask(TurnType.AprilTagCentering, MoveType.Forward, MoveSpeed.Normal, false, true, 80.0)),
+                    new VisionMoveAndTurnTask(TurnType.AprilTagCentering, MoveType.Forward, MoveSpeed.Normal, false, true, 56.0)),
             new IOperation[]
             {
                 AnalogOperation.DriveTrainMoveForward,
@@ -557,7 +557,7 @@ public class ButtonMap implements IButtonMap
                         TuningConstants.ARM_UPPER_POSITION_APPROACH),
                     new VisionTurningTask(TurnType.AprilTagParallelizing),
                     new VisionMoveAndTurnTask(TurnType.AprilTagParallelizing, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, true, 0.0),
-                    new VisionMoveAndTurnTask(TurnType.AprilTagCentering, MoveType.Forward, MoveSpeed.Normal, false, true, 80.0),
+                    new VisionMoveAndTurnTask(TurnType.AprilTagCentering, MoveType.Forward, MoveSpeed.Normal, false, true, 56.0),
                     new FollowPathTask("goLeft22in"),
                     new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0)),
             new IOperation[]
@@ -613,7 +613,7 @@ public class ButtonMap implements IButtonMap
                         TuningConstants.ARM_UPPER_POSITION_APPROACH),
                     new VisionTurningTask(TurnType.AprilTagParallelizing),
                     new VisionMoveAndTurnTask(TurnType.AprilTagParallelizing, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, true, 0.0),
-                    new VisionMoveAndTurnTask(TurnType.AprilTagCentering, MoveType.Forward, MoveSpeed.Normal, false, true, 80.0),
+                    new VisionMoveAndTurnTask(TurnType.AprilTagCentering, MoveType.Forward, MoveSpeed.Normal, false, true, 56.0),
                     new FollowPathTask("goRight22in"),
                     new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0)),
             new IOperation[]
@@ -1111,14 +1111,45 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
-                new PositionStartingTask(0.0, 0.0, 0.0),
-                new FollowPathTask("goForward4ft", Type.Absolute)),
+                ConcurrentTask.AllTasks(
+                    new ResetLevelTask(),
+                    new PositionStartingTask(
+                        false ? TuningConstants.StartGridX : -TuningConstants.StartGridX,
+                        TuningConstants.StartFiveGridY,
+                        false ? 0.0 : 180.0,
+                        true,
+                        true)),
+    
+                ConcurrentTask.AllTasks(
+                    new FollowPathTask(false ? "5To11Red" : "5To11Blue", Type.Absolute),
+                    SequentialTask.Sequence(
+                        new WaitTask(0.5),
+                        new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE, TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE)
+                    )
+                ),
+    
+                new FollowPathTask(false ? "11To5Red" : "11To5Blue", Type.Absolute),
+                new IntakeExtendTask(true),
+                new IntakeInTask(false, 1.5),
+    
+                ConcurrentTask.AllTasks(
+                    new FollowPathTask(false ? "5To11Red" : "5To11Blue", Type.Absolute),
+                    SequentialTask.Sequence(
+                        new WaitTask(0.5),
+                        new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
+                    )
+                ),
+
+                new ResetLevelTask(),
+                new ChargeStationTaskv2(true)
+            ),
             new IOperation[]
             {
                 DigitalOperation.PositionResetFieldOrientation,
                 DigitalOperation.PositionResetRobotLevel,
                 AnalogOperation.PositionStartingAngle,
                 DigitalOperation.DriveTrainResetXYPosition,
+                DigitalOperation.DriveTrainEnableMaintainDirectionMode,
                 AnalogOperation.DriveTrainStartingXPosition,
                 AnalogOperation.DriveTrainStartingYPosition,
                 AnalogOperation.DriveTrainMoveForward,
@@ -1151,6 +1182,12 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.VisionEnableAprilTagProcessing,
                 DigitalOperation.VisionEnableRetroreflectiveProcessing,
                 DigitalOperation.VisionForceDisable,
+                AnalogOperation.ArmMMUpperPosition,
+                AnalogOperation.ArmMMLowerPosition,
+                DigitalOperation.IntakeIn,
+                DigitalOperation.IntakeOut,
+                DigitalOperation.IntakeRelease,
+                DigitalOperation.IntakeGrab,
             }),
 
         // Full auton test
@@ -1161,28 +1198,7 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             Shift.None,
             ButtonType.Toggle,
-            () -> SequentialTask.Sequence(
-                new PositionStartingTask(-TuningConstants.GuardEdgeStartX, 17.5, 180),
-                new FollowPathTask("GuardStartTo9", Type.Absolute),
-                new WaitTask(0.3),
-                new FollowPathTask("9To12", Type.Absolute),
-                ConcurrentTask.AllTasks(
-                    new FollowPathTask("12To23", Type.Absolute),
-                    SequentialTask.Sequence(
-                        new WaitTask(1.0)
-                        //new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP)
-                    )  
-                ),
-                ConcurrentTask.AllTasks(
-                    new FollowPathTask("23To23", Type.Absolute)
-                    //new IntakeGamePieceTask()
-                ),
-                ConcurrentTask.AllTasks(
-                    new FollowPathTask("23To12", Type.Absolute)
-                    //new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
-                ),
-                new FollowPathTask("12To7", Type.Absolute)
-            ),
+            () -> new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0),
             new IOperation[]
             {
                 DigitalOperation.IntakeIn,

@@ -21,41 +21,32 @@ public class ChargeStationTaskv2 extends ControlTaskBase
         Completed
     }
 
+    private final double orientation;
+
     private State currentState;
     private FloatingAverageCalculator pitchRateAverageCalculator; 
     private PigeonManager imuManager;
     private ITimer timer;
 
+    private double pitchRateAverage;
     private double pitch;
     private double climbingExceededTransitionTime;
 
-    private final double[] pitchLog;
-    private double prevPitchLogTime;
-    private double pitchRateAverage;
-    private double reverse = 1.0;
+    private final double reverse;
 
     public ChargeStationTaskv2(boolean reverse)
     {
-        this.reverse = 1.0;
-        if (reverse)
-        {
-            this.reverse = -1.0;
-        }
+        this(reverse, 0.0);
+    }
+
+    public ChargeStationTaskv2(boolean reverse, double orientation)
+    {
+        this.orientation = orientation;
+        this.reverse = reverse ? -1.0 : 1.0;
 
         this.currentState = State.Starting;
         this.pitch = 0.0;
         this.climbingExceededTransitionTime = 0.0;
-        this.pitchLog = new double[25]; // logs every 0.02 secs, array is 0.5 secs total
-        this.prevPitchLogTime = 0.0;
-    }
-
-    /**
-     * finds the absolute value diff of pitch values of beginning and end of pitchLog[]
-     * @return diff of first and last sample
-     */
-    private double findDiff()
-    {
-        return Math.abs((this.pitchLog[this.pitchLog.length - 1]) - this.pitchLog[0]);
     }
 
     /**
@@ -73,18 +64,9 @@ public class ChargeStationTaskv2 extends ControlTaskBase
         this.pitchRateAverageCalculator = new FloatingAverageCalculator(this.timer, 0.25, 50);
         this.pitch = this.imuManager.getPitch();
 
-        //floating average of past 0.1 seconds of pitch rate
-        this.pitchRateAverage = this.pitchRateAverageCalculator.update(this.imuManager.getPitchRate());
-
-        // at the beginning of task set all array values to be current pitch
-        for (int i = 0; i < this.pitchLog.length; i++)
-        {
-            this.pitchLog[i] = this.pitch;
-        }
-
         this.setDigitalOperationState(DigitalOperation.DriveTrainEnableMaintainDirectionMode, true);
         this.setDigitalOperationState(DigitalOperation.DriveTrainPathMode, false);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleGoal, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleGoal, this.orientation);
         this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0);
         this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, 0.0);
     }
@@ -99,21 +81,6 @@ public class ChargeStationTaskv2 extends ControlTaskBase
 
         this.pitch = this.imuManager.getPitch();
         this.pitchRateAverage = this.pitchRateAverageCalculator.update(this.imuManager.getPitchRate());
-
-        // if previous pitch log time was at least 0.02 secs ago then set pitch log time as current time, and log the new pitch
-        if (currTime - this.prevPitchLogTime >= 0.02)
-        {
-            this.prevPitchLogTime = currTime; 
-
-            // constantly update array for past 0.5 seconds
-            for (int i = 1; i < this.pitchLog.length; i++)
-            {
-                this.pitchLog[i - 1] = this.pitchLog[i];
-            }
-
-            // put current pitch in final space
-            this.pitchLog[this.pitchLog.length - 1] = this.pitch;
-        }
 
         if (this.currentState == State.Starting)
         {

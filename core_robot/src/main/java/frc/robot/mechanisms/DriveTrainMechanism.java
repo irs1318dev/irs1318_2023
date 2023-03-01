@@ -651,6 +651,11 @@ public class DriveTrainMechanism implements IMechanism
 
                 this.logger.logNumber(LoggingKey.DriveTrainXPositionGoal, xGoal);
                 this.logger.logNumber(LoggingKey.DriveTrainYPositionGoal, yGoal);
+                this.logger.logNumber(LoggingKey.DriveTrainAngleGoal, angleGoal);
+
+                this.logger.logNumber(LoggingKey.DriveTrainXVelocityGoal, xVelocityGoal);
+                this.logger.logNumber(LoggingKey.DriveTrainYVelocityGoal, yVelocityGoal);
+                this.logger.logNumber(LoggingKey.DriveTrainAngleVelocityGoal, angleVelocityGoal);
 
                 // convert velocity to be robot-oriented
                 centerVelocityRight = -Helpers.cosd(this.robotYaw) * yVelocityGoal + Helpers.sind(this.robotYaw) * xVelocityGoal;

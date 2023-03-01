@@ -19,7 +19,7 @@ public class FollowPathTask extends ControlTaskBase
 {
     public enum Type
     {
-        Absolute, // poses should match how they are 
+        Absolute, // poses should match how they are on the field exactly
         RobotRelativeFromCurrentPose,
         FieldRelativeFromCurrentPose,
     }
@@ -115,15 +115,6 @@ public class FollowPathTask extends ControlTaskBase
         double angleVelGoal;
         switch (this.type)
         {
-            case Absolute:
-                xGoal = xPos;
-                yGoal = yPos;
-                angleGoal = anglePos;
-                xVelGoal = xVel;
-                yVelGoal = yVel;
-                angleVelGoal = angleVel;
-                break;
-
             case FieldRelativeFromCurrentPose:
                 xGoal = xPos + this.initialPose.x;
                 yGoal = yPos + this.initialPose.y;
@@ -133,7 +124,6 @@ public class FollowPathTask extends ControlTaskBase
                 angleVelGoal = angleVel;
                 break;
 
-            default:
             case RobotRelativeFromCurrentPose:
                 double initialAngle = this.initialPose.angle;
 
@@ -144,6 +134,16 @@ public class FollowPathTask extends ControlTaskBase
                 xVelGoal = Helpers.cosd(initialAngle) * xVel + Helpers.sind(initialAngle) * yVel;
                 yVelGoal = Helpers.cosd(initialAngle) * yVel - Helpers.sind(initialAngle) * xVel;
                 angleVelGoal = state.angleVelocity;
+                break;
+
+            default:
+            case Absolute:
+                xGoal = xPos;
+                yGoal = yPos;
+                angleGoal = anglePos;
+                xVelGoal = xVel;
+                yVelGoal = yVel;
+                angleVelGoal = angleVel;
                 break;
         }
 
