@@ -4,7 +4,6 @@ import frc.robot.TuningConstants;
 import frc.robot.common.PIDHandler;
 import frc.robot.common.robotprovider.ITimer;
 import frc.robot.driver.*;
-import frc.robot.mechanisms.OffboardVisionManager;
 
 
     // after apriltag vision
@@ -56,6 +55,13 @@ public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
     {
         super.begin();
 
+        if (this.translateType == MoveType.RetroReflectiveStrafe)
+        {
+            this.setDigitalOperationState(DigitalOperation.VisionEnableRetroreflectiveProcessing, true);
+        }
+
+        this.setDigitalOperationState(DigitalOperation.DriveTrainDisableFieldOrientation, true);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainEnableFieldOrientation, false);
         switch (this.moveSpeed)
         {
             case Fast:
@@ -129,7 +135,11 @@ public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
     public void end()
     {
         super.end();
+
+        this.setDigitalOperationState(DigitalOperation.DriveTrainDisableFieldOrientation, false);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainEnableFieldOrientation, true);
         this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0);
+        this.setDigitalOperationState(DigitalOperation.VisionEnableRetroreflectiveProcessing, false);
     }
 
     @Override

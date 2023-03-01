@@ -62,7 +62,7 @@ public class VisionTurningTask extends PIDTurnTaskBase
 
         this.visionManager = this.getInjector().getInstance(OffboardVisionManager.class);
 
-        this.setDigitalOperationState(DigitalOperation.VisionEnableRetroreflectiveProcessing, !this.isAprilTag());
+        this.setDigitalOperationState(DigitalOperation.VisionEnableRetroreflectiveProcessing, this.isRetroReflective());
         this.setDigitalOperationState(DigitalOperation.VisionEnableAprilTagProcessing, this.isAprilTag());
     }
 
@@ -80,7 +80,12 @@ public class VisionTurningTask extends PIDTurnTaskBase
 
     protected boolean isAprilTag()
     {
-        return this.rotateType != TurnType.RetroreflectiveCentering;
+        return this.rotateType == TurnType.AprilTagCentering || this.rotateType == TurnType.AprilTagParallelizing;
+    }
+
+    protected boolean isRetroReflective()
+    {
+        return this.rotateType == TurnType.RetroreflectiveCentering;
     }
 
     @Override
