@@ -143,11 +143,11 @@ public class ChargeStationTaskv2 extends ControlTaskBase
                     // if negative pitch, move forward
                     if (this.pitch < 0)
                     {
-                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_BALANCING_SPEED_V2);
+                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, this.reverse * TuningConstants.CHARGE_STATION_BALANCING_SPEED_V2);
                     }
                     else // if (this.pitch > 0)
                     {
-                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, -TuningConstants.CHARGE_STATION_BALANCING_SPEED_V2);
+                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, -this.reverse * TuningConstants.CHARGE_STATION_BALANCING_SPEED_V2);
                     }
                 }
                 else // if pitch diff is within acceptable range, then pause.
