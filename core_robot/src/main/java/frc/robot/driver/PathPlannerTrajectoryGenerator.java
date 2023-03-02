@@ -345,27 +345,27 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(LoadStart, BackwardOT, BackwardOT),
                 new PathPlannerWaypoint(LoadMid, BackwardOT, BackwardOT),
-                new PathPlannerWaypoint(P1, -Blue135_Red45OT, BackwardOT)),
-                isRed ? "LoadStartTo1Red" : "LoadStartTo1Blue");
+                new PathPlannerWaypoint(P2, -Blue135_Red45OT, BackwardOT)),
+                isRed ? "LoadStartTo2Red" : "LoadStartTo2Blue");
 
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(P1, ForwardOT, BackwardOT),
+                new PathPlannerWaypoint(P2, ForwardOT, BackwardOT),
                 new PathPlannerWaypoint(P18, -Blue45_Red135OT, BackwardOT),
                 new PathPlannerWaypoint(P13, -90, BackwardOT)),
-                isRed ? "1ToChargeRed" : "1ToChargeBlue");
+                isRed ? "2ToChargeRed" : "2ToChargeBlue");
 
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(P1, -Blue45_Red135OT, BackwardOT),
+                new PathPlannerWaypoint(P2, -Blue45_Red135OT, BackwardOT),
                 new PathPlannerWaypoint(P10, -Blue45_Red135OT, BackwardOT)),
-                isRed ? "1To10Red" : "1To10Blue");
+                isRed ? "2To10Red" : "2To10Blue");
 
         addTrajectory(
             trajectoryManager,

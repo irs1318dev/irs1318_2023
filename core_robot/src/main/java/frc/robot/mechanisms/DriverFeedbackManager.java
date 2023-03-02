@@ -67,47 +67,31 @@ public class DriverFeedbackManager implements IMechanism
     @Override
     public void update()
     {
+        RobotMode currentMode = this.ds.getMode();
         LightMode newLightMode;
-        // if (this.ds.getMode() == RobotMode.Autonomous)
-        // {
-        //     newLightMode = LightMode.PurpleTwinkling;
-        // }
-        // else if (this.driver.getDigital(DigitalOperation.CubeWantedFromSubstation))
-        // {
-        //     newLightMode = LightMode.Purple;
-        // }
-        // else if (this.driver.getDigital(DigitalOperation.ConeWantedFromSubstation))
-        // {
-        //     newLightMode = LightMode.Yellow;
-        // }
-        // else if ((this.driver.getDigital(DigitalOperation.IntakeIn) || this.driver.getDigital(DigitalOperation.IntakeGrab)) && this.arm.isThroughBeamBroken())
-        // {
-        //     newLightMode = LightMode.Blue;
-        // }
-        // else if ((this.driver.getDigital(DigitalOperation.IntakeIn) || this.driver.getDigital(DigitalOperation.IntakeGrab)) && !this.arm.isThroughBeamBroken())
-        // {
-        //     newLightMode = LightMode.Orange;
-        // }
-
-        if (this.driver.getDigital(DigitalOperation.RainbowTest))
+        if (currentMode == RobotMode.Autonomous)
         {
-            newLightMode = LightMode.Rainbow;
+            newLightMode = LightMode.PurpleTwinkling;
         }
-        else if (this.driver.getDigital(DigitalOperation.PurpleTest))
+        else if (this.driver.getDigital(DigitalOperation.CubeWantedFromSubstation))
         {
             newLightMode = LightMode.Purple;
         }
-        else if (this.driver.getDigital(DigitalOperation.GreenTest))
-        {
-            newLightMode = LightMode.Green;
-        }
-        else if (this.driver.getDigital(DigitalOperation.RedTest))
-        {
-            newLightMode = LightMode.Red;
-        }
-        else if (this.driver.getDigital(DigitalOperation.YellowTest))
+        else if (this.driver.getDigital(DigitalOperation.ConeWantedFromSubstation))
         {
             newLightMode = LightMode.Yellow;
+        }
+        else if ((this.driver.getDigital(DigitalOperation.IntakeIn) || this.driver.getDigital(DigitalOperation.IntakeGrab)) && this.arm.isThroughBeamBroken())
+        {
+            newLightMode = LightMode.Blue;
+        }
+        else if ((this.driver.getDigital(DigitalOperation.IntakeIn) || this.driver.getDigital(DigitalOperation.IntakeGrab)) && !this.arm.isThroughBeamBroken())
+        {
+            newLightMode = LightMode.Orange;
+        }
+        else if (currentMode == RobotMode.Disabled)
+        {
+            newLightMode = LightMode.Rainbow;
         }
         else
         {
@@ -189,7 +173,7 @@ public class DriverFeedbackManager implements IMechanism
                     TuningConstants.INDICATOR_PURPLE_COLOR_GREEN,
                     TuningConstants.INDICATOR_PURPLE_COLOR_BLUE,
                     TuningConstants.INDICATOR_PURPLE_COLOR_WHITE,
-                    rangeCount,
+                    rangeStart,
                     rangeCount);
                 break;
 
@@ -199,7 +183,7 @@ public class DriverFeedbackManager implements IMechanism
                     TuningConstants.INDICATOR_YELLOW_COLOR_GREEN,
                     TuningConstants.INDICATOR_YELLOW_COLOR_BLUE,
                     TuningConstants.INDICATOR_YELLOW_COLOR_WHITE,
-                    rangeCount,
+                    rangeStart,
                     rangeCount);
                 break;
 
@@ -219,7 +203,7 @@ public class DriverFeedbackManager implements IMechanism
                     TuningConstants.INDICATOR_RED_COLOR_GREEN,
                     TuningConstants.INDICATOR_RED_COLOR_BLUE,
                     TuningConstants.INDICATOR_RED_COLOR_WHITE,
-                    rangeCount,
+                    rangeStart,
                     rangeCount);
                 break;
 
@@ -229,7 +213,7 @@ public class DriverFeedbackManager implements IMechanism
                     TuningConstants.INDICATOR_BLUE_COLOR_GREEN,
                     TuningConstants.INDICATOR_BLUE_COLOR_BLUE,
                     TuningConstants.INDICATOR_BLUE_COLOR_WHITE,
-                    rangeCount,
+                    rangeStart,
                     rangeCount);
                 break;
 
@@ -239,7 +223,7 @@ public class DriverFeedbackManager implements IMechanism
                     TuningConstants.INDICATOR_ORANGE_COLOR_GREEN,
                     TuningConstants.INDICATOR_ORANGE_COLOR_BLUE,
                     TuningConstants.INDICATOR_ORANGE_COLOR_WHITE,
-                    rangeCount,
+                    rangeStart,
                     rangeCount);
                 break;
 
