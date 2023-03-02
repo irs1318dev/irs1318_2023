@@ -244,11 +244,15 @@ public class ButtonMap implements IButtonMap
             DigitalOperation.CubeWantedFromSubstation,
             UserInputDevice.Codriver,
             UserInputDeviceButton.XBONE_SELECT_BUTTON,
+            Shift.CodriverDebug,
+            Shift.CodriverDebug,
             ButtonType.Simple),
         new DigitalOperationDescription(
             DigitalOperation.ConeWantedFromSubstation,
             UserInputDevice.Codriver,
             UserInputDeviceButton.XBONE_START_BUTTON,
+            Shift.CodriverDebug,
+            Shift.CodriverDebug,
             ButtonType.Simple),
 
         // Test operations:
@@ -694,7 +698,7 @@ public class ButtonMap implements IButtonMap
             MacroOperation.ExtendLeftConeFlipper,
             UserInputDevice.Codriver,
             UserInputDeviceButton.XBONE_SELECT_BUTTON,
-            Shift.None,
+            Shift.CodriverDebug,
             Shift.None,
             ButtonType.Simple,
             () -> SequentialTask.Sequence(
@@ -715,7 +719,7 @@ public class ButtonMap implements IButtonMap
             MacroOperation.ExtendRightConeFlipper,
             UserInputDevice.Codriver,
             UserInputDeviceButton.XBONE_START_BUTTON,
-            Shift.None,
+            Shift.CodriverDebug,
             Shift.None,
             ButtonType.Simple,
             () -> SequentialTask.Sequence(
