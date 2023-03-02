@@ -215,7 +215,8 @@ public class AutonomousRoutineSelector
                     true,
                     true)),
             new FollowPathTask(isRed ? "LSToChargeRed" : "LSToChargeBlue", Type.Absolute),
-            new ChargeStationTaskv2(false, isRed ? 0.0 : 180.0)
+            new ResetLevelTask(),
+            new ChargeStationTaskv2(isRed ? false : true, isRed ? 0.0 : 180.0)
         );
     }
 
@@ -262,7 +263,8 @@ public class AutonomousRoutineSelector
                     new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
                 )
             ),
-            new ChargeStationTaskv2(false, isRed ? 0.0 : 180)
+            new ResetLevelTask(),
+            new ChargeStationTaskv2(isRed ? false : true, isRed ? 0.0 : 180)
         );
     }
 
@@ -308,7 +310,8 @@ public class AutonomousRoutineSelector
                 new FollowPathTask(isRed ? "20ToChargeRed" : "20ToChargeBlue", Type.Absolute),
                 new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_LOWER_POSITION_STOWED)
             ),
-            new ChargeStationTaskv2(true, isRed ? 180 : 0)
+            new ResetLevelTask(),
+            new ChargeStationTaskv2(isRed ? false : true, isRed ? 180 : 0)
         );
     }
 
@@ -381,6 +384,7 @@ public class AutonomousRoutineSelector
     private static IControlTask midCharge(boolean isRed)
     {
         return SequentialTask.Sequence(
+            new ResetLevelTask(),
             new ChargeStationTaskv2(true)
         );
     }
@@ -433,7 +437,7 @@ public class AutonomousRoutineSelector
                     new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
                 )
             ),
-
+            new ResetLevelTask(),
             new ChargeStationTaskv2(isRed ? true : false, isRed ? 0.0 : 180.0)
         );
     }
@@ -465,7 +469,8 @@ public class AutonomousRoutineSelector
                     true,
                     true)),
             new FollowPathTask(isRed ? "GSToChargeRed" : "GSToChargeBlue", Type.Absolute),
-            new ChargeStationTaskv2(false, isRed ? 0 : 180)
+            new ResetLevelTask(),
+            new ChargeStationTaskv2(isRed ? false : true, isRed ? 0 : 180)
         );
     }
 
@@ -512,7 +517,8 @@ public class AutonomousRoutineSelector
                     new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
                 )
             ),
-            new ChargeStationTaskv2(false, isRed ? 0.0 : 180.0)
+            new ResetLevelTask(),
+            new ChargeStationTaskv2(isRed ? false : true, isRed ? 0.0 : 180.0)
         );
     }
 
@@ -558,7 +564,8 @@ public class AutonomousRoutineSelector
                 new FollowPathTask(isRed ? "23ToChargeRed" : "23ToChargeBlue", Type.Absolute),
                 new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_LOWER_POSITION_STOWED)
             ),
-            new ChargeStationTaskv2(true, isRed ? 180.0 : 0.0)
+            new ResetLevelTask(),
+            new ChargeStationTaskv2(isRed ? false : true, isRed ? 180.0 : 0.0)
         );
     }
 

@@ -178,8 +178,8 @@ public class PathPlannerTrajectoryGenerator
             pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(0, 0, ForwardOT, ForwardOT),
-                new PathPlannerWaypoint(65, 0, ForwardOT)),
+                new PathPlannerWaypoint(0, 0, 0.0, 0.0),
+                new PathPlannerWaypoint(56.0, 0.0, 0.0, 0.0)),
             "GuardTaxi");
 
         // Does not need ternary operator, so we can put outside of isRed
@@ -188,8 +188,8 @@ public class PathPlannerTrajectoryGenerator
             pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(0, 0, ForwardOT, ForwardOT),
-                new PathPlannerWaypoint(48, 0, ForwardOT)),
+                new PathPlannerWaypoint(0, 0, 0.0, 0.0),
+                new PathPlannerWaypoint(48, 0, 0.0, 0.0)),
             "LoadTaxi");
 
         addTrajectory(

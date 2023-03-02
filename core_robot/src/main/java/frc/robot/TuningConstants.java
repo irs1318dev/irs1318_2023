@@ -58,7 +58,7 @@ public class TuningConstants
     public static final double CloseChargeStationX = 241.015; // 12.845 inches away from the charge station and grid + Robot centering value
     public static final double FarChargeStationX = 102.99; // 12 inches away from the charge station + Robot centering value
     public static final double FarChargeStationInBetweenX = TuningConstants.FarChargeStationX - 30.0; // 30 inches away from last point to allow for turning
-    public static final double GroundPiecesX = 47.36; // On ground pieces
+    public static final double GroundPiecesX = 57.36; // On ground pieces real value 47.36
     public static final double LoadEdgeStartX = 214.86;
     public static final double GuardEdgeStartX = 193.61;
 
