@@ -84,7 +84,7 @@ public class ArmMMPositionTask extends ControlTaskBase
             {
                 this.currentArmState = ArmMMState.Completed;
             }
-            else if (this.waitUntilPositionReached)
+            else if (!this.waitUntilPositionReached)
             {
                 this.currentArmState = ArmMMState.Completed;
             }
