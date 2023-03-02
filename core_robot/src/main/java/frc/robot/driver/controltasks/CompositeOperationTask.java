@@ -140,14 +140,13 @@ public abstract class CompositeOperationTask extends UpdateCycleTask
         {
             return false;
         }
+
         if (this.timeoutMode)
         {
             return this.timer.get() >= this.startTime + this.timeout;
         }
-        else
-        {
-            return super.hasCompleted();
-        }
+
+        return super.hasCompleted();
     }
 
     /**
