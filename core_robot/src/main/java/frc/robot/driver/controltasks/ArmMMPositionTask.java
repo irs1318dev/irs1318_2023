@@ -21,7 +21,6 @@ public class ArmMMPositionTask extends ControlTaskBase
     private final double upperExtensionLength;
     private final boolean waitUntilPositionReached;
 
-    private int updateCycleCount;
     private ArmMechanism arm;
 
     private ArmMMState currentArmState;
@@ -62,8 +61,6 @@ public class ArmMMPositionTask extends ControlTaskBase
         {
             this.currentArmState = ArmMMState.DesiredGoal;
         }
-
-        this.updateCycleCount = 0;
     }
 
     /**
@@ -78,7 +75,6 @@ public class ArmMMPositionTask extends ControlTaskBase
                 Math.abs(this.arm.getMMUpperPosition() - TuningConstants.ARM_UPPER_MM_INTERMIDATE) < TuningConstants.ARM_UPPER_MM_GOAL_THRESHOLD)
             {
                 this.currentArmState = ArmMMState.DesiredGoal;
-                this.updateCycleCount = 1;
             }
         }
         else if (this.currentArmState == ArmMMState.DesiredGoal)
@@ -88,7 +84,7 @@ public class ArmMMPositionTask extends ControlTaskBase
             {
                 this.currentArmState = ArmMMState.Completed;
             }
-            else if (!this.waitUntilPositionReached && this.updateCycleCount++ >= 1)
+            else if (!this.waitUntilPositionReached)
             {
                 this.currentArmState = ArmMMState.Completed;
             }
@@ -101,15 +97,11 @@ public class ArmMMPositionTask extends ControlTaskBase
                 this.setAnalogOperationState(AnalogOperation.ArmMMUpperPosition, TuningConstants.ARM_UPPER_MM_INTERMIDATE);
                 break;
 
+            default:
+            case Completed:
             case DesiredGoal:
                 this.setAnalogOperationState(AnalogOperation.ArmMMLowerPosition, this.lowerExtensionLength);
                 this.setAnalogOperationState(AnalogOperation.ArmMMUpperPosition, this.upperExtensionLength);
-                break;
-
-            default:
-            case Completed:
-                this.setAnalogOperationState(AnalogOperation.ArmMMLowerPosition, TuningConstants.MAGIC_NULL_VALUE);
-                this.setAnalogOperationState(AnalogOperation.ArmMMUpperPosition, TuningConstants.MAGIC_NULL_VALUE);
                 break;
         }
     }
