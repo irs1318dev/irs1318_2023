@@ -260,6 +260,15 @@ public class ButtonMap implements IButtonMap
             DigitalOperation.VisionEnableAprilTagProcessing,
             UserInputDevice.Test1,
             UserInputDeviceButton.XBONE_A_BUTTON,
+            Shift.Test1Debug,
+            Shift.None,
+            ButtonType.Toggle),
+        new DigitalOperationDescription(
+            DigitalOperation.VisionEnableRetroreflectiveProcessing,
+            UserInputDevice.Test1,
+            UserInputDeviceButton.XBONE_A_BUTTON,
+            Shift.Test1Debug,
+            Shift.Test1Debug,
             ButtonType.Toggle),
         new DigitalOperationDescription(
             DigitalOperation.RainbowTest,
