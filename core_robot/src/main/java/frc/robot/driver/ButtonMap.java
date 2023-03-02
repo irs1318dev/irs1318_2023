@@ -242,13 +242,13 @@ public class ButtonMap implements IButtonMap
 
         new DigitalOperationDescription(
             DigitalOperation.CubeWantedFromSubstation,
-            UserInputDevice.Test1,
-            UserInputDeviceButton.XBONE_B_BUTTON,
+            UserInputDevice.Codriver,
+            UserInputDeviceButton.XBONE_SELECT_BUTTON,
             ButtonType.Simple),
         new DigitalOperationDescription(
             DigitalOperation.ConeWantedFromSubstation,
-            UserInputDevice.Test1,
-            UserInputDeviceButton.XBONE_X_BUTTON,
+            UserInputDevice.Codriver,
+            UserInputDeviceButton.XBONE_START_BUTTON,
             ButtonType.Simple),
 
         // Test operations:
@@ -846,7 +846,7 @@ public class ButtonMap implements IButtonMap
             MacroOperation.ArmMiddleConePosition,
             UserInputDevice.Codriver,
             UserInputDeviceButton.XBONE_B_BUTTON,
-            Shift.CodriverDebug,
+            Shift.None,
             Shift.None,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
@@ -861,7 +861,7 @@ public class ButtonMap implements IButtonMap
             MacroOperation.ArmMiddleCubePosition,
             UserInputDevice.Codriver,
             90, // POV-right
-            Shift.CodriverDebug,
+            Shift.None,
             Shift.None,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
@@ -876,7 +876,7 @@ public class ButtonMap implements IButtonMap
             MacroOperation.ArmHighConePosition,
             UserInputDevice.Codriver,
             UserInputDeviceButton.XBONE_Y_BUTTON,
-            Shift.CodriverDebug,
+            Shift.None,
             Shift.None,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
@@ -891,7 +891,7 @@ public class ButtonMap implements IButtonMap
             MacroOperation.ArmHighCubePosition,
             UserInputDevice.Codriver,
             0, // POV-up
-            Shift.CodriverDebug,
+            Shift.None,
             Shift.None,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
@@ -906,7 +906,7 @@ public class ButtonMap implements IButtonMap
             MacroOperation.ArmConeSubstationPickupPosition,
             UserInputDevice.Codriver,
             UserInputDeviceButton.XBONE_X_BUTTON,
-            Shift.CodriverDebug,
+            Shift.None,
             Shift.None,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
@@ -921,7 +921,7 @@ public class ButtonMap implements IButtonMap
             MacroOperation.ArmCubeSubstationPickupPosition,
             UserInputDevice.Codriver,
             270, // POV-left
-            Shift.CodriverDebug,
+            Shift.None,
             Shift.None,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
