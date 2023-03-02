@@ -78,6 +78,7 @@ public class ArmMMPositionTask extends ControlTaskBase
                 Math.abs(this.arm.getMMUpperPosition() - TuningConstants.ARM_UPPER_MM_INTERMIDATE) < TuningConstants.ARM_UPPER_MM_GOAL_THRESHOLD)
             {
                 this.currentArmState = ArmMMState.DesiredGoal;
+                this.updateCycleCount = 1;
             }
         }
         else if (this.currentArmState == ArmMMState.DesiredGoal)
@@ -87,7 +88,7 @@ public class ArmMMPositionTask extends ControlTaskBase
             {
                 this.currentArmState = ArmMMState.Completed;
             }
-            else if (!this.waitUntilPositionReached && this.updateCycleCount++ > 1)
+            else if (!this.waitUntilPositionReached && this.updateCycleCount++ >= 1)
             {
                 this.currentArmState = ArmMMState.Completed;
             }
