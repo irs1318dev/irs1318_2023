@@ -117,7 +117,7 @@ public class IntakeGamePieceTask extends ControlTaskBase
     @Override
     public boolean hasCompleted()
     {
-        return this.arm.isThroughBeamBroken();
+        return this.state == IntakeState.Completed;
     }
 }
 
