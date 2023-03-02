@@ -152,7 +152,7 @@ public class TuningConstants
 
     public static final int CANDLE_LED_COUNT = 8;
     public static final int LED_STRIP_LED_COUNT = 60; // 60 LEDs per meter-long strip from CTRE
-    public static final int CANDLE_TOTAL_NUMBER_LEDS = TuningConstants.CANDLE_LED_COUNT; //+ TuningConstants.LED_STRIP_LED_COUNT; // * 2;
+    public static final int CANDLE_TOTAL_NUMBER_LEDS = TuningConstants.CANDLE_LED_COUNT + TuningConstants.LED_STRIP_LED_COUNT;
 
     public static final int CANDLE_ANIMATION_SLOT_1 = 0;
     public static final int CANDLE_ANIMATION_SLOT_2 = 1;
@@ -185,7 +185,7 @@ public class TuningConstants
     public static final int INDICATOR_BLUE_COLOR_RED = 0;
     public static final int INDICATOR_BLUE_COLOR_GREEN = 0;
     public static final int INDICATOR_BLUE_COLOR_BLUE = 255;
-    public static final double INDICATOR_BLUE_COLOR_WHITE = 0;
+    public static final int INDICATOR_BLUE_COLOR_WHITE = 0;
 
     //Orange - No Game Piece in Intake
     public static final int INDICATOR_ORANGE_COLOR_RED = 255;
@@ -501,30 +501,4 @@ public class TuningConstants
     public static final double CHARGE_STATION_STARTING_SPEED_V2 = 0.5;
     public static final double CHARGE_STATION_CLIMBING_SPEED_V2 = 0.225;
     public static final double CHARGE_STATION_BALANCING_SPEED_V2 = 0.08;
-
-    //ChargeStationTaskGyro (owned by Calvin)
-    public static final double CHARGE_STATION_2_PITCH_VARIATION = 0.3;
-    public static final double CHARGE_STATION_2_STARTING_SPEED = 0.5;
-    public static final double CHARGE_STATION_2_START_TRANSITION_PITCH = 5.0;
-    public static final double CHARGE_STATION_2_CLIMBING_TRANSITION_PITCH = 13;
-    public static final double CHARGE_STATION_2_CLIMBING_TRANSITION_ACCEPTABLE_VARIATION = 0.3;
-    public static final double CHARGE_STATION_2_CLIMBING_TRANSITION_WAIT_DURATION = 1.35;
-
-    public static final double CHARGE_STATION_2_ACCEPTABLE_PITCH_DIFF = 8.0;
-    public static final double CHARGE_STATION_2_TRANSITION_PITCH_DIFF = 40.0;
-    public static final double CHARGE_STATION_2_APPROACH_SPEED = 0.5;
-    public static final double CHARGE_STATION_2_MOUNT_SPEED = 0.25;
-    public static final double CHARGE_STATION_2_CLIMBING_SPEED = 0.2;
-    public static final double CHARGE_STATION_2_BALANCING_SPEED = 0.06;
-    public static final double CHARGE_STATION_2_FAST_BALANCING_SPEED = 0.12;
-    public static final double CHARGE_STATION_2_MOUNTING_TRANSITION_PITCH = 5.0;
-    public static final double CHARGE_STATION_2_CLIMBING_TRANSITION_GYRO = 15;
-    public static final double CHARGE_STATION_2_BRAKE_GYRO = 50.0;
-    public static final double CHARGE_STATION_2_MIN_BRAKE_TIME = 0.5;
-    public static final double CHARGE_STATION_2_COMPLETED_GYRO = 1.0;
-
-    //============================================= Retro Reflective Tape Macro ==================================================================
-    public static final double RR_CENTERING_ACCEPTABLE_RIGHT_ANGLE_ERROR = 5.0; 
-    public static final double RR_CENTERING_ACCEPTABLE_LEFT_ANGLE_ERROR = -5.0; 
-    public static final double RR_CENTERING_MOVEMENT_SPEED_TO_CENTER_WITH_REFLECTIVE_TAPE = 0.05;
 }

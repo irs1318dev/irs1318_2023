@@ -12,9 +12,9 @@ import com.google.inject.Singleton;
 
 /**
  * Driver feedback manager
- * 
+ *
  * This class manages things like controller rumbler and indicator lights on the robot.
- * 
+ *
  */
 @Singleton
 public class DriverFeedbackManager implements IMechanism
@@ -68,65 +68,47 @@ public class DriverFeedbackManager implements IMechanism
     public void update()
     {
         LightMode newLightMode;
-        /*
-        if (this.ds.getMode() == RobotMode.Autonomous) 
-        {
-            newLightMode = LightMode.PurpleTwinkling;
-        }
-        else if (this.driver.getDigital(DigitalOperation.CubeWantedFromSubstation))
-        {
-            newLightMode = LightMode.Purple;
-        }
-        else if (this.driver.getDigital(DigitalOperation.ConeWantedFromSubstation))
-        {
-            newLightMode = LightMode.Yellow;
-        }
-        else if ((this.driver.getDigital(DigitalOperation.IntakeIn) || this.driver.getDigital(DigitalOperation.IntakeGrab)) && this.arm.isThroughBeamBroken())
-        {
-            newLightMode = LightMode.Blue;
-        }
-        else if ((this.driver.getDigital(DigitalOperation.IntakeIn) || this.driver.getDigital(DigitalOperation.IntakeGrab)) && !this.arm.isThroughBeamBroken())
-        {
-            newLightMode = LightMode.Orange;
-        }
-        */
-        // else if (visionTurningTask.isAprilTag())
+        // if (this.ds.getMode() == RobotMode.Autonomous)
         // {
-        //     newLightMode = LightMode.Green; //Can See AprilTag
+        //     newLightMode = LightMode.PurpleTwinkling;
         // }
-        // else if (!visionTurningTask.isAprilTag())
+        // else if (this.driver.getDigital(DigitalOperation.CubeWantedFromSubstation))
         // {
-        //     newLightMode = LightMode.Red; //Can not see AprilTag
+        //     newLightMode = LightMode.Purple;
         // }
-        // else if (chargeStationTask.currentState == State.Completed)
+        // else if (this.driver.getDigital(DigitalOperation.ConeWantedFromSubstation))
         // {
-        //     newLightMode = LightMode.Rainbow; //Balanced on Charge Station
+        //     newLightMode = LightMode.Yellow;
         // }
-        if (this.driver.getDigital(DigitalOperation.Rainbow))
+        // else if ((this.driver.getDigital(DigitalOperation.IntakeIn) || this.driver.getDigital(DigitalOperation.IntakeGrab)) && this.arm.isThroughBeamBroken())
+        // {
+        //     newLightMode = LightMode.Blue;
+        // }
+        // else if ((this.driver.getDigital(DigitalOperation.IntakeIn) || this.driver.getDigital(DigitalOperation.IntakeGrab)) && !this.arm.isThroughBeamBroken())
+        // {
+        //     newLightMode = LightMode.Orange;
+        // }
+
+        if (this.driver.getDigital(DigitalOperation.RainbowTest))
         {
             newLightMode = LightMode.Rainbow;
         }
-
-        else if (this.driver.getDigital(DigitalOperation.Purple))
+        else if (this.driver.getDigital(DigitalOperation.PurpleTest))
         {
             newLightMode = LightMode.Purple;
         }
-
-        else if (this.driver.getDigital(DigitalOperation.Green))
+        else if (this.driver.getDigital(DigitalOperation.GreenTest))
         {
             newLightMode = LightMode.Green;
         }
-
-        else if (this.driver.getDigital(DigitalOperation.Red))
+        else if (this.driver.getDigital(DigitalOperation.RedTest))
         {
             newLightMode = LightMode.Red;
         }
-
-        else if (this.driver.getDigital(DigitalOperation.Yellow))
+        else if (this.driver.getDigital(DigitalOperation.YellowTest))
         {
             newLightMode = LightMode.Yellow;
         }
-        
         else
         {
             newLightMode = LightMode.Off;
@@ -203,12 +185,12 @@ public class DriverFeedbackManager implements IMechanism
         {
             case Purple:
                 this.candle.setLEDs(
-                    TuningConstants.INDICATOR_PURPLE_COLOR_RED, 
+                    TuningConstants.INDICATOR_PURPLE_COLOR_RED,
                     TuningConstants.INDICATOR_PURPLE_COLOR_GREEN,
                     TuningConstants.INDICATOR_PURPLE_COLOR_BLUE,
                     TuningConstants.INDICATOR_PURPLE_COLOR_WHITE,
-                    rangeCount, 
-                    animationSlot);
+                    rangeCount,
+                    rangeCount);
                 break;
 
             case Yellow:
@@ -218,7 +200,7 @@ public class DriverFeedbackManager implements IMechanism
                     TuningConstants.INDICATOR_YELLOW_COLOR_BLUE,
                     TuningConstants.INDICATOR_YELLOW_COLOR_WHITE,
                     rangeCount,
-                    animationSlot);
+                    rangeCount);
                 break;
 
             case Green:
@@ -230,15 +212,15 @@ public class DriverFeedbackManager implements IMechanism
                     rangeStart,
                     rangeCount);
                 break;
-                
+
             case Red:
                 this.candle.setLEDs(
-                    TuningConstants.INDICATOR_RED_COLOR_RED, 
+                    TuningConstants.INDICATOR_RED_COLOR_RED,
                     TuningConstants.INDICATOR_RED_COLOR_GREEN,
                     TuningConstants.INDICATOR_RED_COLOR_BLUE,
                     TuningConstants.INDICATOR_RED_COLOR_WHITE,
-                    rangeCount, 
-                    animationSlot);
+                    rangeCount,
+                    rangeCount);
                 break;
 
             case Blue:
@@ -246,28 +228,28 @@ public class DriverFeedbackManager implements IMechanism
                     TuningConstants.INDICATOR_BLUE_COLOR_RED,
                     TuningConstants.INDICATOR_BLUE_COLOR_GREEN,
                     TuningConstants.INDICATOR_BLUE_COLOR_BLUE,
-                    TuningConstants.INDICATOR_GREEN_COLOR_WHITE, 
-                    rangeCount, 
-                    animationSlot);
+                    TuningConstants.INDICATOR_BLUE_COLOR_WHITE,
+                    rangeCount,
+                    rangeCount);
                 break;
 
             case Orange:
                 this.candle.setLEDs(
-                    TuningConstants.INDICATOR_ORANGE_COLOR_RED, 
-                    TuningConstants.INDICATOR_ORANGE_COLOR_GREEN, 
+                    TuningConstants.INDICATOR_ORANGE_COLOR_RED,
+                    TuningConstants.INDICATOR_ORANGE_COLOR_GREEN,
                     TuningConstants.INDICATOR_ORANGE_COLOR_BLUE,
                     TuningConstants.INDICATOR_ORANGE_COLOR_WHITE,
                     rangeCount,
-                    animationSlot);
+                    rangeCount);
                 break;
 
             case Rainbow:
                 this.candle.startRainbowAnimation(
-                    animationSlot, 
+                    animationSlot,
                     TuningConstants.INDICATOR_RAINBOW_BRIGHTNESS,
                     TuningConstants.INDICATOR_RAINBOW_SPEED,
-                    rangeCount, 
-                    TuningConstants.INDICATOR_RAINBOW_REVERSE_DIRECTION, 
+                    rangeCount,
+                    TuningConstants.INDICATOR_RAINBOW_REVERSE_DIRECTION,
                     rangeStart);
                 break;
 

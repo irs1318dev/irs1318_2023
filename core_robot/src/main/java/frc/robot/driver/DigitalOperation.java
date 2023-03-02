@@ -9,13 +9,13 @@ public enum DigitalOperation implements IOperation
     ForceLightDriverRumble,
     CubeWantedFromSubstation,
     ConeWantedFromSubstation,
-    Rainbow, // for testing
+    RainbowTest, // for testing
     //FireFlame, // for testing
-    Purple, // for testing
-    Red, // for testing
-    Blue, // for testing
-    Green, // for testing
-    Yellow, // for testing
+    PurpleTest, // for testing
+    RedTest, // for testing
+    BlueTest, // for testing
+    GreenTest, // for testing
+    YellowTest, // for testing
 
     // Vision operations:
     VisionForceDisable,
@@ -38,6 +38,7 @@ public enum DigitalOperation implements IOperation
     DriveTrainEnableMaintainDirectionMode,
     DriveTrainDisableMaintainDirectionMode,
     DriveTrainResetXYPosition,
+    DriveTrainIgnoreSlewRateLimitingMode,
 
     // Arm operations
     IntakeRelease,
