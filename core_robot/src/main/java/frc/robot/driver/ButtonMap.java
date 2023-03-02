@@ -386,7 +386,7 @@ public class ButtonMap implements IButtonMap
             Shift.DriverDebug,
             Shift.None,
             ButtonType.Toggle,
-            () -> 
+            () -> ConcurrentTask.AnyTasks(
                 SequentialTask.Sequence(
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_APPROACH,
@@ -399,8 +399,10 @@ public class ButtonMap implements IButtonMap
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP,
                         TuningConstants.ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP)),
+                new RumbleTask()),
             new IOperation[]
             {
+                DigitalOperation.ForceLightDriverRumble,
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
                 AnalogOperation.DriveTrainTurnAngleGoal,
@@ -445,7 +447,7 @@ public class ButtonMap implements IButtonMap
             Shift.DriverDebug,
             Shift.None,
             ButtonType.Toggle,
-            () ->
+            () -> ConcurrentTask.AnyTasks(
                 SequentialTask.Sequence(
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_APPROACH,
@@ -458,8 +460,10 @@ public class ButtonMap implements IButtonMap
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP,
                         TuningConstants.ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP)),
+                new RumbleTask()),
             new IOperation[]
             {
+                DigitalOperation.ForceLightDriverRumble,
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
                 AnalogOperation.DriveTrainTurnAngleGoal,
@@ -504,7 +508,7 @@ public class ButtonMap implements IButtonMap
             Shift.DriverDebug,
             Shift.DriverDebug,
             ButtonType.Toggle,
-            () ->
+            () -> ConcurrentTask.AnyTasks(
                 SequentialTask.Sequence(
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_APPROACH,
@@ -513,8 +517,10 @@ public class ButtonMap implements IButtonMap
                     new VisionMoveAndTurnTask(TurnType.AprilTagParallelizing, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, true, 0.0),
                     new VisionMoveAndTurnTask(TurnType.AprilTagCentering, MoveType.Forward, MoveSpeed.Normal, false, true, 56.0),
                     new DriveTrainFieldOrientationModeTask(true)),
+                new RumbleTask()),
             new IOperation[]
             {
+                DigitalOperation.ForceLightDriverRumble,
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
                 AnalogOperation.DriveTrainTurnAngleGoal,
@@ -559,7 +565,7 @@ public class ButtonMap implements IButtonMap
             Shift.DriverDebug,
             Shift.DriverDebug,
             ButtonType.Toggle,
-            () ->
+            () -> ConcurrentTask.AnyTasks(
                 SequentialTask.Sequence(
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_APPROACH,
@@ -571,8 +577,10 @@ public class ButtonMap implements IButtonMap
                     new FollowPathTask("goLeft22in"),
                     new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0),
                     new DriveTrainFieldOrientationModeTask(true)),
+                new RumbleTask()),
             new IOperation[]
             {
+                DigitalOperation.ForceLightDriverRumble,
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
                 AnalogOperation.DriveTrainTurnAngleGoal,
@@ -617,7 +625,7 @@ public class ButtonMap implements IButtonMap
             Shift.DriverDebug,
             Shift.DriverDebug,
             ButtonType.Toggle,
-            () ->
+            () -> ConcurrentTask.AnyTasks(
                 SequentialTask.Sequence(
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_APPROACH,
@@ -629,8 +637,10 @@ public class ButtonMap implements IButtonMap
                     new FollowPathTask("goRight22in"),
                     new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0),
                     new DriveTrainFieldOrientationModeTask(true)),
+                new RumbleTask()),
             new IOperation[]
             {
+                DigitalOperation.ForceLightDriverRumble,
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
                 AnalogOperation.DriveTrainTurnAngleGoal,
