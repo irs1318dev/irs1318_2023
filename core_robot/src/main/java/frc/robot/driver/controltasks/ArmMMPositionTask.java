@@ -21,6 +21,7 @@ public class ArmMMPositionTask extends ControlTaskBase
     private final double upperExtensionLength;
     private final boolean waitUntilPositionReached;
 
+    private int updateCycleCount;
     private ArmMechanism arm;
 
     private ArmMMState currentArmState;
@@ -61,6 +62,8 @@ public class ArmMMPositionTask extends ControlTaskBase
         {
             this.currentArmState = ArmMMState.DesiredGoal;
         }
+
+        this.updateCycleCount = 0;
     }
 
     /**
@@ -84,7 +87,7 @@ public class ArmMMPositionTask extends ControlTaskBase
             {
                 this.currentArmState = ArmMMState.Completed;
             }
-            else if (this.waitUntilPositionReached)
+            else if (!this.waitUntilPositionReached && this.updateCycleCount++ > 1)
             {
                 this.currentArmState = ArmMMState.Completed;
             }
