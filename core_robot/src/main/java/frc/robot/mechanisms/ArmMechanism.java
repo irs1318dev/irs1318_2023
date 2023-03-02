@@ -102,7 +102,6 @@ public class ArmMechanism implements IMechanism
     private final IDoubleSolenoid intakeExtender;
 
     // private final IAnalogInput intakeThroughBeamSensor;
-    
 
     private enum IntakeState
     {
@@ -310,7 +309,7 @@ public class ArmMechanism implements IMechanism
         this.upperLAError = this.upperArmLinearActuator.getError();
 
         // this.intakeSensorValue = this.intakeThroughBeamSensor.getVoltage();
-        // this.throughBeamBroken = this.intakeSensorValue < TuningConstants.FEEDER_LIGHT_CUTOFF_VALUE;
+        // this.throughBeamBroken = this.intakeSensorValue < TuningConstants.ARM_INTAKE_THROUGHBEAM_THRESHOLD;
 
         double lowerLeftLAPower = this.powerManager.getCurrent(ElectronicsConstants.ARM_LOWER_LEFT_LA_PDH_CHANNEL);
         double lowerRightLAPower = this.powerManager.getCurrent(ElectronicsConstants.ARM_LOWER_RIGHT_LA_PDH_CHANNEL);
