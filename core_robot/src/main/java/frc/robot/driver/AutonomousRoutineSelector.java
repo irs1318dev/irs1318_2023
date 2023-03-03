@@ -263,7 +263,7 @@ public class AutonomousRoutineSelector
                 )
             ),
             new ResetLevelTask(),
-            new ChargeStationTaskv2(isRed ? false : true, isRed ? 0.0 : 180)
+            new ChargeStationTaskv2(isRed ? false : true, isRed ? false : true)
         );
     }
 
@@ -314,7 +314,7 @@ public class AutonomousRoutineSelector
                 )
             ),
             new ResetLevelTask(),
-            new ChargeStationTaskv2(isRed ? false : true, isRed ? 0.0 : 180.0)
+            new ChargeStationTaskv2(isRed ? false : true, isRed ? false : true)
         );
     }
 
@@ -441,7 +441,7 @@ public class AutonomousRoutineSelector
                 0.0, 
                 0.0, true, true),
             new ResetLevelTask(),
-            new ChargeStationTaskv2(false, 0.0)
+            new ChargeStationTaskv2(false, false)
         );
     }
 
@@ -476,7 +476,7 @@ public class AutonomousRoutineSelector
             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED, true),
             new ResetLevelTask(),
             
-            new ChargeStationTaskv2(isRed ? true : false, isRed ? 180.0 : 0.0)
+            new ChargeStationTaskv2(isRed ? true : false, isRed ? true : false)
         );
     }
 
@@ -543,7 +543,7 @@ public class AutonomousRoutineSelector
                 )
             ),
             new ResetLevelTask(),
-            new ChargeStationTaskv2(isRed ? false : true, isRed ? 0.0 : 180.0)
+            new ChargeStationTaskv2(isRed ? false : true, isRed ? false : true)
         );
     }
 
@@ -595,7 +595,7 @@ public class AutonomousRoutineSelector
                 )
             ),
             new ResetLevelTask(),
-            new ChargeStationTaskv2(isRed ? false : true, isRed ? 0.0 : 180.0)
+            new ChargeStationTaskv2(isRed ? false : true, isRed ? false : true)
         );
     }
 
