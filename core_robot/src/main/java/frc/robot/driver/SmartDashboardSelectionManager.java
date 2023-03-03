@@ -23,9 +23,9 @@ public class SmartDashboardSelectionManager
         None,
         Taxi,
         Charge,
-        TaxiCharge,
         OnePlusTaxi,
         OnePlusCharge,
+        OnePlusPickup,
         OnePickupCharge,
         OnePlusOne
     }
@@ -43,7 +43,7 @@ public class SmartDashboardSelectionManager
         this.routineChooser.addDefault("None", AutoRoutine.None);
         this.routineChooser.addObject("Taxi", AutoRoutine.Taxi);
         this.routineChooser.addObject("Charge", AutoRoutine.Charge);
-        this.routineChooser.addObject("Taxi Charge", AutoRoutine.TaxiCharge);
+        this.routineChooser.addObject("One Pickup", AutoRoutine.OnePlusPickup);
         this.routineChooser.addObject("One Plus Taxi", AutoRoutine.OnePlusTaxi);
         this.routineChooser.addObject("One Plus Charge", AutoRoutine.OnePlusCharge);
         this.routineChooser.addObject("One Pickup Charge", AutoRoutine.OnePickupCharge);
