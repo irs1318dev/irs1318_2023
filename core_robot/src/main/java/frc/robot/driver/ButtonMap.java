@@ -995,7 +995,7 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
                 new ResetLevelTask(),
-                new ChargeStationTaskv2(false),
+                new ChargeStationTaskv2(false, 180.0),
                 ConcurrentTask.AllTasks(
                     new PIDBrakeTask(),
                     new WaitTask(0.5))),

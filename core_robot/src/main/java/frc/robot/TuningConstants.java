@@ -58,7 +58,7 @@ public class TuningConstants
     public static final double CloseChargeStationX = 241.015; // 12.845 inches away from the charge station and grid + Robot centering value
     public static final double FarChargeStationX = 102.99; // 12 inches away from the charge station + Robot centering value
     public static final double FarChargeStationInBetweenX = TuningConstants.FarChargeStationX - 30.0; // 30 inches away from last point to allow for turning
-    public static final double GroundPiecesX = 67.36; // On ground pieces real value 47.36
+    public static final double GroundPiecesX = 72.36; // On ground pieces real value 47.36
     public static final double LoadEdgeStartX = 214.86;
     public static final double GuardEdgeStartX = 193.61;
 
@@ -87,20 +87,20 @@ public class TuningConstants
     //================================================= Vision ======================================================
 
     // Acceptable vision centering range values in degrees
-    public static final double MAX_PID_TURNING_RANGE_DEGREES = 5.0;
+    public static final double MAX_PID_TURNING_RANGE_DEGREES = 7.0;
 
     // How long the robot system must remain centered on the target when using time
     public static final double PID_TURNING_DURATION = 0.75;
 
     // Acceptable vision distance from tape in inches (as measured by vision system)
     public static final double MAX_VISION_ACCEPTABLE_FORWARD_DISTANCE = 1.75;
-    public static final double MAX_VISION_ACCEPTABLE_STRAFE_DISTANCE = 0.5;
+    public static final double MAX_VISION_ACCEPTABLE_STRAFE_DISTANCE = 0.7;
 
     // Acceptable vision distance from tape in angles 
     public static final double MAX_VISION_ACCEPTABLE_MOVING_RR_ANGLE_ERROR = 4.0;
 
     // PID settings for Centering the robot on a vision target from one stationary place
-    public static final double STATIONARY_PID_TURNING_PID_KP = 0.025;
+    public static final double STATIONARY_PID_TURNING_PID_KP = 0.027;
     public static final double STATIONARY_PID_TURNING_PID_KI = 0.0;
     public static final double STATIONARY_PID_TURNING_PID_KD = 0.01;
     public static final double STATIONARY_PID_TURNING_PID_KF = 0.0;
@@ -127,7 +127,7 @@ public class TuningConstants
     public static final double VISION_MOVING_PID_MAX = 0.3;
 
     // PID settings for translating the robot slowly based on a vision target
-    public static final double VISION_SLOW_MOVING_PID_KP = 0.012;
+    public static final double VISION_SLOW_MOVING_PID_KP = 0.013;
     public static final double VISION_SLOW_MOVING_PID_KI = 0.0;
     public static final double VISION_SLOW_MOVING_PID_KD = 0.0;
     public static final double VISION_SLOW_MOVING_PID_KF = 0.0;
@@ -136,7 +136,7 @@ public class TuningConstants
     public static final double VISION_SLOW_MOVING_PID_MAX = 0.3;
 
     // PID settings for translating the robot quickly based on a vision target
-    public static final double VISION_FAST_MOVING_PID_KP = 0.15;
+    public static final double VISION_FAST_MOVING_PID_KP = 0.17;
     public static final double VISION_FAST_MOVING_PID_KI = 0.0;
     public static final double VISION_FAST_MOVING_PID_KD = 0.0;
     public static final double VISION_FAST_MOVING_PID_KF = 0.0;
@@ -320,11 +320,11 @@ public class TuningConstants
     public static final double DRIVETRAIN_ROTATION_B_MULTIPLIER = HardwareConstants.DRIVETRAIN_VERTICAL_WHEEL_SEPERATION_DISTANCE / 2.0;
 
     public static final double DRIVETRAIN_MAX_VELOCITY = TuningConstants.DRIVETRAIN_DRIVE_MOTOR_VELOCITY_PID_KS * HardwareConstants.DRIVETRAIN_DRIVE_MOTOR_VELOCITY_TO_INCHES_PER_SECOND; // max velocity in inches per second
-    public static final double DRIVETRAIN_SLOW_MODE_MAX_VELOCITY = 0.5 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // max velocity in inches per second
+    public static final double DRIVETRAIN_SLOW_MODE_MAX_VELOCITY = 0.3 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // max velocity in inches per second
     public static final double DRIVETRAIN_VELOCITY_TO_PERCENTAGE = 1.0 / TuningConstants.DRIVETRAIN_MAX_VELOCITY;
     public static final double DRIVETRAIN_TURN_GOAL_VELOCITY = 10.0; // degrees per second for turn goal
     public static final double DRIVETRAIN_TURN_SCALE = 1.0 * Math.PI; // radians per second
-    public static final double DRIVETRAIN_SLOW_MODE_TURN_SCALE = 0.5 * TuningConstants.DRIVETRAIN_TURN_SCALE; // radians per second
+    public static final double DRIVETRAIN_SLOW_MODE_TURN_SCALE = 0.3 * TuningConstants.DRIVETRAIN_TURN_SCALE; // radians per second
     public static final double DRIVETRAIN_STATIONARY_VELOCITY = 0.1;
     public static final double DRIVETRAIN_TURN_APPROXIMATION_STATIONARY = 2.0; // number of degrees off at which point we give up trying to face an angle when uncommanded
     public static final double DRIVETRAIN_TURN_APPROXIMATION = 1.0; // number of degrees off at which point we give up trying to face an angle when uncommanded
@@ -474,7 +474,7 @@ public class TuningConstants
     public static final double ARM_LOWER_POSITION_GROUND_PICKUP = 2000.0;
     public static final double ARM_UPPER_POSITION_GROUND_PICKUP = 1550.0;
     public static final double ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP = 3350.0;
-    public static final double ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP = 6750.0;
+    public static final double ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP = 6700.0;
     public static final double ARM_LOWER_POSITION_CUBE_SUBSTATION_PICKUP = 6750.0;
     public static final double ARM_UPPER_POSITION_CUBE_SUBSTATION_PICKUP = 3350.0;
     public static final double ARM_LOWER_POSITION_APPROACH = HardwareConstants.ARM_FULL_EXTENSION_TICKS;
