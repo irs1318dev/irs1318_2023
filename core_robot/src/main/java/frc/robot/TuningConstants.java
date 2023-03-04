@@ -8,7 +8,7 @@ package frc.robot;
  */
 public class TuningConstants
 {
-    public static final boolean COMPETITION_ROBOT = false;
+    public static final boolean COMPETITION_ROBOT = true;
     public static boolean THROW_EXCEPTIONS = !TuningConstants.COMPETITION_ROBOT;
     public static boolean LOG_EXCEPTIONS = true;
     public static double LOOP_DURATION = 0.02; // we expect the robot's main loop to run at roughly ~50 Hz, or 1 update per 20ms (0.02s)
@@ -338,7 +338,7 @@ public class TuningConstants
     public static final double DRIVETRAIN_SLOW_MODE_MAX_VELOCITY = 0.3 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // max velocity in inches per second
     public static final double DRIVETRAIN_VELOCITY_TO_PERCENTAGE = 1.0 / TuningConstants.DRIVETRAIN_MAX_VELOCITY;
     public static final double DRIVETRAIN_TURN_GOAL_VELOCITY = 10.0; // degrees per second for turn goal
-    public static final double DRIVETRAIN_TURN_SCALE = 1.0 * Math.PI; // radians per second
+    public static final double DRIVETRAIN_TURN_SCALE = 1.3 * Math.PI; // radians per second
     public static final double DRIVETRAIN_SLOW_MODE_TURN_SCALE = 0.3 * TuningConstants.DRIVETRAIN_TURN_SCALE; // radians per second
     public static final double DRIVETRAIN_STATIONARY_VELOCITY = 0.1;
     public static final double DRIVETRAIN_TURN_APPROXIMATION_STATIONARY = 2.0; // number of degrees off at which point we give up trying to face an angle when uncommanded
@@ -513,7 +513,7 @@ public class TuningConstants
     //Version 2 constants
     public static final double CHARGE_STATION_PITCH_VARIATION_V2 = 1.0;
     public static final double CHARGE_STATION_ACCEPTABLE_PITCH_DIFF_V2 = 3.0;
-    public static final double CHARGE_STATION_STARTING_SPEED_V2 = 0.5;
+    public static final double CHARGE_STATION_STARTING_SPEED_V2 = 0.7;
     public static final double CHARGE_STATION_CLIMBING_SPEED_V2 = 0.225;
     public static final double CHARGE_STATION_BALANCING_SPEED_V2 = 0.08;
 }
