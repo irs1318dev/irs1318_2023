@@ -771,12 +771,11 @@ public class ButtonMap implements IButtonMap
                 ConcurrentTask.AllTasks(
                     new FollowPathTask("goBackwards1ft"),
                     SequentialTask.Sequence(
-                        new WaitTask(0.25),
-                        ConcurrentTask.AllTasks(
-                            new ArmMMPositionTask(
-                                TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP,
-                                TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP),
-                            new IntakeInTask(true, 0.15)))),
+                        new WaitTask(0.5),
+                        new ArmMMPositionTask(
+                            TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP,
+                            TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP),
+                        new IntakeInTask(true, 0.15))),
                 ConcurrentTask.AllTasks(
                     new IntakeGamePieceTask(0.75),
                     new IntakeExtendTask(false))),
@@ -995,7 +994,7 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
                 new ResetLevelTask(),
-                new ChargeStationTaskv2(false, 180.0),
+                new ChargeStationTaskv2(false, 0.0),
                 ConcurrentTask.AllTasks(
                     new PIDBrakeTask(),
                     new WaitTask(0.5))),
