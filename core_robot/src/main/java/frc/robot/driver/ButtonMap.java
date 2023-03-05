@@ -203,13 +203,13 @@ public class ButtonMap implements IButtonMap
             Shift.CodriverDebug,
             ButtonType.Click),
 
-        new DigitalOperationDescription(
-            DigitalOperation.IntakeGrab,
-            UserInputDevice.Driver,
-            UserInputDeviceButton.XBONE_LEFT_BUTTON,
-            Shift.DriverDebug,
-            Shift.None,
-            ButtonType.Click),
+        // new DigitalOperationDescription(
+        //     DigitalOperation.IntakeGrab,
+        //     UserInputDevice.Driver,
+        //     UserInputDeviceButton.XBONE_LEFT_BUTTON,
+        //     Shift.DriverDebug,
+        //     Shift.None,
+        //     ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.IntakeRelease,
             UserInputDevice.Driver,
@@ -711,6 +711,23 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.IntakeRelease,
                 DigitalOperation.IntakeGrab,
             }),
+        new MacroOperationDescription(
+            MacroOperation.IntakeGamePieceGrab,
+            UserInputDevice.Driver,
+            UserInputDeviceButton.XBONE_LEFT_BUTTON,
+            Shift.DriverDebug,
+            Shift.None,
+            ButtonType.Simple,
+            () -> SequentialTask.Sequence(
+                new IntakeExtendTask(false),
+                new IntakeInTask(true)),
+            new IOperation[]
+            {
+                DigitalOperation.IntakeIn,
+                DigitalOperation.IntakeOut,
+                DigitalOperation.IntakeRelease,
+                DigitalOperation.IntakeGrab,
+            }),
 
         // Cone Flipper macros
         new MacroOperationDescription(
@@ -818,7 +835,7 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.IntakeRelease,
                 DigitalOperation.IntakeGrab,
             }),
-
+            
         // Arm position macros
         new MacroOperationDescription(
             MacroOperation.ArmResetToZero,
