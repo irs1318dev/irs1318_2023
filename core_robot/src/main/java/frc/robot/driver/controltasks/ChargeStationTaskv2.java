@@ -22,8 +22,7 @@ public class ChargeStationTaskv2 extends ControlTaskBase
     }
 
     private final double reverse;
-    private final boolean fromCurrentOrientation;
-    private final double orientation;
+    private final boolean backwardOrientation;
 
     private PigeonManager imuManager;
     private ITimer timer;
@@ -32,29 +31,17 @@ public class ChargeStationTaskv2 extends ControlTaskBase
     private double pitchRateAverage;
 
     private State currentState;
-    private double orientationOffset;
     private double pitch;
     private double climbingExceededTransitionTime;
 
     public ChargeStationTaskv2(boolean reverse)
     {
-        this(reverse, false, 0.0);
+        this(reverse, false);
     }
 
-    public ChargeStationTaskv2(boolean reverse, boolean fromCurrentOrientation)
+    public ChargeStationTaskv2(boolean reverse, boolean backwardOrientation)
     {
-        this(reverse, fromCurrentOrientation, 0.0);
-    }
-
-    public ChargeStationTaskv2(boolean reverse, double orientation)
-    {
-        this(reverse, false, orientation);
-    }
-
-    public ChargeStationTaskv2(boolean reverse, boolean fromCurrentOrientation, double orientation)
-    {
-        this.orientation = orientation;
-        this.fromCurrentOrientation = fromCurrentOrientation;
+        this.backwardOrientation = backwardOrientation;
         this.reverse = reverse ? -1.0 : 1.0;
     }
 
@@ -70,12 +57,6 @@ public class ChargeStationTaskv2 extends ControlTaskBase
         this.imuManager = this.getInjector().getInstance(PigeonManager.class);
         this.timer = this.getInjector().getInstance(ITimer.class);
 
-        this.orientationOffset = 0.0;
-        if (this.fromCurrentOrientation)
-        {
-            this.orientationOffset = this.imuManager.getYaw();
-        }
-
         // calculate floating average of past 0.1 seconds
         this.pitchRateAverage = 0.0;
         this.pitchRateAverageCalculator = new FloatingAverageCalculator(this.timer, 0.25, 50);
@@ -83,7 +64,7 @@ public class ChargeStationTaskv2 extends ControlTaskBase
 
         this.setDigitalOperationState(DigitalOperation.DriveTrainEnableMaintainDirectionMode, true);
         this.setDigitalOperationState(DigitalOperation.DriveTrainPathMode, false);
-        this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleGoal, this.orientation + this.orientationOffset);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleGoal, this.backwardOrientation ? 180.0 : 0.0);
         this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0);
         this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, 0.0);
         this.setDigitalOperationState(DigitalOperation.DriveTrainIgnoreSlewRateLimitingMode, false);
@@ -143,11 +124,11 @@ public class ChargeStationTaskv2 extends ControlTaskBase
                     // if negative pitch, move forward
                     if (this.pitch < 0)
                     {
-                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, this.reverse * TuningConstants.CHARGE_STATION_BALANCING_SPEED_V2);
+                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, (this.backwardOrientation ? -1.0 : 1.0) * TuningConstants.CHARGE_STATION_BALANCING_SPEED_V2);
                     }
                     else // if (this.pitch > 0)
                     {
-                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, -this.reverse * TuningConstants.CHARGE_STATION_BALANCING_SPEED_V2);
+                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, (this.backwardOrientation ? 1.0 : -1.0) * TuningConstants.CHARGE_STATION_BALANCING_SPEED_V2);
                     }
                 }
                 else // if pitch diff is within acceptable range, then pause.

@@ -203,13 +203,13 @@ public class ButtonMap implements IButtonMap
             Shift.CodriverDebug,
             ButtonType.Click),
 
-        new DigitalOperationDescription(
-            DigitalOperation.IntakeGrab,
-            UserInputDevice.Driver,
-            UserInputDeviceButton.XBONE_LEFT_BUTTON,
-            Shift.DriverDebug,
-            Shift.None,
-            ButtonType.Click),
+        // new DigitalOperationDescription(
+        //     DigitalOperation.IntakeGrab,
+        //     UserInputDevice.Driver,
+        //     UserInputDeviceButton.XBONE_LEFT_BUTTON,
+        //     Shift.DriverDebug,
+        //     Shift.None,
+        //     ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.IntakeRelease,
             UserInputDevice.Driver,
@@ -711,6 +711,23 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.IntakeRelease,
                 DigitalOperation.IntakeGrab,
             }),
+        new MacroOperationDescription(
+            MacroOperation.IntakeGamePieceGrab,
+            UserInputDevice.Driver,
+            UserInputDeviceButton.XBONE_LEFT_BUTTON,
+            Shift.DriverDebug,
+            Shift.None,
+            ButtonType.Simple,
+            () -> SequentialTask.Sequence(
+                new IntakeExtendTask(false),
+                new IntakeInTask(true)),
+            new IOperation[]
+            {
+                DigitalOperation.IntakeIn,
+                DigitalOperation.IntakeOut,
+                DigitalOperation.IntakeRelease,
+                DigitalOperation.IntakeGrab,
+            }),
 
         // Cone Flipper macros
         new MacroOperationDescription(
@@ -771,12 +788,11 @@ public class ButtonMap implements IButtonMap
                 ConcurrentTask.AllTasks(
                     new FollowPathTask("goBackwards1ft"),
                     SequentialTask.Sequence(
-                        new WaitTask(0.25),
-                        ConcurrentTask.AllTasks(
-                            new ArmMMPositionTask(
-                                TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP,
-                                TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP),
-                            new IntakeInTask(true, 0.15)))),
+                        new WaitTask(0.5),
+                        new ArmMMPositionTask(
+                            TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP,
+                            TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP),
+                        new IntakeInTask(true, 0.15))),
                 ConcurrentTask.AllTasks(
                     new IntakeGamePieceTask(0.75),
                     new IntakeExtendTask(false))),
@@ -819,7 +835,7 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.IntakeRelease,
                 DigitalOperation.IntakeGrab,
             }),
-
+            
         // Arm position macros
         new MacroOperationDescription(
             MacroOperation.ArmResetToZero,
@@ -995,7 +1011,54 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
                 new ResetLevelTask(),
-                new ChargeStationTaskv2(false),
+                new ChargeStationTaskv2(false, false),
+                ConcurrentTask.AllTasks(
+                    new PIDBrakeTask(),
+                    new WaitTask(0.5))),
+            new IOperation[]
+            {
+                DigitalOperation.PositionResetRobotLevel,
+                DigitalOperation.PositionResetFieldOrientation,
+                AnalogOperation.PositionStartingAngle,
+                AnalogOperation.DriveTrainMoveForward,
+                AnalogOperation.DriveTrainMoveRight,
+                AnalogOperation.DriveTrainTurnAngleGoal,
+                AnalogOperation.DriveTrainTurnSpeed,
+                AnalogOperation.DriveTrainRotationA,
+                AnalogOperation.DriveTrainRotationB,
+                AnalogOperation.DriveTrainPathXGoal,
+                AnalogOperation.DriveTrainPathYGoal,
+                AnalogOperation.DriveTrainPathXVelocityGoal,
+                AnalogOperation.DriveTrainPathYVelocityGoal,
+                AnalogOperation.DriveTrainPathAngleVelocityGoal,
+                AnalogOperation.DriveTrainPositionDrive1,
+                AnalogOperation.DriveTrainPositionDrive2,
+                AnalogOperation.DriveTrainPositionDrive3,
+                AnalogOperation.DriveTrainPositionDrive4,
+                AnalogOperation.DriveTrainPositionSteer1,
+                AnalogOperation.DriveTrainPositionSteer2,
+                AnalogOperation.DriveTrainPositionSteer3,
+                AnalogOperation.DriveTrainPositionSteer4,
+                DigitalOperation.DriveTrainSteerMode,
+                DigitalOperation.DriveTrainMaintainPositionMode,
+                DigitalOperation.DriveTrainPathMode,
+                DigitalOperation.DriveTrainReset,
+                DigitalOperation.DriveTrainEnableFieldOrientation,
+                DigitalOperation.DriveTrainDisableFieldOrientation,
+                DigitalOperation.DriveTrainUseRobotOrientation,
+                DigitalOperation.DriveTrainEnableMaintainDirectionMode,
+                DigitalOperation.DriveTrainIgnoreSlewRateLimitingMode
+            }),
+        new MacroOperationDescription(
+            MacroOperation.ChargeStationBalanceFacingBackwards,
+            UserInputDevice.Test1,
+            UserInputDeviceButton.XBONE_SELECT_BUTTON, // Left menu button
+            Shift.Test1Debug,
+            Shift.Test1Debug,
+            ButtonType.Toggle,
+            () -> SequentialTask.Sequence(
+                new ResetLevelTask(),
+                new ChargeStationTaskv2(false, true),
                 ConcurrentTask.AllTasks(
                     new PIDBrakeTask(),
                     new WaitTask(0.5))),
@@ -1042,7 +1105,54 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
                 new ResetLevelTask(), // calibration
-                new ChargeStationTaskv2(true),
+                new ChargeStationTaskv2(true, false),
+                ConcurrentTask.AllTasks(
+                    new PIDBrakeTask(),
+                    new WaitTask(0.5))),
+            new IOperation[]
+            {
+                DigitalOperation.PositionResetRobotLevel,
+                DigitalOperation.PositionResetFieldOrientation,
+                AnalogOperation.PositionStartingAngle,
+                AnalogOperation.DriveTrainMoveForward,
+                AnalogOperation.DriveTrainMoveRight,
+                AnalogOperation.DriveTrainTurnAngleGoal,
+                AnalogOperation.DriveTrainTurnSpeed,
+                AnalogOperation.DriveTrainRotationA,
+                AnalogOperation.DriveTrainRotationB,
+                AnalogOperation.DriveTrainPathXGoal,
+                AnalogOperation.DriveTrainPathYGoal,
+                AnalogOperation.DriveTrainPathXVelocityGoal,
+                AnalogOperation.DriveTrainPathYVelocityGoal,
+                AnalogOperation.DriveTrainPathAngleVelocityGoal,
+                AnalogOperation.DriveTrainPositionDrive1,
+                AnalogOperation.DriveTrainPositionDrive2,
+                AnalogOperation.DriveTrainPositionDrive3,
+                AnalogOperation.DriveTrainPositionDrive4,
+                AnalogOperation.DriveTrainPositionSteer1,
+                AnalogOperation.DriveTrainPositionSteer2,
+                AnalogOperation.DriveTrainPositionSteer3,
+                AnalogOperation.DriveTrainPositionSteer4,
+                DigitalOperation.DriveTrainSteerMode,
+                DigitalOperation.DriveTrainMaintainPositionMode,
+                DigitalOperation.DriveTrainPathMode,
+                DigitalOperation.DriveTrainReset,
+                DigitalOperation.DriveTrainEnableFieldOrientation,
+                DigitalOperation.DriveTrainDisableFieldOrientation,
+                DigitalOperation.DriveTrainUseRobotOrientation,
+                DigitalOperation.DriveTrainEnableMaintainDirectionMode,
+                DigitalOperation.DriveTrainIgnoreSlewRateLimitingMode
+            }),
+        new MacroOperationDescription(
+            MacroOperation.ChargeStationBalanceReverseFacingBackwards,
+            UserInputDevice.Test1,
+            UserInputDeviceButton.XBONE_START_BUTTON, // Left menu button
+            Shift.Test1Debug,
+            Shift.Test1Debug,
+            ButtonType.Toggle,
+            () -> SequentialTask.Sequence(
+                new ResetLevelTask(), // calibration
+                new ChargeStationTaskv2(true, true),
                 ConcurrentTask.AllTasks(
                     new PIDBrakeTask(),
                     new WaitTask(0.5))),
