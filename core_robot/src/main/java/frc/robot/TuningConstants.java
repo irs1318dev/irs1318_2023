@@ -489,7 +489,7 @@ public class TuningConstants
     public static final double ARM_LOWER_POSITION_GROUND_PICKUP = 2000.0;
     public static final double ARM_UPPER_POSITION_GROUND_PICKUP = 1550.0;
     public static final double ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP = 3350.0;
-    public static final double ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP = 6700.0;
+    public static final double ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP = 6600.0;
     public static final double ARM_LOWER_POSITION_CUBE_SUBSTATION_PICKUP = 6750.0;
     public static final double ARM_UPPER_POSITION_CUBE_SUBSTATION_PICKUP = 3350.0;
     public static final double ARM_LOWER_POSITION_APPROACH = HardwareConstants.ARM_FULL_EXTENSION_TICKS;
@@ -513,7 +513,7 @@ public class TuningConstants
     //Version 2 constants
     public static final double CHARGE_STATION_PITCH_VARIATION_V2 = 1.0;
     public static final double CHARGE_STATION_ACCEPTABLE_PITCH_DIFF_V2 = 3.0;
-    public static final double CHARGE_STATION_STARTING_SPEED_V2 = 0.7;
-    public static final double CHARGE_STATION_CLIMBING_SPEED_V2 = 0.225;
+    public static final double CHARGE_STATION_STARTING_SPEED_V2 = 0.8;
+    public static final double CHARGE_STATION_CLIMBING_SPEED_V2 = 0.25;
     public static final double CHARGE_STATION_BALANCING_SPEED_V2 = 0.08;
 }

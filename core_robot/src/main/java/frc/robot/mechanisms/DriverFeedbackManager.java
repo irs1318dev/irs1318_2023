@@ -6,6 +6,7 @@ import frc.robot.common.robotprovider.*;
 import frc.robot.driver.DigitalOperation;
 import frc.robot.driver.common.*;
 import frc.robot.driver.common.descriptions.UserInputDevice;
+import frc.robot.mechanisms.PowerManager.CurrentLimiting;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -24,6 +25,7 @@ public class DriverFeedbackManager implements IMechanism
     private final IDriver driver;
 
     private final ArmMechanism arm;
+    private final PowerManager powerMan;
 
     private LightMode currentMode;
 
@@ -45,7 +47,8 @@ public class DriverFeedbackManager implements IMechanism
     public DriverFeedbackManager(
         IDriver driver,
         IRobotProvider provider,
-        ArmMechanism arm)
+        ArmMechanism arm,
+        PowerManager powerMan)
     {
         this.driver = driver;
 
@@ -55,6 +58,7 @@ public class DriverFeedbackManager implements IMechanism
 
         this.ds = provider.getDriverStation();
         this.arm = arm;
+        this.powerMan = powerMan;
 
         this.currentMode = LightMode.Off;
     }
@@ -88,6 +92,10 @@ public class DriverFeedbackManager implements IMechanism
         else if ((this.driver.getDigital(DigitalOperation.IntakeIn) || this.driver.getDigital(DigitalOperation.IntakeGrab)) && !this.arm.isThroughBeamBroken())
         {
             newLightMode = LightMode.Red;
+        }
+        else if (this.powerMan.getCurrentLimitingValue() != CurrentLimiting.Normal)
+        {
+            newLightMode = LightMode.Blue;
         }
         else if (currentMode == RobotMode.Disabled)
         {

@@ -469,22 +469,22 @@ public class AutonomousRoutineSelector
             new WaitTask(0.5),
             new FollowPathTask(isRed ? "11To5Red" : "11To5Blue", Type.Absolute),
             
-            new WaitTask(0.2),
+            // new WaitTask(0.2),
             new IntakeInTask(false, 1.0),
             new FollowPathTask(isRed ? "5To11Red" : "5To11Blue", Type.Absolute),
             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED, false),
-            new FollowPathTask(isRed ? "11To5Red" : "11To5Blue", Type.Absolute),
+            // new FollowPathTask(isRed ? "11To5Red" : "11To5Blue", Type.Absolute),
 
 
-            ConcurrentTask.AllTasks(
-                new FollowPathTask(isRed ? "5To11TurnRed" : "5To11TurnBlue", Type.Absolute)
-            ),
-            new FollowPathTask("goBackwards1ft", Type.RobotRelativeFromCurrentPose),
+            // ConcurrentTask.AllTasks(
+            //     new FollowPathTask(isRed ? "5To11TurnRed" : "5To11TurnBlue", Type.Absolute)
+            // ),
+            // new FollowPathTask("goBackwards1ft", Type.RobotRelativeFromCurrentPose),
             
             new WaitTask(1.0),
             new ResetLevelTask(),
             
-            new ChargeStationTaskv2(false, false)
+            new ChargeStationTaskv2(false, true)
         );
     }
 
