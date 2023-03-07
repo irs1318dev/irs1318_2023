@@ -77,14 +77,95 @@ public class PathPlannerTrajectoryGenerator
                 "goRight22in");
     }
 
-    public static double getYPosition(boolean isRed, double bluePosition)
+    /**
+     * Get the desired y position based on whether we are red or blue
+     * @param isRed whether we are red or blue
+     * @param blueYPosition the y position when we are on the blue alliance
+     * @return the y position to use
+     */
+    public static double getYPosition(boolean isRed, double blueYPosition)
     {
         if (!isRed)
         {
-            return bluePosition;
+            return blueYPosition;
         }
 
-        return TuningConstants.FullWidth - bluePosition;
+        return TuningConstants.FullWidth - blueYPosition;
+    }
+
+    /**
+     * Gets the desired yaw direction based on a series of calculations
+     * @param isRed whether we are on the red team or blue team
+     * @param reverse whether we want to have "straight" mean backwards (toward grid) or forwards (away from grid)
+     * @param towardLoading whether we want to angle ourselves towards the loading zone or the guardrail
+     * @param percentFromStraight the percentage from straight we want to go (0.0 to 1.0)
+     * @return the yaw direction to use
+     */
+    public static double getDirection(boolean isRed, boolean reverse, boolean towardLoading, double percentFromStraight)
+    {
+        if (percentFromStraight < 0.0 || percentFromStraight > 1.0)
+        {
+            if (TuningConstants.THROW_EXCEPTIONS)
+            {
+                throw new RuntimeException("percentFromStraight should be between 0 and 1");
+            }
+        }
+
+        if (percentFromStraight == 0.0)
+        {
+            return reverse ? 180.0 : 0.0;
+        }
+
+        if (isRed)
+        {
+            if (reverse)
+            {
+                if (towardLoading)
+                {
+                    return 180.0 + 90.0 * percentFromStraight;
+                }
+                else
+                {
+                    return 180.0 - 90.0 * percentFromStraight;
+                }
+            }
+            else
+            {
+                if (towardLoading)
+                {
+                    return 360.0 - 90.0 * percentFromStraight;
+                }
+                else
+                {
+                    return 0.0 + 90.0 * percentFromStraight;
+                }
+            }
+        }
+        else
+        {
+            if (reverse)
+            {
+                if (towardLoading)
+                {
+                    return 180.0 - 90.0 * percentFromStraight;
+                }
+                else
+                {
+                    return 180.0 + 90.0 * percentFromStraight;
+                }
+            }
+            else
+            {
+                if (towardLoading)
+                {
+                    return 0.0 + 90.0 * percentFromStraight;
+                }
+                else
+                {
+                    return 360.0 - 90.0 * percentFromStraight;
+                }
+            }
+        }
     }
 
     public static void generateTrajectories(boolean isRed, TrajectoryManager trajectoryManager, IPathPlanner pathPlanner)
@@ -94,8 +175,8 @@ public class PathPlannerTrajectoryGenerator
         // -x = 180 toward alliance's grid
         // -y = -90 to right from alliance's grid
         // +y = 90 to left from alliance's grid
-        double ForwardOT = 0.0;
-        double BackwardOT = 180.0;
+        final double ForwardOT = 0.0;
+        final double BackwardOT = 180.0;
         double LoadOT = isRed ? -90.0 : 90.0; // use ternary operator to determine whether we are facing left or right to go towards loading station (substation)
         double GuardOT = isRed ? 90.0 : -90.0; // use ternary operator to determine whether we are facing left or right to go towards guardrail (away from substation)
         double ForwardLoadOT = isRed ? -45.0 : 45.0; // ternary operator for facing forwards and towards the loading station, in terms of Orientation or Tangent
