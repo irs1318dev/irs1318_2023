@@ -3,7 +3,7 @@ package frc.robot.common;
 import frc.robot.common.robotprovider.ITimer;
 
 /**
- * This class is a PID handler with a feed-forward handler and a complementary filter.
+ * This class is a PID handler with rate limiting using a trapezoidal-ish plan.
  * 
  * To use PID control:
  *      set the kp/ki/kd/kf tuning values
@@ -15,10 +15,13 @@ import frc.robot.common.robotprovider.ITimer;
  * 
  * @author Will (adapted from old code)
  */
-public class PIDHandler implements IPositionController
+public class RampedPIDHandler implements IPositionController
 {
     // constants
     private static final double MinTimeStep = 0.01;
+
+    private final double fullAccelerationTime;
+    private final double singleCapDistance;
     private final Double minOutput;
     private final Double maxOutput;
 
@@ -29,8 +32,9 @@ public class PIDHandler implements IPositionController
     private double kp;        // proportion for proportional
     private double ki;        // proportion for integral
     private double kd;        // proportion for derivative
-    private double kf;        // proportion for feed-forward
     private double ks;        // multiplicand for adjusting scale of setpoint to match scale of measured value
+    private double maxVel;    // max velocity to use
+    private double maxAccel;  // max accleration to use
 
     // instance variables
     private double integral = 0.0;          // integral of error data in memory
@@ -49,23 +53,25 @@ public class PIDHandler implements IPositionController
      * @param kp scalar for proportional component
      * @param ki scalar for integral component
      * @param kd scalar for derivative component
-     * @param kf scalar for feed-forward control
      * @param ks scalar for adjusting scale difference between measured value and setpoint value
+     * @param maxVel scalar for specifying the max velocity (in either direction)
+     * @param maxAccel scalar for specifying the max acceleration (in either direction)
      * @param minOutput indicates the minimum output value acceptable, or null
      * @param maxOutput indicates the maximum output value acceptable, or null
      * @param timer to track how much time has passed
      */
-    public PIDHandler(
+    public RampedPIDHandler(
         double kp,
         double ki,
         double kd,
-        double kf,
         double ks,
+        double maxVel,
+        double maxAccel,
         Double minOutput,
         Double maxOutput,
         ITimer timer)
     {
-        this(kp, ki, kd, kf, ks, 0.0, 1.0, 0.0, 1.0, minOutput, maxOutput, timer);
+        this(kp, ki, kd, ks, maxVel, maxAccel, 0.0, 1.0, 0.0, 1.0, minOutput, maxOutput, timer);
     }
 
     /**
@@ -75,8 +81,9 @@ public class PIDHandler implements IPositionController
      * @param kp scalar for proportional component
      * @param ki scalar for integral component
      * @param kd scalar for derivative component
-     * @param kf scalar for feed-forward control
      * @param ks scalar for adjusting scale difference between measured value and setpoint value
+     * @param maxVel scalar for specifying the max velocity (in either direction)
+     * @param maxAccel scalar for specifying the max acceleration (in either direction)
      * @param kO scalar for output complementary filter multiplier
      * @param kN scalar for output complementary filter multiplier
      * @param kEO scalar for error complementary filter multiplier
@@ -85,12 +92,13 @@ public class PIDHandler implements IPositionController
      * @param maxOutput indicates the maximum output value acceptable, or null
      * @param timer to track how much time has passed
      */
-    public PIDHandler(
+    public RampedPIDHandler(
         double kp,
         double ki,
         double kd,
-        double kf,
         double ks,
+        double maxVel,
+        double maxAccel,
         double kO,
         double kN,
         double kEO,
@@ -102,8 +110,9 @@ public class PIDHandler implements IPositionController
         this.ki = ki;
         this.kd = kd;
         this.kp = kp;
-        this.kf = kf;
         this.ks = ks;
+        this.maxVel = maxVel;
+        this.maxAccel = maxAccel;
 
         this.errorFilter = new ComplementaryFilter(kEO, kEN);
         this.outputFilter = new ComplementaryFilter(kO, kN);
@@ -113,6 +122,12 @@ public class PIDHandler implements IPositionController
 
         this.timer = timer;
         this.prevTime = this.timer.get();
+
+        // how long it takes to accelerate from stopped to max velocity using max acceleration
+        this.fullAccelerationTime = this.maxVel / this.maxAccel;
+
+        // how far it is to travel both end caps ()
+        this.singleCapDistance = this.fullAccelerationTime * this.maxVel / 2.0;
     }
 
     /**
@@ -132,7 +147,7 @@ public class PIDHandler implements IPositionController
         double dt = curTime - this.prevTime;
 
         // To prevent division by zero and over-aggressive measurement, output updates at a max of 1kHz
-        if (dt >= PIDHandler.MinTimeStep)
+        if (dt >= RampedPIDHandler.MinTimeStep)
         {
             this.prevTime = curTime;
 
@@ -163,8 +178,7 @@ public class PIDHandler implements IPositionController
 
             double result = this.kp * error +   // proportional
                 this.ki * this.integral +       // integral
-                this.kd * derivative +          // derivative
-                this.kf * setpoint;             // feed-forward
+                this.kd * derivative;           // derivative
 
             if (this.maxOutput != null && result > this.maxOutput)
             {
@@ -177,77 +191,6 @@ public class PIDHandler implements IPositionController
 
             // apply complementary filter to slow ramp-up/ramp-down
             this.output = this.outputFilter.update(result);
-            this.prevMeasuredValue = measuredValue;
-        }
-        else if (dt < 0.0)
-        {
-            this.prevTime = curTime;
-        }
-
-        return this.output;
-    }
-
-    /**
-     * Calculate the desired output value based on the setpoint and measured value.
-     * measuredValue should be in the same unit as the setpoint, typically a rate of change of something over time.
-     * This method should be called in a loop and fed feedback data and setpoint changes
-     * 
-     * @param setpoint describes the goal velocity value
-     * @param measuredValue describes the measured value
-     * 
-     * @return output value to be used
-     */
-    public double calculateVelocity(double setpoint, double measuredValue)
-    {
-        // update dt
-        double curTime = this.timer.get();
-        double dt = curTime - this.prevTime;
-
-        // To prevent division by zero and over-aggressive measurement, output updates at a max of 100 Hz
-        if (dt >= PIDHandler.MinTimeStep)
-        {
-            this.prevTime = curTime;
-
-            double rawError = this.ks * setpoint - measuredValue;
-            double error = this.errorFilter.update(rawError);
-
-            // calculate integral, limiting it based on MaxOutput/MinOutput
-            double potentialI = this.ki * (this.integral + error * dt);
-            if (this.maxOutput != null && potentialI > this.maxOutput)
-            {
-                this.integral = this.maxOutput / this.ki;
-            }
-            else if (this.minOutput != null && potentialI < this.minOutput)
-            {
-                this.integral = this.minOutput / this.ki;
-            }
-            else
-            {
-                this.integral += error * dt;
-            }
-
-            // calculate derivative
-            double derivative = (error - this.prevError) / dt;
-
-            // store error
-            this.prevError = error;
-
-            double result = this.kp * error +   // proportional
-                this.ki * this.integral +       // integral
-                this.kd * derivative +          // derivative
-                this.kf * setpoint;             // feed-forward
-
-            if (this.maxOutput != null && result > this.maxOutput)
-            {
-                result = this.maxOutput;
-            }
-            else if (this.minOutput != null && result < this.minOutput)
-            {
-                result = this.minOutput;
-            }
-
-            // apply complementary filter to slow ramp-up/ramp-down
-            this.output = this.outputFilter.getValue();
             this.prevMeasuredValue = measuredValue;
         }
         else if (dt < 0.0)

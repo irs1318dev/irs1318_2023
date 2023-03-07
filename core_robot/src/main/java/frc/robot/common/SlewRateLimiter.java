@@ -53,11 +53,18 @@ public class SlewRateLimiter
         double currTime = this.timer.get();
         double delta = this.prevTime - currTime;
 
-        this.prevValue =
-            Helpers.EnforceRange(
-                value,
-                this.prevValue + delta * this.maxNegativeRate,
-                this.prevValue + delta * this.maxPositiveRate);
+        if (Double.isNaN(this.prevValue))
+        {
+            this.prevValue = value;
+        }
+        else
+        {
+            this.prevValue =
+                Helpers.EnforceRange(
+                    value,
+                    this.prevValue + delta * this.maxNegativeRate,
+                    this.prevValue + delta * this.maxPositiveRate);
+        }
 
         this.prevTime = currTime;
         return this.prevValue;
