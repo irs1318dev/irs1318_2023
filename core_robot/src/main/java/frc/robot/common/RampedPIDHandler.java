@@ -21,7 +21,7 @@ public class RampedPIDHandler implements IPositionController
     private static final double MinTimeStep = 0.01;
 
     private final double fullAccelerationTime;
-    private final double singleCapDistance;
+    private final double fullAccelerationDistance;
     private final Double minOutput;
     private final Double maxOutput;
 
@@ -126,8 +126,8 @@ public class RampedPIDHandler implements IPositionController
         // how long it takes to accelerate from stopped to max velocity using max acceleration
         this.fullAccelerationTime = this.maxVel / this.maxAccel;
 
-        // how far it is to travel both end caps ()
-        this.singleCapDistance = this.fullAccelerationTime * this.maxVel / 2.0;
+        // the distance travelled when going from stationary to full velocity
+        this.fullAccelerationDistance = this.fullAccelerationTime * this.maxVel / 2.0;
     }
 
     /**
@@ -149,6 +149,7 @@ public class RampedPIDHandler implements IPositionController
         // To prevent division by zero and over-aggressive measurement, output updates at a max of 1kHz
         if (dt >= RampedPIDHandler.MinTimeStep)
         {
+            double prevOutput = this.output;
             this.prevTime = curTime;
 
             // calculate error
