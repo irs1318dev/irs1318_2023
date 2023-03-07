@@ -609,6 +609,12 @@ public class DriveTrainMechanismTests
         }
 
         @Override
+        public void set(TalonXControlMode mode, double value)
+        {
+            this.currentValue = value;
+        }
+
+        @Override
         public void setSupplyCurrentLimit(boolean enabled, double currentLimit, double triggerThresholdCurrent, double triggerThresholdTime)
         {
         }

@@ -394,6 +394,8 @@ public class TuningConstants
     public static final boolean ARM_LOWER_RIGHT_INVERT_SENSOR = false;
     public static final boolean ARM_UPPER_INVERT_SENSOR = false;
 
+    public static final double ARM_MAX_TWIST_AMOUNT = 200.0; // in ticks - the largest allowed tick difference between lower left and lower right actuators
+
     public static final double ARM_NEAR_FULL_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.9; // in inches
     public static final double ARM_NEAR_FULL_RETRACTED_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.1; // in inches
 
@@ -405,9 +407,6 @@ public class TuningConstants
     public static final double ARM_X_POSITION_ADJUSTMENT_VELOCITY = 2.0; // inches per second
     public static final double ARM_Z_POSITION_ADJUSTMENT_VELOCITY = 2.0; // inches per second
 
-    public static final double ARM_LOWER_EXTENSION_ADJUSTMENT_VELOCITY = 2.0; // inches per second
-    public static final double ARM_UPPER_EXTENSION_ADJUSTMENT_VELOCITY = 2.0; // inches per second
-
     public static final double ARM_MAX_REVERSE_SIMPLE_VELOCITY = -0.8; // percentage output
     public static final double ARM_MAX_FORWARD_SIMPLE_VELOCITY = 0.8; // percentage output
 
@@ -418,6 +417,7 @@ public class TuningConstants
 
     public static final double ARM_LOWER_VELOCITY_DEAZONE = 0.15;
     public static final double ARM_UPPER_VELOCITY_DEAZONE = 0.15;
+    public static final double ARM_TWIST_DEAZONE = 0.10;
 
     public static final double ARM_FLIPPER_EXTEND_WAIT_DURATION = 0.5;
     public static final double ARM_FLIPPER_RETRACT_WAIT_DURATION = 0.5;

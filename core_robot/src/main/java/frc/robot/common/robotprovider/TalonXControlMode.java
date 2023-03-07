@@ -2,6 +2,7 @@ package frc.robot.common.robotprovider;
 
 public enum TalonXControlMode
 {
+    Required,
     PercentOutput,
     Disabled,
     Follower,

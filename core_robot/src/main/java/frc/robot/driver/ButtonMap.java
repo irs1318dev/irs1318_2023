@@ -124,6 +124,21 @@ public class ButtonMap implements IButtonMap
             TuningConstants.ARM_UPPER_VELOCITY_DEAZONE),
 
         new AnalogOperationDescription(
+            AnalogOperation.ArmTwistLeft,
+            UserInputDevice.Codriver,
+            AnalogAxis.XBONE_LT,
+            ElectronicsConstants.INVERT_XBONE_LEFT_TRIGGER,
+            TuningConstants.ZERO,
+            TuningConstants.ARM_TWIST_DEAZONE),
+        new AnalogOperationDescription(
+            AnalogOperation.ArmTwistRight,
+            UserInputDevice.Codriver,
+            AnalogAxis.XBONE_RT,
+            ElectronicsConstants.INVERT_XBONE_RIGHT_TRIGGER,
+            TuningConstants.ZERO,
+            TuningConstants.ARM_TWIST_DEAZONE),
+
+        new AnalogOperationDescription(
             AnalogOperation.ArmMMLowerPosition,
             TuningConstants.MAGIC_NULL_VALUE),
         new AnalogOperationDescription(
