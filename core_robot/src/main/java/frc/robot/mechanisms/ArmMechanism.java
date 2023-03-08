@@ -217,27 +217,9 @@ public class ArmMechanism implements IMechanism
         this.lowerRightArmLinearActuator.setNeutralMode(MotorNeutralMode.Brake);
         this.upperArmLinearActuator.setNeutralMode(MotorNeutralMode.Brake);
 
-        if (this.inSimpleMode)
-        {
-            this.lowerLeftArmLinearActuator.setControlMode(TalonXControlMode.PercentOutput);
-            this.lowerRightArmLinearActuator.setControlMode(TalonXControlMode.PercentOutput);
-            this.upperArmLinearActuator.setControlMode(TalonXControlMode.PercentOutput);
-        }
-        else
-        {
-            if (TuningConstants.ARM_USE_MM)
-            {
-                this.lowerLeftArmLinearActuator.setControlMode(TalonXControlMode.MotionMagicPosition);
-                this.lowerRightArmLinearActuator.setControlMode(TalonXControlMode.MotionMagicPosition);
-                this.upperArmLinearActuator.setControlMode(TalonXControlMode.MotionMagicPosition);
-            }
-            else
-            {
-                this.lowerLeftArmLinearActuator.setControlMode(TalonXControlMode.Position);
-                this.lowerRightArmLinearActuator.setControlMode(TalonXControlMode.Position);
-                this.upperArmLinearActuator.setControlMode(TalonXControlMode.Position);
-            }
-        }
+        this.lowerLeftArmLinearActuator.setControlMode(TalonXControlMode.Required);
+        this.lowerRightArmLinearActuator.setControlMode(TalonXControlMode.Required);
+        this.upperArmLinearActuator.setControlMode(TalonXControlMode.Required);
 
         this.lowerLeftArmLinearActuator.setPosition(0.0);
         this.lowerRightArmLinearActuator.setPosition(0.0);
@@ -362,27 +344,10 @@ public class ArmMechanism implements IMechanism
         if (this.driver.getDigital(DigitalOperation.ArmEnableSimpleMode))
         {
             this.inSimpleMode = true;
-
-            this.lowerLeftArmLinearActuator.setControlMode(TalonXControlMode.PercentOutput);
-            this.lowerRightArmLinearActuator.setControlMode(TalonXControlMode.PercentOutput);
-            this.upperArmLinearActuator.setControlMode(TalonXControlMode.PercentOutput);
         }
         else if (this.driver.getDigital(DigitalOperation.ArmDisableSimpleMode))
         {
             this.inSimpleMode = false;
-
-            if (TuningConstants.ARM_USE_MM)
-            {
-                this.lowerLeftArmLinearActuator.setControlMode(TalonXControlMode.MotionMagicPosition);
-                this.lowerRightArmLinearActuator.setControlMode(TalonXControlMode.MotionMagicPosition);
-                this.upperArmLinearActuator.setControlMode(TalonXControlMode.MotionMagicPosition);
-            }
-            else
-            {
-                this.lowerLeftArmLinearActuator.setControlMode(TalonXControlMode.Position);
-                this.lowerRightArmLinearActuator.setControlMode(TalonXControlMode.Position);
-                this.upperArmLinearActuator.setControlMode(TalonXControlMode.Position);
-            }
 
             this.lowerLeftArmLinearActuator.setSelectedSlot(ArmMechanism.defaultPidSlotId);
             this.lowerRightArmLinearActuator.setSelectedSlot(ArmMechanism.defaultPidSlotId);
@@ -618,14 +583,21 @@ public class ArmMechanism implements IMechanism
         }
 
         //----------------------------------- Main Arm -----------------------------------
+        // position adjustment override
+        double lowerPositionAdjustment = this.driver.getAnalog(AnalogOperation.ArmLowerPositionAdjustment);
+        double upperPositionAdjustment = this.driver.getAnalog(AnalogOperation.ArmUpperPositionAdjustment);
+
+        double lowerPower = 0.0;
+        double upperPower = 0.0;
+        boolean useSimpleMode = false;
+        double twistAmount = 0.0;
         if (this.inSimpleMode)
         {
+            useSimpleMode = true;
+
             // controlled by joysticks
-            double lowerArmPower = this.driver.getAnalog(AnalogOperation.ArmLowerPositionAdjustment);
-            double upperArmPower = this.driver.getAnalog(AnalogOperation.ArmUpperPositionAdjustment);
-            this.lowerLeftArmLinearActuator.set(lowerArmPower);
-            this.lowerRightArmLinearActuator.set(lowerArmPower);
-            this.upperArmLinearActuator.set(upperArmPower);
+            lowerPower = lowerPositionAdjustment;
+            upperPower = upperPositionAdjustment;
 
             this.lowerSetpointChangedTime = currTime;
             this.upperSetpointChangedTime = currTime;
@@ -635,181 +607,177 @@ public class ArmMechanism implements IMechanism
         }
         else if (this.curLeftFlipperState == ConeFlipperState.Retracted || this.curRightFlipperState == ConeFlipperState.Retracted)
         {
-            double elapsedTime = currTime - this.prevTime;
-
-            // first choice
-            double ikX = TuningConstants.MAGIC_NULL_VALUE;
-            double ikZ = TuningConstants.MAGIC_NULL_VALUE;
-
-            // second choice
-            double ikXAdjustment = 0.0;
-            double ikZAdjustment = 0.0;
-
-            if (TuningConstants.ARM_USE_IK)
+            if (lowerPositionAdjustment != 0.0 || upperPositionAdjustment != 0.0)
             {
-                ikX = this.driver.getAnalog(AnalogOperation.ArmIKXPosition);
-                ikZ = this.driver.getAnalog(AnalogOperation.ArmIKZPosition);
-
-                ikXAdjustment = this.driver.getAnalog(AnalogOperation.ArmIKXAdjustment) * TuningConstants.ARM_X_POSITION_ADJUSTMENT_VELOCITY * elapsedTime;
-                ikZAdjustment = this.driver.getAnalog(AnalogOperation.ArmIKZAdjustment) * TuningConstants.ARM_Z_POSITION_ADJUSTMENT_VELOCITY * elapsedTime;
-            }
-
-            // third choice
-            double newDesiredLowerPosition = this.driver.getAnalog(AnalogOperation.ArmMMLowerPosition);
-            double newDesiredUpperPosition = this.driver.getAnalog(AnalogOperation.ArmMMUpperPosition);
-
-            // fourth choice
-            double lowerPositionAdjustment = this.driver.getAnalog(AnalogOperation.ArmLowerPositionAdjustment) * TuningConstants.ARM_LOWER_EXTENSION_ADJUSTMENT_VELOCITY * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * elapsedTime;
-            double upperPositionAdjustment = this.driver.getAnalog(AnalogOperation.ArmUpperPositionAdjustment) * TuningConstants.ARM_UPPER_EXTENSION_ADJUSTMENT_VELOCITY * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH * elapsedTime;
-
-            if (ikX != TuningConstants.MAGIC_NULL_VALUE &&
-                ikZ != TuningConstants.MAGIC_NULL_VALUE)
-            {
-                // controlled by macro
-                DoubleTuple ikResult = ArmMechanism.calculateIK(ikX, ikZ);
-                if (ikResult != null)
-                {
-                    boolean updateDesiredIKPosition = false;
-                    if (Helpers.RoughEquals(this.desiredLowerLeftLAPosition, ikResult.first, 0.1) ||
-                        Helpers.RoughEquals(this.desiredLowerRightLAPosition, ikResult.first, 0.1))
-                    {
-                        this.lowerSetpointChangedTime = currTime;
-                        this.lowerLAsStalled = false;
-
-                        this.desiredLowerLeftLAPosition = ikResult.first;
-                        this.desiredLowerRightLAPosition = ikResult.first;
-                        updateDesiredIKPosition = true;
-                    }
-
-                    if (Helpers.RoughEquals(this.desiredUpperLAPosition, ikResult.second, 0.1))
-                    {
-                        this.upperSetpointChangedTime = currTime;
-                        this.upperLAsStalled = false;
-
-                        this.desiredUpperLAPosition = ikResult.second;
-                        updateDesiredIKPosition = true;
-                    }
-
-                    if (updateDesiredIKPosition)
-                    {
-                        this.desiredXPosition = ikX;
-                        this.desiredZPosition = ikZ;
-                    }
-                }
-            }
-            else if (ikXAdjustment != 0.0 || ikZAdjustment != 0.0)
-            {
-                // controlled by joysticks
-                double newDesiredXPosition = this.desiredXPosition + ikXAdjustment;
-                double newDesiredZPosition = this.desiredZPosition + ikZAdjustment;
-
-                DoubleTuple ikResult = ArmMechanism.calculateIK(ikX, ikZ);
-                if (ikResult != null)
-                {
-                    boolean updateDesiredIKPosition = false;
-                    if (Helpers.RoughEquals(this.desiredLowerLeftLAPosition, ikResult.first, 0.1) ||
-                        Helpers.RoughEquals(this.desiredLowerRightLAPosition, ikResult.first, 0.1))
-                    {
-                        this.lowerSetpointChangedTime = currTime;
-                        this.lowerLAsStalled = false;
-
-                        this.desiredLowerLeftLAPosition = ikResult.first;
-                        this.desiredLowerRightLAPosition = ikResult.first;
-                        updateDesiredIKPosition = true;
-                    }
-
-                    if (Helpers.RoughEquals(this.desiredUpperLAPosition, ikResult.second, 0.1))
-                    {
-                        this.upperSetpointChangedTime = currTime;
-                        this.upperLAsStalled = false;
-
-                        this.desiredUpperLAPosition = ikResult.second;
-                        updateDesiredIKPosition = true;
-                    }
-
-                    if (updateDesiredIKPosition)
-                    {
-                        this.desiredXPosition = newDesiredXPosition;
-                        this.desiredZPosition = newDesiredZPosition;
-                    }
-                }
-            }
-            else if (newDesiredLowerPosition != TuningConstants.MAGIC_NULL_VALUE ||
-                newDesiredUpperPosition != TuningConstants.MAGIC_NULL_VALUE)
-            {
-                // controlled by macro
-                boolean updateDesiredIKPosition = false;
-                if (newDesiredLowerPosition != TuningConstants.MAGIC_NULL_VALUE &&
-                    (!Helpers.RoughEquals(this.desiredLowerLeftLAPosition, newDesiredLowerPosition, 0.1) ||
-                        !Helpers.RoughEquals(this.desiredLowerRightLAPosition, newDesiredLowerPosition, 0.1)))
-                {
-                    this.lowerSetpointChangedTime = currTime;
-                    this.lowerLAsStalled = false;
-
-                    this.desiredLowerLeftLAPosition = newDesiredLowerPosition;
-                    this.desiredLowerRightLAPosition = newDesiredLowerPosition;
-                    updateDesiredIKPosition = true;
-                }
-
-                if (newDesiredUpperPosition != TuningConstants.MAGIC_NULL_VALUE &&
-                    !Helpers.RoughEquals(this.desiredUpperLAPosition, newDesiredUpperPosition, 0.1))
-                {
-                    this.upperSetpointChangedTime = currTime;
-                    this.upperLAsStalled = false;
-
-                    this.desiredUpperLAPosition = newDesiredUpperPosition;
-                    updateDesiredIKPosition = true;
-                }
-
-                if (updateDesiredIKPosition)
-                {
-                    DoubleTuple fkResult = ArmMechanism.calculateFK(
-                        (this.desiredLowerLeftLAPosition + this.desiredLowerRightLAPosition) / 2.0,
-                        this.desiredUpperLAPosition);
-                    if (fkResult != null)
-                    {
-                        this.desiredXPosition = fkResult.first;
-                        this.desiredZPosition = fkResult.second;
-                    }
-                }
-            }
-            else if (lowerPositionAdjustment != 0.0 || upperPositionAdjustment != 0.0)
-            {
-                // controlled by joysticks
-                this.desiredLowerLeftLAPosition += lowerPositionAdjustment;
-                this.desiredLowerRightLAPosition += lowerPositionAdjustment;
-                this.desiredUpperLAPosition += upperPositionAdjustment;
-
-                this.desiredLowerLeftLAPosition = Helpers.EnforceRange(this.desiredLowerLeftLAPosition, 0.0, TuningConstants.ARM_LOWER_MAX_EXTENSION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH);
-                this.desiredLowerRightLAPosition = Helpers.EnforceRange(this.desiredLowerRightLAPosition, 0.0, TuningConstants.ARM_LOWER_MAX_EXTENSION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH);
-                this.desiredUpperLAPosition = Helpers.EnforceRange(this.desiredUpperLAPosition, 0.0, TuningConstants.ARM_UPPER_MAX_EXTENSION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH);
-
-                boolean updateDesiredIKPosition = false;
+                useSimpleMode = true;
                 if (lowerPositionAdjustment != 0.0)
                 {
+                    // reset desired positions to ensure that we maintain the position after we release the joystick
+                    this.desiredLowerLeftLAPosition = this.lowerLeftLAPosition;
+                    this.desiredLowerRightLAPosition = this.lowerRightLAPosition;
+
                     this.lowerSetpointChangedTime = currTime;
-                    this.lowerLAsStalled = false;
-                    updateDesiredIKPosition = true;
+
+                    // controlled by joysticks
+                    lowerPower = lowerPositionAdjustment;
                 }
 
                 if (upperPositionAdjustment != 0.0)
                 {
+                    // reset desired positions to ensure that we maintain the position after we release the joystick
+                    this.desiredUpperLAPosition = this.upperLAPosition;
+
                     this.upperSetpointChangedTime = currTime;
-                    this.upperLAsStalled = false;
-                    updateDesiredIKPosition = true;
+
+                    // controlled by joysticks
+                    upperPower = upperPositionAdjustment;
                 }
 
-                if (updateDesiredIKPosition)
+                DoubleTuple fkResult = ArmMechanism.calculateFK(
+                    (this.desiredLowerLeftLAPosition + this.desiredLowerRightLAPosition) / 2.0,
+                    this.desiredUpperLAPosition);
+                if (fkResult != null)
                 {
-                    DoubleTuple fkResult = ArmMechanism.calculateFK(
-                        (this.desiredLowerLeftLAPosition + this.desiredLowerRightLAPosition) / 2.0,
-                        this.desiredUpperLAPosition);
-                    if (fkResult != null)
+                    this.desiredXPosition = fkResult.first;
+                    this.desiredZPosition = fkResult.second;
+                }
+            }
+            else
+            {
+                double elapsedTime = currTime - this.prevTime;
+
+                // first choice
+                double ikX = TuningConstants.MAGIC_NULL_VALUE;
+                double ikZ = TuningConstants.MAGIC_NULL_VALUE;
+
+                // second choice
+                double ikXAdjustment = 0.0;
+                double ikZAdjustment = 0.0;
+
+                if (TuningConstants.ARM_USE_IK)
+                {
+                    ikX = this.driver.getAnalog(AnalogOperation.ArmIKXPosition);
+                    ikZ = this.driver.getAnalog(AnalogOperation.ArmIKZPosition);
+
+                    ikXAdjustment = this.driver.getAnalog(AnalogOperation.ArmIKXAdjustment) * TuningConstants.ARM_X_POSITION_ADJUSTMENT_VELOCITY * elapsedTime;
+                    ikZAdjustment = this.driver.getAnalog(AnalogOperation.ArmIKZAdjustment) * TuningConstants.ARM_Z_POSITION_ADJUSTMENT_VELOCITY * elapsedTime;
+                }
+
+                // third choice
+                double newDesiredLowerPosition = this.driver.getAnalog(AnalogOperation.ArmMMLowerPosition);
+                double newDesiredUpperPosition = this.driver.getAnalog(AnalogOperation.ArmMMUpperPosition);
+
+                if (ikX != TuningConstants.MAGIC_NULL_VALUE &&
+                    ikZ != TuningConstants.MAGIC_NULL_VALUE)
+                {
+                    // controlled by macro
+                    DoubleTuple ikResult = ArmMechanism.calculateIK(ikX, ikZ);
+                    if (ikResult != null)
                     {
-                        this.desiredXPosition = fkResult.first;
-                        this.desiredZPosition = fkResult.second;
+                        boolean updateDesiredIKPosition = false;
+                        if (Helpers.RoughEquals(this.desiredLowerLeftLAPosition, ikResult.first, 0.1) ||
+                            Helpers.RoughEquals(this.desiredLowerRightLAPosition, ikResult.first, 0.1))
+                        {
+                            this.lowerSetpointChangedTime = currTime;
+
+                            this.desiredLowerLeftLAPosition = ikResult.first;
+                            this.desiredLowerRightLAPosition = ikResult.first;
+                            updateDesiredIKPosition = true;
+                        }
+
+                        if (Helpers.RoughEquals(this.desiredUpperLAPosition, ikResult.second, 0.1))
+                        {
+                            this.upperSetpointChangedTime = currTime;
+
+                            this.desiredUpperLAPosition = ikResult.second;
+                            updateDesiredIKPosition = true;
+                        }
+
+                        if (updateDesiredIKPosition)
+                        {
+                            this.desiredXPosition = ikX;
+                            this.desiredZPosition = ikZ;
+                        }
                     }
                 }
+                else if (ikXAdjustment != 0.0 || ikZAdjustment != 0.0)
+                {
+                    // controlled by joysticks
+                    double newDesiredXPosition = this.desiredXPosition + ikXAdjustment;
+                    double newDesiredZPosition = this.desiredZPosition + ikZAdjustment;
+
+                    DoubleTuple ikResult = ArmMechanism.calculateIK(ikX, ikZ);
+                    if (ikResult != null)
+                    {
+                        boolean updateDesiredIKPosition = false;
+                        if (Helpers.RoughEquals(this.desiredLowerLeftLAPosition, ikResult.first, 0.1) ||
+                            Helpers.RoughEquals(this.desiredLowerRightLAPosition, ikResult.first, 0.1))
+                        {
+                            this.lowerSetpointChangedTime = currTime;
+
+                            this.desiredLowerLeftLAPosition = ikResult.first;
+                            this.desiredLowerRightLAPosition = ikResult.first;
+                            updateDesiredIKPosition = true;
+                        }
+
+                        if (Helpers.RoughEquals(this.desiredUpperLAPosition, ikResult.second, 0.1))
+                        {
+                            this.upperSetpointChangedTime = currTime;
+
+                            this.desiredUpperLAPosition = ikResult.second;
+                            updateDesiredIKPosition = true;
+                        }
+
+                        if (updateDesiredIKPosition)
+                        {
+                            this.desiredXPosition = newDesiredXPosition;
+                            this.desiredZPosition = newDesiredZPosition;
+                        }
+                    }
+                }
+                else if (newDesiredLowerPosition != TuningConstants.MAGIC_NULL_VALUE ||
+                    newDesiredUpperPosition != TuningConstants.MAGIC_NULL_VALUE)
+                {
+                    // controlled by macro
+                    boolean updateDesiredIKPosition = false;
+                    if (newDesiredLowerPosition != TuningConstants.MAGIC_NULL_VALUE &&
+                        (!Helpers.RoughEquals(this.desiredLowerLeftLAPosition, newDesiredLowerPosition, 0.1) ||
+                            !Helpers.RoughEquals(this.desiredLowerRightLAPosition, newDesiredLowerPosition, 0.1)))
+                    {
+                        this.lowerSetpointChangedTime = currTime;
+
+                        this.desiredLowerLeftLAPosition = newDesiredLowerPosition;
+                        this.desiredLowerRightLAPosition = newDesiredLowerPosition;
+                        updateDesiredIKPosition = true;
+                    }
+
+                    if (newDesiredUpperPosition != TuningConstants.MAGIC_NULL_VALUE &&
+                        !Helpers.RoughEquals(this.desiredUpperLAPosition, newDesiredUpperPosition, 0.1))
+                    {
+                        this.upperSetpointChangedTime = currTime;
+
+                        this.desiredUpperLAPosition = newDesiredUpperPosition;
+                        updateDesiredIKPosition = true;
+                    }
+
+                    if (updateDesiredIKPosition)
+                    {
+                        DoubleTuple fkResult = ArmMechanism.calculateFK(
+                            (this.desiredLowerLeftLAPosition + this.desiredLowerRightLAPosition) / 2.0,
+                            this.desiredUpperLAPosition);
+                        if (fkResult != null)
+                        {
+                            this.desiredXPosition = fkResult.first;
+                            this.desiredZPosition = fkResult.second;
+                        }
+                    }
+                }
+
+                // twist by putting the left arm out and the right arm in by a certain twist amount.
+                // note that doesn't quite work the same way when the arm is fully extended or fully retracted, but it will be better than nothing
+                // and we don't really expect to _want_ to twist in those scenarios...
+                twistAmount = this.driver.getAnalog(AnalogOperation.ArmTwistLeft) - this.driver.getAnalog(AnalogOperation.ArmTwistRight);
+                twistAmount *= 0.5 * TuningConstants.ARM_MAX_TWIST_AMOUNT;
             }
         }
 
@@ -837,7 +805,7 @@ public class ArmMechanism implements IMechanism
             }
         }
 
-        if (!this.inSimpleMode)
+        if (!useSimpleMode)
         {
             if (this.lowerLAsStalled)
             {
@@ -846,8 +814,12 @@ public class ArmMechanism implements IMechanism
             }
             else
             {
-                this.lowerLeftArmLinearActuator.set(this.desiredLowerLeftLAPosition - HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH);
-                this.lowerRightArmLinearActuator.set(this.desiredLowerRightLAPosition - HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH);
+                this.lowerLeftArmLinearActuator.set(
+                    TuningConstants.ARM_USE_MM ? TalonXControlMode.MotionMagicPosition : TalonXControlMode.Position,
+                    this.desiredLowerLeftLAPosition - HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH + twistAmount);
+                this.lowerRightArmLinearActuator.set(
+                    TuningConstants.ARM_USE_MM ? TalonXControlMode.MotionMagicPosition : TalonXControlMode.Position,
+                    this.desiredLowerRightLAPosition - HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH - twistAmount);
             }
 
             if (this.upperLAsStalled)
@@ -856,8 +828,16 @@ public class ArmMechanism implements IMechanism
             }
             else
             {
-                this.upperArmLinearActuator.set(this.desiredUpperLAPosition);
+                this.upperArmLinearActuator.set(
+                    TuningConstants.ARM_USE_MM ? TalonXControlMode.MotionMagicPosition : TalonXControlMode.Position,
+                    this.desiredUpperLAPosition);
             }
+        }
+        else
+        {
+            this.lowerLeftArmLinearActuator.set(TalonXControlMode.PercentOutput, lowerPower);
+            this.lowerRightArmLinearActuator.set(TalonXControlMode.PercentOutput, lowerPower);
+            this.upperArmLinearActuator.set(TalonXControlMode.PercentOutput, upperPower);
         }
 
         this.logger.logBoolean(LoggingKey.ArmLowerStalled, this.lowerLAsStalled);
@@ -911,12 +891,12 @@ public class ArmMechanism implements IMechanism
         return this.throughBeamBroken;
     }
 
-    public double getMMLowerPosition()
+    public double getLowerPosition()
     {
         return (this.lowerLeftLAPosition + this.lowerRightLAPosition) / 2.0;
     }
 
-    public double getMMUpperPosition()
+    public double getUpperPosition()
     {
         return this.upperLAPosition;
     }
@@ -980,8 +960,8 @@ public class ArmMechanism implements IMechanism
         }
 
         // block the possibility of the end-effector clipping through the robot frame
-        if (x < TuningConstants.ARM_X_IK_IN_TRESHOLD &&
-            z < TuningConstants.ARM_Z_IK_IN_TRESHOLD)
+        if (x < TuningConstants.ARM_X_IK_INSIDE_TRESHOLD &&
+            z < TuningConstants.ARM_Z_IK_INSIDE_TRESHOLD)
         {
             return null;
         }

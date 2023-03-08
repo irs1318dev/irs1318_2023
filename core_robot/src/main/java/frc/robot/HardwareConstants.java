@@ -64,9 +64,9 @@ public class HardwareConstants
     public static final double ARM_UPPER_JOINT_CONSTRAINT_MAX = 170.0; // in degrees
 
     public static final double ARM_MAX_END_EFFECTOR_HEIGHT = 1.5; // inches, max height of the end-effector above the end of the upper arm
-    public static final double ARM_MAX_END_EFFECTOR_EXTENSION = 9.0; // inches, max extension of the end-effector past the end of the upper arm
+    public static final double ARM_MAX_END_EFFECTOR_EXTENSION = 8.0; // inches, max extension of the end-effector past the end of the upper arm
 
-    public static final double ARM_ORIGIN_X_OFFSET = 15.0; // inches, distance from the front of the robot to the origin for the arm
+    public static final double ARM_ORIGIN_X_OFFSET = 16.0; // inches, distance from the front of the robot to the origin for the arm
     public static final double ARM_ORIGIN_Z_OFFSET = 7.5; // inches, distance from the floor to the origin for the arm
 
     public static final double ARM_STRING_ENCODER_TICKS_PER_INCH = (4096.0 / 100.0) * 25.4;

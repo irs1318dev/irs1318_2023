@@ -12,7 +12,8 @@ public class ArmMMPositionTask extends ControlTaskBase
 {
     private enum ArmMMState
     {
-        DesiredIntermidate,
+        DesiredLowerIntermidate,
+        DesiredHighIntermidate,
         DesiredGoal,
         Completed,
     }
@@ -51,11 +52,21 @@ public class ArmMMPositionTask extends ControlTaskBase
             return;
         }
 
-        boolean currentIsIn = (this.arm.getMMLowerPosition() > TuningConstants.ARM_LOWER_MM_IN_TRESHOLD && this.arm.getMMUpperPosition() < TuningConstants.ARM_UPPER_MM_IN_TRESHOLD);
-        boolean goalIsIn = (this.lowerExtensionLength > TuningConstants.ARM_LOWER_MM_IN_TRESHOLD && this.upperExtensionLength < TuningConstants.ARM_UPPER_MM_IN_TRESHOLD);
-        if (currentIsIn != goalIsIn)
+        double armLowerPosition = this.arm.getLowerPosition();
+        double armUpperPosition = this.arm.getUpperPosition();
+
+        boolean currentIsInside = (armLowerPosition > TuningConstants.ARM_LOWER_POSITION_INSIDE_TRESHOLD && armUpperPosition < TuningConstants.ARM_UPPER_POSITION_INSIDE_TRESHOLD);
+        boolean goalIsInside = (this.lowerExtensionLength > TuningConstants.ARM_LOWER_POSITION_INSIDE_TRESHOLD && this.upperExtensionLength < TuningConstants.ARM_UPPER_POSITION_INSIDE_TRESHOLD);
+
+        boolean currentIsHigh = (armLowerPosition < TuningConstants.ARM_LOWER_POSITION_HIGH_TRESHOLD && armUpperPosition > TuningConstants.ARM_UPPER_POSITION_HIGH_TRESHOLD);
+        boolean goalIsHigh = (this.lowerExtensionLength < TuningConstants.ARM_LOWER_POSITION_HIGH_TRESHOLD && this.upperExtensionLength > TuningConstants.ARM_UPPER_POSITION_HIGH_TRESHOLD);
+        if (goalIsHigh != currentIsHigh)
         {
-            this.currentArmState = ArmMMState.DesiredIntermidate;
+            this.currentArmState = ArmMMState.DesiredHighIntermidate;
+        }
+        else if (goalIsInside != currentIsInside)
+        {
+            this.currentArmState = ArmMMState.DesiredLowerIntermidate;
         }
         else
         {
@@ -69,18 +80,26 @@ public class ArmMMPositionTask extends ControlTaskBase
     @Override
     public void update()
     {
-        if (this.currentArmState == ArmMMState.DesiredIntermidate)
+        if (this.currentArmState == ArmMMState.DesiredLowerIntermidate)
         {
-            if (Math.abs(this.arm.getMMLowerPosition() - TuningConstants.ARM_LOWER_MM_INTERMIDATE) < TuningConstants.ARM_LOWER_MM_GOAL_THRESHOLD &&
-                Math.abs(this.arm.getMMUpperPosition() - TuningConstants.ARM_UPPER_MM_INTERMIDATE) < TuningConstants.ARM_UPPER_MM_GOAL_THRESHOLD)
+            if (Math.abs(this.arm.getLowerPosition() - TuningConstants.ARM_LOWER_POSITION_LOWER_INTERMIDATE) < TuningConstants.ARM_LOWER_MM_GOAL_THRESHOLD &&
+                Math.abs(this.arm.getUpperPosition() - TuningConstants.ARM_UPPER_POSITION_LOWER_INTERMIDATE) < TuningConstants.ARM_UPPER_MM_GOAL_THRESHOLD)
+            {
+                this.currentArmState = ArmMMState.DesiredGoal;
+            }
+        }
+        else if (this.currentArmState == ArmMMState.DesiredLowerIntermidate)
+        {
+            if (Math.abs(this.arm.getLowerPosition() - TuningConstants.ARM_LOWER_POSITION_HIGH_INTERMIDATE) < TuningConstants.ARM_LOWER_MM_GOAL_THRESHOLD &&
+                Math.abs(this.arm.getUpperPosition() - TuningConstants.ARM_UPPER_POSITION_HIGH_INTERMIDATE) < TuningConstants.ARM_UPPER_MM_GOAL_THRESHOLD)
             {
                 this.currentArmState = ArmMMState.DesiredGoal;
             }
         }
         else if (this.currentArmState == ArmMMState.DesiredGoal)
         {
-            if (Math.abs(this.arm.getMMLowerPosition() - this.lowerExtensionLength) < TuningConstants.ARM_LOWER_MM_GOAL_THRESHOLD &&
-                Math.abs(this.arm.getMMUpperPosition() - this.upperExtensionLength) < TuningConstants.ARM_UPPER_MM_GOAL_THRESHOLD)
+            if (Math.abs(this.arm.getLowerPosition() - this.lowerExtensionLength) < TuningConstants.ARM_LOWER_MM_GOAL_THRESHOLD &&
+                Math.abs(this.arm.getUpperPosition() - this.upperExtensionLength) < TuningConstants.ARM_UPPER_MM_GOAL_THRESHOLD)
             {
                 this.currentArmState = ArmMMState.Completed;
             }
@@ -92,9 +111,14 @@ public class ArmMMPositionTask extends ControlTaskBase
 
         switch (this.currentArmState)
         {
-            case DesiredIntermidate:
-                this.setAnalogOperationState(AnalogOperation.ArmMMLowerPosition, TuningConstants.ARM_LOWER_MM_INTERMIDATE);
-                this.setAnalogOperationState(AnalogOperation.ArmMMUpperPosition, TuningConstants.ARM_UPPER_MM_INTERMIDATE);
+            case DesiredLowerIntermidate:
+                this.setAnalogOperationState(AnalogOperation.ArmMMLowerPosition, TuningConstants.ARM_LOWER_POSITION_LOWER_INTERMIDATE);
+                this.setAnalogOperationState(AnalogOperation.ArmMMUpperPosition, TuningConstants.ARM_UPPER_POSITION_LOWER_INTERMIDATE);
+                break;
+
+            case DesiredHighIntermidate:
+                this.setAnalogOperationState(AnalogOperation.ArmMMLowerPosition, TuningConstants.ARM_LOWER_POSITION_HIGH_INTERMIDATE);
+                this.setAnalogOperationState(AnalogOperation.ArmMMUpperPosition, TuningConstants.ARM_UPPER_POSITION_HIGH_INTERMIDATE);
                 break;
 
             default:
