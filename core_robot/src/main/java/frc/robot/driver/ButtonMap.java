@@ -403,14 +403,13 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> ConcurrentTask.AnyTasks(
                 SequentialTask.Sequence(
+                    new DriveTrainFieldOrientationModeTask(true),
+                    new OrientationTask(0.0),
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_APPROACH,
                         TuningConstants.ARM_UPPER_POSITION_APPROACH),
-                    new VisionTurningTask(TurnType.AprilTagParallelizing),
-                    new VisionMoveAndTurnTask(TurnType.AprilTagParallelizing, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, true, 0.0),
-                    new VisionMoveAndTurnTask(TurnType.AprilTagCentering, MoveType.Forward, MoveSpeed.Normal, false, true, 80.0),
+                    new VisionMoveAndTurnTask(TurnType.None, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, true, -32.0),
                     new DriveTrainFieldOrientationModeTask(true),
-                    new FollowPathTask("goLeft32inForward18in"),
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP,
                         TuningConstants.ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP)),
@@ -464,14 +463,13 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> ConcurrentTask.AnyTasks(
                 SequentialTask.Sequence(
+                    new DriveTrainFieldOrientationModeTask(true),
+                    new OrientationTask(0.0),
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_APPROACH,
                         TuningConstants.ARM_UPPER_POSITION_APPROACH),
-                    new VisionTurningTask(TurnType.AprilTagParallelizing),
-                    new VisionMoveAndTurnTask(TurnType.AprilTagParallelizing, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, true, 0.0),
-                    new VisionMoveAndTurnTask(TurnType.AprilTagCentering, MoveType.Forward, MoveSpeed.Normal, false, true, 80.0),
+                    new VisionMoveAndTurnTask(TurnType.None, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, true, 32.0),
                     new DriveTrainFieldOrientationModeTask(true),
-                    new FollowPathTask("goRight32inForward18in"),
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP,
                         TuningConstants.ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP)),
@@ -525,12 +523,13 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> ConcurrentTask.AnyTasks(
                 SequentialTask.Sequence(
+                    new DriveTrainFieldOrientationModeTask(true),
+                    new OrientationTask(0.0),
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_APPROACH,
                         TuningConstants.ARM_UPPER_POSITION_APPROACH),
-                    new VisionTurningTask(TurnType.AprilTagParallelizing),
-                    new VisionMoveAndTurnTask(TurnType.AprilTagParallelizing, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, true, 0.0),
-                    new VisionMoveAndTurnTask(TurnType.AprilTagCentering, MoveType.Forward, MoveSpeed.Normal, false, true, 56.0),
+                    new VisionMoveAndTurnTask(TurnType.None, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, true, 0.0),
+                    new VisionMoveAndTurnTask(TurnType.None, MoveType.AprilTagForward, MoveSpeed.Normal, false, true, 56.0),
                     new DriveTrainFieldOrientationModeTask(true)),
                 new RumbleTask()),
             new IOperation[]
@@ -582,14 +581,15 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> ConcurrentTask.AnyTasks(
                 SequentialTask.Sequence(
+                    new DriveTrainFieldOrientationModeTask(true),
+                    new OrientationTask(0.0),
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_APPROACH,
                         TuningConstants.ARM_UPPER_POSITION_APPROACH),
-                    new VisionTurningTask(TurnType.AprilTagParallelizing),
-                    new VisionMoveAndTurnTask(TurnType.AprilTagParallelizing, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, true, 0.0),
-                    new VisionMoveAndTurnTask(TurnType.AprilTagCentering, MoveType.Forward, MoveSpeed.Normal, false, true, 56.0),
+                    new VisionMoveAndTurnTask(TurnType.None, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, true, 0.0),
+                    new VisionMoveAndTurnTask(TurnType.None, MoveType.AprilTagForward, MoveSpeed.Normal, false, true, 56.0),
                     new DriveTrainFieldOrientationModeTask(true),
-                    new FollowPathTask("goLeft22in"),
+                    new FollowPathTask("goRight22in"),
                     new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0),
                     new DriveTrainFieldOrientationModeTask(true)),
                 new RumbleTask()),
@@ -642,14 +642,15 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> ConcurrentTask.AnyTasks(
                 SequentialTask.Sequence(
+                    new DriveTrainFieldOrientationModeTask(true),
+                    new OrientationTask(0.0),
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_APPROACH,
                         TuningConstants.ARM_UPPER_POSITION_APPROACH),
-                    new VisionTurningTask(TurnType.AprilTagParallelizing),
-                    new VisionMoveAndTurnTask(TurnType.AprilTagParallelizing, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, true, 0.0),
-                    new VisionMoveAndTurnTask(TurnType.AprilTagCentering, MoveType.Forward, MoveSpeed.Normal, false, true, 56.0),
+                    new VisionMoveAndTurnTask(TurnType.None, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, true, 0.0),
+                    new VisionMoveAndTurnTask(TurnType.None, MoveType.AprilTagForward, MoveSpeed.Normal, false, true, 56.0),
                     new DriveTrainFieldOrientationModeTask(true),
-                    new FollowPathTask("goRight22in"),
+                    new FollowPathTask("goLeft22in"),
                     new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0),
                     new DriveTrainFieldOrientationModeTask(true)),
                 new RumbleTask()),
