@@ -12,7 +12,8 @@ public class ArmIKPositionTask extends ControlTaskBase
 {
     private enum ArmIKState
     {
-        DesiredIntermidate,
+        DesiredLowerIntermidate,
+        DesiredHighIntermidate,
         DesiredGoal,
         Completed,
     }
@@ -45,11 +46,21 @@ public class ArmIKPositionTask extends ControlTaskBase
     {
         this.arm = this.getInjector().getInstance(ArmMechanism.class);
 
-        boolean currentIsIn = (this.arm.getFKXPosition() < TuningConstants.ARM_X_IK_IN_TRESHOLD && this.arm.getFKZPosition() < TuningConstants.ARM_Z_IK_IN_TRESHOLD);
-        boolean goalIsIn = (this.xPosition < TuningConstants.ARM_X_IK_IN_TRESHOLD && this.zPosition < TuningConstants.ARM_Z_IK_IN_TRESHOLD);
-        if (currentIsIn != goalIsIn)
+        double armXPos = this.arm.getFKXPosition();
+        double armZPos = this.arm.getFKZPosition();
+
+        boolean currentIsInside = (armXPos < TuningConstants.ARM_X_IK_INSIDE_TRESHOLD && armZPos < TuningConstants.ARM_Z_IK_INSIDE_TRESHOLD);
+        boolean goalIsInside = (this.xPosition < TuningConstants.ARM_X_IK_INSIDE_TRESHOLD && this.zPosition < TuningConstants.ARM_Z_IK_INSIDE_TRESHOLD);
+
+        boolean currentIsHigh = (armXPos > TuningConstants.ARM_X_IK_HIGH_TRESHOLD && armZPos > TuningConstants.ARM_Z_IK_HIGH_TRESHOLD);
+        boolean goalIsHigh = (this.xPosition > TuningConstants.ARM_X_IK_HIGH_TRESHOLD && this.zPosition > TuningConstants.ARM_Z_IK_HIGH_TRESHOLD);
+        if (currentIsHigh != goalIsHigh)
         {
-            this.currentArmState = ArmIKState.DesiredIntermidate;
+            this.currentArmState = ArmIKState.DesiredHighIntermidate;
+        }
+        else if (currentIsInside != goalIsInside)
+        {
+            this.currentArmState = ArmIKState.DesiredLowerIntermidate;
         }
         else
         {
@@ -63,10 +74,18 @@ public class ArmIKPositionTask extends ControlTaskBase
     @Override
     public void update()
     {
-        if (this.currentArmState == ArmIKState.DesiredIntermidate)
+        if (this.currentArmState == ArmIKState.DesiredLowerIntermidate)
         {
-            if (Math.abs(this.arm.getFKXPosition() - TuningConstants.ARM_X_IK_INTERMIDATE) < TuningConstants.ARM_X_IK_GOAL_THRESHOLD &&
-                Math.abs(this.arm.getFKZPosition() - TuningConstants.ARM_Z_IK_INTERMIDATE) < TuningConstants.ARM_Z_IK_GOAL_THRESHOLD)
+            if (Math.abs(this.arm.getFKXPosition() - TuningConstants.ARM_X_IK_LOWER_INTERMIDATE) < TuningConstants.ARM_X_IK_GOAL_THRESHOLD &&
+                Math.abs(this.arm.getFKZPosition() - TuningConstants.ARM_Z_IK_LOWER_INTERMIDATE) < TuningConstants.ARM_Z_IK_GOAL_THRESHOLD)
+            {
+                this.currentArmState = ArmIKState.DesiredGoal;
+            }
+        }
+        else if (this.currentArmState == ArmIKState.DesiredHighIntermidate)
+        {
+            if (Math.abs(this.arm.getFKXPosition() - TuningConstants.ARM_X_IK_HIGH_INTERMIDATE) < TuningConstants.ARM_X_IK_GOAL_THRESHOLD &&
+                Math.abs(this.arm.getFKZPosition() - TuningConstants.ARM_Z_IK_HIGH_INTERMIDATE) < TuningConstants.ARM_Z_IK_GOAL_THRESHOLD)
             {
                 this.currentArmState = ArmIKState.DesiredGoal;
             }
@@ -86,20 +105,21 @@ public class ArmIKPositionTask extends ControlTaskBase
 
         switch (this.currentArmState)
         {
-            case DesiredIntermidate:
-                this.setAnalogOperationState(AnalogOperation.ArmIKXPosition, TuningConstants.ARM_X_IK_INTERMIDATE);
-                this.setAnalogOperationState(AnalogOperation.ArmIKZPosition, TuningConstants.ARM_Z_IK_INTERMIDATE);
+            case DesiredLowerIntermidate:
+                this.setAnalogOperationState(AnalogOperation.ArmIKXPosition, TuningConstants.ARM_X_IK_LOWER_INTERMIDATE);
+                this.setAnalogOperationState(AnalogOperation.ArmIKZPosition, TuningConstants.ARM_Z_IK_LOWER_INTERMIDATE);
                 break;
 
-            case DesiredGoal:
-                this.setAnalogOperationState(AnalogOperation.ArmIKXPosition, this.xPosition);
-                this.setAnalogOperationState(AnalogOperation.ArmIKZPosition, this.zPosition);
+            case DesiredHighIntermidate:
+                this.setAnalogOperationState(AnalogOperation.ArmIKXPosition, TuningConstants.ARM_X_IK_HIGH_INTERMIDATE);
+                this.setAnalogOperationState(AnalogOperation.ArmIKZPosition, TuningConstants.ARM_Z_IK_HIGH_INTERMIDATE);
                 break;
 
             default:
             case Completed:
-                this.setAnalogOperationState(AnalogOperation.ArmIKXPosition, TuningConstants.MAGIC_NULL_VALUE);
-                this.setAnalogOperationState(AnalogOperation.ArmIKZPosition, TuningConstants.MAGIC_NULL_VALUE);
+            case DesiredGoal:
+                this.setAnalogOperationState(AnalogOperation.ArmIKXPosition, this.xPosition);
+                this.setAnalogOperationState(AnalogOperation.ArmIKZPosition, this.zPosition);
                 break;
         }
     }

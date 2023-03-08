@@ -891,12 +891,12 @@ public class ArmMechanism implements IMechanism
         return this.throughBeamBroken;
     }
 
-    public double getMMLowerPosition()
+    public double getLowerPosition()
     {
         return (this.lowerLeftLAPosition + this.lowerRightLAPosition) / 2.0;
     }
 
-    public double getMMUpperPosition()
+    public double getUpperPosition()
     {
         return this.upperLAPosition;
     }
@@ -960,8 +960,8 @@ public class ArmMechanism implements IMechanism
         }
 
         // block the possibility of the end-effector clipping through the robot frame
-        if (x < TuningConstants.ARM_X_IK_IN_TRESHOLD &&
-            z < TuningConstants.ARM_Z_IK_IN_TRESHOLD)
+        if (x < TuningConstants.ARM_X_IK_INSIDE_TRESHOLD &&
+            z < TuningConstants.ARM_Z_IK_INSIDE_TRESHOLD)
         {
             return null;
         }

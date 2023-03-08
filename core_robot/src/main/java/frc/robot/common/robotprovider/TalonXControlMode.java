@@ -8,5 +8,6 @@ public enum TalonXControlMode
     Follower,
     Position,
     MotionMagicPosition,
-    Velocity;
+    Velocity,
+    Current;
 }
