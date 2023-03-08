@@ -409,6 +409,8 @@ public class TuningConstants
     public static final boolean ARM_LOWER_RIGHT_INVERT_SENSOR = false;
     public static final boolean ARM_UPPER_INVERT_SENSOR = false;
 
+    public static final double ARM_MAX_TWIST_AMOUNT = 200.0; // in ticks - the largest allowed tick difference between lower left and lower right actuators
+
     public static final double ARM_NEAR_FULL_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.9; // in inches
     public static final double ARM_NEAR_FULL_RETRACTED_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.1; // in inches
 
@@ -420,9 +422,6 @@ public class TuningConstants
     public static final double ARM_X_POSITION_ADJUSTMENT_VELOCITY = 2.0; // inches per second
     public static final double ARM_Z_POSITION_ADJUSTMENT_VELOCITY = 2.0; // inches per second
 
-    public static final double ARM_LOWER_EXTENSION_ADJUSTMENT_VELOCITY = 2.0; // inches per second
-    public static final double ARM_UPPER_EXTENSION_ADJUSTMENT_VELOCITY = 2.0; // inches per second
-
     public static final double ARM_MAX_REVERSE_SIMPLE_VELOCITY = -0.8; // percentage output
     public static final double ARM_MAX_FORWARD_SIMPLE_VELOCITY = 0.8; // percentage output
 
@@ -433,6 +432,7 @@ public class TuningConstants
 
     public static final double ARM_LOWER_VELOCITY_DEAZONE = 0.15;
     public static final double ARM_UPPER_VELOCITY_DEAZONE = 0.15;
+    public static final double ARM_TWIST_DEAZONE = 0.10;
 
     public static final double ARM_FLIPPER_EXTEND_WAIT_DURATION = 0.5;
     public static final double ARM_FLIPPER_RETRACT_WAIT_DURATION = 0.5;
@@ -445,15 +445,6 @@ public class TuningConstants
     public static final double ARM_UPPER_MM_GOAL_THRESHOLD = 0.2 * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH; // in ticks
     public static final double ARM_X_IK_GOAL_THRESHOLD = 0.5; // in inches
     public static final double ARM_Z_IK_GOAL_THRESHOLD = 0.5; // in inches
-
-    public static final double ARM_LOWER_MM_INTERMIDATE = HardwareConstants.ARM_EXTENTION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH;
-    public static final double ARM_UPPER_MM_INTERMIDATE = 1200.0;
-    public static final double ARM_LOWER_MM_IN_TRESHOLD = 8000.0;
-    public static final double ARM_UPPER_MM_IN_TRESHOLD = 1000.0;
-    public static final double ARM_X_IK_IN_TRESHOLD = 18.0;
-    public static final double ARM_Z_IK_IN_TRESHOLD = 8.0;
-    public static final double ARM_X_IK_INTERMIDATE = 20.0;
-    public static final double ARM_Z_IK_INTERMIDATE = 14.5;
 
     // Power sampling for arm
     public static final double ARM_POWER_TRACKING_DURATION = 0.25; // duration of time to keep track of the average current
@@ -478,9 +469,9 @@ public class TuningConstants
     public static final double ARM_UPPER_POSITION_STOWED = 0.0;
     public static final double ARM_LOWER_POSITION_GROUND_PLACING = 4700.0;
     public static final double ARM_UPPER_POSITION_GROUND_PLACING = 1650.0;
-    public static final double ARM_LOWER_POSITION_MIDDLE_CONE = 7550.0; 
+    public static final double ARM_LOWER_POSITION_MIDDLE_CONE = 7550.0;
     public static final double ARM_UPPER_POSITION_MIDDLE_CONE = 4750.0;
-    public static final double ARM_LOWER_POSITION_MIDDLE_CUBE = 5775.0; 
+    public static final double ARM_LOWER_POSITION_MIDDLE_CUBE = 5775.0;
     public static final double ARM_UPPER_POSITION_MIDDLE_CUBE = 3800.0;
     public static final double ARM_LOWER_POSITION_HIGH_CONE = 3210.0;
     public static final double ARM_UPPER_POSITION_HIGH_CONE = 7600.0;
@@ -496,6 +487,46 @@ public class TuningConstants
     public static final double ARM_UPPER_POSITION_APPROACH = 4100.0;
     public static final double ARM_LOWER_POSITION_CONE_UPRIGHTING_MACRO = TuningConstants.ARM_LOWER_POSITION_GROUND_PLACING;
     public static final double ARM_UPPER_POSITION_CONE_UPRIGHTING_MACRO = TuningConstants.ARM_UPPER_POSITION_GROUND_PLACING;
+
+    public static final double ARM_IKX_POSITION_STOWED = 2.7725594688249453;
+    public static final double ARM_IKZ_POSITION_STOWED = 9.226618272316927;
+    public static final double ARM_IKX_POSITION_GROUND_PLACING = 23.409486778127867;
+    public static final double ARM_IKZ_POSITION_GROUND_PLACING = 8.108920118845923;
+    public static final double ARM_IKX_POSITION_MIDDLE_CONE = 37.26065704303803;
+    public static final double ARM_IKZ_POSITION_MIDDLE_CONE = 34.72708676253013;
+    public static final double ARM_IKX_POSITION_MIDDLE_CUBE = 37.82742755893932;
+    public static final double ARM_IKZ_POSITION_MIDDLE_CUBE = 21.045492744242054;
+    public static final double ARM_IKX_POSITION_HIGH_CONE = 55.810758222247195;
+    public static final double ARM_IKZ_POSITION_HIGH_CONE = 48.02010779021726;
+    public static final double ARM_IKX_POSITION_HIGH_CUBE = 52.39322170289499;
+    public static final double ARM_IKZ_POSITION_HIGH_CUBE = 33.932579125363674;
+    public static final double ARM_IKX_POSITION_GROUND_PICKUP = 23.706159602313825;
+    public static final double ARM_IKZ_POSITION_GROUND_PICKUP = 2.579351786849614;
+    public static final double ARM_IKX_POSITION_CONE_SUBSTATION_PICKUP = 55.25973368669209;
+    public static final double ARM_IKZ_POSITION_CONE_SUBSTATION_PICKUP = 35.34859476648403;
+    public static final double ARM_IKX_POSITION_CUBE_SUBSTATION_PICKUP = 33.3687854421636;
+    public static final double ARM_IKZ_POSITION_CUBE_SUBSTATION_PICKUP = 21.298834191380973;
+    public static final double ARM_IKX_POSITION_APPROACH = 32.6997990497486;
+    public static final double ARM_IKZ_POSITION_APPROACH = 31.95776639264709;
+    public static final double ARM_IKX_POSITION_CONE_UPRIGHTING_MACRO = 23.409486778127867;
+    public static final double ARM_IKZ_POSITION_CONE_UPRIGHTING_MACRO = 8.108920118845923;
+
+    public static final double ARM_LOWER_POSITION_LOWER_INTERMIDATE = HardwareConstants.ARM_FULL_EXTENSION_TICKS;
+    public static final double ARM_UPPER_POSITION_LOWER_INTERMIDATE = 1200.0;
+    public static final double ARM_LOWER_POSITION_HIGH_INTERMIDATE = TuningConstants.ARM_LOWER_POSITION_APPROACH;
+    public static final double ARM_UPPER_POSITION_HIGH_INTERMIDATE = TuningConstants.ARM_UPPER_POSITION_APPROACH;
+    public static final double ARM_LOWER_POSITION_INSIDE_TRESHOLD = 8000.0;
+    public static final double ARM_UPPER_POSITION_INSIDE_TRESHOLD = 1000.0;
+    public static final double ARM_LOWER_POSITION_HIGH_TRESHOLD = 8000.0;
+    public static final double ARM_UPPER_POSITION_HIGH_TRESHOLD = 4000.0;
+    public static final double ARM_X_IK_LOWER_INTERMIDATE = 20.0;
+    public static final double ARM_Z_IK_LOWER_INTERMIDATE = 14.5;
+    public static final double ARM_X_IK_HIGH_INTERMIDATE = TuningConstants.ARM_IKX_POSITION_APPROACH;
+    public static final double ARM_Z_IK_HIGH_INTERMIDATE = TuningConstants.ARM_IKZ_POSITION_APPROACH;
+    public static final double ARM_X_IK_INSIDE_TRESHOLD = 18.0;
+    public static final double ARM_Z_IK_INSIDE_TRESHOLD = 12.0;
+    public static final double ARM_X_IK_HIGH_TRESHOLD = 33.5;
+    public static final double ARM_Z_IK_HIGH_TRESHOLD = 30.0;
 
     //============================================= ChargeStation Macro ==================================================================
 

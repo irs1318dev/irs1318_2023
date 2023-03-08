@@ -10,6 +10,8 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.SensorVelocityMeasPeriod;
 
+import frc.robot.TuningConstants;
+
 public class TalonSRXWrapper implements ITalonSRX
 {
     private static final int pidIdx = 0;
@@ -17,17 +19,33 @@ public class TalonSRXWrapper implements ITalonSRX
 
     final TalonSRX wrappedObject;
 
+    private boolean controlModeRequired;
     private ControlMode controlMode;
 
     public TalonSRXWrapper(int deviceNumber)
     {
         this.wrappedObject = new TalonSRX(deviceNumber);
         this.controlMode = ControlMode.PercentOutput;
+        this.controlModeRequired = false;
     }
 
     public void set(double value)
     {
         this.wrappedObject.set(this.controlMode, value);
+        this.controlModeRequired = false;
+    }
+
+    public void set(TalonXControlMode mode, double value)
+    {
+        if (this.controlModeRequired)
+        {
+            if (TuningConstants.THROW_EXCEPTIONS)
+            {
+                throw new RuntimeException("Control mode must be specified!");
+            }
+        }
+
+        this.wrappedObject.set(TalonSRXWrapper.getControlMode(mode), value);
     }
 
     public void follow(ITalonSRX talonSRX)
@@ -47,30 +65,8 @@ public class TalonSRXWrapper implements ITalonSRX
 
     public void setControlMode(TalonXControlMode mode)
     {
-        if (mode == TalonXControlMode.PercentOutput)
-        {
-            this.controlMode = ControlMode.PercentOutput;
-        }
-        else if (mode == TalonXControlMode.Disabled)
-        {
-            this.controlMode = ControlMode.Disabled;
-        }
-        else if (mode == TalonXControlMode.Follower)
-        {
-            this.controlMode = ControlMode.Follower;
-        }
-        else if (mode == TalonXControlMode.Position)
-        {
-            this.controlMode = ControlMode.Position;
-        }
-        else if (mode == TalonXControlMode.MotionMagicPosition)
-        {
-            this.controlMode = ControlMode.MotionMagic;
-        }
-        else if (mode == TalonXControlMode.Velocity)
-        {
-            this.controlMode = ControlMode.Velocity;
-        }
+        this.controlModeRequired = (mode == TalonXControlMode.Required);
+        this.controlMode = TalonSRXWrapper.getControlMode(mode);
     }
 
     public void setSensorType(TalonXFeedbackDevice feedbackDevice)
@@ -315,5 +311,39 @@ public class TalonSRXWrapper implements ITalonSRX
         return new TalonXLimitSwitchStatus(
             collection.isFwdLimitSwitchClosed(),
             collection.isRevLimitSwitchClosed());
+    }
+
+    static ControlMode getControlMode(TalonXControlMode mode)
+    {
+        if (mode == TalonXControlMode.PercentOutput)
+        {
+            return ControlMode.PercentOutput;
+        }
+        else if (mode == TalonXControlMode.Disabled)
+        {
+            return ControlMode.Disabled;
+        }
+        else if (mode == TalonXControlMode.Follower)
+        {
+            return ControlMode.Follower;
+        }
+        else if (mode == TalonXControlMode.Position)
+        {
+            return ControlMode.Position;
+        }
+        else if (mode == TalonXControlMode.MotionMagicPosition)
+        {
+            return ControlMode.MotionMagic;
+        }
+        else if (mode == TalonXControlMode.Velocity)
+        {
+            return ControlMode.Velocity;
+        }
+        else if (mode == TalonXControlMode.Current)
+        {
+            return ControlMode.Current;
+        }
+
+        return ControlMode.PercentOutput;
     }
 }

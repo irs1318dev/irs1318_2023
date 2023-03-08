@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import de.siegmar.fastcsv.writer.*;
 
 import frc.robot.HardwareConstants;
+import frc.robot.TuningConstants;
 import frc.robot.common.Helpers;
 
 public class ArmMechanismTests
@@ -21,6 +22,13 @@ public class ArmMechanismTests
         assertEquals(90.0, setpoint.first, 0.01, "lower angle");
         assertEquals(90.0, setpoint.second, 0.01, "upper angle");
     }
+
+    // @Test
+    // public void calculateFK()
+    // {
+    //     DoubleTuple setpoint = ArmMechanism.calculateFK(TuningConstants.ARM_LOWER_POSITION_HIGH_TRESHOLD, TuningConstants.ARM_UPPER_POSITION_HIGH_TRESHOLD);
+    //     assertEquals(setpoint.first, setpoint.second, 0.01, "lower angle");
+    // }
 
     @Test
     public void calculateAngleHalfUpAndOut()

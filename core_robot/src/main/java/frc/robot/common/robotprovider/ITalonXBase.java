@@ -22,6 +22,7 @@ public interface ITalonXBase extends IMotor
     void setInvertSensor(boolean flip);
     void setNeutralMode(MotorNeutralMode neutralMode);
     void setVoltageCompensation(boolean enabled, double maxVoltage);
+    void set(TalonXControlMode mode, double value);
     void stop();
     void setPosition(double position);
     void reset();
