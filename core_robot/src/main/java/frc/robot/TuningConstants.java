@@ -528,8 +528,13 @@ public class TuningConstants
 
     //Version 2 constants
     public static final double CHARGE_STATION_PITCH_VARIATION_V2 = 1.0;
+
+    //TODO: edit to be more sensitive
     public static final double CHARGE_STATION_ACCEPTABLE_PITCH_DIFF_V2 = 3.0;
     public static final double CHARGE_STATION_STARTING_SPEED_V2 = 0.8;
     public static final double CHARGE_STATION_CLIMBING_SPEED_V2 = 0.25;
     public static final double CHARGE_STATION_BALANCING_SPEED_V2 = 0.08;
+
+    //TODO: edit to be shorter, because climbing velocity has increased.
+    public static final double CHARGE_STATION_CLIMBING_TRANSITION_WAIT_DURATION_V2 = 1.5;
 }

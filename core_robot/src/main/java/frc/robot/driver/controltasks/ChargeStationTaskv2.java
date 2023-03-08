@@ -100,7 +100,7 @@ public class ChargeStationTaskv2 extends ControlTaskBase
 
             if (this.climbingExceededTransitionTime != 0.0)
             {
-                if (currTime - this.climbingExceededTransitionTime >= TuningConstants.CHARGE_STATION_CLIMBING_TRANSITION_WAIT_DURATION)
+                if (currTime - this.climbingExceededTransitionTime >= TuningConstants.CHARGE_STATION_CLIMBING_TRANSITION_WAIT_DURATION_V2)
                 {
                     this.currentState = State.Balancing;
                 }
