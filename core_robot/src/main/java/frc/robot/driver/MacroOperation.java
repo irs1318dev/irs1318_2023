@@ -19,9 +19,12 @@ public enum MacroOperation implements IOperation
     // Charge station:
     ChargeStationBalance,
     ChargeStationBalanceReverse,
+    ChargeStationBalanceFacingBackwards,
+    ChargeStationBalanceReverseFacingBackwards,
 
     // Intake macros:
     IntakeGamePiece,
+    IntakeGamePieceGrab,
 
     // Cone flipepr macros:
     ExtendLeftConeFlipper,

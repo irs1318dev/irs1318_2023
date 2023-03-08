@@ -38,4 +38,6 @@ public enum AnalogOperation implements IOperation
     ArmIKZAdjustment, // minor adjustments for IK
     ArmLowerPositionAdjustment, // minor adjustments for LA position, or simple mode
     ArmUpperPositionAdjustment, // minor adjustments for LA position, or simple mode
+    ArmTwistLeft, // amount to twist to the left
+    ArmTwistRight, // amount to twist to the right
 }
