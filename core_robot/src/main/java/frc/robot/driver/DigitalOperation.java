@@ -43,11 +43,7 @@ public enum DigitalOperation implements IOperation
     // Arm operations
     IntakeRelease,
     IntakeGrab,
-
-    //IntakeIn, (Old intake)
     IntakeCube,
-
-    //IntakeOut, (Old intake)
     IntakeCone,
 
     ExtendLeftConeFlipper,

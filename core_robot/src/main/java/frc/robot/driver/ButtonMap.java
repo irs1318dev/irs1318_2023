@@ -218,13 +218,13 @@ public class ButtonMap implements IButtonMap
             Shift.CodriverDebug,
             ButtonType.Click),
 
-        // new DigitalOperationDescription(
-        //     DigitalOperation.IntakeGrab,
-        //     UserInputDevice.Driver,
-        //     UserInputDeviceButton.XBONE_LEFT_BUTTON,
-        //     Shift.DriverDebug,
-        //     Shift.None,
-        //     ButtonType.Click),
+        new DigitalOperationDescription(
+            DigitalOperation.IntakeGrab,
+            UserInputDevice.Driver,
+            UserInputDeviceButton.XBONE_LEFT_BUTTON,
+            Shift.DriverDebug,
+            Shift.None,
+            ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.IntakeRelease,
             UserInputDevice.Driver,
@@ -232,13 +232,13 @@ public class ButtonMap implements IButtonMap
             Shift.DriverDebug,
             Shift.DriverDebug,
             ButtonType.Click),
-        // new DigitalOperationDescription(
-        //     DigitalOperation.IntakeCube,
-        //     UserInputDevice.Driver,
-        //     UserInputDeviceButton.XBONE_RIGHT_BUTTON,
-        //     Shift.DriverDebug,
-        //     Shift.None,
-        //     ButtonType.Simple),
+        new DigitalOperationDescription(
+            DigitalOperation.IntakeCube,
+            UserInputDevice.Driver,
+            UserInputDeviceButton.XBONE_RIGHT_BUTTON,
+            Shift.DriverDebug,
+            Shift.None,
+            ButtonType.Simple),
         new DigitalOperationDescription(
             DigitalOperation.IntakeCone,
             UserInputDevice.Driver,
@@ -710,46 +710,6 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.VisionEnableRetroreflectiveProcessing,
                 DigitalOperation.VisionEnableAprilTagProcessing,
             }),
-
-        // Intake macros
-        /* 
-        new MacroOperationDescription(
-            MacroOperation.IntakeGamePiece,
-            UserInputDevice.Driver,
-            UserInputDeviceButton.XBONE_RIGHT_BUTTON,
-            Shift.DriverDebug,
-            Shift.None,
-            ButtonType.Simple,
-            () -> new IntakeInTask(),
-            new IOperation[]
-            {
-                DigitalOperation.IntakeCube,
-                DigitalOperation.IntakeCone,
-                DigitalOperation.IntakeRelease,
-                DigitalOperation.IntakeGrab,
-            }),
-            */
-
-            /* 
-        new MacroOperationDescription(
-            MacroOperation.IntakeGamePieceGrab,
-            UserInputDevice.Driver,
-            UserInputDeviceButton.XBONE_LEFT_BUTTON,
-            Shift.DriverDebug,
-            Shift.None,
-            ButtonType.Simple,
-            () -> SequentialTask.Sequence(
-                new IntakeExtendTask(false),
-                new IntakeInTask(true)),
-            new IOperation[]
-            {
-                DigitalOperation.IntakeCube,
-                DigitalOperation.IntakeCone,
-                DigitalOperation.IntakeRelease,
-                DigitalOperation.IntakeGrab,
-            }),
-
-            */
 
         // Cone Flipper macros
         new MacroOperationDescription(
@@ -1242,7 +1202,7 @@ public class ButtonMap implements IButtonMap
     
                 new FollowPathTask(false ? "11To5Red" : "11To5Blue", Type.Absolute),
                 new IntakeExtendTask(true),
-                new IntakeInTask(false, 1.5),
+                new IntakeGamePieceTask(false, 1.5),
     
                 ConcurrentTask.AllTasks(
                     new FollowPathTask(false ? "5To11Red" : "5To11Blue", Type.Absolute),

@@ -550,11 +550,11 @@ public class ArmMechanism implements IMechanism
         double intakePower = TuningConstants.ZERO;
         if (this.driver.getDigital(DigitalOperation.IntakeCube))
         {
-            intakePower = TuningConstants.ARM_INTAKE_POWER;
+            intakePower = TuningConstants.ARM_INTAKE_CUBE_POWER;
         }
         else if (this.driver.getDigital(DigitalOperation.IntakeCone))
         {
-            intakePower = -TuningConstants.ARM_INTAKE_POWER;
+            intakePower = TuningConstants.ARM_INTAKE_CONE_POWER;
         }
 
         this.intakeMotor.set(intakePower);
