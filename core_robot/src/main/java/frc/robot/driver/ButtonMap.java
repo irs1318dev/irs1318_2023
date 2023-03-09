@@ -729,6 +729,8 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.IntakeGrab,
             }),
             */
+
+            /* 
         new MacroOperationDescription(
             MacroOperation.IntakeGamePieceGrab,
             UserInputDevice.Driver,
@@ -746,6 +748,8 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.IntakeRelease,
                 DigitalOperation.IntakeGrab,
             }),
+
+            */
 
         // Cone Flipper macros
         new MacroOperationDescription(

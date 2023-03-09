@@ -230,7 +230,7 @@ public class AutonomousRoutineSelector
             new FollowPathTask(isRed ? "LoadStartTo2Red" : "LoadStartTo2Blue", Type.Absolute),
             
             new WaitTask(0.2),
-            new IntakeInTask(false, 1.0),
+            new IntakeGamePieceTask(false, 1.0),
 
             new FollowPathTask(isRed ? "2To10Red" : "2To10Blue", Type.Absolute),
             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED, true),
@@ -253,7 +253,7 @@ public class AutonomousRoutineSelector
             new FollowPathTask(isRed ? "LoadStartTo2Red" : "LoadStartTo2Blue", Type.Absolute),
 
             new WaitTask(0.2),
-            new IntakeInTask(false, 1.0),
+            new IntakeGamePieceTask(false, 1.0),
 
             ConcurrentTask.AllTasks(
                 new FollowPathTask(isRed ? "2ToChargeRed" : "2ToChargeBlue", Type.Absolute),
@@ -284,7 +284,7 @@ public class AutonomousRoutineSelector
             ),
 
             new WaitTask(0.2),
-            new IntakeInTask(false, 1.0),
+            new IntakeGamePieceTask(false, 1.0),
 
             ConcurrentTask.AllTasks(
                 SequentialTask.Sequence(
@@ -299,10 +299,10 @@ public class AutonomousRoutineSelector
             ),
             ConcurrentTask.AllTasks(
                 new FollowPathTask(isRed ? "20To20Red" : "20To20Blue", Type.Absolute),
-                //new IntakeInTask(1)
+                //new IntakeGamePieceTask(1)
                 // Use If no Through Beam!
                 SequentialTask.Sequence(
-                    new IntakeInTask(true, 2.0),
+                    new IntakeGamePieceTask(true, 2.0),
                     new IntakeExtendTask(false)
                 )
             ),
@@ -335,7 +335,7 @@ public class AutonomousRoutineSelector
             ),
 
             new WaitTask(0.2),
-            new IntakeInTask(false, 1.0),
+            new IntakeGamePieceTask(false, 1.0),
 
             ConcurrentTask.AllTasks(
                 SequentialTask.Sequence(
@@ -350,10 +350,10 @@ public class AutonomousRoutineSelector
             ),
             ConcurrentTask.AllTasks(
                 new FollowPathTask(isRed ? "20To20Red" : "20To20Blue", Type.Absolute),
-                //new IntakeInTask(1)
+                //new IntakeGamePieceTask(1)
                 // Use If no Through Beam!
                 SequentialTask.Sequence(
-                    new IntakeInTask(true, 2.0),
+                    new IntakeGamePieceTask(true, 2.0),
                     new IntakeExtendTask(false)
                 )
             ),
@@ -379,7 +379,7 @@ public class AutonomousRoutineSelector
             ),
 
             new WaitTask(0.2),
-            new IntakeInTask(false, 1.0),
+            new IntakeGamePieceTask(false, 1.0),
 
             ConcurrentTask.AllTasks(
                 SequentialTask.Sequence(
@@ -394,10 +394,10 @@ public class AutonomousRoutineSelector
             ),
             ConcurrentTask.AllTasks(
                 new FollowPathTask(isRed ? "20To20Red" : "20To20Blue", Type.Absolute),
-                //new IntakeInTask(1)
+                //new IntakeGamePieceTask(1)
                 // Use If no Through Beam!
                 SequentialTask.Sequence(
-                    new IntakeInTask(true, 2.0),
+                    new IntakeGamePieceTask(true, 2.0),
                     new IntakeExtendTask(false)
                 )
             ),
@@ -470,7 +470,7 @@ public class AutonomousRoutineSelector
             new FollowPathTask(isRed ? "11To5Red" : "11To5Blue", Type.Absolute),
             
             // new WaitTask(0.2),
-            new IntakeInTask(false, 1.0),
+            new IntakeGamePieceTask(false, 1.0),
             new FollowPathTask(isRed ? "5To11Red" : "5To11Blue", Type.Absolute),
             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED, false),
             // new FollowPathTask(isRed ? "11To5Red" : "11To5Blue", Type.Absolute),
@@ -518,7 +518,7 @@ public class AutonomousRoutineSelector
             new FollowPathTask(isRed ? "GuardStartTo8Red" : "GuardStartTo8Blue", Type.Absolute),
 
             new WaitTask(0.2),
-            new IntakeInTask(false, 1.0),
+            new IntakeGamePieceTask(false, 1.0),
 
             new FollowPathTask(isRed ? "8To12Red" : "8To12Blue", Type.Absolute),
             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED, true),
@@ -541,7 +541,7 @@ public class AutonomousRoutineSelector
             new FollowPathTask(isRed ? "GuardStartTo8Red" : "GuardStartTo8Blue", Type.Absolute),
 
             new WaitTask(0.2),
-            new IntakeInTask(false, 1.0),
+            new IntakeGamePieceTask(false, 1.0),
 
             ConcurrentTask.AllTasks(
                 new FollowPathTask(isRed ? "8ToChargeRed" : "8ToChargeBlue", Type.Absolute),
@@ -572,7 +572,7 @@ public class AutonomousRoutineSelector
             ),
 
             new WaitTask(0.2),
-            new IntakeInTask(false, 1.0),
+            new IntakeGamePieceTask(false, 1.0),
 
             ConcurrentTask.AllTasks(
                 SequentialTask.Sequence(
@@ -588,10 +588,10 @@ public class AutonomousRoutineSelector
             ),
             ConcurrentTask.AllTasks(
                 new FollowPathTask(isRed ? "23To23Red" : "23To23Blue", Type.Absolute),
-                //new IntakeInTask(1)
+                //new IntakeGamePieceTask(1)
                 // Use If no Through Beam!
                 SequentialTask.Sequence(
-                    new IntakeInTask(true, 1.0),
+                    new IntakeGamePieceTask(true, 1.0),
                     new IntakeExtendTask(false)
                 )
             ),
@@ -624,7 +624,7 @@ public class AutonomousRoutineSelector
             ),
 
             new WaitTask(0.2),
-            new IntakeInTask(false, 1.0),
+            new IntakeGamePieceTask(false, 1.0),
 
             ConcurrentTask.AllTasks(
                 SequentialTask.Sequence(
@@ -640,10 +640,10 @@ public class AutonomousRoutineSelector
             ),
             ConcurrentTask.AllTasks(
                 new FollowPathTask(isRed ? "23To23Red" : "23To23Blue", Type.Absolute),
-                //new IntakeInTask(1)
+                //new IntakeGamePieceTask(1)
                 // Use If no Through Beam!
                 SequentialTask.Sequence(
-                    new IntakeInTask(true, 1.0),
+                    new IntakeGamePieceTask(true, 1.0),
                     new IntakeExtendTask(false)
                 )
             ),
@@ -668,7 +668,7 @@ public class AutonomousRoutineSelector
             ),
 
             new WaitTask(0.2),
-            new IntakeInTask(false, 1.0),
+            new IntakeGamePieceTask(false, 1.0),
 
             ConcurrentTask.AllTasks(
                 SequentialTask.Sequence(
@@ -684,10 +684,10 @@ public class AutonomousRoutineSelector
             ),
             ConcurrentTask.AllTasks(
                 new FollowPathTask(isRed ? "23To23Red" : "23To23Blue", Type.Absolute),
-                //new IntakeInTask(1)
+                //new IntakeGamePieceTask(1)
                 // Use If no Through Beam!
                 SequentialTask.Sequence(
-                    new IntakeInTask(true, 1.0),
+                    new IntakeGamePieceTask(true, 1.0),
                     new IntakeExtendTask(false)
                 )
             ),
