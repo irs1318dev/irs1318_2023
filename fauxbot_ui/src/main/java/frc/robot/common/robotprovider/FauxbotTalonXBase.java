@@ -100,7 +100,12 @@ public abstract class FauxbotTalonXBase extends FauxbotAdvancedMotorBase
     @Override
     public void set(double newValue)
     {
-        if (this.currentMode == TalonXControlMode.Follower)
+        this.set(this.currentMode, newValue);
+    }
+
+    public void set(TalonXControlMode mode, double newValue)
+    {
+        if (mode == TalonXControlMode.Follower)
         {
             FauxbotActuatorBase actuator = FauxbotActuatorManager.get(new FauxbotActuatorConnection(FauxbotActuatorConnection.ActuatorConnector.CAN, (int)newValue));
             if (actuator != null && actuator instanceof FauxbotAdvancedMotorBase)
@@ -114,11 +119,11 @@ public abstract class FauxbotTalonXBase extends FauxbotAdvancedMotorBase
                 throw new RuntimeException("expected a different actuator type " + actuator == null ? "null" : actuator.toString());
             }
         }
-        else if (this.currentMode == TalonXControlMode.Velocity && this.pidHandler != null)
+        else if (mode == TalonXControlMode.Velocity && this.pidHandler != null)
         {
             super.set(this.pidHandler.calculateVelocity(newValue, innerEncoder.getRate()));
         }
-        else if (this.currentMode == TalonXControlMode.Position && this.pidHandler != null)
+        else if (mode == TalonXControlMode.Position && this.pidHandler != null)
         {
             super.set(this.pidHandler.calculatePosition(newValue, innerEncoder.get()));
         }

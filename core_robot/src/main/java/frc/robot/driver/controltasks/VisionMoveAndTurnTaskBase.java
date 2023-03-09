@@ -5,11 +5,6 @@ import frc.robot.common.PIDHandler;
 import frc.robot.common.robotprovider.ITimer;
 import frc.robot.driver.*;
 
-
-    // after apriltag vision
-    // see lower RRT
-    // get horizontal angle and center with it
-    // then score (arm task)
 public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
 {
     public enum MoveSpeed
@@ -21,8 +16,9 @@ public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
 
     public enum MoveType
     {
-        Forward,
+        AprilTagForward,
         AprilTagStrafe,
+        RetroReflectiveForward,
         RetroReflectiveStrafe,
     }
 
@@ -54,11 +50,6 @@ public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
     public void begin()
     {
         super.begin();
-
-        if (this.translateType == MoveType.RetroReflectiveStrafe)
-        {
-            this.setDigitalOperationState(DigitalOperation.VisionEnableRetroreflectiveProcessing, true);
-        }
 
         this.setDigitalOperationState(DigitalOperation.DriveTrainDisableFieldOrientation, true);
         this.setDigitalOperationState(DigitalOperation.DriveTrainEnableFieldOrientation, false);
@@ -124,7 +115,8 @@ public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
                     break;
 
                 default:
-                case Forward:
+                case AprilTagForward:
+                case RetroReflectiveForward:
                     this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, desiredVelocity);
                     break;
             }
@@ -164,7 +156,8 @@ public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
 
                 break;
 
-            case Forward:
+            case AprilTagForward:
+            case RetroReflectiveForward:
                 if (offset > TuningConstants.MAX_VISION_ACCEPTABLE_FORWARD_DISTANCE)
                 {
                     return false;
@@ -187,24 +180,21 @@ public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
 
     protected Double getMoveMeasuredValue()
     {
-        if (this.translateType == MoveType.Forward)
+        if (this.translateType == MoveType.AprilTagForward)
         {
-            if (this.isAprilTag())
-            {
-                return this.visionManager.getAprilTagXOffset();
-            }
-            else
-            {
-                return this.visionManager.getVisionTargetDistance();
-            }
+            return this.visionManager.getAprilTagXOffset();
         }
-        else if (this.translateType == MoveType.RetroReflectiveStrafe)
-        {
-            return this.visionManager.getVisionTargetHorizontalAngle();
-        }
-        else // if (this.translateType == MoveType.AprilTagStrafe)
+        else if (this.translateType == MoveType.AprilTagStrafe)
         {
             return this.visionManager.getAprilTagYOffset();
+        }
+        else if (this.translateType == MoveType.RetroReflectiveForward)
+        {
+            return this.visionManager.getVisionTargetDistance();
+        }
+        else // if (this.translateType == MoveType.RetroReflectiveStrafe)
+        {
+            return this.visionManager.getVisionTargetHorizontalAngle();
         }
     }
 
@@ -220,6 +210,18 @@ public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
             TuningConstants.VISION_MOVING_TURNING_PID_MIN,
             TuningConstants.VISION_MOVING_TURNING_PID_MAX,
             this.getInjector().getInstance(ITimer.class));
+    }
+
+    @Override
+    protected boolean isRetroReflective()
+    {
+        return super.isRetroReflective() || this.translateType == MoveType.RetroReflectiveStrafe || this.translateType == MoveType.RetroReflectiveForward;
+    }
+
+    @Override
+    protected boolean isAprilTag()
+    {
+        return super.isAprilTag() || this.translateType == MoveType.AprilTagStrafe || this.translateType == MoveType.AprilTagForward;
     }
 
     protected abstract double getMoveDesiredValue(double currentDistance);
