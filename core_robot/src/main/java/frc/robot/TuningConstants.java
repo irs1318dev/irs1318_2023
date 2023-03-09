@@ -419,7 +419,7 @@ public class TuningConstants
     public static final boolean ARM_LOWER_RIGHT_INVERT_SENSOR = false;
     public static final boolean ARM_UPPER_INVERT_SENSOR = false;
 
-    public static final double ARM_MAX_TWIST_AMOUNT = 200.0; // in ticks - the largest allowed tick difference between lower left and lower right actuators
+    public static final double ARM_MAX_TWIST_AMOUNT = 800.0; // in ticks - the largest allowed tick difference between lower left and lower right actuators
 
     public static final double ARM_NEAR_FULL_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.9; // in inches
     public static final double ARM_NEAR_FULL_RETRACTED_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.1; // in inches

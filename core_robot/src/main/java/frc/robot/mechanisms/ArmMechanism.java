@@ -613,8 +613,9 @@ public class ArmMechanism implements IMechanism
                 if (lowerPositionAdjustment != 0.0)
                 {
                     // reset desired positions to ensure that we maintain the position after we release the joystick
-                    this.desiredLowerLeftLAPosition = this.lowerLeftLAPosition;
-                    this.desiredLowerRightLAPosition = this.lowerRightLAPosition;
+                    double lowerLAPosition = 0.5 * (this.lowerLeftLAPosition + this.lowerRightLAPosition);
+                    this.desiredLowerLeftLAPosition = lowerLAPosition;
+                    this.desiredLowerRightLAPosition = lowerLAPosition;
 
                     this.lowerSetpointChangedTime = currTime;
 
