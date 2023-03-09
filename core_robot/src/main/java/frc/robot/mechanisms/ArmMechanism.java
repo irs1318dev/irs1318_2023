@@ -548,11 +548,11 @@ public class ArmMechanism implements IMechanism
 
         // control intake rollers
         double intakePower = TuningConstants.ZERO;
-        if (this.driver.getDigital(DigitalOperation.IntakeIn))
+        if (this.driver.getDigital(DigitalOperation.IntakeCube))
         {
             intakePower = TuningConstants.ARM_INTAKE_POWER;
         }
-        else if (this.driver.getDigital(DigitalOperation.IntakeOut))
+        else if (this.driver.getDigital(DigitalOperation.IntakeCone))
         {
             intakePower = -TuningConstants.ARM_INTAKE_POWER;
         }

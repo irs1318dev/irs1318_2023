@@ -299,7 +299,7 @@ public class AutonomousRoutineSelector
             ),
             ConcurrentTask.AllTasks(
                 new FollowPathTask(isRed ? "20To20Red" : "20To20Blue", Type.Absolute),
-                //new IntakeGamePieceTask(1)
+                //new IntakeInTask(1)
                 // Use If no Through Beam!
                 SequentialTask.Sequence(
                     new IntakeInTask(true, 2.0),
@@ -350,7 +350,7 @@ public class AutonomousRoutineSelector
             ),
             ConcurrentTask.AllTasks(
                 new FollowPathTask(isRed ? "20To20Red" : "20To20Blue", Type.Absolute),
-                //new IntakeGamePieceTask(1)
+                //new IntakeInTask(1)
                 // Use If no Through Beam!
                 SequentialTask.Sequence(
                     new IntakeInTask(true, 2.0),
@@ -394,7 +394,7 @@ public class AutonomousRoutineSelector
             ),
             ConcurrentTask.AllTasks(
                 new FollowPathTask(isRed ? "20To20Red" : "20To20Blue", Type.Absolute),
-                //new IntakeGamePieceTask(1)
+                //new IntakeInTask(1)
                 // Use If no Through Beam!
                 SequentialTask.Sequence(
                     new IntakeInTask(true, 2.0),
@@ -588,7 +588,7 @@ public class AutonomousRoutineSelector
             ),
             ConcurrentTask.AllTasks(
                 new FollowPathTask(isRed ? "23To23Red" : "23To23Blue", Type.Absolute),
-                //new IntakeGamePieceTask(1)
+                //new IntakeInTask(1)
                 // Use If no Through Beam!
                 SequentialTask.Sequence(
                     new IntakeInTask(true, 1.0),
@@ -640,7 +640,7 @@ public class AutonomousRoutineSelector
             ),
             ConcurrentTask.AllTasks(
                 new FollowPathTask(isRed ? "23To23Red" : "23To23Blue", Type.Absolute),
-                //new IntakeGamePieceTask(1)
+                //new IntakeInTask(1)
                 // Use If no Through Beam!
                 SequentialTask.Sequence(
                     new IntakeInTask(true, 1.0),
@@ -684,7 +684,7 @@ public class AutonomousRoutineSelector
             ),
             ConcurrentTask.AllTasks(
                 new FollowPathTask(isRed ? "23To23Red" : "23To23Blue", Type.Absolute),
-                //new IntakeGamePieceTask(1)
+                //new IntakeInTask(1)
                 // Use If no Through Beam!
                 SequentialTask.Sequence(
                     new IntakeInTask(true, 1.0),

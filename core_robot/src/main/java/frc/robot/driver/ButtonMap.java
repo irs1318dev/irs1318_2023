@@ -233,14 +233,14 @@ public class ButtonMap implements IButtonMap
             Shift.DriverDebug,
             ButtonType.Click),
         // new DigitalOperationDescription(
-        //     DigitalOperation.IntakeIn,
+        //     DigitalOperation.IntakeCube,
         //     UserInputDevice.Driver,
         //     UserInputDeviceButton.XBONE_RIGHT_BUTTON,
         //     Shift.DriverDebug,
         //     Shift.None,
         //     ButtonType.Simple),
         new DigitalOperationDescription(
-            DigitalOperation.IntakeOut,
+            DigitalOperation.IntakeCone,
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_RIGHT_BUTTON,
             Shift.DriverDebug,
@@ -449,8 +449,8 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.VisionForceDisable,
                 AnalogOperation.ArmMMUpperPosition,
                 AnalogOperation.ArmMMLowerPosition,
-                DigitalOperation.IntakeIn,
-                DigitalOperation.IntakeOut,
+                DigitalOperation.IntakeCube,
+                DigitalOperation.IntakeCone,
                 DigitalOperation.IntakeRelease,
                 DigitalOperation.IntakeGrab,
             }),
@@ -509,8 +509,8 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.VisionForceDisable,
                 AnalogOperation.ArmMMUpperPosition,
                 AnalogOperation.ArmMMLowerPosition,
-                DigitalOperation.IntakeIn,
-                DigitalOperation.IntakeOut,
+                DigitalOperation.IntakeCube,
+                DigitalOperation.IntakeCone,
                 DigitalOperation.IntakeRelease,
                 DigitalOperation.IntakeGrab,
             }),
@@ -567,8 +567,8 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.VisionForceDisable,
                 AnalogOperation.ArmMMUpperPosition,
                 AnalogOperation.ArmMMLowerPosition,
-                DigitalOperation.IntakeIn,
-                DigitalOperation.IntakeOut,
+                DigitalOperation.IntakeCube,
+                DigitalOperation.IntakeCone,
                 DigitalOperation.IntakeRelease,
                 DigitalOperation.IntakeGrab,
             }),
@@ -628,8 +628,8 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.VisionForceDisable,
                 AnalogOperation.ArmMMUpperPosition,
                 AnalogOperation.ArmMMLowerPosition,
-                DigitalOperation.IntakeIn,
-                DigitalOperation.IntakeOut,
+                DigitalOperation.IntakeCube,
+                DigitalOperation.IntakeCone,
                 DigitalOperation.IntakeRelease,
                 DigitalOperation.IntakeGrab,
             }),
@@ -689,8 +689,8 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.VisionForceDisable,
                 AnalogOperation.ArmMMUpperPosition,
                 AnalogOperation.ArmMMLowerPosition,
-                DigitalOperation.IntakeIn,
-                DigitalOperation.IntakeOut,
+                DigitalOperation.IntakeCube,
+                DigitalOperation.IntakeCone,
                 DigitalOperation.IntakeRelease,
                 DigitalOperation.IntakeGrab,
             }),
@@ -712,6 +712,7 @@ public class ButtonMap implements IButtonMap
             }),
 
         // Intake macros
+        /* 
         new MacroOperationDescription(
             MacroOperation.IntakeGamePiece,
             UserInputDevice.Driver,
@@ -719,14 +720,15 @@ public class ButtonMap implements IButtonMap
             Shift.DriverDebug,
             Shift.None,
             ButtonType.Simple,
-            () -> new IntakeGamePieceTask(),
+            () -> new IntakeInTask(),
             new IOperation[]
             {
-                DigitalOperation.IntakeIn,
-                DigitalOperation.IntakeOut,
+                DigitalOperation.IntakeCube,
+                DigitalOperation.IntakeCone,
                 DigitalOperation.IntakeRelease,
                 DigitalOperation.IntakeGrab,
             }),
+            */
         new MacroOperationDescription(
             MacroOperation.IntakeGamePieceGrab,
             UserInputDevice.Driver,
@@ -739,8 +741,8 @@ public class ButtonMap implements IButtonMap
                 new IntakeInTask(true)),
             new IOperation[]
             {
-                DigitalOperation.IntakeIn,
-                DigitalOperation.IntakeOut,
+                DigitalOperation.IntakeCube,
+                DigitalOperation.IntakeCone,
                 DigitalOperation.IntakeRelease,
                 DigitalOperation.IntakeGrab,
             }),
@@ -788,6 +790,7 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.ExtendRightConeFlipper,
             }),
 
+            /* 
         new MacroOperationDescription(
             MacroOperation.PickUpConeFromBehind,
             UserInputDevice.Driver,
@@ -810,7 +813,7 @@ public class ButtonMap implements IButtonMap
                             TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP),
                         new IntakeInTask(true, 0.15))),
                 ConcurrentTask.AllTasks(
-                    new IntakeGamePieceTask(0.75),
+                    new IntakeInTask(0.75),
                     new IntakeExtendTask(false))),
             new IOperation[]
             {
@@ -846,11 +849,12 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.VisionForceDisable,
                 AnalogOperation.ArmMMUpperPosition,
                 AnalogOperation.ArmMMLowerPosition,
-                DigitalOperation.IntakeIn,
-                DigitalOperation.IntakeOut,
+                DigitalOperation.IntakeCube,
+                DigitalOperation.IntakeCone,
                 DigitalOperation.IntakeRelease,
                 DigitalOperation.IntakeGrab,
             }),
+            */
             
         // Arm position macros
         new MacroOperationDescription(
@@ -1288,8 +1292,8 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.VisionForceDisable,
                 AnalogOperation.ArmMMUpperPosition,
                 AnalogOperation.ArmMMLowerPosition,
-                DigitalOperation.IntakeIn,
-                DigitalOperation.IntakeOut,
+                DigitalOperation.IntakeCube,
+                DigitalOperation.IntakeCone,
                 DigitalOperation.IntakeRelease,
                 DigitalOperation.IntakeGrab,
             }),
@@ -1305,8 +1309,8 @@ public class ButtonMap implements IButtonMap
             () -> new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0),
             new IOperation[]
             {
-                DigitalOperation.IntakeIn,
-                DigitalOperation.IntakeOut,
+                DigitalOperation.IntakeCube,
+                DigitalOperation.IntakeCone,
                 DigitalOperation.IntakeRelease,
                 DigitalOperation.IntakeGrab,
                 AnalogOperation.ArmMMLowerPosition,

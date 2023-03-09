@@ -85,11 +85,11 @@ public class DriverFeedbackManager implements IMechanism
         {
             newLightMode = LightMode.Yellow;
         }
-        else if ((this.driver.getDigital(DigitalOperation.IntakeIn) || this.driver.getDigital(DigitalOperation.IntakeGrab)) && this.arm.isThroughBeamBroken())
+        else if ((this.driver.getDigital(DigitalOperation.IntakeCube) || this.driver.getDigital(DigitalOperation.IntakeGrab)) && this.arm.isThroughBeamBroken())
         {
             newLightMode = LightMode.Green;
         }
-        else if ((this.driver.getDigital(DigitalOperation.IntakeIn) || this.driver.getDigital(DigitalOperation.IntakeGrab)) && !this.arm.isThroughBeamBroken())
+        else if ((this.driver.getDigital(DigitalOperation.IntakeCube) || this.driver.getDigital(DigitalOperation.IntakeGrab)) && !this.arm.isThroughBeamBroken())
         {
             newLightMode = LightMode.Red;
         }
