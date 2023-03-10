@@ -24,9 +24,9 @@ public class ArmMechanismTests
     }
 
     // @Test
-    // public void calculateFK()
+    // public void calculateIK()
     // {
-    //     DoubleTuple setpoint = ArmMechanism.calculateFK(TuningConstants.ARM_LOWER_POSITION_HIGH_TRESHOLD, TuningConstants.ARM_UPPER_POSITION_HIGH_TRESHOLD);
+    //     DoubleTuple setpoint = ArmMechanism.calculateIK(55.83371200907335, 48.02010779021726);
     //     assertEquals(setpoint.first, setpoint.second, 0.01, "lower angle");
     // }
 

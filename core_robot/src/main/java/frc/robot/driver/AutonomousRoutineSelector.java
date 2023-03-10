@@ -105,9 +105,9 @@ public class AutonomousRoutineSelector
                 return ConcurrentTask.AllTasks(
                     new ResetLevelTask(),
                     new PositionStartingTask(
-                        isRed ? TuningConstants.LoadEdgeStartX : -TuningConstants.LoadEdgeStartX,
-                        TuningConstants.LoadEdgeY,
-                        isRed ? 0.0 : 180.0,
+                        TuningConstants.LoadEdgeStartX,
+                        PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.LoadEdgeY),
+                        180.0,
                         true,
                         true));
             }
@@ -134,9 +134,9 @@ public class AutonomousRoutineSelector
                 return ConcurrentTask.AllTasks(
                     new ResetLevelTask(),
                     new PositionStartingTask(
-                        isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX,
-                        TuningConstants.StartFiveGridY,
-                        isRed ? 180 : 0.0,
+                        TuningConstants.StartGridX,
+                        PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.StartFiveGridY),
+                        0.0,
                         true,
                         true));
             }
@@ -178,9 +178,9 @@ public class AutonomousRoutineSelector
                 return ConcurrentTask.AllTasks(
                     new ResetLevelTask(),
                     new PositionStartingTask(
-                        isRed ? TuningConstants.GuardEdgeStartX : -TuningConstants.GuardEdgeStartX,
-                        TuningConstants.GuardEdgeY,
-                        isRed ? 0 : 180.0,
+                        TuningConstants.GuardEdgeStartX,
+                        PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.GuardEdgeY),
+                        180.0,
                         true,
                         true),
                     new ResetLevelTask());
@@ -221,9 +221,9 @@ public class AutonomousRoutineSelector
             ConcurrentTask.AllTasks(
                 new ResetLevelTask(),
                 new PositionStartingTask(
-                    isRed ? TuningConstants.LoadEdgeStartX : -TuningConstants.LoadEdgeStartX,
-                    TuningConstants.LoadEdgeY,
-                    isRed ? 0.0 : 180.0,
+                    TuningConstants.LoadEdgeStartX,
+                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.LoadEdgeY),
+                    180.0,
                     true,
                     true)),
             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE, TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE, true),
@@ -244,9 +244,9 @@ public class AutonomousRoutineSelector
             ConcurrentTask.AllTasks(
                 new ResetLevelTask(),
                 new PositionStartingTask(
-                    isRed ? TuningConstants.LoadEdgeStartX : -TuningConstants.LoadEdgeStartX,
-                    TuningConstants.LoadEdgeY,
-                    isRed ? 0.0 : 180.0,
+                    TuningConstants.LoadEdgeStartX,
+                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.LoadEdgeY),
+                    180.0,
                     true,
                     true)),
             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CONE, TuningConstants.ARM_UPPER_POSITION_HIGH_CONE, true),
@@ -263,7 +263,7 @@ public class AutonomousRoutineSelector
                 )
             ),
             new ResetLevelTask(),
-            new ChargeStationTaskv2(isRed ? false : true, isRed ? false : true)
+            new ChargeStationTaskv2(true, true)
         );
     }
 
@@ -273,9 +273,9 @@ public class AutonomousRoutineSelector
             ConcurrentTask.AllTasks(
                 new ResetLevelTask(),
                 new PositionStartingTask(
-                    isRed ? TuningConstants.LoadEdgeStartX : -TuningConstants.LoadEdgeStartX,
-                    TuningConstants.LoadEdgeY,
-                    isRed ? 0.0 : 180.0,
+                    TuningConstants.LoadEdgeStartX,
+                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.LoadEdgeY),
+                    180.0,
                     true,
                     true)),
             ConcurrentTask.AllTasks(
@@ -314,7 +314,7 @@ public class AutonomousRoutineSelector
                 )
             ),
             new ResetLevelTask(),
-            new ChargeStationTaskv2(isRed ? false : true, isRed ? false : true)
+            new ChargeStationTaskv2(true, true)
         );
     }
 
@@ -324,9 +324,9 @@ public class AutonomousRoutineSelector
             ConcurrentTask.AllTasks(
                 new ResetLevelTask(),
                 new PositionStartingTask(
-                    isRed ? TuningConstants.LoadEdgeStartX : -TuningConstants.LoadEdgeStartX,
-                    TuningConstants.LoadEdgeY,
-                    isRed ? 0.0 : 180.0,
+                    TuningConstants.LoadEdgeStartX,
+                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.LoadEdgeY),
+                    180.0,
                     true,
                     true)),
             ConcurrentTask.AllTasks(
@@ -368,9 +368,9 @@ public class AutonomousRoutineSelector
             ConcurrentTask.AllTasks(
                 new ResetLevelTask(),
                 new PositionStartingTask(
-                    isRed ? TuningConstants.LoadEdgeStartX : -TuningConstants.LoadEdgeStartX,
-                    TuningConstants.LoadEdgeY,
-                    isRed ? 0.0 : 180.0,
+                    TuningConstants.LoadEdgeStartX,
+                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.LoadEdgeY),
+                    180.0,
                     true,
                     true)),
             ConcurrentTask.AllTasks(
@@ -424,9 +424,9 @@ public class AutonomousRoutineSelector
             ConcurrentTask.AllTasks(
                 new ResetLevelTask(),
                 new PositionStartingTask(
-                    isRed ? TuningConstants.CloseChargeStationX : -TuningConstants.CloseChargeStationX,
-                    TuningConstants.ChargeStationY,
-                    isRed ? 180.0 : 0.0,
+                    TuningConstants.CloseChargeStationX,
+                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.ChargeStationY),
+                    0.0,
                     true,
                     true)),
             new FollowPathTask(isRed ? "MidTaxiRed" : "MidTaxiBlue", Type.Absolute)
@@ -437,9 +437,11 @@ public class AutonomousRoutineSelector
     {
         return SequentialTask.Sequence(
             new PositionStartingTask(
-                0.0, 
-                0.0, 
-                0.0, true, true),
+                0.0,
+                0.0,
+                0.0,
+                true,
+                true),
             new ResetLevelTask(),
             new ChargeStationTaskv2(false, false)
         );
@@ -451,9 +453,9 @@ public class AutonomousRoutineSelector
             ConcurrentTask.AllTasks(
                 new ResetLevelTask(),
                 new PositionStartingTask(
-                    isRed ? TuningConstants.StartGridX : -TuningConstants.StartGridX,
-                    TuningConstants.StartFiveGridY,
-                    isRed ? 0.0 : 180.0,
+                    TuningConstants.StartGridX,
+                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.StartFiveGridY),
+                    180.0,
                     true,
                     true)),
 
@@ -482,7 +484,7 @@ public class AutonomousRoutineSelector
             new WaitTask(1.0),
             new ResetLevelTask(),
             
-            new ChargeStationTaskv2(isRed ? true : false, isRed ? false : true)
+            new ChargeStationTaskv2(false, true)
         );
     }
 
@@ -507,9 +509,9 @@ public class AutonomousRoutineSelector
             ConcurrentTask.AllTasks(
                 new ResetLevelTask(),
                 new PositionStartingTask(
-                    isRed ? TuningConstants.GuardEdgeStartX : -TuningConstants.GuardEdgeStartX,
-                    TuningConstants.GuardEdgeY,
-                    isRed ? 0 : 180.0,
+                    TuningConstants.GuardEdgeStartX,
+                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.GuardEdgeY),
+                    180.0,
                     true,
                     true)),
             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE, TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE, true),
@@ -530,9 +532,9 @@ public class AutonomousRoutineSelector
             ConcurrentTask.AllTasks(
                 new ResetLevelTask(),
                 new PositionStartingTask(
-                    isRed ? TuningConstants.GuardEdgeStartX : -TuningConstants.GuardEdgeStartX,
-                    TuningConstants.GuardEdgeY,
-                    isRed ? 0 : 180.0,
+                    TuningConstants.GuardEdgeStartX,
+                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.GuardEdgeY),
+                    180.0,
                     true,
                     true)),
             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE, TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE, true),
@@ -549,7 +551,7 @@ public class AutonomousRoutineSelector
                 )
             ),
             new ResetLevelTask(),
-            new ChargeStationTaskv2(isRed ? false : true, isRed ? false : true)
+            new ChargeStationTaskv2(true, true)
         );
     }
 
@@ -559,9 +561,9 @@ public class AutonomousRoutineSelector
             ConcurrentTask.AllTasks(
                 new ResetLevelTask(),
                 new PositionStartingTask(
-                    isRed ? TuningConstants.GuardEdgeStartX : -TuningConstants.GuardEdgeStartX,
-                    TuningConstants.GuardEdgeY,
-                    isRed ? 0 : 180.0,
+                    TuningConstants.GuardEdgeStartX,
+                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.GuardEdgeY),
+                    180.0,
                     true,
                     true)),
             ConcurrentTask.AllTasks(
@@ -601,7 +603,7 @@ public class AutonomousRoutineSelector
                 )
             ),
             new ResetLevelTask(),
-            new ChargeStationTaskv2(isRed ? false : true, isRed ? false : true)
+            new ChargeStationTaskv2(true, true)
         );
     }
 
@@ -611,9 +613,9 @@ public class AutonomousRoutineSelector
             ConcurrentTask.AllTasks(
                 new ResetLevelTask(),
                 new PositionStartingTask(
-                    isRed ? TuningConstants.GuardEdgeStartX : -TuningConstants.GuardEdgeStartX,
-                    TuningConstants.GuardEdgeY,
-                    isRed ? 0 : 180.0,
+                    TuningConstants.GuardEdgeStartX,
+                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.GuardEdgeY),
+                    180.0,
                     true,
                     true)),
             ConcurrentTask.AllTasks(
@@ -655,9 +657,9 @@ public class AutonomousRoutineSelector
             ConcurrentTask.AllTasks(
                 new ResetLevelTask(),
                 new PositionStartingTask(
-                    isRed ? TuningConstants.GuardEdgeStartX : -TuningConstants.GuardEdgeStartX,
-                    TuningConstants.GuardEdgeY,
-                    isRed ? 0 : 180.0,
+                    TuningConstants.GuardEdgeStartX,
+                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.GuardEdgeY),
+                    180.0,
                     true,
                     true)),
             ConcurrentTask.AllTasks(

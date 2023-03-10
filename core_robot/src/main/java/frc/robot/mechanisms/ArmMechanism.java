@@ -613,8 +613,9 @@ public class ArmMechanism implements IMechanism
                 if (lowerPositionAdjustment != 0.0)
                 {
                     // reset desired positions to ensure that we maintain the position after we release the joystick
-                    this.desiredLowerLeftLAPosition = this.lowerLeftLAPosition;
-                    this.desiredLowerRightLAPosition = this.lowerRightLAPosition;
+                    double lowerLAPosition = 0.5 * (this.lowerLeftLAPosition + this.lowerRightLAPosition);
+                    this.desiredLowerLeftLAPosition = lowerLAPosition;
+                    this.desiredLowerRightLAPosition = lowerLAPosition;
 
                     this.lowerSetpointChangedTime = currTime;
 
@@ -706,12 +707,13 @@ public class ArmMechanism implements IMechanism
                     double newDesiredXPosition = this.desiredXPosition + ikXAdjustment;
                     double newDesiredZPosition = this.desiredZPosition + ikZAdjustment;
 
-                    DoubleTuple ikResult = ArmMechanism.calculateIK(ikX, ikZ);
+                    DoubleTuple ikResult = ArmMechanism.calculateIK(newDesiredXPosition, newDesiredZPosition);
+                    System.out.println("ik-adjust? " + (ikResult != null));
                     if (ikResult != null)
                     {
                         boolean updateDesiredIKPosition = false;
-                        if (Helpers.RoughEquals(this.desiredLowerLeftLAPosition, ikResult.first, 0.1) ||
-                            Helpers.RoughEquals(this.desiredLowerRightLAPosition, ikResult.first, 0.1))
+                        if (!Helpers.RoughEquals(this.desiredLowerLeftLAPosition, ikResult.first, 0.01) ||
+                            !Helpers.RoughEquals(this.desiredLowerRightLAPosition, ikResult.first, 0.01))
                         {
                             this.lowerSetpointChangedTime = currTime;
 
@@ -720,7 +722,7 @@ public class ArmMechanism implements IMechanism
                             updateDesiredIKPosition = true;
                         }
 
-                        if (Helpers.RoughEquals(this.desiredUpperLAPosition, ikResult.second, 0.1))
+                        if (!Helpers.RoughEquals(this.desiredUpperLAPosition, ikResult.second, 0.01))
                         {
                             this.upperSetpointChangedTime = currTime;
 
@@ -733,6 +735,10 @@ public class ArmMechanism implements IMechanism
                             this.desiredXPosition = newDesiredXPosition;
                             this.desiredZPosition = newDesiredZPosition;
                         }
+                    }
+                    else
+                    {
+                        System.out.println("desired: " + newDesiredXPosition + ", " + newDesiredZPosition);
                     }
                 }
                 else if (newDesiredLowerPosition != TuningConstants.MAGIC_NULL_VALUE ||
@@ -843,8 +849,10 @@ public class ArmMechanism implements IMechanism
         this.logger.logBoolean(LoggingKey.ArmLowerStalled, this.lowerLAsStalled);
         this.logger.logBoolean(LoggingKey.ArmUpperStalled, this.upperLAsStalled);
 
-        this.logger.logNumber(LoggingKey.ArmLowerLeftDesiredPosition, this.desiredLowerLeftLAPosition);
-        this.logger.logNumber(LoggingKey.ArmLowerRightDesiredPosition, this.desiredLowerRightLAPosition);
+        this.logger.logNumber(LoggingKey.ArmDesiredXPosition, this.desiredXPosition);
+        this.logger.logNumber(LoggingKey.ArmDesiredZPosition, this.desiredZPosition);
+        this.logger.logNumber(LoggingKey.ArmLowerLeftDesiredPosition, this.desiredLowerLeftLAPosition + twistAmount);
+        this.logger.logNumber(LoggingKey.ArmLowerRightDesiredPosition, this.desiredLowerRightLAPosition - twistAmount);
         this.logger.logNumber(LoggingKey.ArmUpperDesiredPosition, this.desiredUpperLAPosition);
 
         this.prevTime = currTime;
