@@ -100,13 +100,13 @@ public class TuningConstants
     public static final double POWER_OVERCURREHT_HIGH_THRESHOLD = 160.0;
 
     //================================================= Vision ======================================================
-    
-     // Finding AprilTags to determine if theres enough valid data to translate 
+
+    // Finding AprilTags to determine if theres enough valid data to translate 
     public static final int TAGS_MISSED_THRESHOLD = 30;
     public static final int TAGS_FOUND_THRESHOLD = 5;
     public static final double ACCEPTABLE_RANGE_IN_X_AND_Y_FOR_ALIGNMENT_TRANSLATE = 1.0; // in inches
-    public static final double APRILTAG_TO_NODE_HORIZONTAL_DISTANCE = 22.0; // in inches
-    public static final double APRILTAG_TO_DESIRED_SCORING_X_POSITION_DISTANCE = 16.25; // Pushed against grid, in inches
+    public static final double APRILTAG_TO_CONE_NODE_HORIZONTAL_DISTANCE = 22.0; // in inches
+    public static final double APRILTAG_TO_DESIRED_SCORING_X_POSITION_DISTANCE = 30.25; // from apriltag location to center of robot, in inches
 
     // Acceptable vision centering range values in degrees
     public static final double MAX_PID_TURNING_RANGE_DEGREES = 7.0;
