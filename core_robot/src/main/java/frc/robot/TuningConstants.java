@@ -102,15 +102,12 @@ public class TuningConstants
     //================================================= Vision ======================================================
     
      // Finding AprilTags to determine if theres enough valid data to translate 
+    public static final int TAGS_MISSED_THRESHOLD = 30;
+    public static final int TAGS_FOUND_THRESHOLD = 5;
+    public static final double ACCEPTABLE_RANGE_IN_X_AND_Y_FOR_ALIGNMENT_TRANSLATE = 1.0; // in inches
+    public static final double APRILTAG_TO_NODE_HORIZONTAL_DISTANCE = 22.0; // in inches
+    public static final double APRILTAG_TO_DESIRED_SCORING_X_POSITION_DISTANCE = 16.25; // Pushed against grid, in inches
 
-    
-    public static final int TAGS_MISSED_THRESHOLD = 30; 
-    public static final int TAGS_FOUND_THRESHOLD = 5; 
-    public static final double ACCEPTABLE_RANGE_IN_X_AND_Y_FOR_ALIGNMENT_TRANSLATE = 20; 
-    public static final double VELOCITY_TO_SETPOINT = 0.5; 
-    public static final double APRILTAG_TO_NODE_HORIZONTAL_DISTANCE = 22; 
-    public static final double APRILTAG_TO_DESIRED_SCORING_X_POSITION_DISTANCE = 16.25; //Pushed against grid, in inches 
-    public static final double APRIL_TAG_SAMPLES_DESIRED = 30; //Double to take average (Cannot divide double by int) 
     // Acceptable vision centering range values in degrees
     public static final double MAX_PID_TURNING_RANGE_DEGREES = 7.0;
 
