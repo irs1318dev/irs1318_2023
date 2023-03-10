@@ -9,6 +9,7 @@ import frc.robot.driver.common.buttons.*;
 import frc.robot.driver.common.descriptions.*;
 import frc.robot.driver.controltasks.*;
 import frc.robot.driver.controltasks.FollowPathTask.Type;
+import frc.robot.driver.controltasks.VisionAprilTagTranslateTask.GridScoringPosition;
 import frc.robot.driver.controltasks.VisionMoveAndTurnTaskBase.MoveSpeed;
 import frc.robot.driver.controltasks.VisionMoveAndTurnTaskBase.MoveType;
 import frc.robot.driver.controltasks.VisionTurningTask.TurnType;
@@ -524,12 +525,11 @@ public class ButtonMap implements IButtonMap
             () -> ConcurrentTask.AnyTasks(
                 SequentialTask.Sequence(
                     new DriveTrainFieldOrientationModeTask(true),
-                    new OrientationTask(0.0),
+                    new OrientationTask(180.0),
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_APPROACH,
                         TuningConstants.ARM_UPPER_POSITION_APPROACH),
-                    new VisionAlignmentTranslateTask(0),
-                    new DriveTrainFieldOrientationModeTask(true)),
+                    new VisionAprilTagTranslateTask(GridScoringPosition.MiddleCube)),
                 new RumbleTask()),
             new IOperation[]
             {
@@ -587,10 +587,10 @@ public class ButtonMap implements IButtonMap
                             TuningConstants.ARM_LOWER_POSITION_APPROACH,
                             TuningConstants.ARM_UPPER_POSITION_APPROACH)
                     ),
-                    new VisionAlignmentTranslateTask(TuningConstants.APRILTAG_TO_NODE_HORIZONTAL_DISTANCE)
-                ),
-                new RumbleTask()
-            ),
+                    new VisionAprilTagTranslateTask(GridScoringPosition.LeftCone),
+                    new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0),
+                    new DriveTrainFieldOrientationModeTask(true)),
+                new RumbleTask()),
             new IOperation[]
             {
                 DigitalOperation.ForceLightDriverRumble,
@@ -647,10 +647,10 @@ public class ButtonMap implements IButtonMap
                             TuningConstants.ARM_LOWER_POSITION_APPROACH,
                             TuningConstants.ARM_UPPER_POSITION_APPROACH)
                     ),
-                    new VisionAlignmentTranslateTask(-TuningConstants.APRILTAG_TO_NODE_HORIZONTAL_DISTANCE)
-                ),
-                new RumbleTask()
-                ),
+                    new VisionAprilTagTranslateTask(GridScoringPosition.RightCone),
+                    new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0),
+                    new DriveTrainFieldOrientationModeTask(true)),
+                new RumbleTask()),
             new IOperation[]
             {
                 DigitalOperation.ForceLightDriverRumble,

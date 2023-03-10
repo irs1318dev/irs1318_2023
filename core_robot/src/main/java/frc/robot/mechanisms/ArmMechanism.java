@@ -90,7 +90,7 @@ public class ArmMechanism implements IMechanism
 
     private FloatingAverageCalculator lowerLeftLAVelocityAverageCalculator;
     private FloatingAverageCalculator lowerRightLAVelocityAverageCalculator;
-    private FloatingAverageCalculator upperLAVelocityAverageCalculator;
+    private FloatingAverageCalculator upperLAsVelocityAverageCalculator;
 
     private double lowerLeftLAVelocityAverage;
     private double lowerRightLAVelocityAverage;
@@ -231,7 +231,7 @@ public class ArmMechanism implements IMechanism
 
         this.lowerLeftLAVelocityAverageCalculator = new FloatingAverageCalculator(this.timer, TuningConstants.ARM_VELOCITY_TRACKING_DURATION, TuningConstants.ARM_VELOCITY_SAMPLES_PER_SECOND);
         this.lowerRightLAVelocityAverageCalculator = new FloatingAverageCalculator(this.timer, TuningConstants.ARM_VELOCITY_TRACKING_DURATION, TuningConstants.ARM_VELOCITY_SAMPLES_PER_SECOND);
-        this.upperLAVelocityAverageCalculator = new FloatingAverageCalculator(this.timer, TuningConstants.ARM_VELOCITY_TRACKING_DURATION, TuningConstants.ARM_VELOCITY_SAMPLES_PER_SECOND);
+        this.upperLAsVelocityAverageCalculator = new FloatingAverageCalculator(this.timer, TuningConstants.ARM_VELOCITY_TRACKING_DURATION, TuningConstants.ARM_VELOCITY_SAMPLES_PER_SECOND);
 
         ITalonSRX upperLAFollower = provider.getTalonSRX(ElectronicsConstants.ARM_UPPER_LA_FOLLOWER_CAN_ID);
         upperLAFollower.setNeutralMode(MotorNeutralMode.Brake);
@@ -304,7 +304,7 @@ public class ArmMechanism implements IMechanism
 
         this.lowerLeftLAVelocityAverage = this.lowerLeftLAVelocityAverageCalculator.update(this.lowerLeftLAVelocity);
         this.lowerRightLAVelocityAverage = this.lowerRightLAVelocityAverageCalculator.update(this.lowerRightLAVelocity);
-        this.upperLAVelocityAverage = this.upperLAVelocityAverageCalculator.update(this.upperLAVelocity);
+        this.upperLAVelocityAverage = this.upperLAsVelocityAverageCalculator.update(this.upperLAVelocity);
 
         this.logger.logNumber(LoggingKey.ArmLowerLeftPosition, this.lowerLeftLAPosition);
         this.logger.logNumber(LoggingKey.ArmLowerLeftVelocity, this.lowerLeftLAVelocity);
@@ -886,9 +886,9 @@ public class ArmMechanism implements IMechanism
         this.upperLAsPowerAverage = 0.0;
 
         // velocity averaging
-        this.lowerLeftLAPowerAverageCalculator.reset();
-        this.lowerRightLAPowerAverageCalculator.reset();
-        this.upperLAsPowerAverageCalculator.reset();
+        this.lowerLeftLAVelocityAverageCalculator.reset();
+        this.lowerRightLAVelocityAverageCalculator.reset();
+        this.upperLAsVelocityAverageCalculator.reset();
         this.lowerLeftLAVelocityAverage = 0.0;
         this.lowerRightLAVelocityAverage = 0.0;
         this.upperLAVelocityAverage = 0.0;
