@@ -35,7 +35,7 @@ public class TuningConstants
 
     public static final boolean TRAJECTORY_FORCE_BUILD = false;
 
-    // Y Values
+    // Y Values (distance from Guardrail edge)
     public static final double StartOneGridY = 196.19;
     public static final double StartTwoGridY = 174.19; // April Tag ID's 6 and 3
     public static final double StartThreeGridY = 152.19;
@@ -52,30 +52,45 @@ public class TuningConstants
     public static final double GroundFourY = 36.19;
     public static final double LoadEdgeY = TuningConstants.StartOneGridY + 1.521; // Edge of grid - 17.5
     public static final double GuardEdgeY = 17.5;
+    public static final double FullWidth = 315.5; // (Y) 26 ft. 3.5 in, from game manual
 
     // X Values
-    public static final double StartGridX = 253.86; // Edge of grid - Robot centering value
-    public static final double CloseChargeStationX = 241.015; // 12.845 inches away from the charge station and grid + Robot centering value
-    public static final double FarChargeStationX = 102.99; // 12 inches away from the charge station + Robot centering value
+    public static final double StartGridX = 71.765; // Edge of grid - Robot centering value
+    public static final double CloseChargeStationX = 84.61; // 12.845 inches away from the charge station and grid + Robot centering value
+    public static final double FarChargeStationX = 222.635; // 12 inches away from the charge station + Robot centering value
     public static final double FarChargeStationInBetweenX = TuningConstants.FarChargeStationX - 30.0; // 30 inches away from last point to allow for turning
-    public static final double GroundPiecesX = 72.36; // On ground pieces real value 47.36
-    public static final double LoadEdgeStartX = 214.86;
-    public static final double GuardEdgeStartX = 193.61;
+    public static final double GroundPiecesX = 253.265; // On ground pieces real value 47.36
+    public static final double LoadEdgeStartX = 110.765;
+    public static final double GuardEdgeStartX = 132.015;
+    public static final double FullLength = 651.25; // (X) 54 ft. 3.25 in, from game manual
 
-    // April tag array by ids
+    // April tag array by ids - Blue alliance
     // (xPosition, yPosition, orientation)
-    public static final double[][] AprilTagLocations =
+    public static final double[][] AprilTagLocationsBlue =
         {
-            { 285.16,   42.19,   0.0 }, // ID 1
-            { 285.16,  108.19,   0.0 }, // ID 2
-            { 285.16,  174.19,   0.0 }, // ID 3
-            { 311.35,  265.74,   0.0 }, // ID 4
-            { -285.16,  42.19, 180.0 }, // ID 5
-            { -285.16, 108.19, 180.0 }, // ID 6
-            { -285.16, 174.19, 180.0 }, // ID 7
-            { -311.35, 265.74, 180.0 }, // ID 8
+            { 610.77,  42.19,   0.0 }, // ID 1
+            { 610.77, 108.19,   0.0 }, // ID 2
+            { 610.77, 174.19,   0.0 }, // ID 3
+            { 636.96, 265.74,   0.0 }, // ID 4
+            {  14.25,  42.19, 180.0 }, // ID 5
+            {  40.45, 108.19, 180.0 }, // ID 6
+            {  40.45, 174.19, 180.0 }, // ID 7
+            {  40.45, 265.74, 180.0 }, // ID 8
         };
 
+    // April tag array by ids - Red alliance
+    // (xPosition, yPosition, orientation)
+    public static final double[][] AprilTagLocationsRed =
+        {
+            {  40.45, 273.31, 180.0 }, // ID 1
+            {  40.45, 207.31, 180.0 }, // ID 2
+            {  40.45, 141.31, 180.0 }, // ID 3
+            {  14.25,  49.36, 180.0 }, // ID 4
+            { 636.96, 273.31,   0.0 }, // ID 5
+            { 610.77, 207.31,   0.0 }, // ID 6
+            { 610.77, 141.31,   0.0 }, // ID 7
+            { 610.77,  49.36,   0.0 }, // ID 8
+        };
     //================================================= Power ======================================================
 
     public static final double POWER_OVERCURRENT_TRACKING_DURATION = 5.0; // duration of time to keep track of the average current
@@ -85,6 +100,13 @@ public class TuningConstants
     public static final double POWER_OVERCURREHT_HIGH_THRESHOLD = 160.0;
 
     //================================================= Vision ======================================================
+
+    // Finding AprilTags to determine if theres enough valid data to translate 
+    public static final int TAGS_MISSED_THRESHOLD = 30;
+    public static final int TAGS_FOUND_THRESHOLD = 5;
+    public static final double ACCEPTABLE_RANGE_IN_X_AND_Y_FOR_ALIGNMENT_TRANSLATE = 1.0; // in inches
+    public static final double APRILTAG_TO_CONE_NODE_HORIZONTAL_DISTANCE = 22.0; // in inches
+    public static final double APRILTAG_TO_DESIRED_SCORING_X_POSITION_DISTANCE = 30.25; // from apriltag location to center of robot, in inches
 
     // Acceptable vision centering range values in degrees
     public static final double MAX_PID_TURNING_RANGE_DEGREES = 7.0;
@@ -346,36 +368,36 @@ public class TuningConstants
     public static final double ARM_INTAKE_THROUGHBEAM_THRESHOLD = 3.5;
 
     public static final boolean ARM_USE_MM = false;
-    public static final boolean ARM_USE_IK = false;
+    public static final boolean ARM_USE_IK = true;
 
     public static final double ARM_MAX_VELOCITY = 400.0;
-    public static final double ARM_LOWER_LEFT_POSITION_MM_PID_KP = 0.0;
+    public static final double ARM_LOWER_LEFT_POSITION_MM_PID_KP = 0.5;
     public static final double ARM_LOWER_LEFT_POSITION_MM_PID_KI = 0.0;
     public static final double ARM_LOWER_LEFT_POSITION_MM_PID_KD = 0.0;
     public static final double ARM_LOWER_LEFT_POSITION_MM_PID_KF = 3.2;
     public static final double ARM_LOWER_LEFT_POSITION_MM_CRUISE_VELOCITY = 400.0;
-    public static final double ARM_LOWER_LEFT_POSITION_MM_ACCELERATION = 200.0;
+    public static final double ARM_LOWER_LEFT_POSITION_MM_ACCELERATION = 400.0;
 
-    public static final double ARM_LOWER_RIGHT_POSITION_MM_PID_KP = 0.0;
+    public static final double ARM_LOWER_RIGHT_POSITION_MM_PID_KP = 0.5;
     public static final double ARM_LOWER_RIGHT_POSITION_MM_PID_KI = 0.0;
     public static final double ARM_LOWER_RIGHT_POSITION_MM_PID_KD = 0.0;
     public static final double ARM_LOWER_RIGHT_POSITION_MM_PID_KF = 3.2;
     public static final double ARM_LOWER_RIGHT_POSITION_MM_CRUISE_VELOCITY = 0.8 * 400.0;
-    public static final double ARM_LOWER_RIGHT_POSITION_MM_ACCELERATION = 200.0;
+    public static final double ARM_LOWER_RIGHT_POSITION_MM_ACCELERATION = 400.0;
 
-    public static final double ARM_UPPER_POSITION_MM_PID_KP = 0.0;
+    public static final double ARM_UPPER_POSITION_MM_PID_KP = 0.5;
     public static final double ARM_UPPER_POSITION_MM_PID_KI = 0.0;
     public static final double ARM_UPPER_POSITION_MM_PID_KD = 0.0;
     public static final double ARM_UPPER_POSITION_MM_PID_KF = 3.2;
     public static final double ARM_UPPER_POSITION_MM_CRUISE_VELOCITY = 0.8 * 400.0;
-    public static final double ARM_UPPER_POSITION_MM_ACCELERATION = 200.0;
+    public static final double ARM_UPPER_POSITION_MM_ACCELERATION = 400.0;
 
-    public static final double ARM_LOWER_LEFT_POSITION_PID_KP = 1.2;
+    public static final double ARM_LOWER_LEFT_POSITION_PID_KP = 1.8;
     public static final double ARM_LOWER_LEFT_POSITION_PID_KI = 0.0;
     public static final double ARM_LOWER_LEFT_POSITION_PID_KD = 0.0;
     public static final double ARM_LOWER_LEFT_POSITION_PID_KF = 0.0;
 
-    public static final double ARM_LOWER_RIGHT_POSITION_PID_KP = 1.2;
+    public static final double ARM_LOWER_RIGHT_POSITION_PID_KP = 1.8;
     public static final double ARM_LOWER_RIGHT_POSITION_PID_KI = 0.0;
     public static final double ARM_LOWER_RIGHT_POSITION_PID_KD = 0.0;
     public static final double ARM_LOWER_RIGHT_POSITION_PID_KF = 0.0;
@@ -394,7 +416,7 @@ public class TuningConstants
     public static final boolean ARM_LOWER_RIGHT_INVERT_SENSOR = false;
     public static final boolean ARM_UPPER_INVERT_SENSOR = false;
 
-    public static final double ARM_MAX_TWIST_AMOUNT = 200.0; // in ticks - the largest allowed tick difference between lower left and lower right actuators
+    public static final double ARM_MAX_TWIST_AMOUNT = 800.0; // in ticks - the largest allowed tick difference between lower left and lower right actuators
 
     public static final double ARM_NEAR_FULL_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.9; // in inches
     public static final double ARM_NEAR_FULL_RETRACTED_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.1; // in inches
@@ -528,8 +550,13 @@ public class TuningConstants
 
     //Version 2 constants
     public static final double CHARGE_STATION_PITCH_VARIATION_V2 = 1.0;
+
+    //TODO: edit to be more sensitive
     public static final double CHARGE_STATION_ACCEPTABLE_PITCH_DIFF_V2 = 3.0;
-    public static final double CHARGE_STATION_STARTING_SPEED_V2 = 0.8;
+    public static final double CHARGE_STATION_STARTING_SPEED_V2 = 0.85;
     public static final double CHARGE_STATION_CLIMBING_SPEED_V2 = 0.25;
     public static final double CHARGE_STATION_BALANCING_SPEED_V2 = 0.08;
+
+    //TODO: edit to be shorter, because climbing velocity has increased.
+    public static final double CHARGE_STATION_CLIMBING_TRANSITION_WAIT_DURATION_V2 = 1.0;
 }

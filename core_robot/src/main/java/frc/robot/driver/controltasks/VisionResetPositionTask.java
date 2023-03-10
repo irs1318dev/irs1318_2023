@@ -5,18 +5,17 @@ package frc.robot.driver.controltasks;
 
 import frc.robot.TuningConstants;
 import frc.robot.common.Helpers;
+import frc.robot.common.robotprovider.Alliance;
+import frc.robot.common.robotprovider.IDriverStation;
+import frc.robot.common.robotprovider.IRobotProvider;
 import frc.robot.driver.AnalogOperation;
 import frc.robot.driver.DigitalOperation;
 import frc.robot.mechanisms.OffboardVisionManager;
 
 public class VisionResetPositionTask extends ControlTaskBase {
 
+    private double[][] aprilTagLocations;
     private OffboardVisionManager visionManager;
-
-    private Double tagXOffset;
-    private Double tagYOffset;
-    private Double tagYaw;
-    private Integer tagId;
 
     private Double xPosition;
     private Double yPosition;
@@ -29,6 +28,19 @@ public class VisionResetPositionTask extends ControlTaskBase {
     public void begin()
     {
         this.visionManager = this.getInjector().getInstance(OffboardVisionManager.class);
+        IRobotProvider rp = this.getInjector().getInstance(IRobotProvider.class);
+        IDriverStation ds = rp.getDriverStation();
+        if (ds.getAlliance() == Alliance.Red)
+        {
+            this.aprilTagLocations = TuningConstants.AprilTagLocationsRed;
+        }
+        else
+        {
+            this.aprilTagLocations = TuningConstants.AprilTagLocationsBlue;
+        }
+
+        this.xPosition = null;
+        this.yPosition = null;
 
         this.setDigitalOperationState(DigitalOperation.VisionEnableRetroreflectiveProcessing, false);
         this.setDigitalOperationState(DigitalOperation.VisionEnableAprilTagProcessing, true);
@@ -37,12 +49,30 @@ public class VisionResetPositionTask extends ControlTaskBase {
     @Override
     public void update()
     {
-        this.tagXOffset = visionManager.getAprilTagXOffset();
-        this.tagYOffset = visionManager.getAprilTagYOffset();
-        this.tagYaw = visionManager.getAprilTagYaw();
-        this.tagId = visionManager.getAprilTagId();
-        this.calculatePosition();
-        this.setPosition();
+        Double tagXOffset = this.visionManager.getAprilTagXOffset();
+        Double tagYOffset = this.visionManager.getAprilTagYOffset();
+        Double tagYaw = this.visionManager.getAprilTagYaw();
+        Integer tagId = this.visionManager.getAprilTagId();
+
+        if (tagId != null)
+        {
+            double[] thisTag = this.aprilTagLocations[tagId - 1];
+            double alpha = tagYaw;
+            double beta = Helpers.atan2d(tagXOffset, tagYOffset);
+            double hypoFieldAngle = thisTag[2] - alpha - beta;
+            if (Math.abs(hypoFieldAngle) > 180)
+            {
+                hypoFieldAngle += hypoFieldAngle > 0 ? -360 : 360;
+            }
+
+            double distToTag = Math.sqrt(tagXOffset * tagXOffset + tagYOffset * tagYOffset);
+            this.xPosition = thisTag[0] + Helpers.cosd(hypoFieldAngle) * distToTag;
+            this.yPosition = thisTag[1] + Helpers.sind(hypoFieldAngle) * distToTag;
+
+            this.setDigitalOperationState(DigitalOperation.DriveTrainResetXYPosition, true);
+            this.setAnalogOperationState(AnalogOperation.DriveTrainStartingXPosition, this.xPosition);
+            this.setAnalogOperationState(AnalogOperation.DriveTrainStartingYPosition, this.yPosition);
+        }
     }
 
     @Override
@@ -59,34 +89,5 @@ public class VisionResetPositionTask extends ControlTaskBase {
     public boolean hasCompleted()
     {
         return this.xPosition != null && this.yPosition != null;
-    }
-
-    private void calculatePosition() 
-    {
-        if (this.tagId != null)
-        {
-            double[] thisTag = TuningConstants.AprilTagLocations[this.tagId - 1];
-            double alpha = this.tagYaw;
-            double beta = Helpers.atan2d(this.tagXOffset, this.tagYOffset);
-            double hypoFieldAngle = thisTag[2] - alpha - beta;
-            if (Math.abs(hypoFieldAngle) > 180)
-            {
-                hypoFieldAngle += hypoFieldAngle > 0 ? -360 : 360;
-            }
-
-            double distToTag = Math.sqrt(this.tagXOffset * this.tagXOffset + this.tagYOffset * this.tagYOffset);
-            this.xPosition = thisTag[0] + Helpers.cosd(hypoFieldAngle) * distToTag;
-            this.yPosition = thisTag[1] + Helpers.sind(hypoFieldAngle) * distToTag;
-        }
-    }
-
-    private void setPosition()
-    {
-        if (this.xPosition != null && this.yPosition != null)
-        {
-            this.setDigitalOperationState(DigitalOperation.DriveTrainResetXYPosition, true);
-            this.setAnalogOperationState(AnalogOperation.DriveTrainStartingXPosition, this.xPosition);
-            this.setAnalogOperationState(AnalogOperation.DriveTrainStartingYPosition, this.yPosition);
-        }
     }
 }
