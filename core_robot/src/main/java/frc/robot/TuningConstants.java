@@ -371,36 +371,36 @@ public class TuningConstants
     public static final double ARM_INTAKE_THROUGHBEAM_THRESHOLD = 3.5;
 
     public static final boolean ARM_USE_MM = false;
-    public static final boolean ARM_USE_IK = false;
+    public static final boolean ARM_USE_IK = true;
 
     public static final double ARM_MAX_VELOCITY = 400.0;
-    public static final double ARM_LOWER_LEFT_POSITION_MM_PID_KP = 0.0;
+    public static final double ARM_LOWER_LEFT_POSITION_MM_PID_KP = 0.5;
     public static final double ARM_LOWER_LEFT_POSITION_MM_PID_KI = 0.0;
     public static final double ARM_LOWER_LEFT_POSITION_MM_PID_KD = 0.0;
     public static final double ARM_LOWER_LEFT_POSITION_MM_PID_KF = 3.2;
     public static final double ARM_LOWER_LEFT_POSITION_MM_CRUISE_VELOCITY = 400.0;
-    public static final double ARM_LOWER_LEFT_POSITION_MM_ACCELERATION = 200.0;
+    public static final double ARM_LOWER_LEFT_POSITION_MM_ACCELERATION = 400.0;
 
-    public static final double ARM_LOWER_RIGHT_POSITION_MM_PID_KP = 0.0;
+    public static final double ARM_LOWER_RIGHT_POSITION_MM_PID_KP = 0.5;
     public static final double ARM_LOWER_RIGHT_POSITION_MM_PID_KI = 0.0;
     public static final double ARM_LOWER_RIGHT_POSITION_MM_PID_KD = 0.0;
     public static final double ARM_LOWER_RIGHT_POSITION_MM_PID_KF = 3.2;
     public static final double ARM_LOWER_RIGHT_POSITION_MM_CRUISE_VELOCITY = 0.8 * 400.0;
-    public static final double ARM_LOWER_RIGHT_POSITION_MM_ACCELERATION = 200.0;
+    public static final double ARM_LOWER_RIGHT_POSITION_MM_ACCELERATION = 400.0;
 
-    public static final double ARM_UPPER_POSITION_MM_PID_KP = 0.0;
+    public static final double ARM_UPPER_POSITION_MM_PID_KP = 0.5;
     public static final double ARM_UPPER_POSITION_MM_PID_KI = 0.0;
     public static final double ARM_UPPER_POSITION_MM_PID_KD = 0.0;
     public static final double ARM_UPPER_POSITION_MM_PID_KF = 3.2;
     public static final double ARM_UPPER_POSITION_MM_CRUISE_VELOCITY = 0.8 * 400.0;
-    public static final double ARM_UPPER_POSITION_MM_ACCELERATION = 200.0;
+    public static final double ARM_UPPER_POSITION_MM_ACCELERATION = 400.0;
 
-    public static final double ARM_LOWER_LEFT_POSITION_PID_KP = 1.2;
+    public static final double ARM_LOWER_LEFT_POSITION_PID_KP = 1.8;
     public static final double ARM_LOWER_LEFT_POSITION_PID_KI = 0.0;
     public static final double ARM_LOWER_LEFT_POSITION_PID_KD = 0.0;
     public static final double ARM_LOWER_LEFT_POSITION_PID_KF = 0.0;
 
-    public static final double ARM_LOWER_RIGHT_POSITION_PID_KP = 1.2;
+    public static final double ARM_LOWER_RIGHT_POSITION_PID_KP = 1.8;
     public static final double ARM_LOWER_RIGHT_POSITION_PID_KI = 0.0;
     public static final double ARM_LOWER_RIGHT_POSITION_PID_KD = 0.0;
     public static final double ARM_LOWER_RIGHT_POSITION_PID_KF = 0.0;
@@ -556,10 +556,10 @@ public class TuningConstants
 
     //TODO: edit to be more sensitive
     public static final double CHARGE_STATION_ACCEPTABLE_PITCH_DIFF_V2 = 3.0;
-    public static final double CHARGE_STATION_STARTING_SPEED_V2 = 0.8;
+    public static final double CHARGE_STATION_STARTING_SPEED_V2 = 0.85;
     public static final double CHARGE_STATION_CLIMBING_SPEED_V2 = 0.25;
     public static final double CHARGE_STATION_BALANCING_SPEED_V2 = 0.08;
 
     //TODO: edit to be shorter, because climbing velocity has increased.
-    public static final double CHARGE_STATION_CLIMBING_TRANSITION_WAIT_DURATION_V2 = 1.5;
+    public static final double CHARGE_STATION_CLIMBING_TRANSITION_WAIT_DURATION_V2 = 1.0;
 }
