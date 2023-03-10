@@ -1,13 +1,16 @@
 package frc.robot.driver.controltasks;
 
-import javax.lang.model.util.ElementScanner6;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import frc.robot.TuningConstants;
 import frc.robot.common.PIDHandler;
 import frc.robot.common.robotprovider.ITimer;
+import frc.robot.driver.AnalogOperation;
 import frc.robot.mechanisms.DriveTrainMechanism;
 import frc.robot.mechanisms.OffboardVisionManager;
 
+@Singleton
 public class VisionAlignmentTranslateTask extends ControlTaskBase
 {
     private enum TranslateState
@@ -17,144 +20,126 @@ public class VisionAlignmentTranslateTask extends ControlTaskBase
         Completed,
         Stop
     };
-    private TranslateState currentTranslateState;
+    private TranslateState currentState;
 
-    public enum GridScoringPosition
-    {
-        LeftCone,
-        MiddleCube,
-        RightCone,
-    }
-    private GridScoringPosition currentScorePositionState;
+    // public enum GridScoringPosition
+    // {
+    //     LeftCone,
+    //     MiddleCube,
+    //     RightCone,
+    // }
+    // private GridScoringPosition currentScorePositionState;
 
     private double[] xAprilTagDistance;
     private double[] yAprilTagDistance;
-    private double xAprilTagSumDistance;
-    private double yAprilTagSumDistance;
     private double xAprilTagDistanceAverage;
     private double yAprilTagDistanceAverage;
     private int tagsFound;
-    //private int tagsMissed;
-    private double driveTrainX;
-    private double driveTrainY;
+    private int tagsMissed;
+    private double startingDriveTrainX;
+    private double startingDriveTrainY;
+
+    private double desiredDriveTrainX;
+    private double desiredDriveTrainY;
+
+    private double xDesiredVelocity;
+    private double yDesiredVelocity;
+    private double visionOffset;
 
     private OffboardVisionManager vision;
     private DriveTrainMechanism driveTrain;
-    private PIDHandler pid;
-    private ITimer timer;
+    private PIDHandler XPidHandler;
+    private PIDHandler yPIDHandler;
 
-    public VisionAlignmentTranslateTask(GridScoringPosition currentScorePositionState)
+    @Inject
+    public VisionAlignmentTranslateTask(double visionOffset)
     {
-        
+        this.visionOffset = visionOffset;
     }
-
     @Override
-    public void begin() {
-        this.currentTranslateState = TranslateState.FindAprilTags;
+    public void begin()
+    {
+        this.XPidHandler = new PIDHandler(
+            TuningConstants.VISION_FAST_MOVING_PID_KP,
+            TuningConstants.VISION_FAST_MOVING_PID_KI,
+            TuningConstants.VISION_FAST_MOVING_PID_KD,
+            TuningConstants.VISION_FAST_MOVING_PID_KF,
+            TuningConstants.VISION_FAST_MOVING_PID_KS,
+            TuningConstants.VISION_FAST_MOVING_PID_MIN,
+            TuningConstants.VISION_FAST_MOVING_PID_MAX,
+            this.getInjector().getInstance(ITimer.class));
+        
+        this.yPIDHandler = new PIDHandler(
+            TuningConstants.VISION_FAST_MOVING_PID_KP,
+            TuningConstants.VISION_FAST_MOVING_PID_KI,
+            TuningConstants.VISION_FAST_MOVING_PID_KD,
+            TuningConstants.VISION_FAST_MOVING_PID_KF,
+            TuningConstants.VISION_FAST_MOVING_PID_KS,
+            TuningConstants.VISION_FAST_MOVING_PID_MIN,
+            TuningConstants.VISION_FAST_MOVING_PID_MAX,
+            this.getInjector().getInstance(ITimer.class));
+
+        this.currentState = TranslateState.FindAprilTags;
         tagsFound = 0;
-        //tagsMissed = 0;
-        driveTrainX = this.driveTrain.getPositionX();
-        driveTrainY = this.driveTrain.getPositionY();
+        tagsMissed = 0;
+        startingDriveTrainX = this.driveTrain.getPositionX();
+        startingDriveTrainY = this.driveTrain.getPositionY();
+        xAprilTagDistance = new double[TuningConstants.TAGS_FOUND_THRESHOLD];
+        yAprilTagDistance = new double[TuningConstants.TAGS_FOUND_THRESHOLD];
     }
 
     @Override
     public void update() 
     {
-        //TranslateState t = TranslateState.FindAprilTags;
-        switch(this.currentTranslateState)
+        switch(this.currentState)
         {
             case FindAprilTags:
-            if (this.vision.getAprilTagXOffset() != null && this.vision.getAprilTagYOffset() != null) //Not sure if should be && or || conditional
+            if (tagsFound >= TuningConstants.TAGS_FOUND_THRESHOLD)
             {
-                tagsFound++;
-                // TO DO: put the apriltags Founds X & Y to xDist and yDist array
-                // TO DO: then take average x and average y of those two arrays
-            }
-
-            if (tagsFound > TuningConstants.TAGS_FOUND_THRESHOLD)
-            {
-                this.currentTranslateState = TranslateState.Translate;
+                this.currentState = TranslateState.Translate;
+                double xAprilTagSumDistance = 0;
+                double yAprilTagSumDistance = 0;
                 for (int i = 0; i < TuningConstants.APRIL_TAG_SAMPLES_DESIRED; i++)
                 {
-                    xAprilTagDistance[i] = this.vision.getAprilTagXOffset();
-                    yAprilTagDistance[i] = this.vision.getAprilTagYOffset();    
-                    xAprilTagSumDistance = xAprilTagSumDistance + xAprilTagDistance[i]; 
-                    yAprilTagSumDistance = yAprilTagSumDistance + yAprilTagDistance[i];            
+                    xAprilTagSumDistance += xAprilTagDistance[i];
+                    yAprilTagSumDistance += yAprilTagDistance[i];
                 }
-                xAprilTagDistanceAverage = xAprilTagSumDistance/TuningConstants.APRIL_TAG_SAMPLES_DESIRED;
-                yAprilTagDistanceAverage = yAprilTagSumDistance/TuningConstants.APRIL_TAG_SAMPLES_DESIRED;
-
-                this.currentTranslateState = TranslateState.Translate;
+                this.xAprilTagDistanceAverage = xAprilTagSumDistance/TuningConstants.APRIL_TAG_SAMPLES_DESIRED;
+                this.yAprilTagDistanceAverage = yAprilTagSumDistance/TuningConstants.APRIL_TAG_SAMPLES_DESIRED;
+                this.desiredDriveTrainX = this.startingDriveTrainX + this.xAprilTagDistanceAverage - TuningConstants.APRILTAG_TO_DESIRED_SCORING_X_POSITION_DISTANCE;
+                this.desiredDriveTrainY = this.startingDriveTrainY + this.yAprilTagDistanceAverage + this.visionOffset;
+                this.currentState = TranslateState.Translate;
+                break;
             }
 
-            else if(tagsFound < TuningConstants.TAGS_FOUND_THRESHOLD)
+            else if (tagsMissed >= TuningConstants.TAGS_MISSED_THRESHOLD)
             {
-                this.currentTranslateState = TranslateState.Stop;
+                this.currentState = TranslateState.Stop;
+                break;
+            }
+
+            if (this.vision.getAprilTagXOffset() != null && this.vision.getAprilTagYOffset() != null) //Not sure if should be && or || conditional
+            {
+                this.xAprilTagDistance[tagsFound] = this.vision.getAprilTagXOffset();
+                this.yAprilTagDistance[tagsFound] = this.vision.getAprilTagYOffset(); 
+                this.tagsFound++;
+            }
+            else {
+                this.tagsMissed++;
             }
  
             case Translate:
-                // if (driveTrain.getPositionX() < TuningConstants.ACCEPTABLE_RANGE_IN_X_AND_Y_FOR_ALIGNMENT_TRANSLATE && 
-                //  driveTrain.getPositionY() < TuningConstants.ACCEPTABLE_RANGE_IN_X_AND_Y_FOR_ALIGNMENT_TRANSLATE)
-                //  {
-                //     this.currentState = TranslateState.Completed;
-                //  }
-                switch(this.currentScorePositionState)
+                if (driveTrain.getPositionX() < TuningConstants.ACCEPTABLE_RANGE_IN_X_AND_Y_FOR_ALIGNMENT_TRANSLATE && 
+                driveTrain.getPositionY() < TuningConstants.ACCEPTABLE_RANGE_IN_X_AND_Y_FOR_ALIGNMENT_TRANSLATE)
                 {
-                    case LeftCone:
-                       
-                        if (yAprilTagDistanceAverage - driveTrainY - TuningConstants.APRILTAG_TO_NODE_HORIZONTAL_DISTANCE > TuningConstants.ACCEPTABLE_RANGE_IN_X_AND_Y_FOR_ALIGNMENT_TRANSLATE) // Check if Left of
-                        {
-                            this.pid.calculateVelocity(TuningConstants.VELOCITY_TO_SETPOINT, yAprilTagDistanceAverage - driveTrainY - TuningConstants.APRILTAG_TO_NODE_HORIZONTAL_DISTANCE); //Y Movement (Right)
-                            this.pid.calculateVelocity(TuningConstants.VELOCITY_TO_SETPOINT, xAprilTagDistanceAverage - driveTrainX - TuningConstants.APRILTAG_TO_DESIRED_SCORING_X_POSITION_DISTANCE); //X Movement, X of aprilTag and X of left and right are assumed the same, so same X Code for all three
-
-                        }
-                        else if (yAprilTagDistanceAverage - driveTrainY - TuningConstants.APRILTAG_TO_NODE_HORIZONTAL_DISTANCE < -TuningConstants.ACCEPTABLE_RANGE_IN_X_AND_Y_FOR_ALIGNMENT_TRANSLATE) //Check if Right of
-                        {
-                            this.pid.calculateVelocity(TuningConstants.VELOCITY_TO_SETPOINT, yAprilTagDistanceAverage - driveTrainY - TuningConstants.APRILTAG_TO_NODE_HORIZONTAL_DISTANCE); //Y Movement (Left)
-                            this.pid.calculateVelocity(TuningConstants.VELOCITY_TO_SETPOINT, xAprilTagDistanceAverage - driveTrainX - TuningConstants.APRILTAG_TO_DESIRED_SCORING_X_POSITION_DISTANCE); //X Movement (Forwards)
-
-                        }   
-                        else 
-                        {
-                            this.currentTranslateState = TranslateState.Completed;
-                            break;
-                        }
-                    
-                    case MiddleCube:
-                        if (yAprilTagDistanceAverage - driveTrainY > TuningConstants.ACCEPTABLE_RANGE_IN_X_AND_Y_FOR_ALIGNMENT_TRANSLATE) //Check if Left or Right Of
-                        {
-                            this.pid.calculateVelocity(TuningConstants.VELOCITY_TO_SETPOINT, yAprilTagDistanceAverage - driveTrainY ); //Y Movement Left
-                            this.pid.calculateVelocity(TuningConstants.VELOCITY_TO_SETPOINT, xAprilTagDistanceAverage - driveTrainX - TuningConstants.APRILTAG_TO_DESIRED_SCORING_X_POSITION_DISTANCE); //X Movement (Forwards)
-                        }
-                        else if(yAprilTagDistanceAverage - driveTrainY < -TuningConstants.ACCEPTABLE_RANGE_IN_X_AND_Y_FOR_ALIGNMENT_TRANSLATE)
-                        {
-                            this.pid.calculateVelocity(TuningConstants.VELOCITY_TO_SETPOINT, yAprilTagDistanceAverage - driveTrainY ); //Y Movement Right
-                            this.pid.calculateVelocity(TuningConstants.VELOCITY_TO_SETPOINT, xAprilTagDistanceAverage - driveTrainX - TuningConstants.APRILTAG_TO_DESIRED_SCORING_X_POSITION_DISTANCE); //X Movement (Forwards)
-                        }
-                        else
-                        {
-                            this.currentTranslateState = TranslateState.Completed;
-                            break;
-                        }
-
-                    case RightCone:
-                        if (TuningConstants.APRILTAG_TO_DESIRED_SCORING_X_POSITION_DISTANCE - driveTrainY - yAprilTagDistanceAverage > TuningConstants.ACCEPTABLE_RANGE_IN_X_AND_Y_FOR_ALIGNMENT_TRANSLATE) // Check if Left of
-                            {
-                                this.pid.calculateVelocity(TuningConstants.VELOCITY_TO_SETPOINT, TuningConstants.APRILTAG_TO_DESIRED_SCORING_X_POSITION_DISTANCE - driveTrainY - yAprilTagDistanceAverage); //Y Movement (Right)
-                                this.pid.calculateVelocity(TuningConstants.VELOCITY_TO_SETPOINT, xAprilTagDistanceAverage - driveTrainX - TuningConstants.APRILTAG_TO_DESIRED_SCORING_X_POSITION_DISTANCE); //X Movement
-
-                            }
-                            else if (TuningConstants.APRILTAG_TO_DESIRED_SCORING_X_POSITION_DISTANCE - driveTrainY - yAprilTagDistanceAverage < -TuningConstants.ACCEPTABLE_RANGE_IN_X_AND_Y_FOR_ALIGNMENT_TRANSLATE) // Check if Right of
-                            {
-                                this.pid.calculateVelocity(TuningConstants.VELOCITY_TO_SETPOINT, TuningConstants.APRILTAG_TO_DESIRED_SCORING_X_POSITION_DISTANCE - driveTrainY - yAprilTagDistanceAverage); //Y Movement (Left) *Can make one long conditional and combine as negative distance would set negative velocity and go left
-                                this.pid.calculateVelocity(TuningConstants.VELOCITY_TO_SETPOINT, xAprilTagDistanceAverage - driveTrainX -TuningConstants.APRILTAG_TO_DESIRED_SCORING_X_POSITION_DISTANCE); //X Movement (Forwards)
-                            }   
-                            else 
-                            {
-                                this.currentTranslateState = TranslateState.Completed;
-                                break;
-                            }
+                this.currentState = TranslateState.Completed;
                 }
+                xDesiredVelocity = this.yPIDHandler.calculatePosition(desiredDriveTrainY, startingDriveTrainY);
+                yDesiredVelocity = this.XPidHandler.calculatePosition(desiredDriveTrainX, startingDriveTrainX);
+                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, xDesiredVelocity);
+                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, yDesiredVelocity);
+                this.currentState = TranslateState.Completed;
+                break;
             
             case Completed:
                 break;
@@ -162,6 +147,7 @@ public class VisionAlignmentTranslateTask extends ControlTaskBase
             case Stop:
                 break;
         }
+
     }
 
     @Override
@@ -171,6 +157,6 @@ public class VisionAlignmentTranslateTask extends ControlTaskBase
 
     @Override
     public boolean hasCompleted() {
-        return this.currentTranslateState == TranslateState.Completed;
+        return this.currentState == TranslateState.Completed;
     }
 }
