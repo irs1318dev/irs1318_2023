@@ -88,7 +88,7 @@ public class ArmMMPositionTask extends ControlTaskBase
                 this.currentArmState = ArmMMState.DesiredGoal;
             }
         }
-        else if (this.currentArmState == ArmMMState.DesiredLowerIntermidate)
+        else if (this.currentArmState == ArmMMState.DesiredHighIntermidate)
         {
             if (Math.abs(this.arm.getLowerPosition() - TuningConstants.ARM_LOWER_POSITION_HIGH_INTERMIDATE) < TuningConstants.ARM_LOWER_MM_GOAL_THRESHOLD &&
                 Math.abs(this.arm.getUpperPosition() - TuningConstants.ARM_UPPER_POSITION_HIGH_INTERMIDATE) < TuningConstants.ARM_UPPER_MM_GOAL_THRESHOLD)

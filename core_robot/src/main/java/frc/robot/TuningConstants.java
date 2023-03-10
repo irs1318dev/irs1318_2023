@@ -100,7 +100,17 @@ public class TuningConstants
     public static final double POWER_OVERCURREHT_HIGH_THRESHOLD = 160.0;
 
     //================================================= Vision ======================================================
+    
+     // Finding AprilTags to determine if theres enough valid data to translate 
 
+    
+    public static final int TAGS_MISSED_THRESHOLD = 30; 
+    public static final int TAGS_FOUND_THRESHOLD = 5; 
+    public static final double ACCEPTABLE_RANGE_IN_X_AND_Y_FOR_ALIGNMENT_TRANSLATE = 20; 
+    public static final double VELOCITY_TO_SETPOINT = 0.5; 
+    public static final double APRILTAG_TO_NODE_HORIZONTAL_DISTANCE = 22; 
+    public static final double APRILTAG_TO_DESIRED_SCORING_X_POSITION_DISTANCE = 16.25; //Pushed against grid, in inches 
+    public static final double APRIL_TAG_SAMPLES_DESIRED = 30; //Double to take average (Cannot divide double by int) 
     // Acceptable vision centering range values in degrees
     public static final double MAX_PID_TURNING_RANGE_DEGREES = 7.0;
 
@@ -362,36 +372,36 @@ public class TuningConstants
     public static final double ARM_INTAKE_THROUGHBEAM_THRESHOLD = 3.5;
 
     public static final boolean ARM_USE_MM = false;
-    public static final boolean ARM_USE_IK = false;
+    public static final boolean ARM_USE_IK = true;
 
     public static final double ARM_MAX_VELOCITY = 400.0;
-    public static final double ARM_LOWER_LEFT_POSITION_MM_PID_KP = 0.0;
+    public static final double ARM_LOWER_LEFT_POSITION_MM_PID_KP = 0.5;
     public static final double ARM_LOWER_LEFT_POSITION_MM_PID_KI = 0.0;
     public static final double ARM_LOWER_LEFT_POSITION_MM_PID_KD = 0.0;
     public static final double ARM_LOWER_LEFT_POSITION_MM_PID_KF = 3.2;
     public static final double ARM_LOWER_LEFT_POSITION_MM_CRUISE_VELOCITY = 400.0;
-    public static final double ARM_LOWER_LEFT_POSITION_MM_ACCELERATION = 200.0;
+    public static final double ARM_LOWER_LEFT_POSITION_MM_ACCELERATION = 400.0;
 
-    public static final double ARM_LOWER_RIGHT_POSITION_MM_PID_KP = 0.0;
+    public static final double ARM_LOWER_RIGHT_POSITION_MM_PID_KP = 0.5;
     public static final double ARM_LOWER_RIGHT_POSITION_MM_PID_KI = 0.0;
     public static final double ARM_LOWER_RIGHT_POSITION_MM_PID_KD = 0.0;
     public static final double ARM_LOWER_RIGHT_POSITION_MM_PID_KF = 3.2;
     public static final double ARM_LOWER_RIGHT_POSITION_MM_CRUISE_VELOCITY = 0.8 * 400.0;
-    public static final double ARM_LOWER_RIGHT_POSITION_MM_ACCELERATION = 200.0;
+    public static final double ARM_LOWER_RIGHT_POSITION_MM_ACCELERATION = 400.0;
 
-    public static final double ARM_UPPER_POSITION_MM_PID_KP = 0.0;
+    public static final double ARM_UPPER_POSITION_MM_PID_KP = 0.5;
     public static final double ARM_UPPER_POSITION_MM_PID_KI = 0.0;
     public static final double ARM_UPPER_POSITION_MM_PID_KD = 0.0;
     public static final double ARM_UPPER_POSITION_MM_PID_KF = 3.2;
     public static final double ARM_UPPER_POSITION_MM_CRUISE_VELOCITY = 0.8 * 400.0;
-    public static final double ARM_UPPER_POSITION_MM_ACCELERATION = 200.0;
+    public static final double ARM_UPPER_POSITION_MM_ACCELERATION = 400.0;
 
-    public static final double ARM_LOWER_LEFT_POSITION_PID_KP = 1.2;
+    public static final double ARM_LOWER_LEFT_POSITION_PID_KP = 1.8;
     public static final double ARM_LOWER_LEFT_POSITION_PID_KI = 0.0;
     public static final double ARM_LOWER_LEFT_POSITION_PID_KD = 0.0;
     public static final double ARM_LOWER_LEFT_POSITION_PID_KF = 0.0;
 
-    public static final double ARM_LOWER_RIGHT_POSITION_PID_KP = 1.2;
+    public static final double ARM_LOWER_RIGHT_POSITION_PID_KP = 1.8;
     public static final double ARM_LOWER_RIGHT_POSITION_PID_KI = 0.0;
     public static final double ARM_LOWER_RIGHT_POSITION_PID_KD = 0.0;
     public static final double ARM_LOWER_RIGHT_POSITION_PID_KF = 0.0;
@@ -410,7 +420,7 @@ public class TuningConstants
     public static final boolean ARM_LOWER_RIGHT_INVERT_SENSOR = false;
     public static final boolean ARM_UPPER_INVERT_SENSOR = false;
 
-    public static final double ARM_MAX_TWIST_AMOUNT = 200.0; // in ticks - the largest allowed tick difference between lower left and lower right actuators
+    public static final double ARM_MAX_TWIST_AMOUNT = 800.0; // in ticks - the largest allowed tick difference between lower left and lower right actuators
 
     public static final double ARM_NEAR_FULL_EXTENSION_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.9; // in inches
     public static final double ARM_NEAR_FULL_RETRACTED_LENGTH = HardwareConstants.ARM_EXTENTION_LENGTH * 0.1; // in inches
@@ -547,10 +557,10 @@ public class TuningConstants
 
     //TODO: edit to be more sensitive
     public static final double CHARGE_STATION_ACCEPTABLE_PITCH_DIFF_V2 = 3.0;
-    public static final double CHARGE_STATION_STARTING_SPEED_V2 = 0.8;
+    public static final double CHARGE_STATION_STARTING_SPEED_V2 = 0.85;
     public static final double CHARGE_STATION_CLIMBING_SPEED_V2 = 0.25;
     public static final double CHARGE_STATION_BALANCING_SPEED_V2 = 0.08;
 
     //TODO: edit to be shorter, because climbing velocity has increased.
-    public static final double CHARGE_STATION_CLIMBING_TRANSITION_WAIT_DURATION_V2 = 1.5;
+    public static final double CHARGE_STATION_CLIMBING_TRANSITION_WAIT_DURATION_V2 = 1.0;
 }

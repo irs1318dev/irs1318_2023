@@ -436,6 +436,92 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P10, BackwardOT, BackwardOT),
                 new PathPlannerWaypoint(P1, BackwardOT, BackwardOT)),
             isRed ? "10To1Red" : "10To1Blue");
+        
+        //New Paths
+
+            //Guard Side
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(GuardStart, -180, -180),
+                new PathPlannerWaypoint(P9, -180, -180)),
+                isRed ? "GuardStartTo9Red" : "GuardStartTo9Blue");
+            
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(P9, 0, -180),
+                new PathPlannerWaypoint(P19, 0, -180),
+                new PathPlannerWaypoint(P23, 0, 0),
+                new PathPlannerWaypoint(P17, 0 , 0)),
+                isRed ? "9To17Red" : "9To17Blue");
+        
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(P17, -180, 0),
+                new PathPlannerWaypoint(P23, -180, -180),
+                new PathPlannerWaypoint(P12, -180, -180),
+                new PathPlannerWaypoint(P7, -180 , -180)),
+                isRed ? "17To7Red" : "17To7Blue");
+
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(P17, -180, 0),
+                new PathPlannerWaypoint(P19, -180, 0),
+                new PathPlannerWaypoint(P13, LoadOT , 0)),
+                isRed ? "17ToChargeStationRed" : "17ToChargeStationBlue");
+
+            //Load Side
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(LoadStart, -180, -180),
+                new PathPlannerWaypoint(P1, -180, -180)),
+                isRed ? "LoadStartTo1Red" : "LoadStartTo1Blue");
+            
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(P1, 0, -180),
+                new PathPlannerWaypoint(P18, 0, -180),
+                new PathPlannerWaypoint(P20, 0, 0),
+                new PathPlannerWaypoint(P14, 0 , 0)),
+                isRed ? "1To14Red" : "1To14Blue");
+        
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(P14, -180, 0),
+                new PathPlannerWaypoint(P20, -180, -180),
+                new PathPlannerWaypoint(P10, -180, -180),
+                new PathPlannerWaypoint(P3, -180 , -180)),
+                isRed ? "14To3Red" : "14To3Blue");
+
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(P14, -180, 0),
+                new PathPlannerWaypoint(P18, -180, 0),
+                new PathPlannerWaypoint(P13, GuardOT , 0)),
+                isRed ? "14ToChargeStationRed" : "17ToChargeStationBlue");
     }
 
     private static void addTrajectory(TrajectoryManager trajectoryManager, ITrajectory trajectory, String name)
