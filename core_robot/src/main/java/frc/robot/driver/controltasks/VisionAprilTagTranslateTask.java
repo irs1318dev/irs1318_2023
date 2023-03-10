@@ -55,11 +55,11 @@ public class VisionAprilTagTranslateTask extends ControlTaskBase
         switch (position)
         {
             case LeftCone:
-                this.visionOffset = TuningConstants.APRILTAG_TO_NODE_HORIZONTAL_DISTANCE;
+                this.visionOffset = TuningConstants.APRILTAG_TO_CONE_NODE_HORIZONTAL_DISTANCE;
                 break;
 
             case RightCone:
-                this.visionOffset = -TuningConstants.APRILTAG_TO_NODE_HORIZONTAL_DISTANCE;
+                this.visionOffset = -TuningConstants.APRILTAG_TO_CONE_NODE_HORIZONTAL_DISTANCE;
                 break;
 
             default:
