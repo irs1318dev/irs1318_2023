@@ -55,13 +55,13 @@ public class TuningConstants
     public static final double FullWidth = 315.5; // (Y) 26 ft. 3.5 in, from game manual
 
     // X Values
-    public static final double StartGridX = 71.765; // Edge of grid - Robot centering value
-    public static final double CloseChargeStationX = 84.61; // 12.845 inches away from the charge station and grid + Robot centering value
-    public static final double FarChargeStationX = 222.635; // 12 inches away from the charge station + Robot centering value
-    public static final double FarChargeStationInBetweenX = TuningConstants.FarChargeStationX - 30.0; // 30 inches away from last point to allow for turning
-    public static final double GroundPiecesX = 253.265; // On ground pieces real value 47.36
-    public static final double LoadEdgeStartX = 110.765;
-    public static final double GuardEdgeStartX = 132.015;
+    public static final double StartGridX = 17.5;//71.765; // Edge of grid - Robot centering value
+    public static final double CloseChargeStationX = 30.345;//84.61; // 12.845 inches away from the charge station and grid + Robot centering value
+    public static final double FarChargeStationX = 163.195;//222.635; // 12 inches away from the charge station + Robot centering value
+    public static final double FarChargeStationInBetweenX = TuningConstants.FarChargeStationX + 30.0; // 30 inches away from last point to allow for turning
+    public static final double GroundPiecesX = 196.5;//253.265; // On ground pieces real value 47.36
+    public static final double LoadEdgeStartX = 58.5;//110.765;
+    public static final double GuardEdgeStartX = 77.75;//132.015;
     public static final double FullLength = 651.25; // (X) 54 ft. 3.25 in, from game manual
 
     // April tag array by ids - Blue alliance
