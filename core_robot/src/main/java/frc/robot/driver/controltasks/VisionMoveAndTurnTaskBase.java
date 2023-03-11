@@ -41,6 +41,12 @@ public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
         this.verifyAngle = verifyAngle;
 
         this.movePIDHandler = null;
+
+        if (TuningConstants.THROW_EXCEPTIONS &&
+            this.isAprilTag() == this.isRetroReflective())
+        {
+            throw new RuntimeException("exactly one of isAprilTag or isRetroReflective should be true");
+        }
     }
 
     /**
