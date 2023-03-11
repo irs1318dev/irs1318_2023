@@ -90,7 +90,7 @@ public class ArmMechanism implements IMechanism
 
     private FloatingAverageCalculator lowerLeftLAVelocityAverageCalculator;
     private FloatingAverageCalculator lowerRightLAVelocityAverageCalculator;
-    private FloatingAverageCalculator upperLAVelocityAverageCalculator;
+    private FloatingAverageCalculator upperLAsVelocityAverageCalculator;
 
     private double lowerLeftLAVelocityAverage;
     private double lowerRightLAVelocityAverage;
@@ -231,7 +231,7 @@ public class ArmMechanism implements IMechanism
 
         this.lowerLeftLAVelocityAverageCalculator = new FloatingAverageCalculator(this.timer, TuningConstants.ARM_VELOCITY_TRACKING_DURATION, TuningConstants.ARM_VELOCITY_SAMPLES_PER_SECOND);
         this.lowerRightLAVelocityAverageCalculator = new FloatingAverageCalculator(this.timer, TuningConstants.ARM_VELOCITY_TRACKING_DURATION, TuningConstants.ARM_VELOCITY_SAMPLES_PER_SECOND);
-        this.upperLAVelocityAverageCalculator = new FloatingAverageCalculator(this.timer, TuningConstants.ARM_VELOCITY_TRACKING_DURATION, TuningConstants.ARM_VELOCITY_SAMPLES_PER_SECOND);
+        this.upperLAsVelocityAverageCalculator = new FloatingAverageCalculator(this.timer, TuningConstants.ARM_VELOCITY_TRACKING_DURATION, TuningConstants.ARM_VELOCITY_SAMPLES_PER_SECOND);
 
         ITalonSRX upperLAFollower = provider.getTalonSRX(ElectronicsConstants.ARM_UPPER_LA_FOLLOWER_CAN_ID);
         upperLAFollower.setNeutralMode(MotorNeutralMode.Brake);
@@ -304,7 +304,7 @@ public class ArmMechanism implements IMechanism
 
         this.lowerLeftLAVelocityAverage = this.lowerLeftLAVelocityAverageCalculator.update(this.lowerLeftLAVelocity);
         this.lowerRightLAVelocityAverage = this.lowerRightLAVelocityAverageCalculator.update(this.lowerRightLAVelocity);
-        this.upperLAVelocityAverage = this.upperLAVelocityAverageCalculator.update(this.upperLAVelocity);
+        this.upperLAVelocityAverage = this.upperLAsVelocityAverageCalculator.update(this.upperLAVelocity);
 
         this.logger.logNumber(LoggingKey.ArmLowerLeftPosition, this.lowerLeftLAPosition);
         this.logger.logNumber(LoggingKey.ArmLowerLeftVelocity, this.lowerLeftLAVelocity);
@@ -613,8 +613,9 @@ public class ArmMechanism implements IMechanism
                 if (lowerPositionAdjustment != 0.0)
                 {
                     // reset desired positions to ensure that we maintain the position after we release the joystick
-                    this.desiredLowerLeftLAPosition = this.lowerLeftLAPosition;
-                    this.desiredLowerRightLAPosition = this.lowerRightLAPosition;
+                    double lowerLAPosition = 0.5 * (this.lowerLeftLAPosition + this.lowerRightLAPosition);
+                    this.desiredLowerLeftLAPosition = lowerLAPosition;
+                    this.desiredLowerRightLAPosition = lowerLAPosition;
 
                     this.lowerSetpointChangedTime = currTime;
 
@@ -706,12 +707,13 @@ public class ArmMechanism implements IMechanism
                     double newDesiredXPosition = this.desiredXPosition + ikXAdjustment;
                     double newDesiredZPosition = this.desiredZPosition + ikZAdjustment;
 
-                    DoubleTuple ikResult = ArmMechanism.calculateIK(ikX, ikZ);
+                    DoubleTuple ikResult = ArmMechanism.calculateIK(newDesiredXPosition, newDesiredZPosition);
+                    System.out.println("ik-adjust? " + (ikResult != null));
                     if (ikResult != null)
                     {
                         boolean updateDesiredIKPosition = false;
-                        if (Helpers.RoughEquals(this.desiredLowerLeftLAPosition, ikResult.first, 0.1) ||
-                            Helpers.RoughEquals(this.desiredLowerRightLAPosition, ikResult.first, 0.1))
+                        if (!Helpers.RoughEquals(this.desiredLowerLeftLAPosition, ikResult.first, 0.01) ||
+                            !Helpers.RoughEquals(this.desiredLowerRightLAPosition, ikResult.first, 0.01))
                         {
                             this.lowerSetpointChangedTime = currTime;
 
@@ -720,7 +722,7 @@ public class ArmMechanism implements IMechanism
                             updateDesiredIKPosition = true;
                         }
 
-                        if (Helpers.RoughEquals(this.desiredUpperLAPosition, ikResult.second, 0.1))
+                        if (!Helpers.RoughEquals(this.desiredUpperLAPosition, ikResult.second, 0.01))
                         {
                             this.upperSetpointChangedTime = currTime;
 
@@ -733,6 +735,10 @@ public class ArmMechanism implements IMechanism
                             this.desiredXPosition = newDesiredXPosition;
                             this.desiredZPosition = newDesiredZPosition;
                         }
+                    }
+                    else
+                    {
+                        System.out.println("desired: " + newDesiredXPosition + ", " + newDesiredZPosition);
                     }
                 }
                 else if (newDesiredLowerPosition != TuningConstants.MAGIC_NULL_VALUE ||
@@ -843,8 +849,10 @@ public class ArmMechanism implements IMechanism
         this.logger.logBoolean(LoggingKey.ArmLowerStalled, this.lowerLAsStalled);
         this.logger.logBoolean(LoggingKey.ArmUpperStalled, this.upperLAsStalled);
 
-        this.logger.logNumber(LoggingKey.ArmLowerLeftDesiredPosition, this.desiredLowerLeftLAPosition);
-        this.logger.logNumber(LoggingKey.ArmLowerRightDesiredPosition, this.desiredLowerRightLAPosition);
+        this.logger.logNumber(LoggingKey.ArmDesiredXPosition, this.desiredXPosition);
+        this.logger.logNumber(LoggingKey.ArmDesiredZPosition, this.desiredZPosition);
+        this.logger.logNumber(LoggingKey.ArmLowerLeftDesiredPosition, this.desiredLowerLeftLAPosition + twistAmount);
+        this.logger.logNumber(LoggingKey.ArmLowerRightDesiredPosition, this.desiredLowerRightLAPosition - twistAmount);
         this.logger.logNumber(LoggingKey.ArmUpperDesiredPosition, this.desiredUpperLAPosition);
 
         this.prevTime = currTime;
@@ -878,9 +886,9 @@ public class ArmMechanism implements IMechanism
         this.upperLAsPowerAverage = 0.0;
 
         // velocity averaging
-        this.lowerLeftLAPowerAverageCalculator.reset();
-        this.lowerRightLAPowerAverageCalculator.reset();
-        this.upperLAsPowerAverageCalculator.reset();
+        this.lowerLeftLAVelocityAverageCalculator.reset();
+        this.lowerRightLAVelocityAverageCalculator.reset();
+        this.upperLAsVelocityAverageCalculator.reset();
         this.lowerLeftLAVelocityAverage = 0.0;
         this.lowerRightLAVelocityAverage = 0.0;
         this.upperLAVelocityAverage = 0.0;

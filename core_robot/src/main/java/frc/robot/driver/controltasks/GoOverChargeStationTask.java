@@ -11,13 +11,13 @@ import frc.robot.common.robotprovider.ITimer;
 import frc.robot.driver.*;
 import frc.robot.mechanisms.*;
 
-public class ChargeStationTaskv2 extends ControlTaskBase
+public class GoOverChargeStationTask extends ControlTaskBase
 {
     private enum State
     {
         Starting,
         Climbing,
-        Balancing,
+        Centered,
         Completed
     }
 
@@ -34,12 +34,12 @@ public class ChargeStationTaskv2 extends ControlTaskBase
     private double pitch;
     private double climbingExceededTransitionTime;
 
-    public ChargeStationTaskv2(boolean reverse)
+    public GoOverChargeStationTask(boolean reverse)
     {
         this(reverse, false);
     }
 
-    public ChargeStationTaskv2(boolean reverse, boolean backwardOrientation)
+    public GoOverChargeStationTask(boolean reverse, boolean backwardOrientation)
     {
         this.backwardOrientation = backwardOrientation;
         this.reverse = reverse ? -1.0 : 1.0;
@@ -92,24 +92,17 @@ public class ChargeStationTaskv2 extends ControlTaskBase
         else if (this.currentState == State.Climbing)
         {
             // if pitch is larger than 15-ish for more than the configured length of time, switch to balancing mode
-            if (Math.abs(this.pitch) >= (TuningConstants.CHARGE_STATION_CLIMBING_TRANSITION_PITCH - TuningConstants.CHARGE_STATION_CLIMBING_TRANSITION_ACCEPTABLE_VARIATION) &&
-                this.climbingExceededTransitionTime == 0.0)
+            if (Math.abs(this.pitch) >= (TuningConstants.CHARGE_STATION_CLIMBING_TRANSITION_PITCH - TuningConstants.CHARGE_STATION_CLIMBING_TRANSITION_ACCEPTABLE_VARIATION))
             {
-                this.climbingExceededTransitionTime = currTime;
+                this.currentState = State.Centered;
             }
-
-            if (this.climbingExceededTransitionTime != 0.0)
-            {
-                if (currTime - this.climbingExceededTransitionTime >= TuningConstants.CHARGE_STATION_CLIMBING_TRANSITION_WAIT_DURATION_V2)
-                {
-                    this.currentState = State.Balancing;
-                }
-            }
+                    
+                
+            
         }
-        else if (this.currentState == State.Balancing)
+        else if (this.currentState == State.Centered)
         {
-            if ((Math.abs(this.pitchRateAverage) <= TuningConstants.CHARGE_STATION_ACCEPTABLE_PITCH_DIFF_V2) &&
-                (Math.abs(this.pitch) <= TuningConstants.CHARGE_STATION_PITCH_VARIATION_V2))
+            if (Math.abs(this.pitch) <= TuningConstants.CHARGE_STATION_PITCH_VARIATION)
             {
                 this.currentState = State.Completed;
             }
@@ -117,25 +110,10 @@ public class ChargeStationTaskv2 extends ControlTaskBase
 
         switch (this.currentState)
         {
-            case Balancing:
-                // if the pitch diff over the past 0.1 seconds is greater than the acceptable diff
-                if (Math.abs(this.pitchRateAverage) <= TuningConstants.CHARGE_STATION_ACCEPTABLE_PITCH_DIFF_V2)
-                {
-                    // if negative pitch, move forward
-                    if (this.pitch < 0)
-                    {
-                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, (this.backwardOrientation ? -1.0 : 1.0) * TuningConstants.CHARGE_STATION_BALANCING_SPEED_V2);
-                    }
-                    else // if (this.pitch > 0)
-                    {
-                        this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, (this.backwardOrientation ? 1.0 : -1.0) * TuningConstants.CHARGE_STATION_BALANCING_SPEED_V2);
-                    }
-                }
-                else // if pitch diff is within acceptable range, then pause.
-                {
-                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0);
-                }
-
+            case Centered:
+            
+                //uses climbing speed
+                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_CLIMBING_SPEED_V2 * this.reverse);
                 break;
 
             case Climbing:
