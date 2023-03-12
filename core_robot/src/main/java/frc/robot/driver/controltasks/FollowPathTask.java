@@ -128,11 +128,11 @@ public class FollowPathTask extends ControlTaskBase
                 double initialAngle = this.initialPose.angle;
 
                 // change so that we move in relation to the direction the robot was initially pointing
-                xGoal = Helpers.cosd(initialAngle) * xPos + Helpers.sind(initialAngle) * yPos + this.initialPose.x;
-                yGoal = Helpers.cosd(initialAngle) * yPos - Helpers.sind(initialAngle) * xPos + this.initialPose.y;
+                xGoal = Helpers.cosd(-initialAngle) * xPos + Helpers.sind(-initialAngle) * yPos + this.initialPose.x;
+                yGoal = Helpers.cosd(-initialAngle) * yPos - Helpers.sind(-initialAngle) * xPos + this.initialPose.y;
                 angleGoal = state.angle + initialAngle;
-                xVelGoal = Helpers.cosd(initialAngle) * xVel + Helpers.sind(initialAngle) * yVel;
-                yVelGoal = Helpers.cosd(initialAngle) * yVel - Helpers.sind(initialAngle) * xVel;
+                xVelGoal = Helpers.cosd(-initialAngle) * xVel + Helpers.sind(-initialAngle) * yVel;
+                yVelGoal = Helpers.cosd(-initialAngle) * yVel - Helpers.sind(-initialAngle) * xVel;
                 angleVelGoal = state.angleVelocity;
                 break;
 
