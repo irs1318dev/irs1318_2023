@@ -18,6 +18,13 @@ public class ArmMMPositionTask extends ControlTaskBase
         Completed,
     }
 
+    private enum IntakeState
+    {
+        IntakeUp,
+        IntakeDown,
+        Unchanged,
+    }
+
     private final double lowerExtensionLength;
     private final double upperExtensionLength;
     private final boolean waitUntilPositionReached;
@@ -25,17 +32,29 @@ public class ArmMMPositionTask extends ControlTaskBase
     private ArmMechanism arm;
 
     private ArmMMState currentArmState;
+    private final IntakeState desiredState;
 
     public ArmMMPositionTask(double lowerExtensionLength, double upperExtensionLength)
     {
         this(lowerExtensionLength, upperExtensionLength, false);
     }
 
+    public ArmMMPositionTask(double lowerExtensionLength, double upperExtensionLength, IntakeState state)
+    {
+        this(lowerExtensionLength, upperExtensionLength, false, IntakeState.Unchanged);
+
+    }
+
     public ArmMMPositionTask(double lowerExtensionLength, double upperExtensionLength, boolean waitUntilPositionReached)
+    {
+        this(lowerExtensionLength, upperExtensionLength, waitUntilPositionReached, IntakeState.Unchanged);
+    }
+    public ArmMMPositionTask(double lowerExtensionLength, double upperExtensionLength, boolean waitUntilPositionReached, IntakeState state)
     {
         this.lowerExtensionLength = lowerExtensionLength;
         this.upperExtensionLength = upperExtensionLength;
         this.waitUntilPositionReached = waitUntilPositionReached;
+        this.desiredState = state;
     }
 
     /**

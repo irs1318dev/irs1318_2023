@@ -105,8 +105,8 @@ public class ArmMechanism implements IMechanism
 
     private enum IntakeState
     {
-        Retracted,
-        Extended
+        Up,
+        Down,
     };
     
     private double throughBeamValue;
@@ -272,7 +272,7 @@ public class ArmMechanism implements IMechanism
                 ElectronicsConstants.ARM_INTAKE_PISTON_FORWARD,
                 ElectronicsConstants.ARM_INTAKE_PISTON_REVERSE);
 
-        this.currentIntakeState = IntakeState.Retracted;
+        this.currentIntakeState = IntakeState.Up;
 
         // this.intakeThroughBeamSensor = provider.getAnalogInput(ElectronicsConstants.ARM_INTAKE_THROUGH_BEAM_ANALOG_INPUT);
     }
@@ -561,23 +561,23 @@ public class ArmMechanism implements IMechanism
         this.logger.logNumber(LoggingKey.ArmIntakePower, intakePower);
 
         // intake state transitions
-        if (this.driver.getDigital(DigitalOperation.IntakeRelease))
+        if (this.driver.getDigital(DigitalOperation.IntakeDown))
         {
-            this.currentIntakeState = IntakeState.Extended;
+            this.currentIntakeState = IntakeState.Down;
         }
-        else if (this.driver.getDigital(DigitalOperation.IntakeGrab))
+        else if (this.driver.getDigital(DigitalOperation.IntakeUp))
         {
-            this.currentIntakeState = IntakeState.Retracted;
+            this.currentIntakeState = IntakeState.Up;
         }
 
-        this.logger.logBoolean(LoggingKey.ArmIntakeExtended, this.currentIntakeState == IntakeState.Extended);
+        this.logger.logBoolean(LoggingKey.ArmIntakeExtended, this.currentIntakeState == IntakeState.Down);
         switch (this.currentIntakeState)
         {
-            case Extended:
+            case Down:
                 this.intakeExtender.set(DoubleSolenoidValue.Forward);
                 break;
             default:
-            case Retracted:
+            case Up:
                 this.intakeExtender.set(DoubleSolenoidValue.Reverse);
                 break;
         }

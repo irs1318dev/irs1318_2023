@@ -293,7 +293,7 @@ public class AutonomousRoutineSelector
                 ),
                 SequentialTask.Sequence(
                     new WaitTask(1.0),
-                    new IntakeExtendTask(true),
+                    new IntakePositionTask(true),
                     new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP, true)
                 )
             ),
@@ -303,7 +303,7 @@ public class AutonomousRoutineSelector
                 // Use If no Through Beam!
                 SequentialTask.Sequence(
                     new IntakeGamePieceTask(true, 2.0),
-                    new IntakeExtendTask(false)
+                    new IntakePositionTask(false)
                 )
             ),
             ConcurrentTask.AllTasks(
@@ -344,7 +344,7 @@ public class AutonomousRoutineSelector
                 ),
                 SequentialTask.Sequence(
                     new WaitTask(1.0),
-                    new IntakeExtendTask(true),
+                    new IntakePositionTask(true),
                     new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP, true)
                 )
             ),
@@ -354,7 +354,7 @@ public class AutonomousRoutineSelector
                 // Use If no Through Beam!
                 SequentialTask.Sequence(
                     new IntakeGamePieceTask(true, 2.0),
-                    new IntakeExtendTask(false)
+                    new IntakePositionTask(false)
                 )
             ),
 
@@ -388,7 +388,7 @@ public class AutonomousRoutineSelector
                 ),
                 SequentialTask.Sequence(
                     new WaitTask(1.0),
-                    new IntakeExtendTask(true),
+                    new IntakePositionTask(true),
                     new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP, true)
                 )
             ),
@@ -398,7 +398,7 @@ public class AutonomousRoutineSelector
                 // Use If no Through Beam!
                 SequentialTask.Sequence(
                     new IntakeGamePieceTask(true, 2.0),
-                    new IntakeExtendTask(false)
+                    new IntakePositionTask(false)
                 )
             ),
             ConcurrentTask.AllTasks(
@@ -414,7 +414,7 @@ public class AutonomousRoutineSelector
             ),
             
             new WaitTask(0.2),
-            new IntakeExtendTask(true)
+            new IntakePositionTask(true)
         );
     }
 
@@ -582,7 +582,7 @@ public class AutonomousRoutineSelector
                 SequentialTask.Sequence(
                     new WaitTask(0.8),
                     
-                    new IntakeExtendTask(true),
+                    new IntakePositionTask(true),
                     new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP, true)
                 )
             ),
@@ -592,7 +592,7 @@ public class AutonomousRoutineSelector
                 // Use If no Through Beam!
                 SequentialTask.Sequence(
                     new IntakeGamePieceTask(true, 1.0),
-                    new IntakeExtendTask(false)
+                    new IntakePositionTask(false)
                 )
             ),
             ConcurrentTask.AllTasks(
@@ -634,7 +634,7 @@ public class AutonomousRoutineSelector
                 SequentialTask.Sequence(
                     new WaitTask(0.8),
                     
-                    new IntakeExtendTask(true),
+                    new IntakePositionTask(true),
                     new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP, true)
                 )
             ),
@@ -644,7 +644,7 @@ public class AutonomousRoutineSelector
                 // Use If no Through Beam!
                 SequentialTask.Sequence(
                     new IntakeGamePieceTask(true, 1.0),
-                    new IntakeExtendTask(false)
+                    new IntakePositionTask(false)
                 )
             ),
             new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
@@ -678,7 +678,7 @@ public class AutonomousRoutineSelector
                 SequentialTask.Sequence(
                     new WaitTask(0.8),
                     
-                    new IntakeExtendTask(true),
+                    new IntakePositionTask(true),
                     new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP, true)
                 )
             ),
@@ -688,7 +688,7 @@ public class AutonomousRoutineSelector
                 // Use If no Through Beam!
                 SequentialTask.Sequence(
                     new IntakeGamePieceTask(true, 1.0),
-                    new IntakeExtendTask(false)
+                    new IntakePositionTask(false)
                 )
             ),
             ConcurrentTask.AllTasks(
@@ -701,7 +701,7 @@ public class AutonomousRoutineSelector
             ),
 
             new WaitTask(0.2),
-            new IntakeExtendTask(true)
+            new IntakePositionTask(true)
         );
     }
 }
