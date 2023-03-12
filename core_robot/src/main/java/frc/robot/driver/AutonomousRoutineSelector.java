@@ -294,7 +294,7 @@ public class AutonomousRoutineSelector
                 SequentialTask.Sequence(
                     new WaitTask(0.7),
                     new IntakeExtendTask(true),
-                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP, true)
+                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP_CONE, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP_CONE, true)
                 ),
 
                 new IntakeInTask(true, 5.0)
@@ -333,7 +333,7 @@ public class AutonomousRoutineSelector
                 SequentialTask.Sequence(
                     new WaitTask(0.7),
                     new IntakeExtendTask(true),
-                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP, true)
+                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP_CONE, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP_CONE, true)
                 ),
 
                 new IntakeInTask(true, 5.0)
@@ -366,7 +366,7 @@ public class AutonomousRoutineSelector
                 SequentialTask.Sequence(
                     new WaitTask(0.7),
                     new IntakeExtendTask(true),
-                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP, true)
+                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP_CONE, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP_CONE, true)
                 ),
 
                 new IntakeInTask(true, 5.0)
@@ -538,7 +538,7 @@ public class AutonomousRoutineSelector
                 SequentialTask.Sequence(
                     new WaitTask(0.7),
                     new IntakeExtendTask(true),
-                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP, true)
+                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP_CONE, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP_CONE, true)
                 ),
 
                 new IntakeInTask(true, 5.0)
@@ -577,7 +577,7 @@ public class AutonomousRoutineSelector
                 SequentialTask.Sequence(
                     new WaitTask(0.7),
                     new IntakeExtendTask(true),
-                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP, true)
+                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP_CONE, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP_CONE, true)
                 ),
 
                 new IntakeInTask(true, 5.0)
@@ -589,7 +589,7 @@ public class AutonomousRoutineSelector
                 SequentialTask.Sequence(
                     new WaitTask(0.7),
                     new IntakeExtendTask(true),
-                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP, true)
+                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP_CONE, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP_CONE, true)
                 ),
 
                 new IntakeInTask(true, 5.0)
@@ -621,7 +621,7 @@ public class AutonomousRoutineSelector
                 SequentialTask.Sequence(
                     new WaitTask(0.7),
                     new IntakeExtendTask(true),
-                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP, true)
+                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP_CONE, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP_CONE, true)
                 ),
 
                 new IntakeInTask(true, 5.0)
@@ -633,7 +633,7 @@ public class AutonomousRoutineSelector
                 SequentialTask.Sequence(
                     new WaitTask(0.7),
                     new IntakeExtendTask(true),
-                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP, true)
+                    new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP_CONE, TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP_CONE, true)
                 ),
 
                 new IntakeInTask(true, 5.0)

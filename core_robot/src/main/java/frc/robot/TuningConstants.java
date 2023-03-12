@@ -363,7 +363,7 @@ public class TuningConstants
 
     public static final boolean ARM_USE_SIMPLE_MODE = false;
     
-    public static final double ARM_INTAKE_POWER = 0.6;
+    public static final double ARM_INTAKE_POWER = 0.65;
     public static final boolean ARM_INTAKE_MOTOR_INVERT_OUTPUT = true;
     public static final double ARM_INTAKE_THROUGHBEAM_THRESHOLD = 3.5;
 
@@ -476,30 +476,30 @@ public class TuningConstants
     public static final double ARM_UPPER_POSITION_STOWED = 0.0;
     public static final double ARM_LOWER_POSITION_GROUND_PLACING = 4700.0;
     public static final double ARM_UPPER_POSITION_GROUND_PLACING = 1650.0;
-    public static final double ARM_LOWER_POSITION_MIDDLE_CONE = 7550.0;
-    public static final double ARM_UPPER_POSITION_MIDDLE_CONE = 4750.0;
-    public static final double ARM_LOWER_POSITION_MIDDLE_CUBE = 5775.0;
-    public static final double ARM_UPPER_POSITION_MIDDLE_CUBE = 3800.0;
-    public static final double ARM_LOWER_POSITION_HIGH_CONE = 3210.0;
-    public static final double ARM_UPPER_POSITION_HIGH_CONE = 7600.0;
-    public static final double ARM_LOWER_POSITION_HIGH_CUBE = 4000.0;
-    public static final double ARM_UPPER_POSITION_HIGH_CUBE = 6200.0;
-    
-    public static final double ARM_LOWER_POSITION_GROUND_PICKUP_CONE = 300.0;
-    public static final double ARM_UPPER_POSITION_GROUND_PICKUP_CONE = 4100.0;
+    public static final double ARM_LOWER_POSITION_MIDDLE_CONE = 8000.0;
+    public static final double ARM_UPPER_POSITION_MIDDLE_CONE = 3170.0;
+    public static final double ARM_LOWER_POSITION_MIDDLE_CUBE = 5780.0;
+    public static final double ARM_UPPER_POSITION_MIDDLE_CUBE = 4320.0;
+    public static final double ARM_LOWER_POSITION_HIGH_CONE = 5560.0;
+    public static final double ARM_UPPER_POSITION_HIGH_CONE = 6140.0;
+    public static final double ARM_LOWER_POSITION_HIGH_CUBE = 4300.0;
+    public static final double ARM_UPPER_POSITION_HIGH_CUBE = 6600.0;
+
+    public static final double ARM_LOWER_POSITION_GROUND_PICKUP_CONE = 2350.0;
+    public static final double ARM_UPPER_POSITION_GROUND_PICKUP_CONE = 1800.0;
 
     public static final double ARM_LOWER_POSITION_GROUND_PICKUP_CUBE = 300.0;
     public static final double ARM_UPPER_POSITION_GROUND_PICKUP_CUBE = 3500.0;
     
 
-    public static final double ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP = 3350.0;
-    public static final double ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP = 6600.0;
+    public static final double ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP = 6100.0;
+    public static final double ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP = 5830.0;
     public static final double ARM_LOWER_POSITION_CUBE_SUBSTATION_PICKUP = 6750.0;
     public static final double ARM_UPPER_POSITION_CUBE_SUBSTATION_PICKUP = 3350.0;
     public static final double ARM_LOWER_POSITION_APPROACH = HardwareConstants.ARM_FULL_EXTENSION_TICKS;
     public static final double ARM_UPPER_POSITION_APPROACH = 4100.0;
-    public static final double ARM_LOWER_POSITION_CONE_UPRIGHTING_MACRO = TuningConstants.ARM_LOWER_POSITION_GROUND_PLACING;
-    public static final double ARM_UPPER_POSITION_CONE_UPRIGHTING_MACRO = TuningConstants.ARM_UPPER_POSITION_GROUND_PLACING;
+    public static final double ARM_LOWER_POSITION_CONE_UPRIGHTING_MACRO = 5350;
+    public static final double ARM_UPPER_POSITION_CONE_UPRIGHTING_MACRO = 1425;
 
     public static final double ARM_IKX_POSITION_STOWED = 2.7725594688249453;
     public static final double ARM_IKZ_POSITION_STOWED = 9.226618272316927;

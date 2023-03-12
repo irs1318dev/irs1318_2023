@@ -34,7 +34,8 @@ public enum MacroOperation implements IOperation
 
     // Arm Movement:
     ArmResetToZero,
-    ArmGroundPickupPosition,
+    ArmGroundPickupPositionCube,
+    ArmGroundPickupPositionCone,
     ArmGroundPlacePosition,
     ArmMiddleConePosition,
     ArmMiddleCubePosition,

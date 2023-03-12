@@ -792,22 +792,10 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
-                ConcurrentTask.AllTasks(
-                    new IntakeExtendTask(true),
-                    new ArmMMPositionTask(
-                        TuningConstants.ARM_LOWER_POSITION_CONE_UPRIGHTING_MACRO,
-                        TuningConstants.ARM_UPPER_POSITION_CONE_UPRIGHTING_MACRO)),
-                ConcurrentTask.AllTasks(
-                    new FollowPathTask("goBackwards1ft"),
-                    SequentialTask.Sequence(
-                        new WaitTask(0.5),
-                        new ArmMMPositionTask(
-                            TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP,
-                            TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP),
-                        new IntakeInTask(true, 0.15))),
-                ConcurrentTask.AllTasks(
-                    new IntakeGamePieceTask(0.75),
-                    new IntakeExtendTask(false))),
+                new ArmMMPositionTask(
+                    TuningConstants.ARM_LOWER_POSITION_CONE_UPRIGHTING_MACRO,
+                    TuningConstants.ARM_UPPER_POSITION_CONE_UPRIGHTING_MACRO),
+                new FollowPathTask("goBackwards18in")),
             new IOperation[]
             {
                 AnalogOperation.DriveTrainMoveForward,
@@ -864,20 +852,37 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.ArmForceReset,
             }),
         new MacroOperationDescription(
-            MacroOperation.ArmGroundPickupPosition,
+            MacroOperation.ArmGroundPickupPositionCone,
             UserInputDevice.Codriver,
             180, // POV-down
             Shift.CodriverDebug,
             Shift.None,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP,
-                TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP),
+                TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP_CONE,
+                TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP_CONE),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
                 AnalogOperation.ArmMMUpperPosition,
             }),
+
+        new MacroOperationDescription(
+            MacroOperation.ArmGroundPickupPositionCube,
+            UserInputDevice.Codriver,
+            270, // POV-down
+            Shift.CodriverDebug,
+            Shift.CodriverDebug,
+            ButtonType.Toggle,
+            () -> new ArmMMPositionTask(
+                TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP_CUBE,
+                TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP_CUBE),
+            new IOperation[]
+            {
+                AnalogOperation.ArmMMLowerPosition,
+                AnalogOperation.ArmMMUpperPosition,
+            }),
+
         new MacroOperationDescription(
             MacroOperation.ArmGroundPlacePosition,
             UserInputDevice.Codriver,
@@ -972,7 +977,7 @@ public class ButtonMap implements IButtonMap
             MacroOperation.ArmCubeSubstationPickupPosition,
             UserInputDevice.Codriver,
             270, // POV-left
-            Shift.None,
+            Shift.DriverDebug,
             Shift.None,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
