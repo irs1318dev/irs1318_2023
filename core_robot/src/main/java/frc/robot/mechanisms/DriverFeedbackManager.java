@@ -77,21 +77,15 @@ public class DriverFeedbackManager implements IMechanism
         {
             newLightMode = LightMode.PurpleTwinkling;
         }
-        else if (this.driver.getDigital(DigitalOperation.CubeWantedFromSubstation))
+        else if (this.driver.getDigital(DigitalOperation.CubeWantedFromSubstation) ||
+            this.driver.getDigital(DigitalOperation.IntakeCube))
         {
             newLightMode = LightMode.Purple;
         }
-        else if (this.driver.getDigital(DigitalOperation.ConeWantedFromSubstation))
+        else if (this.driver.getDigital(DigitalOperation.ConeWantedFromSubstation) ||
+            this.driver.getDigital(DigitalOperation.IntakeCone))
         {
             newLightMode = LightMode.Yellow;
-        }
-        else if ((this.driver.getDigital(DigitalOperation.IntakeIn) || this.driver.getDigital(DigitalOperation.IntakeGrab)) && this.arm.isThroughBeamBroken())
-        {
-            newLightMode = LightMode.Green;
-        }
-        else if ((this.driver.getDigital(DigitalOperation.IntakeIn) || this.driver.getDigital(DigitalOperation.IntakeGrab)) && !this.arm.isThroughBeamBroken())
-        {
-            newLightMode = LightMode.Red;
         }
         else if (this.powerMan.getCurrentLimitingValue() != CurrentLimiting.Normal)
         {

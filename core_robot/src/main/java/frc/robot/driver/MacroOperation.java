@@ -21,19 +21,15 @@ public enum MacroOperation implements IOperation
     ChargeStationBalanceReverse,
     ChargeStationBalanceFacingBackwards,
     ChargeStationBalanceReverseFacingBackwards,
-
-    // Intake macros:
-    IntakeGamePiece,
-    IntakeGamePieceGrab,
+    GoOverChargeStationTask,
 
     // Cone flipepr macros:
-    ExtendLeftConeFlipper,
-    ExtendRightConeFlipper,
     PickUpConeFromBehind,
 
     // Arm Movement:
     ArmResetToZero,
-    ArmGroundPickupPosition,
+    ArmGroundPickupPositionCube,
+    ArmGroundPickupPositionCone,
     ArmGroundPlacePosition,
     ArmMiddleConePosition,
     ArmMiddleCubePosition,

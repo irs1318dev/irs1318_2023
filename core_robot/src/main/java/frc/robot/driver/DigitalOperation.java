@@ -41,12 +41,14 @@ public enum DigitalOperation implements IOperation
     DriveTrainIgnoreSlewRateLimitingMode,
 
     // Arm operations
-    IntakeRelease,
-    IntakeGrab,
-    IntakeIn,
-    IntakeOut,
+    IntakeDown,
+    IntakeUp,
+    IntakeCube,
+    IntakeCone,
+    OutakeCubeFast,
     ExtendLeftConeFlipper,
     ExtendRightConeFlipper,
+    
     ArmUpperExtend,
     ArmLowerExtend,
     ArmEnableSimpleMode,
