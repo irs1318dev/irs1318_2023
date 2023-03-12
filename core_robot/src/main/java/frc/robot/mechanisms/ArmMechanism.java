@@ -554,7 +554,14 @@ public class ArmMechanism implements IMechanism
         }
         else if (this.driver.getDigital(DigitalOperation.IntakeCone))
         {
-            intakePower = TuningConstants.ARM_INTAKE_CONE_POWER;
+            if (this.driver.getDigital(DigitalOperation.OutakeCubeFast))
+            {
+                intakePower = TuningConstants.ARM_OUTAKE_CUBE_FAST_POWER;
+            }
+            else
+            {
+                intakePower = TuningConstants.ARM_INTAKE_CONE_POWER;
+            }
         }
 
         this.intakeMotor.set(intakePower);
@@ -574,11 +581,11 @@ public class ArmMechanism implements IMechanism
         switch (this.currentIntakeState)
         {
             case Down:
-                this.intakeExtender.set(DoubleSolenoidValue.Forward);
+                this.intakeExtender.set(DoubleSolenoidValue.Reverse);
                 break;
             default:
             case Up:
-                this.intakeExtender.set(DoubleSolenoidValue.Reverse);
+                this.intakeExtender.set(DoubleSolenoidValue.Forward);
                 break;
         }
 

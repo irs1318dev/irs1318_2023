@@ -41,7 +41,7 @@ public class ArmMMPositionTask extends ControlTaskBase
 
     public ArmMMPositionTask(double lowerExtensionLength, double upperExtensionLength, IntakeState state)
     {
-        this(lowerExtensionLength, upperExtensionLength, false, IntakeState.Unchanged);
+        this(lowerExtensionLength, upperExtensionLength, false, state);
 
     }
 
@@ -49,6 +49,7 @@ public class ArmMMPositionTask extends ControlTaskBase
     {
         this(lowerExtensionLength, upperExtensionLength, waitUntilPositionReached, IntakeState.Unchanged);
     }
+
     public ArmMMPositionTask(double lowerExtensionLength, double upperExtensionLength, boolean waitUntilPositionReached, IntakeState state)
     {
         this.lowerExtensionLength = lowerExtensionLength;
@@ -128,6 +129,24 @@ public class ArmMMPositionTask extends ControlTaskBase
             }
         }
 
+        switch (this.desiredState)
+        {
+            case Down:
+                this.setDigitalOperationState(DigitalOperation.IntakeDown, true);
+                this.setDigitalOperationState(DigitalOperation.IntakeUp, false);
+                break;
+            case Up:
+                this.setDigitalOperationState(DigitalOperation.IntakeDown, false);
+                this.setDigitalOperationState(DigitalOperation.IntakeUp, true);
+                break;
+
+            default:
+            case Unchanged:
+                this.setDigitalOperationState(DigitalOperation.IntakeDown, false);
+                this.setDigitalOperationState(DigitalOperation.IntakeUp, false);
+                break;
+        }
+
         switch (this.currentArmState)
         {
             case DesiredLowerIntermidate:
@@ -157,6 +176,8 @@ public class ArmMMPositionTask extends ControlTaskBase
     {
         this.setAnalogOperationState(AnalogOperation.ArmMMLowerPosition, TuningConstants.MAGIC_NULL_VALUE);
         this.setAnalogOperationState(AnalogOperation.ArmMMUpperPosition, TuningConstants.MAGIC_NULL_VALUE);
+        this.setDigitalOperationState(DigitalOperation.IntakeDown, false);
+        this.setDigitalOperationState(DigitalOperation.IntakeUp, false);
     }
 
     @Override

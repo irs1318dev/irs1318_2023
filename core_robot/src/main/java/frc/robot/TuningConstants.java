@@ -365,6 +365,7 @@ public class TuningConstants
     
     public static final double ARM_INTAKE_CUBE_POWER = 0.65; // Also, eject cone
     public static final double ARM_INTAKE_CONE_POWER = -0.65; // Also, eject cube
+    public static final double ARM_OUTAKE_CUBE_FAST_POWER = -0.85;
     public static final boolean ARM_INTAKE_MOTOR_INVERT_OUTPUT = true;
     public static final double ARM_INTAKE_THROUGHBEAM_THRESHOLD = 3.5;
 
@@ -483,16 +484,12 @@ public class TuningConstants
     public static final double ARM_UPPER_POSITION_MIDDLE_CUBE = 4320.0;
     public static final double ARM_LOWER_POSITION_HIGH_CONE = 5560.0;
     public static final double ARM_UPPER_POSITION_HIGH_CONE = 6140.0;
-    public static final double ARM_LOWER_POSITION_HIGH_CUBE = 4300.0;
-    public static final double ARM_UPPER_POSITION_HIGH_CUBE = 6600.0;
-
+    public static final double ARM_LOWER_POSITION_HIGH_CUBE = 3680.0;
+    public static final double ARM_UPPER_POSITION_HIGH_CUBE = 7250.0;
     public static final double ARM_LOWER_POSITION_GROUND_PICKUP_CONE = 2350.0;
     public static final double ARM_UPPER_POSITION_GROUND_PICKUP_CONE = 1800.0;
-
     public static final double ARM_LOWER_POSITION_GROUND_PICKUP_CUBE = 300.0;
     public static final double ARM_UPPER_POSITION_GROUND_PICKUP_CUBE = 3500.0;
-    
-
     public static final double ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP = 6100.0;
     public static final double ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP = 5830.0;
     public static final double ARM_LOWER_POSITION_CUBE_SUBSTATION_PICKUP = 6750.0;

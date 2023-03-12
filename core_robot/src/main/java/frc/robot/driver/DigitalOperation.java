@@ -45,6 +45,7 @@ public enum DigitalOperation implements IOperation
     IntakeUp,
     IntakeCube,
     IntakeCone,
+    OutakeCubeFast,
     ExtendLeftConeFlipper,
     ExtendRightConeFlipper,
     

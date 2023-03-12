@@ -227,6 +227,14 @@ public class ButtonMap implements IButtonMap
             Shift.DriverDebug,
             Shift.None,
             ButtonType.Click),
+
+    new DigitalOperationDescription(
+            DigitalOperation.OutakeCubeFast,
+            UserInputDevice.Codriver,
+            UserInputDeviceButton.XBONE_START_BUTTON,
+            Shift.None,
+            Shift.None,
+            ButtonType.Simple),
         new DigitalOperationDescription(
             DigitalOperation.IntakeUp,
             UserInputDevice.Driver,
@@ -235,14 +243,14 @@ public class ButtonMap implements IButtonMap
             Shift.DriverDebug,
             ButtonType.Click),
         new DigitalOperationDescription(
-            DigitalOperation.IntakeCube,
+            DigitalOperation.IntakeCone,
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_RIGHT_BUTTON,
             Shift.DriverDebug,
             Shift.None,
             ButtonType.Simple),
         new DigitalOperationDescription(
-            DigitalOperation.IntakeCone,
+            DigitalOperation.IntakeCube,
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_RIGHT_BUTTON,
             Shift.DriverDebug,
@@ -256,21 +264,6 @@ public class ButtonMap implements IButtonMap
             Shift.CodriverDebug,
             Shift.CodriverDebug,
             ButtonType.Click),
-
-        new DigitalOperationDescription(
-            DigitalOperation.CubeWantedFromSubstation,
-            UserInputDevice.Codriver,
-            UserInputDeviceButton.XBONE_SELECT_BUTTON,
-            Shift.CodriverDebug,
-            Shift.CodriverDebug,
-            ButtonType.Simple),
-        new DigitalOperationDescription(
-            DigitalOperation.ConeWantedFromSubstation,
-            UserInputDevice.Codriver,
-            UserInputDeviceButton.XBONE_START_BUTTON,
-            Shift.CodriverDebug,
-            Shift.CodriverDebug,
-            ButtonType.Simple),
 
         // Test operations:
         new DigitalOperationDescription(
@@ -780,51 +773,21 @@ public class ButtonMap implements IButtonMap
             MacroOperation.ArmGroundPickupPositionCone,
             UserInputDevice.Codriver,
             180, // POV-down
-            Shift.CodriverDebug,
+            Shift.None,
             Shift.None,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP_CONE,
                 TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP_CONE,
-                IntakeState.Down),
-            new IOperation[]
-            {
-                AnalogOperation.ArmMMLowerPosition,
-                AnalogOperation.ArmMMUpperPosition,
-            }),
-
-        new MacroOperationDescription(
-            MacroOperation.ArmGroundPickupPositionCube,
-            UserInputDevice.Codriver,
-            270, // POV-down
-            Shift.CodriverDebug,
-            Shift.CodriverDebug,
-            ButtonType.Toggle,
-            () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP_CUBE,
-                TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP_CUBE,
                 IntakeState.Up),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
                 AnalogOperation.ArmMMUpperPosition,
+                DigitalOperation.IntakeDown,
+                DigitalOperation.IntakeUp,
             }),
 
-        new MacroOperationDescription(
-            MacroOperation.ArmGroundPlacePosition,
-            UserInputDevice.Codriver,
-            180, // POV-down
-            Shift.CodriverDebug,
-            Shift.CodriverDebug,
-            ButtonType.Toggle,
-            () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_GROUND_PLACING,
-                TuningConstants.ARM_UPPER_POSITION_GROUND_PLACING),
-            new IOperation[]
-            {
-                AnalogOperation.ArmMMLowerPosition,
-                AnalogOperation.ArmMMUpperPosition,
-            }),
         new MacroOperationDescription(
             MacroOperation.ArmMiddleConePosition,
             UserInputDevice.Codriver,
@@ -840,6 +803,8 @@ public class ButtonMap implements IButtonMap
             {
                 AnalogOperation.ArmMMLowerPosition,
                 AnalogOperation.ArmMMUpperPosition,
+                DigitalOperation.IntakeDown,
+                DigitalOperation.IntakeUp,
             }),
         new MacroOperationDescription(
             MacroOperation.ArmMiddleCubePosition,
@@ -856,6 +821,8 @@ public class ButtonMap implements IButtonMap
             {
                 AnalogOperation.ArmMMLowerPosition,
                 AnalogOperation.ArmMMUpperPosition,
+                DigitalOperation.IntakeDown,
+                DigitalOperation.IntakeUp,
             }),
         new MacroOperationDescription(
             MacroOperation.ArmHighConePosition,
@@ -872,6 +839,8 @@ public class ButtonMap implements IButtonMap
             {
                 AnalogOperation.ArmMMLowerPosition,
                 AnalogOperation.ArmMMUpperPosition,
+                DigitalOperation.IntakeDown,
+                DigitalOperation.IntakeUp,
             }),
         new MacroOperationDescription(
             MacroOperation.ArmHighCubePosition,
@@ -888,6 +857,8 @@ public class ButtonMap implements IButtonMap
             {
                 AnalogOperation.ArmMMLowerPosition,
                 AnalogOperation.ArmMMUpperPosition,
+                DigitalOperation.IntakeDown,
+                DigitalOperation.IntakeUp,
             }),
         new MacroOperationDescription(
             MacroOperation.ArmConeSubstationPickupPosition,
@@ -903,6 +874,8 @@ public class ButtonMap implements IButtonMap
             {
                 AnalogOperation.ArmMMLowerPosition,
                 AnalogOperation.ArmMMUpperPosition,
+                DigitalOperation.IntakeDown,
+                DigitalOperation.IntakeUp,
             }),
         new MacroOperationDescription(
             MacroOperation.ArmCubeSubstationPickupPosition,
@@ -918,6 +891,8 @@ public class ButtonMap implements IButtonMap
             {
                 AnalogOperation.ArmMMLowerPosition,
                 AnalogOperation.ArmMMUpperPosition,
+                DigitalOperation.IntakeDown,
+                DigitalOperation.IntakeUp,
             }),
         new MacroOperationDescription(
             MacroOperation.ArmStowedPosition,
@@ -934,6 +909,8 @@ public class ButtonMap implements IButtonMap
             {
                 AnalogOperation.ArmMMLowerPosition,
                 AnalogOperation.ArmMMUpperPosition,
+                DigitalOperation.IntakeDown,
+                DigitalOperation.IntakeUp,
             }),
         new MacroOperationDescription(
             MacroOperation.ArmApproachPosition,
@@ -949,6 +926,8 @@ public class ButtonMap implements IButtonMap
             {
                 AnalogOperation.ArmMMLowerPosition,
                 AnalogOperation.ArmMMUpperPosition,
+                DigitalOperation.IntakeDown,
+                DigitalOperation.IntakeUp,
             }),
 
         new MacroOperationDescription(
