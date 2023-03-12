@@ -57,9 +57,9 @@ public class TuningConstants
     // X Values
     public static final double StartGridX = 17.5;//71.765; // Edge of grid - Robot centering value
     public static final double CloseChargeStationX = 30.345;//84.61; // 12.845 inches away from the charge station and grid + Robot centering value
-    public static final double FarChargeStationX = 163.195;//222.635; // 12 inches away from the charge station + Robot centering value
+    public static final double FarChargeStationX = 168.195;//222.635; // 15 inches away from the charge station + Robot centering value
     public static final double FarChargeStationInBetweenX = TuningConstants.FarChargeStationX + 30.0; // 30 inches away from last point to allow for turning
-    public static final double GroundPiecesX = 196.5;//253.265; // On ground pieces real value 47.36
+    public static final double GroundPiecesX = 206.5;//253.265; // On ground pieces real value 47.36
     public static final double LoadEdgeStartX = 58.5;//110.765;
     public static final double GuardEdgeStartX = 77.75;//132.015;
     public static final double FullLength = 651.25; // (X) 54 ft. 3.25 in, from game manual
@@ -484,8 +484,14 @@ public class TuningConstants
     public static final double ARM_UPPER_POSITION_HIGH_CONE = 7600.0;
     public static final double ARM_LOWER_POSITION_HIGH_CUBE = 4000.0;
     public static final double ARM_UPPER_POSITION_HIGH_CUBE = 6200.0;
-    public static final double ARM_LOWER_POSITION_GROUND_PICKUP = 2000.0;
-    public static final double ARM_UPPER_POSITION_GROUND_PICKUP = 1550.0;
+    
+    public static final double ARM_LOWER_POSITION_GROUND_PICKUP_CONE = 300.0;
+    public static final double ARM_UPPER_POSITION_GROUND_PICKUP_CONE = 4100.0;
+
+    public static final double ARM_LOWER_POSITION_GROUND_PICKUP_CUBE = 300.0;
+    public static final double ARM_UPPER_POSITION_GROUND_PICKUP_CUBE = 3500.0;
+    
+
     public static final double ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP = 3350.0;
     public static final double ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP = 6600.0;
     public static final double ARM_LOWER_POSITION_CUBE_SUBSTATION_PICKUP = 6750.0;

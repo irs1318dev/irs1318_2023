@@ -21,6 +21,7 @@ public enum MacroOperation implements IOperation
     ChargeStationBalanceReverse,
     ChargeStationBalanceFacingBackwards,
     ChargeStationBalanceReverseFacingBackwards,
+    GoOverChargeStationTask,
 
     // Intake macros:
     IntakeGamePiece,

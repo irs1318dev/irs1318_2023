@@ -30,6 +30,14 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(0, 0, 0.0, 0.0),
                 new PathPlannerWaypoint(48, 0, 0.0, 0.0)),
             "LoadTaxi");
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(0, 0, 0, 0),
+                new PathPlannerWaypoint(60, 0, 0, 0)),
+                "MidTaxi");
 
         PathPlannerTrajectoryGenerator.generateTrajectories(false, trajectoryManager, pathPlanner);
         PathPlannerTrajectoryGenerator.generateTrajectories(true, trajectoryManager, pathPlanner);
@@ -399,6 +407,26 @@ public class PathPlannerTrajectoryGenerator
             pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(P9, 0, -180),
+                new PathPlannerWaypoint(P19, 0, -180),
+                new PathPlannerWaypoint(P13, LoadOT, -180)),
+                isRed ? "9ToChargeRed" : "9ToChargeBlue");
+        
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(P9, 0, -180),
+                new PathPlannerWaypoint(P23, 0, -180)),
+                isRed ? "9To23Red" : "9To23Blue");
+        
+        
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(P17, -180, 0),
                 new PathPlannerWaypoint(P23, -180, -180),
                 new PathPlannerWaypoint(P12, -180, -180),
@@ -435,6 +463,25 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P20, 0, 0),
                 new PathPlannerWaypoint(P14, 0 , 0)),
                 isRed ? "1To14Red" : "1To14Blue");
+
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(P1, 0, -180),
+                new PathPlannerWaypoint(P18, 0, -180),
+                new PathPlannerWaypoint(P13, GuardOT, -180)),
+                isRed ? "1ToChargeRed" : "1ToChargeBlue");
+
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(P1, 0, -180),
+                new PathPlannerWaypoint(P20, 0, -180)),
+                isRed ? "1To20Red" : "1To20Blue");
         
         addTrajectory(
             trajectoryManager,
@@ -455,17 +502,9 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P14, -180, 0),
                 new PathPlannerWaypoint(P18, -180, 0),
                 new PathPlannerWaypoint(P13, GuardOT , 0)),
-                isRed ? "14ToChargeStationRed" : "17ToChargeStationBlue");
+                isRed ? "14ToChargeStationRed" : "14ToChargeStationBlue");
         
-        addTrajectory(
-            trajectoryManager,
-            pathPlanner.buildTrajectory(
-                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(0, 0, 0, 0),
-                new PathPlannerWaypoint(60, 0, 0, 0)),
-            isRed ? "MidTaxiRed" : "MidTaxiBlue");
-        
+            // MID SIDE        
         
         addTrajectory(
             trajectoryManager,

@@ -227,7 +227,7 @@ public class ButtonMap implements IButtonMap
         //     Shift.None,
         //     ButtonType.Click),
         new DigitalOperationDescription(
-            DigitalOperation.IntakeRelease,
+            DigitalOperation.IntakeGrab,
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_LEFT_BUTTON,
             Shift.DriverDebug,
@@ -241,7 +241,7 @@ public class ButtonMap implements IButtonMap
         //     Shift.None,
         //     ButtonType.Simple),
         new DigitalOperationDescription(
-            DigitalOperation.IntakeOut,
+            DigitalOperation.IntakeRelease,
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_RIGHT_BUTTON,
             Shift.DriverDebug,
@@ -716,7 +716,7 @@ public class ButtonMap implements IButtonMap
             Shift.DriverDebug,
             Shift.None,
             ButtonType.Simple,
-            () -> new IntakeGamePieceTask(),
+            () -> new IntakeInTask(true),
             new IOperation[]
             {
                 DigitalOperation.IntakeIn,
@@ -732,8 +732,7 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ButtonType.Simple,
             () -> SequentialTask.Sequence(
-                new IntakeExtendTask(false),
-                new IntakeInTask(true)),
+                new IntakeInTask(false)),
             new IOperation[]
             {
                 DigitalOperation.IntakeIn,
@@ -1156,6 +1155,53 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.DriveTrainEnableMaintainDirectionMode,
                 DigitalOperation.DriveTrainIgnoreSlewRateLimitingMode
             }),
+            new MacroOperationDescription(
+            MacroOperation.GoOverChargeStationTask,
+            UserInputDevice.Test1,
+            UserInputDeviceButton.XBONE_RIGHT_BUTTON, // right bumper
+            Shift.Test1Debug,
+            Shift.None,
+            ButtonType.Toggle,
+            () -> SequentialTask.Sequence(
+                new ResetLevelTask(), // calibration
+                new GoOverChargeStationTask(false, false),
+                ConcurrentTask.AllTasks(
+                    new PIDBrakeTask(),
+                    new WaitTask(0.5))),
+            new IOperation[]
+            {
+                DigitalOperation.PositionResetRobotLevel,
+                DigitalOperation.PositionResetFieldOrientation,
+                AnalogOperation.PositionStartingAngle,
+                AnalogOperation.DriveTrainMoveForward,
+                AnalogOperation.DriveTrainMoveRight,
+                AnalogOperation.DriveTrainTurnAngleGoal,
+                AnalogOperation.DriveTrainTurnSpeed,
+                AnalogOperation.DriveTrainRotationA,
+                AnalogOperation.DriveTrainRotationB,
+                AnalogOperation.DriveTrainPathXGoal,
+                AnalogOperation.DriveTrainPathYGoal,
+                AnalogOperation.DriveTrainPathXVelocityGoal,
+                AnalogOperation.DriveTrainPathYVelocityGoal,
+                AnalogOperation.DriveTrainPathAngleVelocityGoal,
+                AnalogOperation.DriveTrainPositionDrive1,
+                AnalogOperation.DriveTrainPositionDrive2,
+                AnalogOperation.DriveTrainPositionDrive3,
+                AnalogOperation.DriveTrainPositionDrive4,
+                AnalogOperation.DriveTrainPositionSteer1,
+                AnalogOperation.DriveTrainPositionSteer2,
+                AnalogOperation.DriveTrainPositionSteer3,
+                AnalogOperation.DriveTrainPositionSteer4,
+                DigitalOperation.DriveTrainSteerMode,
+                DigitalOperation.DriveTrainMaintainPositionMode,
+                DigitalOperation.DriveTrainPathMode,
+                DigitalOperation.DriveTrainReset,
+                DigitalOperation.DriveTrainEnableFieldOrientation,
+                DigitalOperation.DriveTrainDisableFieldOrientation,
+                DigitalOperation.DriveTrainUseRobotOrientation,
+                DigitalOperation.DriveTrainEnableMaintainDirectionMode,
+                DigitalOperation.DriveTrainIgnoreSlewRateLimitingMode
+            }),
         new MacroOperationDescription(
             MacroOperation.ChargeStationBalanceReverseFacingBackwards,
             UserInputDevice.Test1,
@@ -1215,34 +1261,36 @@ public class ButtonMap implements IButtonMap
                 ConcurrentTask.AllTasks(
                     new ResetLevelTask(),
                     new PositionStartingTask(
-                        false ? TuningConstants.StartGridX : -TuningConstants.StartGridX,
-                        TuningConstants.StartFiveGridY,
-                        false ? 0.0 : 180.0,
+                        TuningConstants.GuardEdgeStartX,
+                        TuningConstants.FullWidth - TuningConstants.GuardEdgeY,
+                        180.0,
                         true,
                         true)),
+                new FollowPathTask("GuardStartTo9Red", Type.Absolute),
+                new FollowPathTask("9To17Red", Type.Absolute),
+                new FollowPathTask("17To8Red", Type.Absolute)
+                // ConcurrentTask.AllTasks(
+                //     new FollowPathTask("GuardStartTo9Blue", Type.Absolute),
+                //     SequentialTask.Sequence(
+                //         new WaitTask(0.5),
+                //         new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE, TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE)
+                //     )
+                // ),
     
-                ConcurrentTask.AllTasks(
-                    new FollowPathTask(false ? "5To11Red" : "5To11Blue", Type.Absolute),
-                    SequentialTask.Sequence(
-                        new WaitTask(0.5),
-                        new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE, TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE)
-                    )
-                ),
+                // new FollowPathTask(false ? "11To5Red" : "11To5Blue", Type.Absolute),
+                // new IntakeExtendTask(true),
+                // new IntakeInTask(false, 1.5),
     
-                new FollowPathTask(false ? "11To5Red" : "11To5Blue", Type.Absolute),
-                new IntakeExtendTask(true),
-                new IntakeInTask(false, 1.5),
-    
-                ConcurrentTask.AllTasks(
-                    new FollowPathTask(false ? "5To11Red" : "5To11Blue", Type.Absolute),
-                    SequentialTask.Sequence(
-                        new WaitTask(0.5),
-                        new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
-                    )
-                ),
+                // ConcurrentTask.AllTasks(
+                //     new FollowPathTask(false ? "5To11Red" : "5To11Blue", Type.Absolute),
+                //     SequentialTask.Sequence(
+                //         new WaitTask(0.5),
+                //         new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
+                //     )
+                // ),
 
-                new ResetLevelTask(),
-                new ChargeStationTaskv2(true)
+                // new ResetLevelTask(),
+                // new ChargeStationTaskv2(true)
             ),
             new IOperation[]
             {
