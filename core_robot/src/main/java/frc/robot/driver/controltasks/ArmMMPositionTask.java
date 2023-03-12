@@ -18,10 +18,10 @@ public class ArmMMPositionTask extends ControlTaskBase
         Completed,
     }
 
-    private enum IntakeState
+    public enum IntakeState
     {
-        IntakeUp,
-        IntakeDown,
+        Up,
+        Down,
         Unchanged,
     }
 

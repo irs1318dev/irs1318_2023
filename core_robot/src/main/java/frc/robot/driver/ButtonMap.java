@@ -8,6 +8,7 @@ import frc.robot.driver.common.*;
 import frc.robot.driver.common.buttons.*;
 import frc.robot.driver.common.descriptions.*;
 import frc.robot.driver.controltasks.*;
+import frc.robot.driver.controltasks.ArmMMPositionTask.IntakeState;
 import frc.robot.driver.controltasks.FollowPathTask.Type;
 import frc.robot.driver.controltasks.VisionAprilTagTranslateTask.GridScoringPosition;
 import frc.robot.driver.controltasks.VisionMoveAndTurnTaskBase.MoveSpeed;
@@ -784,7 +785,8 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP_CONE,
-                TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP_CONE),
+                TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP_CONE,
+                IntakeState.Down),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -800,7 +802,8 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP_CUBE,
-                TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP_CUBE),
+                TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP_CUBE,
+                IntakeState.Up),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -831,7 +834,8 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_MIDDLE_CONE,
-                TuningConstants.ARM_UPPER_POSITION_MIDDLE_CONE),
+                TuningConstants.ARM_UPPER_POSITION_MIDDLE_CONE,
+                IntakeState.Down),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -846,7 +850,8 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_MIDDLE_CUBE,
-                TuningConstants.ARM_UPPER_POSITION_MIDDLE_CUBE),
+                TuningConstants.ARM_UPPER_POSITION_MIDDLE_CUBE,
+                IntakeState.Up),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -861,7 +866,8 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_HIGH_CONE,
-                TuningConstants.ARM_UPPER_POSITION_HIGH_CONE),
+                TuningConstants.ARM_UPPER_POSITION_HIGH_CONE,
+                IntakeState.Down),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -876,7 +882,8 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE,
-                TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE),
+                TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE,
+                IntakeState.Up),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -921,7 +928,8 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_STOWED,
-                TuningConstants.ARM_UPPER_POSITION_STOWED),
+                TuningConstants.ARM_UPPER_POSITION_STOWED,
+                IntakeState.Up),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
