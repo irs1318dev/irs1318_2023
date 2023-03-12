@@ -105,11 +105,11 @@ public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
     {
         super.update();
 
-        Double currentDistance = this.getMoveMeasuredValue();
-        if (currentDistance != null)
+        Double currentValue = this.getMoveMeasuredValue();
+        if (currentValue != null)
         {
-            double desiredValue = this.getMoveDesiredValue(currentDistance);
-            double desiredVelocity = -this.movePIDHandler.calculatePosition(desiredValue, currentDistance);
+            double desiredValue = this.getMoveDesiredValue(currentValue);
+            double desiredVelocity = -this.movePIDHandler.calculatePosition(desiredValue, currentValue);
             switch (this.translateType)
             {
                 case RetroReflectiveStrafe:
