@@ -99,10 +99,10 @@ public class ButtonMap implements IButtonMap
         new AnalogOperationDescription(
             AnalogOperation.ArmIKXAdjustment,
             UserInputDevice.Codriver,
-            AnalogAxis.XBONE_RSX,
+            AnalogAxis.XBONE_RSY,
             Shift.CodriverDebug,
             Shift.None,
-            ElectronicsConstants.INVERT_XBONE_RIGHT_X_AXIS,
+            ElectronicsConstants.INVERT_XBONE_RIGHT_Y_AXIS,
             -TuningConstants.ARM_UPPER_VELOCITY_DEAZONE,
             TuningConstants.ARM_UPPER_VELOCITY_DEAZONE),
 
@@ -227,14 +227,6 @@ public class ButtonMap implements IButtonMap
             Shift.DriverDebug,
             Shift.None,
             ButtonType.Click),
-
-    new DigitalOperationDescription(
-            DigitalOperation.OutakeCubeFast,
-            UserInputDevice.Codriver,
-            UserInputDeviceButton.XBONE_START_BUTTON,
-            Shift.None,
-            Shift.None,
-            ButtonType.Simple),
         new DigitalOperationDescription(
             DigitalOperation.IntakeUp,
             UserInputDevice.Driver,
@@ -256,6 +248,13 @@ public class ButtonMap implements IButtonMap
             Shift.DriverDebug,
             Shift.DriverDebug,
             ButtonType.Simple),
+        new DigitalOperationDescription(
+            DigitalOperation.OutakeCubeFast,
+            UserInputDevice.Codriver,
+            UserInputDeviceButton.XBONE_START_BUTTON,
+            Shift.CodriverDebug,
+            Shift.None,
+            ButtonType.Simple),
 
         new DigitalOperationDescription(
             DigitalOperation.ArmForceReset,
@@ -264,6 +263,21 @@ public class ButtonMap implements IButtonMap
             Shift.CodriverDebug,
             Shift.CodriverDebug,
             ButtonType.Click),
+
+        new DigitalOperationDescription(
+            DigitalOperation.CubeWantedFromSubstation,
+            UserInputDevice.Codriver,
+            UserInputDeviceButton.XBONE_SELECT_BUTTON,
+            Shift.CodriverDebug,
+            Shift.CodriverDebug,
+            ButtonType.Simple),
+        new DigitalOperationDescription(
+            DigitalOperation.ConeWantedFromSubstation,
+            UserInputDevice.Codriver,
+            UserInputDeviceButton.XBONE_START_BUTTON,
+            Shift.CodriverDebug,
+            Shift.CodriverDebug,
+            ButtonType.Simple),
 
         // Test operations:
         new DigitalOperationDescription(
@@ -280,36 +294,6 @@ public class ButtonMap implements IButtonMap
             Shift.Test1Debug,
             Shift.Test1Debug,
             ButtonType.Toggle),
-        new DigitalOperationDescription(
-            DigitalOperation.RainbowTest,
-            UserInputDevice.Test2,
-            UserInputDeviceButton.XBONE_RIGHT_BUTTON,
-            ButtonType.Simple),
-        new DigitalOperationDescription(
-            DigitalOperation.PurpleTest,
-            UserInputDevice.Test2,
-            UserInputDeviceButton.XBONE_LEFT_BUTTON,
-            ButtonType.Simple),
-        new DigitalOperationDescription(
-            DigitalOperation.BlueTest,
-            UserInputDevice.Test2,
-            UserInputDeviceButton.XBONE_X_BUTTON,
-            ButtonType.Simple),
-        new DigitalOperationDescription(
-            DigitalOperation.YellowTest,
-            UserInputDevice.Test2,
-            UserInputDeviceButton.XBONE_Y_BUTTON,
-            ButtonType.Simple),
-        new DigitalOperationDescription(
-            DigitalOperation.GreenTest,
-            UserInputDevice.Test2,
-            UserInputDeviceButton.XBONE_A_BUTTON,
-            ButtonType.Simple),
-        new DigitalOperationDescription(
-            DigitalOperation.RedTest,
-            UserInputDevice.Test2,
-            UserInputDeviceButton.XBONE_B_BUTTON,
-            ButtonType.Simple),
     };
 
     public static MacroOperationDescription[] MacroSchema = new MacroOperationDescription[]
@@ -519,10 +503,12 @@ public class ButtonMap implements IButtonMap
             () -> ConcurrentTask.AnyTasks(
                 SequentialTask.Sequence(
                     new DriveTrainFieldOrientationModeTask(true),
-                    new OrientationTask(180.0),
-                    new ArmMMPositionTask(
-                        TuningConstants.ARM_LOWER_POSITION_APPROACH,
-                        TuningConstants.ARM_UPPER_POSITION_APPROACH),
+                    ConcurrentTask.AllTasks(
+                        new OrientationTask(180.0),
+                        new ArmMMPositionTask(
+                            TuningConstants.ARM_LOWER_POSITION_APPROACH,
+                            TuningConstants.ARM_UPPER_POSITION_APPROACH,
+                            IntakeState.Up)),
                     new VisionAprilTagTranslateTask(GridScoringPosition.MiddleCube)),
                 new RumbleTask()),
             new IOperation[]
@@ -579,7 +565,8 @@ public class ButtonMap implements IButtonMap
                         new OrientationTask(180.0),
                         new ArmMMPositionTask(
                             TuningConstants.ARM_LOWER_POSITION_APPROACH,
-                            TuningConstants.ARM_UPPER_POSITION_APPROACH)
+                            TuningConstants.ARM_UPPER_POSITION_APPROACH,
+                            IntakeState.Down)
                     ),
                     new VisionAprilTagTranslateTask(GridScoringPosition.LeftCone),
                     //new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0),
@@ -639,7 +626,8 @@ public class ButtonMap implements IButtonMap
                         new OrientationTask(180.0),
                         new ArmMMPositionTask(
                             TuningConstants.ARM_LOWER_POSITION_APPROACH,
-                            TuningConstants.ARM_UPPER_POSITION_APPROACH)
+                            TuningConstants.ARM_UPPER_POSITION_APPROACH,
+                            IntakeState.Down)
                     ),
                     new VisionAprilTagTranslateTask(GridScoringPosition.RightCone),
                     //new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0),
@@ -777,8 +765,8 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP_CONE,
-                TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP_CONE,
+                TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP,
+                TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP,
                 IntakeState.Up),
             new IOperation[]
             {
@@ -1027,7 +1015,7 @@ public class ButtonMap implements IButtonMap
         new MacroOperationDescription(
             MacroOperation.ChargeStationBalanceReverse,
             UserInputDevice.Test1,
-            UserInputDeviceButton.XBONE_START_BUTTON, // Left menu button
+            UserInputDeviceButton.XBONE_START_BUTTON, // right menu button
             Shift.Test1Debug,
             Shift.None,
             ButtonType.Toggle,
@@ -1121,7 +1109,7 @@ public class ButtonMap implements IButtonMap
         new MacroOperationDescription(
             MacroOperation.ChargeStationBalanceReverseFacingBackwards,
             UserInputDevice.Test1,
-            UserInputDeviceButton.XBONE_START_BUTTON, // Left menu button
+            UserInputDeviceButton.XBONE_START_BUTTON, // right menu button
             Shift.Test1Debug,
             Shift.Test1Debug,
             ButtonType.Toggle,

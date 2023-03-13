@@ -172,12 +172,16 @@ public class TuningConstants
 
     public static final double INDICATOR_LIGHT_VISION_ACCEPTABLE_ANGLE_RANGE = 3.0;
 
+    public static final int CANDLE_LED_START = 0;
     public static final int CANDLE_LED_COUNT = 8;
+    public static final int LED_STRIP_LED_START = TuningConstants.CANDLE_LED_COUNT;
     public static final int LED_STRIP_LED_COUNT = 60; // 60 LEDs per meter-long strip from CTRE
     public static final int CANDLE_TOTAL_NUMBER_LEDS = TuningConstants.CANDLE_LED_COUNT + TuningConstants.LED_STRIP_LED_COUNT;
 
-    public static final int CANDLE_ANIMATION_SLOT_1 = 0;
-    public static final int CANDLE_ANIMATION_SLOT_2 = 1;
+    public static final int CANDLE_ANIMATION_SLOT_0 = 0;
+    public static final int CANDLE_ANIMATION_SLOT_1 = 1;
+    public static final int CANDLE_ANIMATION_SLOT_2 = 2;
+    public static final int CANDLE_ANIMATION_SLOT_3 = 3;
 
     // IRS1318 Purple color - Human Player Cube Substation
     public static final int INDICATOR_PURPLE_COLOR_RED = 101;
@@ -240,12 +244,12 @@ public class TuningConstants
     public static final double DRIVETRAIN_STEER_MOTOR3_ABSOLUTE_OFFSET = -128.935;
     public static final double DRIVETRAIN_STEER_MOTOR4_ABSOLUTE_OFFSET = -125.419;
 
-    public static final boolean DRIVETRAIN_USE_TRANSLATIONAL_RATE_LIMITING = false;
-    public static final double DRIVETRAIN_TRANSLATIONAL_VELOCITY_MAX_NEGATIVE_RATE = -0.75 * TuningConstants.DRIVETRAIN_MAX_VELOCITY;
-    public static final double DRIVETRAIN_TRANSLATIONAL_VELOCITY_MAX_POSITIVE_RATE = 0.75 * TuningConstants.DRIVETRAIN_MAX_VELOCITY;
-    public static final boolean DRIVETRAIN_USE_ROTATIONAL_RATE_LIMITING = false;
-    public static final double DRIVETRAIN_ROTATIONAL_VELOCITY_MAX_NEGATIVE_RATE = -0.75 * TuningConstants.DRIVETRAIN_TURN_SCALE;
-    public static final double DRIVETRAIN_ROTATIONAL_VELOCITY_MAX_POSITIVE_RATE = 0.75 * TuningConstants.DRIVETRAIN_TURN_SCALE;
+    public static final boolean DRIVETRAIN_USE_TRANSLATIONAL_RATE_LIMITING = true;
+    public static final double DRIVETRAIN_TRANSLATIONAL_VELOCITY_MAX_NEGATIVE_RATE = -2.0 * TuningConstants.DRIVETRAIN_MAX_VELOCITY;
+    public static final double DRIVETRAIN_TRANSLATIONAL_VELOCITY_MAX_POSITIVE_RATE = 2.0 * TuningConstants.DRIVETRAIN_MAX_VELOCITY;
+    public static final boolean DRIVETRAIN_USE_ROTATIONAL_RATE_LIMITING = true;
+    public static final double DRIVETRAIN_ROTATIONAL_VELOCITY_MAX_NEGATIVE_RATE = -2.0 * TuningConstants.DRIVETRAIN_TURN_SCALE;
+    public static final double DRIVETRAIN_ROTATIONAL_VELOCITY_MAX_POSITIVE_RATE = 2.0 * TuningConstants.DRIVETRAIN_TURN_SCALE;
 
     // Position PID (angle) per-module
     public static final double DRIVETRAIN_STEER_MOTOR_POSITION_PID_KS = HardwareConstants.DRIVETRAIN_STEER_TICKS_PER_DEGREE;
@@ -476,8 +480,6 @@ public class TuningConstants
     public static final double ARM_UPPER_ZEROING_POSITION = -10.0 * HardwareConstants.ARM_FULL_EXTENSION_TICKS;
     public static final double ARM_LOWER_POSITION_STOWED = HardwareConstants.ARM_FULL_EXTENSION_TICKS;
     public static final double ARM_UPPER_POSITION_STOWED = 0.0;
-    public static final double ARM_LOWER_POSITION_GROUND_PLACING = 4700.0;
-    public static final double ARM_UPPER_POSITION_GROUND_PLACING = 1650.0;
     public static final double ARM_LOWER_POSITION_MIDDLE_CONE = 8000.0;
     public static final double ARM_UPPER_POSITION_MIDDLE_CONE = 3170.0;
     public static final double ARM_LOWER_POSITION_MIDDLE_CUBE = 5780.0;
@@ -486,10 +488,8 @@ public class TuningConstants
     public static final double ARM_UPPER_POSITION_HIGH_CONE = 6140.0;
     public static final double ARM_LOWER_POSITION_HIGH_CUBE = 3680.0;
     public static final double ARM_UPPER_POSITION_HIGH_CUBE = 7250.0;
-    public static final double ARM_LOWER_POSITION_GROUND_PICKUP_CONE = 2350.0;
-    public static final double ARM_UPPER_POSITION_GROUND_PICKUP_CONE = 1800.0;
-    public static final double ARM_LOWER_POSITION_GROUND_PICKUP_CUBE = 300.0;
-    public static final double ARM_UPPER_POSITION_GROUND_PICKUP_CUBE = 3500.0;
+    public static final double ARM_LOWER_POSITION_GROUND_PICKUP = 2350.0;
+    public static final double ARM_UPPER_POSITION_GROUND_PICKUP = 1800.0;
     public static final double ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP = 6100.0;
     public static final double ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP = 5830.0;
     public static final double ARM_LOWER_POSITION_CUBE_SUBSTATION_PICKUP = 6750.0;
