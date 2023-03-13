@@ -503,10 +503,12 @@ public class ButtonMap implements IButtonMap
             () -> ConcurrentTask.AnyTasks(
                 SequentialTask.Sequence(
                     new DriveTrainFieldOrientationModeTask(true),
-                    new OrientationTask(180.0),
-                    new ArmMMPositionTask(
-                        TuningConstants.ARM_LOWER_POSITION_APPROACH,
-                        TuningConstants.ARM_UPPER_POSITION_APPROACH),
+                    ConcurrentTask.AllTasks(
+                        new OrientationTask(180.0),
+                        new ArmMMPositionTask(
+                            TuningConstants.ARM_LOWER_POSITION_APPROACH,
+                            TuningConstants.ARM_UPPER_POSITION_APPROACH,
+                            IntakeState.Up)),
                     new VisionAprilTagTranslateTask(GridScoringPosition.MiddleCube)),
                 new RumbleTask()),
             new IOperation[]
@@ -563,7 +565,8 @@ public class ButtonMap implements IButtonMap
                         new OrientationTask(180.0),
                         new ArmMMPositionTask(
                             TuningConstants.ARM_LOWER_POSITION_APPROACH,
-                            TuningConstants.ARM_UPPER_POSITION_APPROACH)
+                            TuningConstants.ARM_UPPER_POSITION_APPROACH,
+                            IntakeState.Down)
                     ),
                     new VisionAprilTagTranslateTask(GridScoringPosition.LeftCone),
                     //new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0),
@@ -623,7 +626,8 @@ public class ButtonMap implements IButtonMap
                         new OrientationTask(180.0),
                         new ArmMMPositionTask(
                             TuningConstants.ARM_LOWER_POSITION_APPROACH,
-                            TuningConstants.ARM_UPPER_POSITION_APPROACH)
+                            TuningConstants.ARM_UPPER_POSITION_APPROACH,
+                            IntakeState.Down)
                     ),
                     new VisionAprilTagTranslateTask(GridScoringPosition.RightCone),
                     //new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0),
