@@ -99,10 +99,10 @@ public class ButtonMap implements IButtonMap
         new AnalogOperationDescription(
             AnalogOperation.ArmIKXAdjustment,
             UserInputDevice.Codriver,
-            AnalogAxis.XBONE_RSX,
+            AnalogAxis.XBONE_RSY,
             Shift.CodriverDebug,
             Shift.None,
-            ElectronicsConstants.INVERT_XBONE_RIGHT_X_AXIS,
+            ElectronicsConstants.INVERT_XBONE_RIGHT_Y_AXIS,
             -TuningConstants.ARM_UPPER_VELOCITY_DEAZONE,
             TuningConstants.ARM_UPPER_VELOCITY_DEAZONE),
 
@@ -227,14 +227,6 @@ public class ButtonMap implements IButtonMap
             Shift.DriverDebug,
             Shift.None,
             ButtonType.Click),
-
-    new DigitalOperationDescription(
-            DigitalOperation.OutakeCubeFast,
-            UserInputDevice.Codriver,
-            UserInputDeviceButton.XBONE_START_BUTTON,
-            Shift.None,
-            Shift.None,
-            ButtonType.Simple),
         new DigitalOperationDescription(
             DigitalOperation.IntakeUp,
             UserInputDevice.Driver,
@@ -255,6 +247,13 @@ public class ButtonMap implements IButtonMap
             UserInputDeviceButton.XBONE_RIGHT_BUTTON,
             Shift.DriverDebug,
             Shift.DriverDebug,
+            ButtonType.Simple),
+        new DigitalOperationDescription(
+            DigitalOperation.OutakeCubeFast,
+            UserInputDevice.Codriver,
+            UserInputDeviceButton.XBONE_START_BUTTON,
+            Shift.None,
+            Shift.None,
             ButtonType.Simple),
 
         new DigitalOperationDescription(
