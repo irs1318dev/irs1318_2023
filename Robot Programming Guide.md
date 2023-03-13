@@ -339,7 +339,7 @@ The Analog description takes parameters describing the User Input Device (Driver
 
 ```java
     new DigitalOperationDescription(
-        DigitalOperation.IntakeIn,
+        DigitalOperation.IntakeCube,
         UserInputDevice.Operator,
         UserInputDeviceButton.XBONE_A_BUTTON,
         ButtonType.Simple),

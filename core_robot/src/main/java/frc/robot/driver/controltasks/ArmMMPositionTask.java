@@ -18,6 +18,13 @@ public class ArmMMPositionTask extends ControlTaskBase
         Completed,
     }
 
+    public enum IntakeState
+    {
+        Up,
+        Down,
+        Unchanged,
+    }
+
     private final double lowerExtensionLength;
     private final double upperExtensionLength;
     private final boolean waitUntilPositionReached;
@@ -25,17 +32,30 @@ public class ArmMMPositionTask extends ControlTaskBase
     private ArmMechanism arm;
 
     private ArmMMState currentArmState;
+    private final IntakeState desiredState;
 
     public ArmMMPositionTask(double lowerExtensionLength, double upperExtensionLength)
     {
         this(lowerExtensionLength, upperExtensionLength, false);
     }
 
+    public ArmMMPositionTask(double lowerExtensionLength, double upperExtensionLength, IntakeState state)
+    {
+        this(lowerExtensionLength, upperExtensionLength, false, state);
+
+    }
+
     public ArmMMPositionTask(double lowerExtensionLength, double upperExtensionLength, boolean waitUntilPositionReached)
+    {
+        this(lowerExtensionLength, upperExtensionLength, waitUntilPositionReached, IntakeState.Unchanged);
+    }
+
+    public ArmMMPositionTask(double lowerExtensionLength, double upperExtensionLength, boolean waitUntilPositionReached, IntakeState state)
     {
         this.lowerExtensionLength = lowerExtensionLength;
         this.upperExtensionLength = upperExtensionLength;
         this.waitUntilPositionReached = waitUntilPositionReached;
+        this.desiredState = state;
     }
 
     /**
@@ -109,6 +129,24 @@ public class ArmMMPositionTask extends ControlTaskBase
             }
         }
 
+        switch (this.desiredState)
+        {
+            case Down:
+                this.setDigitalOperationState(DigitalOperation.IntakeDown, true);
+                this.setDigitalOperationState(DigitalOperation.IntakeUp, false);
+                break;
+            case Up:
+                this.setDigitalOperationState(DigitalOperation.IntakeDown, false);
+                this.setDigitalOperationState(DigitalOperation.IntakeUp, true);
+                break;
+
+            default:
+            case Unchanged:
+                this.setDigitalOperationState(DigitalOperation.IntakeDown, false);
+                this.setDigitalOperationState(DigitalOperation.IntakeUp, false);
+                break;
+        }
+
         switch (this.currentArmState)
         {
             case DesiredLowerIntermidate:
@@ -138,6 +176,8 @@ public class ArmMMPositionTask extends ControlTaskBase
     {
         this.setAnalogOperationState(AnalogOperation.ArmMMLowerPosition, TuningConstants.MAGIC_NULL_VALUE);
         this.setAnalogOperationState(AnalogOperation.ArmMMUpperPosition, TuningConstants.MAGIC_NULL_VALUE);
+        this.setDigitalOperationState(DigitalOperation.IntakeDown, false);
+        this.setDigitalOperationState(DigitalOperation.IntakeUp, false);
     }
 
     @Override

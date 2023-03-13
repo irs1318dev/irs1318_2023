@@ -27,7 +27,8 @@ public class DriverFeedbackManager implements IMechanism
     private final ArmMechanism arm;
     private final PowerManager powerMan;
 
-    private LightMode currentMode;
+    private LightMode currentStripMode;
+    private LightMode currentCandleMode;
 
     private enum LightMode
     {
@@ -60,7 +61,8 @@ public class DriverFeedbackManager implements IMechanism
         this.arm = arm;
         this.powerMan = powerMan;
 
-        this.currentMode = LightMode.Off;
+        this.currentStripMode = LightMode.Off;
+        this.currentCandleMode = LightMode.Off;
     }
 
     @Override
@@ -72,50 +74,65 @@ public class DriverFeedbackManager implements IMechanism
     public void update()
     {
         RobotMode currentMode = this.ds.getMode();
-        LightMode newLightMode;
+
+        boolean isCurrentLimiting = this.powerMan.getCurrentLimitingValue() != CurrentLimiting.Normal;
+
+        LightMode newStripMode;
         if (currentMode == RobotMode.Autonomous)
         {
-            newLightMode = LightMode.PurpleTwinkling;
+            newStripMode = LightMode.Rainbow;
         }
-        else if (this.driver.getDigital(DigitalOperation.CubeWantedFromSubstation))
+        else if (this.driver.getDigital(DigitalOperation.CubeWantedFromSubstation) ||
+            this.driver.getDigital(DigitalOperation.IntakeCube))
         {
-            newLightMode = LightMode.Purple;
+            newStripMode = LightMode.Purple;
         }
-        else if (this.driver.getDigital(DigitalOperation.ConeWantedFromSubstation))
+        else if (this.driver.getDigital(DigitalOperation.ConeWantedFromSubstation) ||
+            this.driver.getDigital(DigitalOperation.IntakeCone))
         {
-            newLightMode = LightMode.Yellow;
+            newStripMode = LightMode.Yellow;
         }
-        else if ((this.driver.getDigital(DigitalOperation.IntakeIn) || this.driver.getDigital(DigitalOperation.IntakeGrab)) && this.arm.isThroughBeamBroken())
+        else if (isCurrentLimiting)
         {
-            newLightMode = LightMode.Green;
-        }
-        else if ((this.driver.getDigital(DigitalOperation.IntakeIn) || this.driver.getDigital(DigitalOperation.IntakeGrab)) && !this.arm.isThroughBeamBroken())
-        {
-            newLightMode = LightMode.Red;
-        }
-        else if (this.powerMan.getCurrentLimitingValue() != CurrentLimiting.Normal)
-        {
-            newLightMode = LightMode.Blue;
-        }
-        else if (currentMode == RobotMode.Disabled)
-        {
-            newLightMode = LightMode.Rainbow;
+            newStripMode = LightMode.Blue;
         }
         else
         {
-            newLightMode = LightMode.Off;
+            newStripMode = LightMode.Off;
         }
 
-        if (newLightMode != this.currentMode)
+        LightMode newCandleMode;
+        if (isCurrentLimiting)
+        {
+            newCandleMode = LightMode.Blue;
+        }
+        else
+        {
+            newCandleMode = LightMode.Off;
+        }
+
+        if (newStripMode != this.currentStripMode)
         {
             this.updateLightRange(
-                this.currentMode,
-                newLightMode,
-                0,
-                TuningConstants.CANDLE_TOTAL_NUMBER_LEDS,
+                this.currentStripMode,
+                newStripMode,
+                TuningConstants.LED_STRIP_LED_START,
+                TuningConstants.LED_STRIP_LED_COUNT,
                 TuningConstants.CANDLE_ANIMATION_SLOT_1);
 
-            this.currentMode = newLightMode;
+            this.currentStripMode = newStripMode;
+        }
+
+        if (newCandleMode != this.currentCandleMode)
+        {
+            this.updateLightRange(
+                this.currentCandleMode,
+                newCandleMode,
+                TuningConstants.CANDLE_LED_START,
+                TuningConstants.CANDLE_LED_COUNT,
+                TuningConstants.CANDLE_ANIMATION_SLOT_2);
+
+            this.currentCandleMode = newCandleMode;
         }
 
         if (this.driver.getDigital(DigitalOperation.ForceLightDriverRumble))
@@ -134,13 +151,22 @@ public class DriverFeedbackManager implements IMechanism
     public void stop()
     {
         this.updateLightRange(
-            this.currentMode,
-            LightMode.Rainbow,
-            0,
-            TuningConstants.CANDLE_TOTAL_NUMBER_LEDS,
+            this.currentStripMode,
+            LightMode.Off,
+            TuningConstants.LED_STRIP_LED_START,
+            TuningConstants.LED_STRIP_LED_COUNT,
             TuningConstants.CANDLE_ANIMATION_SLOT_1);
 
-        this.currentMode = LightMode.Rainbow;
+        this.updateLightRange(
+            this.currentCandleMode,
+            LightMode.Off,
+            TuningConstants.CANDLE_LED_START,
+            TuningConstants.CANDLE_LED_COUNT,
+            TuningConstants.CANDLE_ANIMATION_SLOT_2);
+
+        this.currentStripMode = LightMode.Off;
+        this.currentCandleMode = LightMode.Off;
+
         this.driver.setRumble(UserInputDevice.Driver, JoystickRumbleType.Left, 0.0);
         this.driver.setRumble(UserInputDevice.Driver, JoystickRumbleType.Right, 0.0);
     }

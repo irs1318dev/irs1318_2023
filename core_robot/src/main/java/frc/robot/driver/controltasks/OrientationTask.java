@@ -1,6 +1,7 @@
 package frc.robot.driver.controltasks;
 
 import frc.robot.TuningConstants;
+import frc.robot.common.AnglePair;
 import frc.robot.driver.AnalogOperation;
 import frc.robot.mechanisms.PigeonManager;
 
@@ -52,6 +53,8 @@ public class OrientationTask extends UpdateCycleTask
             return super.hasCompleted();
         }
 
-        return Math.abs(this.pigeonManager.getYaw() - this.orientation) < TuningConstants.DRIVETRAIN_TURN_APPROXIMATION_STATIONARY;
+        double currentYaw = this.pigeonManager.getYaw();
+        double yawGoal = AnglePair.getClosestAngle(this.orientation, currentYaw, false).getAngle();
+        return Math.abs(currentYaw - yawGoal) < TuningConstants.DRIVETRAIN_TURN_APPROXIMATION_STATIONARY;
     }
 }
