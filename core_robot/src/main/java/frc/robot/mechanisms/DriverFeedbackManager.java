@@ -82,11 +82,13 @@ public class DriverFeedbackManager implements IMechanism
         {
             newStripMode = LightMode.Rainbow;
         }
-        else if (this.driver.getDigital(DigitalOperation.IntakeCube))
+        else if (this.driver.getDigital(DigitalOperation.CubeWantedFromSubstation) ||
+            this.driver.getDigital(DigitalOperation.IntakeCube))
         {
             newStripMode = LightMode.Purple;
         }
-        else if (this.driver.getDigital(DigitalOperation.IntakeCone))
+        else if (this.driver.getDigital(DigitalOperation.ConeWantedFromSubstation) ||
+            this.driver.getDigital(DigitalOperation.IntakeCone))
         {
             newStripMode = LightMode.Yellow;
         }

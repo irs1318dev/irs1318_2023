@@ -7,6 +7,8 @@ public enum DigitalOperation implements IOperation
 
     // Driver interaction operations
     ForceLightDriverRumble,
+    CubeWantedFromSubstation,
+    ConeWantedFromSubstation,
 
     // Vision operations:
     VisionForceDisable,

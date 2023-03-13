@@ -252,7 +252,7 @@ public class ButtonMap implements IButtonMap
             DigitalOperation.OutakeCubeFast,
             UserInputDevice.Codriver,
             UserInputDeviceButton.XBONE_START_BUTTON,
-            Shift.None,
+            Shift.CodriverDebug,
             Shift.None,
             ButtonType.Simple),
 
@@ -263,6 +263,21 @@ public class ButtonMap implements IButtonMap
             Shift.CodriverDebug,
             Shift.CodriverDebug,
             ButtonType.Click),
+
+        new DigitalOperationDescription(
+            DigitalOperation.CubeWantedFromSubstation,
+            UserInputDevice.Codriver,
+            UserInputDeviceButton.XBONE_SELECT_BUTTON,
+            Shift.CodriverDebug,
+            Shift.CodriverDebug,
+            ButtonType.Simple),
+        new DigitalOperationDescription(
+            DigitalOperation.ConeWantedFromSubstation,
+            UserInputDevice.Codriver,
+            UserInputDeviceButton.XBONE_START_BUTTON,
+            Shift.CodriverDebug,
+            Shift.CodriverDebug,
+            ButtonType.Simple),
 
         // Test operations:
         new DigitalOperationDescription(
@@ -996,7 +1011,7 @@ public class ButtonMap implements IButtonMap
         new MacroOperationDescription(
             MacroOperation.ChargeStationBalanceReverse,
             UserInputDevice.Test1,
-            UserInputDeviceButton.XBONE_START_BUTTON, // Left menu button
+            UserInputDeviceButton.XBONE_START_BUTTON, // right menu button
             Shift.Test1Debug,
             Shift.None,
             ButtonType.Toggle,
@@ -1090,7 +1105,7 @@ public class ButtonMap implements IButtonMap
         new MacroOperationDescription(
             MacroOperation.ChargeStationBalanceReverseFacingBackwards,
             UserInputDevice.Test1,
-            UserInputDeviceButton.XBONE_START_BUTTON, // Left menu button
+            UserInputDeviceButton.XBONE_START_BUTTON, // right menu button
             Shift.Test1Debug,
             Shift.Test1Debug,
             ButtonType.Toggle,
