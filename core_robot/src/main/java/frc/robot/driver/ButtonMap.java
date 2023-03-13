@@ -280,36 +280,6 @@ public class ButtonMap implements IButtonMap
             Shift.Test1Debug,
             Shift.Test1Debug,
             ButtonType.Toggle),
-        new DigitalOperationDescription(
-            DigitalOperation.RainbowTest,
-            UserInputDevice.Test2,
-            UserInputDeviceButton.XBONE_RIGHT_BUTTON,
-            ButtonType.Simple),
-        new DigitalOperationDescription(
-            DigitalOperation.PurpleTest,
-            UserInputDevice.Test2,
-            UserInputDeviceButton.XBONE_LEFT_BUTTON,
-            ButtonType.Simple),
-        new DigitalOperationDescription(
-            DigitalOperation.BlueTest,
-            UserInputDevice.Test2,
-            UserInputDeviceButton.XBONE_X_BUTTON,
-            ButtonType.Simple),
-        new DigitalOperationDescription(
-            DigitalOperation.YellowTest,
-            UserInputDevice.Test2,
-            UserInputDeviceButton.XBONE_Y_BUTTON,
-            ButtonType.Simple),
-        new DigitalOperationDescription(
-            DigitalOperation.GreenTest,
-            UserInputDevice.Test2,
-            UserInputDeviceButton.XBONE_A_BUTTON,
-            ButtonType.Simple),
-        new DigitalOperationDescription(
-            DigitalOperation.RedTest,
-            UserInputDevice.Test2,
-            UserInputDeviceButton.XBONE_B_BUTTON,
-            ButtonType.Simple),
     };
 
     public static MacroOperationDescription[] MacroSchema = new MacroOperationDescription[]
@@ -777,8 +747,8 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ButtonType.Toggle,
             () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP_CONE,
-                TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP_CONE,
+                TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP,
+                TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP,
                 IntakeState.Up),
             new IOperation[]
             {

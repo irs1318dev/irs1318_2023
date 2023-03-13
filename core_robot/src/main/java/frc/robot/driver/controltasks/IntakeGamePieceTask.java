@@ -10,18 +10,18 @@ public class IntakeGamePieceTask extends CompositeOperationTask
             DigitalOperation.IntakeCone,
         };
 
-    public IntakeGamePieceTask(boolean intakeIn)
+    public IntakeGamePieceTask(boolean intakeCube)
     {
         super(
-            intakeIn ? DigitalOperation.IntakeCube : DigitalOperation.IntakeCone,
+            intakeCube ? DigitalOperation.IntakeCube : DigitalOperation.IntakeCone,
             IntakeGamePieceTask.possibleOperations,
             true);
     }
 
-    public IntakeGamePieceTask(boolean intakeIn, double timeout)
+    public IntakeGamePieceTask(boolean intakeCube, double timeout)
     {
         super(
-            intakeIn ? DigitalOperation.IntakeCube : DigitalOperation.IntakeCone,
+            intakeCube ? DigitalOperation.IntakeCube : DigitalOperation.IntakeCone,
             IntakeGamePieceTask.possibleOperations,
             timeout);
     }
