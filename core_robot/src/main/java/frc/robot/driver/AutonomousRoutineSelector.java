@@ -12,6 +12,7 @@ import frc.robot.driver.SmartDashboardSelectionManager.StartPosition;
 import frc.robot.driver.common.*;
 import frc.robot.driver.controltasks.*;
 import frc.robot.driver.controltasks.ArmMMPositionTask.IntakeState;
+import frc.robot.driver.controltasks.ChargeStationTask.Orientation;
 import frc.robot.driver.controltasks.FollowPathTask.Type;
 
 @Singleton
@@ -283,7 +284,7 @@ public class AutonomousRoutineSelector
                 )
             ),
             new ResetLevelTask(),
-            new ChargeStationTaskv2(true, false)
+            new ChargeStationTask(true, Orientation.Forwards)
         );
     }
 
@@ -333,7 +334,7 @@ public class AutonomousRoutineSelector
             ),
 
             new ResetLevelTask(),
-            new ChargeStationTaskv2(true, false)
+            new ChargeStationTask(true, Orientation.Forwards)
         );
     }
 
@@ -455,7 +456,7 @@ public class AutonomousRoutineSelector
                 true,
                 true),
             new ResetLevelTask(),
-            new ChargeStationTaskv2(false, false)
+            new ChargeStationTask(false, Orientation.Forwards)
         );
     }
 
@@ -496,7 +497,7 @@ public class AutonomousRoutineSelector
             new WaitTask(1.0),
             new ResetLevelTask(),
             
-            new ChargeStationTaskv2(false, true)
+            new ChargeStationTask(false, Orientation.Backwards)
         );
     }
 
@@ -583,7 +584,7 @@ public class AutonomousRoutineSelector
                 )
             ),
             new ResetLevelTask(),
-            new ChargeStationTaskv2(true, false)
+            new ChargeStationTask(true, Orientation.Forwards)
         );
     }
 
@@ -633,7 +634,7 @@ public class AutonomousRoutineSelector
             ),
 
             new ResetLevelTask(),
-            new ChargeStationTaskv2(true, false)
+            new ChargeStationTask(true, Orientation.Forwards)
         );
     }
 

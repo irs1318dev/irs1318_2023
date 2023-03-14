@@ -9,6 +9,7 @@ import frc.robot.driver.common.buttons.*;
 import frc.robot.driver.common.descriptions.*;
 import frc.robot.driver.controltasks.*;
 import frc.robot.driver.controltasks.ArmMMPositionTask.IntakeState;
+import frc.robot.driver.controltasks.ChargeStationTask.Orientation;
 import frc.robot.driver.controltasks.FollowPathTask.Type;
 import frc.robot.driver.controltasks.VisionAprilTagTranslateTask.GridScoringPosition;
 import frc.robot.driver.controltasks.VisionMoveAndTurnTaskBase.MoveSpeed;
@@ -927,7 +928,7 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
                 new ResetLevelTask(),
-                new ChargeStationTaskv2(false, false),
+                new ChargeStationTask(false, Orientation.Forwards),
                 ConcurrentTask.AllTasks(
                     new PIDBrakeTask(),
                     new WaitTask(0.5))),
@@ -974,7 +975,7 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
                 new ResetLevelTask(),
-                new ChargeStationTaskv2(false, true),
+                new ChargeStationTask(false, Orientation.Backwards),
                 ConcurrentTask.AllTasks(
                     new PIDBrakeTask(),
                     new WaitTask(0.5))),
@@ -1021,7 +1022,7 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
                 new ResetLevelTask(), // calibration
-                new ChargeStationTaskv2(true, false),
+                new ChargeStationTask(true, Orientation.Forwards),
                 ConcurrentTask.AllTasks(
                     new PIDBrakeTask(),
                     new WaitTask(0.5))),
@@ -1115,7 +1116,7 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
                 new ResetLevelTask(), // calibration
-                new ChargeStationTaskv2(true, true),
+                new ChargeStationTask(true, Orientation.Backwards),
                 ConcurrentTask.AllTasks(
                     new PIDBrakeTask(),
                     new WaitTask(0.5))),
