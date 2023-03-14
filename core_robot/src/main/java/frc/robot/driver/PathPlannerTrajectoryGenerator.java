@@ -1,5 +1,7 @@
 package frc.robot.driver;
 
+import com.google.common.util.concurrent.Monitor.Guard;
+
 import frc.robot.TuningConstants;
 import frc.robot.common.robotprovider.IPathPlanner;
 import frc.robot.common.robotprovider.ITrajectory;
@@ -449,8 +451,8 @@ public class PathPlannerTrajectoryGenerator
             pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(LoadEdge, -180, -180),
-                new PathPlannerWaypoint(P1, -180, -180)),
+                new PathPlannerWaypoint(LoadEdge, GuardOT, -180),
+                new PathPlannerWaypoint(P1, GuardOT, -180)),
                 isRed ? "LoadEdgeTo1Red" : "LoadEdgeTo1Blue");
             
         addTrajectory(
@@ -489,7 +491,7 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(P14, -180, 0),
-                new PathPlannerWaypoint(P20, -180, -180),
+                new PathPlannerWaypoint(P20, -180, 0),
                 new PathPlannerWaypoint(P10, -180, -180),
                 new PathPlannerWaypoint(P3, BackwardGuardOT , -180)),
                 isRed ? "14To3Red" : "14To3Blue");
