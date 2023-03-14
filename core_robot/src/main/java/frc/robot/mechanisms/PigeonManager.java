@@ -171,9 +171,19 @@ public class PigeonManager implements IPositionManager
         return this.roll = this.rollOffset;
     }
 
+    public double getYawRate()
+    {
+        return this.yawRate;
+    }
+
     public double getPitchRate()
     {
         return this.pitchRate;
+    }
+
+    public double getRollRate()
+    {
+        return this.rollRate;
     }
 
     /**
