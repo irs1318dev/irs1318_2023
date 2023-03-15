@@ -14,7 +14,7 @@ public class OrientationTask extends UpdateCycleTask
 
     public OrientationTask(double orientation)
     {
-        this(orientation, false);
+        this(orientation, true);
     }
 
     public OrientationTask(double orientation, boolean waitUntilGoalReached)
@@ -28,6 +28,7 @@ public class OrientationTask extends UpdateCycleTask
     @Override
     public void begin()
     {
+        super.begin();
         this.pigeonManager = this.getInjector().getInstance(PigeonManager.class);
 
         this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleGoal, this.orientation);
@@ -36,12 +37,14 @@ public class OrientationTask extends UpdateCycleTask
     @Override
     public void update()
     {
+        super.update();
         this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleGoal, this.orientation);
     }
 
     @Override
     public void end()
     {
+        super.end();
         this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleGoal, TuningConstants.MAGIC_NULL_VALUE);
     }
 
