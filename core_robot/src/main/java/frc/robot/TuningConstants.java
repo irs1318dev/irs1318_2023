@@ -369,7 +369,6 @@ public class TuningConstants
     
     public static final double ARM_INTAKE_CUBE_POWER = 0.65; // Also, eject cone
     public static final double ARM_INTAKE_CONE_POWER = -0.65; // Also, eject cube
-    public static final double ARM_OUTAKE_CUBE_FAST_POWER = -0.85;
     public static final boolean ARM_INTAKE_MOTOR_INVERT_OUTPUT = true;
     public static final double ARM_INTAKE_THROUGHBEAM_THRESHOLD = 3.5;
 

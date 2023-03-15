@@ -42,6 +42,7 @@ public class DriverFeedbackManager implements IMechanism
         Rainbow,
         YellowFlashing,
         PurpleTwinkling,
+        PurpleStrobe,
     }
 
     @Inject
@@ -91,6 +92,10 @@ public class DriverFeedbackManager implements IMechanism
             this.driver.getDigital(DigitalOperation.IntakeCone))
         {
             newStripMode = LightMode.Yellow;
+        }
+        else if (this.driver.getDigital(DigitalOperation.ForcePurpleStrobe))
+        {
+            newStripMode = LightMode.PurpleStrobe;
         }
         else if (isCurrentLimiting)
         {
@@ -191,6 +196,7 @@ public class DriverFeedbackManager implements IMechanism
             case Rainbow:
             case YellowFlashing:
             case PurpleTwinkling:
+            case PurpleStrobe:
                 this.candle.stopAnimation(animationSlot);
                 break;
 
@@ -279,9 +285,20 @@ public class DriverFeedbackManager implements IMechanism
                     TuningConstants.INDICATOR_YELLOW_COLOR_BLUE,
                     TuningConstants.INDICATOR_YELLOW_COLOR_WHITE,
                     0.75,
-                    rangeStart,
-                    rangeCount);
+                    rangeCount,
+                    rangeStart);
                 break;
+
+            case PurpleStrobe:
+                this.candle.startStrobeAnimation(
+                    animationSlot,
+                    TuningConstants.INDICATOR_PURPLE_COLOR_RED,
+                    TuningConstants.INDICATOR_PURPLE_COLOR_GREEN,
+                    TuningConstants.INDICATOR_PURPLE_COLOR_BLUE,
+                    TuningConstants.INDICATOR_PURPLE_COLOR_WHITE,
+                    0.75,
+                    rangeCount,
+                    rangeStart);
 
             case PurpleTwinkling:
                 this.candle.startTwinkleAnimation(
