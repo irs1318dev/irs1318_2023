@@ -14,7 +14,7 @@ public class OrientationTask extends UpdateCycleTask
 
     public OrientationTask(double orientation)
     {
-        this(orientation, false);
+        this(orientation, true);
     }
 
     public OrientationTask(double orientation, boolean waitUntilGoalReached)
@@ -36,6 +36,7 @@ public class OrientationTask extends UpdateCycleTask
     @Override
     public void update()
     {
+        super.update();
         this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleGoal, this.orientation);
     }
 

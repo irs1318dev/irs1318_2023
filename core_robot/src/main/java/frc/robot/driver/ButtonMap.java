@@ -702,10 +702,7 @@ public class ButtonMap implements IButtonMap
                 new ArmMMPositionTask(
                     TuningConstants.ARM_LOWER_POSITION_CONE_UPRIGHTING_MACRO,
                     TuningConstants.ARM_UPPER_POSITION_CONE_UPRIGHTING_MACRO),
-                new FollowPathTask("goBackwards18in"),
-                new ArmMMPositionTask(
-                    TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP,
-                    TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP)),
+                new FollowPathTask("goBackwards18in")),
             new IOperation[]
             {
                 AnalogOperation.DriveTrainMoveForward,
