@@ -28,6 +28,7 @@ public class OrientationTask extends UpdateCycleTask
     @Override
     public void begin()
     {
+        super.begin();
         this.pigeonManager = this.getInjector().getInstance(PigeonManager.class);
 
         this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleGoal, this.orientation);
@@ -43,6 +44,7 @@ public class OrientationTask extends UpdateCycleTask
     @Override
     public void end()
     {
+        super.end();
         this.setAnalogOperationState(AnalogOperation.DriveTrainTurnAngleGoal, TuningConstants.MAGIC_NULL_VALUE);
     }
 
