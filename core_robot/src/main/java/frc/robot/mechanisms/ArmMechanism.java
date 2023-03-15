@@ -554,14 +554,7 @@ public class ArmMechanism implements IMechanism
         }
         else if (this.driver.getDigital(DigitalOperation.IntakeCone))
         {
-            if (this.driver.getDigital(DigitalOperation.OutakeCubeFast))
-            {
-                intakePower = TuningConstants.ARM_OUTAKE_CUBE_FAST_POWER;
-            }
-            else
-            {
-                intakePower = TuningConstants.ARM_INTAKE_CONE_POWER;
-            }
+            intakePower = TuningConstants.ARM_INTAKE_CONE_POWER;
         }
 
         this.intakeMotor.set(intakePower);

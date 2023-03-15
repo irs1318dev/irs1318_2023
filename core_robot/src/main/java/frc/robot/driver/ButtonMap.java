@@ -249,13 +249,6 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             Shift.None,
             ButtonType.Simple),
-        new DigitalOperationDescription(
-            DigitalOperation.OutakeCubeFast,
-            UserInputDevice.Codriver,
-            UserInputDeviceButton.XBONE_START_BUTTON,
-            Shift.CodriverDebug,
-            Shift.None,
-            ButtonType.Simple),
 
         new DigitalOperationDescription(
             DigitalOperation.ArmForceReset,
@@ -269,15 +262,15 @@ public class ButtonMap implements IButtonMap
             DigitalOperation.CubeWantedFromSubstation,
             UserInputDevice.Codriver,
             UserInputDeviceButton.XBONE_SELECT_BUTTON,
-            Shift.CodriverDebug,
-            Shift.CodriverDebug,
+            Shift.None,
+            Shift.None,
             ButtonType.Simple),
         new DigitalOperationDescription(
             DigitalOperation.ConeWantedFromSubstation,
             UserInputDevice.Codriver,
             UserInputDeviceButton.XBONE_START_BUTTON,
-            Shift.CodriverDebug,
-            Shift.CodriverDebug,
+            Shift.None,
+            Shift.None,
             ButtonType.Simple),
 
         // Test operations:
@@ -388,14 +381,16 @@ public class ButtonMap implements IButtonMap
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_APPROACH,
                         TuningConstants.ARM_UPPER_POSITION_APPROACH),
-                    new VisionMoveAndTurnTask(TurnType.None, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, true, -32.0),
+                    new VisionMoveAndTurnTask(TurnType.None, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, false, -32.0),
                     new DriveTrainFieldOrientationModeTask(true),
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP,
                         TuningConstants.ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP)),
-                new RumbleTask()),
+                new RumbleTask(),
+                new StrobeTask()),
             new IOperation[]
             {
+                DigitalOperation.ForcePurpleStrobe,
                 DigitalOperation.ForceLightDriverRumble,
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
@@ -448,14 +443,16 @@ public class ButtonMap implements IButtonMap
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_APPROACH,
                         TuningConstants.ARM_UPPER_POSITION_APPROACH),
-                    new VisionMoveAndTurnTask(TurnType.None, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, true, 32.0),
+                    new VisionMoveAndTurnTask(TurnType.None, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, false, 32.0),
                     new DriveTrainFieldOrientationModeTask(true),
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP,
                         TuningConstants.ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP)),
-                new RumbleTask()),
+                new RumbleTask(),
+                new StrobeTask()),
             new IOperation[]
             {
+                DigitalOperation.ForcePurpleStrobe,
                 DigitalOperation.ForceLightDriverRumble,
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
@@ -511,9 +508,11 @@ public class ButtonMap implements IButtonMap
                             TuningConstants.ARM_UPPER_POSITION_APPROACH,
                             IntakeState.Up)),
                     new VisionAprilTagTranslateTask(GridScoringPosition.MiddleCube)),
-                new RumbleTask()),
+                new RumbleTask(),
+                new StrobeTask()),
             new IOperation[]
             {
+                DigitalOperation.ForcePurpleStrobe,
                 DigitalOperation.ForceLightDriverRumble,
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
@@ -572,9 +571,11 @@ public class ButtonMap implements IButtonMap
                     new VisionAprilTagTranslateTask(GridScoringPosition.LeftCone),
                     //new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0),
                     new DriveTrainFieldOrientationModeTask(true)),
-                new RumbleTask()),
+                new RumbleTask(),
+                new StrobeTask()),
             new IOperation[]
             {
+                DigitalOperation.ForcePurpleStrobe,
                 DigitalOperation.ForceLightDriverRumble,
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
@@ -633,9 +634,11 @@ public class ButtonMap implements IButtonMap
                     new VisionAprilTagTranslateTask(GridScoringPosition.RightCone),
                     //new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0),
                     new DriveTrainFieldOrientationModeTask(true)),
-                new RumbleTask()),
+                new RumbleTask(),
+                new StrobeTask()),
             new IOperation[]
             {
+                DigitalOperation.ForcePurpleStrobe,
                 DigitalOperation.ForceLightDriverRumble,
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,

@@ -9,6 +9,7 @@ public enum DigitalOperation implements IOperation
     ForceLightDriverRumble,
     CubeWantedFromSubstation,
     ConeWantedFromSubstation,
+    ForcePurpleStrobe,
 
     // Vision operations:
     VisionForceDisable,
@@ -38,7 +39,6 @@ public enum DigitalOperation implements IOperation
     IntakeUp,
     IntakeCube,
     IntakeCone,
-    OutakeCubeFast,
     ExtendLeftConeFlipper,
     ExtendRightConeFlipper,
     ArmEnableSimpleMode,
