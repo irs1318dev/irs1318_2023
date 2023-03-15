@@ -462,7 +462,8 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(P1, 0, -180),
-                new PathPlannerWaypoint(P18, 0, -180),
+                new PathPlannerWaypoint(P10, 0, -180),
+                new PathPlannerWaypoint(P18, 0, 0),
                 new PathPlannerWaypoint(P20, 0, 0),
                 new PathPlannerWaypoint(P14, 0 , 0)),
                 isRed ? "1To14Red" : "1To14Blue");
