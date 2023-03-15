@@ -51,14 +51,15 @@ public class SlewRateLimiter
     public double update(double value)
     {
         double currTime = this.timer.get();
-        double delta = this.prevTime - currTime;
+        double delta = currTime - this.prevTime;
 
-        this.prevValue =
+        double newValue =
             Helpers.EnforceRange(
                 value,
                 this.prevValue + delta * this.maxNegativeRate,
                 this.prevValue + delta * this.maxPositiveRate);
 
+        this.prevValue = newValue;
         this.prevTime = currTime;
         return this.prevValue;
     }
