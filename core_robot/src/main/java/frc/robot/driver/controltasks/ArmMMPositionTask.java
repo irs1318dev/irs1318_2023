@@ -129,22 +129,25 @@ public class ArmMMPositionTask extends ControlTaskBase
             }
         }
 
-        switch (this.desiredState)
+        if (this.currentArmState == ArmMMState.DesiredGoal)
         {
-            case Down:
-                this.setDigitalOperationState(DigitalOperation.IntakeDown, true);
-                this.setDigitalOperationState(DigitalOperation.IntakeUp, false);
-                break;
-            case Up:
-                this.setDigitalOperationState(DigitalOperation.IntakeDown, false);
-                this.setDigitalOperationState(DigitalOperation.IntakeUp, true);
-                break;
+            switch (this.desiredState)
+            {
+                case Down:
+                    this.setDigitalOperationState(DigitalOperation.IntakeDown, true);
+                    this.setDigitalOperationState(DigitalOperation.IntakeUp, false);
+                    break;
+                case Up:
+                    this.setDigitalOperationState(DigitalOperation.IntakeDown, false);
+                    this.setDigitalOperationState(DigitalOperation.IntakeUp, true);
+                    break;
 
-            default:
-            case Unchanged:
-                this.setDigitalOperationState(DigitalOperation.IntakeDown, false);
-                this.setDigitalOperationState(DigitalOperation.IntakeUp, false);
-                break;
+                default:
+                case Unchanged:
+                    this.setDigitalOperationState(DigitalOperation.IntakeDown, false);
+                    this.setDigitalOperationState(DigitalOperation.IntakeUp, false);
+                    break;
+            }
         }
 
         switch (this.currentArmState)

@@ -73,6 +73,9 @@ public class VisionAprilTagTranslateTask extends ControlTaskBase
     @Override
     public void begin()
     {
+        this.driveTrain = this.getInjector().getInstance(DriveTrainMechanism.class);
+        this.vision = this.getInjector().getInstance(OffboardVisionManager.class);
+
         ITimer timer = this.getInjector().getInstance(ITimer.class);
         this.xHandler = new PIDHandler(
             TuningConstants.VISION_FAST_MOVING_PID_KP,
