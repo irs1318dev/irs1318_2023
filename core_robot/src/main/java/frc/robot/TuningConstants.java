@@ -96,8 +96,8 @@ public class TuningConstants
     public static final double POWER_OVERCURRENT_TRACKING_DURATION = 5.0; // duration of time to keep track of the average current
     public static final double POWER_OVERCURRENT_SAMPLES_PER_LOOP = 1.0; // we may want to increase this if we find our update loop duration isn't very consistent...
     public static final double POWER_OVERCURRENT_SAMPLES_PER_SECOND = TuningConstants.LOOPS_PER_SECOND * TuningConstants.POWER_OVERCURRENT_SAMPLES_PER_LOOP;
-    public static final double POWER_OVERCURRENT_THRESHOLD = 120.0;
-    public static final double POWER_OVERCURREHT_HIGH_THRESHOLD = 160.0;
+    public static final double POWER_OVERCURRENT_THRESHOLD = 140.0;
+    public static final double POWER_OVERCURREHT_HIGH_THRESHOLD = 180.0;
 
     //================================================= Vision ======================================================
 
@@ -487,12 +487,16 @@ public class TuningConstants
     public static final double ARM_UPPER_POSITION_HIGH_CONE = 6140.0;
     public static final double ARM_LOWER_POSITION_HIGH_CUBE = 3680.0;
     public static final double ARM_UPPER_POSITION_HIGH_CUBE = 7250.0;
-    public static final double ARM_LOWER_POSITION_GROUND_PICKUP = 2350.0;
-    public static final double ARM_UPPER_POSITION_GROUND_PICKUP = 1800.0;
+    public static final double ARM_LOWER_POSITION_CONE_GROUND_PICKUP = 2350.0;
+    public static final double ARM_UPPER_POSITION_CONE_GROUND_PICKUP = 1800.0;
+    public static final double ARM_LOWER_POSITION_CUBE_GROUND_PICKUP = 3400.0;
+    public static final double ARM_UPPER_POSITION_CUBE_GROUND_PICKUP = 1650.0;
+    public static final double ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP_APPROACH = 6140.0;
+    public static final double ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP_APPROACH = 6200.0;
     public static final double ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP = 6100.0;
     public static final double ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP = 5830.0;
-    public static final double ARM_LOWER_POSITION_CUBE_SUBSTATION_PICKUP = 6750.0;
-    public static final double ARM_UPPER_POSITION_CUBE_SUBSTATION_PICKUP = 3350.0;
+    public static final double ARM_LOWER_POSITION_CUBE_SUBSTATION_PICKUP = 6100.0;
+    public static final double ARM_UPPER_POSITION_CUBE_SUBSTATION_PICKUP = 1650.0;
     public static final double ARM_LOWER_POSITION_APPROACH = HardwareConstants.ARM_FULL_EXTENSION_TICKS;
     public static final double ARM_UPPER_POSITION_APPROACH = 4100.0;
     public static final double ARM_LOWER_POSITION_CONE_UPRIGHTING_MACRO = 5350;
