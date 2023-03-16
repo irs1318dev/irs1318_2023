@@ -59,7 +59,7 @@ public class TuningConstants
     public static final double CloseChargeStationX = 30.345;//84.61; // 12.845 inches away from the charge station and grid + Robot centering value
     public static final double FarChargeStationX = 168.195;//222.635; // 15 inches away from the charge station + Robot centering value
     public static final double FarChargeStationInBetweenX = TuningConstants.FarChargeStationX + 30.0; // 30 inches away from last point to allow for turning
-    public static final double GroundPiecesX = 206.5;//253.265; // On ground pieces real value 47.36
+    public static final double GroundPiecesX = 220.5;//253.265; // On ground pieces real value 47.36
     public static final double LoadEdgeStartX = 58.5;//110.765;
     public static final double GuardEdgeStartX = 77.75;//132.015;
     public static final double FullLength = 651.25; // (X) 54 ft. 3.25 in, from game manual
@@ -359,7 +359,7 @@ public class TuningConstants
     public static final double DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY = 0.60 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // in inches per second
     public static final double DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION = 0.75 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // in inches per second per second
     public static final double DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY = TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY / 1.4; // in inches per second
-    public static final double DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION = TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION / 1.4; // in inches per second per second
+    public static final double DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION = TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION / 1.25; // in inches per second per second
     public static final double DRIVETRAIN_LOW_PATH_TRANSLATIONAL_VELOCITY = TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY / 2.0; // in inches per second
     public static final double DRIVETRAIN_LOW_PATH_TRANSLATIONAL_ACCELERATION = TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION / 2.0; // in inches per second per second
 

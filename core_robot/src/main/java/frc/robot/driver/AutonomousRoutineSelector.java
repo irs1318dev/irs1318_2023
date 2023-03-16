@@ -624,7 +624,7 @@ public class AutonomousRoutineSelector
                 ),
                 SequentialTask.Sequence(
                     new WaitTask(2.0),
-                    new IntakeGamePieceTask(false, 3.2)
+                    new IntakeGamePieceTask(false, 4.0)
                 )
             ),
 
@@ -680,7 +680,7 @@ public class AutonomousRoutineSelector
                 ),
                 SequentialTask.Sequence(
                     new WaitTask(2.0),
-                    new IntakeGamePieceTask(false, 3.2)
+                    new IntakeGamePieceTask(false, 5.5)
                 )
             ),
 
