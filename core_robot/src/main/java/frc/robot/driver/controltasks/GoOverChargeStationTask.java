@@ -102,7 +102,8 @@ public class GoOverChargeStationTask extends ControlTaskBase
         }
         else if (this.currentState == State.Centered)
         {
-            if (Math.abs(this.pitch) <= TuningConstants.CHARGE_STATION_PITCH_VARIATION)
+            if ((Math.abs(this.pitch) <= TuningConstants.CHARGE_STATION_PITCH_VARIATION)
+            && (this.pitchRateAverage >= 0))
             {
                 this.currentState = State.Completed;
             }
