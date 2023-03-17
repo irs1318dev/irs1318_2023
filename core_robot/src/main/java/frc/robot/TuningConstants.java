@@ -57,7 +57,7 @@ public class TuningConstants
     // X Values
     public static final double StartGridX = 17.5;//71.765; // Edge of grid - Robot centering value
     public static final double CloseChargeStationX = 30.345;//84.61; // 12.845 inches away from the charge station and grid + Robot centering value
-    public static final double FarChargeStationX = 168.195;//222.635; // 15 inches away from the charge station + Robot centering value
+    public static final double FarChargeStationX = 178.195;//222.635; // 15 inches away from the charge station + Robot centering value
     public static final double FarChargeStationInBetweenX = TuningConstants.FarChargeStationX + 30.0; // 30 inches away from last point to allow for turning
     public static final double GroundPiecesX = 220.5;//253.265; // On ground pieces real value 47.36
     public static final double LoadEdgeStartX = 58.5;//110.765;
@@ -349,7 +349,7 @@ public class TuningConstants
     public static final double DRIVETRAIN_SLOW_MODE_MAX_VELOCITY = 0.3 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // max velocity in inches per second
     public static final double DRIVETRAIN_VELOCITY_TO_PERCENTAGE = 1.0 / TuningConstants.DRIVETRAIN_MAX_VELOCITY;
     public static final double DRIVETRAIN_TURN_GOAL_VELOCITY = 10.0; // degrees per second for turn goal
-    public static final double DRIVETRAIN_TURN_SCALE = 1.3 * Math.PI; // radians per second
+    public static final double DRIVETRAIN_TURN_SCALE = 1.6 * Math.PI; // radians per second
     public static final double DRIVETRAIN_SLOW_MODE_TURN_SCALE = 0.3 * TuningConstants.DRIVETRAIN_TURN_SCALE; // radians per second
     public static final double DRIVETRAIN_STATIONARY_VELOCITY = 0.1;
     public static final double DRIVETRAIN_TURN_APPROXIMATION_STATIONARY = 2.0; // number of degrees off at which point we give up trying to face an angle when uncommanded
