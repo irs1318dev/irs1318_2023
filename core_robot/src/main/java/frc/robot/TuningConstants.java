@@ -471,8 +471,8 @@ public class TuningConstants
 
     // Arm stall prevention
     public static final boolean ARM_STALL_PROTECTION_ENABLED = true;
-    public static final double ARM_STALLED_POWER_THRESHOLD = 3.0; // amount of power being "used" by the linear actuator (despite not moving according to the encoders) to be considered stalled
-    public static final double ARM_STALLED_VELOCITY_THRESHOLD = 10.0; // 10 ticks/sec is very slow, unlikely to be really moving...
+    public static final double ARM_STALLED_POWER_THRESHOLD = 3.5; // amount of power being "used" by the linear actuator (despite not moving according to the encoders) to be considered stalled
+    public static final double ARM_STALLED_VELOCITY_THRESHOLD = 8.0; // 8 ticks/sec is very slow, unlikely to be really moving...
 
     // Set Points for Arm (linear actuator positions)
     public static final double ARM_LOWER_ZEROING_POSITION = 10.0 * HardwareConstants.ARM_FULL_EXTENSION_TICKS;
@@ -495,8 +495,8 @@ public class TuningConstants
     public static final double ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP_APPROACH = 6200.0;
     public static final double ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP = 6100.0;
     public static final double ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP = 5830.0;
-    public static final double ARM_LOWER_POSITION_CUBE_SUBSTATION_PICKUP = 6100.0;
-    public static final double ARM_UPPER_POSITION_CUBE_SUBSTATION_PICKUP = 1650.0;
+    public static final double ARM_LOWER_POSITION_CUBE_SUBSTATION_PICKUP = 8300.0;
+    public static final double ARM_UPPER_POSITION_CUBE_SUBSTATION_PICKUP = 4020.0;
     public static final double ARM_LOWER_POSITION_APPROACH = HardwareConstants.ARM_FULL_EXTENSION_TICKS;
     public static final double ARM_UPPER_POSITION_APPROACH = 4100.0;
     public static final double ARM_LOWER_POSITION_CONE_UPRIGHTING_MACRO = 5350;
@@ -565,5 +565,5 @@ public class TuningConstants
     public static final double CHARGE_STATION_BALANCING_SPEED_V2 = 0.08;
 
     //TODO: edit to be shorter, because climbing velocity has increased.
-    public static final double CHARGE_STATION_CLIMBING_TRANSITION_WAIT_DURATION_V2 = 1.0;
+    public static final double CHARGE_STATION_CLIMBING_TRANSITION_WAIT_DURATION_V2 = 1.25;
 }

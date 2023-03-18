@@ -768,10 +768,12 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             Shift.None,
             ButtonType.Toggle,
-            () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_CONE_GROUND_PICKUP,
-                TuningConstants.ARM_UPPER_POSITION_CONE_GROUND_PICKUP,
-                IntakeState.Up),
+            () -> SequentialTask.Sequence(
+                new ArmMMPositionTask(
+                    TuningConstants.ARM_LOWER_POSITION_CONE_GROUND_PICKUP,
+                    TuningConstants.ARM_UPPER_POSITION_CONE_GROUND_PICKUP,
+                    IntakeState.Up),
+                new IntakePositionTask(false)),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -787,10 +789,12 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             Shift.None,
             ButtonType.Toggle,
-            () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_MIDDLE_CONE,
-                TuningConstants.ARM_UPPER_POSITION_MIDDLE_CONE,
-                IntakeState.Down),
+            () -> SequentialTask.Sequence(
+                new ArmMMPositionTask(
+                    TuningConstants.ARM_LOWER_POSITION_MIDDLE_CONE,
+                    TuningConstants.ARM_UPPER_POSITION_MIDDLE_CONE,
+                    IntakeState.Down),
+                new IntakePositionTask(true)),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -805,10 +809,12 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             Shift.None,
             ButtonType.Toggle,
-            () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_MIDDLE_CUBE,
-                TuningConstants.ARM_UPPER_POSITION_MIDDLE_CUBE,
-                IntakeState.Up),
+            () -> SequentialTask.Sequence(
+                new ArmMMPositionTask(
+                    TuningConstants.ARM_LOWER_POSITION_MIDDLE_CUBE,
+                    TuningConstants.ARM_UPPER_POSITION_MIDDLE_CUBE,
+                    IntakeState.Up),
+                new IntakePositionTask(false)),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -823,10 +829,12 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             Shift.None,
             ButtonType.Toggle,
-            () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_HIGH_CONE,
-                TuningConstants.ARM_UPPER_POSITION_HIGH_CONE,
-                IntakeState.Down),
+            () -> SequentialTask.Sequence(
+                new ArmMMPositionTask(
+                    TuningConstants.ARM_LOWER_POSITION_HIGH_CONE,
+                    TuningConstants.ARM_UPPER_POSITION_HIGH_CONE,
+                    IntakeState.Down),
+                new IntakePositionTask(true)),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -841,10 +849,12 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             Shift.None,
             ButtonType.Toggle,
-            () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE,
-                TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE,
-                IntakeState.Up),
+            () -> SequentialTask.Sequence(
+                new ArmMMPositionTask(
+                    TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE,
+                    TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE,
+                    IntakeState.Up),
+                new IntakePositionTask(false)),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -880,10 +890,12 @@ public class ButtonMap implements IButtonMap
             Shift.CodriverDebug,
             Shift.None,
             ButtonType.Toggle,
-            () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_CUBE_GROUND_PICKUP,
-                TuningConstants.ARM_UPPER_POSITION_CUBE_GROUND_PICKUP,
-                IntakeState.Down),
+            () -> SequentialTask.Sequence(
+                new ArmMMPositionTask(
+                    TuningConstants.ARM_LOWER_POSITION_CUBE_GROUND_PICKUP,
+                    TuningConstants.ARM_UPPER_POSITION_CUBE_GROUND_PICKUP,
+                    IntakeState.Down),
+                new IntakePositionTask(true)),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -898,10 +910,12 @@ public class ButtonMap implements IButtonMap
             Shift.CodriverDebug,
             Shift.CodriverDebug,
             ButtonType.Toggle,
-            () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_CUBE_SUBSTATION_PICKUP,
-                TuningConstants.ARM_UPPER_POSITION_CUBE_SUBSTATION_PICKUP,
-                IntakeState.Up),
+            () -> SequentialTask.Sequence(
+                new ArmMMPositionTask(
+                    TuningConstants.ARM_LOWER_POSITION_CUBE_SUBSTATION_PICKUP,
+                    TuningConstants.ARM_UPPER_POSITION_CUBE_SUBSTATION_PICKUP,
+                    IntakeState.Up),
+                new IntakePositionTask(false)),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -916,10 +930,12 @@ public class ButtonMap implements IButtonMap
             Shift.CodriverDebug,
             Shift.None,
             ButtonType.Toggle,
-            () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_STOWED,
-                TuningConstants.ARM_UPPER_POSITION_STOWED,
-                IntakeState.Up),
+            () -> SequentialTask.Sequence(
+                new ArmMMPositionTask(
+                    TuningConstants.ARM_LOWER_POSITION_STOWED,
+                    TuningConstants.ARM_UPPER_POSITION_STOWED,
+                    IntakeState.Up),
+                new IntakePositionTask(false)),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
