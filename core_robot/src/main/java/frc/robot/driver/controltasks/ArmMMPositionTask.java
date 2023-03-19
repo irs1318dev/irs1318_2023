@@ -137,6 +137,7 @@ public class ArmMMPositionTask extends ControlTaskBase
                     this.setDigitalOperationState(DigitalOperation.IntakeDown, true);
                     this.setDigitalOperationState(DigitalOperation.IntakeUp, false);
                     break;
+
                 case Up:
                     this.setDigitalOperationState(DigitalOperation.IntakeDown, false);
                     this.setDigitalOperationState(DigitalOperation.IntakeUp, true);

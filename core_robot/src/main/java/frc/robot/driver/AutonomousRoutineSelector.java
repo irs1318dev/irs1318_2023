@@ -223,17 +223,18 @@ public class AutonomousRoutineSelector
             ConcurrentTask.AllTasks(
                 new ResetLevelTask(),
                 new PositionStartingTask(
-                    TuningConstants.LoadEdgeStartX,
-                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.LoadEdgeY),
+                    TuningConstants.StartGridX,
+                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.StartOneGridY),
                     180.0,
                     true,
                     true)),
+
             new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_HIGH_CONE,
                 TuningConstants.ARM_UPPER_POSITION_HIGH_CONE,
                 true,
-                IntakeState.Down),
-            new FollowPathTask(isRed ? "LoadStartTo1Red" : "LoadStartTo1Blue", Type.Absolute),
+                IntakeState.Up),
+            new IntakePositionTask(true),
             
             new WaitTask(0.2),
             new IntakeGamePieceTask(true, 1.0),
@@ -241,7 +242,7 @@ public class AutonomousRoutineSelector
             ConcurrentTask.AllTasks(
                 new FollowPathTask(isRed ? "1To20Red" : "1To20Blue", Type.Absolute),
                 SequentialTask.Sequence(
-                    new WaitTask(0.7),
+                    new WaitTask(0.5),
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_STOWED,
                         TuningConstants.ARM_UPPER_POSITION_STOWED,
@@ -257,25 +258,26 @@ public class AutonomousRoutineSelector
             ConcurrentTask.AllTasks(
                 new ResetLevelTask(),
                 new PositionStartingTask(
-                    TuningConstants.LoadEdgeStartX,
-                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.LoadEdgeY),
+                    TuningConstants.StartGridX,
+                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.StartOneGridY),
                     180.0,
                     true,
                     true)),
+
             new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_HIGH_CONE,
                 TuningConstants.ARM_UPPER_POSITION_HIGH_CONE,
                 true,
-                IntakeState.Down),
-            new FollowPathTask(isRed ? "LoadStartTo1Red" : "LoadStartTo1Blue", Type.Absolute),
-            
+                IntakeState.Up),
+            new IntakePositionTask(true),
+
             new WaitTask(0.2),
             new IntakeGamePieceTask(true, 1.0),
 
             ConcurrentTask.AllTasks(
                 new FollowPathTask(isRed ? "1ToChargeRed" : "1ToChargeBlue", Type.Absolute),
                 SequentialTask.Sequence(
-                    new WaitTask(0.7),
+                    new WaitTask(0.2),
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_STOWED,
                         TuningConstants.ARM_UPPER_POSITION_STOWED,
@@ -284,7 +286,7 @@ public class AutonomousRoutineSelector
                 )
             ),
             new ResetLevelTask(),
-            new ChargeStationTask(true, Orientation.Forwards)
+            new ChargeStationTask(true, Orientation.Backwards)
         );
     }
 
@@ -294,34 +296,39 @@ public class AutonomousRoutineSelector
             ConcurrentTask.AllTasks(
                 new ResetLevelTask(),
                 new PositionStartingTask(
-                    TuningConstants.LoadEdgeStartX,
-                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.LoadEdgeY),
+                    TuningConstants.StartGridX,
+                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.StartOneGridY),
                     180.0,
                     true,
                     true)),
+
             new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_HIGH_CONE,
                 TuningConstants.ARM_UPPER_POSITION_HIGH_CONE,
                 true,
-                IntakeState.Down),
-            new FollowPathTask(isRed ? "LoadStartTo1Red" : "LoadStartTo1Blue", Type.Absolute),
-            
+                IntakeState.Up),
+            new IntakePositionTask(true),
+
             new WaitTask(0.2),
             new IntakeGamePieceTask(true, 1.0),
 
-            ConcurrentTask.AllTasks(
-                new FollowPathTask(isRed ? "1To14Red" : "1To14Blue", Type.Absolute),
-
+            new FollowPathTask(isRed ? "1To14Red" : "1To14Blue", Type.Absolute),
                 SequentialTask.Sequence(
-                    new WaitTask(0.7),
                     new ArmMMPositionTask(
-                        TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP,
-                        TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP,
+                        TuningConstants.ARM_LOWER_POSITION_STOWED,
+                        TuningConstants.ARM_UPPER_POSITION_STOWED,
+                        true,
+                        IntakeState.Up),
+                    new WaitTask(0.5),
+                    new ArmMMPositionTask(
+                        TuningConstants.ARM_LOWER_POSITION_CONE_GROUND_PICKUP,
+                        TuningConstants.ARM_UPPER_POSITION_CONE_GROUND_PICKUP,
                         true,
                         IntakeState.Up)
                 ),
-
-                new IntakeGamePieceTask(true, 5.0)
+                SequentialTask.Sequence(
+                    new WaitTask(2.0),
+                    new IntakeGamePieceTask(false, 3.2)
             ),
 
             ConcurrentTask.AllTasks(
@@ -344,34 +351,39 @@ public class AutonomousRoutineSelector
             ConcurrentTask.AllTasks(
                 new ResetLevelTask(),
                 new PositionStartingTask(
-                    TuningConstants.LoadEdgeStartX,
-                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.LoadEdgeY),
+                    TuningConstants.StartGridX,
+                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.StartOneGridY),
                     180.0,
                     true,
                     true)),
+
             new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_HIGH_CONE,
                 TuningConstants.ARM_UPPER_POSITION_HIGH_CONE,
                 true,
-                IntakeState.Down),
-            new FollowPathTask(isRed ? "LoadStartTo1Red" : "LoadStartTo1Blue", Type.Absolute),
-            
+                IntakeState.Up),
+            new IntakePositionTask(true),
+
             new WaitTask(0.2),
             new IntakeGamePieceTask(true, 1.0),
 
-            ConcurrentTask.AllTasks(
-                new FollowPathTask(isRed ? "1To14Red" : "1To14Blue", Type.Absolute),
-
+            new FollowPathTask(isRed ? "1To14Red" : "1To14Blue", Type.Absolute),
                 SequentialTask.Sequence(
-                    new WaitTask(0.7),
                     new ArmMMPositionTask(
-                        TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP,
-                        TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP,
+                        TuningConstants.ARM_LOWER_POSITION_STOWED,
+                        TuningConstants.ARM_UPPER_POSITION_STOWED,
+                        true,
+                        IntakeState.Up),
+                    new WaitTask(0.5),
+                    new ArmMMPositionTask(
+                        TuningConstants.ARM_LOWER_POSITION_CONE_GROUND_PICKUP,
+                        TuningConstants.ARM_UPPER_POSITION_CONE_GROUND_PICKUP,
                         true,
                         IntakeState.Up)
                 ),
-
-                new IntakeGamePieceTask(true, 5.0)
+                SequentialTask.Sequence(
+                    new WaitTask(2.0),
+                    new IntakeGamePieceTask(false, 3.2)
             ),
 
             new ArmMMPositionTask(
@@ -387,34 +399,39 @@ public class AutonomousRoutineSelector
             ConcurrentTask.AllTasks(
                 new ResetLevelTask(),
                 new PositionStartingTask(
-                    TuningConstants.LoadEdgeStartX,
-                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.LoadEdgeY),
+                    TuningConstants.StartGridX,
+                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.StartOneGridY),
                     180.0,
                     true,
                     true)),
+
             new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_HIGH_CONE,
                 TuningConstants.ARM_UPPER_POSITION_HIGH_CONE,
                 true,
-                IntakeState.Down),
-            new FollowPathTask(isRed ? "LoadStartTo1Red" : "LoadStartTo1Blue", Type.Absolute),
-            
+                IntakeState.Up),
+            new IntakePositionTask(true),
+
             new WaitTask(0.2),
             new IntakeGamePieceTask(true, 1.0),
 
-            ConcurrentTask.AllTasks(
-                new FollowPathTask(isRed ? "1To14Red" : "1To14Blue", Type.Absolute),
-
+            new FollowPathTask(isRed ? "1To14Red" : "1To14Blue", Type.Absolute),
                 SequentialTask.Sequence(
-                    new WaitTask(0.7),
                     new ArmMMPositionTask(
-                        TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP,
-                        TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP,
+                        TuningConstants.ARM_LOWER_POSITION_STOWED,
+                        TuningConstants.ARM_UPPER_POSITION_STOWED,
+                        true,
+                        IntakeState.Up),
+                    new WaitTask(0.5),
+                    new ArmMMPositionTask(
+                        TuningConstants.ARM_LOWER_POSITION_CONE_GROUND_PICKUP,
+                        TuningConstants.ARM_UPPER_POSITION_CONE_GROUND_PICKUP,
                         true,
                         IntakeState.Up)
                 ),
-
-                new IntakeGamePieceTask(true, 5.0)
+                SequentialTask.Sequence(
+                    new WaitTask(2.0),
+                    new IntakeGamePieceTask(false, 3.2)
             ),
 
             ConcurrentTask.AllTasks(
@@ -423,7 +440,7 @@ public class AutonomousRoutineSelector
                     TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE,
                     TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE,
                     true,
-                    IntakeState.Down)
+                    IntakeState.Up)
             ),
             
             new WaitTask(0.2),
@@ -442,7 +459,7 @@ public class AutonomousRoutineSelector
                     0.0,
                     true,
                     true)),
-            new FollowPathTask(isRed ? "MidTaxi" : "MidTaxi", Type.RobotRelativeFromCurrentPose)
+            new FollowPathTask("MidTaxi", Type.RobotRelativeFromCurrentPose)
         );
     }
 
@@ -473,14 +490,15 @@ public class AutonomousRoutineSelector
                     true)),
 
             new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE,
-                TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE,
-                false,
+                TuningConstants.ARM_LOWER_POSITION_HIGH_CONE,
+                TuningConstants.ARM_UPPER_POSITION_HIGH_CONE,
+                true,
                 IntakeState.Up),
+            new IntakePositionTask(true),
+            new WaitTask(0.2),
+            new IntakeGamePieceTask(true, 1.0),
 
-            new WaitTask(0.5),
 
-            new IntakeGamePieceTask(false, 1.0),
             new FollowPathTask(isRed ? "5To11Red" : "5To11Blue", Type.Absolute),
             new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_STOWED,
@@ -521,16 +539,13 @@ public class AutonomousRoutineSelector
                     180.0,
                     true,
                     true)),
-            new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_HIGH_INTERMIDATE,
-                TuningConstants.ARM_UPPER_POSITION_HIGH_INTERMIDATE,
-                true,
-                IntakeState.Up),
+
             new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_HIGH_CONE,
                 TuningConstants.ARM_UPPER_POSITION_HIGH_CONE,
                 true,
-                IntakeState.Down),
+                IntakeState.Up),
+            new IntakePositionTask(true),
                 
 
             new WaitTask(0.2),
@@ -562,15 +577,11 @@ public class AutonomousRoutineSelector
                     true,
                     true)),
             new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_HIGH_INTERMIDATE,
-                TuningConstants.ARM_UPPER_POSITION_HIGH_INTERMIDATE,
-                true,
-                IntakeState.Up),
-            new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_HIGH_CONE,
                 TuningConstants.ARM_UPPER_POSITION_HIGH_CONE,
                 true,
-                IntakeState.Down),
+                IntakeState.Up),
+            new IntakePositionTask(true),
 
             new WaitTask(0.2),
             new IntakeGamePieceTask(true, 1.0),
@@ -600,15 +611,11 @@ public class AutonomousRoutineSelector
                     true,
                     true)),
             new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_HIGH_INTERMIDATE,
-                TuningConstants.ARM_UPPER_POSITION_HIGH_INTERMIDATE,
-                true,
-                IntakeState.Up),
-            new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_HIGH_CONE,
                 TuningConstants.ARM_UPPER_POSITION_HIGH_CONE,
                 true,
-                IntakeState.Down),
+                IntakeState.Up),
+            new IntakePositionTask(true),
 
             new WaitTask(0.2),
             new IntakeGamePieceTask(true, 1.0),
@@ -623,8 +630,8 @@ public class AutonomousRoutineSelector
                         IntakeState.Up),
                     new WaitTask(0.5),
                     new ArmMMPositionTask(
-                        TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP,
-                        TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP,
+                        TuningConstants.ARM_LOWER_POSITION_CONE_GROUND_PICKUP,
+                        TuningConstants.ARM_UPPER_POSITION_CONE_GROUND_PICKUP,
                         true,
                         IntakeState.Up)
                 ),
@@ -655,22 +662,16 @@ public class AutonomousRoutineSelector
                 new ResetLevelTask(),
                 new PositionStartingTask(
                     TuningConstants.StartGridX,
-                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.GuardEdgeY),
+                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.StartNineGridY),
                     180.0,
                     true,
                     true)),
             new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_HIGH_INTERMIDATE,
-                TuningConstants.ARM_UPPER_POSITION_HIGH_INTERMIDATE,
-                true,
-                IntakeState.Up),
-            new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_HIGH_CONE,
                 TuningConstants.ARM_UPPER_POSITION_HIGH_CONE,
                 true,
-                IntakeState.Down),
-                
-            new FollowPathTask(isRed ? "GuardEdgeTo9Red" : "GuardEdgeTo9Blue", Type.Absolute),
+                IntakeState.Up),
+            new IntakePositionTask(true),
 
             new WaitTask(0.2),
             new IntakeGamePieceTask(true, 1.0),
@@ -678,16 +679,21 @@ public class AutonomousRoutineSelector
             ConcurrentTask.AllTasks(
                 new FollowPathTask(isRed ? "9To17Red" : "9To17Blue", Type.Absolute),
                 SequentialTask.Sequence(
-                    new WaitTask(1.0),
                     new ArmMMPositionTask(
-                        TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP,
-                        TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP,
+                        TuningConstants.ARM_LOWER_POSITION_STOWED,
+                        TuningConstants.ARM_UPPER_POSITION_STOWED,
+                        true,
+                        IntakeState.Up),
+                    new WaitTask(0.5),
+                    new ArmMMPositionTask(
+                        TuningConstants.ARM_LOWER_POSITION_CONE_GROUND_PICKUP,
+                        TuningConstants.ARM_UPPER_POSITION_CONE_GROUND_PICKUP,
                         true,
                         IntakeState.Up)
                 ),
                 SequentialTask.Sequence(
                     new WaitTask(2.0),
-                    new IntakeGamePieceTask(false, 5.0)
+                    new IntakeGamePieceTask(false, 5.5)
                 )
             ),
 
@@ -704,8 +710,8 @@ public class AutonomousRoutineSelector
             ConcurrentTask.AllTasks(
                 new ResetLevelTask(),
                 new PositionStartingTask(
-                    TuningConstants.GuardEdgeStartX,
-                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.GuardEdgeY),
+                    TuningConstants.StartGridX,
+                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.StartNineGridY),
                     180.0,
                     true,
                     true)),
@@ -713,8 +719,8 @@ public class AutonomousRoutineSelector
                 TuningConstants.ARM_LOWER_POSITION_HIGH_CONE,
                 TuningConstants.ARM_UPPER_POSITION_HIGH_CONE,
                 true,
-                IntakeState.Down),
-            new FollowPathTask(isRed ? "GuardStartTo9Red" : "GuardStartTo9Blue", Type.Absolute),
+                IntakeState.Up),
+            new IntakePositionTask(true),
 
             new WaitTask(0.2),
             new IntakeGamePieceTask(true, 1.0),
@@ -722,27 +728,43 @@ public class AutonomousRoutineSelector
             ConcurrentTask.AllTasks(
                 new FollowPathTask(isRed ? "9To17Red" : "9To17Blue", Type.Absolute),
                 SequentialTask.Sequence(
-                    new WaitTask(0.7),
                     new ArmMMPositionTask(
-                        TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP,
-                        TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP,
+                        TuningConstants.ARM_LOWER_POSITION_STOWED,
+                        TuningConstants.ARM_UPPER_POSITION_STOWED,
+                        true,
+                        IntakeState.Up),
+                    new WaitTask(0.5),
+                    new ArmMMPositionTask(
+                        TuningConstants.ARM_LOWER_POSITION_CONE_GROUND_PICKUP,
+                        TuningConstants.ARM_UPPER_POSITION_CONE_GROUND_PICKUP,
                         true,
                         IntakeState.Up)
                 ),
-
-                new IntakeGamePieceTask(true, 5.0)
+                SequentialTask.Sequence(
+                    new WaitTask(2.0),
+                    new IntakeGamePieceTask(false, 3.2)
+                )
             ),
 
             ConcurrentTask.AllTasks(
-                new ArmMMPositionTask(
-                    TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE,
-                    TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE,
-                    true,
-                    IntakeState.Up),
+                SequentialTask.Sequence(
+                    new ArmMMPositionTask(
+                        TuningConstants.ARM_LOWER_POSITION_STOWED,
+                        TuningConstants.ARM_UPPER_POSITION_STOWED,
+                        true,
+                        IntakeState.Up),
+                    new WaitTask(0.5),
+                    new ArmMMPositionTask(
+                        TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE,
+                        TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE,
+                        true,
+                        IntakeState.Up)
+                    ),
+
                 new FollowPathTask(isRed ? "17To8Red" : "17To8Blue", Type.Absolute)
             ),
 
-            new IntakeGamePieceTask(false)
+            new IntakeGamePieceTask(false, 2.0)
         );
     }        
 }

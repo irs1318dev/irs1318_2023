@@ -57,9 +57,9 @@ public class TuningConstants
     // X Values
     public static final double StartGridX = 17.5;//71.765; // Edge of grid - Robot centering value
     public static final double CloseChargeStationX = 30.345;//84.61; // 12.845 inches away from the charge station and grid + Robot centering value
-    public static final double FarChargeStationX = 168.195;//222.635; // 15 inches away from the charge station + Robot centering value
+    public static final double FarChargeStationX = 178.195;//222.635; // 15 inches away from the charge station + Robot centering value
     public static final double FarChargeStationInBetweenX = TuningConstants.FarChargeStationX + 30.0; // 30 inches away from last point to allow for turning
-    public static final double GroundPiecesX = 206.5;//253.265; // On ground pieces real value 47.36
+    public static final double GroundPiecesX = 220.5;//253.265; // On ground pieces real value 47.36
     public static final double LoadEdgeStartX = 58.5;//110.765;
     public static final double GuardEdgeStartX = 77.75;//132.015;
     public static final double FullLength = 651.25; // (X) 54 ft. 3.25 in, from game manual
@@ -96,8 +96,8 @@ public class TuningConstants
     public static final double POWER_OVERCURRENT_TRACKING_DURATION = 5.0; // duration of time to keep track of the average current
     public static final double POWER_OVERCURRENT_SAMPLES_PER_LOOP = 1.0; // we may want to increase this if we find our update loop duration isn't very consistent...
     public static final double POWER_OVERCURRENT_SAMPLES_PER_SECOND = TuningConstants.LOOPS_PER_SECOND * TuningConstants.POWER_OVERCURRENT_SAMPLES_PER_LOOP;
-    public static final double POWER_OVERCURRENT_THRESHOLD = 120.0;
-    public static final double POWER_OVERCURREHT_HIGH_THRESHOLD = 160.0;
+    public static final double POWER_OVERCURRENT_THRESHOLD = 140.0;
+    public static final double POWER_OVERCURREHT_HIGH_THRESHOLD = 180.0;
 
     //================================================= Vision ======================================================
 
@@ -245,11 +245,11 @@ public class TuningConstants
     public static final double DRIVETRAIN_STEER_MOTOR4_ABSOLUTE_OFFSET = -125.419;
 
     public static final boolean DRIVETRAIN_USE_TRANSLATIONAL_RATE_LIMITING = true;
-    public static final double DRIVETRAIN_TRANSLATIONAL_VELOCITY_MAX_NEGATIVE_RATE = -2.0 * TuningConstants.DRIVETRAIN_MAX_VELOCITY;
-    public static final double DRIVETRAIN_TRANSLATIONAL_VELOCITY_MAX_POSITIVE_RATE = 2.0 * TuningConstants.DRIVETRAIN_MAX_VELOCITY;
+    public static final double DRIVETRAIN_TRANSLATIONAL_VELOCITY_MAX_NEGATIVE_RATE = -3.0 * TuningConstants.DRIVETRAIN_MAX_VELOCITY;
+    public static final double DRIVETRAIN_TRANSLATIONAL_VELOCITY_MAX_POSITIVE_RATE = 3.0 * TuningConstants.DRIVETRAIN_MAX_VELOCITY;
     public static final boolean DRIVETRAIN_USE_ROTATIONAL_RATE_LIMITING = true;
-    public static final double DRIVETRAIN_ROTATIONAL_VELOCITY_MAX_NEGATIVE_RATE = -2.0 * TuningConstants.DRIVETRAIN_TURN_SCALE;
-    public static final double DRIVETRAIN_ROTATIONAL_VELOCITY_MAX_POSITIVE_RATE = 2.0 * TuningConstants.DRIVETRAIN_TURN_SCALE;
+    public static final double DRIVETRAIN_ROTATIONAL_VELOCITY_MAX_NEGATIVE_RATE = -4.0 * TuningConstants.DRIVETRAIN_TURN_SCALE;
+    public static final double DRIVETRAIN_ROTATIONAL_VELOCITY_MAX_POSITIVE_RATE = 4.0 * TuningConstants.DRIVETRAIN_TURN_SCALE;
 
     // Position PID (angle) per-module
     public static final double DRIVETRAIN_STEER_MOTOR_POSITION_PID_KS = HardwareConstants.DRIVETRAIN_STEER_TICKS_PER_DEGREE;
@@ -349,7 +349,7 @@ public class TuningConstants
     public static final double DRIVETRAIN_SLOW_MODE_MAX_VELOCITY = 0.3 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // max velocity in inches per second
     public static final double DRIVETRAIN_VELOCITY_TO_PERCENTAGE = 1.0 / TuningConstants.DRIVETRAIN_MAX_VELOCITY;
     public static final double DRIVETRAIN_TURN_GOAL_VELOCITY = 10.0; // degrees per second for turn goal
-    public static final double DRIVETRAIN_TURN_SCALE = 1.3 * Math.PI; // radians per second
+    public static final double DRIVETRAIN_TURN_SCALE = 1.6 * Math.PI; // radians per second
     public static final double DRIVETRAIN_SLOW_MODE_TURN_SCALE = 0.3 * TuningConstants.DRIVETRAIN_TURN_SCALE; // radians per second
     public static final double DRIVETRAIN_STATIONARY_VELOCITY = 0.1;
     public static final double DRIVETRAIN_TURN_APPROXIMATION_STATIONARY = 2.0; // number of degrees off at which point we give up trying to face an angle when uncommanded
@@ -359,18 +359,17 @@ public class TuningConstants
     public static final double DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY = 0.60 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // in inches per second
     public static final double DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION = 0.75 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // in inches per second per second
     public static final double DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY = TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY / 1.4; // in inches per second
-    public static final double DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION = TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION / 1.4; // in inches per second per second
+    public static final double DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION = TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION / 1.25; // in inches per second per second
     public static final double DRIVETRAIN_LOW_PATH_TRANSLATIONAL_VELOCITY = TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY / 2.0; // in inches per second
     public static final double DRIVETRAIN_LOW_PATH_TRANSLATIONAL_ACCELERATION = TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION / 2.0; // in inches per second per second
 
     //================================================= Arm ================================================================================
 
     public static final boolean ARM_USE_SIMPLE_MODE = false;
-    
+
     public static final double ARM_INTAKE_CUBE_POWER = 0.65; // Also, eject cone
     public static final double ARM_INTAKE_CONE_POWER = -0.65; // Also, eject cube
     public static final boolean ARM_INTAKE_MOTOR_INVERT_OUTPUT = true;
-    public static final double ARM_INTAKE_THROUGHBEAM_THRESHOLD = 3.5;
 
     public static final boolean ARM_USE_MM = false;
     public static final boolean ARM_USE_IK = true;
@@ -446,9 +445,6 @@ public class TuningConstants
     public static final double ARM_UPPER_VELOCITY_DEAZONE = 0.15;
     public static final double ARM_TWIST_DEAZONE = 0.10;
 
-    public static final double ARM_FLIPPER_EXTEND_WAIT_DURATION = 0.5;
-    public static final double ARM_FLIPPER_RETRACT_WAIT_DURATION = 0.5;
-
     public static final double ARM_FULLY_RETRACTED_X_POSITION = 0.0; // in inches
     public static final double ARM_FULLY_RETRACTED_Z_POSITION = 0.0; // in inches
 
@@ -471,8 +467,8 @@ public class TuningConstants
 
     // Arm stall prevention
     public static final boolean ARM_STALL_PROTECTION_ENABLED = true;
-    public static final double ARM_STALLED_POWER_THRESHOLD = 3.0; // amount of power being "used" by the linear actuator (despite not moving according to the encoders) to be considered stalled
-    public static final double ARM_STALLED_VELOCITY_THRESHOLD = 10.0; // 10 ticks/sec is very slow, unlikely to be really moving...
+    public static final double ARM_STALLED_POWER_THRESHOLD = 3.5; // amount of power being "used" by the linear actuator (despite not moving according to the encoders) to be considered stalled
+    public static final double ARM_STALLED_VELOCITY_THRESHOLD = 8.0; // 8 ticks/sec is very slow, unlikely to be really moving...
 
     // Set Points for Arm (linear actuator positions)
     public static final double ARM_LOWER_ZEROING_POSITION = 10.0 * HardwareConstants.ARM_FULL_EXTENSION_TICKS;
@@ -487,12 +483,16 @@ public class TuningConstants
     public static final double ARM_UPPER_POSITION_HIGH_CONE = 6140.0;
     public static final double ARM_LOWER_POSITION_HIGH_CUBE = 3680.0;
     public static final double ARM_UPPER_POSITION_HIGH_CUBE = 7250.0;
-    public static final double ARM_LOWER_POSITION_GROUND_PICKUP = 2350.0;
-    public static final double ARM_UPPER_POSITION_GROUND_PICKUP = 1800.0;
+    public static final double ARM_LOWER_POSITION_CONE_GROUND_PICKUP = 2350.0;
+    public static final double ARM_UPPER_POSITION_CONE_GROUND_PICKUP = 1800.0;
+    public static final double ARM_LOWER_POSITION_CUBE_GROUND_PICKUP = 3400.0;
+    public static final double ARM_UPPER_POSITION_CUBE_GROUND_PICKUP = 1650.0;
+    public static final double ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP_APPROACH = 6140.0;
+    public static final double ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP_APPROACH = 6200.0;
     public static final double ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP = 6100.0;
     public static final double ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP = 5830.0;
-    public static final double ARM_LOWER_POSITION_CUBE_SUBSTATION_PICKUP = 6750.0;
-    public static final double ARM_UPPER_POSITION_CUBE_SUBSTATION_PICKUP = 3350.0;
+    public static final double ARM_LOWER_POSITION_CUBE_SUBSTATION_PICKUP = 8300.0;
+    public static final double ARM_UPPER_POSITION_CUBE_SUBSTATION_PICKUP = 4020.0;
     public static final double ARM_LOWER_POSITION_APPROACH = HardwareConstants.ARM_FULL_EXTENSION_TICKS;
     public static final double ARM_UPPER_POSITION_APPROACH = 4100.0;
     public static final double ARM_LOWER_POSITION_CONE_UPRIGHTING_MACRO = 5350;
@@ -561,5 +561,5 @@ public class TuningConstants
     public static final double CHARGE_STATION_BALANCING_SPEED_V2 = 0.08;
 
     //TODO: edit to be shorter, because climbing velocity has increased.
-    public static final double CHARGE_STATION_CLIMBING_TRANSITION_WAIT_DURATION_V2 = 1.0;
+    public static final double CHARGE_STATION_CLIMBING_TRANSITION_WAIT_DURATION_V2 = 1.25;
 }
