@@ -57,8 +57,7 @@ public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
     {
         super.begin();
 
-        this.setDigitalOperationState(DigitalOperation.DriveTrainDisableFieldOrientation, true);
-        this.setDigitalOperationState(DigitalOperation.DriveTrainEnableFieldOrientation, false);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainUseRobotOrientation, true);
         switch (this.moveSpeed)
         {
             case Fast:
@@ -109,21 +108,21 @@ public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
         if (currentValue != null)
         {
             double desiredValue = this.getMoveDesiredValue(currentValue);
-            double desiredVelocity = -this.movePIDHandler.calculatePosition(desiredValue, currentValue);
+            double desiredVelocity = this.movePIDHandler.calculatePosition(desiredValue, currentValue);
             switch (this.translateType)
             {
                 case RetroReflectiveStrafe:
-                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, -desiredVelocity);
+                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, desiredVelocity);
                     break;
 
                 case AprilTagStrafe:
-                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, -desiredVelocity);
+                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, desiredVelocity);
                     break;
 
                 default:
                 case AprilTagForward:
                 case RetroReflectiveForward:
-                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, desiredVelocity);
+                    this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, -desiredVelocity);
                     break;
             }
         }
@@ -134,8 +133,7 @@ public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
     {
         super.end();
 
-        this.setDigitalOperationState(DigitalOperation.DriveTrainDisableFieldOrientation, false);
-        this.setDigitalOperationState(DigitalOperation.DriveTrainEnableFieldOrientation, true);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainUseRobotOrientation, false);
         this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0);
         this.setDigitalOperationState(DigitalOperation.VisionEnableRetroreflectiveProcessing, false);
     }

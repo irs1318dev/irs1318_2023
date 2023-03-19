@@ -88,7 +88,6 @@ public class DriveTrainMechanism implements IMechanism
 
     private boolean fieldOriented;
     private boolean maintainOrientation;
-    private boolean updatedOrientation;
     private double desiredYaw;
 
     private double time;
@@ -365,7 +364,6 @@ public class DriveTrainMechanism implements IMechanism
         this.firstRun = TuningConstants.DRIVETRAIN_RESET_ON_ROBOT_START;
         this.fieldOriented = TuningConstants.DRIVETRAIN_FIELD_ORIENTED_ON_ROBOT_START;
         this.maintainOrientation = TuningConstants.DRIVETRAIN_MAINTAIN_ORIENTATION_ON_ROBOT_START;
-        this.updatedOrientation = false;
     }
 
     @Override
@@ -726,6 +724,7 @@ public class DriveTrainMechanism implements IMechanism
                 }
             }
 
+            omega = 0.0;
             double forcedOmega = this.driver.getAnalog(AnalogOperation.DriveTrainSpinLeft) + this.driver.getAnalog(AnalogOperation.DriveTrainSpinRight);
             if (forcedOmega != TuningConstants.ZERO)
             {
@@ -749,50 +748,22 @@ public class DriveTrainMechanism implements IMechanism
                     }
                 }
             }
-            else if (!useFieldOriented)
+            else if (useFieldOriented)
             {
-                this.desiredYaw = this.robotYaw;
-                omega = this.driver.getAnalog(AnalogOperation.DriveTrainTurnSpeed);
-                if (useSlowMode)
-                {
-                    omega *= TuningConstants.DRIVETRAIN_SLOW_MODE_TURN_SCALE;
-                }
-                else
-                {
-                    omega *= TuningConstants.DRIVETRAIN_TURN_SCALE;
-                }
-            }
-            else
-            {
-                boolean hadUpdatedOrientation = this.updatedOrientation;
-                this.updatedOrientation = false;
+                boolean updatedOrientation = false;
                 double yawGoal = this.driver.getAnalog(AnalogOperation.DriveTrainTurnAngleGoal);
                 if (yawGoal != TuningConstants.MAGIC_NULL_VALUE)
                 {
-                    this.updatedOrientation = true;
+                    updatedOrientation = true;
 
                     AnglePair anglePair = AnglePair.getClosestAngle(yawGoal, this.robotYaw, false);
                     this.desiredYaw = anglePair.getAngle();
                 }
-                else
-                {
-                    double turnSpeed = this.driver.getAnalog(AnalogOperation.DriveTrainTurnSpeed);
-                    if (turnSpeed != 0.0)
-                    {
-                        this.updatedOrientation = true;
-                        if (!hadUpdatedOrientation)
-                        {
-                            this.desiredYaw = this.robotYaw;
-                        }
 
-                        this.desiredYaw += turnSpeed * TuningConstants.DRIVETRAIN_TURN_GOAL_VELOCITY;
-                    }
-                }
-
-                if (this.maintainOrientation || this.updatedOrientation)
+                if (this.maintainOrientation || updatedOrientation)
                 {
                     boolean skipTurn = false;
-                    if (!this.updatedOrientation)
+                    if (!updatedOrientation)
                     {
                         if (Math.abs(centerVelocityForward) + Math.abs(centerVelocityRight) < TuningConstants.DRIVETRAIN_STATIONARY_VELOCITY)
                         {
@@ -804,20 +775,12 @@ public class DriveTrainMechanism implements IMechanism
                         }
                     }
 
-                    if (skipTurn)
-                    {
-                        // don't turn aggressively if we are within a very small delta from our goal angle
-                        omega = 0.0;
-                    }
-                    else
+                    // don't turn aggressively if we are within a very small delta from our goal angle
+                    if (!skipTurn)
                     {
                         this.logger.logNumber(LoggingKey.DriveTrainDesiredAngle, this.desiredYaw);
                         omega = this.omegaPID.calculatePosition(this.desiredYaw, this.robotYaw);
                     }
-                }
-                else
-                {
-                    omega = 0.0;
                 }
             }
         }

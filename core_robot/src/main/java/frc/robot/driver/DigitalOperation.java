@@ -39,8 +39,6 @@ public enum DigitalOperation implements IOperation
     IntakeUp,
     IntakeCube,
     IntakeCone,
-    ExtendLeftConeFlipper,
-    ExtendRightConeFlipper,
     ArmEnableSimpleMode,
     ArmDisableSimpleMode,
     ArmForceReset,

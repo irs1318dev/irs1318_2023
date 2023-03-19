@@ -106,6 +106,7 @@ public class VisionAprilTagTranslateTask extends ControlTaskBase
         this.yAprilTagDistanceSamples = new double[TuningConstants.TAGS_FOUND_THRESHOLD];
 
         this.setDigitalOperationState(DigitalOperation.VisionEnableAprilTagProcessing, true);
+        this.setDigitalOperationState(DigitalOperation.DriveTrainUseRobotOrientation, true);
     }
 
     @Override
@@ -168,8 +169,8 @@ public class VisionAprilTagTranslateTask extends ControlTaskBase
 
             case Translate:
                 double xDesiredVelocity = -this.xHandler.calculatePosition(desiredXPosition, currXPosition);
-                double yDesiredVelocity = -this.yHandler.calculatePosition(desiredYPosition, currYPosition);
-                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, xDesiredVelocity);
+                double yDesiredVelocity = this.yHandler.calculatePosition(desiredYPosition, currYPosition);
+                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, -xDesiredVelocity);
                 this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, yDesiredVelocity);
                 this.setDigitalOperationState(DigitalOperation.VisionEnableAprilTagProcessing, false);
                 break;
@@ -187,6 +188,7 @@ public class VisionAprilTagTranslateTask extends ControlTaskBase
     @Override
     public void end()
     {
+        this.setDigitalOperationState(DigitalOperation.DriveTrainUseRobotOrientation, false);
         this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0);
         this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, 0.0);
         this.setDigitalOperationState(DigitalOperation.VisionEnableAprilTagProcessing, false);

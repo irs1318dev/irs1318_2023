@@ -366,11 +366,10 @@ public class TuningConstants
     //================================================= Arm ================================================================================
 
     public static final boolean ARM_USE_SIMPLE_MODE = false;
-    
+
     public static final double ARM_INTAKE_CUBE_POWER = 0.65; // Also, eject cone
     public static final double ARM_INTAKE_CONE_POWER = -0.65; // Also, eject cube
     public static final boolean ARM_INTAKE_MOTOR_INVERT_OUTPUT = true;
-    public static final double ARM_INTAKE_THROUGHBEAM_THRESHOLD = 3.5;
 
     public static final boolean ARM_USE_MM = false;
     public static final boolean ARM_USE_IK = true;
@@ -445,9 +444,6 @@ public class TuningConstants
     public static final double ARM_LOWER_VELOCITY_DEAZONE = 0.15;
     public static final double ARM_UPPER_VELOCITY_DEAZONE = 0.15;
     public static final double ARM_TWIST_DEAZONE = 0.10;
-
-    public static final double ARM_FLIPPER_EXTEND_WAIT_DURATION = 0.5;
-    public static final double ARM_FLIPPER_RETRACT_WAIT_DURATION = 0.5;
 
     public static final double ARM_FULLY_RETRACTED_X_POSITION = 0.0; // in inches
     public static final double ARM_FULLY_RETRACTED_Z_POSITION = 0.0; // in inches
