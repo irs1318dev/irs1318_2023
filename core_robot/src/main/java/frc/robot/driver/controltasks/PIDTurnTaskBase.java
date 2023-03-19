@@ -68,9 +68,7 @@ public abstract class PIDTurnTaskBase extends ControlTaskBase
         if (currentMeasuredAngle != null)
         {
             double turnSpeed = this.turnPidHandler.calculatePosition(0.0, currentMeasuredAngle);
-            this.setAnalogOperationState(
-                AnalogOperation.DriveTrainTurnSpeed,
-                turnSpeed);
+            this.setAnalogOperationState(AnalogOperation.DriveTrainSpinRight, turnSpeed);
         }
     }
 
@@ -80,7 +78,7 @@ public abstract class PIDTurnTaskBase extends ControlTaskBase
     @Override
     public void end()
     {
-        this.setAnalogOperationState(AnalogOperation.DriveTrainTurnSpeed, 0.0);
+        this.setAnalogOperationState(AnalogOperation.DriveTrainSpinRight, 0.0);
 
         this.setDigitalOperationState(DigitalOperation.VisionDisableStream, false);
         this.setDigitalOperationState(DigitalOperation.DriveTrainEnableFieldOrientation, false);

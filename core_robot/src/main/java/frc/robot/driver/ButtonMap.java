@@ -306,7 +306,8 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
                 AnalogOperation.DriveTrainTurnAngleGoal,
-                AnalogOperation.DriveTrainTurnSpeed,
+                AnalogOperation.DriveTrainSpinLeft,
+                AnalogOperation.DriveTrainSpinRight,
                 AnalogOperation.DriveTrainRotationA,
                 AnalogOperation.DriveTrainRotationB,
                 AnalogOperation.DriveTrainPathXGoal,
@@ -343,7 +344,8 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
                 AnalogOperation.DriveTrainTurnAngleGoal,
-                AnalogOperation.DriveTrainTurnSpeed,
+                AnalogOperation.DriveTrainSpinLeft,
+                AnalogOperation.DriveTrainSpinRight,
                 AnalogOperation.DriveTrainRotationA,
                 AnalogOperation.DriveTrainRotationB,
                 AnalogOperation.DriveTrainPathXGoal,
@@ -376,13 +378,12 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> ConcurrentTask.AnyTasks(
                 SequentialTask.Sequence(
-                    new DriveTrainFieldOrientationModeTask(true),
-                    new OrientationTask(0.0),
-                    new ArmMMPositionTask(
-                        TuningConstants.ARM_LOWER_POSITION_APPROACH,
-                        TuningConstants.ARM_UPPER_POSITION_APPROACH),
+                    ConcurrentTask.AllTasks(
+                        new OrientationTask(0.0),
+                        new ArmMMPositionTask(
+                            TuningConstants.ARM_LOWER_POSITION_APPROACH,
+                            TuningConstants.ARM_UPPER_POSITION_APPROACH)),
                     new VisionMoveAndTurnTask(TurnType.None, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, false, -32.0),
-                    new DriveTrainFieldOrientationModeTask(true),
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP,
                         TuningConstants.ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP)),
@@ -395,7 +396,8 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
                 AnalogOperation.DriveTrainTurnAngleGoal,
-                AnalogOperation.DriveTrainTurnSpeed,
+                AnalogOperation.DriveTrainSpinLeft,
+                AnalogOperation.DriveTrainSpinRight,
                 AnalogOperation.DriveTrainRotationA,
                 AnalogOperation.DriveTrainRotationB,
                 AnalogOperation.DriveTrainPathXGoal,
@@ -438,13 +440,12 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> ConcurrentTask.AnyTasks(
                 SequentialTask.Sequence(
-                    new DriveTrainFieldOrientationModeTask(true),
-                    new OrientationTask(0.0),
-                    new ArmMMPositionTask(
-                        TuningConstants.ARM_LOWER_POSITION_APPROACH,
-                        TuningConstants.ARM_UPPER_POSITION_APPROACH),
+                    ConcurrentTask.AllTasks(
+                        new OrientationTask(0.0),
+                        new ArmMMPositionTask(
+                            TuningConstants.ARM_LOWER_POSITION_APPROACH,
+                            TuningConstants.ARM_UPPER_POSITION_APPROACH)),
                     new VisionMoveAndTurnTask(TurnType.None, MoveType.AprilTagStrafe, MoveSpeed.Normal, false, false, 32.0),
-                    new DriveTrainFieldOrientationModeTask(true),
                     new ArmMMPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP,
                         TuningConstants.ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP)),
@@ -457,7 +458,8 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
                 AnalogOperation.DriveTrainTurnAngleGoal,
-                AnalogOperation.DriveTrainTurnSpeed,
+                AnalogOperation.DriveTrainSpinLeft,
+                AnalogOperation.DriveTrainSpinRight,
                 AnalogOperation.DriveTrainRotationA,
                 AnalogOperation.DriveTrainRotationB,
                 AnalogOperation.DriveTrainPathXGoal,
@@ -500,7 +502,6 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> ConcurrentTask.AnyTasks(
                 SequentialTask.Sequence(
-                    new DriveTrainFieldOrientationModeTask(true),
                     ConcurrentTask.AllTasks(
                         new OrientationTask(180.0),
                         new ArmMMPositionTask(
@@ -517,7 +518,8 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
                 AnalogOperation.DriveTrainTurnAngleGoal,
-                AnalogOperation.DriveTrainTurnSpeed,
+                AnalogOperation.DriveTrainSpinLeft,
+                AnalogOperation.DriveTrainSpinRight,
                 AnalogOperation.DriveTrainRotationA,
                 AnalogOperation.DriveTrainRotationB,
                 AnalogOperation.DriveTrainPathXGoal,
@@ -560,17 +562,14 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> ConcurrentTask.AnyTasks(
                 SequentialTask.Sequence(
-                    new DriveTrainFieldOrientationModeTask(true),
                     ConcurrentTask.AllTasks(
                         new OrientationTask(180.0),
                         new ArmMMPositionTask(
                             TuningConstants.ARM_LOWER_POSITION_APPROACH,
                             TuningConstants.ARM_UPPER_POSITION_APPROACH,
-                            IntakeState.Down)
-                    ),
+                            IntakeState.Down)),
                     new VisionAprilTagTranslateTask(GridScoringPosition.LeftCone),
-                    //new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0),
-                    new DriveTrainFieldOrientationModeTask(true)),
+                    new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0)),
                 new RumbleTask(),
                 new StrobeTask()),
             new IOperation[]
@@ -580,7 +579,8 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
                 AnalogOperation.DriveTrainTurnAngleGoal,
-                AnalogOperation.DriveTrainTurnSpeed,
+                AnalogOperation.DriveTrainSpinLeft,
+                AnalogOperation.DriveTrainSpinRight,
                 AnalogOperation.DriveTrainRotationA,
                 AnalogOperation.DriveTrainRotationB,
                 AnalogOperation.DriveTrainPathXGoal,
@@ -623,17 +623,14 @@ public class ButtonMap implements IButtonMap
             ButtonType.Toggle,
             () -> ConcurrentTask.AllTasks(
                 SequentialTask.Sequence(
-                    new DriveTrainFieldOrientationModeTask(true),
                     ConcurrentTask.AllTasks(
                         new OrientationTask(180.0),
                         new ArmMMPositionTask(
                             TuningConstants.ARM_LOWER_POSITION_APPROACH,
                             TuningConstants.ARM_UPPER_POSITION_APPROACH,
-                            IntakeState.Down)
-                    ),
+                            IntakeState.Down)),
                     new VisionAprilTagTranslateTask(GridScoringPosition.RightCone),
-                    //new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0),
-                    new DriveTrainFieldOrientationModeTask(true)),
+                    new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0)),
                 new RumbleTask(),
                 new StrobeTask()),
             new IOperation[]
@@ -643,7 +640,8 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
                 AnalogOperation.DriveTrainTurnAngleGoal,
-                AnalogOperation.DriveTrainTurnSpeed,
+                AnalogOperation.DriveTrainSpinLeft,
+                AnalogOperation.DriveTrainSpinRight,
                 AnalogOperation.DriveTrainRotationA,
                 AnalogOperation.DriveTrainRotationB,
                 AnalogOperation.DriveTrainPathXGoal,
@@ -711,7 +709,8 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
                 AnalogOperation.DriveTrainTurnAngleGoal,
-                AnalogOperation.DriveTrainTurnSpeed,
+                AnalogOperation.DriveTrainSpinLeft,
+                AnalogOperation.DriveTrainSpinRight,
                 AnalogOperation.DriveTrainRotationA,
                 AnalogOperation.DriveTrainRotationB,
                 AnalogOperation.DriveTrainPathXGoal,
@@ -768,10 +767,12 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             Shift.None,
             ButtonType.Toggle,
-            () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP,
-                TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP,
-                IntakeState.Up),
+            () -> SequentialTask.Sequence(
+                new ArmMMPositionTask(
+                    TuningConstants.ARM_LOWER_POSITION_CONE_GROUND_PICKUP,
+                    TuningConstants.ARM_UPPER_POSITION_CONE_GROUND_PICKUP,
+                    IntakeState.Up),
+                new IntakePositionTask(false)),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -787,10 +788,12 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             Shift.None,
             ButtonType.Toggle,
-            () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_MIDDLE_CONE,
-                TuningConstants.ARM_UPPER_POSITION_MIDDLE_CONE,
-                IntakeState.Down),
+            () -> SequentialTask.Sequence(
+                new ArmMMPositionTask(
+                    TuningConstants.ARM_LOWER_POSITION_MIDDLE_CONE,
+                    TuningConstants.ARM_UPPER_POSITION_MIDDLE_CONE,
+                    IntakeState.Down),
+                new IntakePositionTask(true)),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -805,10 +808,12 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             Shift.None,
             ButtonType.Toggle,
-            () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_MIDDLE_CUBE,
-                TuningConstants.ARM_UPPER_POSITION_MIDDLE_CUBE,
-                IntakeState.Up),
+            () -> SequentialTask.Sequence(
+                new ArmMMPositionTask(
+                    TuningConstants.ARM_LOWER_POSITION_MIDDLE_CUBE,
+                    TuningConstants.ARM_UPPER_POSITION_MIDDLE_CUBE,
+                    IntakeState.Up),
+                new IntakePositionTask(false)),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -823,10 +828,12 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             Shift.None,
             ButtonType.Toggle,
-            () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_HIGH_CONE,
-                TuningConstants.ARM_UPPER_POSITION_HIGH_CONE,
-                IntakeState.Down),
+            () -> SequentialTask.Sequence(
+                new ArmMMPositionTask(
+                    TuningConstants.ARM_LOWER_POSITION_HIGH_CONE,
+                    TuningConstants.ARM_UPPER_POSITION_HIGH_CONE,
+                    IntakeState.Down),
+                new IntakePositionTask(true)),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -841,10 +848,12 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             Shift.None,
             ButtonType.Toggle,
-            () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE,
-                TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE,
-                IntakeState.Up),
+            () -> SequentialTask.Sequence(
+                new ArmMMPositionTask(
+                    TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE,
+                    TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE,
+                    IntakeState.Up),
+                new IntakePositionTask(false)),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -859,9 +868,33 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             Shift.None,
             ButtonType.Toggle,
-            () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP,
-                TuningConstants.ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP),
+            () -> SequentialTask.Sequence(
+                new ArmMMPositionTask(
+                    TuningConstants.ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP_APPROACH,
+                    TuningConstants.ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP_APPROACH),
+                new ArmMMPositionTask(
+                    TuningConstants.ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP,
+                    TuningConstants.ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP)),
+            new IOperation[]
+            {
+                AnalogOperation.ArmMMLowerPosition,
+                AnalogOperation.ArmMMUpperPosition,
+                DigitalOperation.IntakeDown,
+                DigitalOperation.IntakeUp,
+            }),
+        new MacroOperationDescription(
+            MacroOperation.ArmGroundPickupPositionCube,
+            UserInputDevice.Codriver,
+            270, // POV-left
+            Shift.CodriverDebug,
+            Shift.None,
+            ButtonType.Toggle,
+            () -> SequentialTask.Sequence(
+                new ArmMMPositionTask(
+                    TuningConstants.ARM_LOWER_POSITION_CUBE_GROUND_PICKUP,
+                    TuningConstants.ARM_UPPER_POSITION_CUBE_GROUND_PICKUP,
+                    IntakeState.Down),
+                new IntakePositionTask(true)),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -873,12 +906,15 @@ public class ButtonMap implements IButtonMap
             MacroOperation.ArmCubeSubstationPickupPosition,
             UserInputDevice.Codriver,
             270, // POV-left
-            Shift.DriverDebug,
-            Shift.None,
+            Shift.CodriverDebug,
+            Shift.CodriverDebug,
             ButtonType.Toggle,
-            () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_CUBE_SUBSTATION_PICKUP,
-                TuningConstants.ARM_UPPER_POSITION_CUBE_SUBSTATION_PICKUP),
+            () -> SequentialTask.Sequence(
+                new ArmMMPositionTask(
+                    TuningConstants.ARM_LOWER_POSITION_CUBE_SUBSTATION_PICKUP,
+                    TuningConstants.ARM_UPPER_POSITION_CUBE_SUBSTATION_PICKUP,
+                    IntakeState.Up),
+                new IntakePositionTask(false)),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -886,17 +922,19 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.IntakeDown,
                 DigitalOperation.IntakeUp,
             }),
-        new MacroOperationDescription(
+            new MacroOperationDescription(
             MacroOperation.ArmStowedPosition,
             UserInputDevice.Codriver,
             UserInputDeviceButton.XBONE_A_BUTTON,
             Shift.CodriverDebug,
             Shift.None,
             ButtonType.Toggle,
-            () -> new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_STOWED,
-                TuningConstants.ARM_UPPER_POSITION_STOWED,
-                IntakeState.Up),
+            () -> SequentialTask.Sequence(
+                new ArmMMPositionTask(
+                    TuningConstants.ARM_LOWER_POSITION_STOWED,
+                    TuningConstants.ARM_UPPER_POSITION_STOWED,
+                    IntakeState.Up),
+                new IntakePositionTask(false)),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -943,7 +981,8 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
                 AnalogOperation.DriveTrainTurnAngleGoal,
-                AnalogOperation.DriveTrainTurnSpeed,
+                AnalogOperation.DriveTrainSpinLeft,
+                AnalogOperation.DriveTrainSpinRight,
                 AnalogOperation.DriveTrainRotationA,
                 AnalogOperation.DriveTrainRotationB,
                 AnalogOperation.DriveTrainPathXGoal,
@@ -990,7 +1029,8 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
                 AnalogOperation.DriveTrainTurnAngleGoal,
-                AnalogOperation.DriveTrainTurnSpeed,
+                AnalogOperation.DriveTrainSpinLeft,
+                AnalogOperation.DriveTrainSpinRight,
                 AnalogOperation.DriveTrainRotationA,
                 AnalogOperation.DriveTrainRotationB,
                 AnalogOperation.DriveTrainPathXGoal,
@@ -1037,7 +1077,8 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
                 AnalogOperation.DriveTrainTurnAngleGoal,
-                AnalogOperation.DriveTrainTurnSpeed,
+                AnalogOperation.DriveTrainSpinLeft,
+                AnalogOperation.DriveTrainSpinRight,
                 AnalogOperation.DriveTrainRotationA,
                 AnalogOperation.DriveTrainRotationB,
                 AnalogOperation.DriveTrainPathXGoal,
@@ -1084,7 +1125,8 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
                 AnalogOperation.DriveTrainTurnAngleGoal,
-                AnalogOperation.DriveTrainTurnSpeed,
+                AnalogOperation.DriveTrainSpinLeft,
+                AnalogOperation.DriveTrainSpinRight,
                 AnalogOperation.DriveTrainRotationA,
                 AnalogOperation.DriveTrainRotationB,
                 AnalogOperation.DriveTrainPathXGoal,
@@ -1131,7 +1173,8 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
                 AnalogOperation.DriveTrainTurnAngleGoal,
-                AnalogOperation.DriveTrainTurnSpeed,
+                AnalogOperation.DriveTrainSpinLeft,
+                AnalogOperation.DriveTrainSpinRight,
                 AnalogOperation.DriveTrainRotationA,
                 AnalogOperation.DriveTrainRotationB,
                 AnalogOperation.DriveTrainPathXGoal,
@@ -1213,7 +1256,8 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
                 AnalogOperation.DriveTrainTurnAngleGoal,
-                AnalogOperation.DriveTrainTurnSpeed,
+                AnalogOperation.DriveTrainSpinLeft,
+                AnalogOperation.DriveTrainSpinRight,
                 AnalogOperation.DriveTrainRotationA,
                 AnalogOperation.DriveTrainRotationB,
                 AnalogOperation.DriveTrainPathXGoal,
@@ -1274,7 +1318,8 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
                 AnalogOperation.DriveTrainTurnAngleGoal,
-                AnalogOperation.DriveTrainTurnSpeed,
+                AnalogOperation.DriveTrainSpinLeft,
+                AnalogOperation.DriveTrainSpinRight,
                 AnalogOperation.DriveTrainRotationA,
                 AnalogOperation.DriveTrainRotationB,
                 AnalogOperation.DriveTrainPathXGoal,
@@ -1331,7 +1376,8 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
                 AnalogOperation.DriveTrainTurnAngleGoal,
-                AnalogOperation.DriveTrainTurnSpeed,
+                AnalogOperation.DriveTrainSpinLeft,
+                AnalogOperation.DriveTrainSpinRight,
                 AnalogOperation.DriveTrainRotationA,
                 AnalogOperation.DriveTrainRotationB,
                 AnalogOperation.DriveTrainPathXGoal,
@@ -1382,7 +1428,8 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.DriveTrainMoveForward,
                 AnalogOperation.DriveTrainMoveRight,
                 AnalogOperation.DriveTrainTurnAngleGoal,
-                AnalogOperation.DriveTrainTurnSpeed,
+                AnalogOperation.DriveTrainSpinLeft,
+                AnalogOperation.DriveTrainSpinRight,
                 AnalogOperation.DriveTrainRotationA,
                 AnalogOperation.DriveTrainRotationB,
                 AnalogOperation.DriveTrainPathXGoal,
