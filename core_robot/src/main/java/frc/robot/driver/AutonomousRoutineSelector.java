@@ -271,6 +271,9 @@ public class AutonomousRoutineSelector
                 IntakeState.Up),
             new IntakePositionTask(true),
 
+            new WaitTask(0.2),
+            new IntakeGamePieceTask(true, 1.0),
+
             ConcurrentTask.AllTasks(
                 new FollowPathTask(isRed ? "1ToChargeRed" : "1ToChargeBlue", Type.Absolute),
                 SequentialTask.Sequence(
@@ -306,6 +309,9 @@ public class AutonomousRoutineSelector
                 IntakeState.Up),
             new IntakePositionTask(true),
 
+            new WaitTask(0.2),
+            new IntakeGamePieceTask(true, 1.0),
+
             new FollowPathTask(isRed ? "1To14Red" : "1To14Blue", Type.Absolute),
                 SequentialTask.Sequence(
                     new ArmMMPositionTask(
@@ -315,8 +321,8 @@ public class AutonomousRoutineSelector
                         IntakeState.Up),
                     new WaitTask(0.5),
                     new ArmMMPositionTask(
-                        TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP,
-                        TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP,
+                        TuningConstants.ARM_LOWER_POSITION_CONE_GROUND_PICKUP,
+                        TuningConstants.ARM_UPPER_POSITION_CONE_GROUND_PICKUP,
                         true,
                         IntakeState.Up)
                 ),
@@ -358,6 +364,9 @@ public class AutonomousRoutineSelector
                 IntakeState.Up),
             new IntakePositionTask(true),
 
+            new WaitTask(0.2),
+            new IntakeGamePieceTask(true, 1.0),
+
             new FollowPathTask(isRed ? "1To14Red" : "1To14Blue", Type.Absolute),
                 SequentialTask.Sequence(
                     new ArmMMPositionTask(
@@ -367,8 +376,8 @@ public class AutonomousRoutineSelector
                         IntakeState.Up),
                     new WaitTask(0.5),
                     new ArmMMPositionTask(
-                        TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP,
-                        TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP,
+                        TuningConstants.ARM_LOWER_POSITION_CONE_GROUND_PICKUP,
+                        TuningConstants.ARM_UPPER_POSITION_CONE_GROUND_PICKUP,
                         true,
                         IntakeState.Up)
                 ),
@@ -403,6 +412,9 @@ public class AutonomousRoutineSelector
                 IntakeState.Up),
             new IntakePositionTask(true),
 
+            new WaitTask(0.2),
+            new IntakeGamePieceTask(true, 1.0),
+
             new FollowPathTask(isRed ? "1To14Red" : "1To14Blue", Type.Absolute),
                 SequentialTask.Sequence(
                     new ArmMMPositionTask(
@@ -412,8 +424,8 @@ public class AutonomousRoutineSelector
                         IntakeState.Up),
                     new WaitTask(0.5),
                     new ArmMMPositionTask(
-                        TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP,
-                        TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP,
+                        TuningConstants.ARM_LOWER_POSITION_CONE_GROUND_PICKUP,
+                        TuningConstants.ARM_UPPER_POSITION_CONE_GROUND_PICKUP,
                         true,
                         IntakeState.Up)
                 ),
@@ -478,14 +490,15 @@ public class AutonomousRoutineSelector
                     true)),
 
             new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE,
-                TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE,
-                false,
+                TuningConstants.ARM_LOWER_POSITION_HIGH_CONE,
+                TuningConstants.ARM_UPPER_POSITION_HIGH_CONE,
+                true,
                 IntakeState.Up),
+            new IntakePositionTask(true),
+            new WaitTask(0.2),
+            new IntakeGamePieceTask(true, 1.0),
 
-            new WaitTask(0.5),
 
-            new IntakeGamePieceTask(false, 1.0),
             new FollowPathTask(isRed ? "5To11Red" : "5To11Blue", Type.Absolute),
             new ArmMMPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_STOWED,
@@ -617,14 +630,14 @@ public class AutonomousRoutineSelector
                         IntakeState.Up),
                     new WaitTask(0.5),
                     new ArmMMPositionTask(
-                        TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP,
-                        TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP,
+                        TuningConstants.ARM_LOWER_POSITION_CONE_GROUND_PICKUP,
+                        TuningConstants.ARM_UPPER_POSITION_CONE_GROUND_PICKUP,
                         true,
                         IntakeState.Up)
                 ),
                 SequentialTask.Sequence(
                     new WaitTask(2.0),
-                    new IntakeGamePieceTask(false, 3.2)
+                    new IntakeGamePieceTask(false, 4.0)
                 )
             ),
 
@@ -673,14 +686,14 @@ public class AutonomousRoutineSelector
                         IntakeState.Up),
                     new WaitTask(0.5),
                     new ArmMMPositionTask(
-                        TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP,
-                        TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP,
+                        TuningConstants.ARM_LOWER_POSITION_CONE_GROUND_PICKUP,
+                        TuningConstants.ARM_UPPER_POSITION_CONE_GROUND_PICKUP,
                         true,
                         IntakeState.Up)
                 ),
                 SequentialTask.Sequence(
                     new WaitTask(2.0),
-                    new IntakeGamePieceTask(false, 3.2)
+                    new IntakeGamePieceTask(false, 5.5)
                 )
             ),
 
@@ -722,8 +735,8 @@ public class AutonomousRoutineSelector
                         IntakeState.Up),
                     new WaitTask(0.5),
                     new ArmMMPositionTask(
-                        TuningConstants.ARM_LOWER_POSITION_GROUND_PICKUP,
-                        TuningConstants.ARM_UPPER_POSITION_GROUND_PICKUP,
+                        TuningConstants.ARM_LOWER_POSITION_CONE_GROUND_PICKUP,
+                        TuningConstants.ARM_UPPER_POSITION_CONE_GROUND_PICKUP,
                         true,
                         IntakeState.Up)
                 ),

@@ -23,25 +23,6 @@ public class ArmMechanism implements IMechanism
 
     private double prevTime;
 
-    //----------------- Cone flipper Variables -----------------
-
-    private final IDoubleSolenoid rightConeFlipper;
-    private final IDoubleSolenoid leftConeFlipper;
-
-    private double leftFlipperTransitionTime;
-    private double rightFlipperTransitionTime;
-    private enum ConeFlipperState
-    {
-        Extended,
-        Extending,
-        ExtendingWait,
-        Retracted,
-        Retracting,
-    };
-
-    private ConeFlipperState curLeftFlipperState;
-    private ConeFlipperState curRightFlipperState;
-
     //----------------- Main Arm Variables -----------------
 
     private final ITalonSRX lowerLeftArmLinearActuator;
@@ -62,8 +43,6 @@ public class ArmMechanism implements IMechanism
     // actual positions calculated using forward kinematics
     private double xPosition;
     private double zPosition;
-
-    private boolean throughBeamBroken;
 
     private boolean inSimpleMode;
 
@@ -101,15 +80,12 @@ public class ArmMechanism implements IMechanism
     private final ITalonSRX intakeMotor;
     private final IDoubleSolenoid intakeExtender;
 
-    // private final IAnalogInput intakeThroughBeamSensor;
-
     private enum IntakeState
     {
         Up,
         Down,
     };
-    
-    private double throughBeamValue;
+
     private IntakeState currentIntakeState;
 
     @Inject
@@ -238,26 +214,6 @@ public class ArmMechanism implements IMechanism
         upperLAFollower.setInvertOutput(TuningConstants.ARM_UPPER_FOLLOWER_INVERT_OUTPUT);
         upperLAFollower.follow(this.upperArmLinearActuator);
 
-        //------------------------- Side Stick Initialization ------------------------------
-
-        this.leftConeFlipper = provider.getDoubleSolenoid(
-            ElectronicsConstants.PNEUMATICS_MODULE_A,
-            ElectronicsConstants.PNEUMATICS_MODULE_TYPE_A,
-            ElectronicsConstants.LEFT_SIDE_STICK_PISTON_FORWARD,
-            ElectronicsConstants.LEFT_SIDE_STICK_PISTON_BACKWARD);
-
-        this.rightConeFlipper = provider.getDoubleSolenoid(
-            ElectronicsConstants.PNEUMATICS_MODULE_A,
-            ElectronicsConstants.PNEUMATICS_MODULE_TYPE_A,
-            ElectronicsConstants.RIGHT_SIDE_STICK_PISTON_FORWARD,
-            ElectronicsConstants.RIGHT_SIDE_STICK_PISTON_BACKWARD);
-
-        this.leftFlipperTransitionTime = 0.0;
-        this.rightFlipperTransitionTime = 0.0;
-
-        this.curRightFlipperState = ConeFlipperState.Retracted;
-        this.curLeftFlipperState = ConeFlipperState.Retracted;
-
         //-------------------------- Intake Initialization ----------------------------------
 
         this.intakeMotor = provider.getTalonSRX(ElectronicsConstants.ARM_INTAKE_MOTOR_CAN_ID);
@@ -273,8 +229,6 @@ public class ArmMechanism implements IMechanism
                 ElectronicsConstants.ARM_INTAKE_PISTON_REVERSE);
 
         this.currentIntakeState = IntakeState.Up;
-
-        // this.intakeThroughBeamSensor = provider.getAnalogInput(ElectronicsConstants.ARM_INTAKE_THROUGH_BEAM_ANALOG_INPUT);
     }
 
     @Override
@@ -289,9 +243,6 @@ public class ArmMechanism implements IMechanism
         this.upperLAPosition = this.upperArmLinearActuator.getPosition();
         this.upperLAVelocity = this.upperArmLinearActuator.getVelocity();
         this.upperLAError = this.upperArmLinearActuator.getError();
-
-        // this.intakeSensorValue = this.intakeThroughBeamSensor.getVoltage();
-        // this.throughBeamBroken = this.intakeSensorValue < TuningConstants.ARM_INTAKE_THROUGHBEAM_THRESHOLD;
 
         double lowerLeftLAPower = this.powerManager.getCurrent(ElectronicsConstants.ARM_LOWER_LEFT_LA_PDH_CHANNEL);
         double lowerRightLAPower = this.powerManager.getCurrent(ElectronicsConstants.ARM_LOWER_RIGHT_LA_PDH_CHANNEL);
@@ -321,8 +272,6 @@ public class ArmMechanism implements IMechanism
         this.logger.logNumber(LoggingKey.ArmUpperVelocityAverage, this.upperLAVelocityAverage);
         this.logger.logNumber(LoggingKey.ArmUpperError, this.upperLAError);
         this.logger.logNumber(LoggingKey.ArmUpperPower, this.upperLAsPowerAverage);
-        this.logger.logNumber(LoggingKey.ArmIntakeThroughBeamRaw, this.throughBeamValue);
-        this.logger.logBoolean(LoggingKey.ArmIntakeSensorBroken, this.throughBeamBroken);
 
         DoubleTuple offsets = ArmMechanism.calculateFK(
             (this.lowerLeftLAPosition + this.lowerRightLAPosition) / 2.0,
@@ -383,165 +332,6 @@ public class ArmMechanism implements IMechanism
 
             this.lowerLAsStalled = false;
             this.upperLAsStalled = false;
-        }
-
-        //----------------------------------- Flippers -----------------------------------
-        boolean extendRightFlipper = this.driver.getDigital(DigitalOperation.ExtendRightConeFlipper);
-        boolean extendLeftFlipper = this.driver.getDigital(DigitalOperation.ExtendLeftConeFlipper);
-        switch (this.curRightFlipperState)
-        {
-            case Retracted:
-                if (extendRightFlipper)
-                {
-                    this.curRightFlipperState = ConeFlipperState.ExtendingWait;
-                }
-
-                break;
-
-            case ExtendingWait:
-                if (!extendRightFlipper)
-                {
-                    this.curRightFlipperState = ConeFlipperState.Retracted;
-                }
-                else if (this.curLeftFlipperState == ConeFlipperState.Retracted &&
-                    (this.inSimpleMode ||
-                        (this.upperLAPosition <= TuningConstants.ARM_NEAR_FULL_RETRACTED_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH &&
-                        this.lowerLeftLAPosition >= TuningConstants.ARM_NEAR_FULL_EXTENSION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH)))
-                {
-                    this.curRightFlipperState = ConeFlipperState.Extending;
-                    this.rightFlipperTransitionTime = currTime;
-                }
-
-                break;
-
-            case Extending:
-                if (!extendRightFlipper)
-                {
-                    this.curRightFlipperState = ConeFlipperState.Retracting;
-                    this.rightFlipperTransitionTime = currTime;
-                }
-                else if (currTime - this.rightFlipperTransitionTime > TuningConstants.ARM_FLIPPER_EXTEND_WAIT_DURATION)
-                {
-                    this.curRightFlipperState = ConeFlipperState.Extended;
-                }
-
-                break;
-
-            case Extended:
-                if (!extendRightFlipper)
-                {
-                    this.curRightFlipperState = ConeFlipperState.Retracting;
-                    this.rightFlipperTransitionTime = currTime;
-                }
-
-                break;
-
-            case Retracting:
-                if (extendRightFlipper)
-                {
-                    this.curRightFlipperState = ConeFlipperState.Extending;
-                    this.rightFlipperTransitionTime = currTime;
-                }
-                else if (currTime - this.rightFlipperTransitionTime > TuningConstants.ARM_FLIPPER_RETRACT_WAIT_DURATION)
-                {
-                    this.curRightFlipperState = ConeFlipperState.Retracted;
-                }
-
-                break;
-        }
-
-        switch (this.curLeftFlipperState)
-        {
-            case Retracted:
-                if (extendLeftFlipper)
-                {
-                    this.curLeftFlipperState = ConeFlipperState.ExtendingWait;
-                }
-
-                break;
-
-            case ExtendingWait:
-                if (!extendLeftFlipper)
-                {
-                    this.curLeftFlipperState = ConeFlipperState.Retracted;
-                }
-                else if (this.curRightFlipperState == ConeFlipperState.Retracted &&
-                    (this.inSimpleMode ||
-                        (this.upperLAPosition <= TuningConstants.ARM_NEAR_FULL_RETRACTED_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH &&
-                        this.lowerLeftLAPosition >= TuningConstants.ARM_NEAR_FULL_EXTENSION_LENGTH * HardwareConstants.ARM_STRING_ENCODER_TICKS_PER_INCH)))
-                {
-                    this.curLeftFlipperState = ConeFlipperState.Extending;
-                    this.leftFlipperTransitionTime = currTime;
-                }
-
-                break;
-
-            case Extending:
-                if (!extendLeftFlipper)
-                {
-                    this.curLeftFlipperState = ConeFlipperState.Retracting;
-                    this.leftFlipperTransitionTime = currTime;
-                }
-                else if (currTime - this.leftFlipperTransitionTime > TuningConstants.ARM_FLIPPER_EXTEND_WAIT_DURATION)
-                {
-                    this.curLeftFlipperState = ConeFlipperState.Extended;
-                }
-
-                break;
-
-            case Extended:
-                if (!extendLeftFlipper)
-                {
-                    this.curLeftFlipperState = ConeFlipperState.Retracting;
-                    this.leftFlipperTransitionTime = currTime;
-                }
-
-                break;
-
-            case Retracting:
-                if (extendLeftFlipper)
-                {
-                    this.curLeftFlipperState = ConeFlipperState.Extending;
-                    this.leftFlipperTransitionTime = currTime;
-                }
-                else if (currTime - this.leftFlipperTransitionTime > TuningConstants.ARM_FLIPPER_RETRACT_WAIT_DURATION)
-                {
-                    this.curLeftFlipperState = ConeFlipperState.Retracted;
-                }
-
-                break;
-        }
-
-        this.logger.logString(LoggingKey.ArmRightFlipperState, this.curRightFlipperState.toString());
-        switch (this.curRightFlipperState)
-        {
-            case Extended:
-            case Extending:
-                this.rightConeFlipper.set(DoubleSolenoidValue.Forward);
-                break;
-
-            default:
-            case ExtendingWait:
-            case Retracted:
-            case Retracting:
-                this.rightConeFlipper.set(DoubleSolenoidValue.Reverse);
-                break;
-        }
-
-        this.logger.logString(LoggingKey.ArmLeftFlipperState, this.curLeftFlipperState.toString());
-        switch (this.curLeftFlipperState)
-        {
-            case Extended:
-            case Extending:
-                this.leftConeFlipper.set(DoubleSolenoidValue.Forward);
-                break;
-
-            default:
-            case ExtendingWait:
-            case Retracted:
-            case Retracting:
-                this.leftConeFlipper.set(DoubleSolenoidValue.Reverse);
-                break;
         }
 
         //----------------------------------- Intake Update -----------------------------------
@@ -605,7 +395,7 @@ public class ArmMechanism implements IMechanism
             this.lowerLAsStalled = false;
             this.upperLAsStalled = false;
         }
-        else if (this.curLeftFlipperState == ConeFlipperState.Retracted || this.curRightFlipperState == ConeFlipperState.Retracted)
+        else
         {
             if (lowerPositionAdjustment != 0.0 || upperPositionAdjustment != 0.0)
             {
@@ -708,7 +498,6 @@ public class ArmMechanism implements IMechanism
                     double newDesiredZPosition = this.desiredZPosition + ikZAdjustment;
 
                     DoubleTuple ikResult = ArmMechanism.calculateIK(newDesiredXPosition, newDesiredZPosition);
-                    System.out.println("ik-adjust? " + (ikResult != null));
                     if (ikResult != null)
                     {
                         boolean updateDesiredIKPosition = false;
@@ -735,10 +524,6 @@ public class ArmMechanism implements IMechanism
                             this.desiredXPosition = newDesiredXPosition;
                             this.desiredZPosition = newDesiredZPosition;
                         }
-                    }
-                    else
-                    {
-                        System.out.println("desired: " + newDesiredXPosition + ", " + newDesiredZPosition);
                     }
                 }
                 else if (newDesiredLowerPosition != TuningConstants.MAGIC_NULL_VALUE ||
@@ -866,11 +651,6 @@ public class ArmMechanism implements IMechanism
         this.upperArmLinearActuator.stop();
         this.intakeMotor.stop();
         this.intakeExtender.set(DoubleSolenoidValue.Off);
-        this.leftConeFlipper.set(DoubleSolenoidValue.Off);
-        this.rightConeFlipper.set(DoubleSolenoidValue.Off);
-
-        this.leftFlipperTransitionTime = 0.0;
-        this.rightFlipperTransitionTime = 0.0;
 
         this.lowerSetpointChangedTime = 0.0;
         this.upperSetpointChangedTime = 0.0;
@@ -894,10 +674,6 @@ public class ArmMechanism implements IMechanism
         this.upperLAVelocityAverage = 0.0;
     }
 
-    public boolean isThroughBeamBroken()
-    {
-        return this.throughBeamBroken;
-    }
 
     public double getLowerPosition()
     {

@@ -132,11 +132,7 @@ public enum LoggingKey
     ArmUpperError("a.up_err"),
     ArmUpperPower("a.up_power"),
     ArmIntakePower("a.intake_power"),
-    ArmIntakeThroughBeamRaw("a.through_beam_raw"),
-    ArmIntakeSensorBroken("a.through_beam_broken"),
     ArmIntakeExtended("a.intake_extended"),
-    ArmLeftFlipperState("a.left_flipper"),
-    ArmRightFlipperState("a.right_flipper"),
 
     CompressorPreassure("com.pres");
 
