@@ -43,13 +43,13 @@ public class PathPlannerWrapper implements IPathPlanner
                 this.convertWaypoints(otherWaypoints)));
     }
 
-    private PathPoint convertWaypoint(PathPlannerWaypoint firstWaypoint)
+    private PathPoint convertWaypoint(PathPlannerWaypoint waypoint)
     {
         return new PathPoint(
-            new Translation2d(firstWaypoint.x * Helpers.METERS_PER_INCH, firstWaypoint.y * Helpers.METERS_PER_INCH),
-            Rotation2d.fromDegrees(firstWaypoint.heading),
-            Rotation2d.fromDegrees(firstWaypoint.orientation),
-            firstWaypoint.velocityOverride * Helpers.METERS_PER_INCH);
+            new Translation2d(waypoint.x * Helpers.METERS_PER_INCH, waypoint.y * Helpers.METERS_PER_INCH),
+            Rotation2d.fromDegrees(waypoint.heading),
+            Rotation2d.fromDegrees(waypoint.orientation),
+            waypoint.velocityOverride == -1.0 ? -1.0 : waypoint.velocityOverride * Helpers.METERS_PER_INCH); // -1.0 is a special value
     }
 
     private PathPoint[] convertWaypoints(PathPlannerWaypoint[] otherWaypoints)
