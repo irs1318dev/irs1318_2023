@@ -2,7 +2,7 @@ package frc.robot.driver;
 
 import org.junit.jupiter.api.Test;
 
-import frc.robot.driver.common.ButtonMapVerifier;
+import frc.lib.driver.ButtonMapVerifier;
 
 public class ButtonMapTests
 {

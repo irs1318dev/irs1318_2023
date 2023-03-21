@@ -1,10 +1,13 @@
 package frc.robot.mechanisms;
 
 import frc.robot.*;
-import frc.robot.common.*;
-import frc.robot.common.robotprovider.*;
+import frc.lib.driver.IDriver;
+import frc.lib.filters.FloatingAverageCalculator;
+import frc.lib.helpers.Helpers;
+import frc.lib.mechanisms.IMechanism;
+import frc.lib.mechanisms.LoggingManager;
+import frc.lib.robotprovider.*;
 import frc.robot.driver.*;
-import frc.robot.driver.common.IDriver;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;

@@ -1,11 +1,12 @@
 package frc.robot.mechanisms;
 
 import frc.robot.*;
-import frc.robot.common.*;
-import frc.robot.common.robotprovider.*;
+import frc.lib.driver.IDriver;
+import frc.lib.mechanisms.IPositionManager;
+import frc.lib.mechanisms.LoggingManager;
+import frc.lib.robotprovider.*;
 import frc.robot.driver.AnalogOperation;
 import frc.robot.driver.DigitalOperation;
-import frc.robot.driver.common.IDriver;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;

@@ -1,14 +1,15 @@
 package frc.robot.driver.controltasks;
 
+import frc.lib.driver.TrajectoryManager;
+import frc.lib.helpers.ExceptionHelpers;
+import frc.lib.helpers.Helpers;
+import frc.lib.robotprovider.ITimer;
+import frc.lib.robotprovider.ITrajectory;
+import frc.lib.robotprovider.Pose2d;
+import frc.lib.robotprovider.TrajectoryState;
 import frc.robot.TuningConstants;
-import frc.robot.common.Helpers;
-import frc.robot.common.robotprovider.ITimer;
-import frc.robot.common.robotprovider.ITrajectory;
-import frc.robot.common.robotprovider.Pose2d;
-import frc.robot.common.robotprovider.TrajectoryState;
 import frc.robot.driver.AnalogOperation;
 import frc.robot.driver.DigitalOperation;
-import frc.robot.driver.common.TrajectoryManager;
 import frc.robot.mechanisms.DriveTrainMechanism;
 
 /**
@@ -66,11 +67,7 @@ public class FollowPathTask extends ControlTaskBase
         this.trajectory = trajectoryManager.getTrajectory(this.pathName);
         if (this.trajectory == null)
         {
-            if (TuningConstants.THROW_EXCEPTIONS)
-            {
-                throw new RuntimeException("Unknown trajectory " + this.pathName);
-            }
-
+            ExceptionHelpers.Assert(false, "Unknown trajectory " + this.pathName);
             this.startTime = 0.0;
             this.trajectoryDuration = 0.0;
             return;

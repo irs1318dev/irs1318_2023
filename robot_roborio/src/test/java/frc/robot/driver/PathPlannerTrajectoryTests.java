@@ -2,8 +2,8 @@ package frc.robot.driver;
 
 import org.junit.jupiter.api.Test;
 
-import frc.robot.common.robotprovider.PathPlannerWrapper;
-import frc.robot.driver.common.TrajectoryManager;
+import frc.lib.driver.TrajectoryManager;
+import frc.lib.robotprovider.PathPlannerWrapper;
 
 public class PathPlannerTrajectoryTests
 {

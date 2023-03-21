@@ -6,10 +6,10 @@ import com.acmerobotics.roadrunner.geometry.*;
 import com.acmerobotics.roadrunner.trajectory.*;
 import com.acmerobotics.roadrunner.trajectory.constraints.*;
 
+import frc.lib.driver.TrajectoryManager;
+import frc.lib.helpers.Helpers;
 import frc.robot.HardwareConstants;
 import frc.robot.TuningConstants;
-import frc.robot.common.*;
-import frc.robot.driver.common.TrajectoryManager;
 
 public class RoadRunnerTrajectoryGenerator
 {

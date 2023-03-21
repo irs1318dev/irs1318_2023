@@ -2,11 +2,11 @@ package frc.robot.driver;
 
 import javax.inject.Singleton;
 
+import frc.lib.driver.*;
+import frc.lib.driver.buttons.*;
+import frc.lib.driver.descriptions.*;
+import frc.lib.helpers.Helpers;
 import frc.robot.*;
-import frc.robot.common.Helpers;
-import frc.robot.driver.common.*;
-import frc.robot.driver.common.buttons.*;
-import frc.robot.driver.common.descriptions.*;
 import frc.robot.driver.controltasks.*;
 import frc.robot.driver.controltasks.ArmMMPositionTask.IntakeState;
 import frc.robot.driver.controltasks.ChargeStationTask.Orientation;

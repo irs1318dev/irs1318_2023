@@ -1,6 +1,6 @@
 package frc.robot.driver;
 
-import frc.robot.common.FlagBase;
+import frc.lib.helpers.FlagBase;
 
 public class Shift extends FlagBase
 {

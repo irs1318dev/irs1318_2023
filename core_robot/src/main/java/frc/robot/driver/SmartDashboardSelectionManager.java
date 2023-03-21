@@ -3,7 +3,7 @@ package frc.robot.driver;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import frc.robot.common.robotprovider.*;
+import frc.lib.robotprovider.*;
 
 @Singleton
 public class SmartDashboardSelectionManager

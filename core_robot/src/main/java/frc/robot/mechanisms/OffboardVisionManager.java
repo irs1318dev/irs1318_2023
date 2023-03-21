@@ -1,10 +1,11 @@
 package frc.robot.mechanisms;
 
 import frc.robot.*;
-import frc.robot.common.*;
-import frc.robot.common.robotprovider.*;
+import frc.lib.driver.IDriver;
+import frc.lib.mechanisms.IMechanism;
+import frc.lib.mechanisms.LoggingManager;
+import frc.lib.robotprovider.*;
 import frc.robot.driver.*;
-import frc.robot.driver.common.*;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -18,7 +19,6 @@ public class OffboardVisionManager implements IMechanism
     private final IDriver driver;
     private final ILogger logger;
 
-    private final IDriverStation driverStation;
     private final INetworkTableProvider networkTable;
 
     private IDoubleSubscriber atXOffsetSubscriber;
@@ -57,7 +57,6 @@ public class OffboardVisionManager implements IMechanism
         this.driver = driver;
         this.logger = logger;
 
-        this.driverStation = provider.getDriverStation();
         this.networkTable = provider.getNetworkTableProvider();
         this.atXOffsetSubscriber = this.networkTable.getDoubleSubscriber("at.xOffset", TuningConstants.MAGIC_NULL_VALUE);
         this.atYOffsetSubscriber = this.networkTable.getDoubleSubscriber("at.yOffset", TuningConstants.MAGIC_NULL_VALUE);
@@ -219,25 +218,5 @@ public class OffboardVisionManager implements IMechanism
     public Integer getAprilTagId()
     {
         return this.atId;
-    }
-
-    private boolean isRedTeam()
-    {
-        Alliance currentAlliance = this.driverStation.getAlliance();
-        switch (currentAlliance)
-        {
-            case Red:
-                return true;
-
-            case Blue:
-                return false;
-
-            case Invalid:
-            default:
-                break;
-        }
-
-        // fallback: use the game-specific message.  if "red", use red, otherwise use blue
-        return this.driverStation.getGameSpecificMessage().equalsIgnoreCase("red");
     }
 }

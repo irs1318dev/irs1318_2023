@@ -2,10 +2,12 @@ package frc.robot;
 
 import java.io.IOException;
 
-import frc.robot.common.robotprovider.*;
-import frc.robot.driver.common.*;
-import frc.robot.driver.common.buttons.ButtonType;
-import frc.robot.driver.common.descriptions.*;
+import frc.lib.driver.IButtonMap;
+import frc.lib.driver.UserInputDeviceButton;
+import frc.lib.robotprovider.*;
+import frc.lib.CoreRobot;
+import frc.lib.driver.buttons.ButtonType;
+import frc.lib.driver.descriptions.*;
 import frc.robot.simulation.*;
 
 import javafx.application.*;

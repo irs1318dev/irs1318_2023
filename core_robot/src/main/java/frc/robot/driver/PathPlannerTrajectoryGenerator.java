@@ -1,13 +1,12 @@
 package frc.robot.driver;
 
-import com.google.common.util.concurrent.Monitor.Guard;
-
+import frc.lib.driver.TrajectoryManager;
+import frc.lib.helpers.ExceptionHelpers;
+import frc.lib.robotprovider.IPathPlanner;
+import frc.lib.robotprovider.ITrajectory;
+import frc.lib.robotprovider.PathPlannerWaypoint;
+import frc.lib.robotprovider.Point2d;
 import frc.robot.TuningConstants;
-import frc.robot.common.robotprovider.IPathPlanner;
-import frc.robot.common.robotprovider.ITrajectory;
-import frc.robot.common.robotprovider.PathPlannerWaypoint;
-import frc.robot.common.robotprovider.Point2d;
-import frc.robot.driver.common.TrajectoryManager;
 
 public class PathPlannerTrajectoryGenerator
 {
@@ -113,13 +112,7 @@ public class PathPlannerTrajectoryGenerator
      */
     public static double getDirection(boolean isRed, boolean reverse, boolean towardLoading, double percentFromStraight)
     {
-        if (percentFromStraight < 0.0 || percentFromStraight > 1.0)
-        {
-            if (TuningConstants.THROW_EXCEPTIONS)
-            {
-                throw new RuntimeException("percentFromStraight should be between 0 and 1");
-            }
-        }
+        ExceptionHelpers.Assert(percentFromStraight >= 0.0 && percentFromStraight <= 1.0, "percentFromStraight should be between 0 and 1");
 
         if (percentFromStraight == 0.0)
         {

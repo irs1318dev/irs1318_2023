@@ -3,13 +3,14 @@ package frc.robot.driver;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import frc.lib.driver.IControlTask;
+import frc.lib.driver.TrajectoryManager;
+import frc.lib.mechanisms.LoggingManager;
+import frc.lib.robotprovider.*;
 import frc.robot.LoggingKey;
 import frc.robot.TuningConstants;
-import frc.robot.common.LoggingManager;
-import frc.robot.common.robotprovider.*;
 import frc.robot.driver.SmartDashboardSelectionManager.AutoRoutine;
 import frc.robot.driver.SmartDashboardSelectionManager.StartPosition;
-import frc.robot.driver.common.*;
 import frc.robot.driver.controltasks.*;
 import frc.robot.driver.controltasks.ArmMMPositionTask.IntakeState;
 import frc.robot.driver.controltasks.ChargeStationTask.Orientation;

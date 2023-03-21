@@ -2,10 +2,10 @@ package frc.robot;
 
 import javax.inject.Singleton;
 
-import frc.robot.common.*;
-import frc.robot.common.robotprovider.*;
+import frc.lib.driver.*;
+import frc.lib.mechanisms.MechanismManager;
+import frc.lib.robotprovider.*;
 import frc.robot.driver.*;
-import frc.robot.driver.common.*;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;

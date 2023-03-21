@@ -1,7 +1,7 @@
 package frc.robot.driver.controltasks;
 
+import frc.lib.helpers.AnglePair;
 import frc.robot.TuningConstants;
-import frc.robot.common.AnglePair;
 import frc.robot.driver.AnalogOperation;
 import frc.robot.mechanisms.PigeonManager;
 
