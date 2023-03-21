@@ -1,7 +1,8 @@
 package frc.robot.driver.controltasks;
 
+import frc.lib.helpers.ExceptionHelpers;
+import frc.lib.robotprovider.ITimer;
 import frc.robot.TuningConstants;
-import frc.robot.common.robotprovider.ITimer;
 import frc.robot.driver.DigitalOperation;
 
 /**
@@ -75,10 +76,7 @@ public abstract class CompositeOperationTask extends UpdateCycleTask
                 }
             }
 
-            if (!containsToPerform)
-            {
-                throw new RuntimeException("" + toPerform.toString() + " not contained in the set");
-            }
+            ExceptionHelpers.Assert(containsToPerform, toPerform.toString() + " not contained in the set");
         }
 
         this.toPerform = toPerform;

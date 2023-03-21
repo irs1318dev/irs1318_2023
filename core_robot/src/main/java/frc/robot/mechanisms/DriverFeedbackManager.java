@@ -1,11 +1,11 @@
 package frc.robot.mechanisms;
 
 import frc.robot.*;
-import frc.robot.common.*;
-import frc.robot.common.robotprovider.*;
+import frc.lib.driver.IDriver;
+import frc.lib.mechanisms.IMechanism;
+import frc.lib.robotprovider.*;
 import frc.robot.driver.DigitalOperation;
-import frc.robot.driver.common.*;
-import frc.robot.driver.common.descriptions.UserInputDevice;
+import frc.lib.driver.descriptions.UserInputDevice;
 import frc.robot.mechanisms.PowerManager.CurrentLimiting;
 
 import com.google.inject.Inject;
@@ -24,7 +24,6 @@ public class DriverFeedbackManager implements IMechanism
     private final IDriverStation ds;
     private final IDriver driver;
 
-    private final ArmMechanism arm;
     private final PowerManager powerMan;
 
     private LightMode currentStripMode;
@@ -49,7 +48,6 @@ public class DriverFeedbackManager implements IMechanism
     public DriverFeedbackManager(
         IDriver driver,
         IRobotProvider provider,
-        ArmMechanism arm,
         PowerManager powerMan)
     {
         this.driver = driver;
@@ -59,7 +57,6 @@ public class DriverFeedbackManager implements IMechanism
         this.candle.configVBatOutput(CANdleVBatOutputMode.On);
 
         this.ds = provider.getDriverStation();
-        this.arm = arm;
         this.powerMan = powerMan;
 
         this.currentStripMode = LightMode.Off;

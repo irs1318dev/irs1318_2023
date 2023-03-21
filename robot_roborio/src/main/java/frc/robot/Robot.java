@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import frc.lib.CoreRobot;
 
 /**
  * Robot wraps CoreRobot to allow for the basic autonomous/teleop and switching logic to be shared between

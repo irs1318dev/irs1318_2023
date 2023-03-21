@@ -1,7 +1,7 @@
 package frc.robot;
 
-import frc.robot.common.robotprovider.PneumaticsModuleType;
-import frc.robot.common.robotprovider.PowerDistributionModuleType;
+import frc.lib.robotprovider.PneumaticsModuleType;
+import frc.lib.robotprovider.PowerDistributionModuleType;
 
 /**
  * All constants describing how the electronics are plugged together.

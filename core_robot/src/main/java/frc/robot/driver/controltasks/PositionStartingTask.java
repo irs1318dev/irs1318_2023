@@ -1,6 +1,6 @@
 package frc.robot.driver.controltasks;
 
-import frc.robot.TuningConstants;
+import frc.lib.helpers.ExceptionHelpers;
 import frc.robot.driver.*;
 
 /**
@@ -38,13 +38,7 @@ public class PositionStartingTask extends UpdateCycleTask
     {
         super(1);
 
-        if (TuningConstants.THROW_EXCEPTIONS)
-        {
-            if ((xPosition == null) != (yPosition == null))
-            {
-                throw new RuntimeException("expect xPosition and yPosition to either both be null, or both be non-null");
-            }
-        }
+        ExceptionHelpers.Assert((xPosition == null) == (yPosition == null), "expect xPosition and yPosition to either both be null, or both be non-null");
 
         this.xPosition = xPosition;
         this.yPosition = yPosition;

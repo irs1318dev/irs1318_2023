@@ -1,6 +1,6 @@
 package frc.robot.driver.controltasks;
 
-import frc.robot.common.Helpers;
+import frc.lib.helpers.Helpers;
 import frc.robot.driver.DigitalOperation;
 import frc.robot.mechanisms.OffboardVisionManager;
 

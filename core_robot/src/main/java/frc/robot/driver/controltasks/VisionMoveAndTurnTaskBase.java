@@ -1,8 +1,9 @@
 package frc.robot.driver.controltasks;
 
+import frc.lib.controllers.PIDHandler;
+import frc.lib.helpers.ExceptionHelpers;
+import frc.lib.robotprovider.ITimer;
 import frc.robot.TuningConstants;
-import frc.robot.common.PIDHandler;
-import frc.robot.common.robotprovider.ITimer;
 import frc.robot.driver.*;
 
 public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
@@ -42,11 +43,7 @@ public abstract class VisionMoveAndTurnTaskBase extends VisionTurningTask
 
         this.movePIDHandler = null;
 
-        if (TuningConstants.THROW_EXCEPTIONS &&
-            this.isAprilTag() == this.isRetroReflective())
-        {
-            throw new RuntimeException("exactly one of isAprilTag or isRetroReflective should be true");
-        }
+        ExceptionHelpers.Assert(this.isAprilTag() != this.isRetroReflective(), "exactly one of isAprilTag or isRetroReflective should be true");
     }
 
     /**

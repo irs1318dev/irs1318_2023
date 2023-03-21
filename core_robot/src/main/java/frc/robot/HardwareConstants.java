@@ -1,7 +1,7 @@
 package frc.robot;
 
-import frc.robot.common.Helpers;
-import frc.robot.common.robotprovider.TalonFXInvertType;
+import frc.lib.helpers.Helpers;
+import frc.lib.robotprovider.TalonFXInvertType;
 
 /**
  * All constants describing the physical structure of the robot (distances and sizes of things).

@@ -2,13 +2,13 @@ package frc.robot.mechanisms;
 
 import frc.robot.ElectronicsConstants;
 import frc.robot.LoggingKey;
-import frc.robot.common.IMechanism;
-import frc.robot.common.LoggingManager;
-import frc.robot.common.robotprovider.ICompressor;
-import frc.robot.common.robotprovider.ILogger;
-import frc.robot.common.robotprovider.IRobotProvider;
+import frc.lib.driver.IDriver;
+import frc.lib.mechanisms.IMechanism;
+import frc.lib.mechanisms.LoggingManager;
+import frc.lib.robotprovider.ICompressor;
+import frc.lib.robotprovider.ILogger;
+import frc.lib.robotprovider.IRobotProvider;
 import frc.robot.driver.DigitalOperation;
-import frc.robot.driver.common.IDriver;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;

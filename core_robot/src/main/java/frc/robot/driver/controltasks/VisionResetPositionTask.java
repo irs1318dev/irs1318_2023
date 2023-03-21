@@ -3,11 +3,11 @@
 
 package frc.robot.driver.controltasks;
 
+import frc.lib.helpers.Helpers;
+import frc.lib.robotprovider.Alliance;
+import frc.lib.robotprovider.IDriverStation;
+import frc.lib.robotprovider.IRobotProvider;
 import frc.robot.TuningConstants;
-import frc.robot.common.Helpers;
-import frc.robot.common.robotprovider.Alliance;
-import frc.robot.common.robotprovider.IDriverStation;
-import frc.robot.common.robotprovider.IRobotProvider;
 import frc.robot.driver.AnalogOperation;
 import frc.robot.driver.DigitalOperation;
 import frc.robot.mechanisms.OffboardVisionManager;

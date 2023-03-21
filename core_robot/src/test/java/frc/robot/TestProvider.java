@@ -4,7 +4,7 @@ import static org.mockito.Mockito.mock;
 
 import java.util.HashMap;
 
-import frc.robot.common.robotprovider.*;
+import frc.lib.robotprovider.*;
 
 public class TestProvider implements IRobotProvider
 {
