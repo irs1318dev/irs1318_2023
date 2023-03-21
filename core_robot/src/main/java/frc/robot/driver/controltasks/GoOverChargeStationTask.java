@@ -100,9 +100,11 @@ public class GoOverChargeStationTask extends ControlTaskBase
                 
             
         }
+        //if the absolute pitch is within flat acceptability, and the pitch rate average has been decreasing (robot has been flattening)
         else if (this.currentState == State.Centered)
         {
-            if (Math.abs(this.pitch) <= TuningConstants.CHARGE_STATION_PITCH_VARIATION)
+            if ((Math.abs(this.pitch) <= TuningConstants.CHARGE_STATION_PITCH_VARIATION)
+            && (this.pitchRateAverage <= 0))
             {
                 this.currentState = State.Completed;
             }
