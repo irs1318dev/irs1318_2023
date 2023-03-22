@@ -50,8 +50,8 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_LOW_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_LOW_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(0.0, 0.0, 180.0, 0.0),
-                new PathPlannerWaypoint(-18.0, 0.0, 180.0, 0.0)),
-                "goBackwards18in");
+                new PathPlannerWaypoint(-30.0, 0.0, 180.0, 0.0)),
+                "goBackwards30in");
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(

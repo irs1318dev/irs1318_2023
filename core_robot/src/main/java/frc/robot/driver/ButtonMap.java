@@ -15,7 +15,6 @@ import frc.robot.driver.controltasks.VisionAprilTagTranslateTask.GridScoringPosi
 import frc.robot.driver.controltasks.VisionMoveAndTurnTaskBase.MoveSpeed;
 import frc.robot.driver.controltasks.VisionMoveAndTurnTaskBase.MoveType;
 import frc.robot.driver.controltasks.VisionTurningTask.TurnType;
-import kotlin._Assertions;
 
 @Singleton
 public class ButtonMap implements IButtonMap
@@ -697,41 +696,46 @@ public class ButtonMap implements IButtonMap
         new MacroOperationDescription(
             MacroOperation.FaceForward,
             UserInputDevice.Driver,
-            0,
+            0, // DPAD-up
             Shift.DriverDebug, 
             Shift.None, 
-            ButtonType.Click,
+            ButtonType.Toggle,
             () -> new OrientationTask(0),
             new IOperation[]
             {
                 AnalogOperation.DriveTrainTurnAngleGoal,
+                AnalogOperation.DriveTrainSpinLeft,
+                AnalogOperation.DriveTrainSpinRight,
             }),
         
         new MacroOperationDescription(
             MacroOperation.FaceBackward,
             UserInputDevice.Driver,
-            180,
+            180, // DPAD-down
             Shift.DriverDebug, 
             Shift.None, 
-            ButtonType.Click,
+            ButtonType.Toggle,
             () -> new OrientationTask(180),
             new IOperation[]
             {
                 AnalogOperation.DriveTrainTurnAngleGoal,
+                AnalogOperation.DriveTrainSpinLeft,
+                AnalogOperation.DriveTrainSpinRight,
             }),
 
         new MacroOperationDescription(
             MacroOperation.PickUpConeFromBehind,
-            UserInputDevice.Codriver,
-            0,
-            Shift.CodriverDebug,
-            Shift.CodriverDebug,
+            UserInputDevice.Driver,
+            180, // DPAD-down
+            Shift.DriverDebug,
+            Shift.DriverDebug,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
                 new ArmMMPositionTask(
                     TuningConstants.ARM_LOWER_POSITION_CONE_UPRIGHTING_MACRO,
-                    TuningConstants.ARM_UPPER_POSITION_CONE_UPRIGHTING_MACRO),
-                new FollowPathTask("goBackwards18in")),
+                    TuningConstants.ARM_UPPER_POSITION_CONE_UPRIGHTING_MACRO,
+                    true),
+                new FollowPathTask("goBackwards30in")),
             new IOperation[]
             {
                 AnalogOperation.DriveTrainMoveForward,
@@ -860,8 +864,8 @@ public class ButtonMap implements IButtonMap
                 new ArmMMPositionTask(
                     TuningConstants.ARM_LOWER_POSITION_HIGH_CONE,
                     TuningConstants.ARM_UPPER_POSITION_HIGH_CONE,
-                    IntakeState.Down),
-                new IntakePositionTask(true)),
+                    IntakeState.Up),
+                new IntakePositionTask(false)),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
@@ -902,7 +906,9 @@ public class ButtonMap implements IButtonMap
                     TuningConstants.ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP_APPROACH),
                 new ArmMMPositionTask(
                     TuningConstants.ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP,
-                    TuningConstants.ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP)),
+                    TuningConstants.ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP,
+                    IntakeState.Down),
+                new IntakePositionTask(true)),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,

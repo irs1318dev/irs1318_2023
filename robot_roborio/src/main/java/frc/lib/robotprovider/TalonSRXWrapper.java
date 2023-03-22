@@ -31,14 +31,13 @@ public class TalonSRXWrapper implements ITalonSRX
 
     public void set(double value)
     {
+        ExceptionHelpers.Assert(!this.controlModeRequired, "Control mode must be specified!");
+
         this.wrappedObject.set(this.controlMode, value);
-        this.controlModeRequired = false;
     }
 
     public void set(TalonXControlMode mode, double value)
     {
-        ExceptionHelpers.Assert(!this.controlModeRequired, "Control mode must be specified!");
-
         this.wrappedObject.set(TalonSRXWrapper.getControlMode(mode), value);
     }
 
