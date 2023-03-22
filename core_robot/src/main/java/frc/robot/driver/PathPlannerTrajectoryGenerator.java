@@ -425,7 +425,7 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P17, -180, 0),
                 new PathPlannerWaypoint(P23, -180, 0),
                 new PathPlannerWaypoint(P12, -180, -180),
-                new PathPlannerWaypoint(P7, BackwardLoadOT , -180)),
+                new PathPlannerWaypoint(P7, BackwardLoadOT, -180)),
                 isRed ? "17To7Red" : "17To7Blue");
 
         addTrajectory(
@@ -437,6 +437,18 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P19, -180, 0),
                 new PathPlannerWaypoint(P13, LoadOT , 0)),
                 isRed ? "17ToChargeStationRed" : "17ToChargeStationBlue");
+        
+        // addTrajectory(
+        //     trajectoryManager,
+        //     pathPlanner.buildTrajectory(
+        //         TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
+        //         TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
+        //         new PathPlannerWaypoint(P17, 0, 0),
+        //         new PathPlannerWaypoint(P23, LoadOT, 0),
+        //         new PathPlannerWaypoint(P19, 180, 0),
+        //         new PathPlannerWaypoint(P12, 180, 0),
+        //         new PathPlannerTrajectoryGenerator(P7, 180, 0)),
+        //         isRed ? "17To7Red" : "17To7Blue"); //Verify Tangets and Headings
 
             //Load Side
         addTrajectory(
@@ -499,6 +511,18 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P18, -180, 0),
                 new PathPlannerWaypoint(P13, GuardOT , 0)),
                 isRed ? "14ToChargeStationRed" : "14ToChargeStationBlue");
+        
+        // addTrajectory(
+        //     trajectoryManager,
+        //     pathPlanner.buildTrajectory(
+        //         TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
+        //         TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
+        //         new PathPlannerWaypoint(P14, 0, 0),
+        //         new PathPlannerWaypoint(P20, LoadOT, 0),
+        //         new PathPlannerWaypoint(P18, 180, 0),
+        //         new PathPlannerWaypoint(P10, 180, 0),
+        //         new PathPlannerTrajectoryGenerator(P3, 180, 0)),
+        //         isRed ? "14To3Red" : "14To3Blue"); //Verify Tangets and Headings
         
             // MID SIDE        
         
