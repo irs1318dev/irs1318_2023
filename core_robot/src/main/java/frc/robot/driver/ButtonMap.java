@@ -15,6 +15,7 @@ import frc.robot.driver.controltasks.VisionAprilTagTranslateTask.GridScoringPosi
 import frc.robot.driver.controltasks.VisionMoveAndTurnTaskBase.MoveSpeed;
 import frc.robot.driver.controltasks.VisionMoveAndTurnTaskBase.MoveType;
 import frc.robot.driver.controltasks.VisionTurningTask.TurnType;
+import kotlin._Assertions;
 
 @Singleton
 public class ButtonMap implements IButtonMap
@@ -691,13 +692,40 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.VisionEnableRetroreflectiveProcessing,
                 DigitalOperation.VisionEnableAprilTagProcessing,
             }),
+        
+        
+        new MacroOperationDescription(
+            MacroOperation.FaceForward,
+            UserInputDevice.Driver,
+            0,
+            Shift.DriverDebug, 
+            Shift.None, 
+            ButtonType.Click,
+            () -> new OrientationTask(0),
+            new IOperation[]
+            {
+                AnalogOperation.DriveTrainTurnAngleGoal,
+            }),
+        
+        new MacroOperationDescription(
+            MacroOperation.FaceBackward,
+            UserInputDevice.Driver,
+            180,
+            Shift.DriverDebug, 
+            Shift.None, 
+            ButtonType.Click,
+            () -> new OrientationTask(180),
+            new IOperation[]
+            {
+                AnalogOperation.DriveTrainTurnAngleGoal,
+            }),
 
         new MacroOperationDescription(
             MacroOperation.PickUpConeFromBehind,
-            UserInputDevice.Driver,
+            UserInputDevice.Codriver,
             0,
-            Shift.DriverDebug,
-            Shift.None,
+            Shift.CodriverDebug,
+            Shift.CodriverDebug,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
                 new ArmMMPositionTask(

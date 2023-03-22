@@ -9,6 +9,8 @@ public enum MacroOperation implements IOperation
     // DriveTrain operations:
     PIDLightBrake,
     PIDHeavyBrake,
+    FaceForward,
+    FaceBackward,
 
     // Vision operations:
     VisionDoubleSubstationLeft,
