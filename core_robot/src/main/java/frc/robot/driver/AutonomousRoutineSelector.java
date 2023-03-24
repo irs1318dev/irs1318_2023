@@ -56,11 +56,7 @@ public class AutonomousRoutineSelector
         this.logger.logString(LoggingKey.AutonomousDSMessage, driverStationMessage);
         if (mode == RobotMode.Test)
         {
-            return new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_STOWED,
-                TuningConstants.ARM_UPPER_POSITION_STOWED,
-                true,
-                IntakeState.Up);
+            return new ArmZeroTask();
         }
 
         if (mode == RobotMode.Autonomous)
