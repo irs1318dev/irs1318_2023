@@ -213,6 +213,8 @@ public class PathPlannerTrajectoryGenerator
         Point2d P21 = new Point2d(TuningConstants.FarChargeStationInBetweenX, getYPosition(isRed, TuningConstants.GroundTwoY));
         Point2d P22 = new Point2d(TuningConstants.FarChargeStationInBetweenX, getYPosition(isRed, TuningConstants.GroundThreeY));
         Point2d P23 = new Point2d(TuningConstants.FarChargeStationInBetweenX, getYPosition(isRed, TuningConstants.GroundFourY));
+        Point2d P24 = new Point2d(TuningConstants.BetweenBumpAndChargeStationFarX, getYPosition(isRed, TuningConstants.TurnGuardY));
+        Point2d P25 = new Point2d(TuningConstants.BetweenBumpAndChargeStationFarX, getYPosition(isRed, TuningConstants.TurnLoadY));
         Point2d LoadMid = new Point2d(TuningConstants.CloseChargeStationX, getYPosition(isRed, TuningConstants.LoadEdgeY));
         Point2d GuardMid = new Point2d(TuningConstants.CloseChargeStationX, getYPosition(isRed, TuningConstants.GuardEdgeY));
         Point2d LoadStart = new Point2d(TuningConstants.LoadEdgeStartX, getYPosition(isRed, TuningConstants.LoadEdgeY));
@@ -392,8 +394,9 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(P9, 0, 180),
-                new PathPlannerWaypoint(P12, 0, 180),
-                new PathPlannerWaypoint(P19, 0, 0),
+                //new PathPlannerWaypoint(P12, 0, 180),
+                new PathPlannerWaypoint(P24, 0, 180),
+                new PathPlannerWaypoint(P19, 0, 0.0000000000000001),
                 new PathPlannerWaypoint(P17, 0 , 0)),
                 isRed ? "9To17Red" : "9To17Blue");
         
@@ -424,7 +427,7 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(P17, -180, 0),
                 new PathPlannerWaypoint(P23, -180, 0),
-                new PathPlannerWaypoint(P12, -180, -180),
+                //new PathPlannerWaypoint(P12, -180, -180),
                 new PathPlannerWaypoint(P7, BackwardLoadOT, -180)),
                 isRed ? "17To7Red" : "17To7Blue");
 
@@ -446,7 +449,7 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P17, 180, 0),
                 new PathPlannerWaypoint(P23, 180, LoadOT),
                 new PathPlannerWaypoint(P19, 180, 180),
-                new PathPlannerWaypoint(P12, 180, BackwardLoadOT),
+                //new PathPlannerWaypoint(P12, 180, BackwardLoadOT),
                 new PathPlannerWaypoint(P7, 180, BackwardLoadOT)),
                 isRed ? "17To7Red" : "17To7Blue");
 
@@ -466,9 +469,9 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(P1, 0, -180),
-                new PathPlannerWaypoint(P10, 0, -180),
-                new PathPlannerWaypoint(P18, 0, 0),
-                new PathPlannerWaypoint(P20, 0, 0),
+                //new PathPlannerWaypoint(P10, 0, -180),
+                new PathPlannerWaypoint(P25, 0, 180),
+                new PathPlannerWaypoint(P18, 0, 0.0000000000000001), //Check with will to make sure path planner doesn't round stuff
                 new PathPlannerWaypoint(P14, 0 , 0)),
                 isRed ? "1To14Red" : "1To14Blue");
 
@@ -498,7 +501,7 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(P14, -180, 0),
                 new PathPlannerWaypoint(P20, -180, 0),
-                new PathPlannerWaypoint(P10, -180, -180),
+                //new PathPlannerWaypoint(P10, -180, -180),
                 new PathPlannerWaypoint(P3, BackwardGuardOT , -180)),
                 isRed ? "14To3Red" : "14To3Blue");
 
@@ -520,7 +523,7 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P14, 180, 0),
                 new PathPlannerWaypoint(P20, 180,  LoadOT),
                 new PathPlannerWaypoint(P18, 180, 180),
-                new PathPlannerWaypoint(P10, 180, BackwardGuardOT),
+                //new PathPlannerWaypoint(P10, 180, BackwardGuardOT),
                 new PathPlannerWaypoint(P3, 180, BackwardGuardOT)),
                 isRed ? "14To3Red" : "14To3Blue");
         
