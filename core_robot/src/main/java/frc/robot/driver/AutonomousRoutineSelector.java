@@ -56,138 +56,143 @@ public class AutonomousRoutineSelector
         this.logger.logString(LoggingKey.AutonomousDSMessage, driverStationMessage);
         if (mode == RobotMode.Test)
         {
-            return AutonomousRoutineSelector.GetFillerRoutine();
+            return new ArmMMPositionTask(
+                TuningConstants.ARM_LOWER_POSITION_STOWED,
+                TuningConstants.ARM_UPPER_POSITION_STOWED,
+                true,
+                IntakeState.Up);
         }
 
-        if (mode != RobotMode.Autonomous)
+        if (mode == RobotMode.Autonomous)
         {
-            return null;
-        }
 
-        StartPosition startPosition = this.selectionManager.getSelectedStartPosition();
-        AutoRoutine routine = this.selectionManager.getSelectedAutoRoutine();
+            StartPosition startPosition = this.selectionManager.getSelectedStartPosition();
+            AutoRoutine routine = this.selectionManager.getSelectedAutoRoutine();
 
-        boolean isRed = this.driverStation.getAlliance() == Alliance.Red;
+            boolean isRed = this.driverStation.getAlliance() == Alliance.Red;
 
-        this.logger.logString(LoggingKey.AutonomousSelection, startPosition.toString() + "." + routine.toString() + "(" + (isRed ? "red" : "blue") + ")");
+            this.logger.logString(LoggingKey.AutonomousSelection, startPosition.toString() + "." + routine.toString() + "(" + (isRed ? "red" : "blue") + ")");
 
-        if (startPosition == StartPosition.Load)
-        {
-            if (routine == AutoRoutine.Taxi)
+            if (startPosition == StartPosition.Load)
             {
-                return loadTaxi();
+                if (routine == AutoRoutine.Taxi)
+                {
+                    return loadTaxi();
+                }
+                
+                else if (routine == AutoRoutine.OnePlusTaxi)
+                {
+                    return loadOnePlusTaxi(isRed);
+                }
+
+                else if (routine == AutoRoutine.OnePlusCharge)
+                {
+                    return loadOnePlusCharge(isRed);
+                }
+
+                else if (routine == AutoRoutine.OnePickupCharge)
+                {
+                    return loadOnePickupCharge(isRed);
+                }
+
+                else if (routine == AutoRoutine.OnePlusPickup)
+                {
+                    return loadOnePickup(isRed);
+                }
+
+                else if (routine == AutoRoutine.OnePlusOne)
+                {
+                    return loadOnePlusOne(isRed);
+                }
+
+                else
+                {
+                    return ConcurrentTask.AllTasks(
+                        new ResetLevelTask(),
+                        new PositionStartingTask(
+                            TuningConstants.LoadEdgeStartX,
+                            PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.LoadEdgeY),
+                            180.0,
+                            true,
+                            true));
+                }
             }
-            
-            else if (routine == AutoRoutine.OnePlusTaxi)
+            else if (startPosition == StartPosition.Mid)
             {
-                return loadOnePlusTaxi(isRed);
+                if (routine == AutoRoutine.Taxi)
+                {
+                    return midTaxi(isRed);
+                }
+
+                else if (routine == AutoRoutine.Charge)
+                {
+                    return midCharge(isRed);
+                }
+                
+                else if (routine == AutoRoutine.OnePlusCharge)
+                {
+                    return midOnePlusCharge(isRed);
+                }
+
+                else
+                {
+                    return ConcurrentTask.AllTasks(
+                        new ResetLevelTask(),
+                        new PositionStartingTask(
+                            TuningConstants.StartGridX,
+                            PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.StartFiveGridY),
+                            0.0,
+                            true,
+                            true));
+                }
+            }
+            else if (startPosition == StartPosition.Guard)
+            {
+                if (routine == AutoRoutine.Taxi)
+                {
+                    return guardTaxi();
+                }
+
+                else if (routine == AutoRoutine.OnePlusTaxi)
+                {
+                    return guardOnePlusTaxi(isRed);
+                }
+
+                else if (routine == AutoRoutine.OnePlusCharge)
+                {
+                    return guardOnePlusCharge(isRed);
+                }
+
+                else if (routine == AutoRoutine.OnePickupCharge)
+                {
+                    return guardOnePickupCharge(isRed);
+                }
+
+                else if (routine == AutoRoutine.OnePlusPickup)
+                {
+                    return guardOnePickup(isRed);
+                }
+
+                else if (routine == AutoRoutine.OnePlusOne)
+                {
+                    return guardOnePlusOne(isRed);
+                }
+
+                else
+                {
+                    return ConcurrentTask.AllTasks(
+                        new ResetLevelTask(),
+                        new PositionStartingTask(
+                            TuningConstants.GuardEdgeStartX,
+                            PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.GuardEdgeY),
+                            180.0,
+                            true,
+                            true),
+                        new ResetLevelTask());
+                }
             }
 
-            else if (routine == AutoRoutine.OnePlusCharge)
-            {
-                return loadOnePlusCharge(isRed);
-            }
-
-            else if (routine == AutoRoutine.OnePickupCharge)
-            {
-                return loadOnePickupCharge(isRed);
-            }
-
-            else if (routine == AutoRoutine.OnePlusPickup)
-            {
-                return loadOnePickup(isRed);
-            }
-
-            else if (routine == AutoRoutine.OnePlusOne)
-            {
-                return loadOnePlusOne(isRed);
-            }
-
-            else
-            {
-                return ConcurrentTask.AllTasks(
-                    new ResetLevelTask(),
-                    new PositionStartingTask(
-                        TuningConstants.LoadEdgeStartX,
-                        PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.LoadEdgeY),
-                        180.0,
-                        true,
-                        true));
-            }
-        }
-        else if (startPosition == StartPosition.Mid)
-        {
-            if (routine == AutoRoutine.Taxi)
-            {
-                return midTaxi(isRed);
-            }
-
-            else if (routine == AutoRoutine.Charge)
-            {
-                return midCharge(isRed);
-            }
-            
-            else if (routine == AutoRoutine.OnePlusCharge)
-            {
-                return midOnePlusCharge(isRed);
-            }
-
-            else
-            {
-                return ConcurrentTask.AllTasks(
-                    new ResetLevelTask(),
-                    new PositionStartingTask(
-                        TuningConstants.StartGridX,
-                        PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.StartFiveGridY),
-                        0.0,
-                        true,
-                        true));
-            }
-        }
-        else if (startPosition == StartPosition.Guard)
-        {
-            if (routine == AutoRoutine.Taxi)
-            {
-                return guardTaxi();
-            }
-
-            else if (routine == AutoRoutine.OnePlusTaxi)
-            {
-                return guardOnePlusTaxi(isRed);
-            }
-
-            else if (routine == AutoRoutine.OnePlusCharge)
-            {
-                return guardOnePlusCharge(isRed);
-            }
-
-            else if (routine == AutoRoutine.OnePickupCharge)
-            {
-                return guardOnePickupCharge(isRed);
-            }
-
-            else if (routine == AutoRoutine.OnePlusPickup)
-            {
-                return guardOnePickup(isRed);
-            }
-
-            else if (routine == AutoRoutine.OnePlusOne)
-            {
-                return guardOnePlusOne(isRed);
-            }
-
-            else
-            {
-                return ConcurrentTask.AllTasks(
-                    new ResetLevelTask(),
-                    new PositionStartingTask(
-                        TuningConstants.GuardEdgeStartX,
-                        PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.GuardEdgeY),
-                        180.0,
-                        true,
-                        true),
-                    new ResetLevelTask());
-            }
+            return GetFillerRoutine();
         }
 
         return GetFillerRoutine();
