@@ -215,6 +215,7 @@ public class PathPlannerTrajectoryGenerator
         Point2d P23 = new Point2d(TuningConstants.FarChargeStationInBetweenX, getYPosition(isRed, TuningConstants.GroundFourY));
         Point2d P24 = new Point2d(TuningConstants.BetweenBumpAndChargeStationFarX, getYPosition(isRed, TuningConstants.TurnGuardY));
         Point2d P25 = new Point2d(TuningConstants.BetweenBumpAndChargeStationFarX, getYPosition(isRed, TuningConstants.TurnLoadY));
+        Point2d P26 = new Point2d(TuningConstants.FarChargeStationInBetweenX, getYPosition(isRed, TuningConstants.TurnGuardY));
         Point2d LoadMid = new Point2d(TuningConstants.CloseChargeStationX, getYPosition(isRed, TuningConstants.LoadEdgeY));
         Point2d GuardMid = new Point2d(TuningConstants.CloseChargeStationX, getYPosition(isRed, TuningConstants.GuardEdgeY));
         Point2d LoadStart = new Point2d(TuningConstants.LoadEdgeStartX, getYPosition(isRed, TuningConstants.LoadEdgeY));
@@ -395,9 +396,18 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(GuardEdge, 0, 180),
                 new PathPlannerWaypoint(P24, 0, 180),
-                new PathPlannerWaypoint(P23, 0, isRed ? 0.01 : -0.01),
-                new PathPlannerWaypoint(P17, 0 , 0)),
-                isRed ? "GuardEdgeTo17Red" : "GuardEdgeTo17Blue");
+                new PathPlannerWaypoint(P23, 0, isRed ? -1.0 : 1.0)),
+                isRed ? "GuardEdgeTo23Red" : "GuardEdgeTo23Blue");
+
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(P23, 0, isRed ? -1.0 : 1.0),
+                new PathPlannerWaypoint(P17, 0 , 0.0)),
+                isRed ? "23To17Red" : "23To17Blue");
+                
         
         addTrajectory(
             trajectoryManager,
@@ -414,9 +424,10 @@ public class PathPlannerTrajectoryGenerator
             pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(P9, 0, -180),
-                new PathPlannerWaypoint(P23, 0, -180)),
-                isRed ? "9To23Red" : "9To23Blue");
+                new PathPlannerWaypoint(P8, 0, -180),
+                new PathPlannerWaypoint(P12, 0, -180),
+                new PathPlannerWaypoint(P26, 0, -180)),
+                isRed ? "8To23Red" : "8To23Blue");
         
         
         addTrajectory(
@@ -425,7 +436,7 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(P17, -180, 0),
-                new PathPlannerWaypoint(P23, -180, isRed ? 0.01 : -0.01),
+                new PathPlannerWaypoint(P23, -180, isRed ? -0.01 : 0.01),
                 new PathPlannerWaypoint(P24, -180, -180),
                 new PathPlannerWaypoint(P8, -180, -180)),
                 isRed ? "17To8Red" : "17To8Blue");
@@ -469,10 +480,18 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(LoadEdge, 0, -180),
                 new PathPlannerWaypoint(P25, 0, -180),
+                new PathPlannerWaypoint(P20, 0, isRed ? 0.01 : -0.01)),
+                isRed ? "LoadEdgeTo20Red" : "LoadEdgeTo20Blue");
+                
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(P20, 0, isRed ? 0.01 : -0.01),
                 new PathPlannerWaypoint(P14, 0 , 0)),
-                isRed ? "LoadEdgeTo14Red" : "LoadEdgeTo14Blue");
-
+                isRed ? "20To14Red" : "20To14Blue");
+                        
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(

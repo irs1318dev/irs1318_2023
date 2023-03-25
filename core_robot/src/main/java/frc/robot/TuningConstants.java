@@ -53,7 +53,7 @@ public class TuningConstants
     public static final double LoadEdgeY = TuningConstants.StartOneGridY + 1.521; // Edge of grid - 17.5
     public static final double GuardEdgeY = 17.5;
     public static final double FullWidth = 315.5; // (Y) 26 ft. 3.5 in, from game manual
-    public static final double TurnGuardY = 29.5;
+    public static final double TurnGuardY = 27.5;
     public static final double TurnLoadY = 186.53;
     // X Values
     public static final double StartGridX = 17.5;//71.765; // Edge of grid - Robot centering value
@@ -108,7 +108,7 @@ public class TuningConstants
     public static final int TAGS_FOUND_THRESHOLD = 5;
     public static final double ACCEPTABLE_RANGE_IN_X_AND_Y_FOR_ALIGNMENT_TRANSLATE = 1.0; // in inches
     public static final double APRILTAG_TO_CONE_NODE_HORIZONTAL_DISTANCE = 22.0; // in inches
-    public static final double APRILTAG_TO_DESIRED_SCORING_X_POSITION_DISTANCE = 30.25; // from apriltag location to center of robot, in inches
+    public static final double APRILTAG_TO_DESIRED_SCORING_X_POSITION_DISTANCE = 40.0; // from apriltag location to center of robot, in inches
 
     // Acceptable vision centering range values in degrees
     public static final double MAX_PID_TURNING_RANGE_DEGREES = 7.0;
@@ -358,7 +358,7 @@ public class TuningConstants
     public static final double DRIVETRAIN_TURN_APPROXIMATION = 1.0; // number of degrees off at which point we give up trying to face an angle when uncommanded
     public static final double DRIVETRAIN_MAX_MODULE_PATH_VELOCITY = 0.85 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // up to x% of our max controllable speed
     public static final double DRIVETRAIN_MAX_PATH_TURN_VELOCITY = 180.0; // in degrees per second
-    public static final double DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY = 0.60 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // in inches per second
+    public static final double DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY = 0.60 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // in inches per second    
     public static final double DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION = 0.75 * TuningConstants.DRIVETRAIN_MAX_VELOCITY; // in inches per second per second
     public static final double DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY = TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY / 1.4; // in inches per second
     public static final double DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION = TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION / 1.25; // in inches per second per second
@@ -481,14 +481,16 @@ public class TuningConstants
     public static final double ARM_UPPER_POSITION_MIDDLE_CONE = 3170.0;
     public static final double ARM_LOWER_POSITION_MIDDLE_CUBE = 5780.0;
     public static final double ARM_UPPER_POSITION_MIDDLE_CUBE = 4320.0;
-    public static final double ARM_LOWER_POSITION_HIGH_CONE = 4650;//5560.0;
-    public static final double ARM_UPPER_POSITION_HIGH_CONE = 6100;///6140.0;
+    public static final double ARM_LOWER_POSITION_HIGH_CONE_DOWN = 4650.0;
+    public static final double ARM_UPPER_POSITION_HIGH_CONE_DOWN = 6100.0;
+    public static final double ARM_LOWER_POSITION_HIGH_CONE_UP = 5560.0;
+    public static final double ARM_UPPER_POSITION_HIGH_CONE_UP = 6140.0;
     public static final double ARM_LOWER_POSITION_HIGH_CUBE = 3680.0;
     public static final double ARM_UPPER_POSITION_HIGH_CUBE = 7250.0;
     public static final double ARM_LOWER_POSITION_CONE_GROUND_PICKUP = 2350.0;
     public static final double ARM_UPPER_POSITION_CONE_GROUND_PICKUP = 1800.0;
-    public static final double ARM_LOWER_POSITION_CUBE_GROUND_PICKUP = 3400.0;
-    public static final double ARM_UPPER_POSITION_CUBE_GROUND_PICKUP = 1650.0;
+    public static final double ARM_LOWER_POSITION_CUBE_GROUND_PICKUP = 3015.0;
+    public static final double ARM_UPPER_POSITION_CUBE_GROUND_PICKUP = 1525.0;
     public static final double ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP_APPROACH = 6140.0;
     public static final double ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP_APPROACH = 6050.0;
     public static final double ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP = 6100.0;
@@ -531,6 +533,7 @@ public class TuningConstants
     public static final double ARM_UPPER_POSITION_INSIDE_TRESHOLD = 1000.0;
     public static final double ARM_LOWER_POSITION_HIGH_TRESHOLD = 8000.0;
     public static final double ARM_UPPER_POSITION_HIGH_TRESHOLD = 4000.0;
+    public static final double ARM_USE_UPPER_POSITION_HIGH_INTERMIDATE_THRESHOLD = 6250.0;
     public static final double ARM_X_IK_LOWER_INTERMIDATE = 20.0;
     public static final double ARM_Z_IK_LOWER_INTERMIDATE = 14.5;
     public static final double ARM_X_IK_HIGH_INTERMIDATE = TuningConstants.ARM_IKX_POSITION_APPROACH;

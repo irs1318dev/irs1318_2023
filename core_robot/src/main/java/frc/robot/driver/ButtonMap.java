@@ -854,18 +854,38 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.IntakeUp,
             }),
         new MacroOperationDescription(
-            MacroOperation.ArmHighConePosition,
+            MacroOperation.ArmHighConePositionUp,
             UserInputDevice.Codriver,
             UserInputDeviceButton.XBONE_Y_BUTTON,
-            Shift.None,
+            Shift.CodriverDebug,
             Shift.None,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
                 new ArmMMPositionTask(
-                    TuningConstants.ARM_LOWER_POSITION_HIGH_CONE,
-                    TuningConstants.ARM_UPPER_POSITION_HIGH_CONE,
+                    TuningConstants.ARM_LOWER_POSITION_HIGH_CONE_UP,
+                    TuningConstants.ARM_UPPER_POSITION_HIGH_CONE_UP,
                     IntakeState.Up),
                 new IntakePositionTask(false)),
+            new IOperation[]
+            {
+                AnalogOperation.ArmMMLowerPosition,
+                AnalogOperation.ArmMMUpperPosition,
+                DigitalOperation.IntakeDown,
+                DigitalOperation.IntakeUp,
+            }),
+        new MacroOperationDescription(
+            MacroOperation.ArmHighConePositionUp,
+            UserInputDevice.Codriver,
+            UserInputDeviceButton.XBONE_Y_BUTTON,
+            Shift.CodriverDebug,
+            Shift.CodriverDebug,
+            ButtonType.Toggle,
+            () -> SequentialTask.Sequence(
+                new ArmMMPositionTask(
+                    TuningConstants.ARM_LOWER_POSITION_HIGH_CONE_DOWN,
+                    TuningConstants.ARM_UPPER_POSITION_HIGH_CONE_DOWN,
+                    IntakeState.Down),
+                new IntakePositionTask(true)),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,

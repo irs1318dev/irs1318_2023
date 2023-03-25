@@ -25,6 +25,8 @@ public class ArmMMPositionTask extends ControlTaskBase
         Unchanged,
     }
 
+    private final IntakeState desiredState;
+
     private final double lowerExtensionLength;
     private final double upperExtensionLength;
     private final boolean waitUntilPositionReached;
@@ -32,7 +34,7 @@ public class ArmMMPositionTask extends ControlTaskBase
     private ArmMechanism arm;
 
     private ArmMMState currentArmState;
-    private final IntakeState desiredState;
+    public double upperArmHighIntermediate;
 
     public ArmMMPositionTask(double lowerExtensionLength, double upperExtensionLength)
     {
@@ -83,6 +85,15 @@ public class ArmMMPositionTask extends ControlTaskBase
         if (goalIsHigh != currentIsHigh)
         {
             this.currentArmState = ArmMMState.DesiredHighIntermidate;
+            if (armUpperPosition > TuningConstants.ARM_UPPER_POSITION_HIGH_INTERMIDATE &&
+                armUpperPosition < TuningConstants.ARM_USE_UPPER_POSITION_HIGH_INTERMIDATE_THRESHOLD)
+            {
+                this.upperArmHighIntermediate = armUpperPosition;
+            }
+            else
+            {
+                this.upperArmHighIntermediate = TuningConstants.ARM_UPPER_POSITION_HIGH_INTERMIDATE;
+            }
         }
         else if (goalIsInside != currentIsInside)
         {
@@ -111,7 +122,7 @@ public class ArmMMPositionTask extends ControlTaskBase
         else if (this.currentArmState == ArmMMState.DesiredHighIntermidate)
         {
             if (Math.abs(this.arm.getLowerPosition() - TuningConstants.ARM_LOWER_POSITION_HIGH_INTERMIDATE) < TuningConstants.ARM_LOWER_MM_GOAL_THRESHOLD &&
-                Math.abs(this.arm.getUpperPosition() - TuningConstants.ARM_UPPER_POSITION_HIGH_INTERMIDATE) < TuningConstants.ARM_UPPER_MM_GOAL_THRESHOLD)
+                Math.abs(this.arm.getUpperPosition() - this.upperArmHighIntermediate) < TuningConstants.ARM_UPPER_MM_GOAL_THRESHOLD)
             {
                 this.currentArmState = ArmMMState.DesiredGoal;
             }
@@ -160,7 +171,7 @@ public class ArmMMPositionTask extends ControlTaskBase
 
             case DesiredHighIntermidate:
                 this.setAnalogOperationState(AnalogOperation.ArmMMLowerPosition, TuningConstants.ARM_LOWER_POSITION_HIGH_INTERMIDATE);
-                this.setAnalogOperationState(AnalogOperation.ArmMMUpperPosition, TuningConstants.ARM_UPPER_POSITION_HIGH_INTERMIDATE);
+                this.setAnalogOperationState(AnalogOperation.ArmMMUpperPosition, this.upperArmHighIntermediate);
                 break;
 
             default:
