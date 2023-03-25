@@ -78,23 +78,23 @@ public class VisionAprilTagTranslateTask extends ControlTaskBase
 
         ITimer timer = this.getInjector().getInstance(ITimer.class);
         this.xHandler = new PIDHandler(
-            TuningConstants.VISION_SLOW_MOVING_PID_KP,
-            TuningConstants.VISION_SLOW_MOVING_PID_KI,
-            TuningConstants.VISION_SLOW_MOVING_PID_KD,
-            TuningConstants.VISION_SLOW_MOVING_PID_KF,
-            TuningConstants.VISION_SLOW_MOVING_PID_KS,
-            TuningConstants.VISION_SLOW_MOVING_PID_MIN,
-            TuningConstants.VISION_SLOW_MOVING_PID_MAX,
+            TuningConstants.VISION_AT_TRANSLATION_X_PID_KP,
+            TuningConstants.VISION_AT_TRANSLATION_X_PID_KI,
+            TuningConstants.VISION_AT_TRANSLATION_X_PID_KD,
+            TuningConstants.VISION_AT_TRANSLATION_X_PID_KF,
+            TuningConstants.VISION_AT_TRANSLATION_X_PID_KS,
+            TuningConstants.VISION_AT_TRANSLATION_X_PID_MIN,
+            TuningConstants.VISION_AT_TRANSLATION_X_PID_MAX,
             timer);
 
         this.yHandler = new PIDHandler(
-            TuningConstants.VISION_SLOW_MOVING_PID_KP,
-            TuningConstants.VISION_SLOW_MOVING_PID_KI,
-            TuningConstants.VISION_SLOW_MOVING_PID_KD,
-            TuningConstants.VISION_SLOW_MOVING_PID_KF,
-            TuningConstants.VISION_SLOW_MOVING_PID_KS,
-            TuningConstants.VISION_SLOW_MOVING_PID_MIN,
-            TuningConstants.VISION_SLOW_MOVING_PID_MAX,
+            TuningConstants.VISION_AT_TRANSLATION_Y_PID_KP,
+            TuningConstants.VISION_AT_TRANSLATION_Y_PID_KI,
+            TuningConstants.VISION_AT_TRANSLATION_Y_PID_KD,
+            TuningConstants.VISION_AT_TRANSLATION_Y_PID_KF,
+            TuningConstants.VISION_AT_TRANSLATION_Y_PID_KS,
+            TuningConstants.VISION_AT_TRANSLATION_Y_PID_MIN,
+            TuningConstants.VISION_AT_TRANSLATION_Y_PID_MAX,
             timer);
 
         this.currentState = TranslateState.FindAprilTags;
@@ -106,7 +106,6 @@ public class VisionAprilTagTranslateTask extends ControlTaskBase
         this.yAprilTagDistanceSamples = new double[TuningConstants.TAGS_FOUND_THRESHOLD];
 
         this.setDigitalOperationState(DigitalOperation.VisionEnableAprilTagProcessing, true);
-        this.setDigitalOperationState(DigitalOperation.DriveTrainUseRobotOrientation, true);
     }
 
     @Override
@@ -141,8 +140,8 @@ public class VisionAprilTagTranslateTask extends ControlTaskBase
 
                 double xAprilTagDistanceAverage = xAprilTagSumDistance / TuningConstants.TAGS_FOUND_THRESHOLD;
                 double yAprilTagDistanceAverage = yAprilTagSumDistance / TuningConstants.TAGS_FOUND_THRESHOLD;
-                this.desiredXPosition = this.startingDriveTrainX + xAprilTagDistanceAverage - TuningConstants.APRILTAG_TO_DESIRED_SCORING_X_POSITION_DISTANCE;
-                this.desiredYPosition = this.startingDriveTrainY + yAprilTagDistanceAverage + this.visionOffset;
+                this.desiredXPosition = this.startingDriveTrainX - (xAprilTagDistanceAverage - TuningConstants.APRILTAG_TO_DESIRED_SCORING_X_POSITION_DISTANCE);
+                this.desiredYPosition = this.startingDriveTrainY - yAprilTagDistanceAverage + this.visionOffset;
                 this.currentState = TranslateState.Translate;
             }
             else if (this.tagsMissed >= TuningConstants.TAGS_MISSED_THRESHOLD)
@@ -168,9 +167,9 @@ public class VisionAprilTagTranslateTask extends ControlTaskBase
                 break;
 
             case Translate:
-                double xDesiredVelocity = -this.xHandler.calculatePosition(desiredXPosition, currXPosition);
-                double yDesiredVelocity = this.yHandler.calculatePosition(desiredYPosition, currYPosition);
-                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, -xDesiredVelocity);
+                double xDesiredVelocity = this.xHandler.calculatePosition(desiredXPosition, currXPosition);
+                double yDesiredVelocity = -this.yHandler.calculatePosition(desiredYPosition, currYPosition);
+                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, xDesiredVelocity);
                 this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, yDesiredVelocity);
                 this.setDigitalOperationState(DigitalOperation.VisionEnableAprilTagProcessing, false);
                 break;
@@ -188,7 +187,6 @@ public class VisionAprilTagTranslateTask extends ControlTaskBase
     @Override
     public void end()
     {
-        this.setDigitalOperationState(DigitalOperation.DriveTrainUseRobotOrientation, false);
         this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.0);
         this.setAnalogOperationState(AnalogOperation.DriveTrainMoveRight, 0.0);
         this.setDigitalOperationState(DigitalOperation.VisionEnableAprilTagProcessing, false);

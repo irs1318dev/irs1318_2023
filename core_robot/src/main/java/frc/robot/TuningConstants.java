@@ -150,6 +150,24 @@ public class TuningConstants
     public static final double VISION_MOVING_PID_MIN = -0.3;
     public static final double VISION_MOVING_PID_MAX = 0.3;
 
+    // PID settings for translating the robot based on a vision target
+    public static final double VISION_AT_TRANSLATION_X_PID_KP = 0.02;
+    public static final double VISION_AT_TRANSLATION_X_PID_KI = 0.0;
+    public static final double VISION_AT_TRANSLATION_X_PID_KD = 0.0;
+    public static final double VISION_AT_TRANSLATION_X_PID_KF = 0.0;
+    public static final double VISION_AT_TRANSLATION_X_PID_KS = 1.0;
+    public static final double VISION_AT_TRANSLATION_X_PID_MIN = -0.3;
+    public static final double VISION_AT_TRANSLATION_X_PID_MAX = 0.3;
+
+    // PID settings for translating the robot based on a vision target
+    public static final double VISION_AT_TRANSLATION_Y_PID_KP = 0.02;
+    public static final double VISION_AT_TRANSLATION_Y_PID_KI = 0.0;
+    public static final double VISION_AT_TRANSLATION_Y_PID_KD = 0.0;
+    public static final double VISION_AT_TRANSLATION_Y_PID_KF = 0.0;
+    public static final double VISION_AT_TRANSLATION_Y_PID_KS = 1.0;
+    public static final double VISION_AT_TRANSLATION_Y_PID_MIN = -0.3;
+    public static final double VISION_AT_TRANSLATION_Y_PID_MAX = 0.3;
+
     // PID settings for translating the robot slowly based on a vision target
     public static final double VISION_SLOW_MOVING_PID_KP = 0.013;
     public static final double VISION_SLOW_MOVING_PID_KI = 0.0;
@@ -481,10 +499,10 @@ public class TuningConstants
     public static final double ARM_UPPER_POSITION_MIDDLE_CONE = 3170.0;
     public static final double ARM_LOWER_POSITION_MIDDLE_CUBE = 5780.0;
     public static final double ARM_UPPER_POSITION_MIDDLE_CUBE = 4320.0;
-    public static final double ARM_LOWER_POSITION_HIGH_CONE_DOWN = 4650.0;
-    public static final double ARM_UPPER_POSITION_HIGH_CONE_DOWN = 6100.0;
-    public static final double ARM_LOWER_POSITION_HIGH_CONE_UP = 5560.0;
-    public static final double ARM_UPPER_POSITION_HIGH_CONE_UP = 6140.0;
+    public static final double ARM_LOWER_POSITION_HIGH_CONE_UP = 4650.0;
+    public static final double ARM_UPPER_POSITION_HIGH_CONE_UP = 6100.0;
+    public static final double ARM_LOWER_POSITION_HIGH_CONE_DOWN = 5560.0;
+    public static final double ARM_UPPER_POSITION_HIGH_CONE_DOWN = 6140.0;
     public static final double ARM_LOWER_POSITION_HIGH_CUBE = 3680.0;
     public static final double ARM_UPPER_POSITION_HIGH_CUBE = 7250.0;
     public static final double ARM_LOWER_POSITION_CONE_GROUND_PICKUP = 2350.0;

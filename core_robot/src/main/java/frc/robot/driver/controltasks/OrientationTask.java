@@ -9,6 +9,7 @@ public class OrientationTask extends UpdateCycleTask
 {
     private final double orientation;
     private final boolean waitUntilGoalReached;
+    private final boolean keepOrienting;
 
     private PigeonManager pigeonManager;
 
@@ -19,10 +20,16 @@ public class OrientationTask extends UpdateCycleTask
 
     public OrientationTask(double orientation, boolean waitUntilGoalReached)
     {
+        this(orientation, waitUntilGoalReached, false);
+    }
+
+    public OrientationTask(double orientation, boolean waitUntilGoalReached, boolean keepOrienting)
+    {
         super(1);
 
         this.orientation = orientation;
         this.waitUntilGoalReached = waitUntilGoalReached;
+        this.keepOrienting = keepOrienting;
     }
 
     @Override
@@ -51,6 +58,11 @@ public class OrientationTask extends UpdateCycleTask
     @Override
     public boolean hasCompleted()
     {
+        if (this.keepOrienting)
+        {
+            return false;
+        }
+
         if (!this.waitUntilGoalReached)
         {
             return super.hasCompleted();
