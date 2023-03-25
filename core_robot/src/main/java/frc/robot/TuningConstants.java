@@ -64,7 +64,7 @@ public class TuningConstants
     public static final double LoadEdgeStartX = 58.5;//110.765;
     public static final double GuardEdgeStartX = 77.75;//132.015;
     public static final double FullLength = 651.25; // (X) 54 ft. 3.25 in, from game manual
-    public static final double BetweenBumpAndChargeStationFarX = 136.875;
+    public static final double BetweenBumpAndChargeStationFarX = 121.85; // 6 + Bump + 17.5
 
     // April tag array by ids - Blue alliance
     // (xPosition, yPosition, orientation)

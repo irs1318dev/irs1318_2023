@@ -383,7 +383,7 @@ public class PathPlannerTrajectoryGenerator
             trajectoryManager,
             pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(GuardEdge, LoadOT, -180),
                 new PathPlannerWaypoint(P9, LoadOT, -180)),
                 isRed ? "GuardEdgeTo9Red" : "GuardEdgeTo9Blue");
@@ -392,19 +392,18 @@ public class PathPlannerTrajectoryGenerator
             trajectoryManager,
             pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(P9, 0, 180),
-                //new PathPlannerWaypoint(P12, 0, 180),
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(GuardEdge, 0, 180),
                 new PathPlannerWaypoint(P24, 0, 180),
-                new PathPlannerWaypoint(P19, 0, isRed ? 0.01 : -0.01),
+                new PathPlannerWaypoint(P23, 0, isRed ? 0.01 : -0.01),
                 new PathPlannerWaypoint(P17, 0 , 0)),
-                isRed ? "9To17Red" : "9To17Blue");
+                isRed ? "GuardEdgeTo17Red" : "GuardEdgeTo17Blue");
         
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(P9, 0, -180),
                 new PathPlannerWaypoint(P19, BackwardLoadOT, -180),
                 new PathPlannerWaypoint(P13, LoadOT, -180)),
@@ -414,7 +413,7 @@ public class PathPlannerTrajectoryGenerator
             trajectoryManager,
             pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(P9, 0, -180),
                 new PathPlannerWaypoint(P23, 0, -180)),
                 isRed ? "9To23Red" : "9To23Blue");
@@ -423,13 +422,13 @@ public class PathPlannerTrajectoryGenerator
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
-                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(P17, -180, 0),
-                new PathPlannerWaypoint(P23, -180, 0),
-                //new PathPlannerWaypoint(P12, -180, -180),
-                new PathPlannerWaypoint(P7, BackwardLoadOT, -180)),
-                isRed ? "17To7Red" : "17To7Blue");
+                new PathPlannerWaypoint(P23, -180, isRed ? 0.01 : -0.01),
+                new PathPlannerWaypoint(P24, -180, -180),
+                new PathPlannerWaypoint(P8, -180, -180)),
+                isRed ? "17To8Red" : "17To8Blue");
 
         addTrajectory(
             trajectoryManager,
@@ -458,7 +457,7 @@ public class PathPlannerTrajectoryGenerator
             trajectoryManager,
             pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(LoadEdge, GuardOT, -180),
                 new PathPlannerWaypoint(P1, GuardOT, -180)),
                 isRed ? "LoadEdgeTo1Red" : "LoadEdgeTo1Blue");
@@ -467,19 +466,18 @@ public class PathPlannerTrajectoryGenerator
             trajectoryManager,
             pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
-                new PathPlannerWaypoint(P1, 0, -180),
-                //new PathPlannerWaypoint(P10, 0, -180),
-                new PathPlannerWaypoint(P25, 0, 180),
-                new PathPlannerWaypoint(P18, 0, isRed ? 0.01 : -0.01),
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(LoadEdge, 0, -180),
+                new PathPlannerWaypoint(P25, 0, -180),
+                new PathPlannerWaypoint(P20, 0, isRed ? 0.01 : -0.01),
                 new PathPlannerWaypoint(P14, 0 , 0)),
-                isRed ? "1To14Red" : "1To14Blue");
+                isRed ? "LoadEdgeTo14Red" : "LoadEdgeTo14Blue");
 
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(P1, 0, -180),
                 new PathPlannerWaypoint(P18, BackwardGuardOT, -180),
                 new PathPlannerWaypoint(P13, GuardOT, -180)),
@@ -489,7 +487,7 @@ public class PathPlannerTrajectoryGenerator
             trajectoryManager,
             pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(P1, 0, -180),
                 new PathPlannerWaypoint(P20, 0, -180)),
                 isRed ? "1To20Red" : "1To20Blue");
@@ -498,18 +496,18 @@ public class PathPlannerTrajectoryGenerator
             trajectoryManager,
             pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(P14, -180, 0),
-                new PathPlannerWaypoint(P20, -180, 0),
-                //new PathPlannerWaypoint(P10, -180, -180),
-                new PathPlannerWaypoint(P3, BackwardGuardOT , -180)),
-                isRed ? "14To3Red" : "14To3Blue");
+                new PathPlannerWaypoint(P20, -180, isRed ? 0.01 : -0.01),
+                new PathPlannerWaypoint(P25, -180, -180),
+                new PathPlannerWaypoint(P2, -180 , -180)),
+                isRed ? "14To2Red" : "14To2Blue");
 
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(P14, -180, 0),
                 new PathPlannerWaypoint(P18, -180, 0),
                 new PathPlannerWaypoint(P13, GuardOT , 0)),
@@ -531,8 +529,8 @@ public class PathPlannerTrajectoryGenerator
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
-                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(P5, 0, 180),
                 new PathPlannerWaypoint(P11, 0, 180)),
                 isRed ? "5To11Red" : "5To11Blue");
@@ -540,8 +538,8 @@ public class PathPlannerTrajectoryGenerator
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
-                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(P11, 180, 180),
                 new PathPlannerWaypoint(P5, 180, 180)),
                 isRed ? "11To5Red" : "11To5Blue");
