@@ -396,7 +396,7 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P9, 0, 180),
                 //new PathPlannerWaypoint(P12, 0, 180),
                 new PathPlannerWaypoint(P24, 0, 180),
-                new PathPlannerWaypoint(P19, 0, 0.0000000000000001),
+                new PathPlannerWaypoint(P19, 0, isRed ? 0.01 : -0.01),
                 new PathPlannerWaypoint(P17, 0 , 0)),
                 isRed ? "9To17Red" : "9To17Blue");
         
@@ -471,7 +471,7 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P1, 0, -180),
                 //new PathPlannerWaypoint(P10, 0, -180),
                 new PathPlannerWaypoint(P25, 0, 180),
-                new PathPlannerWaypoint(P18, 0, 0.0000000000000001), //Check with will to make sure path planner doesn't round stuff
+                new PathPlannerWaypoint(P18, 0, isRed ? 0.01 : -0.01),
                 new PathPlannerWaypoint(P14, 0 , 0)),
                 isRed ? "1To14Red" : "1To14Blue");
 
@@ -528,7 +528,6 @@ public class PathPlannerTrajectoryGenerator
                 isRed ? "14To3Red" : "14To3Blue");
         
             // MID SIDE        
-        
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(

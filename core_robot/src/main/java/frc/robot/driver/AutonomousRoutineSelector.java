@@ -56,7 +56,9 @@ public class AutonomousRoutineSelector
         this.logger.logString(LoggingKey.AutonomousDSMessage, driverStationMessage);
         if (mode == RobotMode.Test)
         {
-            return new ArmZeroTask();
+            return ConcurrentTask.AllTasks(
+                new ArmZeroTask(),
+                new IntakePositionTask(false));
         }
 
         if (mode == RobotMode.Autonomous)
