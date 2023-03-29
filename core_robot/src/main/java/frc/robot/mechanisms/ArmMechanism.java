@@ -256,9 +256,9 @@ public class ArmMechanism implements IMechanism
         this.lowerRightLAPowerAverage = this.lowerRightLAPowerAverageCalculator.update(lowerRightLAPower);
         this.upperLAsPowerAverage = this.upperLAsPowerAverageCalculator.update((upperLeftLAPower + upperRightLAPower) / 2.0);
 
-        this.lowerLeftLAVelocityAverage = this.lowerLeftLAVelocityAverageCalculator.update(this.lowerLeftLAVelocity);
-        this.lowerRightLAVelocityAverage = this.lowerRightLAVelocityAverageCalculator.update(this.lowerRightLAVelocity);
-        this.upperLAVelocityAverage = this.upperLAsVelocityAverageCalculator.update(this.upperLAVelocity);
+        this.lowerLeftLAVelocityAverage = this.lowerLeftLAVelocityAverageCalculator.update(Math.abs(this.lowerLeftLAVelocity));
+        this.lowerRightLAVelocityAverage = this.lowerRightLAVelocityAverageCalculator.update(Math.abs(this.lowerRightLAVelocity));
+        this.upperLAVelocityAverage = this.upperLAsVelocityAverageCalculator.update(Math.abs(this.upperLAVelocity));
 
         this.logger.logNumber(LoggingKey.ArmLowerLeftPosition, this.lowerLeftLAPosition);
         this.logger.logNumber(LoggingKey.ArmLowerLeftVelocity, this.lowerLeftLAVelocity);
@@ -423,6 +423,7 @@ public class ArmMechanism implements IMechanism
                     this.desiredUpperLAPosition = this.upperLAPosition;
 
                     this.upperSetpointChangedTime = currTime;
+                    this.upperLAsStalled = false;
 
                     // controlled by joysticks
                     upperPower = upperPositionAdjustment;
