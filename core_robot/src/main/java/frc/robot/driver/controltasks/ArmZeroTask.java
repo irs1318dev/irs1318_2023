@@ -61,8 +61,8 @@ public class ArmZeroTask extends ControlTaskBase
         {
             if (currTime >= this.transitionTime + TuningConstants.ARM_POWER_TRACKING_DURATION &&
                 ((this.arm.getLowerLAsStalled() ||
-                    (this.arm.getLowerLeftLAPowerAverage() <= TuningConstants.ARM_NOT_MOVING_POWER_THRESHOLD ||
-                    this.arm.getLowerRightLAPowerAverage() <= TuningConstants.ARM_NOT_MOVING_POWER_THRESHOLD)) ||
+                    (this.arm.getLowerLeftLACurrrentAverage() <= TuningConstants.ARM_NOT_MOVING_POWER_THRESHOLD ||
+                    this.arm.getLowerRightLACurrentAverage() <= TuningConstants.ARM_NOT_MOVING_POWER_THRESHOLD)) ||
                 currTime >= this.transitionTime + 2.5))
             {
                 this.state = ArmZeroState.RetractUpperArm;
@@ -73,7 +73,7 @@ public class ArmZeroTask extends ControlTaskBase
         {
             if (currTime >= this.transitionTime + TuningConstants.ARM_POWER_TRACKING_DURATION &&
                 ((this.arm.getUpperLAsStalled() ||
-                    this.arm.getUpperLAsPowerAverage() <= TuningConstants.ARM_NOT_MOVING_POWER_THRESHOLD) ||
+                    this.arm.getUpperLAsCurrentAverage() <= TuningConstants.ARM_NOT_MOVING_POWER_THRESHOLD) ||
                 currTime >= this.transitionTime + 2.0))
             {
                 this.state = ArmZeroState.Reset;

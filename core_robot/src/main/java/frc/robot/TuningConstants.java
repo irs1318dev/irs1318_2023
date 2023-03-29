@@ -487,7 +487,9 @@ public class TuningConstants
 
     // Arm stall prevention
     public static final boolean ARM_STALL_PROTECTION_ENABLED = true;
-    public static final double ARM_STALLED_POWER_THRESHOLD = 3.5; // amount of power being "used" by the linear actuator (despite not moving according to the encoders) to be considered stalled
+    public static final double ARM_STALLED_CURRENT_THRESHOLD = 3.5; // amount of current being "used" by the linear actuator (despite not moving according to the encoders) to be considered stalled
+    public static final double BATTERY_AVERAGE_EXPECTED_VOLTAGE = 12.0; // expected voltage of battery
+    public static final double ARM_STALLED_POWER_THRESHOLD = TuningConstants.ARM_STALLED_CURRENT_THRESHOLD * TuningConstants.BATTERY_AVERAGE_EXPECTED_VOLTAGE; // amount of power that can be "used" by the linear actuators to be considere stalled
     public static final double ARM_STALLED_VELOCITY_THRESHOLD = 8.0; // 8 ticks/sec is very slow, unlikely to be really moving...
 
     // Set Points for Arm (linear actuator positions)

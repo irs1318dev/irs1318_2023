@@ -73,6 +73,11 @@ public class PowerManager implements IMechanism
         return this.powerDistribution.getCurrent(pdpChannel);
     }
 
+    public double getBatteryVoltage()
+    {
+        return this.powerDistribution.getBatteryVoltage();
+    }
+
     @Override
     public void readSensors()
     {
