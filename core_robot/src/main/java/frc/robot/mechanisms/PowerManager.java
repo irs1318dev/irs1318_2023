@@ -35,6 +35,7 @@ public class PowerManager implements IMechanism
 
     private final FloatingAverageCalculator currentAverageCalculator;
     private double currentFloatingAverage;
+    private double batteryVoltage;
 
     /**
      * Initializes a new PowerManager
@@ -46,7 +47,9 @@ public class PowerManager implements IMechanism
         this.driver = driver;
         this.logger = logger;
         this.powerDistribution = provider.getPowerDistribution(ElectronicsConstants.POWER_DISTRIBUTION_CAN_ID, ElectronicsConstants.POWER_DISTRIBUTION_TYPE);
-        this.batteryVoltageFilter = new ComplementaryFilter(0.4, 0.6, this.powerDistribution.getBatteryVoltage());
+
+        this.batteryVoltage = this.powerDistribution.getBatteryVoltage();
+        this.batteryVoltageFilter = new ComplementaryFilter(0.4, 0.6, this.batteryVoltage);
 
         this.currentAverageCalculator = new FloatingAverageCalculator(timer, TuningConstants.POWER_OVERCURRENT_TRACKING_DURATION, TuningConstants.POWER_OVERCURRENT_SAMPLES_PER_SECOND);
         this.currentFloatingAverage = 0.0;
@@ -75,13 +78,15 @@ public class PowerManager implements IMechanism
 
     public double getBatteryVoltage()
     {
-        return this.powerDistribution.getBatteryVoltage();
+        return this.batteryVoltage;
     }
 
     @Override
     public void readSensors()
     {
-        this.batteryVoltageFilter.update(this.powerDistribution.getBatteryVoltage());
+        this.batteryVoltage = this.powerDistribution.getBatteryVoltage();
+
+        this.batteryVoltageFilter.update(this.batteryVoltage);
         this.logger.logNumber(LoggingKey.PowerBatteryVoltage, this.batteryVoltageFilter.getValue());
 
         double currCurrent = this.powerDistribution.getTotalCurrent();

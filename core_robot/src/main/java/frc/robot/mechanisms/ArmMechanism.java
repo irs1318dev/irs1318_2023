@@ -62,17 +62,13 @@ public class ArmMechanism implements IMechanism
     private boolean lowerLAsStalled;
     private boolean upperLAsStalled;
 
-    private FloatingAverageCalculator lowerLeftLACurrentAverageCalculator;
-    private FloatingAverageCalculator lowerRightLACurrentAverageCalculator;
-    private FloatingAverageCalculator upperLAsCurrentAverageCalculator;
+    private FloatingAverageCalculator lowerLeftLAPowerAverageCalculator;
+    private FloatingAverageCalculator lowerRightLAPowerAverageCalculator;
+    private FloatingAverageCalculator upperLAsPowerAverageCalculator;
 
-    private double lowerLeftLACurrrentAverage;
-    private double lowerRightLACurrentAverage;
-    private double upperLAsCurrentAverage;
     private double lowerLeftLAPowerAverage;
     private double lowerRightLAPowerAverage;
     private double upperLAsPowerAverage;
-    
 
     private FloatingAverageCalculator lowerLeftLAVelocityAverageCalculator;
     private FloatingAverageCalculator lowerRightLAVelocityAverageCalculator;
@@ -208,9 +204,9 @@ public class ArmMechanism implements IMechanism
         this.lowerRightArmLinearActuator.setPosition(0.0);
         this.upperArmLinearActuator.setPosition(0.0);
 
-        this.lowerLeftLACurrentAverageCalculator = new FloatingAverageCalculator(this.timer, TuningConstants.ARM_POWER_TRACKING_DURATION, TuningConstants.ARM_POWER_SAMPLES_PER_SECOND);
-        this.lowerRightLACurrentAverageCalculator = new FloatingAverageCalculator(this.timer, TuningConstants.ARM_POWER_TRACKING_DURATION, TuningConstants.ARM_POWER_SAMPLES_PER_SECOND);
-        this.upperLAsCurrentAverageCalculator = new FloatingAverageCalculator(this.timer, TuningConstants.ARM_POWER_TRACKING_DURATION, TuningConstants.ARM_POWER_SAMPLES_PER_SECOND);
+        this.lowerLeftLAPowerAverageCalculator = new FloatingAverageCalculator(this.timer, TuningConstants.ARM_POWER_TRACKING_DURATION, TuningConstants.ARM_POWER_SAMPLES_PER_SECOND);
+        this.lowerRightLAPowerAverageCalculator = new FloatingAverageCalculator(this.timer, TuningConstants.ARM_POWER_TRACKING_DURATION, TuningConstants.ARM_POWER_SAMPLES_PER_SECOND);
+        this.upperLAsPowerAverageCalculator = new FloatingAverageCalculator(this.timer, TuningConstants.ARM_POWER_TRACKING_DURATION, TuningConstants.ARM_POWER_SAMPLES_PER_SECOND);
 
         this.lowerLeftLAVelocityAverageCalculator = new FloatingAverageCalculator(this.timer, TuningConstants.ARM_VELOCITY_TRACKING_DURATION, TuningConstants.ARM_VELOCITY_SAMPLES_PER_SECOND);
         this.lowerRightLAVelocityAverageCalculator = new FloatingAverageCalculator(this.timer, TuningConstants.ARM_VELOCITY_TRACKING_DURATION, TuningConstants.ARM_VELOCITY_SAMPLES_PER_SECOND);
@@ -256,14 +252,10 @@ public class ArmMechanism implements IMechanism
         double upperLeftLACurrent = this.powerManager.getCurrent(ElectronicsConstants.ARM_UPPER_LEFT_LA_PDH_CHANNEL);
         double upperRightLACurrent = this.powerManager.getCurrent(ElectronicsConstants.ARM_UPPER_RIGHT_LA_PDH_CHANNEL);
         double batteryVoltage = this.powerManager.getBatteryVoltage();
-        
-        this.lowerLeftLACurrrentAverage = this.lowerLeftLACurrentAverageCalculator.update(lowerLeftLACurrent);
-        this.lowerRightLACurrentAverage = this.lowerRightLACurrentAverageCalculator.update(lowerRightLACurrent);
-        this.upperLAsCurrentAverage = this.upperLAsCurrentAverageCalculator.update((upperLeftLACurrent + upperRightLACurrent) / 2.0);
 
-        this.lowerLeftLAPowerAverage = this.lowerLeftLACurrrentAverage * batteryVoltage;
-        this.lowerRightLAPowerAverage = this.lowerRightLACurrentAverage * batteryVoltage;
-        this.upperLAsPowerAverage = this.upperLAsCurrentAverage * batteryVoltage;
+        this.lowerLeftLAPowerAverage = this.lowerLeftLAPowerAverageCalculator.update(lowerLeftLACurrent * batteryVoltage);
+        this.lowerRightLAPowerAverage = this.lowerRightLAPowerAverageCalculator.update(lowerRightLACurrent * batteryVoltage);
+        this.upperLAsPowerAverage = this.upperLAsPowerAverageCalculator.update(((upperLeftLACurrent + upperRightLACurrent) / 2.0) * batteryVoltage);
 
         this.lowerLeftLAVelocityAverage = this.lowerLeftLAVelocityAverageCalculator.update(Math.abs(this.lowerLeftLAVelocity));
         this.lowerRightLAVelocityAverage = this.lowerRightLAVelocityAverageCalculator.update(Math.abs(this.lowerRightLAVelocity));
@@ -273,17 +265,17 @@ public class ArmMechanism implements IMechanism
         this.logger.logNumber(LoggingKey.ArmLowerLeftVelocity, this.lowerLeftLAVelocity);
         this.logger.logNumber(LoggingKey.ArmLowerLeftVelocityAverage, this.lowerLeftLAVelocityAverage);
         this.logger.logNumber(LoggingKey.ArmLowerLeftError, this.lowerLeftLAError);
-        this.logger.logNumber(LoggingKey.ArmLowerLeftPower, this.lowerLeftLACurrrentAverage);
+        this.logger.logNumber(LoggingKey.ArmLowerLeftPower, this.lowerLeftLAPowerAverage);
         this.logger.logNumber(LoggingKey.ArmLowerRightPosition, this.lowerRightLAPosition);
         this.logger.logNumber(LoggingKey.ArmLowerRightVelocity, this.lowerRightLAVelocity);
         this.logger.logNumber(LoggingKey.ArmLowerRightVelocityAverage, this.lowerRightLAVelocityAverage);
         this.logger.logNumber(LoggingKey.ArmLowerRightError, this.lowerRightLAError);
-        this.logger.logNumber(LoggingKey.ArmLowerRightPower, this.lowerRightLACurrentAverage);
+        this.logger.logNumber(LoggingKey.ArmLowerRightPower, this.lowerRightLAPowerAverage);
         this.logger.logNumber(LoggingKey.ArmUpperPosition, this.upperLAPosition);
         this.logger.logNumber(LoggingKey.ArmUpperVelocity, this.upperLAVelocity);
         this.logger.logNumber(LoggingKey.ArmUpperVelocityAverage, this.upperLAVelocityAverage);
         this.logger.logNumber(LoggingKey.ArmUpperError, this.upperLAError);
-        this.logger.logNumber(LoggingKey.ArmUpperPower, this.upperLAsCurrentAverage);
+        this.logger.logNumber(LoggingKey.ArmUpperPower, this.upperLAsPowerAverage);
 
         DoubleTuple offsets = ArmMechanism.calculateFK(
             (this.lowerLeftLAPosition + this.lowerRightLAPosition) / 2.0,
@@ -678,12 +670,12 @@ public class ArmMechanism implements IMechanism
         this.upperLAsStalled = false;
 
         // power averaging
-        this.lowerLeftLACurrentAverageCalculator.reset();
-        this.lowerRightLACurrentAverageCalculator.reset();
-        this.upperLAsCurrentAverageCalculator.reset();
-        this.lowerLeftLACurrrentAverage = 0.0;
-        this.lowerRightLACurrentAverage = 0.0;
-        this.upperLAsCurrentAverage = 0.0;
+        this.lowerLeftLAPowerAverageCalculator.reset();
+        this.lowerRightLAPowerAverageCalculator.reset();
+        this.upperLAsPowerAverageCalculator.reset();
+        this.lowerLeftLAPowerAverage = 0.0;
+        this.lowerRightLAPowerAverage = 0.0;
+        this.upperLAsPowerAverage = 0.0;
 
         // velocity averaging
         this.lowerLeftLAVelocityAverageCalculator.reset();
@@ -715,14 +707,14 @@ public class ArmMechanism implements IMechanism
         return this.zPosition;
     }
 
-    public double getLowerLeftLACurrrentAverage()
+    public double getLowerLeftLAPowerAverage()
     {
-        return this.lowerLeftLACurrrentAverage;
+        return this.lowerLeftLAPowerAverage;
     }
 
-    public double getLowerRightLACurrentAverage()
+    public double getLowerRightLAPowerAverage()
     {
-        return this.lowerRightLACurrentAverage;
+        return this.lowerRightLAPowerAverage;
     }
 
     public boolean getLowerLAsStalled()
@@ -735,9 +727,9 @@ public class ArmMechanism implements IMechanism
         return this.upperLAsStalled;
     }
 
-    public double getUpperLAsCurrentAverage()
+    public double getUpperLAsPowerAverage()
     {
-        return this.upperLAsCurrentAverage;
+        return this.upperLAsPowerAverage;
     }
 
     public boolean getInSimpleMode()
