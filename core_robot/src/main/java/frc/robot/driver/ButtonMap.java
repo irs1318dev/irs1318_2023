@@ -127,17 +127,17 @@ public class ButtonMap implements IButtonMap
             TuningConstants.ARM_UPPER_VELOCITY_DEAZONE),
 
         new AnalogOperationDescription(
-            AnalogOperation.ArmTwistLeft,
+            AnalogOperation.ArmTwistRight,
             UserInputDevice.Codriver,
             AnalogAxis.XBONE_LT,
-            ElectronicsConstants.INVERT_XBONE_LEFT_TRIGGER,
+            ElectronicsConstants.INVERT_XBONE_RIGHT_TRIGGER,
             TuningConstants.ZERO,
             TuningConstants.ARM_TWIST_DEAZONE),
         new AnalogOperationDescription(
-            AnalogOperation.ArmTwistRight,
+            AnalogOperation.ArmTwistLeft,
             UserInputDevice.Codriver,
             AnalogAxis.XBONE_RT,
-            ElectronicsConstants.INVERT_XBONE_RIGHT_TRIGGER,
+            ElectronicsConstants.INVERT_XBONE_LEFT_TRIGGER,
             TuningConstants.ZERO,
             TuningConstants.ARM_TWIST_DEAZONE),
 
@@ -175,28 +175,28 @@ public class ButtonMap implements IButtonMap
         new DigitalOperationDescription(
             DigitalOperation.DriveTrainEnableFieldOrientation,
             UserInputDevice.Driver,
-            UserInputDeviceButton.XBONE_X_BUTTON,
+            270,
             Shift.DriverDebug,
             Shift.None,
             ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.DriveTrainDisableFieldOrientation,
             UserInputDevice.Driver,
-            UserInputDeviceButton.XBONE_X_BUTTON,
+            270,
             Shift.DriverDebug,
             Shift.DriverDebug,
             ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.DriveTrainEnableMaintainDirectionMode,
             UserInputDevice.Driver,
-            UserInputDeviceButton.XBONE_B_BUTTON,
+            90,
             Shift.DriverDebug,
             Shift.None,
             ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.DriveTrainDisableMaintainDirectionMode,
             UserInputDevice.Driver,
-            UserInputDeviceButton.XBONE_B_BUTTON,
+            90,
             Shift.DriverDebug,
             Shift.DriverDebug,
             ButtonType.Click),
@@ -204,6 +204,8 @@ public class ButtonMap implements IButtonMap
             DigitalOperation.DriveTrainSlowMode,
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_A_BUTTON,
+            Shift.DriverDebug,
+            Shift.None,
             ButtonType.Simple),
 
         new DigitalOperationDescription(
@@ -496,7 +498,7 @@ public class ButtonMap implements IButtonMap
         new MacroOperationDescription(
             MacroOperation.VisionGridCube,
             UserInputDevice.Driver,
-            0, // DPAD-up
+            UserInputDeviceButton.XBONE_A_BUTTON, // DPAD-up
             Shift.DriverDebug,
             Shift.DriverDebug,
             ButtonType.Toggle,
@@ -553,8 +555,6 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.VisionForceDisable,
                 AnalogOperation.ArmMMUpperPosition,
                 AnalogOperation.ArmMMLowerPosition,
-                DigitalOperation.IntakeCube,
-                DigitalOperation.IntakeCone,
                 DigitalOperation.IntakeDown,
                 DigitalOperation.IntakeUp,
             },
@@ -566,14 +566,13 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.DriveTrainSpinLeft,
                 AnalogOperation.DriveTrainSpinRight,
                 DigitalOperation.IntakeCube,
-                DigitalOperation.IntakeCone,
             }),
         new MacroOperationDescription(
             MacroOperation.VisionGridConeLeft,
             UserInputDevice.Driver,
-            270, // DPAD-left
-            Shift.DriverDebug,
-            Shift.DriverDebug,
+            UserInputDeviceButton.XBONE_X_BUTTON, // DPAD-left
+            Shift.None,
+            Shift.None,
             ButtonType.Toggle,
             () -> ConcurrentTask.AnyTasks(
                 SequentialTask.Sequence(
@@ -629,8 +628,6 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.VisionForceDisable,
                 AnalogOperation.ArmMMUpperPosition,
                 AnalogOperation.ArmMMLowerPosition,
-                DigitalOperation.IntakeCube,
-                DigitalOperation.IntakeCone,
                 DigitalOperation.IntakeDown,
                 DigitalOperation.IntakeUp,
             },
@@ -642,14 +639,13 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.DriveTrainSpinLeft,
                 AnalogOperation.DriveTrainSpinRight,
                 DigitalOperation.IntakeCube,
-                DigitalOperation.IntakeCone,
             }),
         new MacroOperationDescription(
             MacroOperation.VisionGridConeRight,
             UserInputDevice.Driver,
-            90, // DPAD-right
-            Shift.DriverDebug,
-            Shift.DriverDebug,
+            UserInputDeviceButton.XBONE_B_BUTTON, // DPAD-right
+            Shift.None,
+            Shift.None,
             ButtonType.Toggle,
             () -> ConcurrentTask.AllTasks(
                 SequentialTask.Sequence(
@@ -705,8 +701,6 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.VisionForceDisable,
                 AnalogOperation.ArmMMUpperPosition,
                 AnalogOperation.ArmMMLowerPosition,
-                DigitalOperation.IntakeCube,
-                DigitalOperation.IntakeCone,
                 DigitalOperation.IntakeDown,
                 DigitalOperation.IntakeUp,
             },
@@ -718,7 +712,6 @@ public class ButtonMap implements IButtonMap
                 AnalogOperation.DriveTrainSpinLeft,
                 AnalogOperation.DriveTrainSpinRight,
                 DigitalOperation.IntakeCube,
-                DigitalOperation.IntakeCone,
             }),
         new MacroOperationDescription(
             MacroOperation.VisionResetPosition,

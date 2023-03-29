@@ -495,8 +495,8 @@ public class TuningConstants
     public static final double ARM_UPPER_ZEROING_POSITION = -10.0 * HardwareConstants.ARM_FULL_EXTENSION_TICKS;
     public static final double ARM_LOWER_POSITION_STOWED = HardwareConstants.ARM_FULL_EXTENSION_TICKS;
     public static final double ARM_UPPER_POSITION_STOWED = 0.0;
-    public static final double ARM_LOWER_POSITION_MIDDLE_CONE = 8000.0;
-    public static final double ARM_UPPER_POSITION_MIDDLE_CONE = 3170.0;
+    public static final double ARM_LOWER_POSITION_MIDDLE_CONE = 8240.0;
+    public static final double ARM_UPPER_POSITION_MIDDLE_CONE = 3260.0;
     public static final double ARM_LOWER_POSITION_MIDDLE_CUBE = 5780.0;
     public static final double ARM_UPPER_POSITION_MIDDLE_CUBE = 4320.0;
     public static final double ARM_LOWER_POSITION_HIGH_CONE_UP = 4650.0;

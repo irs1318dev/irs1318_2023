@@ -411,6 +411,7 @@ public class ArmMechanism implements IMechanism
                     this.desiredLowerRightLAPosition = lowerLAPosition;
 
                     this.lowerSetpointChangedTime = currTime;
+                    this.lowerLAsStalled = false;
 
                     // controlled by joysticks
                     lowerPower = lowerPositionAdjustment;
@@ -473,6 +474,7 @@ public class ArmMechanism implements IMechanism
                             Helpers.RoughEquals(this.desiredLowerRightLAPosition, ikResult.first, 0.1))
                         {
                             this.lowerSetpointChangedTime = currTime;
+                            this.lowerLAsStalled = false;
 
                             this.desiredLowerLeftLAPosition = ikResult.first;
                             this.desiredLowerRightLAPosition = ikResult.first;
@@ -482,6 +484,7 @@ public class ArmMechanism implements IMechanism
                         if (Helpers.RoughEquals(this.desiredUpperLAPosition, ikResult.second, 0.1))
                         {
                             this.upperSetpointChangedTime = currTime;
+                            this.upperLAsStalled = false;
 
                             this.desiredUpperLAPosition = ikResult.second;
                             updateDesiredIKPosition = true;
@@ -508,6 +511,7 @@ public class ArmMechanism implements IMechanism
                             !Helpers.RoughEquals(this.desiredLowerRightLAPosition, ikResult.first, 0.01))
                         {
                             this.lowerSetpointChangedTime = currTime;
+                            this.lowerLAsStalled = false;
 
                             this.desiredLowerLeftLAPosition = ikResult.first;
                             this.desiredLowerRightLAPosition = ikResult.first;
@@ -517,6 +521,7 @@ public class ArmMechanism implements IMechanism
                         if (!Helpers.RoughEquals(this.desiredUpperLAPosition, ikResult.second, 0.01))
                         {
                             this.upperSetpointChangedTime = currTime;
+                            this.upperLAsStalled = false;
 
                             this.desiredUpperLAPosition = ikResult.second;
                             updateDesiredIKPosition = true;
@@ -539,6 +544,7 @@ public class ArmMechanism implements IMechanism
                             !Helpers.RoughEquals(this.desiredLowerRightLAPosition, newDesiredLowerPosition, 0.1)))
                     {
                         this.lowerSetpointChangedTime = currTime;
+                        this.lowerLAsStalled = false;
 
                         this.desiredLowerLeftLAPosition = newDesiredLowerPosition;
                         this.desiredLowerRightLAPosition = newDesiredLowerPosition;
@@ -549,6 +555,7 @@ public class ArmMechanism implements IMechanism
                         !Helpers.RoughEquals(this.desiredUpperLAPosition, newDesiredUpperPosition, 0.1))
                     {
                         this.upperSetpointChangedTime = currTime;
+                        this.upperLAsStalled = false;
 
                         this.desiredUpperLAPosition = newDesiredUpperPosition;
                         updateDesiredIKPosition = true;
@@ -581,14 +588,14 @@ public class ArmMechanism implements IMechanism
                 this.lowerLeftLAPowerAverage >= TuningConstants.ARM_STALLED_POWER_THRESHOLD &&
                 Math.abs(this.lowerLeftLAVelocityAverage) <= TuningConstants.ARM_STALLED_VELOCITY_THRESHOLD)
             {
-                this.lowerLAsStalled = false;
+                this.lowerLAsStalled = true;
             }
 
             if (currTime > this.lowerSetpointChangedTime + TuningConstants.ARM_VELOCITY_TRACKING_DURATION &&
                 this.lowerRightLAPowerAverage >= TuningConstants.ARM_STALLED_POWER_THRESHOLD &&
                 Math.abs(this.lowerRightLAVelocityAverage) <= TuningConstants.ARM_STALLED_VELOCITY_THRESHOLD)
             {
-                this.lowerLAsStalled = false;
+                this.lowerLAsStalled = true;
             }
 
             if (currTime > this.upperSetpointChangedTime + TuningConstants.ARM_VELOCITY_TRACKING_DURATION &&

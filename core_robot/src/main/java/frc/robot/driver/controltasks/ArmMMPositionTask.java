@@ -30,6 +30,7 @@ public class ArmMMPositionTask extends ControlTaskBase
     private final double lowerExtensionLength;
     private final double upperExtensionLength;
     private final boolean waitUntilPositionReached;
+    private final boolean useAutoBehavior;
 
     private ArmMechanism arm;
 
@@ -43,21 +44,22 @@ public class ArmMMPositionTask extends ControlTaskBase
 
     public ArmMMPositionTask(double lowerExtensionLength, double upperExtensionLength, IntakeState state)
     {
-        this(lowerExtensionLength, upperExtensionLength, false, state);
+        this(lowerExtensionLength, upperExtensionLength, false, state, false);
 
     }
 
     public ArmMMPositionTask(double lowerExtensionLength, double upperExtensionLength, boolean waitUntilPositionReached)
     {
-        this(lowerExtensionLength, upperExtensionLength, waitUntilPositionReached, IntakeState.Unchanged);
+        this(lowerExtensionLength, upperExtensionLength, waitUntilPositionReached, IntakeState.Unchanged, false);
     }
 
-    public ArmMMPositionTask(double lowerExtensionLength, double upperExtensionLength, boolean waitUntilPositionReached, IntakeState state)
+    public ArmMMPositionTask(double lowerExtensionLength, double upperExtensionLength, boolean waitUntilPositionReached, IntakeState state, boolean useAutoBehavior)
     {
         this.lowerExtensionLength = lowerExtensionLength;
         this.upperExtensionLength = upperExtensionLength;
         this.waitUntilPositionReached = waitUntilPositionReached;
         this.desiredState = state;
+        this.useAutoBehavior = useAutoBehavior;
     }
 
     /**
@@ -85,7 +87,8 @@ public class ArmMMPositionTask extends ControlTaskBase
         if (goalIsHigh != currentIsHigh)
         {
             this.currentArmState = ArmMMState.DesiredHighIntermidate;
-            if (armUpperPosition > TuningConstants.ARM_UPPER_POSITION_HIGH_INTERMIDATE &&
+            if (this.useAutoBehavior &&
+                armUpperPosition > TuningConstants.ARM_UPPER_POSITION_HIGH_INTERMIDATE &&
                 armUpperPosition < TuningConstants.ARM_USE_UPPER_POSITION_HIGH_INTERMIDATE_THRESHOLD)
             {
                 this.upperArmHighIntermediate = armUpperPosition;

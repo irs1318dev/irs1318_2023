@@ -41,6 +41,7 @@ public class DriverFeedbackManager implements IMechanism
         Rainbow,
         YellowFlashing,
         PurpleTwinkling,
+        GreenTwinkling,
         PurpleStrobe,
     }
 
@@ -192,6 +193,7 @@ public class DriverFeedbackManager implements IMechanism
         {
             case Rainbow:
             case YellowFlashing:
+            case GreenTwinkling:
             case PurpleTwinkling:
             case PurpleStrobe:
                 this.candle.stopAnimation(animationSlot);
@@ -296,6 +298,19 @@ public class DriverFeedbackManager implements IMechanism
                     0.75,
                     rangeCount,
                     rangeStart);
+
+            case GreenTwinkling:
+                this.candle.startTwinkleAnimation(
+                    animationSlot,
+                    TuningConstants.INDICATOR_GREEN_COLOR_RED,
+                    TuningConstants.INDICATOR_GREEN_COLOR_GREEN,
+                    TuningConstants.INDICATOR_GREEN_COLOR_BLUE,
+                    TuningConstants.INDICATOR_GREEN_COLOR_WHITE,
+                    0.75,
+                    rangeCount,
+                    CANdleTwinklePercent.Percent88,
+                    rangeStart);
+                break;
 
             case PurpleTwinkling:
                 this.candle.startTwinkleAnimation(
