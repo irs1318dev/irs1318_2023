@@ -204,7 +204,7 @@ public class ButtonMap implements IButtonMap
             DigitalOperation.DriveTrainSlowMode,
             UserInputDevice.Driver,
             UserInputDeviceButton.XBONE_A_BUTTON,
-            Shift.DriverDebug,
+            Shift.None,
             Shift.None,
             ButtonType.Simple),
 
@@ -498,7 +498,7 @@ public class ButtonMap implements IButtonMap
         new MacroOperationDescription(
             MacroOperation.VisionGridCube,
             UserInputDevice.Driver,
-            UserInputDeviceButton.XBONE_A_BUTTON, // DPAD-up
+            0, // POV-up
             Shift.DriverDebug,
             Shift.DriverDebug,
             ButtonType.Toggle,
@@ -570,7 +570,7 @@ public class ButtonMap implements IButtonMap
         new MacroOperationDescription(
             MacroOperation.VisionGridConeLeft,
             UserInputDevice.Driver,
-            UserInputDeviceButton.XBONE_X_BUTTON, // DPAD-left
+            UserInputDeviceButton.XBONE_X_BUTTON,
             Shift.None,
             Shift.None,
             ButtonType.Toggle,
@@ -643,7 +643,7 @@ public class ButtonMap implements IButtonMap
         new MacroOperationDescription(
             MacroOperation.VisionGridConeRight,
             UserInputDevice.Driver,
-            UserInputDeviceButton.XBONE_B_BUTTON, // DPAD-right
+            UserInputDeviceButton.XBONE_B_BUTTON,
             Shift.None,
             Shift.None,
             ButtonType.Toggle,
@@ -735,8 +735,8 @@ public class ButtonMap implements IButtonMap
             MacroOperation.FaceForward,
             UserInputDevice.Driver,
             0, // DPAD-up
-            Shift.DriverDebug, 
-            Shift.None, 
+            Shift.DriverDebug,
+            Shift.None,
             ButtonType.Toggle,
             () -> new OrientationTask(0),
             new IOperation[]
@@ -750,8 +750,8 @@ public class ButtonMap implements IButtonMap
             MacroOperation.FaceBackward,
             UserInputDevice.Driver,
             180, // DPAD-down
-            Shift.DriverDebug, 
-            Shift.None, 
+            Shift.DriverDebug,
+            Shift.None,
             ButtonType.Toggle,
             () -> new OrientationTask(180),
             new IOperation[]
@@ -1014,7 +1014,7 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.IntakeDown,
                 DigitalOperation.IntakeUp,
             }),
-            new MacroOperationDescription(
+        new MacroOperationDescription(
             MacroOperation.ArmStowedPosition,
             UserInputDevice.Codriver,
             UserInputDeviceButton.XBONE_A_BUTTON,
