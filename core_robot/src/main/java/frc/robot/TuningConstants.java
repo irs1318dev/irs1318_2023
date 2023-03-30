@@ -515,8 +515,8 @@ public class TuningConstants
     public static final double ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP_APPROACH = 6050.0;
     public static final double ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP = 6100.0;
     public static final double ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP = 6000.0;
-    public static final double ARM_LOWER_POSITION_CUBE_SUBSTATION_PICKUP = 8300.0;
-    public static final double ARM_UPPER_POSITION_CUBE_SUBSTATION_PICKUP = 4020.0;
+    public static final double ARM_LOWER_POSITION_CUBE_SINGLE_SUBSTATION_PICKUP = 8300.0;
+    public static final double ARM_UPPER_POSITION_CUBE_SINGLE_SUBSTATION_PICKUP = 4020.0;
     public static final double ARM_LOWER_POSITION_APPROACH = HardwareConstants.ARM_FULL_EXTENSION_TICKS;
     public static final double ARM_UPPER_POSITION_APPROACH = 4100.0;
     public static final double ARM_LOWER_POSITION_CONE_UPRIGHTING_MACRO = 4400;

@@ -161,9 +161,9 @@ public class ButtonMap implements IButtonMap
         new DigitalOperationDescription(
             DigitalOperation.PositionResetFieldOrientation,
             UserInputDevice.Driver,
-            UserInputDeviceButton.XBONE_Y_BUTTON,
+            0, // DPAD-up
             Shift.DriverDebug,
-            Shift.None,
+            Shift.DriverDebug,
             ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.DriveTrainReset,
@@ -498,9 +498,9 @@ public class ButtonMap implements IButtonMap
         new MacroOperationDescription(
             MacroOperation.VisionGridCube,
             UserInputDevice.Driver,
-            0, // POV-up
+            UserInputDeviceButton.XBONE_Y_BUTTON,
             Shift.DriverDebug,
-            Shift.DriverDebug,
+            Shift.None,
             ButtonType.Toggle,
             () -> ConcurrentTask.AnyTasks(
                 SequentialTask.Sequence(
@@ -978,7 +978,7 @@ public class ButtonMap implements IButtonMap
             MacroOperation.ArmGroundPickupPositionCube,
             UserInputDevice.Codriver,
             270, // POV-left
-            Shift.CodriverDebug,
+            Shift.None,
             Shift.None,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
@@ -994,26 +994,26 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.IntakeDown,
                 DigitalOperation.IntakeUp,
             }),
-        new MacroOperationDescription(
-            MacroOperation.ArmCubeSubstationPickupPosition,
-            UserInputDevice.Codriver,
-            270, // POV-left
-            Shift.CodriverDebug,
-            Shift.CodriverDebug,
-            ButtonType.Toggle,
-            () -> SequentialTask.Sequence(
-                new ArmMMPositionTask(
-                    TuningConstants.ARM_LOWER_POSITION_CUBE_SUBSTATION_PICKUP,
-                    TuningConstants.ARM_UPPER_POSITION_CUBE_SUBSTATION_PICKUP,
-                    IntakeState.Up),
-                new IntakePositionTask(false)),
-            new IOperation[]
-            {
-                AnalogOperation.ArmMMLowerPosition,
-                AnalogOperation.ArmMMUpperPosition,
-                DigitalOperation.IntakeDown,
-                DigitalOperation.IntakeUp,
-            }),
+        // new MacroOperationDescription(
+        //     MacroOperation.ArmCubeSingleSubstationPickupPosition,
+        //     UserInputDevice.Codriver,
+        //     270, // POV-left
+        //     Shift.CodriverDebug,
+        //     Shift.CodriverDebug,
+        //     ButtonType.Toggle,
+        //     () -> SequentialTask.Sequence(
+        //         new ArmMMPositionTask(
+        //             TuningConstants.ARM_LOWER_POSITION_CUBE_SINGLE_SUBSTATION_PICKUP,
+        //             TuningConstants.ARM_UPPER_POSITION_CUBE_SINGLE_SUBSTATION_PICKUP,
+        //             IntakeState.Up),
+        //         new IntakePositionTask(false)),
+        //     new IOperation[]
+        //     {
+        //         AnalogOperation.ArmMMLowerPosition,
+        //         AnalogOperation.ArmMMUpperPosition,
+        //         DigitalOperation.IntakeDown,
+        //         DigitalOperation.IntakeUp,
+        //     }),
         new MacroOperationDescription(
             MacroOperation.ArmStowedPosition,
             UserInputDevice.Codriver,
