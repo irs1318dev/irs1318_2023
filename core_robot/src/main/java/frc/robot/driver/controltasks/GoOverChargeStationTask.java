@@ -11,6 +11,8 @@ import frc.robot.TuningConstants;
 import frc.robot.driver.*;
 import frc.robot.mechanisms.*;
 
+//Reverse means TOWARD GRID (reverse true = robot coming closer, reverse false = going away). 
+//Orientation is robot orientation according to driver.
 public class GoOverChargeStationTask extends ControlTaskBase
 {
     private enum State

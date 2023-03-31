@@ -29,6 +29,9 @@ public class ChargeStationTask extends ControlTaskBase
         Completed
     }
 
+
+    //Reverse means TOWARD GRID (reverse true = robot coming closer, reverse false = going away). 
+    //Orientation is robot orientation according to driver.
     private final double reverse;
     private final Orientation orientation;
 
