@@ -316,15 +316,15 @@ public class AutonomousRoutineSelector
                     true)),
 
             new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_HIGH_CONE_UP,
-                TuningConstants.ARM_UPPER_POSITION_HIGH_CONE_UP,
+                TuningConstants.ARM_LOWER_POSITION_HIGH_CONE_DOWN,
+                TuningConstants.ARM_UPPER_POSITION_HIGH_CONE_DOWN,
                 true,
                 IntakeState.Up,
                 true),
             new IntakePositionTask(true),
 
             new WaitTask(0.2),
-            new IntakeGamePieceTask(true, 0.8),
+            new IntakeGamePieceTask(true, 1.0),
             
             ConcurrentTask.AllTasks(
                 new FollowPathTask(isRed ? "LoadEdgeTo20Red" : "LoadEdgeTo20Blue", Type.Absolute),
@@ -432,15 +432,15 @@ public class AutonomousRoutineSelector
                     true)),
 
             new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_HIGH_CONE_UP,
-                TuningConstants.ARM_UPPER_POSITION_HIGH_CONE_UP,
+                TuningConstants.ARM_LOWER_POSITION_HIGH_CONE_DOWN,
+                TuningConstants.ARM_UPPER_POSITION_HIGH_CONE_DOWN,
                 true,
                 IntakeState.Up,
                 true),
             new IntakePositionTask(true),
 
             new WaitTask(0.2),
-            new IntakeGamePieceTask(true, 0.8),
+            new IntakeGamePieceTask(true, 1.0),
             
             ConcurrentTask.AllTasks(
                 new FollowPathTask(isRed ? "LoadEdgeTo20Red" : "LoadEdgeTo20Blue", Type.Absolute),
@@ -586,24 +586,27 @@ public class AutonomousRoutineSelector
                 IntakeState.Up,
                 true),
             new IntakePositionTask(true),
+
             new WaitTask(0.2),
             new IntakeGamePieceTask(true, 1.0),
 
+            ConcurrentTask.AllTasks(
+                new FollowPathTask(isRed ? "5To11Red" : "5To11Blue", Type.Absolute),
+                SequentialTask.Sequence(
+                        new WaitTask(1.0),
+                        new ArmMMPositionTask(
+                            TuningConstants.ARM_LOWER_POSITION_STOWED,
+                            TuningConstants.ARM_UPPER_POSITION_STOWED,
+                            true,
+                            IntakeState.Up,
+                            true)
+                )
+            ),
 
-            new FollowPathTask(isRed ? "5To11Red" : "5To11Blue", Type.Absolute),
-            new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_STOWED,
-                TuningConstants.ARM_UPPER_POSITION_STOWED,
-                false,
-                IntakeState.Up,
-                true),
-            
-            new WaitTask(1.0),
             new ResetLevelTask(),
-
             new GoOverChargeStationTask(false, true),
 
-            new FollowPathTask("goBackwards30in", Type.RobotRelativeFromCurrentPose),
+            new FollowPathTask("goBackwards1ft", Type.RobotRelativeFromCurrentPose),
             new WaitTask(0.5),
             
             new ChargeStationTask(true, Orientation.Backwards)
@@ -644,7 +647,6 @@ public class AutonomousRoutineSelector
                 IntakeState.Up,
                 true),
             new IntakePositionTask(true),
-                
 
             new WaitTask(0.2),
             new IntakeGamePieceTask(true, 1.0),
@@ -712,15 +714,15 @@ public class AutonomousRoutineSelector
                     true,
                     true)),
             new ArmMMPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_HIGH_CONE_UP,
-                TuningConstants.ARM_UPPER_POSITION_HIGH_CONE_UP,
+                TuningConstants.ARM_LOWER_POSITION_HIGH_CONE_DOWN,
+                TuningConstants.ARM_UPPER_POSITION_HIGH_CONE_DOWN,
                 true,
                 IntakeState.Up,
                 true),
             new IntakePositionTask(true),
 
             new WaitTask(0.2),
-            new IntakeGamePieceTask(true, 0.8),
+            new IntakeGamePieceTask(true, 1.0),
 
             ConcurrentTask.AllTasks(
                 new FollowPathTask(isRed ? "GuardEdgeTo23Red" : "GuardEdgeTo23Blue", Type.Absolute),

@@ -47,11 +47,11 @@ public class PathPlannerTrajectoryGenerator
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
-                TuningConstants.DRIVETRAIN_LOW_PATH_TRANSLATIONAL_VELOCITY,
-                TuningConstants.DRIVETRAIN_LOW_PATH_TRANSLATIONAL_ACCELERATION,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(0.0, 0.0, 180.0, 0.0),
-                new PathPlannerWaypoint(-30.0, 0.0, 180.0, 0.0)),
-                "goBackwards30in");
+                new PathPlannerWaypoint(-12.0, 0.0, 180.0, 0.0)),
+                "goBackwards1ft");
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
