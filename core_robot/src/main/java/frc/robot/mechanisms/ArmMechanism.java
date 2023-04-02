@@ -581,6 +581,11 @@ public class ArmMechanism implements IMechanism
                 // and we don't really expect to _want_ to twist in those scenarios...
                 twistAmount = this.driver.getAnalog(AnalogOperation.ArmTwistLeft) - this.driver.getAnalog(AnalogOperation.ArmTwistRight);
                 twistAmount *= 0.5 * TuningConstants.ARM_MAX_TWIST_AMOUNT;
+                if (!Helpers.RoughEquals(twistAmount, 0.0))
+                {
+                    this.lowerSetpointChangedTime = currTime;
+                    this.lowerLAsStalled = false;
+                }
             }
         }
 

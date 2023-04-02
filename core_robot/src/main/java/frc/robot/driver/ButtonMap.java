@@ -1304,37 +1304,43 @@ public class ButtonMap implements IButtonMap
                 ConcurrentTask.AllTasks(
                     new ResetLevelTask(),
                     new PositionStartingTask(
-                        TuningConstants.GuardEdgeStartX,
-                        TuningConstants.FullWidth - TuningConstants.GuardEdgeY,
+                        TuningConstants.StartGridX,
+                        PathPlannerTrajectoryGenerator.getYPosition(false, TuningConstants.StartFiveGridY),
                         180.0,
                         true,
                         true)),
-                new FollowPathTask("GuardStartTo9Red", Type.Absolute),
-                new FollowPathTask("9To17Red", Type.Absolute),
-                new FollowPathTask("17To8Red", Type.Absolute),
-                // ConcurrentTask.AllTasks(
-                //     new FollowPathTask("GuardStartTo9Blue", Type.Absolute),
-                //     SequentialTask.Sequence(
-                //         new WaitTask(0.5),
-                //         new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE, TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE)
-                //     )
-                // ),
     
-                // new FollowPathTask(false ? "11To5Red" : "11To5Blue", Type.Absolute),
-                // new IntakeExtendTask(true),
-                // new IntakeInTask(false, 1.5),
-    
-                new FollowPathTask(false ? "11To5Red" : "11To5Blue", Type.Absolute),
+                new ArmMMPositionTask(
+                    TuningConstants.ARM_LOWER_POSITION_HIGH_CONE_DOWN,
+                    TuningConstants.ARM_UPPER_POSITION_HIGH_CONE_DOWN,
+                    true,
+                    IntakeState.Up,
+                    true),
                 new IntakePositionTask(true),
-                new IntakeGamePieceTask(false, 1.5),
+    
+                new WaitTask(0.2),
+                new IntakeGamePieceTask(true, 1.0),
     
                 ConcurrentTask.AllTasks(
                     new FollowPathTask(false ? "5To11Red" : "5To11Blue", Type.Absolute),
                     SequentialTask.Sequence(
-                        new WaitTask(0.5),
-                        new ArmMMPositionTask(TuningConstants.ARM_LOWER_POSITION_STOWED, TuningConstants.ARM_UPPER_POSITION_STOWED)
+                            new WaitTask(1.0),
+                            new ArmMMPositionTask(
+                                TuningConstants.ARM_LOWER_POSITION_STOWED,
+                                TuningConstants.ARM_UPPER_POSITION_STOWED,
+                                true,
+                                IntakeState.Up,
+                                true)
                     )
-                )
+                ),
+    
+                new ResetLevelTask(),
+                new GoOverChargeStationTask(false, true),
+    
+                new FollowPathTask("goBackwards1ft", Type.RobotRelativeFromCurrentPose),
+                new WaitTask(0.5),
+                
+                new ChargeStationTask(true, Orientation.Backwards)
             ),
             new IOperation[]
             {

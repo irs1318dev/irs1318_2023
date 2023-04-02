@@ -604,12 +604,13 @@ public class AutonomousRoutineSelector
             ),
 
             new ResetLevelTask(),
-            new GoOverChargeStationTask(false, true),
-
-            new FollowPathTask("goBackwards1ft", Type.RobotRelativeFromCurrentPose),
-            new WaitTask(0.5),
-            
-            new ChargeStationTask(true, Orientation.Backwards)
+            ConcurrentTask.AnyTasks(
+                SequentialTask.Sequence(
+                    new GoOverChargeStationTask(false, true),
+                    new WaitTask(0.5)),
+                new WaitTask(4.0)),
+                new ResetLevelTask(),
+                new ChargeStationTaskV3(true, ChargeStationTaskV3.Orientation.Backwards)
         );
     }
 

@@ -49,7 +49,7 @@ public class TuningConstants
     public static final double GroundOneY = 180.19;
     public static final double GroundTwoY = 132.19;
     public static final double GroundThreeY = 84.19;
-    public static final double GroundFourY = 36.19;
+    public static final double GroundFourY = 33.19;
     public static final double LoadEdgeY = TuningConstants.StartOneGridY + 1.521; // Edge of grid - 17.5
     public static final double GuardEdgeY = 17.5;
     public static final double FullWidth = 315.5; // (Y) 26 ft. 3.5 in, from game manual
@@ -60,7 +60,7 @@ public class TuningConstants
     public static final double CloseChargeStationX = 30.345;//84.61; // 12.845 inches away from the charge station and grid + Robot centering value
     public static final double FarChargeStationX = 166.875;//222.635; // 15 inches away from the charge station + Robot centering value
     public static final double FarChargeStationInBetweenX = TuningConstants.FarChargeStationX + 30.0; // 30 inches away from last point to allow for turning
-    public static final double GroundPiecesX = 220.5;//253.265; // On ground pieces real value 47.36
+    public static final double GroundPiecesX = 224.5;//253.265; // On ground pieces real value 47.36
     public static final double LoadEdgeStartX = 58.5;//110.765;
     public static final double GuardEdgeStartX = 77.75;//132.015;
     public static final double FullLength = 651.25; // (X) 54 ft. 3.25 in, from game manual
@@ -107,8 +107,8 @@ public class TuningConstants
     public static final int TAGS_MISSED_THRESHOLD = 30;
     public static final int TAGS_FOUND_THRESHOLD = 5;
     public static final double ACCEPTABLE_RANGE_IN_X_AND_Y_FOR_ALIGNMENT_TRANSLATE = 1.0; // in inches
-    public static final double APRILTAG_TO_CONE_NODE_HORIZONTAL_DISTANCE = 22.0; // in inches
-    public static final double APRILTAG_TO_DESIRED_SCORING_X_POSITION_DISTANCE = 40.0; // from apriltag location to center of robot, in inches
+    public static final double APRILTAG_TO_CONE_NODE_HORIZONTAL_DISTANCE = 26.5; // in inches
+    public static final double APRILTAG_TO_DESIRED_SCORING_X_POSITION_DISTANCE = 30.00;//40.0; // from apriltag location to center of robot, in inches
 
     // Acceptable vision centering range values in degrees
     public static final double MAX_PID_TURNING_RANGE_DEGREES = 7.0;
@@ -151,7 +151,7 @@ public class TuningConstants
     public static final double VISION_MOVING_PID_MAX = 0.3;
 
     // PID settings for translating the robot based on a vision target
-    public static final double VISION_AT_TRANSLATION_X_PID_KP = 0.02;
+    public static final double VISION_AT_TRANSLATION_X_PID_KP = 0.023;
     public static final double VISION_AT_TRANSLATION_X_PID_KI = 0.0;
     public static final double VISION_AT_TRANSLATION_X_PID_KD = 0.0;
     public static final double VISION_AT_TRANSLATION_X_PID_KF = 0.0;
@@ -160,7 +160,7 @@ public class TuningConstants
     public static final double VISION_AT_TRANSLATION_X_PID_MAX = 0.3;
 
     // PID settings for translating the robot based on a vision target
-    public static final double VISION_AT_TRANSLATION_Y_PID_KP = 0.02;
+    public static final double VISION_AT_TRANSLATION_Y_PID_KP = 0.023;
     public static final double VISION_AT_TRANSLATION_Y_PID_KI = 0.0;
     public static final double VISION_AT_TRANSLATION_Y_PID_KD = 0.0;
     public static final double VISION_AT_TRANSLATION_Y_PID_KF = 0.0;
@@ -507,8 +507,8 @@ public class TuningConstants
     public static final double ARM_UPPER_POSITION_HIGH_CONE_DOWN = 6380.0;
     public static final double ARM_LOWER_POSITION_HIGH_CUBE = 3680.0;
     public static final double ARM_UPPER_POSITION_HIGH_CUBE = 7250.0;
-    public static final double ARM_LOWER_POSITION_CONE_GROUND_PICKUP = 2350.0;
-    public static final double ARM_UPPER_POSITION_CONE_GROUND_PICKUP = 1800.0;
+    public static final double ARM_LOWER_POSITION_CONE_GROUND_PICKUP = 2680.0;
+    public static final double ARM_UPPER_POSITION_CONE_GROUND_PICKUP = 1330.0;
     public static final double ARM_LOWER_POSITION_CUBE_GROUND_PICKUP = 3015.0;
     public static final double ARM_UPPER_POSITION_CUBE_GROUND_PICKUP = 1525.0;
     public static final double ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP_APPROACH = 6140.0;
@@ -584,6 +584,9 @@ public class TuningConstants
     public static final double CHARGE_STATION_STARTING_SPEED_V2 = 0.85;
     public static final double CHARGE_STATION_CLIMBING_SPEED_V2 = 0.25;
     public static final double CHARGE_STATION_BALANCING_SPEED_V2 = 0.08;
+
+    //charge station task extra tuning constants v3
+    public static final double CHARGE_STATION_CLIMBING_TRANSITION_WAIT_DURATION_V3 = 1.5;
 
     //TODO: edit to be shorter, because climbing velocity has increased.
     public static final double CHARGE_STATION_CLIMBING_TRANSITION_WAIT_DURATION_V2 = 1.25;

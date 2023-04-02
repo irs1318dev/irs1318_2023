@@ -61,7 +61,7 @@ public class GoOverChargeStationTask extends ControlTaskBase
 
         // calculate floating average of past 0.1 seconds
         this.pitchRateAverage = 0.0;
-        this.pitchRateAverageCalculator = new FloatingAverageCalculator(this.timer, 0.25, 50);
+        this.pitchRateAverageCalculator = new FloatingAverageCalculator(this.timer, 0.5, 50);
         this.pitch = this.imuManager.getPitch();
 
         this.setDigitalOperationState(DigitalOperation.DriveTrainEnableMaintainDirectionMode, true);
@@ -107,7 +107,7 @@ public class GoOverChargeStationTask extends ControlTaskBase
         {
             
             if ((Math.abs(this.pitch) <= TuningConstants.CHARGE_STATION_PITCH_VARIATION)
-            && ((!this.backwardOrientation && this.pitchRateAverage <= 0) || (this.backwardOrientation && this.pitchRateAverage >= 0)))
+                && ((!this.backwardOrientation && this.pitchRateAverage <= 0.5) || (this.backwardOrientation && this.pitchRateAverage >= 0.5)))
             {
                 this.currentState = State.Completed;
             }
@@ -118,11 +118,11 @@ public class GoOverChargeStationTask extends ControlTaskBase
             case Centered:
             
                 //uses climbing speed
-                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_CLIMBING_SPEED_V2 * this.reverse);
+                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.4 * this.reverse);
                 break;
 
             case Climbing:
-                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, TuningConstants.CHARGE_STATION_CLIMBING_SPEED_V2 * this.reverse);
+                this.setAnalogOperationState(AnalogOperation.DriveTrainMoveForward, 0.4 * this.reverse);
                 break;
 
             case Starting:
