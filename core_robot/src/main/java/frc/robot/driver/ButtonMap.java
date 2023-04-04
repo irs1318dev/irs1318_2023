@@ -495,6 +495,29 @@ public class ButtonMap implements IButtonMap
         //         DigitalOperation.IntakeDown,
         //         DigitalOperation.IntakeUp,
         //     }),
+
+        new MacroOperationDescription(
+            MacroOperation.ArmSubstationHover,
+            UserInputDevice.Test2,
+            UserInputDeviceButton.XBONE_A_BUTTON,
+            Shift.DriverDebug,
+            Shift.None,
+            ButtonType.Toggle,
+            () -> ConcurrentTask.AnyTasks(
+                SequentialTask.Sequence(
+                    new ArmIKPositionTask(TuningConstants.ARM_UPPER_POSITION_INITIAL_HOVER_SUBSTATION, TuningConstants.ARM_LOWER_POSITION_INITIAL_HOVER_SUBSTATION),
+                    new ArmIKPositionTask(TuningConstants.ARM_UPPER_POSITION_TARGET_HOVER_SUBSTATION_MIDPOINT, TuningConstants.ARM_LOWER_POSITION_TARGET_HOVER_SUBSTATION_MIDPOINT),
+                    ConcurrentTask.AllTasks(
+                        new ArmIKPositionTask(TuningConstants.ARM_UPPER_POSITION_TARGET_HOVER_SUBSTATION_FINAL, TuningConstants.ARM_LOWER_POSITION_TARGET_HOVER_SUBSTATION_FINAL),
+                        new IntakeGamePieceTask(false, 1)
+                    )
+                )),
+            new IOperation[]
+            {
+                DigitalOperation.IntakeCube,
+                DigitalOperation.IntakeCone
+            }),
+
         new MacroOperationDescription(
             MacroOperation.VisionGridCube,
             UserInputDevice.Driver,

@@ -522,11 +522,14 @@ public class TuningConstants
     public static final double ARM_LOWER_POSITION_CONE_UPRIGHTING_MACRO = 4400;
     public static final double ARM_UPPER_POSITION_CONE_UPRIGHTING_MACRO = 2050;
 
-    public static final double ARM_UPPER_POSITION_INITIAL_HOVER_SUBSTATION = MAGIC_NULL_VALUE;//hover starting point
+    public static final double ARM_UPPER_POSITION_INITIAL_HOVER_SUBSTATION = MAGIC_NULL_VALUE;//hover starting point IK for stage 1
     public static final double ARM_LOWER_POSITION_INITIAL_HOVER_SUBSTATION = MAGIC_NULL_VALUE;
 
-    public static final double ARM_UPPER_POSITION_TARGET_HOVER_SUBSTATION = MAGIC_NULL_VALUE; //hover end point
-    public static final double ARM_LOWER_POSITION_TARGET_HOVER_SUBSTATION = MAGIC_NULL_VALUE;
+    public static final double ARM_UPPER_POSITION_TARGET_HOVER_SUBSTATION_MIDPOINT = MAGIC_NULL_VALUE; //hover end point stage 1, and start of stage 2
+    public static final double ARM_LOWER_POSITION_TARGET_HOVER_SUBSTATION_MIDPOINT = MAGIC_NULL_VALUE;
+
+    public static final double ARM_UPPER_POSITION_TARGET_HOVER_SUBSTATION_FINAL = MAGIC_NULL_VALUE; //hover end point stage 2
+    public static final double ARM_LOWER_POSITION_TARGET_HOVER_SUBSTATION_FINAL = MAGIC_NULL_VALUE;
 
     public static final double HOVER_TASK_TIME_TO_TAKE = 1;
 

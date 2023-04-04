@@ -5,11 +5,15 @@ import frc.robot.TuningConstants;
 public class HoverSubstationTask extends ControlTaskBase
 {
 
-    private double length;
     private double initialUpperArmPos;
     private double initialLowerArmPos;
-    private double targetUpperArmPos;
-    private double targetLowerArmPos;
+
+    private double stageOneUpperArmPos;
+    private double stageOneLowerArmPos;
+
+    private double stageTwoUpperArmPos;
+    private double stageTwoLowerArmPos;
+
     private double timeToTake;
     private double diffToTargetUpper;
     private double diffToTargetLower;
@@ -20,18 +24,21 @@ public class HoverSubstationTask extends ControlTaskBase
         initialUpperArmPos = TuningConstants.ARM_UPPER_POSITION_INITIAL_HOVER_SUBSTATION;
         initialLowerArmPos = TuningConstants.ARM_LOWER_POSITION_INITIAL_HOVER_SUBSTATION;
 
-        targetUpperArmPos = TuningConstants.ARM_UPPER_POSITION_TARGET_HOVER_SUBSTATION;
-        targetLowerArmPos = TuningConstants.ARM_LOWER_POSITION_TARGET_HOVER_SUBSTATION;
+        stageOneUpperArmPos = TuningConstants.ARM_UPPER_POSITION_TARGET_HOVER_SUBSTATION_MIDPOINT;
+        stageOneLowerArmPos = TuningConstants.ARM_LOWER_POSITION_TARGET_HOVER_SUBSTATION_MIDPOINT;  
+
+        stageTwoUpperArmPos = TuningConstants.ARM_UPPER_POSITION_TARGET_HOVER_SUBSTATION_FINAL;
+        stageTwoLowerArmPos = TuningConstants.ARM_LOWER_POSITION_TARGET_HOVER_SUBSTATION_FINAL;
 
         timeToTake = TuningConstants.HOVER_TASK_TIME_TO_TAKE;
 
-        diffToTargetUpper = Math.abs(initialUpperArmPos - targetUpperArmPos);
-        diffToTargetLower = Math.abs(initialLowerArmPos - targetLowerArmPos);
+        diffToTargetUpper = Math.abs(initialUpperArmPos - stageOneUpperArmPos);
+        diffToTargetLower = Math.abs(initialLowerArmPos - stageOneLowerArmPos);
     }
 
     @Override
     public void update() {
-        new ArmMMPositionTask(targetLowerArmPos, targetUpperArmPos);
+        new ArmIKPositionTask(stageOneLowerArmPos, stageOneUpperArmPos);
     }
 
     @Override
