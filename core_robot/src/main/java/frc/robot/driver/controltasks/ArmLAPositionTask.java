@@ -8,7 +8,7 @@ import frc.robot.mechanisms.*;
  * Task that sets the Arm to the desired position using MM
  * 
  */
-public class ArmMMPositionTask extends ControlTaskBase
+public class ArmLAPositionTask extends ControlTaskBase
 {
     private enum ArmMMState
     {
@@ -37,22 +37,22 @@ public class ArmMMPositionTask extends ControlTaskBase
     private ArmMMState currentArmState;
     public double upperArmHighIntermediate;
 
-    public ArmMMPositionTask(double lowerExtensionLength, double upperExtensionLength)
+    public ArmLAPositionTask(double lowerExtensionLength, double upperExtensionLength)
     {
         this(lowerExtensionLength, upperExtensionLength, false);
     }
 
-    public ArmMMPositionTask(double lowerExtensionLength, double upperExtensionLength, IntakeState state)
+    public ArmLAPositionTask(double lowerExtensionLength, double upperExtensionLength, IntakeState state)
     {
         this(lowerExtensionLength, upperExtensionLength, false, state, false);
     }
 
-    public ArmMMPositionTask(double lowerExtensionLength, double upperExtensionLength, boolean waitUntilPositionReached)
+    public ArmLAPositionTask(double lowerExtensionLength, double upperExtensionLength, boolean waitUntilPositionReached)
     {
         this(lowerExtensionLength, upperExtensionLength, waitUntilPositionReached, IntakeState.Unchanged, false);
     }
 
-    public ArmMMPositionTask(double lowerExtensionLength, double upperExtensionLength, boolean waitUntilPositionReached, IntakeState state, boolean useAutoBehavior)
+    public ArmLAPositionTask(double lowerExtensionLength, double upperExtensionLength, boolean waitUntilPositionReached, IntakeState state, boolean useAutoBehavior)
     {
         this.lowerExtensionLength = lowerExtensionLength;
         this.upperExtensionLength = upperExtensionLength;

@@ -8,7 +8,7 @@ import frc.lib.driver.descriptions.*;
 import frc.lib.helpers.Helpers;
 import frc.robot.*;
 import frc.robot.driver.controltasks.*;
-import frc.robot.driver.controltasks.ArmMMPositionTask.IntakeState;
+import frc.robot.driver.controltasks.ArmLAPositionTask.IntakeState;
 import frc.robot.driver.controltasks.ChargeStationTask.Orientation;
 import frc.robot.driver.controltasks.FollowPathTask.Type;
 import frc.robot.driver.controltasks.VisionAprilTagTranslateTask.GridScoringPosition;
@@ -529,10 +529,11 @@ public class ButtonMap implements IButtonMap
                 SequentialTask.Sequence(
                     ConcurrentTask.AllTasks(
                         new OrientationTask(180.0),
-                        new CheckIntermediateArmPositionTask(
+                        new CheckArmPositionTask(
                             TuningConstants.ARM_LOWER_POSITION_APPROACH,
                             TuningConstants.ARM_UPPER_POSITION_APPROACH,
-                            IntakeState.Up)),
+                            IntakeState.Up,
+                            TuningConstants.ARM_IKZ_POSITION_APPROACH)),
                     ConcurrentTask.AnyTasks(
                         new VisionAprilTagTranslateTask(GridScoringPosition.MiddleCube),
                         new OrientationTask(180.0, true, true)),
@@ -601,10 +602,11 @@ public class ButtonMap implements IButtonMap
                 SequentialTask.Sequence(
                     ConcurrentTask.AllTasks(
                         new OrientationTask(180.0),
-                        new CheckIntermediateArmPositionTask(
+                        new CheckArmPositionTask(
                             TuningConstants.ARM_LOWER_POSITION_APPROACH,
                             TuningConstants.ARM_UPPER_POSITION_APPROACH,
-                            IntakeState.Down)),
+                            IntakeState.Down,
+                            TuningConstants.ARM_IKZ_POSITION_APPROACH)),
                     ConcurrentTask.AnyTasks(
                         new VisionAprilTagTranslateTask(GridScoringPosition.LeftCone),
                         new OrientationTask(180.0, true, true)),
@@ -674,10 +676,11 @@ public class ButtonMap implements IButtonMap
                 SequentialTask.Sequence(
                     ConcurrentTask.AllTasks(
                         new OrientationTask(180.0, true),
-                        new CheckIntermediateArmPositionTask(
+                        new CheckArmPositionTask(
                             TuningConstants.ARM_LOWER_POSITION_APPROACH,
                             TuningConstants.ARM_UPPER_POSITION_APPROACH,
-                            IntakeState.Down)),
+                            IntakeState.Down,
+                            TuningConstants.ARM_IKZ_POSITION_APPROACH)),
                     ConcurrentTask.AnyTasks(
                         new VisionAprilTagTranslateTask(GridScoringPosition.RightCone),
                         new OrientationTask(180.0, true, true)),
@@ -792,7 +795,7 @@ public class ButtonMap implements IButtonMap
             Shift.DriverDebug,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
-                new ArmMMPositionTask(
+                new ArmLAPositionTask(
                     TuningConstants.ARM_LOWER_POSITION_CONE_UPRIGHTING_MACRO,
                     TuningConstants.ARM_UPPER_POSITION_CONE_UPRIGHTING_MACRO,
                     true),
@@ -861,7 +864,7 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
-                new ArmMMPositionTask(
+                new ArmLAPositionTask(
                     TuningConstants.ARM_LOWER_POSITION_CONE_GROUND_PICKUP,
                     TuningConstants.ARM_UPPER_POSITION_CONE_GROUND_PICKUP,
                     IntakeState.Up),
@@ -882,7 +885,7 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
-                new ArmMMPositionTask(
+                new ArmLAPositionTask(
                     TuningConstants.ARM_LOWER_POSITION_MIDDLE_CONE,
                     TuningConstants.ARM_UPPER_POSITION_MIDDLE_CONE,
                     IntakeState.Down),
@@ -902,7 +905,7 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
-                new ArmMMPositionTask(
+                new ArmLAPositionTask(
                     TuningConstants.ARM_LOWER_POSITION_MIDDLE_CUBE,
                     TuningConstants.ARM_UPPER_POSITION_MIDDLE_CUBE,
                     IntakeState.Up),
@@ -922,7 +925,7 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
-                new ArmMMPositionTask(
+                new ArmLAPositionTask(
                     TuningConstants.ARM_LOWER_POSITION_HIGH_CONE_UP,
                     TuningConstants.ARM_UPPER_POSITION_HIGH_CONE_UP,
                     IntakeState.Up),
@@ -942,7 +945,7 @@ public class ButtonMap implements IButtonMap
             Shift.CodriverDebug,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
-                new ArmMMPositionTask(
+                new ArmLAPositionTask(
                     TuningConstants.ARM_LOWER_POSITION_HIGH_CONE_DOWN,
                     TuningConstants.ARM_UPPER_POSITION_HIGH_CONE_DOWN,
                     IntakeState.Down),
@@ -962,7 +965,7 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
-                new ArmMMPositionTask(
+                new ArmLAPositionTask(
                     TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE,
                     TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE,
                     IntakeState.Up),
@@ -982,10 +985,10 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
-                new ArmMMPositionTask(
+                new ArmLAPositionTask(
                     TuningConstants.ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP_APPROACH,
                     TuningConstants.ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP_APPROACH),
-                new ArmMMPositionTask(
+                new ArmLAPositionTask(
                     TuningConstants.ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP,
                     TuningConstants.ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP,
                     IntakeState.Down),
@@ -1005,7 +1008,7 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
-                new ArmMMPositionTask(
+                new ArmLAPositionTask(
                     TuningConstants.ARM_LOWER_POSITION_CUBE_GROUND_PICKUP,
                     TuningConstants.ARM_UPPER_POSITION_CUBE_GROUND_PICKUP,
                     IntakeState.Down),
@@ -1045,7 +1048,7 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
-                new ArmMMPositionTask(
+                new ArmLAPositionTask(
                     TuningConstants.ARM_LOWER_POSITION_STOWED,
                     TuningConstants.ARM_UPPER_POSITION_STOWED,
                     IntakeState.Up),
@@ -1064,7 +1067,7 @@ public class ButtonMap implements IButtonMap
             Shift.CodriverDebug,
             Shift.CodriverDebug,
             ButtonType.Toggle,
-            () -> new ArmMMPositionTask(
+            () -> new ArmLAPositionTask(
                 TuningConstants.ARM_LOWER_POSITION_APPROACH,
                 TuningConstants.ARM_UPPER_POSITION_APPROACH),
             new IOperation[]
@@ -1333,7 +1336,7 @@ public class ButtonMap implements IButtonMap
                         true,
                         true)),
     
-                new ArmMMPositionTask(
+                new ArmLAPositionTask(
                     TuningConstants.ARM_LOWER_POSITION_HIGH_CONE_DOWN,
                     TuningConstants.ARM_UPPER_POSITION_HIGH_CONE_DOWN,
                     true,
@@ -1348,7 +1351,7 @@ public class ButtonMap implements IButtonMap
                     new FollowPathTask(false ? "5To11Red" : "5To11Blue", Type.Absolute),
                     SequentialTask.Sequence(
                             new WaitTask(1.0),
-                            new ArmMMPositionTask(
+                            new ArmLAPositionTask(
                                 TuningConstants.ARM_LOWER_POSITION_STOWED,
                                 TuningConstants.ARM_UPPER_POSITION_STOWED,
                                 true,

@@ -1,21 +1,31 @@
 package frc.robot.driver.controltasks;
 
 //import frc.robot.TuningConstants;
-import frc.robot.driver.controltasks.ArmMMPositionTask.IntakeState;
+import frc.robot.driver.controltasks.ArmLAPositionTask.IntakeState;
 import frc.robot.mechanisms.ArmMechanism;
 
-public class CheckIntermediateArmPositionTask extends DecisionSequentialTask
+public class CheckArmPositionTask extends DecisionSequentialTask
 {
-    private ArmMechanism arm;
-    private final IntakeState desiredState;
     private final double lowerExtensionLength;
     private final double upperExtensionLength;
-    public CheckIntermediateArmPositionTask(double lowerExtensionLength, double upperExtensionLength, IntakeState state)
+    private final IntakeState desiredState;
+    private final double minimumZ;
+
+    private ArmMechanism arm;
+
+    public CheckArmPositionTask(
+        double lowerExtensionLength,
+        double upperExtensionLength,
+        IntakeState state,
+        double minimumZ)
     {
         super();
+
         this.lowerExtensionLength = lowerExtensionLength;
         this.upperExtensionLength = upperExtensionLength;
         this.desiredState = state;
+
+        this.minimumZ = minimumZ;
     }
 
     @Override
@@ -25,14 +35,9 @@ public class CheckIntermediateArmPositionTask extends DecisionSequentialTask
         this.arm = this.getInjector().getInstance(ArmMechanism.class);
 
         double fkZ = this.arm.getFKZPosition();
-        if (fkZ < upperExtensionLength) //Arm Upper Position Approach
+        if (fkZ < upperExtensionLength)
         {
-            this.AppendTask(new ArmMMPositionTask(lowerExtensionLength, upperExtensionLength, IntakeState.Up));
-        }
-
-        else
-        {
-            return;
+            this.AppendTask(new ArmLAPositionTask(this.lowerExtensionLength, this.upperExtensionLength, this.desiredState));
         }
     }
 }

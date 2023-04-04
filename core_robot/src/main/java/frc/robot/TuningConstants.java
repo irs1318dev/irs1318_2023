@@ -519,42 +519,50 @@ public class TuningConstants
     public static final double ARM_UPPER_POSITION_CUBE_SINGLE_SUBSTATION_PICKUP = 4020.0;
     public static final double ARM_LOWER_POSITION_APPROACH = HardwareConstants.ARM_FULL_EXTENSION_TICKS;
     public static final double ARM_UPPER_POSITION_APPROACH = 4100.0;
-    public static final double ARM_LOWER_POSITION_CONE_UPRIGHTING_MACRO = 4400;
-    public static final double ARM_UPPER_POSITION_CONE_UPRIGHTING_MACRO = 2050;
+    public static final double ARM_LOWER_POSITION_CONE_UPRIGHTING_MACRO = 4400.0;
+    public static final double ARM_UPPER_POSITION_CONE_UPRIGHTING_MACRO = 2050.0;
 
-    public static final double ARM_UPPER_POSITION_INITIAL_HOVER_SUBSTATION = MAGIC_NULL_VALUE;//hover starting point IK for stage 1
-    public static final double ARM_LOWER_POSITION_INITIAL_HOVER_SUBSTATION = MAGIC_NULL_VALUE;
+    public static final double ARM_UPPER_POSITION_INITIAL_HOVER_SUBSTATION = TuningConstants.MAGIC_NULL_VALUE; // hover starting point IK for stage 1
+    public static final double ARM_LOWER_POSITION_INITIAL_HOVER_SUBSTATION = TuningConstants.MAGIC_NULL_VALUE;
+    public static final double ARM_UPPER_POSITION_TARGET_HOVER_SUBSTATION_MIDPOINT = TuningConstants.MAGIC_NULL_VALUE; // hover end point stage 1, and start of stage 2
+    public static final double ARM_LOWER_POSITION_TARGET_HOVER_SUBSTATION_MIDPOINT = TuningConstants.MAGIC_NULL_VALUE;
+    public static final double ARM_UPPER_POSITION_TARGET_HOVER_SUBSTATION_FINAL = TuningConstants.MAGIC_NULL_VALUE; // hover end point stage 2
+    public static final double ARM_LOWER_POSITION_TARGET_HOVER_SUBSTATION_FINAL = TuningConstants.MAGIC_NULL_VALUE;
+    public static final double ARM_IKX_POSITION_INITIAL_HOVER_SUBSTATION = TuningConstants.MAGIC_NULL_VALUE; // hover starting point IK for stage 1
+    public static final double ARM_IKZ_POSITION_INITIAL_HOVER_SUBSTATION = TuningConstants.MAGIC_NULL_VALUE;
+    public static final double ARM_IKX_POSITION_TARGET_HOVER_SUBSTATION_MIDPOINT = TuningConstants.MAGIC_NULL_VALUE; // hover end point stage 1, and start of stage 2
+    public static final double ARM_IKZ_POSITION_TARGET_HOVER_SUBSTATION_MIDPOINT = TuningConstants.MAGIC_NULL_VALUE;
+    public static final double ARM_IKX_POSITION_TARGET_HOVER_SUBSTATION_FINAL = TuningConstants.MAGIC_NULL_VALUE; // hover end point stage 2
+    public static final double ARM_IKZ_POSITION_TARGET_HOVER_SUBSTATION_FINAL = TuningConstants.MAGIC_NULL_VALUE;
 
-    public static final double ARM_UPPER_POSITION_TARGET_HOVER_SUBSTATION_MIDPOINT = MAGIC_NULL_VALUE; //hover end point stage 1, and start of stage 2
-    public static final double ARM_LOWER_POSITION_TARGET_HOVER_SUBSTATION_MIDPOINT = MAGIC_NULL_VALUE;
-
-    public static final double ARM_UPPER_POSITION_TARGET_HOVER_SUBSTATION_FINAL = MAGIC_NULL_VALUE; //hover end point stage 2
-    public static final double ARM_LOWER_POSITION_TARGET_HOVER_SUBSTATION_FINAL = MAGIC_NULL_VALUE;
-
-    public static final double HOVER_TASK_TIME_TO_TAKE = 1;
+    public static final double HOVER_TASK_TIME_TO_TAKE = 1.0;
 
     public static final double ARM_IKX_POSITION_STOWED = 2.7725594688249453;
     public static final double ARM_IKZ_POSITION_STOWED = 9.226618272316927;
-    public static final double ARM_IKX_POSITION_GROUND_PLACING = 23.409486778127867;
-    public static final double ARM_IKZ_POSITION_GROUND_PLACING = 8.108920118845923;
-    public static final double ARM_IKX_POSITION_MIDDLE_CONE = 37.26065704303803;
-    public static final double ARM_IKZ_POSITION_MIDDLE_CONE = 34.72708676253013;
-    public static final double ARM_IKX_POSITION_MIDDLE_CUBE = 37.82742755893932;
-    public static final double ARM_IKZ_POSITION_MIDDLE_CUBE = 21.045492744242054;
-    public static final double ARM_IKX_POSITION_HIGH_CONE = 55.810758222247195;
-    public static final double ARM_IKZ_POSITION_HIGH_CONE = 48.02010779021726;
-    public static final double ARM_IKX_POSITION_HIGH_CUBE = 52.39322170289499;
-    public static final double ARM_IKZ_POSITION_HIGH_CUBE = 33.932579125363674;
-    public static final double ARM_IKX_POSITION_GROUND_PICKUP = 23.706159602313825;
-    public static final double ARM_IKZ_POSITION_GROUND_PICKUP = 2.579351786849614;
-    public static final double ARM_IKX_POSITION_CONE_SUBSTATION_PICKUP = 55.25973368669209;
-    public static final double ARM_IKZ_POSITION_CONE_SUBSTATION_PICKUP = 35.34859476648403;
-    public static final double ARM_IKX_POSITION_CUBE_SUBSTATION_PICKUP = 33.3687854421636;
-    public static final double ARM_IKZ_POSITION_CUBE_SUBSTATION_PICKUP = 21.298834191380973;
+    public static final double ARM_IKX_POSITION_MIDDLE_CONE = 29.49869231367811;
+    public static final double ARM_IKZ_POSITION_MIDDLE_CONE = 25.263637052668365;
+    public static final double ARM_IKX_POSITION_MIDDLE_CUBE = 40.552320746071516;
+    public static final double ARM_IKZ_POSITION_MIDDLE_CUBE = 24.72482453266215;
+    public static final double ARM_IKX_POSITION_HIGH_CONE_DOWN = 49.14651299117821;
+    public static final double ARM_IKZ_POSITION_HIGH_CONE_DOWN = 40.75996101195127;
+    public static final double ARM_IKX_POSITION_HIGH_CONE_UP = 50.18334429528092;
+    public static final double ARM_IKZ_POSITION_HIGH_CONE_UP = 35.77466784618557;
+    public static final double ARM_IKX_POSITION_HIGH_CUBE = 54.580176045592424;
+    public static final double ARM_IKZ_POSITION_HIGH_CUBE = 45.09782500136869;
+    public static final double ARM_IKX_POSITION_CONE_GROUND_PICKUP = 21.437370642085995;
+    public static final double ARM_IKZ_POSITION_CONE_GROUND_PICKUP = 3.834472995886834;
+    public static final double ARM_IKX_POSITION_CUBE_GROUND_PICKUP = 23.171558855643603;
+    public static final double ARM_IKZ_POSITION_CUBE_GROUND_PICKUP = 4.54382320658744;
+    public static final double ARM_IKX_POSITION_CONE_SUBSTATION_PICKUP_APPROACH = 44.92716889418364;
+    public static final double ARM_IKZ_POSITION_CONE_SUBSTATION_PICKUP_APPROACH = 41.60653585099458;
+    public static final double ARM_IKX_POSITION_CONE_SUBSTATION_PICKUP = 45.02191777909888;
+    public static final double ARM_IKZ_POSITION_CONE_SUBSTATION_PICKUP = 40.917830197850705;
+    public static final double ARM_IKX_POSITION_CUBE_SINGLE_SUBSTATION_PICKUP = 32.50071352716033;
+    public static final double ARM_IKZ_POSITION_CUBE_SINGLE_SUBSTATION_PICKUP = 31.23325436412944;
     public static final double ARM_IKX_POSITION_APPROACH = 32.6997990497486;
     public static final double ARM_IKZ_POSITION_APPROACH = 31.95776639264709;
-    public static final double ARM_IKX_POSITION_CONE_UPRIGHTING_MACRO = 23.409486778127867;
-    public static final double ARM_IKZ_POSITION_CONE_UPRIGHTING_MACRO = 8.108920118845923;
+    public static final double ARM_IKX_POSITION_CONE_UPRIGHTING_MACRO = 27.107962669883413;
+    public static final double ARM_IKZ_POSITION_CONE_UPRIGHTING_MACRO = 8.51325895329839;
 
     public static final double ARM_LOWER_POSITION_LOWER_INTERMIDATE = HardwareConstants.ARM_FULL_EXTENSION_TICKS;
     public static final double ARM_UPPER_POSITION_LOWER_INTERMIDATE = 1200.0;
@@ -569,8 +577,8 @@ public class TuningConstants
     public static final double ARM_Z_IK_LOWER_INTERMIDATE = 14.5;
     public static final double ARM_X_IK_HIGH_INTERMIDATE = TuningConstants.ARM_IKX_POSITION_APPROACH;
     public static final double ARM_Z_IK_HIGH_INTERMIDATE = TuningConstants.ARM_IKZ_POSITION_APPROACH;
-    public static final double ARM_X_IK_INSIDE_TRESHOLD = 18.0;
-    public static final double ARM_Z_IK_INSIDE_TRESHOLD = 12.0;
+    public static final double ARM_X_IK_INSIDE_TRESHOLD = 16.0;
+    public static final double ARM_Z_IK_INSIDE_TRESHOLD = 14.0;
     public static final double ARM_X_IK_HIGH_TRESHOLD = 33.5;
     public static final double ARM_Z_IK_HIGH_TRESHOLD = 30.0;
 
