@@ -35,7 +35,7 @@ public class CheckArmPositionTask extends DecisionSequentialTask
         this.arm = this.getInjector().getInstance(ArmMechanism.class);
 
         double fkZ = this.arm.getFKZPosition();
-        if (fkZ < upperExtensionLength)
+        if (fkZ < this.minimumZ)
         {
             this.AppendTask(new ArmLAPositionTask(this.lowerExtensionLength, this.upperExtensionLength, this.desiredState));
         }
