@@ -529,7 +529,7 @@ public class ButtonMap implements IButtonMap
                 SequentialTask.Sequence(
                     ConcurrentTask.AllTasks(
                         new OrientationTask(180.0),
-                        new ArmMMPositionTask(
+                        new CheckIntermediateArmPositionTask(
                             TuningConstants.ARM_LOWER_POSITION_APPROACH,
                             TuningConstants.ARM_UPPER_POSITION_APPROACH,
                             IntakeState.Up)),
@@ -601,7 +601,7 @@ public class ButtonMap implements IButtonMap
                 SequentialTask.Sequence(
                     ConcurrentTask.AllTasks(
                         new OrientationTask(180.0),
-                        new ArmMMPositionTask(
+                        new CheckIntermediateArmPositionTask(
                             TuningConstants.ARM_LOWER_POSITION_APPROACH,
                             TuningConstants.ARM_UPPER_POSITION_APPROACH,
                             IntakeState.Down)),
@@ -674,7 +674,7 @@ public class ButtonMap implements IButtonMap
                 SequentialTask.Sequence(
                     ConcurrentTask.AllTasks(
                         new OrientationTask(180.0, true),
-                        new ArmMMPositionTask(
+                        new CheckIntermediateArmPositionTask(
                             TuningConstants.ARM_LOWER_POSITION_APPROACH,
                             TuningConstants.ARM_UPPER_POSITION_APPROACH,
                             IntakeState.Down)),

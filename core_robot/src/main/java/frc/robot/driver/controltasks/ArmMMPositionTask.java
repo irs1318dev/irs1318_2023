@@ -45,7 +45,6 @@ public class ArmMMPositionTask extends ControlTaskBase
     public ArmMMPositionTask(double lowerExtensionLength, double upperExtensionLength, IntakeState state)
     {
         this(lowerExtensionLength, upperExtensionLength, false, state, false);
-
     }
 
     public ArmMMPositionTask(double lowerExtensionLength, double upperExtensionLength, boolean waitUntilPositionReached)
