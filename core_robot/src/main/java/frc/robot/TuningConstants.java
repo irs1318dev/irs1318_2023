@@ -49,7 +49,7 @@ public class TuningConstants
     public static final double GroundOneY = 180.19;
     public static final double GroundTwoY = 132.19;
     public static final double GroundThreeY = 84.19;
-    public static final double GroundFourY = 33.19;
+    public static final double GroundFourY = 31.19;//33.19;
     public static final double LoadEdgeY = TuningConstants.StartOneGridY + 1.521; // Edge of grid - 17.5
     public static final double GuardEdgeY = 17.5;
     public static final double FullWidth = 315.5; // (Y) 26 ft. 3.5 in, from game manual
@@ -60,7 +60,7 @@ public class TuningConstants
     public static final double CloseChargeStationX = 30.345;//84.61; // 12.845 inches away from the charge station and grid + Robot centering value
     public static final double FarChargeStationX = 166.875;//222.635; // 15 inches away from the charge station + Robot centering value
     public static final double FarChargeStationInBetweenX = TuningConstants.FarChargeStationX + 30.0; // 30 inches away from last point to allow for turning
-    public static final double GroundPiecesX = 224.5;//253.265; // On ground pieces real value 47.36
+    public static final double GroundPiecesX = 228.5;//224.5;//253.265; // On ground pieces real value 47.36
     public static final double LoadEdgeStartX = 58.5;//110.765;
     public static final double GuardEdgeStartX = 77.75;//132.015;
     public static final double FullLength = 651.25; // (X) 54 ft. 3.25 in, from game manual
