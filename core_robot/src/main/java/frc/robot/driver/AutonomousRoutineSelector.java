@@ -886,13 +886,23 @@ public class AutonomousRoutineSelector
             new WaitTask(0.2),
             new IntakeGamePieceTask(false, 0.8),
             ConcurrentTask.AllTasks(
-                new ArmLAPositionTask(
-                    TuningConstants.ARM_LOWER_POSITION_STOWED,
-                    TuningConstants.ARM_UPPER_POSITION_STOWED,
-                    true,
-                    IntakeState.Up,
-                    true),
-                new FollowPathTask(isRed ? "8To26Red" : "8To26Blue", Type.Absolute)
+                SequentialTask.Sequence(
+                    new ArmLAPositionTask(
+                        TuningConstants.ARM_LOWER_POSITION_STOWED,
+                        TuningConstants.ARM_UPPER_POSITION_STOWED,
+                        true,
+                        IntakeState.Up,
+                        true),
+                    new WaitTask(1.0),
+                    new ArmLAPositionTask(
+                        TuningConstants.ARM_LOWER_POSITION_CONE_GROUND_PICKUP,
+                        TuningConstants.ARM_UPPER_POSITION_CONE_GROUND_PICKUP,
+                        true,
+                        IntakeState.Down,
+                        true),
+                    new IntakeGamePieceTask(false, 1.5)
+                ),
+                new FollowPathTask(isRed ? "8To16Red" : "8To16Blue", Type.Absolute)
             )
         );
     }
@@ -1001,9 +1011,7 @@ public class AutonomousRoutineSelector
                         true),
                     
                     new WaitTask(0.5),
-                    new IntakeGamePieceTask(false, 1.0)
-                    
-                    ),
+                    new IntakeGamePieceTask(false, 1.0)),
 
                 new FollowPathTask(isRed ? "16To8Red" : "16To8Blue", Type.Absolute)
             )
