@@ -501,10 +501,10 @@ public class TuningConstants
     public static final double ARM_UPPER_POSITION_MIDDLE_CONE = 3260.0;
     public static final double ARM_LOWER_POSITION_MIDDLE_CUBE = 5780.0;
     public static final double ARM_UPPER_POSITION_MIDDLE_CUBE = 4320.0;
-    public static final double ARM_LOWER_POSITION_HIGH_CONE_UP = 4650.0;
-    public static final double ARM_UPPER_POSITION_HIGH_CONE_UP = 6100.0;
-    public static final double ARM_LOWER_POSITION_HIGH_CONE_DOWN = 5100.0;
-    public static final double ARM_UPPER_POSITION_HIGH_CONE_DOWN = 6380.0;
+    public static final double ARM_LOWER_POSITION_HIGH_CONE_UP = 4680.0;
+    public static final double ARM_UPPER_POSITION_HIGH_CONE_UP = 6170.0;
+    public static final double ARM_LOWER_POSITION_HIGH_CONE_DOWN = 5380.0;
+    public static final double ARM_UPPER_POSITION_HIGH_CONE_DOWN = 6250.0;
     public static final double ARM_LOWER_POSITION_HIGH_CUBE = 3680.0;
     public static final double ARM_UPPER_POSITION_HIGH_CUBE = 7250.0;
     public static final double ARM_LOWER_POSITION_CONE_GROUND_PICKUP = 2850;//2680.0;
