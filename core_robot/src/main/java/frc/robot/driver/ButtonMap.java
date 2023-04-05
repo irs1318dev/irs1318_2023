@@ -186,20 +186,20 @@ public class ButtonMap implements IButtonMap
             Shift.DriverDebug,
             Shift.DriverDebug,
             ButtonType.Click),
-        new DigitalOperationDescription(
-            DigitalOperation.DriveTrainEnableMaintainDirectionMode,
-            UserInputDevice.Driver,
-            90,
-            Shift.DriverDebug,
-            Shift.None,
-            ButtonType.Click),
-        new DigitalOperationDescription(
-            DigitalOperation.DriveTrainDisableMaintainDirectionMode,
-            UserInputDevice.Driver,
-            90,
-            Shift.DriverDebug,
-            Shift.DriverDebug,
-            ButtonType.Click),
+        // new DigitalOperationDescription(
+        //     DigitalOperation.DriveTrainEnableMaintainDirectionMode,
+        //     UserInputDevice.Driver,
+        //     90,
+        //     Shift.DriverDebug,
+        //     Shift.None,
+        //     ButtonType.Click),
+        // new DigitalOperationDescription(
+        //     DigitalOperation.DriveTrainDisableMaintainDirectionMode,
+        //     UserInputDevice.Driver,
+        //     90,
+        //     Shift.DriverDebug,
+        //     Shift.DriverDebug,
+        //     ButtonType.Click),
         new DigitalOperationDescription(
             DigitalOperation.DriveTrainSlowMode,
             UserInputDevice.Driver,
@@ -497,6 +497,16 @@ public class ButtonMap implements IButtonMap
         //     }),
 
         new MacroOperationDescription(
+            MacroOperation.FaceSubstationWall,
+            UserInputDevice.Driver,
+            90,
+            ButtonType.Toggle,
+            () -> new FaceSubstationWallTask(),
+            new IOperation[]
+            {
+                AnalogOperation.DriveTrainTurnAngleGoal,
+            }),
+        new MacroOperationDescription(
             MacroOperation.ArmSubstationHover,
             UserInputDevice.Test2,
             UserInputDeviceButton.XBONE_A_BUTTON,
@@ -533,7 +543,7 @@ public class ButtonMap implements IButtonMap
                             TuningConstants.ARM_LOWER_POSITION_APPROACH,
                             TuningConstants.ARM_UPPER_POSITION_APPROACH,
                             IntakeState.Up,
-                            TuningConstants.ARM_IKZ_POSITION_APPROACH)),
+                            TuningConstants.ARM_IKZ_MINIMUM_VISION_HEIGHT)),
                     ConcurrentTask.AnyTasks(
                         new VisionAprilTagTranslateTask(GridScoringPosition.MiddleCube),
                         new OrientationTask(180.0, true, true)),
@@ -606,7 +616,7 @@ public class ButtonMap implements IButtonMap
                             TuningConstants.ARM_LOWER_POSITION_APPROACH,
                             TuningConstants.ARM_UPPER_POSITION_APPROACH,
                             IntakeState.Down,
-                            TuningConstants.ARM_IKZ_POSITION_APPROACH)),
+                            TuningConstants.ARM_IKZ_MINIMUM_VISION_HEIGHT)),
                     ConcurrentTask.AnyTasks(
                         new VisionAprilTagTranslateTask(GridScoringPosition.LeftCone),
                         new OrientationTask(180.0, true, true)),
@@ -680,7 +690,7 @@ public class ButtonMap implements IButtonMap
                             TuningConstants.ARM_LOWER_POSITION_APPROACH,
                             TuningConstants.ARM_UPPER_POSITION_APPROACH,
                             IntakeState.Down,
-                            TuningConstants.ARM_IKZ_POSITION_APPROACH)),
+                            TuningConstants.ARM_IKZ_MINIMUM_VISION_HEIGHT)),
                     ConcurrentTask.AnyTasks(
                         new VisionAprilTagTranslateTask(GridScoringPosition.RightCone),
                         new OrientationTask(180.0, true, true)),
@@ -864,17 +874,21 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
+                new IntakePositionTask(false),
                 new ArmLAPositionTask(
                     TuningConstants.ARM_LOWER_POSITION_CONE_GROUND_PICKUP,
                     TuningConstants.ARM_UPPER_POSITION_CONE_GROUND_PICKUP,
+                    true,
                     IntakeState.Up),
-                new IntakePositionTask(false)),
+                new IndicatorTask(2.0, DigitalOperation.SubstationIntakeReady)),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
                 AnalogOperation.ArmMMUpperPosition,
                 DigitalOperation.IntakeDown,
                 DigitalOperation.IntakeUp,
+                DigitalOperation.SubstationIntakeReady,
+                DigitalOperation.ForcePurpleStrobe,
             }),
 
         new MacroOperationDescription(
@@ -985,20 +999,25 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
+                new IntakePositionTask(true),
                 new ArmLAPositionTask(
                     TuningConstants.ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP_APPROACH,
-                    TuningConstants.ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP_APPROACH),
+                    TuningConstants.ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP_APPROACH,
+                    true),
                 new ArmLAPositionTask(
                     TuningConstants.ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP,
                     TuningConstants.ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP,
+                    true,
                     IntakeState.Down),
-                new IntakePositionTask(true)),
+                new IndicatorTask(2.0, DigitalOperation.SubstationIntakeReady)),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
                 AnalogOperation.ArmMMUpperPosition,
                 DigitalOperation.IntakeDown,
                 DigitalOperation.IntakeUp,
+                DigitalOperation.SubstationIntakeReady,
+                DigitalOperation.ForcePurpleStrobe,
             }),
         new MacroOperationDescription(
             MacroOperation.ArmGroundPickupPositionCube,
@@ -1011,14 +1030,18 @@ public class ButtonMap implements IButtonMap
                 new ArmLAPositionTask(
                     TuningConstants.ARM_LOWER_POSITION_CUBE_GROUND_PICKUP,
                     TuningConstants.ARM_UPPER_POSITION_CUBE_GROUND_PICKUP,
+                    true,
                     IntakeState.Down),
-                new IntakePositionTask(true)),
+                new IntakePositionTask(true),
+                new IndicatorTask(2.0, DigitalOperation.SubstationIntakeReady)),
             new IOperation[]
             {
                 AnalogOperation.ArmMMLowerPosition,
                 AnalogOperation.ArmMMUpperPosition,
                 DigitalOperation.IntakeDown,
                 DigitalOperation.IntakeUp,
+                DigitalOperation.SubstationIntakeReady,
+                DigitalOperation.ForcePurpleStrobe,
             }),
         // new MacroOperationDescription(
         //     MacroOperation.ArmCubeSingleSubstationPickupPosition,

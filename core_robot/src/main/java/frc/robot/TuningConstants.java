@@ -388,7 +388,7 @@ public class TuningConstants
     public static final boolean ARM_USE_SIMPLE_MODE = false;
 
     public static final double ARM_INTAKE_CUBE_POWER = 0.8; // Also, eject cone
-    public static final double ARM_INTAKE_CONE_POWER = -0.6; // Also, eject cube
+    public static final double ARM_INTAKE_CONE_POWER = -0.8; // Also, eject cube
     public static final boolean ARM_INTAKE_MOTOR_INVERT_OUTPUT = true;
 
     public static final boolean ARM_USE_MM = false;
@@ -416,17 +416,17 @@ public class TuningConstants
     public static final double ARM_UPPER_POSITION_MM_CRUISE_VELOCITY = 0.8 * 400.0;
     public static final double ARM_UPPER_POSITION_MM_ACCELERATION = 400.0;
 
-    public static final double ARM_LOWER_LEFT_POSITION_PID_KP = 1.9;//1.8;
+    public static final double ARM_LOWER_LEFT_POSITION_PID_KP = 4.0;//1.8;
     public static final double ARM_LOWER_LEFT_POSITION_PID_KI = 0.0;
     public static final double ARM_LOWER_LEFT_POSITION_PID_KD = 0.0;
     public static final double ARM_LOWER_LEFT_POSITION_PID_KF = 0.0;
 
-    public static final double ARM_LOWER_RIGHT_POSITION_PID_KP = 1.9;//1.8;
+    public static final double ARM_LOWER_RIGHT_POSITION_PID_KP = 4.0;//1.8;
     public static final double ARM_LOWER_RIGHT_POSITION_PID_KI = 0.0;
     public static final double ARM_LOWER_RIGHT_POSITION_PID_KD = 0.0;
     public static final double ARM_LOWER_RIGHT_POSITION_PID_KF = 0.0;
 
-    public static final double ARM_UPPER_POSITION_PID_KP = 1.3;//1.2;
+    public static final double ARM_UPPER_POSITION_PID_KP = 4.0;//1.2;
     public static final double ARM_UPPER_POSITION_PID_KI = 0.0;
     public static final double ARM_UPPER_POSITION_PID_KD = 0.0;
     public static final double ARM_UPPER_POSITION_PID_KF = 0.0;
@@ -496,7 +496,7 @@ public class TuningConstants
     public static final double ARM_LOWER_ZEROING_POSITION = 10.0 * HardwareConstants.ARM_FULL_EXTENSION_TICKS;
     public static final double ARM_UPPER_ZEROING_POSITION = -10.0 * HardwareConstants.ARM_FULL_EXTENSION_TICKS;
     public static final double ARM_LOWER_POSITION_STOWED = HardwareConstants.ARM_FULL_EXTENSION_TICKS;
-    public static final double ARM_UPPER_POSITION_STOWED = 0.0;
+    public static final double ARM_UPPER_POSITION_STOWED = 100.0;
     public static final double ARM_LOWER_POSITION_MIDDLE_CONE = 8240.0;
     public static final double ARM_UPPER_POSITION_MIDDLE_CONE = 3260.0;
     public static final double ARM_LOWER_POSITION_MIDDLE_CUBE = 5780.0;
@@ -507,14 +507,14 @@ public class TuningConstants
     public static final double ARM_UPPER_POSITION_HIGH_CONE_DOWN = 6380.0;
     public static final double ARM_LOWER_POSITION_HIGH_CUBE = 3680.0;
     public static final double ARM_UPPER_POSITION_HIGH_CUBE = 7250.0;
-    public static final double ARM_LOWER_POSITION_CONE_GROUND_PICKUP = 2680.0;
-    public static final double ARM_UPPER_POSITION_CONE_GROUND_PICKUP = 1330.0;
+    public static final double ARM_LOWER_POSITION_CONE_GROUND_PICKUP = 2850;//2680.0;
+    public static final double ARM_UPPER_POSITION_CONE_GROUND_PICKUP = 1270;//1330.0;
     public static final double ARM_LOWER_POSITION_CUBE_GROUND_PICKUP = 3015.0;
     public static final double ARM_UPPER_POSITION_CUBE_GROUND_PICKUP = 1525.0;
-    public static final double ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP_APPROACH = 6140.0;
-    public static final double ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP_APPROACH = 6050.0;
-    public static final double ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP = 6100.0;
-    public static final double ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP = 6000.0;
+    public static final double ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP_APPROACH = HardwareConstants.ARM_FULL_EXTENSION_TICKS; //6140.0;
+    public static final double ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP_APPROACH = TuningConstants.ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP + 200.0; //6050.0;
+    public static final double ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP = HardwareConstants.ARM_FULL_EXTENSION_TICKS;//6100.0;
+    public static final double ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP = 4850.0;//6000.0;
     public static final double ARM_LOWER_POSITION_CUBE_SINGLE_SUBSTATION_PICKUP = 8300.0;
     public static final double ARM_UPPER_POSITION_CUBE_SINGLE_SUBSTATION_PICKUP = 4020.0;
     public static final double ARM_LOWER_POSITION_APPROACH = HardwareConstants.ARM_FULL_EXTENSION_TICKS;
@@ -563,6 +563,7 @@ public class TuningConstants
     public static final double ARM_IKZ_POSITION_APPROACH = 31.95776639264709;
     public static final double ARM_IKX_POSITION_CONE_UPRIGHTING_MACRO = 27.107962669883413;
     public static final double ARM_IKZ_POSITION_CONE_UPRIGHTING_MACRO = 8.51325895329839;
+    public static final double ARM_IKZ_MINIMUM_VISION_HEIGHT = 24.25;
 
     public static final double ARM_LOWER_POSITION_LOWER_INTERMIDATE = HardwareConstants.ARM_FULL_EXTENSION_TICKS;
     public static final double ARM_UPPER_POSITION_LOWER_INTERMIDATE = 1200.0;
@@ -609,4 +610,7 @@ public class TuningConstants
 
     //TODO: edit to be shorter, because climbing velocity has increased.
     public static final double CHARGE_STATION_CLIMBING_TRANSITION_WAIT_DURATION_V2 = 1.25;
+
+    // Position for touching wall with front corner bumper and not having intake scrape against wall, but be close enough for picking up a cone
+    public static final double DRIVETRAIN_ORIENTATION_FACE_SUBSTATION_WALL = 22.5; // degrees
 }

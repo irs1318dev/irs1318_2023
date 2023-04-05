@@ -283,8 +283,11 @@ public class ArmMechanism implements IMechanism
 
         if (offsets != null)
         {
-            this.logger.logNumber(LoggingKey.ArmFKXPosition, offsets.first);
-            this.logger.logNumber(LoggingKey.ArmFKZPosition, offsets.second);
+            this.xPosition = offsets.first;
+            this.zPosition = offsets.second;
+
+            this.logger.logNumber(LoggingKey.ArmFKXPosition, this.xPosition);
+            this.logger.logNumber(LoggingKey.ArmFKZPosition, this.zPosition);
         }
     }
 

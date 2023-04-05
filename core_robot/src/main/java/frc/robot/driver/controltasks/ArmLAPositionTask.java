@@ -52,6 +52,11 @@ public class ArmLAPositionTask extends ControlTaskBase
         this(lowerExtensionLength, upperExtensionLength, waitUntilPositionReached, IntakeState.Unchanged, false);
     }
 
+    public ArmLAPositionTask(double lowerExtensionLength, double upperExtensionLength, boolean waitUntilPositionReached, IntakeState state)
+    {
+        this(lowerExtensionLength, upperExtensionLength, waitUntilPositionReached, state, false);
+    }
+
     public ArmLAPositionTask(double lowerExtensionLength, double upperExtensionLength, boolean waitUntilPositionReached, IntakeState state, boolean useAutoBehavior)
     {
         this.lowerExtensionLength = lowerExtensionLength;

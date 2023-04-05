@@ -9,6 +9,7 @@ public enum DigitalOperation implements IOperation
 
     // Driver interaction operations
     ForceLightDriverRumble,
+    SubstationIntakeReady,
     CubeWantedFromSubstation,
     ConeWantedFromSubstation,
     ForcePurpleStrobe,
