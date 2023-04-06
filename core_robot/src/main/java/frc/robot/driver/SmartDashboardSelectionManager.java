@@ -27,7 +27,8 @@ public class SmartDashboardSelectionManager
         OnePlusCharge,
         OnePlusPickup,
         OnePickupCharge,
-        OnePlusOne
+        OnePlusOne,
+        ThreePiece
     }
 
     /**
@@ -48,6 +49,7 @@ public class SmartDashboardSelectionManager
         this.routineChooser.addObject("One Plus Charge", AutoRoutine.OnePlusCharge);
         this.routineChooser.addObject("One Pickup Charge", AutoRoutine.OnePickupCharge);
         this.routineChooser.addObject("One Plus One", AutoRoutine.OnePlusOne);
+        this.routineChooser.addObject("Three Piece", AutoRoutine.ThreePiece);
         networkTableProvider.addChooser("Auto Routine", this.routineChooser);
 
         this.positionChooser = networkTableProvider.getSendableChooser();

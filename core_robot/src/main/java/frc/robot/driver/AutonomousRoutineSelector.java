@@ -180,6 +180,11 @@ public class AutonomousRoutineSelector
                     return guardOnePlusOne(isRed);
                 }
 
+                else if (routine == AutoRoutine.ThreePiece)
+                {
+                    return guardThreePiece(isRed);
+                }
+
                 else
                 {
                     return ConcurrentTask.AllTasks(
