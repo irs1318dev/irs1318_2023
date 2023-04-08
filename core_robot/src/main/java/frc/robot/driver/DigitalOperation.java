@@ -13,6 +13,7 @@ public enum DigitalOperation implements IOperation
     CubeWantedFromSubstation,
     ConeWantedFromSubstation,
     ForcePurpleStrobe,
+    ForceRainbow,
 
     // Vision operations:
     VisionForceDisable,

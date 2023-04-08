@@ -12,6 +12,8 @@ public enum MacroOperation implements IOperation
     FaceForward,
     FaceBackward,
     FaceSubstationWall,
+    ForceRainbow,
+    PIDBackupBrake,
 
     // Vision operations:
     VisionDoubleSubstationLeft,

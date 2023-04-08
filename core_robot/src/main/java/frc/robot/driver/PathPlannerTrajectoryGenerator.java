@@ -191,7 +191,7 @@ public class PathPlannerTrajectoryGenerator
         double LoadOT = isRed ? -90.0 : 90.0; // use ternary operator to determine whether we are facing left or right to go towards loading station (substation)
         double GuardOT = isRed ? 90.0 : -90.0; // use ternary operator to determine whether we are facing left or right to go towards guardrail (away from substation)
         double ForwardLoadOT = isRed ? -45.0 : 45.0; // ternary operator for facing forwards and towards the loading station, in terms of Orientation or Tangent
-        double ForwardGuard = isRed ? 45.0 : -45.0; // ternary operator for facing forwards and towards the guardrail, in terms of Orientation or Tangent
+        double ForwardGuardOT = isRed ? 45.0 : -45.0; // ternary operator for facing forwards and towards the guardrail, in terms of Orientation or Tangent
         double BackwardLoadOT = isRed ? -135.0 : 135.0; // ternary operator for facing backwards and towards the loading station, in terms of Orientation or Tangent
         double BackwardGuardOT = isRed ? 135.0 : -135.0; // ternary operator for facing backwards and towards the guardrail, in terms of Orientation or Tangent
 
@@ -204,7 +204,7 @@ public class PathPlannerTrajectoryGenerator
         Point2d P5 = new Point2d(TuningConstants.StartGridX, getYPosition(isRed, TuningConstants.StartFiveGridY)); // StartFiveGrid
         Point2d P6 = new Point2d(TuningConstants.StartGridX, getYPosition(isRed, TuningConstants.StartSixGridY)); // StartSixGrid
         Point2d P7 = new Point2d(TuningConstants.StartGridX, getYPosition(isRed, TuningConstants.StartSevenGridY)); // StartSevenGrid
-        Point2d P8 = new Point2d(TuningConstants.StartGridX, getYPosition(isRed, TuningConstants.StartEightGridY)); // StartEightGrid
+        Point2d P8 = new Point2d(TuningConstants.StartGridX + 3.0, getYPosition(isRed, TuningConstants.StartEightGridY)); // StartEightGrid
         Point2d P9 = new Point2d(TuningConstants.StartGridX, getYPosition(isRed, TuningConstants.StartNineGridY)); // StartNineGrid
         Point2d GuardEdge = new Point2d(TuningConstants.StartGridX, getYPosition(isRed, TuningConstants.GuardEdgeY)); // Guard side edge of grid
         Point2d P10 = new Point2d(TuningConstants.CloseChargeStationX,getYPosition(isRed, TuningConstants.GroundOneY)); // InBetweenLoadClose
@@ -213,14 +213,18 @@ public class PathPlannerTrajectoryGenerator
         Point2d P13 = new Point2d(TuningConstants.FarChargeStationX, getYPosition(isRed, TuningConstants.ChargeStationY)); // ChargeStationFar
         Point2d P14 = new Point2d(TuningConstants.GroundPiecesX, getYPosition(isRed, TuningConstants.GroundOneY)); // GroundOne
         Point2d P15 = new Point2d(TuningConstants.GroundPiecesX, getYPosition(isRed, TuningConstants.GroundTwoY)); // GroundTwo
-        Point2d P16 = new Point2d(TuningConstants.GroundPiecesX, getYPosition(isRed, TuningConstants.GroundThreeY)); // GroundThree
-        Point2d P17 = new Point2d(TuningConstants.GroundPiecesX, getYPosition(isRed, TuningConstants.GroundFourY)); // GroundFour
+        Point2d P16 = new Point2d(TuningConstants.GroundPiecesX + 10.0, getYPosition(isRed, TuningConstants.GroundThreeY)); // GroundThree
+        Point2d P17 = new Point2d(TuningConstants.GroundPiecesX + 4.0, getYPosition(isRed, TuningConstants.GroundFourY)); // GroundFour
         Point2d P18 = new Point2d(TuningConstants.FarChargeStationX, getYPosition(isRed, TuningConstants.GroundOneY)); // InBetweenLoadFar
         Point2d P19 = new Point2d(TuningConstants.FarChargeStationX, getYPosition(isRed, TuningConstants.GroundFourY)); // InBetweenGuardFar
+
         Point2d P20 = new Point2d(TuningConstants.FarChargeStationInBetweenX, getYPosition(isRed, TuningConstants.GroundOneY));
+        Point2d P20b = new Point2d(TuningConstants.FarChargeStationInBetweenX, getYPosition(isRed, TuningConstants.TurnLoadY));
         Point2d P21 = new Point2d(TuningConstants.FarChargeStationInBetweenX, getYPosition(isRed, TuningConstants.GroundTwoY));
         Point2d P22 = new Point2d(TuningConstants.FarChargeStationInBetweenX, getYPosition(isRed, TuningConstants.GroundThreeY));
         Point2d P23 = new Point2d(TuningConstants.FarChargeStationInBetweenX, getYPosition(isRed, TuningConstants.GroundFourY));
+        Point2d P23b = new Point2d(TuningConstants.FarChargeStationInBetweenX, getYPosition(isRed, TuningConstants.TurnGuardY));
+
         Point2d P24 = new Point2d(TuningConstants.BetweenBumpAndChargeStationFarX, getYPosition(isRed, TuningConstants.TurnGuardY));
         Point2d P25 = new Point2d(TuningConstants.BetweenBumpAndChargeStationFarX, getYPosition(isRed, TuningConstants.TurnLoadY));
         Point2d P26 = new Point2d(TuningConstants.FarChargeStationInBetweenX, getYPosition(isRed, TuningConstants.TurnGuardY));
@@ -300,8 +304,9 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(P8, 0, -180),
+                new PathPlannerWaypoint(P12, 0, -180),
                 new PathPlannerWaypoint(P24, 0, -180),
-                new PathPlannerWaypoint(P23, 0, ForwardLoadOT),
+                new PathPlannerWaypoint(P23b, 0, ForwardLoadOT),
                 new PathPlannerWaypoint(P16, ForwardLoadOT, ForwardLoadOT)),
                 isRed ? "8To16Red" : "8To16Blue");
 
@@ -311,8 +316,9 @@ public class PathPlannerTrajectoryGenerator
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(P16, BackwardGuardOT, ForwardLoadOT),
-                new PathPlannerWaypoint(P23, BackwardGuardOT, ForwardLoadOT),
+                new PathPlannerWaypoint(P23b, BackwardGuardOT, ForwardLoadOT),
                 new PathPlannerWaypoint(P24, 0, -180),
+                new PathPlannerWaypoint(P12, 0, -180),
                 new PathPlannerWaypoint(P8, -180, -180)),
                 isRed ? "16To8Red" : "16To8Blue");       
         
@@ -396,6 +402,18 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P10, 0, -180),
                 new PathPlannerWaypoint(P27, 0, -180)),
                 isRed ? "2To27Red" : "2To27Blue");
+        
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(P2, 0, -180),
+                new PathPlannerWaypoint(P10, 0, -180),
+                new PathPlannerWaypoint(P25, 0, -180),
+                new PathPlannerWaypoint(P20b, 0, ForwardGuardOT),
+                new PathPlannerWaypoint(P15, ForwardGuardOT, ForwardGuardOT)),
+                isRed ? "2To15Red" : "2To15Blue");
         
         addTrajectory(
             trajectoryManager,

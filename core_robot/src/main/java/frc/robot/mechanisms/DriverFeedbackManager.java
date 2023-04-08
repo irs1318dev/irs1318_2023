@@ -99,6 +99,10 @@ public class DriverFeedbackManager implements IMechanism
         {
             newStripMode = LightMode.PurpleStrobe;
         }
+        else if (this.driver.getDigital(DigitalOperation.ForceRainbow))
+        {
+            newStripMode = LightMode.Rainbow;
+        }
         else if (isCurrentLimiting)
         {
             newStripMode = LightMode.Blue;

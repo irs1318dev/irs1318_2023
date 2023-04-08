@@ -43,28 +43,28 @@ public class TuningConstants
     public static final double StartFiveGridY = 108.19; // April Tag ID's 7 and 2
     public static final double StartSixGridY = 86.19;
     public static final double StartSevenGridY = 64.19;
-    public static final double StartEightGridY = 42.19; // April Tag ID's 8 and 1
+    public static final double StartEightGridY = 43.19; // April Tag ID's 8 and 1
     public static final double StartNineGridY = 20.19;
     public static final double ChargeStationY = 108.015;
     public static final double GroundOneY = 180.19;
     public static final double GroundTwoY = 132.19;
     public static final double GroundThreeY = 84.19;
-    public static final double GroundFourY = 31.19;//33.19;
+    public static final double GroundFourY = 34.19;//33.19;    
     public static final double LoadEdgeY = TuningConstants.StartOneGridY + 1.521; // Edge of grid - 17.5
     public static final double GuardEdgeY = 17.5;
     public static final double FullWidth = 315.5; // (Y) 26 ft. 3.5 in, from game manual
-    public static final double TurnGuardY = 27.5;
+    public static final double TurnGuardY = 29.5;
     public static final double TurnLoadY = 186.53;
     // X Values
     public static final double StartGridX = 17.5;//71.765; // Edge of grid - Robot centering value
     public static final double CloseChargeStationX = 30.345;//84.61; // 12.845 inches away from the charge station and grid + Robot centering value
     public static final double FarChargeStationX = 166.875;//222.635; // 15 inches away from the charge station + Robot centering value
     public static final double FarChargeStationInBetweenX = TuningConstants.FarChargeStationX + 30.0; // 30 inches away from last point to allow for turning
-    public static final double GroundPiecesX = 228.5;//224.5;//253.265; // On ground pieces real value 47.36
+    public static final double GroundPiecesX = 230.5;//228.5;//224.5;//253.265; // On ground pieces real value 47.36
     public static final double LoadEdgeStartX = 58.5;//110.765;
     public static final double GuardEdgeStartX = 77.75;//132.015;
     public static final double FullLength = 651.25; // (X) 54 ft. 3.25 in, from game manual
-    public static final double BetweenBumpAndChargeStationFarX = 121.85; // 6 + Bump + 17.5
+    public static final double BetweenBumpAndChargeStationFarX = 128.85; // 6 + Bump + 17.5
 
     // April tag array by ids - Blue alliance
     // (xPosition, yPosition, orientation)
@@ -509,8 +509,10 @@ public class TuningConstants
     public static final double ARM_UPPER_POSITION_HIGH_CUBE = 7250.0;
     public static final double ARM_LOWER_POSITION_CONE_GROUND_PICKUP = 2850;//2680.0;
     public static final double ARM_UPPER_POSITION_CONE_GROUND_PICKUP = 1270;//1330.0;
-    public static final double ARM_LOWER_POSITION_CUBE_GROUND_PICKUP = 3015.0;
-    public static final double ARM_UPPER_POSITION_CUBE_GROUND_PICKUP = 1525.0;
+    public static final double ARM_LOWER_POSITION_CUBE_GROUND_PICKUP = 3780.0;
+    public static final double ARM_UPPER_POSITION_CUBE_GROUND_PICKUP = 1115.0;
+    public static final double ARM_LOWER_POSITION_CUBE_GROUND_PICKUP_AUTO = 3015.0;
+    public static final double ARM_UPPER_POSITION_CUBE_GROUND_PICKUP_AUTO = 1625.0;
     public static final double ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP_APPROACH = HardwareConstants.ARM_FULL_EXTENSION_TICKS; //6140.0;
     public static final double ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP_APPROACH = TuningConstants.ARM_UPPER_POSITION_CONE_SUBSTATION_PICKUP + 200.0; //6050.0;
     public static final double ARM_LOWER_POSITION_CONE_SUBSTATION_PICKUP = HardwareConstants.ARM_FULL_EXTENSION_TICKS;//6100.0;

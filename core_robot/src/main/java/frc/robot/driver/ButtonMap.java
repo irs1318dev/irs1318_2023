@@ -264,16 +264,26 @@ public class ButtonMap implements IButtonMap
             DigitalOperation.CubeWantedFromSubstation,
             UserInputDevice.Codriver,
             UserInputDeviceButton.XBONE_SELECT_BUTTON,
-            Shift.None,
+            Shift.CodriverDebug,
             Shift.None,
             ButtonType.Simple),
         new DigitalOperationDescription(
             DigitalOperation.ConeWantedFromSubstation,
             UserInputDevice.Codriver,
             UserInputDeviceButton.XBONE_START_BUTTON,
-            Shift.None,
+            Shift.CodriverDebug,
             Shift.None,
             ButtonType.Simple),
+        new DigitalOperationDescription(
+            DigitalOperation.ForceRainbow,
+            UserInputDevice.Codriver,
+            UserInputDeviceButton.XBONE_SELECT_BUTTON,
+            Shift.CodriverDebug,
+            Shift.CodriverDebug,
+            ButtonType.Simple),
+        
+            
+            
 
         // Test operations:
         new DigitalOperationDescription(
@@ -546,10 +556,11 @@ public class ButtonMap implements IButtonMap
                             TuningConstants.ARM_IKZ_MINIMUM_VISION_HEIGHT)),
                     ConcurrentTask.AnyTasks(
                         new VisionAprilTagTranslateTask(GridScoringPosition.MiddleCube),
-                        new OrientationTask(180.0, true, true)),
-                    ConcurrentTask.AnyTasks(
-                        new VisionAprilTagTranslateTask(GridScoringPosition.MiddleCube),
-                        new OrientationTask(180.0, true, true))),
+                        new OrientationTask(180.0, true, true))
+                    // ConcurrentTask.AnyTasks(
+                    //     new VisionAprilTagTranslateTask(GridScoringPosition.MiddleCube),
+                    //     new OrientationTask(180.0, true, true))
+                        ),
                     new RumbleTask(),
                 new StrobeTask()),
             new IOperation[]
@@ -619,10 +630,11 @@ public class ButtonMap implements IButtonMap
                             TuningConstants.ARM_IKZ_MINIMUM_VISION_HEIGHT)),
                     ConcurrentTask.AnyTasks(
                         new VisionAprilTagTranslateTask(GridScoringPosition.LeftCone),
-                        new OrientationTask(180.0, true, true)),
-                    ConcurrentTask.AnyTasks(
-                        new VisionAprilTagTranslateTask(GridScoringPosition.LeftCone),
-                        new OrientationTask(180.0, true, true))),
+                        new OrientationTask(180.0, true, true))
+                    // ConcurrentTask.AnyTasks(
+                    //     new VisionAprilTagTranslateTask(GridScoringPosition.LeftCone),
+                    //     new OrientationTask(180.0, true, true))
+                        ),
                     // new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0)
                 new RumbleTask(),
                 new StrobeTask()),
@@ -693,10 +705,11 @@ public class ButtonMap implements IButtonMap
                             TuningConstants.ARM_IKZ_MINIMUM_VISION_HEIGHT)),
                     ConcurrentTask.AnyTasks(
                         new VisionAprilTagTranslateTask(GridScoringPosition.RightCone),
-                        new OrientationTask(180.0, true, true)),
-                    ConcurrentTask.AnyTasks(
-                        new VisionAprilTagTranslateTask(GridScoringPosition.RightCone),
-                        new OrientationTask(180.0, true, true))),
+                        new OrientationTask(180.0, true, true))
+                    // ConcurrentTask.AnyTasks(
+                        // new VisionAprilTagTranslateTask(GridScoringPosition.RightCone),
+                        // new OrientationTask(180.0, true, true))
+                        ),
                     // new VisionMoveAndTurnTask(TurnType.None, MoveType.RetroReflectiveStrafe, MoveSpeed.Normal, false, false, 0.0)),
                 new RumbleTask(),
                 new StrobeTask()),
@@ -765,7 +778,56 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.VisionEnableRetroreflectiveProcessing,
                 DigitalOperation.VisionEnableAprilTagProcessing,
             }),
-        
+
+        new MacroOperationDescription(
+            MacroOperation.PIDBackupBrake,
+            UserInputDevice.Codriver,
+            UserInputDeviceButton.XBONE_START_BUTTON, // Right random button
+            Shift.CodriverDebug,
+            Shift.CodriverDebug,
+            ButtonType.Simple,
+            () -> new PIDBrakeTask(true),
+            new IOperation[]
+            {
+                DigitalOperation.PositionResetRobotLevel,
+                DigitalOperation.PositionResetFieldOrientation,
+                AnalogOperation.PositionStartingAngle,
+                AnalogOperation.DriveTrainMoveForward,
+                AnalogOperation.DriveTrainMoveRight,
+                AnalogOperation.DriveTrainTurnAngleGoal,
+                AnalogOperation.DriveTrainSpinLeft,
+                AnalogOperation.DriveTrainSpinRight,
+                AnalogOperation.DriveTrainRotationA,
+                AnalogOperation.DriveTrainRotationB,
+                AnalogOperation.DriveTrainPathXGoal,
+                AnalogOperation.DriveTrainPathYGoal,
+                AnalogOperation.DriveTrainPathXVelocityGoal,
+                AnalogOperation.DriveTrainPathYVelocityGoal,
+                AnalogOperation.DriveTrainPathAngleVelocityGoal,
+                AnalogOperation.DriveTrainPositionDrive1,
+                AnalogOperation.DriveTrainPositionDrive2,
+                AnalogOperation.DriveTrainPositionDrive3,
+                AnalogOperation.DriveTrainPositionDrive4,
+                AnalogOperation.DriveTrainPositionSteer1,
+                AnalogOperation.DriveTrainPositionSteer2,
+                AnalogOperation.DriveTrainPositionSteer3,
+                AnalogOperation.DriveTrainPositionSteer4,
+                DigitalOperation.DriveTrainSteerMode,
+                DigitalOperation.DriveTrainMaintainPositionMode,
+                DigitalOperation.DriveTrainPathMode,
+                DigitalOperation.DriveTrainReset,
+                DigitalOperation.DriveTrainEnableFieldOrientation,
+                DigitalOperation.DriveTrainDisableFieldOrientation,
+                DigitalOperation.DriveTrainUseRobotOrientation,
+                DigitalOperation.DriveTrainEnableMaintainDirectionMode,
+                DigitalOperation.DriveTrainIgnoreSlewRateLimitingMode
+            },
+            new IOperation[]
+            {
+                DigitalOperation.PositionResetRobotLevel,
+                DigitalOperation.PositionResetFieldOrientation,
+                AnalogOperation.PositionStartingAngle
+            }),
         
         new MacroOperationDescription(
             MacroOperation.FaceForward,
@@ -1019,6 +1081,7 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.SubstationIntakeReady,
                 DigitalOperation.ForcePurpleStrobe,
             }),
+
         new MacroOperationDescription(
             MacroOperation.ArmGroundPickupPositionCube,
             UserInputDevice.Codriver,

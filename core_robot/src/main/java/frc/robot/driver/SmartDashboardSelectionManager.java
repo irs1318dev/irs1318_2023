@@ -21,6 +21,7 @@ public class SmartDashboardSelectionManager
     public enum AutoRoutine
     {
         None,
+        Place,
         Taxi,
         Charge,
         OnePlusTaxi,
@@ -50,6 +51,7 @@ public class SmartDashboardSelectionManager
         this.routineChooser.addObject("One Pickup Charge", AutoRoutine.OnePickupCharge);
         this.routineChooser.addObject("One Plus One", AutoRoutine.OnePlusOne);
         this.routineChooser.addObject("Three Piece", AutoRoutine.ThreePiece);
+        this.routineChooser.addObject("Place", AutoRoutine.Place);
         networkTableProvider.addChooser("Auto Routine", this.routineChooser);
 
         this.positionChooser = networkTableProvider.getSendableChooser();
