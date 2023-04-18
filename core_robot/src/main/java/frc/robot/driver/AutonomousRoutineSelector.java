@@ -108,6 +108,11 @@ public class AutonomousRoutineSelector
                     return loadOnePlusOne(isRed);
                 }
 
+                else if (routine == AutoRoutine.ThreePiece)
+                {
+                    return loadThreePiece(isRed);
+                }
+
                 else
                 {
                     return ConcurrentTask.AllTasks(
@@ -953,114 +958,281 @@ public class AutonomousRoutineSelector
     private static IControlTask guardThreePiece(boolean isRed)
     {
         return SequentialTask.Sequence(
+            new FollowPathTask("goBackwards15in", Type.RobotRelativeFromCurrentPose),
             ConcurrentTask.AllTasks(
                 new ResetLevelTask(),
                 new PositionStartingTask(
                     TuningConstants.StartGridX,
                     PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.GuardEdgeY),
-                    180.0,
+                    0.0,
                     true,
-                    true)),
-            new ArmLAPositionTask(
-                TuningConstants.ARM_LOWER_POSITION_MIDDLE_CONE,
-                TuningConstants.ARM_UPPER_POSITION_MIDDLE_CONE,
-                true,
-                IntakeState.Up,
-                true),
-            new IntakePositionTask(true),
-
-            new WaitTask(0.2),
-            new IntakeGamePieceTask(true, 1.0),
-
+                    true)
+            ),
+            
             ConcurrentTask.AllTasks(
-                new FollowPathTask(isRed ? "GuardEdgeTo17Red" : "GuardEdgeTo17Blue", Type.Absolute),
+                new FollowPathTask(isRed ? "GuardEdgeTo17FastRed" : "GuardEdgeTo17FastBlue", Type.Absolute),
+
                 SequentialTask.Sequence(
-                    new ArmLAPositionTask(
-                        TuningConstants.ARM_LOWER_POSITION_LOWER_INTERMIDATE,
-                        TuningConstants.ARM_UPPER_POSITION_LOWER_INTERMIDATE,
-                        true,
-                        IntakeState.Up,
-                        true),
-                    new WaitTask(1.0),
+                    new WaitTask(0.5),
                     new ArmLAPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_CUBE_GROUND_PICKUP_AUTO,
                         TuningConstants.ARM_UPPER_POSITION_CUBE_GROUND_PICKUP_AUTO,
                         true,
-                        IntakeState.Down,
-                        true),
-                    new IntakePositionTask(true),
-                    new IntakeGamePieceTask(true, 1.3)
+                        IntakeState.Down),
+                    new IntakeGamePieceTask(true, 3.0)
                 )
             ),
 
             ConcurrentTask.AllTasks(
+                new FollowPathTask(isRed ? "17To8FastRed" : "17To8FastBlue", Type.Absolute),
+
                 SequentialTask.Sequence(
                     new ArmLAPositionTask(
-                        TuningConstants.ARM_LOWER_POSITION_LOWER_INTERMIDATE,
-                        TuningConstants.ARM_UPPER_POSITION_LOWER_INTERMIDATE,
+                        TuningConstants.ARM_LOWER_POSITION_STOWED,
+                        TuningConstants.ARM_UPPER_POSITION_STOWED,
                         true,
-                        IntakeState.Up,
-                        true),
+                        IntakeState.Up),
+                    new WaitTask(1.0),
                     new ArmLAPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_MIDDLE_CUBE,
                         TuningConstants.ARM_UPPER_POSITION_MIDDLE_CUBE,
-                        true,
-                        IntakeState.Up,
-                        true)
-                    ),
-
-                new FollowPathTask(isRed ? "17To8Red" : "17To8Blue", Type.Absolute)
-            ),
-
-            new WaitTask(0.2),
-            new IntakeGamePieceTask(false, 0.8),
-
-            ConcurrentTask.AllTasks(
-                new FollowPathTask(isRed ? "8To16Red" : "8To16Blue", Type.Absolute),
-                SequentialTask.Sequence(
-                    new ArmLAPositionTask(
-                        TuningConstants.ARM_LOWER_POSITION_LOWER_INTERMIDATE,
-                        TuningConstants.ARM_UPPER_POSITION_LOWER_INTERMIDATE,
-                        true,
-                        IntakeState.Up,
-                        true),
-                    new WaitTask(1.0),
-                    new ArmLAPositionTask(
-                        TuningConstants.ARM_LOWER_POSITION_CUBE_GROUND_PICKUP_AUTO,
-                        TuningConstants.ARM_UPPER_POSITION_CUBE_GROUND_PICKUP_AUTO,
-                        true,
-                        IntakeState.Down,
-                        true),
-                    new IntakePositionTask(true),
-                    new IntakeGamePieceTask(true, 1.3)
+                        true, 
+                        IntakeState.Down),
+                    new IntakeGamePieceTask(false, 1.0)
                 )
             ),
 
             ConcurrentTask.AllTasks(
+                new FollowPathTask(isRed ? "8To16FastRed" : "8To16FastBlue", Type.Absolute),
+
                 SequentialTask.Sequence(
+                    new WaitTask(0.5),
                     new ArmLAPositionTask(
                         TuningConstants.ARM_LOWER_POSITION_LOWER_INTERMIDATE,
                         TuningConstants.ARM_UPPER_POSITION_LOWER_INTERMIDATE,
                         true,
-                        IntakeState.Up,
-                        true),
+                        IntakeState.Up),
                     new WaitTask(1.0),
-                    new IntakePositionTask(false),
                     new ArmLAPositionTask(
-                        TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE,
-                        TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE,
+                        TuningConstants.ARM_LOWER_POSITION_CONE_GROUND_PICKUP,
+                        TuningConstants.ARM_UPPER_POSITION_CONE_GROUND_PICKUP,
                         true,
-                        IntakeState.Up,
-                        true),
-                    
-                    new WaitTask(0.5),
-                    new IntakeGamePieceTask(false, 1.0)),
+                        IntakeState.Up
+                    ),
+                    new IntakeGamePieceTask(false, 2.0)
+                )
+            ),
 
-                new FollowPathTask(isRed ? "16To8Red" : "16To8Blue", Type.Absolute)
+            ConcurrentTask.AllTasks(
+                new FollowPathTask(isRed ? "16To8FastRed" : "16To8FastBlue", Type.Absolute),
+
+                SequentialTask.Sequence(
+                    new ArmLAPositionTask(
+                        TuningConstants.ARM_LOWER_POSITION_STOWED,
+                        TuningConstants.ARM_UPPER_POSITION_STOWED,
+                        true,
+                        IntakeState.Up),
+                    new WaitTask(4.0),
+                    new IntakeGamePieceTask(true, 1.0)
+                )
             )
         );
     }
+
+    private static IControlTask loadThreePiece(boolean isRed)
+    {
+        return SequentialTask.Sequence(
+            new FollowPathTask("goBackwards15in", Type.RobotRelativeFromCurrentPose),
+            ConcurrentTask.AllTasks(
+                new ResetLevelTask(),
+                new PositionStartingTask(
+                    TuningConstants.StartGridX,
+                    PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.LoadEdgeY),
+                    0.0,
+                    true,
+                    true)
+            ),
+            
+            ConcurrentTask.AllTasks(
+                new FollowPathTask(isRed ? "LoadEdgeTo14FastRed" : "LoadEdgeTo14FastBlue", Type.Absolute),
+
+                SequentialTask.Sequence(
+                    new WaitTask(0.5),
+                    new ArmLAPositionTask(
+                        TuningConstants.ARM_LOWER_POSITION_CUBE_GROUND_PICKUP_AUTO,
+                        TuningConstants.ARM_UPPER_POSITION_CUBE_GROUND_PICKUP_AUTO,
+                        true,
+                        IntakeState.Down),
+                    new IntakeGamePieceTask(true, 3.0)
+                )
+            ),
+
+            ConcurrentTask.AllTasks(
+                new FollowPathTask(isRed ? "14To2FastRed" : "14To2FastBlue", Type.Absolute),
+
+                SequentialTask.Sequence(
+                    new ArmLAPositionTask(
+                        TuningConstants.ARM_LOWER_POSITION_STOWED,
+                        TuningConstants.ARM_UPPER_POSITION_STOWED,
+                        true,
+                        IntakeState.Up),
+                    new WaitTask(1.0),
+                    new ArmLAPositionTask(
+                        TuningConstants.ARM_LOWER_POSITION_MIDDLE_CUBE,
+                        TuningConstants.ARM_UPPER_POSITION_MIDDLE_CUBE,
+                        true, 
+                        IntakeState.Down),
+                    new IntakeGamePieceTask(false, 1.0)
+                )
+            ),
+
+            ConcurrentTask.AllTasks(
+                new FollowPathTask(isRed ? "2To15FastRed" : "2To15FastBlue", Type.Absolute),
+
+                SequentialTask.Sequence(
+                    new WaitTask(0.5),
+                    new ArmLAPositionTask(
+                        TuningConstants.ARM_LOWER_POSITION_LOWER_INTERMIDATE,
+                        TuningConstants.ARM_UPPER_POSITION_LOWER_INTERMIDATE,
+                        true,
+                        IntakeState.Up),
+                    new WaitTask(1.0),
+                    new ArmLAPositionTask(
+                        TuningConstants.ARM_LOWER_POSITION_CONE_GROUND_PICKUP,
+                        TuningConstants.ARM_UPPER_POSITION_CONE_GROUND_PICKUP,
+                        true,
+                        IntakeState.Up
+                    ),
+                    new IntakeGamePieceTask(false, 2.0)
+                )
+            ),
+
+            ConcurrentTask.AllTasks(
+                new FollowPathTask(isRed ? "15To2FastRed" : "15To2FastBlue", Type.Absolute),
+
+                SequentialTask.Sequence(
+                    new ArmLAPositionTask(
+                        TuningConstants.ARM_LOWER_POSITION_STOWED,
+                        TuningConstants.ARM_UPPER_POSITION_STOWED,
+                        true,
+                        IntakeState.Up),
+                    new WaitTask(4.0),
+                    new IntakeGamePieceTask(true, 1.0)
+                )
+            )
+        );
+    }
+    // private static IControlTask guardThreePiece(boolean isRed)
+    // {
+    //     return SequentialTask.Sequence(
+    //         ConcurrentTask.AllTasks(
+    //             new ResetLevelTask(),
+    //             new PositionStartingTask(
+    //                 TuningConstants.StartGridX,
+    //                 PathPlannerTrajectoryGenerator.getYPosition(isRed, TuningConstants.GuardEdgeY),
+    //                 180.0,
+    //                 true,
+    //                 true)),
+    //         new ArmLAPositionTask(
+    //             TuningConstants.ARM_LOWER_POSITION_MIDDLE_CONE,
+    //             TuningConstants.ARM_UPPER_POSITION_MIDDLE_CONE,
+    //             true,
+    //             IntakeState.Up,
+    //             true),
+    //         new IntakePositionTask(true),
+
+    //         new WaitTask(0.2),
+    //         new IntakeGamePieceTask(true, 1.0),
+
+    //         ConcurrentTask.AllTasks(
+    //             new FollowPathTask(isRed ? "GuardEdgeTo17Red" : "GuardEdgeTo17Blue", Type.Absolute),
+    //             SequentialTask.Sequence(
+    //                 new ArmLAPositionTask(
+    //                     TuningConstants.ARM_LOWER_POSITION_LOWER_INTERMIDATE,
+    //                     TuningConstants.ARM_UPPER_POSITION_LOWER_INTERMIDATE,
+    //                     true,
+    //                     IntakeState.Up,
+    //                     true),
+    //                 new WaitTask(1.0),
+    //                 new ArmLAPositionTask(
+    //                     TuningConstants.ARM_LOWER_POSITION_CUBE_GROUND_PICKUP_AUTO,
+    //                     TuningConstants.ARM_UPPER_POSITION_CUBE_GROUND_PICKUP_AUTO,
+    //                     true,
+    //                     IntakeState.Down,
+    //                     true),
+    //                 new IntakePositionTask(true),
+    //                 new IntakeGamePieceTask(true, 1.3)
+    //             )
+    //         ),
+
+    //         ConcurrentTask.AllTasks(
+    //             SequentialTask.Sequence(
+    //                 new ArmLAPositionTask(
+    //                     TuningConstants.ARM_LOWER_POSITION_LOWER_INTERMIDATE,
+    //                     TuningConstants.ARM_UPPER_POSITION_LOWER_INTERMIDATE,
+    //                     true,
+    //                     IntakeState.Up,
+    //                     true),
+    //                 new ArmLAPositionTask(
+    //                     TuningConstants.ARM_LOWER_POSITION_MIDDLE_CUBE,
+    //                     TuningConstants.ARM_UPPER_POSITION_MIDDLE_CUBE,
+    //                     true,
+    //                     IntakeState.Up,
+    //                     true)
+    //                 ),
+
+    //             new FollowPathTask(isRed ? "17To8Red" : "17To8Blue", Type.Absolute)
+    //         ),
+
+    //         new WaitTask(0.2),
+    //         new IntakeGamePieceTask(false, 0.8),
+
+    //         ConcurrentTask.AllTasks(
+    //             new FollowPathTask(isRed ? "8To16Red" : "8To16Blue", Type.Absolute),
+    //             SequentialTask.Sequence(
+    //                 new ArmLAPositionTask(
+    //                     TuningConstants.ARM_LOWER_POSITION_LOWER_INTERMIDATE,
+    //                     TuningConstants.ARM_UPPER_POSITION_LOWER_INTERMIDATE,
+    //                     true,
+    //                     IntakeState.Up,
+    //                     true),
+    //                 new WaitTask(1.0),
+    //                 new ArmLAPositionTask(
+    //                     TuningConstants.ARM_LOWER_POSITION_CUBE_GROUND_PICKUP_AUTO,
+    //                     TuningConstants.ARM_UPPER_POSITION_CUBE_GROUND_PICKUP_AUTO,
+    //                     true,
+    //                     IntakeState.Down,
+    //                     true),
+    //                 new IntakePositionTask(true),
+    //                 new IntakeGamePieceTask(true, 1.3)
+    //             )
+    //         ),
+
+    //         ConcurrentTask.AllTasks(
+    //             SequentialTask.Sequence(
+    //                 new ArmLAPositionTask(
+    //                     TuningConstants.ARM_LOWER_POSITION_LOWER_INTERMIDATE,
+    //                     TuningConstants.ARM_UPPER_POSITION_LOWER_INTERMIDATE,
+    //                     true,
+    //                     IntakeState.Up,
+    //                     true),
+    //                 new WaitTask(1.0),
+    //                 new IntakePositionTask(false),
+    //                 new ArmLAPositionTask(
+    //                     TuningConstants.ARM_LOWER_POSITION_HIGH_CUBE,
+    //                     TuningConstants.ARM_UPPER_POSITION_HIGH_CUBE,
+    //                     true,
+    //                     IntakeState.Up,
+    //                     true),
+                    
+    //                 new WaitTask(0.5),
+    //                 new IntakeGamePieceTask(false, 1.0)),
+
+    //             new FollowPathTask(isRed ? "16To8Red" : "16To8Blue", Type.Absolute)
+    //         )
+    //     );
 }
+
 
 
 

@@ -63,6 +63,14 @@ public class PathPlannerTrajectoryGenerator
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_TRUE_MAX_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
+                new PathPlannerWaypoint(0.0, 0.0, 180.0, 0.0),
+                new PathPlannerWaypoint(-12.0, 0.0, 180.0, 0.0)),
+                "goBackwards15in");
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MID_PATH_TRANSLATIONAL_ACCELERATION,
                 new PathPlannerWaypoint(0.0, 0.0, 90.0, 0.0),
@@ -353,8 +361,101 @@ public class PathPlannerTrajectoryGenerator
                 new PathPlannerWaypoint(P19, 180, 180),
                 new PathPlannerWaypoint(P7, 180, BackwardLoadOT)),
                 isRed ? "17To7Red" : "17To7Blue");
+        
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_TRUE_MAX_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION, 
+                new PathPlannerWaypoint(GuardEdge, 0, 0.0),
+                new PathPlannerWaypoint(P23, 0, 0.0),
+                new PathPlannerWaypoint(P17, 0, 0.0)),
+                isRed ? "GuardEdgeTo17FastRed" : "GuardEdgeTo17FastBlue");
+        
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_TRUE_MAX_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION, 
+                new PathPlannerWaypoint(P17, -180, 0),
+                new PathPlannerWaypoint(P23, -180, isRed ? -0.01 : 0.01),
+                new PathPlannerWaypoint(P24, -180, -180),
+                new PathPlannerWaypoint(P12, BackwardLoadOT, -180),
+                new PathPlannerWaypoint(P8, BackwardLoadOT, -180)),
+                isRed ? "17To8FastRed" : "17To8FastBlue");
+        
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_TRUE_MAX_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION, 
+                new PathPlannerWaypoint(P8, ForwardGuardOT, -180),
+                new PathPlannerWaypoint(P12, ForwardGuardOT, -180),
+                new PathPlannerWaypoint(P24, 0, -180),
+                new PathPlannerWaypoint(P23, ForwardLoadOT, ForwardLoadOT),
+                new PathPlannerWaypoint(P16, ForwardLoadOT, ForwardLoadOT)),
+                isRed ? "8To16FastRed" : "8To16FastBlue");
 
-            //Load Side
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_TRUE_MAX_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION, 
+                new PathPlannerWaypoint(P16, BackwardGuardOT, ForwardLoadOT),
+                new PathPlannerWaypoint(P26, BackwardGuardOT, LoadOT),
+                new PathPlannerWaypoint(P24, -180, -180),
+                new PathPlannerWaypoint(P12, BackwardLoadOT, -180),
+                new PathPlannerWaypoint(P8, BackwardLoadOT, -180)),
+                isRed ? "16To8FastRed" : "16To8FastBlue");
+
+        //Load Side
+
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_TRUE_MAX_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION, 
+                new PathPlannerWaypoint(LoadEdge, 0, 0.0),
+                new PathPlannerWaypoint(P20, 0, 0.0),
+                new PathPlannerWaypoint(P14, 0, 0.0)),
+                isRed ? "LoadEdgeTo14FastRed" : "LoadEdgeTo14FastBlue");
+        
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_TRUE_MAX_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION, 
+                new PathPlannerWaypoint(P14, -180, 0),
+                new PathPlannerWaypoint(P20, -180, isRed ? 0.01 : -0.01),
+                new PathPlannerWaypoint(P25, -180, -180),
+                new PathPlannerWaypoint(P10, BackwardGuardOT, -180),
+                new PathPlannerWaypoint(P2, BackwardGuardOT, -180)),
+                isRed ? "14To2FastRed" : "14To2FastBlue");
+        
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_TRUE_MAX_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION, 
+                new PathPlannerWaypoint(P2, ForwardLoadOT, -180),
+                new PathPlannerWaypoint(P10, ForwardLoadOT, -180),
+                new PathPlannerWaypoint(P25, 0, -180),
+                new PathPlannerWaypoint(P18, ForwardGuardOT, ForwardGuardOT),
+                new PathPlannerWaypoint(P15, ForwardGuardOT, ForwardGuardOT)),
+                isRed ? "2To15FastRed" : "2To15FastBlue");
+
+        addTrajectory(
+            trajectoryManager,
+            pathPlanner.buildTrajectory(
+                TuningConstants.DRIVETRAIN_TRUE_MAX_PATH_TRANSLATIONAL_VELOCITY,
+                TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION, 
+                new PathPlannerWaypoint(P15, BackwardLoadOT, ForwardGuardOT),
+                new PathPlannerWaypoint(P27, BackwardLoadOT, GuardOT),
+                new PathPlannerWaypoint(P25, -180, -180),
+                new PathPlannerWaypoint(P10, BackwardGuardOT, -180),
+                new PathPlannerWaypoint(P2, BackwardGuardOT, -180)),
+                isRed ? "15To2FastRed" : "15To2FastBlue");
+        
         addTrajectory(
             trajectoryManager,
             pathPlanner.buildTrajectory(
