@@ -305,82 +305,82 @@ public class ButtonMap implements IButtonMap
     public static MacroOperationDescription[] MacroSchema = new MacroOperationDescription[]
     {
         // driving macros
-        new MacroOperationDescription(
-            MacroOperation.PIDLightBrake,
-            UserInputDevice.Driver,
-            UserInputDeviceButton.XBONE_LEFT_STICK_BUTTON,
-            Shift.DriverDebug,
-            Shift.None,
-            ButtonType.Simple,
-            () -> new PIDBrakeTask(false),
-            new IOperation[]
-            {
-                AnalogOperation.DriveTrainMoveForward,
-                AnalogOperation.DriveTrainMoveRight,
-                AnalogOperation.DriveTrainTurnAngleGoal,
-                AnalogOperation.DriveTrainSpinLeft,
-                AnalogOperation.DriveTrainSpinRight,
-                AnalogOperation.DriveTrainRotationA,
-                AnalogOperation.DriveTrainRotationB,
-                AnalogOperation.DriveTrainPathXGoal,
-                AnalogOperation.DriveTrainPathYGoal,
-                AnalogOperation.DriveTrainPathXVelocityGoal,
-                AnalogOperation.DriveTrainPathYVelocityGoal,
-                AnalogOperation.DriveTrainPathAngleVelocityGoal,
-                AnalogOperation.DriveTrainPositionDrive1,
-                AnalogOperation.DriveTrainPositionDrive2,
-                AnalogOperation.DriveTrainPositionDrive3,
-                AnalogOperation.DriveTrainPositionDrive4,
-                AnalogOperation.DriveTrainPositionSteer1,
-                AnalogOperation.DriveTrainPositionSteer2,
-                AnalogOperation.DriveTrainPositionSteer3,
-                AnalogOperation.DriveTrainPositionSteer4,
-                DigitalOperation.DriveTrainSteerMode,
-                DigitalOperation.DriveTrainMaintainPositionMode,
-                DigitalOperation.DriveTrainPathMode,
-                DigitalOperation.DriveTrainReset,
-                DigitalOperation.DriveTrainEnableFieldOrientation,
-                DigitalOperation.DriveTrainDisableFieldOrientation,
-                DigitalOperation.DriveTrainUseRobotOrientation,
-            }),
-        new MacroOperationDescription(
-            MacroOperation.PIDHeavyBrake,
-            UserInputDevice.Driver,
-            UserInputDeviceButton.XBONE_LEFT_STICK_BUTTON,
-            Shift.DriverDebug,
-            Shift.DriverDebug,
-            ButtonType.Simple,
-            () -> new PIDBrakeTask(true),
-            new IOperation[]
-            {
-                AnalogOperation.DriveTrainMoveForward,
-                AnalogOperation.DriveTrainMoveRight,
-                AnalogOperation.DriveTrainTurnAngleGoal,
-                AnalogOperation.DriveTrainSpinLeft,
-                AnalogOperation.DriveTrainSpinRight,
-                AnalogOperation.DriveTrainRotationA,
-                AnalogOperation.DriveTrainRotationB,
-                AnalogOperation.DriveTrainPathXGoal,
-                AnalogOperation.DriveTrainPathYGoal,
-                AnalogOperation.DriveTrainPathXVelocityGoal,
-                AnalogOperation.DriveTrainPathYVelocityGoal,
-                AnalogOperation.DriveTrainPathAngleVelocityGoal,
-                AnalogOperation.DriveTrainPositionDrive1,
-                AnalogOperation.DriveTrainPositionDrive2,
-                AnalogOperation.DriveTrainPositionDrive3,
-                AnalogOperation.DriveTrainPositionDrive4,
-                AnalogOperation.DriveTrainPositionSteer1,
-                AnalogOperation.DriveTrainPositionSteer2,
-                AnalogOperation.DriveTrainPositionSteer3,
-                AnalogOperation.DriveTrainPositionSteer4,
-                DigitalOperation.DriveTrainSteerMode,
-                DigitalOperation.DriveTrainMaintainPositionMode,
-                DigitalOperation.DriveTrainPathMode,
-                DigitalOperation.DriveTrainReset,
-                DigitalOperation.DriveTrainEnableFieldOrientation,
-                DigitalOperation.DriveTrainDisableFieldOrientation,
-                DigitalOperation.DriveTrainUseRobotOrientation,
-            }),
+        // new MacroOperationDescription(
+        //     MacroOperation.PIDLightBrake,
+        //     UserInputDevice.Driver,
+        //     UserInputDeviceButton.XBONE_LEFT_STICK_BUTTON,
+        //     Shift.DriverDebug,
+        //     Shift.None,
+        //     ButtonType.Simple,
+        //     () -> new PIDBrakeTask(false),
+        //     new IOperation[]
+        //     {
+        //         AnalogOperation.DriveTrainMoveForward,
+        //         AnalogOperation.DriveTrainMoveRight,
+        //         AnalogOperation.DriveTrainTurnAngleGoal,
+        //         AnalogOperation.DriveTrainSpinLeft,
+        //         AnalogOperation.DriveTrainSpinRight,
+        //         AnalogOperation.DriveTrainRotationA,
+        //         AnalogOperation.DriveTrainRotationB,
+        //         AnalogOperation.DriveTrainPathXGoal,
+        //         AnalogOperation.DriveTrainPathYGoal,
+        //         AnalogOperation.DriveTrainPathXVelocityGoal,
+        //         AnalogOperation.DriveTrainPathYVelocityGoal,
+        //         AnalogOperation.DriveTrainPathAngleVelocityGoal,
+        //         AnalogOperation.DriveTrainPositionDrive1,
+        //         AnalogOperation.DriveTrainPositionDrive2,
+        //         AnalogOperation.DriveTrainPositionDrive3,
+        //         AnalogOperation.DriveTrainPositionDrive4,
+        //         AnalogOperation.DriveTrainPositionSteer1,
+        //         AnalogOperation.DriveTrainPositionSteer2,
+        //         AnalogOperation.DriveTrainPositionSteer3,
+        //         AnalogOperation.DriveTrainPositionSteer4,
+        //         DigitalOperation.DriveTrainSteerMode,
+        //         DigitalOperation.DriveTrainMaintainPositionMode,
+        //         DigitalOperation.DriveTrainPathMode,
+        //         DigitalOperation.DriveTrainReset,
+        //         DigitalOperation.DriveTrainEnableFieldOrientation,
+        //         DigitalOperation.DriveTrainDisableFieldOrientation,
+        //         DigitalOperation.DriveTrainUseRobotOrientation,
+        //     }),
+        // new MacroOperationDescription(
+        //     MacroOperation.PIDHeavyBrake,
+        //     UserInputDevice.Driver,
+        //     UserInputDeviceButton.XBONE_LEFT_STICK_BUTTON,
+        //     Shift.DriverDebug,
+        //     Shift.DriverDebug,
+        //     ButtonType.Simple,
+        //     () -> new PIDBrakeTask(true),
+        //     new IOperation[]
+        //     {
+        //         AnalogOperation.DriveTrainMoveForward,
+        //         AnalogOperation.DriveTrainMoveRight,
+        //         AnalogOperation.DriveTrainTurnAngleGoal,
+        //         AnalogOperation.DriveTrainSpinLeft,
+        //         AnalogOperation.DriveTrainSpinRight,
+        //         AnalogOperation.DriveTrainRotationA,
+        //         AnalogOperation.DriveTrainRotationB,
+        //         AnalogOperation.DriveTrainPathXGoal,
+        //         AnalogOperation.DriveTrainPathYGoal,
+        //         AnalogOperation.DriveTrainPathXVelocityGoal,
+        //         AnalogOperation.DriveTrainPathYVelocityGoal,
+        //         AnalogOperation.DriveTrainPathAngleVelocityGoal,
+        //         AnalogOperation.DriveTrainPositionDrive1,
+        //         AnalogOperation.DriveTrainPositionDrive2,
+        //         AnalogOperation.DriveTrainPositionDrive3,
+        //         AnalogOperation.DriveTrainPositionDrive4,
+        //         AnalogOperation.DriveTrainPositionSteer1,
+        //         AnalogOperation.DriveTrainPositionSteer2,
+        //         AnalogOperation.DriveTrainPositionSteer3,
+        //         AnalogOperation.DriveTrainPositionSteer4,
+        //         DigitalOperation.DriveTrainSteerMode,
+        //         DigitalOperation.DriveTrainMaintainPositionMode,
+        //         DigitalOperation.DriveTrainPathMode,
+        //         DigitalOperation.DriveTrainReset,
+        //         DigitalOperation.DriveTrainEnableFieldOrientation,
+        //         DigitalOperation.DriveTrainDisableFieldOrientation,
+        //         DigitalOperation.DriveTrainUseRobotOrientation,
+        //     }),
         // new MacroOperationDescription(
         //     MacroOperation.VisionDoubleSubstationLeft,
         //     UserInputDevice.Driver,
@@ -951,6 +951,7 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.IntakeUp,
                 DigitalOperation.SubstationIntakeReady,
                 DigitalOperation.ForcePurpleStrobe,
+                DigitalOperation.ForceRainbow
             }),
 
         new MacroOperationDescription(
@@ -1080,6 +1081,7 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.IntakeUp,
                 DigitalOperation.SubstationIntakeReady,
                 DigitalOperation.ForcePurpleStrobe,
+                DigitalOperation.ForceRainbow
             }),
 
         new MacroOperationDescription(
@@ -1105,7 +1107,10 @@ public class ButtonMap implements IButtonMap
                 DigitalOperation.IntakeUp,
                 DigitalOperation.SubstationIntakeReady,
                 DigitalOperation.ForcePurpleStrobe,
+                DigitalOperation.ForceRainbow
             }),
+
+        
         // new MacroOperationDescription(
         //     MacroOperation.ArmCubeSingleSubstationPickupPosition,
         //     UserInputDevice.Codriver,
@@ -1413,46 +1418,7 @@ public class ButtonMap implements IButtonMap
             Shift.None,
             ButtonType.Toggle,
             () -> SequentialTask.Sequence(
-                ConcurrentTask.AllTasks(
-                    new ResetLevelTask(),
-                    new PositionStartingTask(
-                        TuningConstants.StartGridX,
-                        PathPlannerTrajectoryGenerator.getYPosition(false, TuningConstants.StartFiveGridY),
-                        180.0,
-                        true,
-                        true)),
-    
-                new ArmLAPositionTask(
-                    TuningConstants.ARM_LOWER_POSITION_HIGH_CONE_DOWN,
-                    TuningConstants.ARM_UPPER_POSITION_HIGH_CONE_DOWN,
-                    true,
-                    IntakeState.Up,
-                    true),
-                new IntakePositionTask(true),
-    
-                new WaitTask(0.2),
-                new IntakeGamePieceTask(true, 1.0),
-    
-                ConcurrentTask.AllTasks(
-                    new FollowPathTask(false ? "5To11Red" : "5To11Blue", Type.Absolute),
-                    SequentialTask.Sequence(
-                            new WaitTask(1.0),
-                            new ArmLAPositionTask(
-                                TuningConstants.ARM_LOWER_POSITION_STOWED,
-                                TuningConstants.ARM_UPPER_POSITION_STOWED,
-                                true,
-                                IntakeState.Up,
-                                true)
-                    )
-                ),
-    
-                new ResetLevelTask(),
-                new GoOverChargeStationTask(false, true),
-    
-                new FollowPathTask("goBackwards1ft", Type.RobotRelativeFromCurrentPose),
-                new WaitTask(0.5),
-                
-                new ChargeStationTask(true, Orientation.Backwards)
+                new FollowPathTask("LoadTaxi", Type.RobotRelativeFromCurrentPose)
             ),
             new IOperation[]
             {
