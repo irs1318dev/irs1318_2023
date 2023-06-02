@@ -16,7 +16,7 @@ Motors are devices that convert electrical power into rotational motion. They ca
 
 Pistons 
 
-## Structure of a mechanism
+## Structure of a mechanism (stub)
 Start: Mechanism implements IMechanism
 
 @Inject 
