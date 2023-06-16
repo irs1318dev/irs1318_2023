@@ -111,6 +111,8 @@ public enum LoggingKey
     ArmFKZPosition("a.fk_z_pos"),
     ArmDesiredXPosition("a.ik_x_desired"),
     ArmDesiredZPosition("a.ik_z_desired"),
+    ikXAdjustment("a.ik_x_adj"),
+    ikZAdjustment("a.ik_z_adj"),
     ArmLowerStalled("a.low_stalled"),
     ArmLowerLeftDesiredPosition("a.low_left_pos_desired"),
     ArmLowerLeftPosition("a.low_left_pos"),
