@@ -33,9 +33,9 @@ This reads the sensors and prepares information you will need in the current upd
 @Override
 update()
  
-This is where you do stuff.
+During this time, control any actuators.
 
 @Override
 stop() 
 
-This is where you tell stuff to stop. If you don't, it won't stop on disable.
+This is where you must command everything to stop. If you don't, it won't stop on disable and may become a safety hazard.
