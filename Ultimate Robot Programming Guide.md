@@ -8,13 +8,15 @@ The Issaquah Robotics Society’s Robot code is designed to be a good example of
 First, it is crucial to understand how different parts of the robot work in tandem to comprise a functional machine.
 
 ## Actuators
-Actuators can be defined as any physical component that converts electrical signal to motion. Think of it in the context of "actualizing your dreams," except you are an electric signal and the dream is for a linear actuator to extend. The motor is your medium of achieving what you wish to happen.
+Actuators can be defined as any physical component that converts electrical signal to motion. Think of it in the context of "actualizing your dreams," except you are an electric signal and the dream is for a linear actuator to extend. 
 
 Examples of actuators include motors and pistons. 
 
 Motors are devices that convert electrical power into rotational motion. They can move a variety of parts such as wheels, flywheels (for shooting things), electric fans, elevators, garage doors, linear actuators, and much more.
 
-Pistons are mechanisms powered by pneumatics or hydraulics, and utilize pressure to extend or retract. Pistons have binary states, as they are controlled by pressure of gas or sometimes liquid. Some piston-looking mechanisms may not actually be pistons, however, as there are mechanisms called linear actuators that look similar but have motorized control systems.
+Pistons are mechanisms powered by pneumatics or hydraulics, and utilize pressure to extend or retract. Pistons have binary states, as they are controlled by pressure of gas or sometimes liquid. So, for example, 
+
+Some piston-looking mechanisms may not actually be pistons, however, as there are mechanisms called linear actuators that look similar but have motorized control systems.
 
 ## Structure of a mechanism (stub)
 Start: Mechanism implements IMechanism
