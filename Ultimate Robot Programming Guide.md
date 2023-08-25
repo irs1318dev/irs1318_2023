@@ -69,3 +69,29 @@ stop()
 
 This is where you must command everything to stop. If you don't, it won't stop on disable and may become a safety hazard.
 
+## Using Acuators
+
+All accuators must extend from 2 base classes
+
+1. IMotor for Motor Controllers
+2. IDoubleSolenoid for Double Solenoid like Pistons
+
+Note: Motor Controllers are modules that move motors based on code. They are physically attached to motors because motors are too dumb to understand code. We will never be programing the physical motors, instead we will always work with motor controllers that intern move the motors based on the code.
+
+You can also use Special classes like ITalonFX or ISparkMax to use API's provided by these special motor classes.
+
+### Set Up Process
+
+An accuator is initialized by creating a variable IMotor, ITalonFX , ISparkMax, ITalonSRX, ect.
+
+```private final ITalonSRX lowerLeftArmLinearActuator;```
+
+In the constructor you need to initalize the CAN ID's of the motors (you can think of CAN as a method to identify each motor on the physical robot, as each motor is assigned a CAN ID during the installation process. This document will go into more detail about CAN later). 
+
+```this.lowerLeftArmLinearActuator = provider.getTalonSRX(1);```
+
+This is an example for TalonSRX but it will be almost similar for other motor controllers too, except you will use ```provider.<Controller Name>():```
+
+With this you should have your accuator ready to program on
+
+### Basic Accuator Movement (IDK if I should put this here, might be too early)
