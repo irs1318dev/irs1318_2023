@@ -46,30 +46,113 @@ Each mechanism should control and manage
 For example the intake mechanism could handle the intake of game pieces by using user input, handled by another class, to determine weather to move the acuators to clamp the game object or move them out to release.
 
 ## Structure of a mechanism (stub)
-Start: Mechanism implements IMechanism
 
-@Inject 
+Mechanisms handle the interactions with the actuators (e.g. motors, pneumatic solenoids) and sensors (e.g. encoders, limit switches) of each part of the robot, controlling them based on the operations from the Driver. A mechanism is a class that implements the IMechanism interface with a name based on the name of that portion of the robot (e.g. DriveTrain, Intake) combined with "Mechanism", such as ThingMechanism. It should be placed within the mechanisms folder with the other mechanisms and managers.
 
-public ThisMechanism(IDriver driver, IRobotProvider provider)
+For example, an intake mechanism may intake some cargo, and control numerous motors and recieve information from sensors at the same time. When given the command, it will start running the intake motors to intake cargo. At the same time, it will constantly check whether or not a through-beam in the intake has been broken to determine if cargo has been recieved, and then stop the motors. These would all be written into a singular mechanism as functions, and called from the ButtonMap.
 
-This begins the class.
+Define mechanism class and member variables
 
-@Override
-readSensors() 
- 
-This reads the sensors and prepares information you will need in the current update cycle.
+```java
+@Singleton
+public class ThingMechanism implements IMechanism
+{
+  // driver
+  private final IDriver driver;
 
-@Override
-update()
- 
-During this time, control any actuators.
+  // sensors and actuators
+  private final ISomeSensor nameOfSensor;
+  private final ISomeActuator nameOfAcutator;
 
-@Override
-stop() 
+  // logger
+  private final ILogger logger;
 
-This is where you must command everything to stop. If you don't, it won't stop on disable and may become a safety hazard.
+  // sensor values
+  private boolean someSetting;
 
-## Using Acuators
+  // mechanism state
+  private boolean someState;
+```
+
+At the top of the class, you should have the driver (``private IDriver driver;``), followed by a list of the definitions of your different actuators and sensors (``private final ISomeActuator nameOfActuator;``) and (``private final ISomeSensor nameOfSensor;``). These will be initialized in the constructor. After the driver and set of actuators and sensors are defined, you will also need to define the logger (``private ILogger logger;``), anything that will be read from the sensors (``private boolean someSetting;``) and any state that needs to be kept for the operation of the mechanism (``private boolean someState;``).
+
+##### Write mechanism constructor
+```java
+  @Inject
+  public ThingMechanism(IDriver driver, IRobotProvider provider, LoggingManager logger)
+  {
+    this.driver = driver;
+
+    this.nameOfSensor = provider.GetSomeSensor(ElectronicsConstants.THING_NAMEOFSENSOR_PWM_CHANNEL);
+    this.nameOfActuator = provider.GetSomeActuator(ElectronicsConstants.THING_NAMEOFACTUATOR_PWM_CHANNEL);
+
+    this.logger = logger;
+
+    this.someSetting = false;
+    this.someState = false;
+  }
+```
+
+After defining all of the class's variables, you will define a constructor named like "``public ThingMechanism(IDriver driver, IRobotProvider provider, LoggingManager logger)``". Since 2017 we’ve made use of Google’s Guice to control dependency injection, which is the reason why the special ``@Inject`` markup is required. You will first set the driver to the value that is provided to the constructor by Guice. You will then set the value for each actuator and sensor you defined earlier by calling the corresponding function on the IRobotProvider that is also passed into the constructor. These functions will take some number of arguments based on how the actuators/sensors are physically plugged together in the robot (such as CAN Ids, DIO channel, Analog channel, PCM channel, or PWM channel). 
+
+These arguments should be placed as constants in the ElectronicsConstants file with names such as ``THING_NAMEOFACTUATOR_PWM_CHANNEL`` (The ``ElectronicsConstants`` file will be covered later). We don’t necessarily know in advance how the robot plugs together, so they can be initialized with a value of -1 until we do. After initializing the sensors and actuators, you should set the logger as provided and the settings and states to their default values.
+
+##### Write mechanism readSensors function:
+
+```java
+  @Override
+  public void readSensors()
+  {
+    this.someSetting = this.nameOfSensor.get();
+
+    this.logger.logBoolean(LoggingKey.ThingSomeSetting, this.someSetting);
+  }
+The ``readSensors()`` function reads from the relevant sensors for that mechanism, stores the results in class member variables, and then logs the results to the logger. Most simple sensor types have a simple ``get()`` function or similar to read the current value from that sensor. An entry in the ``LoggingKey`` enum will need to be added to correspond to each setting that we want to log.
+```
+
+##### Write mechanism update function:
+```java
+  @Override
+  public void update()
+  {
+    boolean shouldThingAction = this.driver.getDigital(DigitalOperation.ThingAction);
+
+    double thingActionAmount = 0.0;
+    if (shouldThingAction)
+    {
+      thingActionAmount = TuningConstants.THING_ACTION_AMOUNT;
+    }
+
+    this.nameOfActuator.set(thingActionAmount);
+  }
+```
+
+The ``update()`` function examines the inputs that we retrieve from the ``IDriver``, and then calculates the various outputs to use applies them to the outputs for the relevant actuators. For some mechanisms, the logic will be very simple - reading an operation and applying it to an actuator (extend, retract, like a piston). Other mechanisms will involve some internal state and information from the most recent readings from the sensors, and possibly some math in order to determine what the actuator should do. Note that there will often be a "degree" to which something should be done that we don't know in advance (like how linear actuators can extend certain specific amounts). If we are intaking a ball, we may want to carefully choose the correct strength to run the intake motor at. Because we don't know this value in advance and will discover it experimentally, we should put such values into the ``TuningConstants`` file as a constant with a guess for the value. This value should be low as to prevent any accidents.
+
+##### Write mechanism stop function:
+
+```java
+  @Override
+  public void stop()
+  {
+    this.nameOfActuator.set(0.0);
+  }
+```
+
+The stop function tells each of the actuators to stop moving. This typically means setting any ``Motor`` to 0.0 and any ``DoubleSolenoid`` to ``kOff``. It is called when the robot is being disabled, and it is very important to stop everything to ensure that the robot is safe and doesn't make any uncontrolled movements.
+
+##### Write any getter functions:
+
+```java
+  public boolean getSomeSetting()
+  {
+    return this.someSetting;
+  }
+```
+
+When there are sensors being read, often we will want to incorporate the data that they return into the running of tasks as a part of macros and autonomous routines. In order to support that, we must add getter functions so that the tasks can access the values that were read from the sensors. These functions just simply return the value that was read during the ``readSensors`` function. Typically we can skip writing these until a task is being written needs this information.
+
+## Using Actuators
 
 All accuators must extend from 2 base classes
 
@@ -82,16 +165,16 @@ You can also use Special classes like ITalonFX or ISparkMax to use API's provide
 
 ### Set Up Process
 
-An accuator is initialized by creating a variable IMotor, ITalonFX , ISparkMax, ITalonSRX, ect.
+An actuator is initialized by creating a variable IMotor, ITalonFX , ISparkMax, ITalonSRX, etc.
 
 ```private final ITalonSRX lowerLeftArmLinearActuator;```
 
-In the constructor you need to initalize the CAN ID's of the motors (you can think of CAN as a method to identify each motor on the physical robot, as each motor is assigned a CAN ID during the installation process. This document will go into more detail about CAN later). 
+In the constructor you need to initalize the CAN IDs of the motors (you can think of CAN as a method to identify each motor on the physical robot, as each motor is assigned a CAN ID during the installation process. This document will go into more detail about CAN later). 
 
 ```this.lowerLeftArmLinearActuator = provider.getTalonSRX(1);```
 
 This is an example for TalonSRX but it will be almost similar for other motor controllers too, except you will use ```provider.<Controller Name>():```
 
-With this you should have your accuator ready to program on
+With this you should have your actuator ready to program on
 
-### Basic Accuator Movement (IDK if I should put this here, might be too early)
+### Basic Actuator Movement 
