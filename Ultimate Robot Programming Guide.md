@@ -14,7 +14,7 @@ Examples of actuators include motors and pistons.
 
 Motors are devices that convert electrical power into rotational motion. They can move a variety of parts such as wheels, flywheels (for shooting things), electric fans, elevators, garage doors, linear actuators, and much more.
 
-Pistons are mechanisms powered by pneumatics or hydraulics, and utilize pressure to extend or retract. Pistons have binary states, as they are controlled by pressure of gas or sometimes liquid. Some piston-looking mechanisms may not actually be pistons, however, as there are mechanisms called linear actuators that look similar but have motorized control systems.
+Pistons are mechanisms powered by pneumatics or hydraulics, and utilize pressure to extend or retract. Pistons are generally utilized in binary states, as they are controlled by pressure of gas or sometimes liquid. Sometimes, a third state may be used where the pison is not actively pushing or pulling. Some piston-looking mechanisms may not actually be pistons, however, as there are mechanisms called linear actuators that look similar but have motorized control systems.
 
 ## Structure of a mechanism (stub)
 Start: Mechanism implements IMechanism
