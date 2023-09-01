@@ -461,6 +461,8 @@ public class ArmMechanism implements IMechanism
 
                     ikXAdjustment = this.driver.getAnalog(AnalogOperation.ArmIKXAdjustment) * TuningConstants.ARM_X_POSITION_ADJUSTMENT_VELOCITY * elapsedTime;
                     ikZAdjustment = this.driver.getAnalog(AnalogOperation.ArmIKZAdjustment) * TuningConstants.ARM_Z_POSITION_ADJUSTMENT_VELOCITY * elapsedTime;
+                    this.logger.logNumber(LoggingKey.ikXAdjustment, ikXAdjustment);
+                    this.logger.logNumber(LoggingKey.ikZAdjustment, ikZAdjustment);
                 }
 
                 // third choice
