@@ -1,3 +1,39 @@
+Planned chapter guide:
+
+Overview
+Intro to Actuators
+Intro to Sensors
+Intro to Mechanisms
+Intro to Robot Structure
+Intro to Robot Code Design
+Introduce Driver, Mechanisms
+Intro to Mechanism Code
+Structure
+Using Actuators
+Fauxbot Exercise 1 (Forklift)
+Code organization
+Tuning, Hardware, Electronics Constants
+Intro to Driver
+ButtonMap, Operations
+Using Sensors
+Fauxbot Exercise 2 (Garage Door)
+Logging
+Intro to PID, Positional PID
+Fauxbot Exercise 3 (Elevator)
+Velocity PID
+Advanced Motor Controllers
+Talon SRX, Talon FX, Spark MAX
+Fauxbot Exercise 4 (Shooter)
+Intro to Macros
+Fauxbot Exercise 5 (Printer)
+Advanced Macros
+Fauxbot Exercise 5b (Printer Macro)
+Intro to Autonomous
+Intro to Path Planner
+Intro to Trapezoidal Motion Profiling
+Motion Magic
+
+
 ## Overview
 > "Everything should be made as simple as possible, but not simpler." - Albert Einstein
 
@@ -17,6 +53,11 @@ Motors are devices that convert electrical power into rotational motion. They ca
 Pistons are mechanisms powered by pneumatics or hydraulics, and utilize pressure to extend or retract. Pistons have binary states, as they are controlled by pressure of gas or sometimes liquid. So, for example, 
 
 Some piston-looking mechanisms may not actually be pistons, however, as there are mechanisms called linear actuators that look similar but have motorized control systems.
+
+## Motors
+#### [REMOVE THIS Electric motors are typically used to provide movement for the robot. They provide a rotational force that is dependent on the current setting on them and the amount of voltage that is available. Motors are useful when a certain amount of motion is needed or when there are motions that need to happen at different speeds (as opposed to all-or-nothing). Motors are used in places such as drive trains, elevators, and intakes. In WPILib, they are controlled using a double value (rational number) between -1.0 and 1.0. Since 2018, we have typically used the Talon SRX which can incorporate the abilities of a motor, an encoder, a top/bottom limit switch, and a PID controller to allow for advanced control. In 2020, we started using brushless motors, including the Falcon with its built-in TalonFX motor controller as well as the NEO with its corresponding Spark MAX motor controller.]
+
+Movement for the robot typically involves the usage of electric motors. They provide a rotational force that is dependent on the current setting and voltage available. They are useful because they have variable speeds that can be changed with programming. They are used in mechanisms such as drivetrains, elevators, and intakes. We currently use the motor controller for NEO, the Spark MAX. 
 
 ## Intro to Sensors
 Sensors are components that sense certian behaviors of objects.
@@ -178,3 +219,5 @@ This is an example for TalonSRX but it will be almost similar for other motor co
 With this you should have your actuator ready to program on
 
 ### Basic Actuator Movement 
+
+
