@@ -1,36 +1,68 @@
 Planned chapter guide:
 
 Overview
+
 Intro to Actuators
+
 Intro to Sensors
+
 Intro to Mechanisms
+
 Intro to Robot Structure
+
 Intro to Robot Code Design
+
 Introduce Driver, Mechanisms
+
 Intro to Mechanism Code
+
 Structure
+
+
 Using Actuators
+
 Fauxbot Exercise 1 (Forklift)
+
 Code organization
+
 Tuning, Hardware, Electronics Constants
+
 Intro to Driver
+
 ButtonMap, Operations
+
 Using Sensors
+
 Fauxbot Exercise 2 (Garage Door)
+
 Logging
+
 Intro to PID, Positional PID
+
 Fauxbot Exercise 3 (Elevator)
+
 Velocity PID
+
 Advanced Motor Controllers
+
 Talon SRX, Talon FX, Spark MAX
+
 Fauxbot Exercise 4 (Shooter)
+
 Intro to Macros
+
 Fauxbot Exercise 5 (Printer)
+
 Advanced Macros
+
 Fauxbot Exercise 5b (Printer Macro)
+
 Intro to Autonomous
+
 Intro to Path Planner
+
 Intro to Trapezoidal Motion Profiling
+
 Motion Magic
 
 
