@@ -76,7 +76,10 @@ The Issaquah Robotics Society’s Robot code is designed to be a good example of
 
 First, it is crucial to understand how different parts of the robot work in tandem to comprise a functional machine.
 
-## Vocabulary
+## General Robot Design
+
+Robots in FRC tend to have a small set of different pieces that we want to utilize, that can be arranged in a large number of ways to make complex mechanisms. These mechanisms are designed before the code for them is written, so you should know what they are composed of by the time you are writing any code. I’ll list out a few of these pieces here and explain what they do and how we typically use them.
+
 
 ### Actuators
 
@@ -95,21 +98,15 @@ Some piston-looking mechanisms may not actually be pistons, however, as there ar
 The word "sensor" encapsulates many different types of sensors, including limit switches, encoders, through-beam sensors, and distance sensors. Essentially, the word means "something that reports information." They sense certain behaviors of objects. One example a garage door's through beam sensor, that senses if something is in the way of the door closing and stops the door. Another example of a sensor is an encoder inside of a wheel, that counts how many times that wheel has spun. These are numbers that can be accessed in code and used to detect things such as if the robot is carrying cargo, or how far it has travelled.
 
 
+## RoboRIO
+
+RoboRIO is the name of the computing device that is used to control the robot. It is produced by National Instruments and runs a customized version of Linux on an ARM processor. We write code that uses a library called WPILib (provided by FIRST) to handle interactions between the Robot, Driver Station, etc.
 
 ## Intro to Mechanisms and Tasks
 
 A Robot can be thought of as a culmination of numerous different "mechanisms." A mechanism file encapsulates the control of related systems. For example, an intake mechanism may intake some cargo, and control numerous motors and recieve information from sensors at the same time. When given the command, it will start running the intake motors to intake cargo. At the same time, it will constantly check whether or not a through-beam in the intake has been broken to determine if cargo has been recieved, and then stop the motors. These would all be written into a singular mechanism as functions. If these systems need to interact with a human operator, functions can be written and then called from ``ButtonMap``.
 
 Once mechanisms are defined and some functions of those mechanisms are created, the mechanism can then be implemented into "tasks." For example, an arm (which has numerous actuators and encoders) may have to move at the same time as the drivetrain (which has numerous actuators and encoders) to accomplish a certain task. The functions ``armUp(10)`` and ``driveTrainForward(10)`` can be used in a single "task" file without worrying about the specifics of how those mechanisms will move.
-
-
-## General Robot Design
-
-Robots in FRC tend to have a small set of different pieces that we want to utilize, that can be arranged in a large number of ways to make complex mechanisms. These mechanisms are designed before the code for them is written, so you should know what they are composed of by the time you are writing any code. I’ll list out a few of these pieces here and explain what they do and how we typically use them.
-
-## RoboRIO
-
-RoboRIO is the name of the computing device that is used to control the robot. It is produced by National Instruments and runs a customized version of Linux on an ARM processor. We write code that uses a library called WPILib (provided by FIRST) to handle interactions between the Robot, Driver Station, etc.
 
 ## Intro to Robot Code Structure
 
