@@ -18,6 +18,7 @@ Intro to Mechanism Code
 
 Structure
 
+(NOT MENTIONED: LoggingKeys, ControlTasks, Macros, Shifts, Autonomous Routines, External Libraries, Guice, OpenCV, CTRE Phoenix, Spark MAX API, NavX MXP, JUnit, Mockito)
 
 Using Actuators
 
@@ -75,39 +76,104 @@ The Issaquah Robotics Society’s Robot code is designed to be a good example of
 
 First, it is crucial to understand how different parts of the robot work in tandem to comprise a functional machine.
 
-## Intro to Actuators
-Actuators can be defined as any physical component that converts electrical signal to motion. Think of it in the context of "actualizing your dreams," except you are an electric signal and the dream is for a linear actuator to extend. 
+## Vocabulary
 
-Examples of actuators include motors and pistons. 
+### Actuators
+
+Actuators can be defined as any physical component that converts electrical signal to motion. Think of it in the context of "actualizing your dreams," except you are an electric signal and the dream is for a linear actuator to extend.
+
+Examples of actuators include motors and pistons.
 
 Motors are devices that convert electrical power into rotational motion. They can move a variety of parts such as wheels, flywheels (for shooting things), electric fans, elevators, garage doors, linear actuators, and much more.
 
-Pistons are mechanisms powered by pneumatics or hydraulics, and utilize pressure to extend or retract. Pistons have binary states, as they are controlled by pressure of gas or sometimes liquid. So, for example, 
+Pistons are mechanisms powered by pneumatics or hydraulics, and utilize pressure to extend or retract. Pistons have binary states, as they are controlled by pressure of gas or sometimes liquid. So, for example,
 
 Some piston-looking mechanisms may not actually be pistons, however, as there are mechanisms called linear actuators that look similar but have motorized control systems.
 
-## Motors
-#### [REMOVE THIS Electric motors are typically used to provide movement for the robot. They provide a rotational force that is dependent on the current setting on them and the amount of voltage that is available. Motors are useful when a certain amount of motion is needed or when there are motions that need to happen at different speeds (as opposed to all-or-nothing). Motors are used in places such as drive trains, elevators, and intakes. In WPILib, they are controlled using a double value (rational number) between -1.0 and 1.0. Since 2018, we have typically used the Talon SRX which can incorporate the abilities of a motor, an encoder, a top/bottom limit switch, and a PID controller to allow for advanced control. In 2020, we started using brushless motors, including the Falcon with its built-in TalonFX motor controller as well as the NEO with its corresponding Spark MAX motor controller.]
+### Sensors
 
-Movement for the robot typically involves the usage of electric motors. They provide a rotational force that is dependent on the current setting and voltage available. They are useful because they have variable speeds that can be changed with programming. They are used in mechanisms such as drivetrains, elevators, and intakes. We currently use the motor controller for NEO, the Spark MAX. 
+The word "sensor" encapsulates many different types of sensors, including limit switches, encoders, through-beam sensors, and distance sensors. Essentially, the word means "something that reports information." They sense certain behaviors of objects. One example a garage door's through beam sensor, that senses if something is in the way of the door closing and stops the door. Another example of a sensor is an encoder inside of a wheel, that counts how many times that wheel has spun. These are numbers that can be accessed in code and used to detect things such as if the robot is carrying cargo, or how far it has travelled.
 
-## Intro to Sensors
-Sensors are components that sense certian behaviors of objects.
 
-Think of them as components that behave like the 5 human senses except each serves a very specific purpose.
 
-### Types of Sensors
-#### Limit Switches
-Limit switches are simple switches that are used to sense when two things are physically touching.  They are simple electronic devices that complete a circuit (or break a circuit) when the switch is pressed, and break a circuit (or complete it) when released.  In WPILib, you would use a DigitalInput, which returns a true or false based on whether the limit switch is pressed or not.
+## Intro to Mechanisms and Tasks
 
-#### Encoders
-Encoders are used to measure the amount that an axle has rotated.  There are different types of encoders (optical, magnetic).  We typically use a quadrature encoder, which can detect the amount of rotation and the direction in which the axle has rotated.  Each encoder has a rating for how many "pulses" or ticks it receives in a complete rotation of the axle.  Using some simple math based on the sizes of the wheels (and gears), you can calculate how far something has travelled.  In WPILib, you would typically use an Encoder object, which returns the number of ticks/pulses, the distance (based on the distance per pulse), or the velocity (if you trust the timer on the robot).  In some scenarios, such as when using a TalonSRX, TalonFX, or SparkMAX motor controller, the encoder plugs into the motor controller and is instead used as a part of controlling the motor.  In other scenarios, such as some absolute encoders, the sensor is actually an Analog sensor.  For such encoders, WPILib would use an AnalogInput, which returns a double (rational number) value between 0V (0 degrees) and 5V (360 degrees).
+A Robot can be thought of as a culmination of numerous different "mechanisms." A mechanism file encapsulates the control of related systems. For example, an intake mechanism may intake some cargo, and control numerous motors and recieve information from sensors at the same time. When given the command, it will start running the intake motors to intake cargo. At the same time, it will constantly check whether or not a through-beam in the intake has been broken to determine if cargo has been recieved, and then stop the motors. These would all be written into a singular mechanism as functions. If these systems need to interact with a human operator, functions can be written and then called from ``ButtonMap``.
 
-#### Through-Beam Sensors
-Through-Beam Sensors are simple infrared sensors and lights that are used to sense whether there is anything between the light and sensor.  They are often used in the real world at the bottom of a garage door to detect if anything is under the garage door so it doesn’t get crushed.  This can be used on a robot to sense whether something is in a given location.  We often use them on robots to detect whether the game piece has been successfully picked up.  In WPILib, you would use an AnalogInput, which returns a double value (rational number) which indicates how many volts were detected by the infrared sensor.  This value will differ based on the through-beam sensor, so you can tell through experimentation whether it is tripped or not for a given value range.
+Once mechanisms are defined and some functions of those mechanisms are created, the mechanism can then be implemented into "tasks." For example, an arm (which has numerous actuators and encoders) may have to move at the same time as the drivetrain (which has numerous actuators and encoders) to accomplish a certain task. The functions ``armUp(10)`` and ``driveTrainForward(10)`` can be used in a single "task" file without worrying about the specifics of how those mechanisms will move.
 
-#### Distance Sensors
-There are various types of distance sensors, which can use either sound or light to sense how far away the robot is from something else.  In WPILib, you would use an AnalogInput, which would return a double value (rational number) which indicates how many volts were detected by the sensor.  This value will differ based on the sensor and its placement, so you can tell through experimentation what the values mean.  It is also possible to use a more complex sensor that would need to have code written for it to use I2C or another protocol to let the RoboRIO communicate with the sensor.
+
+## General Robot Design
+
+Robots in FRC tend to have a small set of different pieces that we want to utilize, that can be arranged in a large number of ways to make complex mechanisms. These mechanisms are designed before the code for them is written, so you should know what they are composed of by the time you are writing any code. I’ll list out a few of these pieces here and explain what they do and how we typically use them.
+
+## RoboRIO
+
+RoboRIO is the name of the computing device that is used to control the robot. It is produced by National Instruments and runs a customized version of Linux on an ARM processor. We write code that uses a library called WPILib (provided by FIRST) to handle interactions between the Robot, Driver Station, etc.
+
+## Intro to Robot Code Structure
+
+There are a couple of basic files a programmer will edit that are crucial to the operation of an IRS 1318 robot. These are ``TuningConstants``, ``ElectronicsConstants``, ``ButtonMap``, ``DigitalOperation``, ``AnalogOperation``, and as aforementioned, any ``SomethingMechanism`` or ``SomethingTask`` files.
+
+Digital and Analog operations will be covered later. It is important to note that they are essentially lists of operations that can happen when buttons are pressed on a controller, so for an action to work, it must be registered as one of the operations depending on the type.
+
+### TuningConstants
+
+In order to simplify tuning the settings of the robot, we store any "magic numbers" that we will likely want to change as constants in the ```TuningConstants``` class.  Settings that may need to be tuned include things like the speed at which to run an intake, or the speed at which to turn when the joystick is in a certain position.  These settings are usually things that are hard to know in advance, and the appropriate settings are discovered by testing the robot.  There are many things that aren’t known in advance by the software team, so putting all of these things in ```TuningConstants``` in an organized fashion can help speed up the tuning process of the robot and prevent bugs.
+
+ex: 
+
+```java 
+public static final double FLYWHEEL_SHOOT_SPEED = 13.18;
+```
+
+This allows for quick editing and tuning of the robot. 
+
+### ElectronicsConstants
+
+```ElectronicsConstants``` is a class that holds constant values describing all of the physical connections (PWM channels, Digital IO channels, Analog IO channels, CAN ids, etc.) that are needed to be known in order to control the correct output device and read the correct sensors.  We keep this information in a separate class (and all in a single file) so that there is only one place to update if the Electronics sub-team needs to re-run the wiring, or in case there are wiring differences between the practice robot and the competition robot.
+
+ex: 
+
+```java 
+public static final int JOYSTICK_DRIVER_PORT = 0;
+```
+
+This joystick will be plugged into the driver port 0. That is how we will know what port to communicate with this joystick through.
+
+### ButtonMap
+
+The ```ButtonMap``` contains the mapping of various joystick/controller buttons and axes to the corresponding digital and analog operations.  The ```Driver``` class is in charge of reading from the joysticks and button pads during the teleop mode, and it uses the ```ButtonMap``` schemas to translate the individual actions taken on the joystick into ```DigitalOperation```s, ```AnalogOperation```s, and ```MacroOperation```s.
+
+ex: 
+
+```java 
+new DigitalOperationDescription(
+            DigitalOperation.FireButton,
+            UserInputDevice.Driver,
+            UserInputDeviceButton.XBONE_B_BUTTON,
+            ButtonType.Click
+        );
+```
+		
+This is what a button defintion will look like. Once the Xbox One Controller button "B" is clicked, ``FireButton`` will become ``true``. Code in a ``ShooterMechanism`` will have something like this written in its ``update()`` loop:
+
+```java 
+boolean fireButtonPressed = driver.getDigital(DigitalOperation.FireButton);
+if (fireButtonPressed){
+            kicker.set(DoubleSolenoidValue.Forward);
+            flywheelMotor.set(100);
+            kickerOn = true;
+        }
+        hoodMotor.set(scaledHoodPos);
+```
+		
+Which will cause the hood to start adjusting and activate the kicker, to fire a ball.
+
+### Driver
+
+This file will not be edited often.
+The ```Driver``` is the actor that controls the robots.  The ```Driver``` class triggers different Operations to occur based on the intent of the current actor that is controlling the robot (autonomous or user).
 
 ## Intro to Mechanisms
 A mechanism is a piece of code (generally a file) that controls a specific part of the robot. 
@@ -118,7 +184,7 @@ Each mechanism should control and manage
 
 For example the intake mechanism could handle the intake of game pieces by using user input, handled by another class, to determine weather to move the acuators to clamp the game object or move them out to release.
 
-## Structure of a mechanism (stub)
+## Structure of a mechanism (BEGINNERS MAY SKIP)
 
 Mechanisms handle the interactions with the actuators (e.g. motors, pneumatic solenoids) and sensors (e.g. encoders, limit switches) of each part of the robot, controlling them based on the operations from the Driver. A mechanism is a class that implements the IMechanism interface with a name based on the name of that portion of the robot (e.g. DriveTrain, Intake) combined with "Mechanism", such as ThingMechanism. It should be placed within the mechanisms folder with the other mechanisms and managers.
 
@@ -214,42 +280,22 @@ The ``update()`` function examines the inputs that we retrieve from the ``IDrive
 
 The stop function tells each of the actuators to stop moving. This typically means setting any ``Motor`` to 0.0 and any ``DoubleSolenoid`` to ``kOff``. It is called when the robot is being disabled, and it is very important to stop everything to ensure that the robot is safe and doesn't make any uncontrolled movements.
 
-##### Write any getter functions:
+## Fauxbot Exercise One: Forklift
 
-```java
-  public boolean getSomeSetting()
-  {
-    return this.someSetting;
-  }
-```
+Now that you understand these fundamental concepts, it's time for the first exercise.
 
-When there are sensors being read, often we will want to incorporate the data that they return into the running of tasks as a part of macros and autonomous routines. In order to support that, we must add getter functions so that the tasks can access the values that were read from the sensors. These functions just simply return the value that was read during the ``readSensors`` function. Typically we can skip writing these until a task is being written needs this information.
+This task will require you to write ```ForkliftMechanism```. Since this particular machinery is relatively simple, it can be written as a single mechanism. Specific actuators for this exercise can be found in ``ForkliftExercise.md``.
 
-## Using Actuators
+Put simply, here is how ```ForkliftMechanism``` will operate:
 
-All accuators must extend from 2 base classes
+The forklift can move left and right, and also move its lifter up and down.
 
-1. IMotor for Motor Controllers
-2. IDoubleSolenoid for Double Solenoid like Pistons
+1. First, you will define everything needed for the class to work. This includes the driver, drivetrain motors, and lifter. 
 
-Note: Motor Controllers are modules that move motors based on code. They are physically attached to motors because motors are too dumb to understand code. We will never be programing the physical motors, instead we will always work with motor controllers that intern move the motors based on the code.
+2. In the update loop, you will determine what checks need to be made, and how to act on those checks. This will likely only be checking for button inputs.
 
-You can also use Special classes like ITalonFX or ISparkMax to use API's provided by these special motor classes.
+3. This means that you must have actions that happen when a button is pressed. 
 
-### Set Up Process
+4. Operation names must be defined in either ``AnalogOperation`` or ``DigitalOperation``, and buttons must be assigned to each operation.
 
-An actuator is initialized by creating a variable IMotor, ITalonFX , ISparkMax, ITalonSRX, etc.
-
-```private final ITalonSRX lowerLeftArmLinearActuator;```
-
-In the constructor you need to initalize the CAN IDs of the motors (you can think of CAN as a method to identify each motor on the physical robot, as each motor is assigned a CAN ID during the installation process. This document will go into more detail about CAN later). 
-
-```this.lowerLeftArmLinearActuator = provider.getTalonSRX(1);```
-
-This is an example for TalonSRX but it will be almost similar for other motor controllers too, except you will use ```provider.<Controller Name>():```
-
-With this you should have your actuator ready to program on
-
-### Basic Actuator Movement 
-
-
+TuningConstants are optional, but can be used.
