@@ -23,14 +23,14 @@ import frc.robot.driver.AnalogOperation;
 import frc.robot.driver.DigitalOperation;
 
 @Singleton
-public class IDKWhatPranavWantsMeToDo implements IMechanism {
+public class SimpleDriveTrainMech implements IMechanism {
 
     private final IVictorSPX leftMotor;
     private final IVictorSPX rightMotor;
     private IDriver driver;
 
     @inject
-    public IDKWhatPranavWantsMeToDo(
+    public SimpleDriveTrainMech(
         IRobotProvider provider
     )
     {
