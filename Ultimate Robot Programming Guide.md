@@ -296,3 +296,9 @@ The forklift can move left and right, and also move its lifter up and down.
 4. Operation names must be defined in either ``AnalogOperation`` or ``DigitalOperation``, and buttons must be assigned to each operation.
 
 TuningConstants are optional, but can be used.
+
+## Troubleshooting Visual Studio Code
+
+Visual Studio Code handles many things at the same time, so this can be an ongoing list of issues that you may run into when using it.
+
+One way that often fixes any problems you may be having regarding synchronizing with the repository, or VSC not recognizing libraries or imports, is to simply clone the repository again. Go to the folder where your cloned files are and delete everything. Then, clone the repository again. This usually works. If it does not, then that means there is a fundamental issue with the code. Do not commit your code if you are having issues.
