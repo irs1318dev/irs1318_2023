@@ -301,4 +301,7 @@ TuningConstants are optional, but can be used.
 
 Visual Studio Code handles many things at the same time, so this can be an ongoing list of issues that you may run into when using it.
 
+The below method works for fixing this:
+![brokencode](https://github.com/irs1318dev/irs1318_2023/assets/62030864/e174f449-9de3-48cd-9139-f6a57086654e)
+
 One way that often fixes any problems you may be having regarding synchronizing with the repository, or VSC not recognizing libraries or imports, is to simply clone the repository again. Go to the folder where your cloned files are and delete everything. Then, clone the repository again. This usually works. If it does not, then that means there is a fundamental issue with the code. Do not commit your code if you are having issues.
