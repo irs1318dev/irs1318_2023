@@ -1,32 +1,32 @@
 Planned chapter guide:
 
-Overview
+Overview x
 
-Intro to Actuators
+Intro to Actuators x
 
-Intro to Sensors
+Intro to Sensors x
 
-Intro to Mechanisms
+Intro to Mechanisms x
 
-Intro to Robot Structure
+Intro to Robot Structure x
 
-Intro to Robot Code Design
+Intro to Robot Code Design x
 
-Introduce Driver, Mechanisms
+Introduce Driver, Mechanisms x
 
-Intro to Mechanism Code
+Intro to Mechanism Code x
 
-Structure
+Structure x
 
 (NOT MENTIONED: LoggingKeys, ControlTasks, Macros, Shifts, Autonomous Routines, External Libraries, Guice, OpenCV, CTRE Phoenix, Spark MAX API, NavX MXP, JUnit, Mockito)
 
-Using Actuators
+Using Actuators x
 
-Fauxbot Exercise 1 (Forklift)
+Fauxbot Exercise 1 (Forklift) x
 
 Code organization
 
-Tuning, Hardware, Electronics Constants
+Tuning, Hardware, Electronics Constants x
 
 Intro to Driver
 
@@ -277,9 +277,19 @@ The ``update()`` function examines the inputs that we retrieve from the ``IDrive
 
 The stop function tells each of the actuators to stop moving. This typically means setting any ``Motor`` to 0.0 and any ``DoubleSolenoid`` to ``kOff``. It is called when the robot is being disabled, and it is very important to stop everything to ensure that the robot is safe and doesn't make any uncontrolled movements.
 
-## Fauxbot Exercise One: Forklift
+## IMechanism
+Mechanism classes handle the reading of all of the sensors and control of all of the actuators on each mechanism of the robot.  There is one Mechanism class for each individual part of the robot, named using the pattern "ThingMechanism" (where "Thing" is the name of the mechanism, like "DriveTrain").  Mechanisms read from all of the Sensors and translate the Operations from the Driver into the functions that need to be called on the individual Actuators.  This typically involves some math and logic to convert the data from the operations into the particular actions that need to happen.  For example, when using a typical Tank drivetrain, the DriveTrain Mechanism calculates the speed settings to apply to the left and right motors based on the DriveTrainMoveForward operation and the DriveTrainTurn operation.  Also, there may be other concerns to take care of, such as how to respond based on the presence or absence of a setting from another operation or a sensor.
+
+The Mechanisms implement the ```IMechanism``` interface which has the definitions of functions that every Mechanism must implement.  In the mechanism, the ```readSensor()``` and ```update()``` functions are the most important, and are called every ~20 milliseconds.  The ```readSensors()``` function reads the current values from all of the sensors and stores them locally in member variables for that ThingMechanism object.  The ```update()``` function calculates what should be applied to the output devices based on the current Operations and the data we previously read from the sensors.  It is important that these functions execute quickly, so anything that depends on a certain length of time elapsing should be calculated between separate runs of the function and not involve any long-running loops or sleeps.  Most actions that take multiple iterations of the ```update()``` function or depend on time elapsing belong in a macro instead of being hard-coded into the Mechanism, though it is also possible for there to be state kept in member variables to help keep track of what that mechanism should be doing.
+
+## Begin Fauxbot Exercise One: Forklift
 
 Now that you understand these fundamental concepts, it's time for the first exercise.
+
+First, let's clear up what a Digital and Analog Operation is:
+An _analog_ operation is an operation that requires a _continuous_ signal. A _digital_ operation is an operation that has a "chunky" signal. Examples of analog operations include Joysticks, pedals, any one button that has numerous continuous states. A digital operation can be a single button, that is either pressed or not pressed. We can know how long it is held for, but nothing more.
+
+![image](https://github.com/irs1318dev/irs1318_2023/assets/62030864/385d43e1-d6c9-4d61-a74d-7a19fa15d7b7)
 
 This task will require you to write ```ForkliftMechanism```. Since this particular machinery is relatively simple, it can be written as a single mechanism. Specific actuators for this exercise can be found in ``ForkliftExercise.md``.
 
@@ -295,7 +305,24 @@ The forklift can move left and right, and also move its lifter up and down.
 
 4. Operation names must be defined in either ``AnalogOperation`` or ``DigitalOperation``, and buttons must be assigned to each operation.
 
-TuningConstants are optional, but can be used.
+TuningConstants and ElectronicsConstants are optional, but can be used.
+
+First, find or make the folder ``mechanisms`` in ``Fauxbot> core_robot> src> main\java\frc\robot``. Create ``ForkliftMechanism.java`` within the folder.
+
+Your Forklift will have a left motor, right motor, and lifter. You must also define the driver. All mechanisms must have their components first stated on the class level, and then assigned in the ``@inject``. Keep in mind that our programming team likes to use the ``this.something`` syntax when possible, to avoid confusion between items named similarly. 
+
+
+For this first exercise, an example is provided below:
+
+![image](https://github.com/irs1318dev/irs1318_2023/assets/62030864/e39b6a2e-1935-470b-ba0e-be89e21e1317)
+
+Apply your imports as you go. When making mechanisms, imports can usually be pasted from similar mechanisms.
+
+In this simulation, each electronic part of the forklift has its own channel, similar to how a real robot would have components plugged into different ports. These are defined in ``ElectronicsConstants``. The forklift motor has a left and right channel, and the double solenoid has a forward and reverse channel. Assign those to 0, 1, 7, and 8, respectively.
+
+This exercise does not utilize ``readSensors()``.
+
+The ``update()`` loop is where you controll all of your actuators. You want your forklift to move when given the command to. Now, think about the two actuators on this component. Are they digital, or are they analog? Assign those actions in ``DigitalOperation`` and ``AnalogOperation``. What you will write in the ``update()`` loop for _digital_ operations is simple ``if`` statements about whether the desired command is ``true``. Your ``update()`` loop must also constantly check whether the desired _analog_ states have changed and update those.
 
 ## Troubleshooting Visual Studio Code
 
