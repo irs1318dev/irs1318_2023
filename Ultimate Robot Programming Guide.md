@@ -307,7 +307,10 @@ The forklift can move left and right, and also move its lifter up and down.
 
 TuningConstants and ElectronicsConstants are optional, but can be used.
 
-First, find or make the folder ``mechanisms`` in ``Fauxbot> core_robot> src> main\java\frc\robot``. Create ``ForkliftMechanism.java`` within the folder.
+First, find or make the folder ``mechanisms`` in ``Fauxbot> core_robot> src> main\java\frc\robot``. Create ``ForkliftMechanism.java`` within the folder. Next to public class ForkliftMechanism, add ``implements IMechanism``. Follow VS Code prompts to fix imports and errors, and you should end up with something like this:
+
+![image](https://github.com/irs1318dev/irs1318_2023/assets/62030864/7eac8cab-e0b8-4bcd-9a7f-22db979db2d9)
+
 
 Your Forklift will have a left motor, right motor, and lifter. You must also define the driver. All mechanisms must have their components first stated on the class level, and then assigned in the ``@inject``. Keep in mind that our programming team likes to use the ``this.something`` syntax when possible, to avoid confusion between items named similarly. 
 
