@@ -357,9 +357,9 @@ public class TuningConstants
     public static final double DRIVETRAIN_SKIP_OMEGA_ON_ZERO_DELTA = 0.36;
 
     public static final double DRIVETRAIN_EXPONENTIAL = 2.0;
-    public static final double DRIVETRAIN_DEAD_ZONE_TURN = 0.1;
-    public static final double DRIVETRAIN_DEAD_ZONE_VELOCITY_X = 0.1;
-    public static final double DRIVETRAIN_DEAD_ZONE_VELOCITY_Y = 0.1;
+    public static final double DRIVETRAIN_DEAD_ZONE_TURN = 0.3;
+    public static final double DRIVETRAIN_DEAD_ZONE_VELOCITY_X = 0.3;
+    public static final double DRIVETRAIN_DEAD_ZONE_VELOCITY_Y = 0.3;
     public static final double DRIVETRAIN_DEAD_ZONE_TRIGGER_AB = 0.1;
 
     public static final double DRIVETRAIN_ROTATION_A_MULTIPLIER = HardwareConstants.DRIVETRAIN_HORIZONTAL_WHEEL_SEPERATION_DISTANCE / 2.0;
@@ -462,8 +462,8 @@ public class TuningConstants
     public static final double ARM_MIN_IKZ_EXTENSION_HEIGHT = -5.0;
     public static final double ARM_MAX_IKZ_EXTENSION_HEIGHT = HardwareConstants.MAX_ROBOT_HEIGHT - HardwareConstants.ARM_ORIGIN_Z_OFFSET - HardwareConstants.ARM_MAX_END_EFFECTOR_HEIGHT;
 
-    public static final double ARM_LOWER_VELOCITY_DEAZONE = 0.15;
-    public static final double ARM_UPPER_VELOCITY_DEAZONE = 0.15;
+    public static final double ARM_LOWER_VELOCITY_DEAZONE = 0.30;
+    public static final double ARM_UPPER_VELOCITY_DEAZONE = 0.30;
     public static final double ARM_TWIST_DEAZONE = 0.10;
 
     public static final double ARM_FULLY_RETRACTED_X_POSITION = 0.0; // in inches
