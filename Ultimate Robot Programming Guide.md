@@ -277,6 +277,11 @@ The ``update()`` function examines the inputs that we retrieve from the ``IDrive
 
 The stop function tells each of the actuators to stop moving. This typically means setting any ``Motor`` to 0.0 and any ``DoubleSolenoid`` to ``kOff``. It is called when the robot is being disabled, and it is very important to stop everything to ensure that the robot is safe and doesn't make any uncontrolled movements.
 
+Relationship chart of classes:
+
+![image](https://github.com/irs1318dev/irs1318_2023/assets/62030864/e1b65b44-c64c-455c-9a68-13be3637f422)
+
+
 ## IMechanism
 Mechanism classes handle the reading of all of the sensors and control of all of the actuators on each mechanism of the robot.  There is one Mechanism class for each individual part of the robot, named using the pattern "ThingMechanism" (where "Thing" is the name of the mechanism, like "DriveTrain").  Mechanisms read from all of the Sensors and translate the Operations from the Driver into the functions that need to be called on the individual Actuators.  This typically involves some math and logic to convert the data from the operations into the particular actions that need to happen.  For example, when using a typical Tank drivetrain, the DriveTrain Mechanism calculates the speed settings to apply to the left and right motors based on the DriveTrainMoveForward operation and the DriveTrainTurn operation.  Also, there may be other concerns to take care of, such as how to respond based on the presence or absence of a setting from another operation or a sensor.
 
