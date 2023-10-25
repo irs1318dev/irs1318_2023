@@ -347,6 +347,8 @@ motor, through-beam sensor, open sensor, closed sensor.
 
 Your garage door will have numerous states, including moving up, moving down, open, and closed. Button presses and your through-beam sensor will determine what state the garage should be in.
 
+![download](https://github.com/irs1318dev/irs1318_2023/assets/62030864/4c727b72-b986-4eba-a907-72116ab06705)
+
 Begin by creating a new class called GarageDoorMechanism. You may copy imports from Forklift. The ``IMechanism`` structure will always be used.
 
 Below are SOME of the necessary definitions to continue with this exercise:
