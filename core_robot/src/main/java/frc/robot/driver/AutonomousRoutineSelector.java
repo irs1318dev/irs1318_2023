@@ -71,6 +71,11 @@ public class AutonomousRoutineSelector
 
             this.logger.logString(LoggingKey.AutonomousSelection, startPosition.toString() + "." + routine.toString() + "(" + (isRed ? "red" : "blue") + ")");
 
+            if (routine == AutoRoutine.Test2024)
+            {
+                return Test2024();
+            }
+
             if(routine == AutoRoutine.Place)
             {
                 return place();
@@ -221,6 +226,24 @@ public class AutonomousRoutineSelector
     private static IControlTask GetFillerRoutine()
     {
         return new WaitTask(0.0);
+    }
+
+    public static IControlTask Test2024()
+    {
+        double framePreremetere = 34; //With bumpers
+        double halfFramePreremetere = framePreremetere / 2.0;
+
+        return SequentialTask.Sequence(
+            ConcurrentTask.AllTasks(
+                new ResetLevelTask(),
+                new PositionStartingTask(
+                    250.5 + halfFramePreremetere, 
+                    324.0 + halfFramePreremetere,
+                    180.0,
+                    true,
+                    true)),
+            
+            new FollowPathTask("P3toP5", Type.Absolute));
     }
 
     private static IControlTask place()

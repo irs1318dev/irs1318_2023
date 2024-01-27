@@ -29,7 +29,8 @@ public class SmartDashboardSelectionManager
         OnePlusPickup,
         OnePickupCharge,
         OnePlusOne,
-        ThreePiece
+        ThreePiece, 
+        Test2024
     }
 
     /**
