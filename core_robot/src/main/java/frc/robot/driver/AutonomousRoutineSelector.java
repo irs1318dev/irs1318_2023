@@ -238,9 +238,9 @@ public class AutonomousRoutineSelector
                 new ResetLevelTask(),
                 new PositionStartingTask(
                     // Change tour x - axis value based on is red
-                    250.5 + halfFramePreremetere, 
-                    324.0 + halfFramePreremetere,
-                    180.0,
+                    250.5 + halfFramePreremetere,
+                    306 - halfFramePreremetere,
+                    0.0,
                     true,
                     true)),
             
