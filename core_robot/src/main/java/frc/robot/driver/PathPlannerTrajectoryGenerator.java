@@ -569,7 +569,10 @@ public class PathPlannerTrajectoryGenerator
     // }
 
     public static void generateTrajectories(boolean isRed, TrajectoryManager trajectoryManager, IPathPlanner pathPlanner)
-    {
+    {   
+
+        // Fix positions based on layout and marking diagrams
+        
         double framePreremetere = 34; //With bumpers
         double halfFramePreremetere = framePreremetere / 2.0;
         Point2d P1 = new Point2d(getXPosition(isRed, 324.173750 - halfFramePreremetere), 253.611250 - halfFramePreremetere);
@@ -595,6 +598,9 @@ public class PathPlannerTrajectoryGenerator
             pathPlanner.buildTrajectory(
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_VELOCITY,
                 TuningConstants.DRIVETRAIN_MAX_PATH_TRANSLATIONAL_ACCELERATION,
+
+                // Fix tangents based on new positions
+
                 new PathPlannerWaypoint(P3, getOrientationOrHeading(isRed, 0), getOrientationOrHeading(isRed, 225)),
                 new PathPlannerWaypoint(P7M, getOrientationOrHeading(isRed, 0), getOrientationOrHeading(isRed, 202.5)),
                 new PathPlannerWaypoint(P7, getOrientationOrHeading(isRed, 0), getOrientationOrHeading(isRed, 112.5)),
